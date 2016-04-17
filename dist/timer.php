@@ -1,0 +1,54 @@
+<?php
+// if ($_SERVER['HTTP_HOST'] == "www.cstimer.net" && !isset($_REQUEST['noredirect'])) {
+//   header("HTTP/1.1 301 Moved Permanently"); 
+//   header("Location: https://cstimer.net".$_SERVER["REQUEST_URI"]);
+//   die(0);
+// }
+// if ($_SERVER['HTTP_HOST'] == "cstimer.net" && !((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)) {
+//   header("HTTP/1.1 301 Moved Permanently"); 
+//   header("Location: https://cstimer.net".$_SERVER["REQUEST_URI"]);
+//   die(0);
+// }
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html manifest="cache.manifest">
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=800">
+  <link rel="apple-touch-icon" href="img/cstimer.png">
+<?php include('lang/langDet.php');?>
+  <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
+  <link rel='stylesheet' type='text/css' href='css/style.css'>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/cstimer.js"></script>
+<?php include('baidutongji.php') ?>
+</head>
+<body>
+<div id="leftbar">
+  <div class="mybutton c1"><div><span></span></div></div>
+  <div class="mybutton c2"><div><span></span></div></div>
+  <div class="mybutton c3"><div><span></span></div></div>
+  <div id="logo" class="mybutton"><div><span>csTimer</span></div></div>
+  <div class="mybutton c4"><div><span></span></div></div>
+  <div class="mybutton c5"><div><span></span></div></div>
+  <div class="mybutton c6"><div><span></span></div></div>
+</div>
+<div id="gray"></div>
+<div><img id="bgImage"></div>
+<div id="about" style="display:none;">
+<?php include('lang/'.$lang.'.php') ?>
+</div>
+<table id="timer" border="0"><tbody>
+<tr><td id="container">
+<div id="touch"></div>
+<div id="lcd"></div>
+<div id="avgstr"></div>
+</td></tr>
+</tbody></table>
+<table border="0" style="position:absolute; right:0%; height:100%;"><tbody>
+<tr><td id="multiphase"></td></tr>
+</tbody></table>
+</body></html>
