@@ -672,7 +672,7 @@ var kernel = (function() {
 				return;
 			}
 			var compExpString = LZString.compressToEncodedURIComponent(expString);
-			$.post('https://cstimer.sinaapp.com/userdata.php', {'id': id, 'data': compExpString}, function(val) {
+			$.post('https://cstimer.net/userdata.php', {'id': id, 'data': compExpString}, function(val) {
 				if (val["retcode"] == 0) {
 					alert(EXPORT_UPLOADED);
 				} else {
@@ -690,7 +690,7 @@ var kernel = (function() {
 				alert(EXPORT_INVID);
 				return;
 			}
-			$.post('https://cstimer.sinaapp.com/userdata.php', {'id': id}, function(val) {
+			$.post('https://cstimer.net/userdata.php', {'id': id}, function(val) {
 				var retcode = val["retcode"];
 				if (retcode == 0) {
 					loadData(LZString.decompressFromEncodedURIComponent(val["data"]));

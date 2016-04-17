@@ -66,7 +66,7 @@ clean:
 	rm -f $(cstimer) $(twisty) $(css) $(langJS) $(langPHP)
 
 local: all
-	php $(dest)/timer.php | sed "s/http:\/\/lib\.sinaapp\.com\/js\/jquery\/1\.8\//js\//g" | sed "s/ manifest=\"cache\.manifest\"//g" > $(dest)/local/timer.html
+	php $(dest)/timer.php | sed "s/ manifest=\"cache\.manifest\"//g" > $(dest)/local/timer.html
 	cp $(dest)/js/cstimer.js $(dest)/local/js/cstimer.js
 	cp $(dest)/js/twisty.js $(dest)/local/js/twisty.js
 	cp $(dest)/css/style.css $(dest)/local/css/style.css
