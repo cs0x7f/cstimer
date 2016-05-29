@@ -46,6 +46,7 @@ var TOOLS_TREND = '时间趋势';
 var PROPERTY_IMGSIZE = '打乱图案大小：';
 var TIMER_INSPECT = '观察';
 var TIMER_SOLVE = '还原';
+var PROPERTY_USEMOUSE = '启用鼠标计时';
 var PROPERTY_TIMEU = '计时器更新方式：';
 var PROPERTY_TIMEU_STR = '实时|0.1秒|到秒|仅观察|隐藏';
 var PROPERTY_PRETIME = '开始前按住空格时间（秒）：';

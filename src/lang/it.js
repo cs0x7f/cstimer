@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = 'Dimensione della visualizzazione dello scramble: ';
 var TIMER_INSPECT = 'Ispezione	';
 var TIMER_SOLVE = 'Risoluzione';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'L\'aggiornamento del cronometro e\': ';
 var PROPERTY_TIMEU_STR = 'Aggiorna|0.1s|secondi|inspezione|none';
 var PROPERTY_PRETIME = 'Tempo di attesa dopo la pressione del tasto spazio (secondo(i)): ';

@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = '스크램블 이미지 크기: ';
 var TIMER_INSPECT = '보기';
 var TIMER_SOLVE = '맞추기';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = '타이머 업데이트: ';
 var PROPERTY_TIMEU_STR = '업데이트|0.1s|초|인스펙션|없음';
 var PROPERTY_PRETIME = '시작하기 전 스페이스바를 누르고 있는 시간: ';

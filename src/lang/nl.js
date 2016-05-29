@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = 'Tekstgrootte scramble: ';
 var TIMER_INSPECT = 'Inspectie';
 var TIMER_SOLVE = 'Oplossen';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'Timer update is: ';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconden|inspectie|geen';
 var PROPERTY_PRETIME = 'Spatiebalk ingedrukt houden voor (seconde(n)): ';

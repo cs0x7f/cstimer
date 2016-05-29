@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = 'Tamaño de la imagen de la mezcla: ';
 var TIMER_INSPECT = 'Inspección';
 var TIMER_SOLVE = 'Resolución';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'Frecuencia del cronómetro: ';
 var PROPERTY_TIMEU_STR = 'normal|0.1s|segundos|solo inspección|nada';
 var PROPERTY_PRETIME = 'Tiempo manteniendo la barra espaciadora (en segundo(s)): ';

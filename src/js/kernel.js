@@ -823,6 +823,23 @@ var kernel = (function() {
 		}
 		$('#touch').bind('touch', function(e){e.preventDefault()});
 
+		/**
+		 * ontouch events might not work on microsoft surface pad or laptop,
+		 * so we add the mouse timer function to support such devices.
+		 */
+		$('#touch').mousedown(function(e) {
+			if (e.which == 1 && getProp('useMouse')) { //left button only
+				timer.onkeydown(32);
+				e.preventDefault();
+			}
+		});
+		$('#touch').mouseup(function(e) {
+			if (e.which == 1 && getProp('useMouse')) {
+				timer.onkeyup(32);
+				e.preventDefault();
+			}
+		});
+
 		if (window.applicationCache) { 
 			applicationCache.addEventListener('updateready', function(e) {
 				if (applicationCache.status == applicationCache.UPDATEREADY) {

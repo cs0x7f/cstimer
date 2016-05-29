@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange: ';
 var TIMER_INSPECT = 'Inspection';
 var TIMER_SOLVE = 'Résolution';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'Rafraîchissement du chronomètre: ';
 var PROPERTY_TIMEU_STR = 'normal|0.1s|secondes|inspection|non';
 var PROPERTY_PRETIME = 'Tenir la barre d\'espace appuyée pendant (en secondes): ';

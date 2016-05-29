@@ -757,6 +757,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 reset();
             }
         }, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP)$/);
+        regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
         regProp('timer', 'useIns', 0, PROPERTY_USEINS, [false]);
         regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
         regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'v'], PROPERTY_ENTERING_STR.split('|')]);

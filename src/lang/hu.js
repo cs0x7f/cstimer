@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = 'Keverési kép mérete: ';
 var TIMER_INSPECT = 'memorizációs idő';
 var TIMER_SOLVE = 'megoldás';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'időmérő beállítása: ';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'a szóköz lenttartásának az ideje (másodpercben): ';

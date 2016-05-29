@@ -46,6 +46,7 @@ var TOOLS_TREND = 'time trend';
 var PROPERTY_IMGSIZE = 'Scramble Image Size: ';
 var TIMER_INSPECT = 'inspect';
 var TIMER_SOLVE = 'solve';
+var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'timer update is: ';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s)): ';
