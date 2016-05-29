@@ -79,8 +79,9 @@
 </ul>
 <h2>链接</h2>
 <ul>
-<li><a class="click" href="/">cstimer博客</a></li>
 <li><a class="click" href="http://cubingchina.com/">粗饼 中国魔方赛事网</a></li>
 <li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
 <li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="/src/">csTimer with uncompressed files</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer">source code of csTimer</a></li>
 </ul>

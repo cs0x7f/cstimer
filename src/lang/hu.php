@@ -75,8 +75,9 @@
 </ul>
 <h2>Linkek</h2>
 <ul>
-<li><a class="click" href="/">csTimer blog</a></li>
 <li><a class="click" href="http://cubingchina.com/">Cubing China, a k&#x043d;nai gyorskock&#x0431;z&#x0443;k hivatalos weboldala</a></li>
 <li><a class="click" href="/old2/">csTimer 2012.03.15-&#x0446;s verzi&#x0443;ja (csak k&#x043d;nai nyelven el&#x0439;rhet&#x0445;)</a></li>
 <li><a class="click" href="/old/">csTimer 2012.02.29-es verzi&#x0443;ja (csak k&#x043d;nai nyelven el&#x0439;rhet&#x0445;)</a></li>
+<li><a class="click" href="/src/">csTimer with uncompressed files</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer">source code of csTimer</a></li>
 </ul>

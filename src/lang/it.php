@@ -79,8 +79,9 @@ csTimer e' stato testato su Firefox, Chrome e Safari. Inoltre funziona bene su i
 </ul>
 <h2>Links</h2>
 <ul>
-<li><a class="click" href="/">cstimer blog</a></li>
 <li><a class="click" href="http://cubingchina.com/">Cubing China, il website cinese ufficiale sullo speedcubing</a></li>
 <li><a class="click" href="/old2/">csTimer version 2012.3.15 (only zh-cn)</a></li>
 <li><a class="click" href="/old/">csTimer version 2012.2.29 (only zh-cn)</a></li>
+<li><a class="click" href="/src/">csTimer with uncompressed files</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer">source code of csTimer</a></li>
 </ul>
