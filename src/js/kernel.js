@@ -585,6 +585,7 @@ var kernel = (function() {
 		var images = ["http://fmn.rrimg.com/fmn063/xiaozhan/20120815/0025/x_large_FX3O_12190000160a1261.jpg"];
 		var img;
 		var lastidx = 0;
+		var urlre = /^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
 
 		function procSignal(signal, value) {
 			if (value[0] == "bgImgO") {
@@ -599,10 +600,9 @@ var kernel = (function() {
 				}
 
 				if (value[1] == 'u') {
-					if (img.attr("src") != undefined) {
+					if (value[2] == 'modify') {
 						var input = prompt(BGIMAGE_URL, src);
-						var re = /^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
-						if (re.exec(input)) {
+						if (urlre.exec(input)) {
 							src = input;
 							img.attr("src", src);
 							setProp('bgImgSrc', src);
@@ -627,7 +627,6 @@ var kernel = (function() {
 			regListener('bgImage', 'property', procSignal, /^bgImg[OS]$/);
 			regProp('ui', 'bgImgO', 2, BGIMAGE_OPACITY, [25, 0, 100]);
 			regProp('ui', 'bgImgS', 1, BGIMAGE_IMAGE, ['n', ['n', 'u', 0], BGIMAGE_IMAGE_STR.split('|')]);
-			img.attr("src", "");
 		});
 	})();
 
