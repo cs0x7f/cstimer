@@ -40,9 +40,9 @@ if ($lang == "cn") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionele Speedcubing/Training Timer </title>
 <?php } else if ($lang == "vi") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <meta name="keywords" content="đồi hồ bấm giờ, cstimer, tính giờ cho rubik, tính giờ trục tuyến, web tính giờ">
   <title> csTimer - Trang tính giờ / huẩn luyện chuyên nghiệp cho rubik's cube solver </title>
 <?php } else { ?>
-  <meta name="keywords" content="đồi hồ bấm giờ, cstimer, tính giờ cho rubik, tính giờ trục tuyến, web tính giờ">
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
