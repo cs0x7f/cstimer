@@ -10,76 +10,76 @@ var BUTTON_BLOG = 'BLOG';
 var PROPERTY_USEINS = 'dử dụng thời gian chuẩn bị của WCA';
 var PROPERTY_VOICEINS = 'Giọng nói cho thời gian chuẩn bị của WCA: ';
 var PROPERTY_VOICEINS_STR = 'Giới tính chưa rõ|Nam giới|Nữ giới';
-var PROPERTY_USECFM = 'confirm time(ok/+2/dnf)';
-var PROPERTY_PHASES = ': ';
+var PROPERTY_USECFM = 'xác nhận time(ok/+2/dnf)';
+var PROPERTY_PHASES = 'nhiều đợt: ';
 var PROPERTY_TIMERSIZE = 'kích cớ của timer: ';
 var CFMDIV_CURTIME = 'Thời gian là: ';
-var PROPERTY_USEMILLI = 'sử dụng ';
+var PROPERTY_USEMILLI = 'sử dụng 0.001s ';
 var PROPERTY_SMALLADP = 'use small font after decimal point';
 var PROPERTY_SCRSIZE = 'kích cớ của scramble: ';
 var PROPERTY_SCRMONO = 'Khoảng cách của các chữ scramble';
 var PROPERTY_SCRLIM = 'Giới hạn chiều cao của vùng scramble';
 var PROPERTY_SCRALIGN = 'Vị trí của scramble: ';
 var PROPERTY_SCRALIGN_STR = 'Giữa|Trái|Phải';
-var EXPORT_DATAEXPORT = 'thut/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_USERID = 'Please input your account (only alphabet or number): ';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var EXPORT_DATAEXPORT = 'Thu thập/giải phóng data';
+var EXPORT_TOFILE = 'giải phóng thành file';
+var EXPORT_FROMFILE = 'Thu thập từ file';
+var EXPORT_TOSERV = 'Giải phóng ra server';
+var EXPORT_FROMSERV = 'Thu thập từ  server';
+var EXPORT_USERID = 'Hãy viết mã riêng đặc biệt của bạn (chỉ viết bằng chữ cái và số): ';
+var EXPORT_INVID = 'Chỉ được viết chữ cái hoặc con số!';
+var EXPORT_ERROR = 'Có lỗi xảy ra...';
+var EXPORT_NODATA = 'không tìm thấy thông tin từ mã của bạn';
+var EXPORT_UPLOADED = 'thu thập thành công';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
-var CROSS_UNAVAILABLE = 'Unavailable for this scramble type';
-var EOLINE_UNAVAILABLE = 'Unavailable for this scramble type';
-var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
-var TOOLS_SELECTFUNC = 'Function: ';
-var TOOLS_CROSS = 'solve cross';
-var TOOLS_EOLINE = 'solve EOLine';
-var TOOLS_IMAGE = 'draw scramble';
-var TOOLS_STATS = 'Statistics';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var PROPERTY_IMGSIZE = 'Scramble Image Size: ';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is: ';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'time of keeping space down(second(s)): ';
-var PROPERTY_ENTERING = 'entering in times with ';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|virtual';
-var PROPERTY_COLOR = 'select color theme: ';
-var PROPERTY_COLORS = 'font color: |background color: |board color: |button color: |link color: |Logo color: |Logo bgcolor: ';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'random|style1|style2|style3|black|white|style6|manual';
-var PROPERTY_FONT = 'select timer\'s font: ';
-var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format: '
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
+var BUTTON_TOOLS = 'Công cụ';
+var CROSS_UNAVAILABLE = 'Không khả dụng cho loại scramble này';
+var EOLINE_UNAVAILABLE = 'Không khả dụng cho loại scramble này';
+var IMAGE_UNAVAILABLE = 'Không khả dụng cho loại scramble này';
+var TOOLS_SELECTFUNC = 'Chức năng: ';
+var TOOLS_CROSS = 'giải cross';
+var TOOLS_EOLINE = 'giải EOLine';
+var TOOLS_IMAGE = 'vẽ scramble';
+var TOOLS_STATS = 'Thành tích ( kiểu 1)';
+var TOOLS_DISTRIBUTION = 'Thành tích ( kiểu 2)';
+var TOOLS_TREND = 'Thành tích ( kiểu 3)';
+var PROPERTY_IMGSIZE = 'kích cớ hình vẽ scramble: ';
+var TIMER_INSPECT = 'Chuẩn bị';
+var TIMER_SOLVE = 'GIải';
+var PROPERTY_USEMOUSE = 'sử dụng chuột';
+var PROPERTY_TIMEU = 'cập nhập thời gian: ';
+var PROPERTY_TIMEU_STR = 'Cập nhập|theo 0.1s|theo giây|Chuẩn bị|Không có';
+var PROPERTY_PRETIME = 'Thời gian giữ (Giây(s)): ';
+var PROPERTY_ENTERING = 'Nhập thời gian với ';
+var PROPERTY_ENTERING_STR = 'timer|gõ vào|stackmat|Giả lập';
+var PROPERTY_COLOR = 'Chọn màu nền: ';
+var PROPERTY_COLORS = 'màu chữ: |Màu nền: |Màu bảng: |Màu nút: |Màu link: |Màu chữ logo: |màu nền logo: ';
+var PROPERTY_FONTCOLOR_STR = 'Đen|Trắng';
+var PROPERTY_COLOR_STR = 'bất kì|kiểu 1|kiểu 2|Kiểu 3|đen|trắng|Kiểu6|tự chọn';
+var PROPERTY_FONT = 'Kiểu chữ timer: ';
+var PROPERTY_FONT_STR = 'bất kì|bình thường|kí thuật số 1|kí thuật số 2|kí thuật số 3|kí thuật số 4|kí thuật số 5';
+var PROPERTY_FORMAT = 'Thể loại thời gian: '
+var PROPERTY_USEKSC = 'Sử dụng nút tắt';
+var PROPERTY_NTOOLS = 'số công cụ';
+var PROPERTY_AHIDE = 'ẩn tất cả khi giải';
+var SCRAMBLE_LAST = 'trước';
+var SCRAMBLE_NEXT = 'sau';
 var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
+var SCRAMBLE_LENGTH = 'độ dài';
+var SCRAMBLE_INPUT = 'Nhập scramble';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
 		['4x4x4', "444wca", -40],
 		['5x5x5', "555wca", -60],
 		['2x2x2', "222so", 0],
-		['3x3 bld', "333ni", 0],
-		['3x3 oh', "333oh", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 ft', "333ft", 0],
+		['3x3 BLD', "333ni", 0],
+		['3x3 OH', "333oh", 0],
+		['3x3 FM', "333fm", 0],
+		['3x3 FT', "333ft", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
-		['sq1', "sqrs", 0],
+		['Square-1', "sqrs", 0],
 		['clock', "clko", 0],
 		['skewb', "skbso", 0],
 		['6x6x6', "666wca", -80],
@@ -96,7 +96,7 @@ var scrdata = [
 	]],
 	['2x2x2', [
 		["WCA", "222so", 0],
-		['optimal random state', "222o", 0],
+		['Trường hợp bất kì', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -105,51 +105,51 @@ var scrdata = [
 	]],
 	['3x3x3', [
 		["WCA", "333", 0],
-		['old style', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
-		['last layer', "ll", 0],
-		['zb last layer', "zbll", 0],
-		['corners of last layer', "cll", 0],
-		['edges of last layer', "ell", 0],
-		['last six edges', "lse", 0],
-		['last six edges&ltM,U&gt', "lsemu", 0],
+		['kiểu cũ', "333o", 25],
+		['3x3x3 cho những thằng đần', "333noob", 25],
+		['cạnh', "edges", 0],
+		['góc', "corners", 0],
+		['tầng 3', "ll", 0],
+		['ZBLL', "zbll", 0],
+		['COLL', "cll", 0],
+		['ELL', "ell", 0],
+		['6 cạnh cuối', "lse", 0],
+		['6 cạnh cuối &ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
-		['cross solved', "f2l", 0],
-		['last slot + last layer', "lsll2", 0],
+		['đã giải cross', "f2l", 0],
+		['F2L cuối  + tầng 3', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
 		['ZZLL', "zzll", 0],
 		['PLL', "pll", 0],
-		['easy cross', 'easyc', 3]
+		['solve dởm', 'easyc', 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", 40],
 		['SiGN', "444", 40],
-		['random state', "444o", 0],
+		['trường họp bất kì', "444o", 0],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['4x4x4 cạnh', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['5x5x5 cạnh', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
 		['prefix', "666p", 80],
 		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['6x6x6 cạnh', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['7x7x7 cạnh', "7edge", 8]
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
@@ -160,12 +160,12 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['Kiểu cũ', "mgmo", 70]
 	]],
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
 		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['bước bất kì', "pyrm", 25]
 	]],
 	['Square-1', [
 		["WCA", "sqrs", 0],
@@ -197,7 +197,7 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
+		['Trường hợp bất kì', "gearso", 0],
 		['optimal random state', "gearo", 0],
 		['3-gen', "gear", 10]
 	]],
@@ -215,12 +215,12 @@ var scrdata = [
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['Kiểu cũ', "prco", 70]
 	]],
 	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+		['khối 1x1x3 ', "sia113", 25],
+		['khối 1x2x3', "sia123", 25],
+		['khối 2x2x2', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -232,7 +232,7 @@ var scrdata = [
 		['twist metric', "ssq1t", 20]
 	]],
 	['UFO', [
-		['Jaap style', "ufo", 25]
+		['kiểu Jaap', "ufo", 25]
 	]],
 	['Other', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
@@ -241,31 +241,31 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
-		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
-		['3-generator R,r,U', "RrU", 25],
-		['half turns only', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+		['2-gen R,U', "2gen", 25],
+		['2-gen L,U', "2genl", 25],
+		['Roux-2gen M,U', "roux", 25],
+		['3-gen F,R,U', "3gen_F", 25],
+		['3-gen R,U,L', "3gen_L", 25],
+		['3-gen R,r,U', "RrU", 25],
+		['không có bước kép', "half", 25],
+		['F2L cuối + tầng 3 ( kiểu cũ )', "lsll", 15]
 	]],
 	['Bandaged Cube', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
 	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
+		['2-gen R,U', "minx2g", 30],
+		['last slot + tầng cuối', "mlsll", 20]
 	]],
 	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
+		['Nhiều 3x3x3s', "r3", 5],
 		['234 relay', "r234", 0],
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
 		['234567 relay', "r234567", 0]
 	]],
-	['===JOKES===', [
+	['=== VUI =)) ===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -289,45 +289,45 @@ var SCRAMBLE_NOOBST = [
 	['turn the right face', 'turn the left face'],
 	['turn the front face', 'turn the back face']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete this session?';
+var SCRAMBLE_NOOBSS = ' quay theo chiều kim đồn hồ 90 độ,| quay ngược theo chiều kim đồn hồ 90 độ,| quay 180 độ,';
+var STATS_CFM_RESET = 'bạn có chắc muốn xóa mọi thời gian trong mục này?';
+var STATS_CFM_DELSS = 'bạn có chắc muốn xóa mục này?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment:';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
+var STATS_CFM_DELETE = 'Xóa thời gian này?';
+var STATS_COMMENT = 'bình luận:';
+var STATS_CURROUND = 'thành tích vòng hiện tại';
+var STATS_CURSESSION = 'thành tích mục hiện tại';
 var STATS_AVG = 'mean';
 var STATS_SOLVE = 'solve';
 var STATS_TIME = 'time';
 var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Session Name';
-var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:';
+var STATS_SESSION_NAME = 'tên session';
+var STATS_STRING = 'best|vừa xong|worst|tạo ra bởi csTimer on %Y-%M-%D|solves/tổng: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Thành tích:';
 var STATS_PREC = 'time distribution precision: ';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
+var STATS_PREC_STR = 'tự động|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
+var PROPERTY_PRINTSCR = 'In scramble trong thành tích';
+var PROPERTY_SUMMARY = 'cho xem bảng thành tích	';
+var PROPERTY_IMRENAME = 'yêu cầu đặt tên ngay sau khi tạo 1 mục';
+var PROPERTY_SCR2SS = 'tạo ngay 1 mục khi chuyển sang scramble khác';
+var PROPERTY_SS2SCR = 'không xóa scramble khi chuyển sang mục khác';
+var PROPERTY_DELMUL = 'cho phép xóa thời gian cùng 1 lúc';
 var MODULE_NAMES = {
-	"ui": 'display',
-	"color": 'color',
+	"ui": 'màn hình chính ',
+	"color": 'màu',
 	"timer": 'timer',
 	"kernel": 'global',
 	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools'
+	"stats": 'thành tích',
+	"tools": 'công cụ'
 };
-var BGIMAGE_URL = 'please input image\'s url';
-var BGIMAGE_INVALID = 'invalid url';
-var BGIMAGE_OPACITY = 'background image opacity: ';
-var BGIMAGE_IMAGE = 'background image: ';
-var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
-var SHOW_AVG_LABEL = 'Show Avg Label';
+var BGIMAGE_URL = 'Yêu cầu nhập URL của ảnh';
+var BGIMAGE_INVALID = 'URL không hợp lệ';
+var BGIMAGE_OPACITY = 'Background: ';
+var BGIMAGE_IMAGE = 'background : ';
+var BGIMAGE_IMAGE_STR = 'none|tự chọn|CCT';
+var SHOW_AVG_LABEL = 'cho xem avg ở dưới timer';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles: ';
+var SCRGEN_NSCR = 'số scrambles: ';
 var SCRGEN_PRE = 'prefix: ';
 var SCRGEN_GEN = 'Generate Scrambles!';
