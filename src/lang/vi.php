@@ -1,6 +1,6 @@
 <h1>csTimer  bản 2015.12.12 - Speedcube chuyên nghiệp/huẩn luyện timer</h1>
 <?php include('lang.php') ?>
-<p>CSTimer được thiết kế cho speedcuber. Được dịch bởi Long Regain. Nó hỗ trợ scramble cho nhiều loại cube <b>toàn bộ cube của WCA</b>; nó còn hỗ trợ cho <b>Xcross solver và eoline solver</b>; Nó thống kê thành tích , <b>Cho phép chia ra và tính thời gian thành nhiều đợt</b> và 1 số chức năng cơ bàn như: 15s' chuẩn bị như WCA, blo bla ble...</p>
+<p>Được dịch bởi Long Regain. CSTimer được thiết kế cho speedcuber. Nó hỗ trợ scramble cho nhiều loại cube <b>toàn bộ cube của WCA</b>; nó còn hỗ trợ cho <b>Xcross solver và eoline solver</b>; Nó thống kê thành tích , <b>Cho phép chia ra và tính thời gian thành nhiều đợt</b> và 1 số chức năng cơ bàn như: 15s' chuẩn bị như WCA, blo bla ble...</p>
 <p>CStimer có thể sử dụng rất tốt hầu hết với mọi browser, như: chrome(khuyến khích sử dụng), firefox, opera, blo bla... Và nó cũng hỗ trở ipad, iphone và tất cả các thiết bị android. </p>
 <p> --- Chủ mưu bởi: <a class="click" href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a><br>
  --- Thiết kế bởi: <a class="click" href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a><br></p>
@@ -18,13 +18,13 @@ csTimer đã đc thử nghiệm trên firefox, Chrome và Safari. Và hoạt đ�
  <li><b>Truyền thống</b> - giứ nút SPACE đến khi màu chữ chuyển sang màu xanh là cây. Thời gian sẽ bắt đầu tính cho đến khi bạn bầm SPACE 1 lần nữa.</li>
  <li><b>Bấm nút</b> - giống như stackmat, csTimer giữ thời gian khi giữ SPACE.Bạn phải giữ SPACE 1 vài giây rồi mới được thả ra. </li>
  <li><b>WCA inspection</b> - csTimer hỗ trợ thời gian chuận bị theo như luật của WCA. Khi chức năng inspect được bật lên, Thời gian chuận bị sẽ được tính trước khi bạn giải cube.</li>
- <li><b>chia đợt</b> - CStimer cho phép bạn chia ra thành nhiểu đợt khi tính thời gian. bạn có thể tự cài đặt số đợt. </li>
- <li><b>Cắm stackmat</b> - Nếu bạn muốn sử dụng stackmat, bạn phải mua 1 loại dây cắm đặc biệt và cắm nó vào máy.</li>
+ <li><b>chia đợt tính thời gian </b> - CStimer cho phép bạn chia ra thành nhiểu đợt khi tính thời gian. bạn có thể tự cài đặt số đợt. </li>
+ <li><b>kết nối với stackmat</b> - Nếu bạn muốn sử dụng stackmat, bạn phải mua 1 loại dây cắm đặc biệt và cắm nó vào máy.</li>
  <li><b>OK/+2/DNF</b> - Nếu bạn cắm stackmat thì nó sẽ hiện lên hiện 1 bảng thông báo xác nhận đã cắm. Nhưng bạn sẽ phải chọn hoặc là +2 hay DNF. Nếu không làm gì, thời gian sẽ giữ nguyên.</li>
- <li><b>độ nhạy bén</b> - CStimer có thể tính tới 0.001s. </li>
+ <li><b>độ nhạy bén</b> - CStimer chính xác từng 0.001s. </li>
  <li><b>Thể loại đồng hộ</b> - bạn có thể chỉnh thời gian hiện thị như: hh:mm:ss.XX(X) hoặc mm:ss.XX(X)".</li>
  <li><b>cập nhập thời gian</b> - timer có thể cập nhập theo: không cập nhập, theo giây hoặc thời gian thực.</li>
- <li><b>Style</b> - bạn có thể chỉnh kích cỡ cho CStimer.</li>
+ <li><b>kích cỡ</b> - bạn có thể chỉnh kích cỡ cho CStimer.</li>
  <li><b>Màu</b> - Có rất nhiều màu và phong cách để bạn có thể chọn.</li>
 </ul>
 <h3>Scramble</h3>
@@ -39,15 +39,15 @@ csTimer đã đc thử nghiệm trên firefox, Chrome và Safari. Và hoạt đ�
 </ul>
 <h3>Thành tích</h3>
 <ul>
- <li><b>Multi Session</b> - There're 5 session(s) of time. All statistics function is session-oriented.</li>
- <li><b>Session average</b> - You may find session average at the bottom of the time table.</li>
- <li><b>Dynamic ao5</b> - After solving more than 5 times, you may check your average of 5 at 'ao5' column and get detail by clicking the cell.</li>
- <li><b>Dynamic ao12</b> - After solving more than 12 times, you may check your average of 12 at 'ao12' column and get detail by clicking the cell.</li>
- <li><b>Statistics detials</b> - Click the cell which contains session average, you'll get the detail of current session.</li>
- <li><b>add comments</b> - Click the cell which contains a solving time, you may set the time to OK/+2/DNF or comments.</li>
- <li><b>delete time/session</b> - Click the index before time, You may delete the time at the same row. Or click the 'X' button to remove all times in the current session.</li>
+ <li><b>Bảng thành tích</b> - có 5 bảng thành tích. tất cả đều dược sắp xếp gọn gàng, dễ nhìn.</li>
+ <li><b>Bảng avg/b> - Bạn có thể thấy nó ở bảng thành tích.</li>
+ <li><b>Avg of 5</b> - Sau khi giải 5 lần, CStimer sẽ tính ra con số trung bình trong 5 lần giải đó.</li>
+ <li><b>Avg of 12 </b> - Sau khi giải 12 lần, CStimer sẽ tính ra con số trung bình trong 12 lần giải đó.</li>
+ <li><b>Chi tiết về thành tích</b> - Bạn có thể tùy chọn avg của xx trong tùy chọn.</li>
+ <li><b>Thêm comment </b> - Nếu bạn lập được best, bạn có thể thể hiện cảm xúc của mình trong phần comment ở mỗi lần giải.</li>
+ <li><b>Xóa thời gian, mục</b> - Bạn có thể xóa từng thời gian một hoặc có thể xóa cả mục bằng cách bấm vào nút X ở bảng thành tích.</li>
 </ul>
-<h3>Keyboard Shortcut</h3>
+<h3>Phím tắt</h3>
 <ul>
  <table class="table" style="display: inline-block;">
   <tr><th>key</th><td>function</td></tr>
