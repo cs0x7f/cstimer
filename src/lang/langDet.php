@@ -1,7 +1,7 @@
 <?php 
 $req_lang = "en";
 $lang = "en";
-$lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl");
+$lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl", "vi" => "vi");
 
 if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
   $req_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 4);
@@ -39,7 +39,10 @@ if ($lang == "cn") { ?>
 <?php } else if ($lang == "nl") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionele Speedcubing/Training Timer </title>
-<?php } else { ?>
+<?php } else if ($lang == "vi") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Trang tính giờ / huẩn luyện chuyên nghiệp cho rubik's cube solver </title>
+<?php } else { ?>
+  <meta name="keywords" content="đồi hồ bấm giờ, cstimer, tính giờ cho rubik, tính giờ trục tuyến, web tính giờ">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
