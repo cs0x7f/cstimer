@@ -40,7 +40,7 @@ csTimer đã đc thử nghiệm trên firefox, Chrome và Safari. Và hoạt đ�
 <h3>Thành tích</h3>
 <ul>
  <li><b>Bảng thành tích</b> - có 5 bảng thành tích. tất cả đều dược sắp xếp gọn gàng, dễ nhìn.</li>
- <li><b>Bảng avg/b> - Bạn có thể thấy nó ở bảng thành tích.</li>
+ <li><b>Bảng avg</b> - Bạn có thể thấy nó ở bảng thành tích.</li>
  <li><b>Avg of 5</b> - Sau khi giải 5 lần, CStimer sẽ tính ra con số trung bình trong 5 lần giải đó.</li>
  <li><b>Avg of 12 </b> - Sau khi giải 12 lần, CStimer sẽ tính ra con số trung bình trong 12 lần giải đó.</li>
  <li><b>Chi tiết về thành tích</b> - Bạn có thể tùy chọn avg của xx trong tùy chọn.</li>
