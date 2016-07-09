@@ -122,6 +122,7 @@ var scrdata = [
 		['ZBLS', "zbls", 0],
 		['ZZLL', "zzll", 0],
 		['PLL', "pll", 0],
+		['EOLine', "eoline", 0],
 		['Croix facile', 'easyc', 3]
 	]],
 	['4x4x4', [

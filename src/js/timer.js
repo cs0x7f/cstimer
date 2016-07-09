@@ -6,8 +6,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
     /**
      * n: n phase(s) before stop
      * -1: idle
-     * -2: ready
+     * -2: ready to start (space pressed)
      * -3: inspecting
+     * -4: ready to inspection (space pressed)
      */
     var status = -1;
 
@@ -60,7 +61,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         }
 
         function runningThread(timestamp) {
-            if (status == 0 || status == -1 || runningId == undefined) {
+            if (status == 0 || status == -1 || status == -4 || runningId == undefined) {
                 return;
             }
             var time = $.now() - startTime;
@@ -105,13 +106,11 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             var run = false;
             if (status == 0) {
                 lcd.color('red');
-            } else if (status == -1) {
+            } else if (status == -1 || status == -4) {
                 setColor(isKeyDown && isSpace ? (getProp('useIns') ? '#0d0' : '#f00') : '');
             } else if (status == -2) {
                 setColor(isKeyDown && isSpace ? '#0d0' : '');
-                if (getProp('useIns')) {
-                    run = true;
-                }
+                run = getProp('useIns');
             } else if (status == -3) {
                 setColor(isKeyDown && isSpace ? '#dd0' : '#f00');
                 run = true;
@@ -240,24 +239,23 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         var lastStop = 0;
         var pressreadyId = undefined;
 
+        function clearPressReady() {
+            if (pressreadyId != undefined) {
+                clearTimeout(pressreadyId);
+                pressreadyId = undefined;
+            }
+        }
+
         function onkeyup(keyCode) {
             var now = $.now();
             if (keyCode == 32) {
                 if (status == 0) {
                     status = -1;
                 } else if (status == -1 || status == -3) {
-                    if (pressreadyId != undefined) {
-                        clearTimeout(pressreadyId);
-                        pressreadyId = undefined;
-                    }
+                    clearPressReady();
                     if (now - lastStop < 500) {
                         lcd.fixDisplay(false, keyCode == 32);
                         return;
-                    }
-                    if (getProp('useIns') && status == -1) {
-                        status = -3;
-                        lcd.reset();
-                        startTime = $.now();
                     }
                 } else if (status == -2) {
                     var time = now;
@@ -266,6 +264,10 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
                     startTime = time;
                     lcd.reset();
+                } else if (status == -4) {
+                    status = -3;
+                    lcd.reset();
+                    startTime = $.now();
                 }
             }
             lcd.fixDisplay(false, keyCode == 32);
@@ -302,8 +304,17 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                         status = -1;
                     }
                 }
-            } else if ((status == (getProp('useIns') ? -3 : -1)) && keyCode == 32 && pressreadyId == undefined) {
-                pressreadyId = setTimeout(pressReady, getProp('preTime'));
+            } else if (keyCode == 32) {
+                if ((status == (getProp('useIns') ? -3 : -1)) && pressreadyId == undefined) {
+                    pressreadyId = setTimeout(pressReady, getProp('preTime'));
+                } else if (status == -1 && getProp('useIns')) {
+                    status = -4;
+                }
+            } else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
+                clearPressReady();
+                status = -1;
+                lcd.val(0);
+                ui.setAutoShow(true);
             }
             lcd.fixDisplay(true, keyCode == 32);
             if (keyCode == 32) {
@@ -620,29 +631,16 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         var currentScramble;
         var currentScrambleType;
         var currentScrambleSize;
-        var types = [
-            /$^/,
-            /sq(rs|1[ht])/, //sq1
-            /222(so|[236o]|eg[012]?)/,
-            /(333(oh?|ni|f[mt])?|(z[zb]|[cep]|cm|2g|ls)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|zbls|roux|RrU|half|easyc)/,
-            /(444(o|wca|yj|bld)?|4edge|RrUu)/,
-            /(555(wca|bld)?|5edge)/,
-            /(666(si|[sp]|wca)?|6edge)/,
-            /(777(si|[sp]|wca)?|7edge)/,
-            /888/,
-            /999/,
-            /101010/,
-            /111111/,
-            /skb(so)?/ //skewb
-        ];
+        var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb'];
         var isReseted = false;
 
         function procSignal(signal, value) {
             if (signal == 'scramble') {
                 currentScrambleType = value[0];
                 currentScramble = value[1];
+                var puzzleType = tools.puzzleType(currentScrambleType);
                 for (var size = 12; size > 0; size--) {
-                    if (types[size].exec(currentScrambleType)) {
+                    if (types[size] == puzzleType) {
                         if (currentScrambleSize != size) {
                             currentScrambleSize = size
                             isReseted = false;

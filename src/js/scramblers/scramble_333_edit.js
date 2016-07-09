@@ -1282,6 +1282,10 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return getAnyScramble(0xf, 0, 0xf, 0);
 	}
 
+	function getEOLineScramble() {
+		return getAnyScramble(0xf5f, 0x000, 0xff, 0xff);
+	}
+
 	function getEasyCrossScramble(type, length) {
 		var cases = cross.getEasyCross(length);
 		return getAnyScramble(cases[0], cases[1], 0xff, 0xff);
@@ -1303,7 +1307,8 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		('ell', getELLScramble)
 		('pll', getPLLScramble)
 		('2gll', get2GLLScramble)
-		('easyc', getEasyCrossScramble);
+		('easyc', getEasyCrossScramble)
+		('eoline', getEOLineScramble);
 
 	return {
 		/* mark2 interface */

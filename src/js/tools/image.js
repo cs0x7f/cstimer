@@ -475,46 +475,30 @@ posit:
         }
     })();
 
-    var types_nnn = [
-        /$./,
-        /$./,
-        /222(so|[236o]|eg[012]?)/,
-        /(333(oh?|ni|f[mt])?|(z[zb]|[cep]|cm|2g|ls)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|zbls|roux|RrU|half|easyc)/,
-        /(444(o|wca|yj|bld)?|4edge|RrUu)/,
-        /(555(wca|bld)?|5edge)/,
-        /(666(si|[sp]|wca)?|6edge)/,
-        /(777(si|[sp]|wca)?|7edge)/,
-        /888/,
-        /999/,
-        /101010/,
-        /111111/
-    ];
-
-    var types_pyra = /pyrs?[om]/;
-    var types_skewb = /skb(so)?/;
-    var types_sq1 = /sq(rs|1[ht])/;
+    var types_nnn = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
 
     function genImage(scramble) {
         var type = scramble[0];
         if (type == 'input') {
             type = tools.scrambleType(scramble[1]);
         }
+        type = tools.puzzleType(type);
         var size;
         for (size = 0; size < 12; size++) {
-            if (types_nnn[size].exec(type)) {
+            if (type == types_nnn[size]) {
                 nnnImage(size, scramble[1]);
                 return true;
             }
         }
-        if (types_pyra.exec(type)) {
+        if (type == "pyr") {
             pyraImage(scramble[1]);
             return true;
         }
-        if (types_skewb.exec(type)) {
+        if (type == "skb") {
             skewbImage(scramble[1]);
             return true;
         }
-        if (types_sq1.exec(type)) {
+        if (type == "sq1") {
             sq1Image(scramble[1]);
             return true;
         }
