@@ -482,14 +482,35 @@ var kernel = (function() {
 			return "#" + (longFormat ? col[0] + col[0] + col[1] + col[1] + col[2] + col[2] : col[0] + col[1] + col[2]);
 		}
 
+		function importColor() {
+			var val = prompt(COLOR_IMPORT, '');
+			var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7})\s*$/
+			if (val === null) {
+				return;
+			}
+			var m = colstr_re.exec(val);
+			if (m) {
+				useColorTemplate(m[1]);
+			} else {
+				alert(COLOR_FAIL);
+			}
+		}
+
 		function procSignal(signal, value) {
 			if (signal == 'property') {
 				switch (value[0]) {
 				case 'color':
 					if (value[1] == 'u') {//user defined
 						return;
+					} else if (value[1] == 'e') {
+						prompt(COLOR_EXPORT, cur_color.join(''));
+						property.set('color', 'u');
+					} else if (value[1] == 'i') {
+						importColor();
+						property.set('color', 'u');
+					} else {
+						useColorTemplate(styles[value[1] == 'r' ? ~~(Math.random() * 6) : (value[1] - 1)]);
 					}
-					useColorTemplate(styles[value[1] == 'r' ? ~~(Math.random() * 6) : (value[1] - 1)]);
 					break;
 				case 'font':
 					if (value[1] == 'r') {
@@ -521,7 +542,7 @@ var kernel = (function() {
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_FONT_STR.split('|')]);
 			regProp('ui', 'ahide', 0, PROPERTY_AHIDE, [true]);
-			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u'], PROPERTY_COLOR_STR.split('|')]);
+			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
 			regProp('color', 'col-font', 1, parr[0], ['#000', ['#000', '#fff'], PROPERTY_FONTCOLOR_STR.split('|')]);
 			regProp('color', 'col-back', 3, parr[1], []);
