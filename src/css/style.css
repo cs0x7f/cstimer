@@ -539,110 +539,109 @@ input[type="text"] {
 	text-align: center;
 }
 
-@media (max-aspect-ratio: 5/6) {
-	html.p70 {
-		font-size: 1.9vw;
-	}
-	html.p80 {
-		font-size: 2.2vw;
-	}
-	html.p90 {
-		font-size: 2.5vw;
-	}
-	html {
-		font-size: 2.8vw;
-	}
-	html.p110 {
-		font-size: 3.1vw;
-	}
-	html.p125 {
-		font-size: 3.5vw;
-	}
-	html.p150 {
-		font-size: 4.2vw;
-	}
-
-	#timer, #touch {
-		font-size: 0.8em;
-		left: 0;
-		width: 100%;
-	}
-
-	#leftbar {
-		left: 0;
-		bottom: 0;
-		top: auto;
-		right: 0;
-		width: auto;
-		height: 59px;
-		height: 11.8vw;
-		font-size: 2.5vw;
-	}
-
-	#leftbar > div {
-		top: 0;
-		width: 11.1111%;
-		height: 100%;
-	}
-
-	#leftbar > div.c1{
-		left: 0;
-	}
-	#leftbar > div.c2{
-		left: 11.1111%;
-	}
-	#leftbar > div.c3{
-		left: 22.2222%;
-	}
-	#leftbar #logo {
-		left: 33.3333%;
-	}
-	#leftbar > div.c4{
-		left: 66.6667%;
-	}
-	#leftbar > div.c5{
-		left: 77.7778%;
-	}
-	#leftbar > div.c6{
-		left: 88.8889%;
-	}
-
-	#leftbar #logo {
-		width: 33.3333%;
-		top: 0;
-	}
-
-	.mybutton {
-		font-size: 1.2em;
-	}
-
-	#stats {
-		top: 150px;
-		top: 30vw;
-		bottom: 61px;
-		bottom: 12.2vw;
-	}
-
-	#scrambleDiv {
-		left: 0;
-	}
-
-	#toolsDiv {
-		bottom: 61px;
-		bottom: 12.2vw;
-	}
-
-	.dialogoption, .dialogshare, .dialoginput, .dialogstats, .dialoglogo {
-		left: 5%;
-		right: 5%;
-	}
-
-	#lcd {
-		max-width: 480px;
-		max-width: 100vw;
-		overflow: hidden;
-	}
+.m html.p70 {
+	font-size: 1.9vw;
 }
+.m html.p80 {
+	font-size: 2.2vw;
+}
+.m html.p90 {
+	font-size: 2.5vw;
+}
+.m html {
+	font-size: 2.8vw;
+}
+.m html.p110 {
+	font-size: 3.1vw;
+}
+.m html.p125 {
+	font-size: 3.5vw;
+}
+.m html.p150 {
+	font-size: 4.2vw;
+}
+
+.m #timer, .m #touch {
+	font-size: 0.8em;
+	left: 0;
+	width: 100%;
+}
+
+.m #leftbar {
+	left: 0;
+	bottom: 0;
+	top: auto;
+	right: 0;
+	width: auto;
+	height: 59px;
+	height: 11.8vw;
+	font-size: 2.5vw;
+}
+
+.m #leftbar > div {
+	top: 0;
+	width: 11.1111%;
+	height: 100%;
+}
+
+.m #leftbar > div.c1{
+	left: 0;
+}
+.m #leftbar > div.c2{
+	left: 11.1111%;
+}
+.m #leftbar > div.c3{
+	left: 22.2222%;
+}
+.m #leftbar #logo {
+	left: 33.3333%;
+}
+.m #leftbar > div.c4{
+	left: 66.6667%;
+}
+.m #leftbar > div.c5{
+	left: 77.7778%;
+}
+.m #leftbar > div.c6{
+	left: 88.8889%;
+}
+
+.m #leftbar #logo {
+	width: 33.3333%;
+	top: 0;
+}
+
+.m .mybutton {
+	font-size: 1.2em;
+}
+
+.m #stats {
+	top: 150px;
+	top: 30vw;
+	bottom: 61px;
+	bottom: 12.2vw;
+}
+
+.m #scrambleDiv {
+	left: 0;
+}
+
+.m #toolsDiv {
+	bottom: 61px;
+	bottom: 12.2vw;
+}
+
+.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialoglogo {
+	left: 5%;
+	right: 5%;
+}
+
+.m #lcd {
+	max-width: 480px;
+	max-width: 100vw;
+	overflow: hidden;
+}
+
 
 #vrckey {
 	table-layout: fixed;

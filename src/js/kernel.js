@@ -496,6 +496,30 @@ var kernel = (function() {
 			}
 		}
 
+		var isMobileView = false;
+
+		function fixOrient() {
+			var width = $(window).width();
+			var height = $(window).height();
+			var view = getProp('view');
+			if (view == 'm') {
+				isMobileView = true;
+			} else if (view == 'd') {
+				isMobileView = false;
+			} else {
+				if (width / height < 6/5) {
+					isMobileView = true;
+				} else {
+					isMobileView = false;
+				}
+			}
+			if (isMobileView) {
+				$('html').addClass('m');
+			} else {
+				$('html').removeClass('m');
+			}
+		}
+
 		function procSignal(signal, value) {
 			if (signal == 'property') {
 				switch (value[0]) {
@@ -531,6 +555,8 @@ var kernel = (function() {
 				case 'zoom':
 					$('html').attr('class', 'p' + ~~(value[1] * 100));
 					$(window).trigger('resize');
+				case 'view':
+					fixOrient();
 					break;
 				default:
 				}
@@ -538,10 +564,11 @@ var kernel = (function() {
 		}
 
 		$(function() {
-			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom)/);
+			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view)/);
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_FONT_STR.split('|')]);
 			regProp('ui', 'ahide', 0, PROPERTY_AHIDE, [true]);
+			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
 			regProp('color', 'col-font', 1, parr[0], ['#000', ['#000', '#fff'], PROPERTY_FONTCOLOR_STR.split('|')]);
@@ -574,6 +601,7 @@ var kernel = (function() {
 			});//.delay(3000).fadeTo(100, 0.1);
 			setTimeout(ui.toggleLeftBar, 3000);
 			dialog.appendTo('body');
+			$(window).resize(fixOrient);
 
 			if (localStorage['properties'] == undefined) {
 				logo.click();
