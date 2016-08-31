@@ -36,6 +36,7 @@ tools/image.js \
 tools/cross.js \
 tools/eoline.js \
 tools/insertionfinder.js \
+tools/metronome.js \
 shortcut.js \
 help.js \
 stackmat.js)

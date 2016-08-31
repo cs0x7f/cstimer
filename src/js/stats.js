@@ -800,7 +800,6 @@ var stats = (function(kpretty, round) {
 				return;
 			}
 			if (!canvas[0].getContext) {
-				fdiv.html('Do not support your browser!');
 				return;
 			}
 			ctx = canvas[0].getContext('2d');
@@ -927,7 +926,9 @@ var stats = (function(kpretty, round) {
 						updateTrend();
 					}
 				}, /^disPrec$/);
-				tools.regTool('trend', TOOLS_TREND, execFunc);
+				if (canvas[0].getContext) {
+					tools.regTool('trend', TOOLS_TREND, execFunc);;
+				}
 			}
 		});
 

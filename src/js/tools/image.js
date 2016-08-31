@@ -510,10 +510,6 @@ posit:
             return;
         }
         canvas = $('<canvas>');
-        if (!canvas[0].getContext) {
-            fdiv.html('Do not support your browser!');
-            return;
-        }
         ctx = canvas[0].getContext('2d');
         fdiv.empty().append(canvas);
         if (!genImage(tools.getCurScramble())) {
@@ -522,7 +518,10 @@ posit:
     }
 
     $(function() {
-        tools.regTool('image', TOOLS_IMAGE, execFunc);
+        canvas = $('<canvas>');
+        if (canvas[0].getContext) {
+            tools.regTool('image', TOOLS_IMAGE, execFunc);
+        }
     });
 
     return {
