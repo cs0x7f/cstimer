@@ -595,8 +595,43 @@ var stats = (function(kpretty, round) {
 		s = s.join("");
 		s = s.substr(0, s.length - 2);
 		stext.val(s);
-		kernel.showDialog([stext, 0, undefined, 0], 'stats', STATS_CURROUND);
+		kernel.showDialog([stext, 0, undefined, 0, ['Export CSV', function(){
+			exportCSV(start, nsolves);
+			return false;
+		}]], 'stats', STATS_CURROUND);
 		stext[0].select();
+	}
+
+	function csvField(val) {
+		if (val.indexOf(',') != -1) {
+			val = '"' + val.replace(/"/g, '""') + '"';
+		}
+		return val;
+	}
+
+	function exportCSV(start, nsolves) {
+		if (times.length == 0) return;
+		if (!window.Blob) {
+			alert('Do not support your browser!');
+		}
+		var s = ["No.,Time,Comment,Scramble"];
+		for (var i=0; i<nsolves; i++) {
+			var time = times[start+i][0];
+			var line = [];
+			line.push(i+1);
+			line.push(pretty(time, true));
+			line.push(csvField(times[start+i][2] ? times[start+i][2] : ""));
+			line.push(times[start+i][1]);
+			s.push(line.join(','));
+		}
+		s = s.join("\r\n");
+		if (window.Blob) {
+			var blob = new Blob([s], {'type': 'text/csv'});
+			var outFile = $('<a class="click"/>');
+			outFile.attr('href', URL.createObjectURL(blob));
+			outFile.attr('download', 'csTimerExport.csv');
+			outFile[0].click();
+		}
 	}
 
 	function infoClick(e) {
@@ -992,7 +1027,10 @@ var stats = (function(kpretty, round) {
 		}
 		s = s.join("\n");
 		stext.val(s);
-		kernel.showDialog([stext, 0, undefined, 0], 'stats', STATS_CURSESSION);
+		kernel.showDialog([stext, 0, undefined, 0, ['Export CSV', function(){
+			exportCSV(0, length);
+			return false;
+		}]], 'stats', STATS_CURSESSION);
 		stext[0].select();
 	}
 
