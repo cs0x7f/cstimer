@@ -17,6 +17,7 @@ var image = (function() {
     function execFunc(fdiv) {
         if (!fdiv) {
             stopAudio();
+            isEnable = false;
             return;
         }
         fdiv.empty().append("BPM: ", bpmInput, bgmOutput, '<br />', 'Vol: ', volInput, '<br />', button);
