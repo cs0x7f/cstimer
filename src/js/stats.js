@@ -625,13 +625,12 @@ var stats = (function(kpretty, round) {
 			s.push(line.join(','));
 		}
 		s = s.join("\r\n");
-		if (window.Blob) {
-			var blob = new Blob([s], {'type': 'text/csv'});
-			var outFile = $('<a class="click"/>');
-			outFile.attr('href', URL.createObjectURL(blob));
-			outFile.attr('download', 'csTimerExport.csv');
-			outFile[0].click();
-		}
+		var blob = new Blob([s], {'type': 'text/csv'});
+		var outFile = $('<a class="click"/>').appendTo('body');
+		outFile.attr('href', URL.createObjectURL(blob));
+		outFile.attr('download', 'csTimerExport.csv');
+		outFile[0].click();
+		outFile.remove();
 	}
 
 	function infoClick(e) {
