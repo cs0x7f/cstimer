@@ -243,6 +243,7 @@ var kernel = (function() {
 		var logo;
 		var gray;
 		var leftbar;
+		var donateDiv = $('<div />');
 
 		function addButton(module, button, callback, index) {
 			leftbar = leftbar || $('#leftbar');
@@ -593,13 +594,17 @@ var kernel = (function() {
 				about.show();
 				showDialog([about, 0, undefined, 0], 'logo', title);
 			});
+			$('.donate').appendTo(donateDiv);
+			addButton('donate', BUTTON_DONATE, function() {
+				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE);
+			}, 5);
 			about.hide();
 			leftbar.appendTo('body').mouseenter(function() {
-				ui.toggleLeftBar(true);
+				toggleLeftBar(true);
 			}).mouseleave(function() {
-				ui.toggleLeftBar();
+				toggleLeftBar();
 			});//.delay(3000).fadeTo(100, 0.1);
-			setTimeout(ui.toggleLeftBar, 3000);
+			setTimeout(toggleLeftBar, 3000);
 			dialog.appendTo('body');
 			$(window).resize(fixOrient);
 
