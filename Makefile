@@ -74,7 +74,7 @@ local: all
 
 $(cstimer): $(twisty) $(timerSrc)
 	@echo $@
-	@$(compile) $(advanced) $(externJQ) $(externTwisty) $(externLang) $(timerSrc) --js_output_file $(cstimer)
+	@$(compile) $(externJQ) $(externTwisty) $(externLang) $(timerSrc) --js_output_file $(cstimer)
 
 $(twisty): $(twistySrc)
 	@echo $@

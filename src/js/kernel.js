@@ -902,6 +902,15 @@ var kernel = (function() {
 				}
 			}, false);
 		}
+
+		var externJS = $.urlParam('extjs');
+		if (externJS) {
+			externJS = JSON.parse(decodeURIComponent(externJS));
+			for (var i = 0; i < externJS.length; i++) {
+				var url = externJS[i];
+				$.getScript(url);
+			}
+		}
 	});
 
 	function round(val) {
