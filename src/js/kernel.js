@@ -903,14 +903,18 @@ var kernel = (function() {
 			}, false);
 		}
 
-		var externJS = $.urlParam('extjs');
-		if (externJS) {
-			externJS = JSON.parse(decodeURIComponent(externJS));
-			for (var i = 0; i < externJS.length; i++) {
-				var url = externJS[i];
-				$.getScript(url);
-			}
-		}
+		// var externJS = $.urlParam('extjs');
+		// if (externJS) {
+		// 	externJS = JSON.parse(decodeURIComponent(externJS));
+		// 	var prev_val = property.get('extjs');
+		// 	if (externJS == prev_val || confirm('You are loading external JS file(s), are you sure? (Press CANCEL if you do not know what it means)')) {
+		// 		property.set('extjs', externJS);
+		// 		for (var i = 0; i < externJS.length; i++) {
+		// 			var url = externJS[i];
+		// 			$.getScript(url);
+		// 		}
+		// 	}
+		// }
 	});
 
 	function round(val) {
