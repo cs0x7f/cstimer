@@ -116,7 +116,7 @@ function calcScramble() {
 	case "15pm": // 15 puzzle, mirrored
 		do15puzzle(true);
 		break;
-	case "clkwca": // Clock (Jaap order)
+	case "clkwca": // Clock (WCA Notation)
 		var clkapp = ["0+", "1+", "2+", "3+", "4+", "5+", "6+", "1-", "2-", "3-", "4-", "5-"];
 		scramble = "UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
 		for (var i=0; i<14; i++) {
