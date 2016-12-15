@@ -636,8 +636,7 @@ function oldminxscramble(){
 				if (scrdata[i][1][j][1] == type) {
 					select[0].selectedIndex = i;
 					loadSelect2(j);
-					i = scrdata.length;
-					break;
+					return;
 				}
 			}
 		}

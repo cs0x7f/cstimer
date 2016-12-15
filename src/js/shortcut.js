@@ -13,7 +13,7 @@ var shortcuts= (function(){
 		53: [['scrType', '555wca']],//5
 		54: [['scrType', '666wca']],//6
 		55: [['scrType', '777wca']],//7
-		67: [['scrType', 'clkwca']],//c
+		67: [['scrType', 'clko']],//c
 		77: [['scrType', 'mgmp']],//m
 		80: [['scrType', 'pyrso']],//p
 		83: [['scrType', 'skbso']],//s
