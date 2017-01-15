@@ -260,6 +260,10 @@ textarea {
 	z-index: 30;
 }
 
+.mywindow:hover {
+	z-index: 35;
+}
+
 .mywindow.highlight {
 	border: 2px solid;
 	border: 0.15rem solid;
