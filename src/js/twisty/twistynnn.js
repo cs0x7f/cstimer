@@ -380,7 +380,7 @@
         }
 
         var counter = 0;
-        var lastMove;
+        var lastMove = -1;
 
         function cntMove(twisty, move) {
             if (!isInspectionLegalMove(twisty, move) && move[2] != lastMove) {
@@ -392,6 +392,7 @@
         function moveCnt(clr) {
             if (clr) {
                 counter = 0;
+                lastMove = -1;
             }
             return counter;
         }
