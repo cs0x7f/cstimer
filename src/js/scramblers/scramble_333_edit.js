@@ -1167,6 +1167,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		_eo = parseMask(_eo, 12, true);
 		_cp = parseMask(_cp, 8, false);
 		_co = parseMask(_co, 8, true);
+		var solution = "";
 		do {
 			var eo = _eo.slice();
 			var ep = _ep.slice();
@@ -1190,21 +1191,24 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 				nep = fixPerm(ep, ue, -1);
 				ncp = fixPerm(cp, uc, getNParity(nep, 12));
 			}
-		} while (ncp + nco + nep + neo == 0);
-		var cc = new CubieCube1(ncp, nco, nep, neo);
-		var cc2 = new CubieCube;
-		var rndMove = rndEl(_rndapp);
-		if (rndMove != -1) {
-			for (var i = 0; i < rndMove.length; i++) {
-				CornMult(cc, moveCube[rndMove[i]], cc2);
-				EdgeMult(cc, moveCube[rndMove[i]], cc2);
-				var tmp = cc2;
-				cc2 = cc;
-				cc = tmp;
+			if (ncp + nco + nep + neo == 0) {
+				continue;
 			}
-		}
-		var posit = toFaceCube(cc);
-		var solution = $solution(search, posit);
+			var cc = new CubieCube1(ncp, nco, nep, neo);
+			var cc2 = new CubieCube;
+			var rndMove = rndEl(_rndapp);
+			if (rndMove != -1) {
+				for (var i = 0; i < rndMove.length; i++) {
+					CornMult(cc, moveCube[rndMove[i]], cc2);
+					EdgeMult(cc, moveCube[rndMove[i]], cc2);
+					var tmp = cc2;
+					cc2 = cc;
+					cc = tmp;
+				}
+			}
+			var posit = toFaceCube(cc);
+			solution = $solution(search, posit);
+		} while (solution.length <= 3);
 		return solution.replace(/ +/g, ' ');
 	}
 
@@ -1275,7 +1279,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function get2GLLScramble() {
-		return getAnyScramble(0xf, 0, 0, 0xf);
+		return getAnyScramble(0xf, 0, 0, 0xf, [-1, [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getPLLScramble() {
