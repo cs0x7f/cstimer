@@ -1,4 +1,4 @@
-(function() {
+(function(mega, rn, rndEl) {
 	var cubesuff=["","2","'"];
 	var minxsuff=["","2","'","2'"];
 	var args = {
@@ -48,36 +48,25 @@
 		"eide": [[["OMG"],["WOW"],["WTF"],[["WOO-HOO","WOO-HOO","MATYAS","YES","YES","YAY","YEEEEEEEEEEEES"]],["HAHA"],["XD"],[":D"],["LOL"]],["","","","!!!"]] // Derrick Eide	
 	}
 	
-	function mega(turns, suffixes, length) {
-		if (suffixes == undefined) {
-			suffixes = [""];
-		}
-		if (length == undefined) {
-			length = 0;
-		}
-		var donemoves = 0;
-		var lastaxis = -1;
-		var s = [];
-		var first, second;
-		for (var i=0; i<length; i++) {
-			do {
-				first=mathlib.rn(turns.length);
-				second=mathlib.rn(turns[first].length);
-				if (first!=lastaxis) {
-					donemoves = 0;
-					lastaxis=first;
-				}
-			} while (((donemoves >> second) & 1) != 0);
-			donemoves |= 1 << second;
-			if (turns[first][second].constructor == Array) {
-				s.push(mathlib.rndEl(turns[first][second])+mathlib.rndEl(suffixes));
-			} else {
-				s.push(turns[first][second]+mathlib.rndEl(suffixes));
-			}
-		}
-		return s.join(' ');
+	var args2 = {
+		'sia113': '#{[["U","u"],["R","r"]],%c} z2 #{[["U","u"],["R","r"]],%c}',
+		'sia123': '#{[["U"],["R","r"]],%c} z2 #{[["U"],["R","r"]],%c}',
+		'sia222': '#{[["U"],["R"],["F"]],%c} z2 y #{[["U"],["R"],["F"]],%c}',
+		'335': '#{[[["U","U\'","U2"],["D","D\'","D2"]],["R2","L2"],["F2","B2"]]} / ${333}',
+		'337': '#{[[["U","U\'","U2","u","u\'","u2","U u","U u\'","U u2","U\' u","U\' u\'","U\' u2","U2 u","U2 u\'","U2 u2"],["D","D\'","D2","d","d\'","d2","D d","D d\'","D d2","D\' d","D\' d\'","D\' d2","D2 d","D2 d\'","D2 d2"]],["R2","L2"],["F2","B2"]]} / ${333}',
+		'r234': '2) ${222so}\n3) ${333}\n4) ${[444,40]}',
+		'r2345': '${r234}\n5) ${["555",60]}',
+		'r23456': '${r2345}\n6) ${["666p",80]}',
+		'r234567': '${r23456}\n7) ${["777p",100]}'
 	}
-	
+
+	var edges = {
+		'4edge': ["r b2",["b2 r'","b2 U2 r U2 r U2 r U2 r"],["u"]],
+		'5edge': ["r R b B",["B' b' R' r'","B' b' R' U2 r U2 r U2 r U2 r"],["u","d"]], 
+		'6edge': ["3r r 3b b",["3b' b' 3r' r'","3b' b' 3r' U2 r U2 r U2 r U2 r","3b' b' r' U2 3r U2 3r U2 3r U2 3r","3b' b' r2 U2 3r U2 3r U2 3r U2 3r U2 r"],["u","3u","d"]],
+		'7edge': ["3r r 3b b",["3b' b' 3r' r'","3b' b' 3r' U2 r U2 r U2 r U2 r","3b' b' r' U2 3r U2 3r U2 3r U2 3r","3b' b' r2 U2 3r U2 3r U2 3r U2 3r U2 r"],["u","3u","3d","d"]]
+	}
+
 	function megascramble(type, length) {
 		var value = args[type];
 		switch (value.length) {
@@ -86,8 +75,81 @@
 			case 3: return mega(value[0], value[1], value[2]);
 		}
 	}
+
+	function edgescramble(type, length) {
+		var value = edges[type];
+		return edge(value[0], value[1], value[2], length);
+	}
+
+	function formatScramble(type, length) {
+		var value = args2[type].replace(/%l/g, length).replace(/%c/g, '["","2","\'"]');
+		// console.log(value);
+		var ret = scramble.formatScramble(value);
+		// console.log(ret);
+		return ret;
+	}
+
 	
 	for (var i in args) {
 		scramble.reg(i, megascramble);
 	}
-})();
+
+	for (var i in args2) {
+		scramble.reg(i, formatScramble);
+	}
+
+	for (var i in edges) {
+		scramble.reg(i, edgescramble);
+	}
+
+	function edge(start, end, moves, len) {
+		var u=0,d=0,movemis=[];
+		var triggers=[["R","R'"],["R'","R"],["L","L'"],["L'","L"],["F'","F"],["F","F'"],["B","B'"],["B'","B"]];
+		var ud=["U","D"];
+		var scramble = start;
+		// initialize move misalignments
+		for (var i=0; i<moves.length; i++) {
+			movemis[i] = 0;
+		}
+
+		for (var i=0; i<len; i++) {
+			// apply random moves
+			var done = false;
+			while (!done) {
+				var v = "";
+				for (var j=0; j<moves.length; j++) {
+					var x = rn(4);
+					movemis[j] += x;
+					if (x!=0) {
+						done = true;
+						v += " " + moves[j] + cubesuff[x-1];
+					}
+				}
+			}
+			// apply random trigger, update U/D
+			var trigger = rn(8);
+			var layer = rn(2);
+			var turn = rn(3);
+			scramble += v + " " + triggers[trigger][0] + " " + ud[layer] + cubesuff[turn] + " " + triggers[trigger][1];
+			if (layer==0) {u += turn+1;}
+			if (layer==1) {d += turn+1;}
+		}
+
+		// fix everything
+		for (var i=0; i<moves.length; i++) {
+			var x = 4-(movemis[i]%4);
+			if (x<4) {
+				scramble += " " + moves[i] + cubesuff[x-1];
+			}
+		}
+		u = 4-(u%4); d = 4-(d%4);
+		if (u<4) {
+			scramble += " U" + cubesuff[u-1];
+		}
+		if (d<4) {
+			scramble += " D" + cubesuff[d-1];
+		}
+		scramble += " " + rndEl(end);
+		return scramble;
+	}
+})(scramble.mega, mathlib.rn, mathlib.rndEl);
