@@ -1160,9 +1160,10 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		}
 	}
 
-	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp) {
+	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp, _rndpre) {
 		ini();
-		_rndapp = _rndapp || [-1];
+		_rndapp = _rndapp || [[]];
+		_rndpre = _rndpre || [[]];
 		_ep = parseMask(_ep, 12, false);
 		_eo = parseMask(_eo, 12, true);
 		_cp = parseMask(_cp, 8, false);
@@ -1196,15 +1197,21 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 			}
 			var cc = new CubieCube1(ncp, nco, nep, neo);
 			var cc2 = new CubieCube;
-			var rndMove = rndEl(_rndapp);
-			if (rndMove != -1) {
-				for (var i = 0; i < rndMove.length; i++) {
-					CornMult(cc, moveCube[rndMove[i]], cc2);
-					EdgeMult(cc, moveCube[rndMove[i]], cc2);
-					var tmp = cc2;
-					cc2 = cc;
-					cc = tmp;
-				}
+			var rndpre = rndEl(_rndpre);
+			var rndapp = rndEl(_rndapp);
+			for (var i = 0; i < rndapp.length; i++) {
+				CornMult(moveCube[rndapp[i]], cc, cc2);
+				EdgeMult(moveCube[rndapp[i]], cc, cc2);
+				var tmp = cc2;
+				cc2 = cc;
+				cc = tmp;
+			}
+			for (var i = 0; i < rndapp.length; i++) {
+				CornMult(cc, moveCube[rndapp[i]], cc2);
+				EdgeMult(cc, moveCube[rndapp[i]], cc2);
+				var tmp = cc2;
+				cc2 = cc;
+				cc = tmp;
 			}
 			var posit = toFaceCube(cc);
 			solution = $solution(search, posit);
@@ -1293,11 +1300,11 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		// console.log(filter[idx]);
 		var zbcase = zbll_map[idx];
 		// console.log(zbcase);
-		return getAnyScramble(0xf, 0, zbcase[0], zbcase[1]);
+		return getAnyScramble(0xf, 0, zbcase[0], zbcase[1], [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getZZLLScramble() {
-		return getAnyScramble(0x5, 0, 0xf, 0xf, [-1, [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(0x5, 0, 0xf, 0xf, [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getZBLSScramble() {
@@ -1339,7 +1346,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function get2GLLScramble() {
-		return getAnyScramble(0xf, 0, 0, 0xf, [-1, [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(0xf, 0, 0, 0xf, [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getPLLScramble() {
