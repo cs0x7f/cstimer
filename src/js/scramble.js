@@ -8,6 +8,7 @@ var scramble = (function(rn, rndEl) {
 	var scrOptDiv = $('<div>');
 	var scrFltUl = $('<ul>');
 	var scrFltSelAll = $('<input type="button">').val('Select All');
+	var scrFltSelNon = $('<input type="button">').val('Select None');
 	var scrLen = $('<input type="text" maxlength="3">');
 	var sdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
@@ -99,7 +100,7 @@ var scramble = (function(rn, rndEl) {
 		}
 
 		if (realType in scramblers) {
-			scramble = scramblers[realType](realType, len);
+			scramble = scramblers[realType](realType, len, scrFlt[1]);
 			return;
 		}
 
@@ -135,7 +136,7 @@ var scramble = (function(rn, rndEl) {
 	}
 
 	/**
-	 *	{type: callback(type, length)}
+	 *	{type: callback(type, length, filter)}
 	 *	callback return: scramble string or undefined means delay
 	 */
 	var scramblers = {};
@@ -146,7 +147,7 @@ var scramble = (function(rn, rndEl) {
 	var filters = {
 		'pll': ['H Perm', 'U Perm', 'Z Perm', 'A Perm', 'E Perm', 'F Perm', 'G Perm', 'J Perm', 'N Perm', 'R Perm', 'T Perm', 'V Perm', 'Y Perm'],
 		'222eg': ['CLL', 'EG1', 'EG2'],
-		'zbll': ['T Cases', 'U Cases', 'L Cases', 'Pi Cases', 'Sune Cases', 'Anti-sune Cases', 'H Cases', 'Pll Cases']
+		'zbll': ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'PLL']
 	};
 
 	function regScrambler(type, callback) {
@@ -205,7 +206,7 @@ var scramble = (function(rn, rndEl) {
 				curData = scrFlt[1] || data;
 			}
 			// console.log(scrFlt, curData);
-			scrFltUl.append('<br>', scrFltSelAll, '<br>');
+			scrFltUl.append('<br>', scrFltSelAll, scrFltSelNon, '<br>');
 			for (var i = 0; i < data.length; i++) {
 				var chkBox = $('<input type="checkbox">').val(i);
 				if (curData[i] != null) {
@@ -215,10 +216,16 @@ var scramble = (function(rn, rndEl) {
 				scrFltUl.append($('<label>').append(chkBox, data[i]));
 			}
 			scrFltSelAll.unbind('click').click(function() {
-				// console.log('selAll');
 				for (var i = 0; i < chkBoxList.length; i++) {
 					if (!chkBoxList[i][0].checked) {
 						chkBoxList[i][0].checked = true;
+					}
+				}
+			});
+			scrFltSelNon.unbind('click').click(function() {
+				for (var i = 0; i < chkBoxList.length; i++) {
+					if (chkBoxList[i][0].checked) {
+						chkBoxList[i][0].checked = false;
 					}
 				}
 			});

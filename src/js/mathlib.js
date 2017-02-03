@@ -271,6 +271,22 @@ var mathlib = (function() {
 		return ~~(Math.random()*n)
 	}
 
+	function rndProb(plist) {
+		var cum = 0;
+		var curIdx = 0;
+		for (var i = 0; i < plist.length; i++) {
+			if (plist[i] == 0) {
+				continue;
+			}
+			// console.log(plist, plist[i] / (cum + plist[i]));
+			if (Math.random() < plist[i] / (cum + plist[i])) {
+				curIdx = i;
+			}
+			cum += plist[i];
+		}
+		return curIdx;
+	}
+
 	return {
 		Cnk: Cnk,
 		fact: fact,
@@ -287,6 +303,7 @@ var mathlib = (function() {
 		createPrun: createPrun,
 		rn: rn,
 		rndEl: rndEl, 
+		rndProb: rndProb, 
 		Solver: Solver
 	}
 
