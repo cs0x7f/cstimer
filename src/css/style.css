@@ -506,11 +506,18 @@ table.sumtable td, table.sumtable th {
 	bottom: 20%;
 }
 
-.dialoginput, .dialogstats {
+.dialoginput, .dialogstats, .dialogscropt {
 	left: 20%;
 	right: 20%;
 	top: 20%;
 	bottom: 20%;
+}
+
+.dialogscropt label {
+	display: inline-block;
+	width: 10em;
+	text-align: left;
+	padding: 0.2em;
 }
 
 select, input[type='button'], input[type='text'] {

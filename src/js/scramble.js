@@ -4,6 +4,10 @@ var scramble = (function(rn, rndEl) {
 	var title = $('<div />').addClass('title');
 	var select = $('<select />');
 	var select2 = $('<select />');
+	var scrOpt = $('<input type="button">').val('Opt.');
+	var scrOptDiv = $('<div>');
+	var scrFltUl = $('<ul>');
+	var scrFltSelAll = $('<input type="button">').val('Select All');
 	var scrLen = $('<input type="text" maxlength="3">');
 	var sdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
@@ -13,6 +17,8 @@ var scramble = (function(rn, rndEl) {
 		'444bld': '444wca',
 		'555bld': '555wca'
 	};
+
+	var scrFlt = "";
 
 	var inputText = $('<textarea />');
 
@@ -134,6 +140,15 @@ var scramble = (function(rn, rndEl) {
 	 */
 	var scramblers = {};
 
+	/**
+	 *	{type: [str1, str2, ..., strN]}
+	 */
+	var filters = {
+		'pll': ['H Perm', 'U Perm', 'Z Perm', 'A Perm', 'E Perm', 'F Perm', 'G Perm', 'J Perm', 'N Perm', 'R Perm', 'T Perm', 'V Perm', 'Y Perm'],
+		'222eg': ['CLL', 'EG1', 'EG2'],
+		'zbll': ['T Cases', 'U Cases', 'L Cases', 'Pi Cases', 'Sune Cases', 'Anti-sune Cases', 'H Cases', 'Pll Cases']
+	};
+
 	function regScrambler(type, callback) {
 		// console.log(type);
 		if ($.isArray(type)) {
@@ -162,9 +177,78 @@ var scramble = (function(rn, rndEl) {
 			select2.append('<option value="' + box2[i][1] + '">' + box2[i][0] + '</option');
 		}
 		select2[0].selectedIndex = idx;
-		scrLen.val(Math.abs(box2[idx][2]));
-		scrLen[0].disabled = box2[idx][2] <= 0;
+		loadScrOptsAndGen();
+	}
+
+	function loadScrOptsAndGen() {
+		kernel.blur();
+		scrLen.val(Math.abs(scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2]));
+		scrLen[0].disabled = scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2] <= 0;
+		var curType = select2.val();
+		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, filters[curType]])));
+		if (scrFlt[0] != curType) {
+			scrFlt = [curType, filters[curType]];
+			kernel.setProp('scrFlt', JSON.stringify(scrFlt));
+		}
+		// console.log(scrFlt);
 		genScramble();
+	}
+
+	function showScrOpt() {
+		scrFltUl.empty();
+		var chkBoxList = [];
+		var modified = false;
+		if (type in filters) {
+			var data = filters[type];
+			var curData = data;
+			if (scrFlt[0] == type) {
+				curData = scrFlt[1] || data;
+			}
+			// console.log(scrFlt, curData);
+			scrFltUl.append('<br>', scrFltSelAll, '<br>');
+			for (var i = 0; i < data.length; i++) {
+				var chkBox = $('<input type="checkbox">').val(i);
+				if (curData[i] != null) {
+					chkBox[0].checked = true;
+				}
+				chkBoxList.push(chkBox);
+				scrFltUl.append($('<label>').append(chkBox, data[i]));
+			}
+			scrFltSelAll.unbind('click').click(function() {
+				// console.log('selAll');
+				for (var i = 0; i < chkBoxList.length; i++) {
+					if (!chkBoxList[i][0].checked) {
+						chkBoxList[i][0].checked = true;
+					}
+				}
+			});
+		}
+		kernel.showDialog([scrOptDiv, function() {
+			if (type in filters) {
+				var data = filters[type].slice();
+				var hasVal = false;
+				for (var i = 0; i < chkBoxList.length; i++) {
+					if (!chkBoxList[i][0].checked) {
+						data[i] = null;
+					} else {
+						hasVal = true;
+					}
+				}
+				if (!hasVal) {
+					alert('Should Select At Least One Case');
+				} else {
+					scrFlt = [type, data];
+					var scrFltStr = JSON.stringify(scrFlt);
+					if (kernel.getProp('scrFlt') != scrFltStr) {
+						modified = true;
+						kernel.setProp('scrFlt', scrFltStr);
+					}
+				}
+			}
+			if (modified) {
+				genScramble();
+			}
+		}], 'scropt', 'Scramble Options');
 	}
 
 	function getLastScramble() {
@@ -332,13 +416,10 @@ var scramble = (function(rn, rndEl) {
 		kernel.getProp('scrType', '333');
 
 		select.change(loadSelect2);
-		select2.change(function() {
-			kernel.blur();
-			scrLen.val(Math.abs(scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2]));
-			scrLen[0].disabled = scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2] <= 0;
-			genScramble();
-		});
+		select2.change(loadScrOptsAndGen);
 		scrLen.change(genScramble);
+		scrOpt.click(showScrOpt);
+		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltUl);
 
 		var last = $('<span />').addClass('click').html(SCRAMBLE_LAST).click(function() {
 			sdiv.html(lastscramble);
@@ -354,8 +435,8 @@ var scramble = (function(rn, rndEl) {
 				genScramble();
 			}
 		});
-		title.append($('<nobr>').append(select, ' ', select2), " <wbr>");
-		title.append($('<nobr>').append(SCRAMBLE_LENGTH + ': ', scrLen), " <wbr>");
+		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
+		// title.append($('<nobr>').append(SCRAMBLE_LENGTH + ': ', scrLen), " <wbr>");
 		title.append($('<nobr>').append(last, '/', next, SCRAMBLE_SCRAMBLE));
 		div.append(title, sdiv).appendTo('body');
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
