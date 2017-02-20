@@ -134,7 +134,7 @@ var kernel = (function() {
 					var type = proSet[1];
 					if (type == 0) {
 						proSet[0] = $('<input type="checkbox" name="' + key + '">').prop('checked', curVal).click(procClick);
-						curDiv[1].append($('<li />').append(proSet[0], proSet[2]));
+						curDiv[1].append($('<li />').append($('<label>').append(proSet[0], proSet[2])));
 					} else if (type == 1) {
 						proSet[0] = $('<select name="' + key + '">');
 						var vals = proSet[3][1];
