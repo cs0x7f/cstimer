@@ -49,7 +49,7 @@
 <div id="leftbar">
   <div class="mybutton c1"><div><span></span><span class="icon">&#59796</span></div></div>
   <div class="mybutton c2"><div><span></span><span class="icon">&#59846</span></div></div>
-  <div class="mybutton c3"><div><span></span><span class="icon">&#60007</span></div></div>
+  <div class="mybutton c3"><div><span></span><span class="icon">&#59648</span></div></div>
   <div id="logo" class="mybutton"><div><span>csTimer</span></div></div>
   <div class="mybutton c4"><div><span></span><span class="icon">&#59835</span></div></div>
   <div class="mybutton c5"><div><span></span><span class="icon">&#59710</span></div></div>

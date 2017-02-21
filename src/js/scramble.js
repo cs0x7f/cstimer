@@ -4,7 +4,7 @@ var scramble = (function(rn, rndEl) {
 	var title = $('<div />').addClass('title');
 	var select = $('<select />');
 	var select2 = $('<select />');
-	var scrOpt = $('<input type="button">').val('Opt.');
+	var scrOpt = $('<input type="button" class="icon">').val('\ue994');
 	var scrOptDiv = $('<div>');
 	var scrFltUl = $('<ul>');
 	var scrFltSelAll = $('<input type="button">').val('Select All');
