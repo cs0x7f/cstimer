@@ -1285,21 +1285,11 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 
 	var zbprobs = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3];
 
-	function getZBLLScramble(type, length, filter) {
-		// console.log(filter);
-		if (filter == undefined) {
-			filter = ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'PLL'];
-		}
-		var probs = zbprobs.slice();
-		for (var i = 0; i < probs.length; i++) {
-			if (!filter[i]) {
-				probs[i] = 0;
-			}
-		}
-		var idx = mathlib.rndProb(probs);
-		// console.log(filter[idx]);
+	var zbfilter = ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'PLL'];
+
+	function getZBLLScramble(type, length, cases) {
+		var idx = cases;
 		var zbcase = zbll_map[idx];
-		// console.log(zbcase);
 		return getAnyScramble(0xf, 0, zbcase[0], zbcase[1], [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
@@ -1369,7 +1359,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		('ll', getLLScramble)
 		('lsll2', getLSLLScramble)
 		('f2l', getF2LScramble)
-		('zbll', getZBLLScramble)
+		('zbll', getZBLLScramble, [zbfilter, zbprobs])
 		('zzll', getZZLLScramble)
 		('zbls', getZBLSScramble)
 		('lse', getLSEScramble)

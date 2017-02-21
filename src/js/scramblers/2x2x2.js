@@ -28,7 +28,7 @@
 		for (b = 6; 1 <= b; b--) g = 3 * g + f[b] % 3;
 		return g
 	}
-	function getScramble(type) {
+	function getScramble(type, length, state) {
 		var a, b, c, g, lim;
 		a = type == '222o' ? 0 : 9;
 		g = [[0, 0, 0, 0, 4, 5, 6],
@@ -44,11 +44,13 @@
 				b = rn(729);
 				lim = 3;
 			} else if (type == '222eg') {
-				c = rn(24);
-				b = rn(27);
-				g = g[rn(6)];
-				mathlib.set8Perm(g, c, 4);
-				c = mathlib.get8Perm(g, 7);
+				if (state == 0) {
+					return getScramble('222eg0', length);
+				} else if (state == 1) {
+					return getScramble('222eg1', length);
+				} else if (state == 2) {
+					return getScramble('222eg2', length);
+				}
 			} else if (type == '222eg0') {
 				c = rn(24);
 				b = rn(27);
@@ -71,5 +73,5 @@
 		} while (c == 0 && b == 0 || solv.search([c, b], lim, lim) != null);
 		return solv.toStr(solv.search([c, b], a).reverse(), "URF", "'2 ");
 	}
-	scramble.reg(['222o', '222so', '222eg', '222eg0', '222eg1', '222eg2'], getScramble);
+	scramble.reg(['222o', '222so', '222eg0', '222eg1', '222eg2'], getScramble)('222eg', getScramble, [['CLL', 'EG1', 'EG2'], [1, 4, 1]]);
 }) (mathlib.circle, mathlib.rn);

@@ -100,7 +100,7 @@ var scramble = (function(rn, rndEl) {
 		}
 
 		if (realType in scramblers) {
-			scramble = scramblers[realType](realType, len, scrFlt[1]);
+			scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
 			return;
 		}
 
@@ -136,7 +136,7 @@ var scramble = (function(rn, rndEl) {
 	}
 
 	/**
-	 *	{type: callback(type, length, filter)}
+	 *	{type: callback(type, length, state)}
 	 *	callback return: scramble string or undefined means delay
 	 */
 	var scramblers = {};
@@ -144,13 +144,17 @@ var scramble = (function(rn, rndEl) {
 	/**
 	 *	{type: [str1, str2, ..., strN]}
 	 */
-	var filters = {
-		'pll': ['H Perm', 'U Perm', 'Z Perm', 'A Perm', 'E Perm', 'F Perm', 'G Perm', 'J Perm', 'N Perm', 'R Perm', 'T Perm', 'V Perm', 'Y Perm'],
-		'222eg': ['CLL', 'EG1', 'EG2'],
-		'zbll': ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'PLL']
-	};
+	var filters = {};
 
-	function regScrambler(type, callback) {
+	/**
+	 *	{type: [prob1, prob2, ..., probN]}
+	 */
+	var probs = {};
+
+	/**
+	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN]]
+	 */
+	function regScrambler(type, callback, filter_and_probs) {
 		// console.log(type);
 		if ($.isArray(type)) {
 			for (var i = 0; i < type.length; i++) {
@@ -158,6 +162,10 @@ var scramble = (function(rn, rndEl) {
 			}
 		} else {
 			scramblers[type] = callback;
+			if (filter_and_probs != undefined) {
+				filters[type] = filter_and_probs[0];
+				probs[type] = filter_and_probs[1];
+			}
 		}
 		return regScrambler;
 	}
@@ -200,7 +208,7 @@ var scramble = (function(rn, rndEl) {
 		var chkBoxList = [];
 		var modified = false;
 		if (type in filters) {
-			var data = filters[type];
+			var data = filters[type].slice();
 			var curData = data;
 			if (scrFlt[0] == type) {
 				curData = scrFlt[1] || data;
@@ -229,9 +237,6 @@ var scramble = (function(rn, rndEl) {
 					}
 				}
 			});
-			if (modified) {
-				genScramble();
-			}
 		}
 
 		function procDialog() {
@@ -255,8 +260,10 @@ var scramble = (function(rn, rndEl) {
 						kernel.setProp('scrFlt', scrFltStr);
 					}
 				}
+				if (modified) {
+					genScramble();
+				}
 			}
-
 		}
 		kernel.showDialog([scrOptDiv, procDialog, null, procDialog], 'scropt', 'Scramble Options');
 	}
@@ -407,6 +414,22 @@ var scramble = (function(rn, rndEl) {
 		return str.replace(re1, repfunc);
 	}
 
+	function rndState(filter, probs) {
+		if (probs == undefined) {
+			return undefined;
+		}
+		var ret = probs.slice();
+		if (filter == undefined) {
+			filter = ret;
+		}
+		for (var i = 0; i < filter.length; i++) {
+			if (!filter[i]) {
+				ret[i] = 0;
+			}
+		}
+		return mathlib.rndProb(ret);
+	}
+
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
 		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align)$/);
@@ -457,7 +480,8 @@ var scramble = (function(rn, rndEl) {
 		reg: regScrambler,
 		scramblers: scramblers,
 		mega: mega,
-		formatScramble: formatScramble
+		formatScramble: formatScramble, 
+		rndState: rndState
 	}
 
 })(mathlib.rn, mathlib.rndEl);
