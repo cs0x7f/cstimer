@@ -229,8 +229,12 @@ var scramble = (function(rn, rndEl) {
 					}
 				}
 			});
+			if (modified) {
+				genScramble();
+			}
 		}
-		kernel.showDialog([scrOptDiv, function() {
+
+		function procDialog() {
 			if (type in filters) {
 				var data = filters[type].slice();
 				var hasVal = false;
@@ -252,10 +256,9 @@ var scramble = (function(rn, rndEl) {
 					}
 				}
 			}
-			if (modified) {
-				genScramble();
-			}
-		}], 'scropt', 'Scramble Options');
+
+		}
+		kernel.showDialog([scrOptDiv, procDialog, null, procDialog], 'scropt', 'Scramble Options');
 	}
 
 	function getLastScramble() {
