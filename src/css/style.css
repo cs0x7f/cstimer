@@ -539,7 +539,7 @@ table.sumtable td, table.sumtable th {
 	padding: 0.2em;
 }
 
-select, input[type='button'], input[type='text'], input[type='number'] {
+select, input[type='button'], input[type='text'] {
 	cursor: pointer;
 	border: 1px solid;
 	border: 0.1rem solid;
@@ -564,7 +564,7 @@ input[type='button'] {
 	padding: 0.1rem 0.35rem 0.1rem 0.35rem;
 }
 
-input[type="text"], input[type="number"] {
+input[type="text"] {
 	width: 35px;
 	width: 2.5rem;
 	text-align: center;
