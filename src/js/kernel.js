@@ -95,24 +95,9 @@ var kernel = (function() {
 				case 'color':
 					setProp(key, target.val());
 					break;
-				case 'text':
-				case 'button':
-					for (var module in proSets) if (key in proSets[module]) {
-						var obj = proSets[module][key];
-						var newVal = getProp(key);
-						switch (target.val()) {
-						case '+': newVal = Math.min(newVal+1, obj[3][2]); break;
-						case '-': newVal = Math.max(newVal-1, obj[3][1]); break;
-						default:
-							if (target.val().match(/^\d+$/)) {
-								newVal = +target.val().match(/^0*(.+)$/)[1];
-								newVal = Math.max(Math.min(newVal, obj[3][2]), obj[3][1]);
-							}
-						}
-						obj[0].val(newVal);
-						setProp(key, newVal);
-						break;
-					}
+				case 'number':
+					setProp(key, ~~target.val());
+					break;
 				}
 			}
 		}
@@ -146,10 +131,8 @@ var kernel = (function() {
 						proSet[0].change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
 					} else if (type == 2) {
-						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(properties[key]).change(procClick);
-						var inc = $('<input type="button" value="+" name="' + key + '">').click(procClick);
-						var dec = $('<input type="button" value="-" name="' + key + '">').click(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], '('+proSet[3][1]+'~'+proSet[3][2]+')', proSet[0], inc, dec));
+						proSet[0] = $('<input type="number" name="' + key + '" min="' + proSet[3][1] + '" max="' + proSet[3][2] + '">').val(properties[key]).change(procClick);
+						curDiv[1].append($('<li />').append(proSet[2], '('+proSet[3][1]+'~'+proSet[3][2]+')', proSet[0]));
 					} else if (type == 3) {
 						proSet[0] = $('<input type="color" name="' + key + '">').val(properties[key]).change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
@@ -405,7 +388,7 @@ var kernel = (function() {
 			".click{color:?}" +
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue{border-color:?}" +
 			"#avgstr .click:hover{background-color:?}" + 
-			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" + 
+			"select,input[type='button'],input[type='text'],input[type='number']{color:?;background:?;border-color:?}" + 
 			"input:disabled{background:?}" + 
 			".mywindow,.popup,.dialog,#leftbar{box-shadow:0 0 .5em ?}";
 
