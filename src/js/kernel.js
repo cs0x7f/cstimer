@@ -247,7 +247,7 @@ var kernel = (function() {
 
 		function addButton(module, button, callback, index) {
 			leftbar = leftbar || $('#leftbar');
-			leftbar.children('.c' + index).click(callback).find('span').html(button);
+			leftbar.children('.c' + index).click(callback).find('span:first').html(button);
 		}
 
 		function windowClick() {
@@ -276,7 +276,7 @@ var kernel = (function() {
 			div.addClass("mywindow");
 			enable = getProp(module, enable);
 			leftbar = leftbar || $('#leftbar');
-			leftbar.children('.c' + index).addClass(enable ? "enable" : "").data('module', module).click(windowClick).find('span').html(button);
+			leftbar.children('.c' + index).addClass(enable ? "enable" : "").data('module', module).click(windowClick).find('span:first').html(button);
 			modules[module] = {button: enable, div: div, auto: auto};
 			enable ? div.show() : div.hide();
 			pushSignal('button', [module, enable]);

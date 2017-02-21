@@ -47,6 +47,15 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'iconfont';
+	src: url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAXUAAwAAAAACSwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABHAAAABsAAAAcdeET5k9TLzIAAAE4AAAAPwAAAGD4UAeSY21hcAAAAXgAAABXAAABcr2J14FnYXNwAAAB0AAAAAgAAAAIAAAAEGdseWYAAAHYAAAChQAABADG9rvpaGVhZAAABGAAAAArAAAANgzBth1oaGVhAAAEjAAAABwAAAAkB8IDxWhtdHgAAASoAAAAFAAAABoMQAASbG9jYQAABLwAAAAUAAAAFAO8BKBtYXhwAAAE0AAAABgAAAAgABAAZW5hbWUAAAToAAAA3AAAAZv6WE3YcG9zdAAABcQAAAAQAAAAIAADAAF4nGNgYGBkAIIztovOg+grF3ekQekNAFNjCEwAeJxjYGZhYJzAwMrAwDST6QwDA0M/hGZ8zWDMyMmAChgF0AQYHF7avUpnPvD/AIMDMxCD1CDJKjAwAgBLCgvYAHicY2BgYGaAYBkGRgYQyAHyGMF8FoYAIC0AhCB5hpd2L6e83P3y2Kv0/3///4eKTEYSYRQ7KlYo5i3mKLoQagYaYGRjgAszMgEJJnQFmHqGGwAAD1QajQAAAQAB//8AD3ichVNNb9NAEJ3xtnGj1KHG61htQxrHTVzUKoU4tikUYyGkfiSIShyQONBAyaFI/IeVeuBQqefeKBeODQe4+8odiWsRd35B4zB205JWINY7frPzPKN9O2tgAIOIRUyABja8AsBKXtJ5SXIageQ26xKr1AkDWpconpe0huc2a4voezW7lrmGdh3lPM6hVcnovHAP9QuHF5yGdx+dYYLr4MlOb6/V2uvtnOPW/u7q6u7+1hBvKZqmPNqWx3O5mYlud2ImlxuXtx8l0U4nfWuKop15HSZGKyV4ejRSK0VMEw6oGtU8PKRqVPMgiYV/KqVLoJGBMD2LCAyYBQd8eAJP6URSGakEK1F3AxN5qsMc3WLnlGqpF5TuuPYodzlNTTkxxYtFPnUOND79NyBBkR/xYhSl0I8YiDhMfSnsR0MuEhhe/kwKIwESXCdtv0ibB5ukqY4B+nae2kbttXhGzks1Wy6hUcI8ykaAab+dpucHUsHw62iPX7kI7CPPastWV2/MLqy5pa+Kogfrj61uoarwLK8nxAwRc0TwYKM9/1qvKvHzxdZKubzSWhwivrDaGwHvKfk5d+3mdMOw6lqWHyvzhtVef8CPJ5P4wvTts3hvct54O5KdYtI3usNjQNoYyJCj7lmwTBpN3VSHhk3PaRR0nrEqNfUfPgpJ9C8sFi3Xbf3NmBADSCYLh8H4y1WHdkKD9nREngIcwKVdVHXT1Qhds5pFujDqGJxCYgIhefodLGP5RIRhFIYIQkRYjk8GxCRzqFEHqPoOM90suqZm0f9nmVk0Gx47XqqFpyG248/s21JFm/Xu9t/gy/i7VHr28Md2LDbxHbZ/DsD2K/H7+MMd2uFvdPHawAAAAHicY2BkAIMrW00+xvPbfGXgZoHwL+64gKD/H2BhYD4A5HIwMIFEAXp1DUgAeJxjYGRgYD7w/wADAwsDCABJRgZUwAIATFYCkXicY2GAABYoZnBgEIKIAAADwABfAAAAAAAAAAAAhgD0AWIBrAHUAgB4nGNgZGBg4GRIZmBjAAEmBjQAAAuJAHZ4nHXOsWrCUBjF8X80WrQgnUrpdEenoOADdCp1cOkgHRvjJQT0XogRdO8jdOwz9GF8Ik/CtyZww+87N+cjwIx/Eton4YEn80Cem4fymzmVv8wjHrmYx8p/zVNeuamVpBMls25D64H8Yh7KC3Mqf5hHPPNtHiv/MU9Z8UdFQeSoEwlQFfEYo/CJp+TMgZxaoy/Ph1zo+74v32pPzUn3be5Ykukv2fr6VMXgltmiv/vezY1apbaEblOu2bNXtuOq97rrbqybqRRD40offJ03fu92V7cu4kb7Mu7l2z5DeJxjYGZABowMaAAAAI4ABQ=='); format('woff')
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
 * {
 	padding: 0;
 	margin: 0;
@@ -225,9 +234,21 @@ textarea {
 	text-align: center;
 }
 
+.icon {
+	font-family: iconfont;
+	font-size: 2em;
+}
+
 #leftbar div > div > span {
-	display: table-cell;
 	vertical-align: middle;
+}
+
+#leftbar div > div > span, #leftbar div > div:hover > span.icon {
+	display: none;
+}
+
+#leftbar div > div:hover > span, #leftbar div > div > span.icon, #leftbar > #logo > div > span {
+	display: table-cell;
 }
 
 #leftbar #logo {
