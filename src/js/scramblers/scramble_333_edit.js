@@ -1078,11 +1078,11 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	var search;
 
 	function getRandomOriScramble() {
-		return getAnyScramble(0xfff, 0xfff, 0xff, 0xff) + rndEl(["", "Rw ", "Rw2 ", "Rw' ", "Fw ", "Fw' "]) + rndEl(["", "Uw", "Uw2", "Uw'"]);
+		return getRandomScramble() + rndEl(["", "Rw ", "Rw2 ", "Rw' ", "Fw ", "Fw' "]) + rndEl(["", "Uw", "Uw2", "Uw'"]);
 	}
 
 	function getRandomScramble() {
-		return getAnyScramble(0xfff, 0xfff, 0xff, 0xff);
+		return getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff);
 	}
 
 	function cntU(b) {
@@ -1147,27 +1147,28 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return getNPerm(arr, arr.length);
 	}
 
-	function parseMask(arr, length, ori) {
-		if ($.isNumeric(arr)) {
-			var ret = [];
-			for (var i = 0; i < length; i++) {
-				ret[i] = (arr & 1) ? -1 : (ori ? 0 : i);
-				arr >>= 1;
-			}
-			return ret;
-		} else {
+	//arr: 53 bit integer
+	function parseMask(arr, length) {
+		if (!$.isNumeric(arr)) {
 			return arr;
 		}
+		var ret = [];
+		for (var i = 0; i < length; i++) {
+			var val = arr & 0xf; // should use "/" instead of ">>" to avoid unexpected type conversion
+			ret[i] = val == 15 ? -1 : val;
+			arr /= 16;
+		}
+		return ret;
 	}
 
 	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp, _rndpre) {
 		ini();
 		_rndapp = _rndapp || [[]];
 		_rndpre = _rndpre || [[]];
-		_ep = parseMask(_ep, 12, false);
-		_eo = parseMask(_eo, 12, true);
-		_cp = parseMask(_cp, 8, false);
-		_co = parseMask(_co, 8, true);
+		_ep = parseMask(_ep, 12);
+		_eo = parseMask(_eo, 12);
+		_cp = parseMask(_cp, 8);
+		_co = parseMask(_co, 8);
 		var solution = "";
 		do {
 			var eo = _eo.slice();
@@ -1199,9 +1200,9 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 			var cc2 = new CubieCube;
 			var rndpre = rndEl(_rndpre);
 			var rndapp = rndEl(_rndapp);
-			for (var i = 0; i < rndapp.length; i++) {
-				CornMult(moveCube[rndapp[i]], cc, cc2);
-				EdgeMult(moveCube[rndapp[i]], cc, cc2);
+			for (var i = 0; i < rndpre.length; i++) {
+				CornMult(moveCube[rndpre[i]], cc, cc2);
+				EdgeMult(moveCube[rndpre[i]], cc, cc2);
 				var tmp = cc2;
 				cc2 = cc;
 				cc = tmp;
@@ -1220,67 +1221,67 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function getEdgeScramble() {
-		return getAnyScramble(0xfff, 0xfff, 0, 0);
+		return getAnyScramble(0xffffffffffff, 0xffffffffffff, 0x76543210, 0x00000000);
 	}
 
 	function getCornerScramble() {
-		return getAnyScramble(0, 0, 0xff, 0xff);
+		return getAnyScramble(0xba9876543210, 0x000000000000, 0xffffffff, 0xffffffff);
 	}
 
 	function getLLScramble() {
-		return getAnyScramble(0xf, 0xf, 0xf, 0xf);
+		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x7654ffff, 0x0000ffff);
 	}
 
 	function getLSLLScramble() {
-		return getAnyScramble(0x10f, 0x10f, 0x1f, 0x1f);
+		return getAnyScramble(0xba9f7654ffff, 0x000f0000ffff, 0x765fffff, 0x000fffff);
 	}
 
 	function getF2LScramble() {
-		return getAnyScramble(0xf0f, 0xf0f, 0xff, 0xff);
+		return getAnyScramble(0xffff7654ffff, 0xffff0000ffff, 0xffffffff, 0xffffffff);
 	}
 
 	var zbll_map = [
-		[[0, 1, 2, 3, 4, 5, 6, 7], [1, 2, 1, 2, 0, 0, 0, 0]], // H-BBFF
-		[[2, 1, 0, 3, 4, 5, 6, 7], [1, 2, 1, 2, 0, 0, 0, 0]], // H-FBFB
-		[[0, 2, 1, 3, 4, 5, 6, 7], [1, 2, 1, 2, 0, 0, 0, 0]], // H-RFLF
-		[[1, 0, 2, 3, 4, 5, 6, 7], [1, 2, 1, 2, 0, 0, 0, 0]], // H-RLFF
-		[[2, 1, 0, 3, 4, 5, 6, 7], [0, 2, 0, 1, 0, 0, 0, 0]], // L-FBRL
-		[[1, 2, 0, 3, 4, 5, 6, 7], [0, 2, 0, 1, 0, 0, 0, 0]], // L-LBFF
-		[[1, 0, 2, 3, 4, 5, 6, 7], [0, 2, 0, 1, 0, 0, 0, 0]], // L-LFFB
-		[[2, 0, 1, 3, 4, 5, 6, 7], [0, 2, 0, 1, 0, 0, 0, 0]], // L-LFFR
-		[[0, 1, 2, 3, 4, 5, 6, 7], [0, 2, 0, 1, 0, 0, 0, 0]], // L-LRFF
-		[[0, 2, 1, 3, 4, 5, 6, 7], [0, 2, 0, 1, 0, 0, 0, 0]], // L-RFBL
-		[[2, 0, 1, 3, 4, 5, 6, 7], [2, 2, 1, 1, 0, 0, 0, 0]], // Pi-BFFB
-		[[0, 2, 1, 3, 4, 5, 6, 7], [2, 2, 1, 1, 0, 0, 0, 0]], // Pi-FBFB
-		[[2, 1, 0, 3, 4, 5, 6, 7], [2, 2, 1, 1, 0, 0, 0, 0]], // Pi-FRFL
-		[[1, 2, 0, 3, 4, 5, 6, 7], [2, 2, 1, 1, 0, 0, 0, 0]], // Pi-FRLF
-		[[0, 1, 2, 3, 4, 5, 6, 7], [2, 2, 1, 1, 0, 0, 0, 0]], // Pi-LFRF
-		[[1, 0, 2, 3, 4, 5, 6, 7], [2, 2, 1, 1, 0, 0, 0, 0]], // Pi-RFFL
-		[[0, 2, 1, 3, 4, 5, 6, 7], [0, 2, 2, 2, 0, 0, 0, 0]], // S-FBBF
-		[[2, 0, 1, 3, 4, 5, 6, 7], [0, 2, 2, 2, 0, 0, 0, 0]], // S-FBFB
-		[[0, 1, 2, 3, 4, 5, 6, 7], [0, 2, 2, 2, 0, 0, 0, 0]], // S-FLFR
-		[[1, 0, 2, 3, 4, 5, 6, 7], [0, 2, 2, 2, 0, 0, 0, 0]], // S-FLRF
-		[[1, 2, 0, 3, 4, 5, 6, 7], [0, 2, 2, 2, 0, 0, 0, 0]], // S-LFFR
-		[[2, 1, 0, 3, 4, 5, 6, 7], [0, 2, 2, 2, 0, 0, 0, 0]], // S-LFRF
-		[[0, 1, 2, 3, 4, 5, 6, 7], [0, 0, 1, 2, 0, 0, 0, 0]], // T-BBFF
-		[[2, 1, 0, 3, 4, 5, 6, 7], [0, 0, 1, 2, 0, 0, 0, 0]], // T-FBFB
-		[[1, 0, 2, 3, 4, 5, 6, 7], [0, 0, 1, 2, 0, 0, 0, 0]], // T-FFLR
-		[[0, 2, 1, 3, 4, 5, 6, 7], [0, 0, 1, 2, 0, 0, 0, 0]], // T-FLFR
-		[[2, 0, 1, 3, 4, 5, 6, 7], [0, 0, 1, 2, 0, 0, 0, 0]], // T-RFLF
-		[[1, 2, 0, 3, 4, 5, 6, 7], [0, 0, 1, 2, 0, 0, 0, 0]], // T-RLFF
-		[[1, 2, 0, 3, 4, 5, 6, 7], [0, 0, 2, 1, 0, 0, 0, 0]], // U-BBFF
-		[[1, 0, 2, 3, 4, 5, 6, 7], [0, 0, 2, 1, 0, 0, 0, 0]], // U-BFFB
-		[[2, 1, 0, 3, 4, 5, 6, 7], [0, 0, 2, 1, 0, 0, 0, 0]], // U-FFLR
-		[[0, 2, 1, 3, 4, 5, 6, 7], [0, 0, 2, 1, 0, 0, 0, 0]], // U-FRLF
-		[[2, 0, 1, 3, 4, 5, 6, 7], [0, 0, 2, 1, 0, 0, 0, 0]], // U-LFFR
-		[[0, 1, 2, 3, 4, 5, 6, 7], [0, 0, 2, 1, 0, 0, 0, 0]], // U-LRFF
-		[[2, 0, 1, 3, 4, 5, 6, 7], [1, 0, 1, 1, 0, 0, 0, 0]], // aS-FBBF
-		[[0, 2, 1, 3, 4, 5, 6, 7], [1, 0, 1, 1, 0, 0, 0, 0]], // aS-FBFB
-		[[2, 1, 0, 3, 4, 5, 6, 7], [1, 0, 1, 1, 0, 0, 0, 0]], // aS-FRFL
-		[[1, 2, 0, 3, 4, 5, 6, 7], [1, 0, 1, 1, 0, 0, 0, 0]], // aS-FRLF
-		[[0, 1, 2, 3, 4, 5, 6, 7], [1, 0, 1, 1, 0, 0, 0, 0]], // aS-LFRF
-		[[1, 0, 2, 3, 4, 5, 6, 7], [1, 0, 1, 1, 0, 0, 0, 0]], // aS-RFFL
-		[0xf, 0x0] // PLL
+		[0x76543210, 0x00002121], // H-BBFF
+		[0x76543012, 0x00002121], // H-FBFB
+		[0x76543120, 0x00002121], // H-RFLF
+		[0x76543201, 0x00002121], // H-RLFF
+		[0x76543012, 0x00001020], // L-FBRL
+		[0x76543021, 0x00001020], // L-LBFF
+		[0x76543201, 0x00001020], // L-LFFB
+		[0x76543102, 0x00001020], // L-LFFR
+		[0x76543210, 0x00001020], // L-LRFF
+		[0x76543120, 0x00001020], // L-RFBL
+		[0x76543102, 0x00001122], // Pi-BFFB
+		[0x76543120, 0x00001122], // Pi-FBFB
+		[0x76543012, 0x00001122], // Pi-FRFL
+		[0x76543021, 0x00001122], // Pi-FRLF
+		[0x76543210, 0x00001122], // Pi-LFRF
+		[0x76543201, 0x00001122], // Pi-RFFL
+		[0x76543120, 0x00002220], // S-FBBF
+		[0x76543102, 0x00002220], // S-FBFB
+		[0x76543210, 0x00002220], // S-FLFR
+		[0x76543201, 0x00002220], // S-FLRF
+		[0x76543021, 0x00002220], // S-LFFR
+		[0x76543012, 0x00002220], // S-LFRF
+		[0x76543210, 0x00002100], // T-BBFF
+		[0x76543012, 0x00002100], // T-FBFB
+		[0x76543201, 0x00002100], // T-FFLR
+		[0x76543120, 0x00002100], // T-FLFR
+		[0x76543102, 0x00002100], // T-RFLF
+		[0x76543021, 0x00002100], // T-RLFF
+		[0x76543021, 0x00001200], // U-BBFF
+		[0x76543201, 0x00001200], // U-BFFB
+		[0x76543012, 0x00001200], // U-FFLR
+		[0x76543120, 0x00001200], // U-FRLF
+		[0x76543102, 0x00001200], // U-LFFR
+		[0x76543210, 0x00001200], // U-LRFF
+		[0x76543102, 0x00001101], // aS-FBBF
+		[0x76543120, 0x00001101], // aS-FBFB
+		[0x76543012, 0x00001101], // aS-FRFL
+		[0x76543021, 0x00001101], // aS-FRLF
+		[0x76543210, 0x00001101], // aS-LFRF
+		[0x76543201, 0x00001101], // aS-RFFL
+		[0x7654ffff, 0x00000000] // PLL
 	];
 
 	var zbprobs = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3];
@@ -1290,66 +1291,66 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	function getZBLLScramble(type, length, cases) {
 		var idx = cases;
 		var zbcase = zbll_map[idx];
-		return getAnyScramble(0xf, 0, zbcase[0], zbcase[1], [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(0xba987654ffff, 0, zbcase[0], zbcase[1], [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getZZLLScramble() {
-		return getAnyScramble(0x5, 0, 0xf, 0xf, [[], [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getZBLSScramble() {
-		return getAnyScramble(0x10f, 0, 0x1f, 0x1f);
+		return getAnyScramble(0xba9f7654ffff, 0x000000000000, 0x765fffff, 0x000fffff);
 	}
 
 	function getLSEScramble() {
 		switch (rn(4)) {
 		case 0:
-			return getAnyScramble(0xaf, 0xaf, 0, 0);
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000);
 		case 1:
-			return getAnyScramble(0xaf, 0xaf, 0, 0, [[Rx1, Lx3]]) + "x'";
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [[Rx1, Lx3]]) + "x'";
 		case 2:
-			return getAnyScramble(0xaf, 0xaf, 0, 0, [[Rx2, Lx2]]) + "x2";
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [[Rx2, Lx2]]) + "x2";
 		case 3:
-			return getAnyScramble(0xaf, 0xaf, 0, 0, [[Rx3, Lx1]]) + "x";
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [[Rx3, Lx1]]) + "x";
 		}
 	}
 
 	function getCMLLScramble() {
 		switch (rn(4)) {
 		case 0:
-			return getAnyScramble(0xaf, 0xaf, 0xf, 0xf);
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff);
 		case 1:
-			return getAnyScramble(0xaf, 0xaf, 0xf, 0xf, [[Rx1, Lx3]]) + "x'";
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [[Rx1, Lx3]]) + "x'";
 		case 2:
-			return getAnyScramble(0xaf, 0xaf, 0xf, 0xf, [[Rx2, Lx2]]) + "x2";
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [[Rx2, Lx2]]) + "x2";
 		case 3:
-			return getAnyScramble(0xaf, 0xaf, 0xf, 0xf, [[Rx3, Lx1]]) + "x";
+			return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [[Rx3, Lx1]]) + "x";
 		}
 	}
 
 	function getCLLScramble() {
-		return getAnyScramble(0, 0, 0xf, 0xf);
+		return getAnyScramble(0xba9876543210, 0x000000000000, 0x7654ffff, 0x0000ffff);
 	}
 
 	function getELLScramble() {
-		return getAnyScramble(0xf, 0xf, 0, 0);
+		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x76543210, 0x00000000);
 	}
 
 	function get2GLLScramble() {
-		return getAnyScramble(0xf, 0, 0, 0xf, [[], [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x76543210, 0x0000ffff, [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getPLLScramble() {
-		return getAnyScramble(0xf, 0, 0xf, 0);
+		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x7654ffff, 0x00000000);
 	}
 
 	function getEOLineScramble() {
-		return getAnyScramble(0xf5f, 0x000, 0xff, 0xff);
+		return getAnyScramble(0xffff7f5fffff, 0x000000000000, 0xffffffff, 0xffffffff);
 	}
 
 	function getEasyCrossScramble(type, length) {
 		var cases = cross.getEasyCross(length);
-		return getAnyScramble(cases[0], cases[1], 0xff, 0xff);
+		return getAnyScramble(cases[0], cases[1], 0xffffffff, 0xffffffff);
 	}
 
 	scramble.reg('333', getRandomScramble)
