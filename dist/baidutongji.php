@@ -6,4 +6,7 @@ $(function() {
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 });
+kernel.regListener('baidu', 'property', function(signal, value) {
+  _hmt.push(['_trackEvent', 'scrType', value[1]]);
+}, /^scrType$/);
 </script>

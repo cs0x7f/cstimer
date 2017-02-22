@@ -71,7 +71,7 @@ var scramble = (function(rn, rndEl) {
 			inputScramble = [];
 		}
 		scramble = "";
-		setTimeout(doScrambleIt, 0);
+		requestAnimFrame(doScrambleIt);
 	}
 
 	// #################### SCRAMBLING ####################
