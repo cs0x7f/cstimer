@@ -1340,8 +1340,50 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x76543210, 0x0000ffff, [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
-	function getPLLScramble() {
-		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x7654ffff, 0x00000000);
+	var pll_map = [
+		[0xba9876541032, 0x76543210], // H
+		[0xba9876543102, 0x76543210], // Ua
+		[0xba9876543021, 0x76543210], // Ub
+		[0xba9876542301, 0x76543210], // Z
+		[0xba9876543210, 0x76543021], // Aa
+		[0xba9876543210, 0x76543102], // Ab
+		[0xba9876543210, 0x76542301], // E
+		[0xba9876543012, 0x76543201], // F
+		[0xba9876542130, 0x76543021], // Gb
+		[0xba9876541320, 0x76543102], // Ga
+		[0xba9876543021, 0x76543102], // Gc
+		[0xba9876543102, 0x76543021], // Gd
+		[0xba9876543201, 0x76543201], // Ja
+		[0xba9876543120, 0x76543201], // Jb
+		[0xba9876541230, 0x76543012], // Na
+		[0xba9876543012, 0x76543012], // Nb
+		[0xba9876540213, 0x76543201], // Ra
+		[0xba9876542310, 0x76543201], // Rb
+		[0xba9876541230, 0x76543201], // T
+		[0xba9876543120, 0x76543012], // V
+		[0xba9876543201, 0x76543012]  // Y
+	];
+
+	var pllprobs = [
+		1, 4, 4, 2, 
+		4, 4, 2, 4, 
+		4, 4, 4, 4, 
+		4, 4, 1, 1, 
+		4, 4, 4, 4, 4
+	];
+
+	var pllfilter = [
+		'H', 'Ua', 'Ub', 'Z', 
+		'Aa', 'Ab', 'E', 'F', 
+		'Ga', 'Gb', 'Gc', 'Gd', 
+		'Ja', 'Jb', 'Na', 'Nb', 
+		'Ra', 'Rb', 'T', 'V', 'Y'
+	];
+
+	function getPLLScramble(type, length, cases) {
+		var idx = cases;
+		var pllcase = pll_map[idx];
+		return getAnyScramble(pllcase[0], 0x000000000000, pllcase[1], 0x00000000, [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getEOLineScramble() {
@@ -1367,7 +1409,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		('cmll', getCMLLScramble)
 		('cll', getCLLScramble)
 		('ell', getELLScramble)
-		('pll', getPLLScramble)
+		('pll', getPLLScramble, [pllfilter, pllprobs])
 		('2gll', get2GLLScramble)
 		('easyc', getEasyCrossScramble)
 		('eoline', getEOLineScramble);

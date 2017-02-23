@@ -57,6 +57,7 @@ var scramble = (function(rn, rndEl) {
 
 	function genScramble() {
 		kernel.blur();
+		isDisplayLast = false;
 		sdiv.html('Scrambling...');
 		lasttype = type;
 		typeExIn = (!type || type == 'input') ? typeExIn : type;
@@ -82,6 +83,7 @@ var scramble = (function(rn, rndEl) {
 	var cubesuff = ["", "2", "'"];
 	var minxsuff = ["", "2", "'", "2'"];
 	var scramble, lastscramble;
+	var isDisplayLast = false;
 
 	function doScrambleIt() {
 		calcScramble();
@@ -333,8 +335,10 @@ var scramble = (function(rn, rndEl) {
 		} else if (signal == 'ctrl' && value[0] == 'scramble') {
 			if (value[1] == 'last') {
 				sdiv.html(lastscramble);
+				isDisplayLast = true;
 			} else if (value[1] == 'next') {
-				if (sdiv.html() == lastscramble) {
+				if (isDisplayLast) {
+					isDisplayLast = false;
 					sdiv.html(scramble);
 				} else {
 					genScramble();
@@ -456,12 +460,14 @@ var scramble = (function(rn, rndEl) {
 
 		var last = $('<span />').addClass('click').html(SCRAMBLE_LAST).click(function() {
 			sdiv.html(lastscramble);
+			isDisplayLast = true;
 			if (lastscramble != undefined) {
 				kernel.pushSignal('scrambleX', [lasttype, lastscramble]);
 			}
 		});
 		var next = $('<span />').addClass('click').html(SCRAMBLE_NEXT).click(function() {
-			if (sdiv.html() == lastscramble) {
+			if (isDisplayLast) {
+				isDisplayLast = false;
 				sdiv.html(scramble);
 				kernel.pushSignal('scrambleX', [type, scramble]);
 			} else {
