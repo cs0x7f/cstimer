@@ -603,7 +603,7 @@ var stats = (function(kpretty, round) {
 	}
 
 	function csvField(val) {
-		if (val.indexOf(',') != -1) {
+		if (val.indexOf(';') != -1) {
 			val = '"' + val.replace(/"/g, '""') + '"';
 		}
 		return val;
@@ -614,7 +614,7 @@ var stats = (function(kpretty, round) {
 		if (!window.Blob) {
 			alert('Do not support your browser!');
 		}
-		var s = ["No.,Time,Comment,Scramble"];
+		var s = ["No.;Time;Comment;Scramble"];
 		for (var i=0; i<nsolves; i++) {
 			var time = times[start+i][0];
 			var line = [];
@@ -622,7 +622,7 @@ var stats = (function(kpretty, round) {
 			line.push(pretty(time, true));
 			line.push(csvField(times[start+i][2] ? times[start+i][2] : ""));
 			line.push(times[start+i][1]);
-			s.push(line.join(','));
+			s.push(line.join(';'));
 		}
 		s = s.join("\r\n");
 		var blob = new Blob([s], {'type': 'text/csv'});
