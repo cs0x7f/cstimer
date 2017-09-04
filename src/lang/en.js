@@ -94,7 +94,7 @@ var scrdata = [
 		['3x3 mbld', "r3", 5]
 	]],
 	['Input', [
-		['外部', "input", 0]
+		['Extern', "input", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
