@@ -178,7 +178,7 @@ var stats = (function(kpretty, round) {
 			if (curTime[0] == -1 || curTime.length <= dim) {
 				cntdnf += 1;
 			} else if (dim == 0) {
-				sum += curTime[0] + curTime[1];
+				sum += timesAt(i);
 			} else if (dim == 1) {
 				sum += curTime[curTime.length-dim];
 			} else {
@@ -212,7 +212,7 @@ var stats = (function(kpretty, round) {
 				cntDNF++;
 				time_list[i-idx] = -1;
 			} else {
-				var time = times[i][0][0] + times[i][0][1];
+				var time = timesAt(i);
 				best = Math.min(best, time);
 				worst = Math.max(worst, time);
 				total += time;
@@ -503,7 +503,7 @@ var stats = (function(kpretty, round) {
 		s.push('<tr><th>time</th>');
 		if (times.length > 0) {
 			var idx = times.length - 1;
-			s.push('<td class="times click" data="cs">' + kpretty(times[idx][0][0] == -1 ? -1 : times[idx][0][0] + times[idx][0][1]) + '</td>');
+			s.push('<td class="times click" data="cs">' + kpretty(timesAt(idx)) + '</td>');
 			s.push('<td class="times click" data="bs">' + kpretty(bestTime) + '</td></tr>');
 		} else {
 			s.push('<td><span>-</span></td>');
@@ -722,7 +722,7 @@ var stats = (function(kpretty, round) {
 		var max = 0, min = 0x7fffffff, n_solve = 0, diff;
 		for (var i=0; i<times.length; i++) {
 			if (times[i][0][0] != -1) {
-				var value = times[i][0][0] + times[i][0][1];
+				var value = timesAt(i);
 				max = Math.max(value, max);
 				min = Math.min(value, min);
 				n_solve++;
@@ -743,6 +743,10 @@ var stats = (function(kpretty, round) {
 			diff = diffValues[kernel.getProp('disPrec')];
 		}
 		return [max, min, diff];
+	}
+
+	function timesAt(idx) {
+		return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
 	}
 
 	var distribution = (function() {
@@ -772,7 +776,7 @@ var stats = (function(kpretty, round) {
 
 			for (var i=0; i<times.length; i++) {
 				if (times[i][0][0] != -1) {
-					var value = times[i][0][0] + times[i][0][1];
+					var value = timesAt(i);
 					var cur = ~~(value / diff);
 					dis[cur] = (dis[cur] || 0) + 1;
 					cntmax = Math.max(dis[cur], cntmax);
@@ -889,7 +893,7 @@ var stats = (function(kpretty, round) {
 				for (var i = 0; i < times.length; i++) {
 					if (times[i][0][0] != -1) {
 						x.push(i / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (times[i][0][0] + times[i][0][1] - plotmin) / ploth)));
+						y.push(Math.max(0, Math.min(1, (timesAt(i) - plotmin) / ploth)));
 					}
 				}
 				plot(x, y, '#888');
@@ -1075,7 +1079,7 @@ var stats = (function(kpretty, round) {
 			bestMo = runAvgMean(bestMoIndex, moSize, 0, 0);
 		}
 		for (var i = 0; i < times.length; i++) {
-			var thisTime = (times[i][0][0] == -1) ? -1 : times[i][0][0] + times[i][0][1];
+			var thisTime = timesAt(i);
 			if (bestTime < 0 || (thisTime != -1 && thisTime < bestTime)) {
 				bestTime = thisTime;
 				bestTimeIndex = i;
@@ -1112,7 +1116,7 @@ var stats = (function(kpretty, round) {
 		var rbt = redblack.tree(dnfsort);
 		var n_dnf = 0;
 		for (var j = 0; j < nsolves; j++) {
-			var t = (times[start + j][0][0] == -1 ? -1 : times[start + j][0][0] + times[start + j][0][1]);
+			var t = timesAt(start + j);
 			rbt.insert(t, j);
 			n_dnf += t == -1;
 		}
@@ -1120,8 +1124,8 @@ var stats = (function(kpretty, round) {
 		var retAvg = [n_dnf > trim ? -1 : round((rbt.cumSum(nsolves - trim) - rbt.cumSum(trim)) / neff)];
 		var start0 = start - nsolves;
 		for (var i = nsolves; i < length; i++) {
-			var t = (times[start + i][0][0] == -1 ? -1 : times[start + i][0][0] + times[start + i][0][1]);
-			var t0 = (times[start0 + i][0][0] == -1 ? -1 : times[start0 + i][0][0] + times[start0 + i][0][1]);
+			var t = timesAt(start + i);
+			var t0 = timesAt(start0 + i);
 			rbt.remove(t0);
 			rbt.insert(t, j);
 			n_dnf += t == -1;
@@ -1135,7 +1139,7 @@ var stats = (function(kpretty, round) {
 			retAvg = retAvg[0];
 			var timeArr = [];
 			for (var j = 0; j < nsolves; j++) {
-				var t = (times[start + j][0][0] == -1 ? -1 : times[start + j][0][0] + times[start + j][0][1]);
+				var t = timesAt(start + j);
 				timeArr.push(t);
 				n_dnf += t == -1;
 			}
@@ -1175,6 +1179,8 @@ var stats = (function(kpretty, round) {
 
 	var curScrType = '333';
 
+	var roundMilli = 1;
+
 	function procSignal(signal, value) {
 		if (signal == 'time') {
 			push(value);
@@ -1182,6 +1188,7 @@ var stats = (function(kpretty, round) {
 			scramble = value[1];
 		} else if (signal == 'property') {
 			if (/^(:?useMilli|timeFormat|stat[12][tl])$/.exec(value[0])) {
+				roundMilli = kernel.getProp('useMilli') ? 1 : 10;
 				stat1 = [1, -1][~~kernel.getProp('stat1t')] * kernel.getProp('stat1l');
 				stat2 = [1, -1][~~kernel.getProp('stat2t')] * kernel.getProp('stat2l');
 				len1 = Math.abs(stat1);
