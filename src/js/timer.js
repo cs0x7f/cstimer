@@ -539,7 +539,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             } else if (currentScrambleSize == 1) {
                 twistyScene.initializeTwisty({
                     type: "sq1",
-                    faceColors: [0xffffff, 0xff9000, 0x00ff00, 0xff0000, 0x0000ff, 0xffff00],
+                    faceColors: [0xffff00, 0x0000ff, 0xff0000, 0x00ff00, 0xff8800, 0xffffff],
                     scale: 0.9
                 });
             } else {
