@@ -200,7 +200,7 @@ var stackmat = (function() {
 			}
 			time_milli = ~~byteBuffer[1] * 60000 + ~~(byteBuffer[2] + byteBuffer[3]) * 1000 + ~~(byteBuffer[4] + byteBuffer[5] + byteBuffer[6]);
 		}
-		var suc_time = +new Date;
+		var suc_time = $.now();
 		if (suc_time - last_suc_time > 200) {
 			console.log(suc_time - last_suc_time);
 		}

@@ -313,6 +313,12 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 	jQuery.fx.off = true;
 }
 
+if (window.performance && window.performance.now) {
+	$.now = function() {
+		return Math.floor(window.performance.now());
+	}
+}
+
 $.urlParam = function(name){
 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	if (results==null){
