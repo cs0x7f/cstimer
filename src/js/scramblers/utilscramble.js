@@ -407,9 +407,9 @@
 				}
 				return scramble.formatScramble(ret);
 			case "sq1h": // Square-1 (turn metric)
-				return sq1_scramble(1);
+				return sq1_scramble(1, len);
 			case "sq1t": // Square-1 (twist metric)
-				return sq1_scramble(0);
+				return sq1_scramble(0, len);
 			case "sq2": // Square-2
 				var i = 0;
 				while (i < len) {

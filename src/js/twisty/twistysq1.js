@@ -409,8 +409,6 @@
                     if (d != 0) {
                         ret.push([2, d, 1, 5]);
                     }
-                } else {
-                    ret.push([0, 6, 0, 5]);
                 }
                 if (i != scramble.length - 1) {
                     ret.push([0, 6, 0, 5]);

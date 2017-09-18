@@ -89,17 +89,16 @@ var image = (function() {
         eps = Transform(ep, [0.66, 0, 0]);
         cps = Transform(cp, [0.66, 0, 0]);
 
-        var udcol = [0, 3];
-        var ecol = [0, 5, 0, 1, 0, 2, 0, 4, 0, 5, 0, 1, 0, 2, 0, 4];
-        var ccol = [4, 5, 5, 1, 1, 2, 2, 4, 5, 4, 1, 5, 2, 1, 4, 2];
-        var colors = ['#fff', '#00f', '#f00', '#ff0', '#0f0', '#f80'];
+        var udcol = 'UD';
+        var ecol = '-B-R-F-L-B-R-F-L';
+        var ccol = 'LBBRRFFLBLRBFRLF';
+        var colors = {'U': '#ff0', 'R': '#f80', 'F': '#0f0', 'D': '#fff', 'L': '#f00', 'B': '#00f'};
 
         width = 45;
 
         var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/
 
         return function(moveseq) {
-            // moveseq = "/(3, 0)"
             posit = [0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 12, 12, 13, 14, 14, 15];
             mid = 0;
             var moves = moveseq.split('/');
