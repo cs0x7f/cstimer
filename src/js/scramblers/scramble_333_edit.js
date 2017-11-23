@@ -63,7 +63,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		}
 	}
 
-	function initRawSymPrun(PrunTable, INV_DEPTH, RawMove, RawConj, SymMove, SymState, SymSwitch, moveMap, SYM_SHIFT) {
+	function initRawSymPrun(PrunTable, INV_DEPTH, RawMove, RawConj, SymMove, SymState, SymSwitch, SYM_SHIFT) {
 		var N_MOVES, N_RAW, N_SIZE, N_SYM, SYM_MASK, check, depth, done, end, i, idx, idxx, inv, j, m, raw, rawx, select, sym, symState, symx, val, fill, len;
 		SYM_MASK = (1 << SYM_SHIFT) - 1;
 		N_RAW = RawMove.length;
@@ -95,7 +95,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 					raw = i % N_RAW;
 					sym = ~~(i / N_RAW);
 					for (m = 0; m < N_MOVES; ++m) {
-						symx = SymMove[sym][moveMap == null ? m : moveMap[m]];
+						symx = SymMove[sym][m];
 						rawx = RawConj[RawMove[raw][m] & 511][symx & SYM_MASK];
 						symx >>>= SYM_SHIFT;
 						idx = symx * N_RAW + rawx;
@@ -126,7 +126,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function initMoveTable(MoveTable, SIZE, S2RArray, setIdx, getIdx, isEdge, isPhase2) {
-		var c, d, i, j, N_MOVES = isPhase2 ? 10 : 18;
+		var c, d, i, j, N_MOVES = isPhase2 ? (isEdge ? 10 : 18) : 18;
 		c = new CubieCube;
 		d = new CubieCube;
 		for (i = 0; i < SIZE; ++i) {
@@ -173,9 +173,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		SymInv = createArray(16);
 		SymMult = createArray(16, 16);
 		SymMove = createArray(16, 18);
-		Sym8Mult = createArray(8, 8);
 		Sym8Move = createArray(8, 18);
-		Sym8MultInv = createArray(8, 8);
 		SymMoveUD = createArray(16, 10);
 		FlipS2R = createArray(336);
 		TwistS2R = createArray(324);
@@ -217,20 +215,8 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function $getCPermSym(obj) {
-		var idx, k;
-		if (epermR2S !== null) {
-			idx = epermR2S[get8Perm(obj.cp)];
-			return idx ^ e2c[idx & 15];
-		}
-		obj.temps || (obj.temps = new CubieCube);
-		for (k = 0; k < 16; ++k) {
-			cornConjugate(obj, SymInv[k], obj.temps);
-			idx = binarySearch(epermS2R, get8Perm(obj.temps.cp));
-			if (idx != 65535) {
-				return (idx << 4 | k);
-			}
-		}
-		return 0;
+		var idx = epermR2S[get8Perm(obj.cp)];
+		return idx ^ e2c[idx & 15];
 	}
 
 	function $getEPermSym(obj) {
@@ -238,11 +224,9 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function $getFlip(obj) {
-		var i, idx;
-		idx = 0;
-		for (i = 0; i < 11; ++i) {
-			idx <<= 1;
-			idx |= obj.eo[i];
+		var idx = 0;
+		for (var i = 0; i < 11; ++i) {
+			idx = idx << 1 | obj.eo[i];
 		}
 		return idx;
 	}
@@ -496,12 +480,6 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 				SymMoveUD[s][j] = std2ud[SymMove[s][ud2std[j]]];
 			}
 		}
-		for (j = 0; j < 8; ++j) {
-			for (s = 0; s < 8; ++s) {
-				Sym8Mult[j][s] = SymMult[j << 1][s << 1] >> 1;
-				Sym8MultInv[j][s] = SymMult[j << 1][SymInv[s << 1]] >> 1;
-			}
-		}
 		for (j = 0; j < 18; ++j) {
 			for (s = 0; s < 8; ++s) {
 				Sym8Move[s][j] = SymMove[s << 1][j];
@@ -536,7 +514,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	_.temps = null;
 	var CubeSym, epermR2S = null,
 		epermS2R, FlipR2S = null,
-		FlipS2R, MtoEPerm, Sym8Move, Sym8Mult, Sym8MultInv, SymInv, SymMove, SymMoveUD, SymMult, SymStateFlip, SymStatePerm, SymStateTwist, TwistR2S = null,
+		FlipS2R, MtoEPerm, Sym8Move, SymInv, SymMove, SymMoveUD, SymMult, SymStateFlip, SymStatePerm, SymStateTwist, TwistR2S = null,
 		TwistS2R, e2c, moveCube, urf1, urf2, urfMove;
 
 	function $initPhase2(obj) {
@@ -549,7 +527,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		csym = obj.corn[obj.valid1] & 15;
 		for (i = obj.valid1; i < obj.depth1; ++i) {
 			m = obj.move[i];
-			cidx = CPermMove[cidx][SymMove[csym][m]];
+			cidx = CPermMove[cidx][std2ud[SymMove[csym][m]]];
 			csym = SymMult[cidx & 15][csym];
 			cidx >>>= 4;
 			obj.corn[i + 1] = cidx << 4 | csym;
@@ -636,7 +614,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 				m = axis + power;
 				slicex = UDSliceMove[slice][m] & 511;
 				twistx = TwistMove[twist][Sym8Move[tsym][m]];
-				tsymx = Sym8Mult[twistx & 7][tsym];
+				tsymx = (twistx & 7) ^ tsym;
 				twistx >>>= 3;
 				prun = getPruning(UDSliceTwistPrun, twistx * 495 + UDSliceConj[slicex][tsymx]);
 				if (prun > maxl) {
@@ -645,7 +623,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 					continue;
 				}
 				flipx = FlipMove[flip][Sym8Move[fsym][m]];
-				fsymx = Sym8Mult[flipx & 7][fsym];
+				fsymx = (flipx & 7) ^ fsym;
 				flipx >>>= 3;
 				prun = getPruning(UDSliceFlipPrun, flipx * 495 + UDSliceConj[slicex][fsymx]);
 				if (prun > maxl) {
@@ -669,12 +647,14 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		if (eidx == 0 && cidx == 0 && mid == 0) {
 			return maxl;
 		}
-		for (m = 0; m < 10; ++m) {
-			if (lm < 0 ? (m == -lm) : ckmv2[lm][m]) {
+		var moveMask = lm < 0 ? (1 << (-lm)) : ckmv2bit[lm];
+		for (m = 0; m < 10; m++) {
+			if ((moveMask >> m & 1) != 0) {
+				m += 0x42 >> m & 3;
 				continue;
 			}
 			midx = MPermMove[mid][m];
-			cidxx = CPermMove[cidx][SymMove[csym][ud2std[m]]];
+			cidxx = CPermMove[cidx][SymMoveUD[csym][m]];
 			csymx = SymMult[cidxx & 15][csym];
 			cidxx >>>= 4;
 			if (getPruning(MCPermPrun, cidxx * 24 + MPermConj[midx][csymx]) >= maxl) {
@@ -887,19 +867,19 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		];
 		permMult = createArray(24, 24);
 		move2str = ['U ', 'U2', "U'", 'R ', 'R2', "R'", 'F ', 'F2', "F'", 'D ', 'D2', "D'", 'L ', 'L2', "L'", 'B ', 'B2', "B'"];
-		ud2std = [0, 1, 2, 4, 7, 9, 10, 11, 13, 16];
+		ud2std = [0, 1, 2, 4, 7, 9, 10, 11, 13, 16, 3, 5, 6, 8, 12, 14, 15, 17];
 		std2ud = createArray(18);
-		ckmv2 = createArray(11, 10);
-		for (i = 0; i < 10; ++i) {
+		ckmv2bit = createArray(18);
+		for (i = 0; i < 18; ++i) {
 			std2ud[ud2std[i]] = i;
 		}
-		for (i = 0; i < 10; ++i) {
-			for (j = 0; j < 10; ++j) {
-				ix = ud2std[i];
-				jx = ud2std[j];
-				ckmv2[i][j] = ~~(ix / 3) == ~~(jx / 3) || ~~(ix / 3) % 3 == ~~(jx / 3) % 3 && ix >= jx;
+		for (i = 0; i < 10; i++) {
+			ix = ~~(ud2std[i] / 3);
+			ckmv2bit[i] = 0;
+			for (j = 0; j < 10; j++) {
+				jx = ~~(ud2std[j] / 3);
+				ckmv2bit[i] |= ((ix == jx) || ((ix % 3 == jx % 3) && (ix >= jx)) ? 1 : 0) << j;
 			}
-			ckmv2[10][i] = false;
 		}
 		arr1 = createArray(4);
 		arr2 = createArray(4);
@@ -914,27 +894,6 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 				permMult[i][j] = getNPerm(arr3, 4);
 			}
 		}
-	}
-
-	function binarySearch(arr, key) {
-		var l, length, mid, r, val;
-		length = arr.length;
-		if (key <= arr[length - 1]) {
-			l = 0;
-			r = length - 1;
-			while (l <= r) {
-				mid = (l + r) >>> 1;
-				val = arr[mid];
-				if (key > val) {
-					l = mid + 1;
-				} else if (key < val) {
-					r = mid - 1;
-				} else {
-					return mid;
-				}
-			}
-		}
-		return 65535;
 	}
 
 	function getComb(arr, mask) {
@@ -1035,10 +994,10 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return String.fromCharCode.apply(null, f);
 	}
 
-	var ckmv2, cornerFacelet, edgeFacelet, move2str, permMult, std2ud, ud2std;
+	var ckmv2bit, cornerFacelet, edgeFacelet, move2str, permMult, std2ud, ud2std;
 
 	function initialize() {
-		//	var startTime = +new Date;
+			// var startTime = +new Date;
 		Util_$clinit();
 		CubieCube_$clinit();
 		CoordCube_$clinit();
@@ -1050,16 +1009,15 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		initMoveTable(FlipMove, 336, FlipS2R, $setFlip, $getFlipSym, true, false);
 		initMoveTable(TwistMove, 324, TwistS2R, $setTwist, $getTwistSym, false, false);
 		initUDSliceMoveConj();
-		initMoveTable(CPermMove, 2768, epermS2R, $setCPerm, $getCPermSym, false, false);
+		initMoveTable(CPermMove, 2768, epermS2R, $setCPerm, $getCPermSym, false, true);
 		initMoveTable(EPermMove, 2768, epermS2R, $setEPerm, $getEPermSym, true, true);
 		initMPermMoveConj();
-		epermR2S = null;
-		//	console.log(+new Date - startTime);
-		initRawSymPrun(UDSliceTwistPrun, 6, UDSliceMove, UDSliceConj, TwistMove, SymStateTwist, null, null, 3);
-		initRawSymPrun(UDSliceFlipPrun, 6, UDSliceMove, UDSliceConj, FlipMove, SymStateFlip, null, null, 3);
-		initRawSymPrun(MEPermPrun, 7, MPermMove, MPermConj, EPermMove, SymStatePerm, null, null, 4);
-		initRawSymPrun(MCPermPrun, 10, MPermMove, MPermConj, CPermMove, SymStatePerm, e2c, ud2std, 4);
-		//	console.log(+new Date - startTime);
+			// console.log(+new Date - startTime);
+		initRawSymPrun(UDSliceTwistPrun, 6, UDSliceMove, UDSliceConj, TwistMove, SymStateTwist, null, 3);
+		initRawSymPrun(UDSliceFlipPrun, 6, UDSliceMove, UDSliceConj, FlipMove, SymStateFlip, null, 3);
+		initRawSymPrun(MEPermPrun, 7, MPermMove, MPermConj, EPermMove, SymStatePerm, null, 4);
+		initRawSymPrun(MCPermPrun, 10, MPermMove, MPermConj, CPermMove, SymStatePerm, e2c, 4);
+			// console.log(+new Date - startTime);
 	}
 
 	var initialized = false;
