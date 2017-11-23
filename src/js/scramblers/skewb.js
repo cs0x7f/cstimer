@@ -102,12 +102,12 @@
     var ori = [0, 1, 2, 0, 2, 1, 1, 2, 0, 2, 1, 0];
 
 	function getScramble(type) {
-		var perm, twst, lim = 5, 
+		var perm, twst, lim = 6,
 		l = type == 'skbso' ? 8 : 0;
 		do {
 			perm = mathlib.rn(4320);
 			twst = mathlib.rn(2187);
-		} while (perm == 0 && twst == 0 || ori[perm % 12] != (twst + ~~(twst / 3) + ~~(twst / 9) + ~~(twst / 27)) % 3 || solv.search([perm, twst], lim, lim) != null);
+		} while (perm == 0 && twst == 0 || ori[perm % 12] != (twst + ~~(twst / 3) + ~~(twst / 9) + ~~(twst / 27)) % 3 || solv.search([perm, twst], 0, lim) != null);
 		var sol = solv.search([perm, twst], l).reverse();
 		return getSolution(sol);
 	}

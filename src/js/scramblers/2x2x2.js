@@ -70,7 +70,7 @@
 				mathlib.set8Perm(g, c, 4);
 				c = mathlib.get8Perm(g, 7);
 			}
-		} while (c == 0 && b == 0 || solv.search([c, b], lim, lim) != null);
+		} while (c == 0 && b == 0 || solv.search([c, b], 0, lim) != null);
 		return solv.toStr(solv.search([c, b], a).reverse(), "URF", "'2 ");
 	}
 	scramble.reg(['222o', '222so', '222eg0', '222eg1', '222eg2'], getScramble)('222eg', getScramble, [['CLL', 'EG1', 'EG2'], [1, 4, 1]]);
