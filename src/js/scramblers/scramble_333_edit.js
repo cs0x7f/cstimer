@@ -1043,6 +1043,10 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff);
 	}
 
+	function getFewestScramble() {
+		return "R' U' F " + getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff) + "R' U' F";
+	}
+
 	function cntU(b) {
 		for (var c = 0, a = 0; a < b.length; a++) - 1 == b[a] && c++;
 		return c
@@ -1354,6 +1358,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	scramble.reg('333', getRandomScramble)
+		('333fm', getFewestScramble)
 		('333ni', getRandomOriScramble)
 		('edges', getEdgeScramble)
 		('corners', getCornerScramble)

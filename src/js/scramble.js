@@ -12,7 +12,6 @@ var scramble = (function(rn, rndEl) {
 	var scrLen = $('<input type="text" maxlength="3">');
 	var sdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
-		'333fm': '333',
 		'333oh': '333',
 		'333ft': '333',
 		'444bld': '444wca',
