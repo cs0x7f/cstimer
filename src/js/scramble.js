@@ -83,13 +83,14 @@ var scramble = (function(rn, rndEl) {
 	var minxsuff = ["", "2", "'", "2'"];
 	var scramble, lastscramble;
 	var isDisplayLast = false;
+	var cachedScramble;
 
 	function doScrambleIt() {
 		calcScramble();
 		if (scramble) {
 			scrambleOK();
 		} else {
-			sdiv.html("Scramble Error. ");
+			sdiv.html("Scrambling... ");
 		}
 	}
 
@@ -101,7 +102,16 @@ var scramble = (function(rn, rndEl) {
 		}
 
 		if (realType in scramblers) {
-			scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
+			if (cachedScramble && cachedScramble[0] == JSON.stringify([realType, len, scrFlt[1], probs[realType]])){
+				scramble = cachedScramble[1];
+				cachedScramble = undefined;
+			} else {
+				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
+			}
+			setTimeout(function() {
+				cachedScramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
+				cachedScramble = [JSON.stringify([realType, len, scrFlt[1], probs[realType]]), cachedScramble];
+			}, 500);
 			return;
 		}
 
@@ -115,6 +125,8 @@ var scramble = (function(rn, rndEl) {
 					scramble = inputScramble.shift();
 				}
 				break;
+			default: //scrambler not ready, wait
+				requestAnimFrame(doScrambleIt);
 		}
 	}
 
@@ -486,7 +498,30 @@ var scramble = (function(rn, rndEl) {
 		scramblers: scramblers,
 		mega: mega,
 		formatScramble: formatScramble, 
+		// scrambleOK: scrambleOK,
 		rndState: rndState
 	}
 
 })(mathlib.rn, mathlib.rndEl);
+
+// if (window.Worker) {
+// 	var async_scramble = new Worker("js/async_scramble.js");
+// 	async_scramble.onmessage = function(event) {
+// 		// console.log(event);
+// 		var data = event.data;
+// 		if (data[0] == 'reg') {
+// 			// console.log(data[0], data[1]);
+// 			data = data[1];
+// 			scramble.reg(data[0], function(arg1, arg2, arg3) {
+// 				async_scramble.postMessage([arg1, arg2, arg3]);
+// 			}, data[1]);
+// 		} else if (data[0] == 's') {
+// 			scramble.scrambleOK(data[1]);
+// 		}
+// 	}
+// } else {
+// 	$.ajax({
+// 		url: 'js/async_scramble.js',
+// 		dataType: "script"
+// 	});
+// }
