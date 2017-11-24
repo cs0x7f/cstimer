@@ -83,7 +83,6 @@ var scramble = (function(rn, rndEl) {
 	var minxsuff = ["", "2", "'", "2'"];
 	var scramble, lastscramble;
 	var isDisplayLast = false;
-	var cachedScramble;
 
 	function doScrambleIt() {
 		calcScramble();
@@ -102,15 +101,15 @@ var scramble = (function(rn, rndEl) {
 		}
 
 		if (realType in scramblers) {
+			var cachedScramble = JSON.parse(localStorage['cachedScr'] || null);
 			if (cachedScramble && cachedScramble[0] == JSON.stringify([realType, len, scrFlt[1], probs[realType]])){
 				scramble = cachedScramble[1];
-				cachedScramble = undefined;
+				delete localStorage['cachedScr'];
 			} else {
 				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
 			}
 			setTimeout(function() {
-				cachedScramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
-				cachedScramble = [JSON.stringify([realType, len, scrFlt[1], probs[realType]]), cachedScramble];
+				localStorage['cachedScr'] = JSON.stringify([JSON.stringify([realType, len, scrFlt[1], probs[realType]]), scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]))]);
 			}, 500);
 			return;
 		}
