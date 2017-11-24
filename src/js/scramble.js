@@ -93,12 +93,11 @@ var scramble = (function(rn, rndEl) {
 		}
 	}
 
+	var cacheTid = 0;
+
 	function calcScramble() {
 		scramble = "";
-		var realType = type;
-		if (type in alias) {
-			realType = alias[type];
-		}
+		var realType = alias[type] || type;
 
 		if (realType in scramblers) {
 			var cachedScramble = JSON.parse(localStorage['cachedScr'] || null);
@@ -108,24 +107,25 @@ var scramble = (function(rn, rndEl) {
 			} else {
 				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
 			}
-			setTimeout(function() {
+			cacheTid = cacheTid || setTimeout(function() {
 				localStorage['cachedScr'] = JSON.stringify([JSON.stringify([realType, len, scrFlt[1], probs[realType]]), scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]))]);
+				cacheTid = 0;
 			}, 500);
 			return;
 		}
 
 		switch (realType) {
-			case "input":
-				if (inputScramble.length == 0) {
-					inputText.val("");
-					kernel.showDialog([inputText, inputOK, inputCancel], 'input', SCRAMBLE_INPUT);
-					return;
-				} else {
-					scramble = inputScramble.shift();
-				}
-				break;
-			default: //scrambler not ready, wait
-				requestAnimFrame(doScrambleIt);
+		case "input":
+			if (inputScramble.length == 0) {
+				inputText.val("");
+				kernel.showDialog([inputText, inputOK, inputCancel], 'input', SCRAMBLE_INPUT);
+				return;
+			} else {
+				scramble = inputScramble.shift();
+			}
+			break;
+		default: //scrambler not ready, wait
+			requestAnimFrame(doScrambleIt);
 		}
 	}
 

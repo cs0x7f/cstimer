@@ -1108,7 +1108,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 
 	//arr: 53 bit integer
 	function parseMask(arr, length) {
-		if (!$.isNumeric(arr)) {
+		if ('number' !== typeof arr) {
 			return arr;
 		}
 		var ret = [];
