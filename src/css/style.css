@@ -671,7 +671,10 @@ input[type="text"] {
 .m .statc {
 	margin-right: 5px;
 	margin-right: 0.35rem;
+	margin-top: 5px;
+	margin-top: 0.35rem;
 	width: auto;
+	vertical-align: top;
 }
 
 .m .myscroll {
