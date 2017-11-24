@@ -421,6 +421,7 @@ textarea {
 #stats table {
 	min-width: 178px;
 	min-width: 12.6rem;
+	white-space: nowrap;
 }
 
 .myscroll {
@@ -433,6 +434,11 @@ textarea {
 	margin-right: -1.5rem;
 	margin-top: 2px;
 	margin-top: 0.15rem;
+	width: 100%;
+}
+
+.statc {
+	display: inline-block;
 	width: 100%;
 }
 
@@ -655,10 +661,22 @@ input[type="text"] {
 	top: auto;
 	bottom: 61px;
 	bottom: 12.2vw;
+	white-space: nowrap;
 }
 
 .m #scrambleDiv {
 	left: 0;
+}
+
+.m .statc {
+	margin-right: 5px;
+	margin-right: 0.35rem;
+	width: auto;
+}
+
+.m .myscroll {
+	display: inline-block;
+	width: auto;
 }
 
 .m #toolsDiv {

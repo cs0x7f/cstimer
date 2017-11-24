@@ -15,6 +15,7 @@ var stats = (function(kpretty, round) {
 	var showAllRow = $('<tr class="click" ><th class="click" colspan="15">...</th></tr>');
 
 	var sumtable = $('<table class="sumtable" />').click(infoClick).addClass("table");
+	var sumtableDiv = $('<div class="statc" />');
 
 	var sessionIdxMax = 15;
 	var sessionIdxMin = 1;
@@ -491,8 +492,11 @@ var stats = (function(kpretty, round) {
 	function updateSumTable() {
 		if (!kernel.getProp('statsum')) {
 			sumtable.empty();
+			sumtableDiv.hide();
 			resultsHeight();
 			return;
+		} else {
+			sumtableDiv.css('display', 'inline-block');
 		}
 		var theStats = getAllStats();
 		var s = [];
@@ -1264,7 +1268,7 @@ var stats = (function(kpretty, round) {
 
 	function resultsHeight() {
 		if ($('html').hasClass('m')) {
-			scrollDiv.height(avgRow.height() + title.height() * 2);
+			scrollDiv.height(Math.max(sumtableDiv.height(), avgRow.height() + title.height() * 2));
 		} else if (scrollDiv[0].offsetParent != null) {
 			scrollDiv.outerHeight(~~(div.height() - select.outerHeight() - sumtable.outerHeight()));
 		}
@@ -1310,9 +1314,10 @@ var stats = (function(kpretty, round) {
 		kernel.getProp('session', 1);
 
 		div.appendTo('body').append(
-			$('<span class="click" />').html(STATS_SESSION).click(renameSession), 
-			select, $('<input type="button">').val('X').click(reset), 
-			sumtable, 
+			$('<div>').append(
+				$('<span class="click" />').html(STATS_SESSION).click(renameSession),
+				select, $('<input type="button">').val('X').click(reset)),
+			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
 		//set height after the statsDiv appended
 		// setTimeout(resultsHeight, 100);
