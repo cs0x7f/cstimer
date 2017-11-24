@@ -406,6 +406,11 @@
 					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333}";
 				}
 				return scramble.formatScramble(ret);
+			case "r3ni": // multiple 3x3x3 bld
+				for (var i = 0; i < len; i++) {
+					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333ni}";
+				}
+				return scramble.formatScramble(ret);
 			case "sq1h": // Square-1 (turn metric)
 				return sq1_scramble(1, len);
 			case "sq1t": // Square-1 (twist metric)
@@ -445,6 +450,6 @@
 	}
 
 
-	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'pyrm', 'prcp', 'r3', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scramble.mega);

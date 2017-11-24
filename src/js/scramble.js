@@ -207,6 +207,7 @@ var scramble = (function(rn, rndEl) {
 		scrLen[0].disabled = scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2] <= 0;
 		var curType = select2.val();
 		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, filters[curType]])));
+		scrOpt[0].disabled = scrLen[0].disabled && !(curType in filters);
 		if (scrFlt[0] != curType) {
 			scrFlt = [curType, filters[curType]];
 			kernel.setProp('scrFlt', JSON.stringify(scrFlt));

@@ -91,7 +91,7 @@ var scrdata = [
 		['7x7x7', "777wca", -100],
 		['4x4 bld', "444bld", -40],
 		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3", 5]
+		['3x3 mbld', "r3ni", 5]
 	]],
 	['Input', [
 		['??', "input", 0]
