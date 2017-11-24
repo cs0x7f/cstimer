@@ -561,8 +561,8 @@ select, input[type='button'], input[type='text'] {
 }
 
 select {
-	max-width: 150px;
-	max-width: 10em;
+	max-width: 100px;
+	max-width: 7em;
 }
 
 input:disabled {
