@@ -554,6 +554,11 @@ select, input[type='button'], input[type='text'] {
 	appearance:         none;
 }
 
+select {
+	max-width: 150px;
+	max-width: 10em;
+}
+
 input:disabled {
 	cursor: default;
 	border: none;
@@ -647,8 +652,7 @@ input[type="text"] {
 }
 
 .m #stats {
-	top: 150px;
-	top: 30vw;
+	top: auto;
 	bottom: 61px;
 	bottom: 12.2vw;
 }

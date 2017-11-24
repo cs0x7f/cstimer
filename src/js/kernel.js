@@ -607,10 +607,6 @@ var kernel = (function() {
 			setTimeout(toggleLeftBar, 3000);
 			dialog.appendTo('body');
 			$(window).resize(fixOrient);
-
-			if (localStorage['properties'] == undefined) {
-				logo.click();
-			}
 		});
 
 		return {

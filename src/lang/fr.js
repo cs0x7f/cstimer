@@ -317,6 +317,7 @@ var PROPERTY_SUMMARY = 'show summary before time list';
 var PROPERTY_IMRENAME = 'rename session immediately after creation';
 var PROPERTY_SCR2SS = 'create new session when switching scramble type';
 var PROPERTY_SS2SCR = 'restore scramble type when switching session';
+var PROPERTY_STATAL = 'Statistical indicators: ';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var MODULE_NAMES = {
 	"ui": 'affichage',

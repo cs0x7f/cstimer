@@ -1,4 +1,4 @@
-<h1>csTimer  bản 2015.12.12 - Speedcube chuyên nghiệp/huẩn luyện timer</h1>
+<h1>csTimer  bản 2017.11.24 - Speedcube chuyên nghiệp/huẩn luyện timer</h1>
 <?php include('lang.php') ?>
 <p>Được dịch bởi Long Regain. CSTimer được thiết kế cho speedcuber. Nó hỗ trợ scramble cho nhiều loại cube <b>toàn bộ cube của WCA</b>; nó còn hỗ trợ cho <b>Xcross solver và eoline solver</b>; Nó thống kê thành tích , <b>Cho phép chia ra và tính thời gian thành nhiều đợt</b> và 1 số chức năng cơ bàn như: 15s' chuẩn bị như WCA, blo bla ble...</p>
 <p>CStimer có thể sử dụng rất tốt hầu hết với mọi browser, như: chrome(khuyến khích sử dụng), firefox, opera, blo bla... Và nó cũng hỗ trở ipad, iphone và tất cả các thiết bị android. </p>

@@ -317,6 +317,7 @@ var PROPERTY_SUMMARY = '成绩列表前显示摘要';
 var PROPERTY_IMRENAME = '新建分组时重命名';
 var PROPERTY_SCR2SS = '改变打乱类型时新建分组';
 var PROPERTY_SS2SCR = '改变分组时自动选择打乱类型';
+var PROPERTY_STATAL = '统计指标：';
 var PROPERTY_DELMUL = '启用批量删除';
 var MODULE_NAMES = {
 	"ui": '界面',

@@ -1,4 +1,4 @@
-<h1>csTimer  versie 2015.12.12 - Professionele Speedcubing/Training Timer</h1>
+<h1>csTimer  versie 2017.11.24 - Professionele Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
 <p>csTimer is ontwikkeld voor speedcubers. Het cre&euml;ert scrambles voor vele types puzzles, waaronder <b>Alle officiele puzzels erkend door het WCA.</b>; Het is ge&iuml;ntegreerd met <b>Xcross solver en eoline solver</b>; Het ondersteunt tijd statistiek, <b>meerfasige timing</b> en verscheidene andere functies zoals: 15s' inspectie vastgesteld door het WCA, etc.</p>
 <p>De timer werkt naar behoren op de meeste browsers zoals: Chrome (aanbevolen), Firefox, Opera, Internet Explorer 7+. Ook werkt csTimer op iPad, iPhone en de meeste Android toestellen. </p>

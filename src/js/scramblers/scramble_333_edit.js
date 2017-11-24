@@ -355,21 +355,21 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function initFlipSym2Raw() {
-		var c, count, d, i, idx, occ, s;
+		var c, count, d, i, idx, s;
 		c = new CubieCube;
 		d = new CubieCube;
-		occ = createArray(64);
 		count = 0;
-		for (i = 0; i < 64; occ[i++] = 0) {}
-		FlipR2S = createArray(2048);
+		FlipR2S = createArray(2187);
+		for (i = 0; i < 2048; i++) {
+			FlipR2S[i] = 0;
+		}
 		for (i = 0; i < 2048; ++i) {
-			if ((occ[i >> 5] & 1 << (i & 31)) == 0) {
+			if (FlipR2S[i] == 0) {
 				$setFlip(c, i);
 				for (s = 0; s < 16; s += 2) {
 					EdgeConjugate(c, s, d);
 					idx = $getFlip(d);
 					idx == i && (SymStateFlip[count] |= 1 << (s >> 1));
-					occ[idx >> 5] |= 1 << (idx & 31);
 					FlipR2S[idx] = count << 3 | s >> 1;
 				}
 				FlipS2R[count++] = i;
@@ -395,21 +395,21 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function initPermSym2Raw() {
-		var a, b, c, count, d, i, idx, occ, s;
+		var a, b, c, count, d, i, idx, s;
 		c = new CubieCube;
 		d = new CubieCube;
-		occ = createArray(1260);
 		count = 0;
-		for (i = 0; i < 1260; occ[i++] = 0) {}
 		epermR2S = createArray(40320);
+		for (i = 0; i < 40320; i++) {
+			epermR2S[i] = 0;
+		}
 		for (i = 0; i < 40320; ++i) {
-			if ((occ[i >> 5] & 1 << (i & 31)) == 0) {
+			if (epermR2S[i] == 0) {
 				set8Perm(c.ep, i);
 				for (s = 0; s < 16; ++s) {
 					EdgeConjugate(c, s, d);
 					idx = get8Perm(d.ep);
 					idx == i && (SymStatePerm[count] |= 1 << s);
-					occ[idx >> 5] |= 1 << (idx & 31);
 					a = getComb(d.ep, 0);
 					b = getComb(d.ep, 4) >> 9;
 					MtoEPerm[494 - (a & 511)][(a >> 9) + b * 24] = epermR2S[idx] = count << 4 | s;
@@ -488,21 +488,21 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	function initTwistSym2Raw() {
-		var c, count, d, i, idx, occ, s;
+		var c, count, d, i, idx, s;
 		c = new CubieCube;
 		d = new CubieCube;
-		occ = createArray(69);
 		count = 0;
-		for (i = 0; i < 69; occ[i++] = 0) {}
 		TwistR2S = createArray(2187);
+		for (i = 0; i < 2187; i++) {
+			TwistR2S[i] = 0;
+		}
 		for (i = 0; i < 2187; ++i) {
-			if ((occ[i >> 5] & 1 << (i & 31)) == 0) {
+			if (TwistR2S[i] == 0) {
 				$setTwist(c, i);
 				for (s = 0; s < 16; s += 2) {
 					cornConjugate(c, s, d);
 					idx = $getTwist(d);
 					idx == i && (SymStateTwist[count] = (SymStateTwist[count] | 1 << (s >> 1)));
-					occ[idx >> 5] |= 1 << (idx & 31);
 					TwistR2S[idx] = (count << 3 | s >> 1);
 				}
 				TwistS2R[count++] = i;
@@ -780,32 +780,15 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 
 	function Search_$verify(obj, facelets) {
 		var count = 0, i;
+		var centers = facelets[4] + facelets[13] + facelets[22] + facelets[31] + facelets[40] + facelets[49];
 		for (i = 0; i < 54; ++i) {
-			switch (facelets.charCodeAt(i)) {
-				case 85:
-					obj.f[i] = 0;
-					break;
-				case 82:
-					obj.f[i] = 1;
-					break;
-				case 70:
-					obj.f[i] = 2;
-					break;
-				case 68:
-					obj.f[i] = 3;
-					break;
-				case 76:
-					obj.f[i] = 4;
-					break;
-				case 66:
-					obj.f[i] = 5;
-					break;
-				default:
-					return -1;
+			obj.f[i] = centers.indexOf(facelets[i]);
+			if (obj.f[i] == -1) {
+				return -1;
 			}
 			count += 1 << (obj.f[i] << 2);
 		}
-		if (count != 10066329) {
+		if (count != 0x999999) {
 			return -1;
 		}
 		toCubieCube(obj.f, obj.cc);
@@ -1217,47 +1200,47 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	var zbll_map = [
-		[0x76543210, 0x00002121], // H-BBFF
-		[0x76543012, 0x00002121], // H-FBFB
-		[0x76543120, 0x00002121], // H-RFLF
-		[0x76543201, 0x00002121], // H-RLFF
-		[0x76543012, 0x00001020], // L-FBRL
-		[0x76543021, 0x00001020], // L-LBFF
-		[0x76543201, 0x00001020], // L-LFFB
-		[0x76543102, 0x00001020], // L-LFFR
-		[0x76543210, 0x00001020], // L-LRFF
-		[0x76543120, 0x00001020], // L-RFBL
-		[0x76543102, 0x00001122], // Pi-BFFB
-		[0x76543120, 0x00001122], // Pi-FBFB
-		[0x76543012, 0x00001122], // Pi-FRFL
-		[0x76543021, 0x00001122], // Pi-FRLF
-		[0x76543210, 0x00001122], // Pi-LFRF
-		[0x76543201, 0x00001122], // Pi-RFFL
-		[0x76543120, 0x00002220], // S-FBBF
-		[0x76543102, 0x00002220], // S-FBFB
-		[0x76543210, 0x00002220], // S-FLFR
-		[0x76543201, 0x00002220], // S-FLRF
-		[0x76543021, 0x00002220], // S-LFFR
-		[0x76543012, 0x00002220], // S-LFRF
-		[0x76543210, 0x00002100], // T-BBFF
-		[0x76543012, 0x00002100], // T-FBFB
-		[0x76543201, 0x00002100], // T-FFLR
-		[0x76543120, 0x00002100], // T-FLFR
-		[0x76543102, 0x00002100], // T-RFLF
-		[0x76543021, 0x00002100], // T-RLFF
-		[0x76543021, 0x00001200], // U-BBFF
-		[0x76543201, 0x00001200], // U-BFFB
-		[0x76543012, 0x00001200], // U-FFLR
-		[0x76543120, 0x00001200], // U-FRLF
-		[0x76543102, 0x00001200], // U-LFFR
-		[0x76543210, 0x00001200], // U-LRFF
-		[0x76543102, 0x00001101], // aS-FBBF
-		[0x76543120, 0x00001101], // aS-FBFB
-		[0x76543012, 0x00001101], // aS-FRFL
-		[0x76543021, 0x00001101], // aS-FRLF
-		[0x76543210, 0x00001101], // aS-LFRF
-		[0x76543201, 0x00001101], // aS-RFFL
-		[0x7654ffff, 0x00000000] // PLL
+		[0x3210, 0x2121], // H-BBFF
+		[0x3012, 0x2121], // H-FBFB
+		[0x3120, 0x2121], // H-RFLF
+		[0x3201, 0x2121], // H-RLFF
+		[0x3012, 0x1020], // L-FBRL
+		[0x3021, 0x1020], // L-LBFF
+		[0x3201, 0x1020], // L-LFFB
+		[0x3102, 0x1020], // L-LFFR
+		[0x3210, 0x1020], // L-LRFF
+		[0x3120, 0x1020], // L-RFBL
+		[0x3102, 0x1122], // Pi-BFFB
+		[0x3120, 0x1122], // Pi-FBFB
+		[0x3012, 0x1122], // Pi-FRFL
+		[0x3021, 0x1122], // Pi-FRLF
+		[0x3210, 0x1122], // Pi-LFRF
+		[0x3201, 0x1122], // Pi-RFFL
+		[0x3120, 0x2220], // S-FBBF
+		[0x3102, 0x2220], // S-FBFB
+		[0x3210, 0x2220], // S-FLFR
+		[0x3201, 0x2220], // S-FLRF
+		[0x3021, 0x2220], // S-LFFR
+		[0x3012, 0x2220], // S-LFRF
+		[0x3210, 0x2100], // T-BBFF
+		[0x3012, 0x2100], // T-FBFB
+		[0x3201, 0x2100], // T-FFLR
+		[0x3120, 0x2100], // T-FLFR
+		[0x3102, 0x2100], // T-RFLF
+		[0x3021, 0x2100], // T-RLFF
+		[0x3021, 0x1200], // U-BBFF
+		[0x3201, 0x1200], // U-BFFB
+		[0x3012, 0x1200], // U-FFLR
+		[0x3120, 0x1200], // U-FRLF
+		[0x3102, 0x1200], // U-LFFR
+		[0x3210, 0x1200], // U-LRFF
+		[0x3102, 0x1101], // aS-FBBF
+		[0x3120, 0x1101], // aS-FBFB
+		[0x3012, 0x1101], // aS-FRFL
+		[0x3021, 0x1101], // aS-FRLF
+		[0x3210, 0x1101], // aS-LFRF
+		[0x3201, 0x1101], // aS-RFFL
+		[0xffff, 0x0000] // PLL
 	];
 
 	var zbprobs = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3];
@@ -1267,7 +1250,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	function getZBLLScramble(type, length, cases) {
 		var idx = cases;
 		var zbcase = zbll_map[idx];
-		return getAnyScramble(0xba987654ffff, 0, zbcase[0], zbcase[1], [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(0xba987654ffff, 0, zbcase[0] + 0x76540000, zbcase[1], [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getZZLLScramble() {
@@ -1317,27 +1300,27 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	}
 
 	var pll_map = [
-		[0xba9876541032, 0x76543210], // H
-		[0xba9876543102, 0x76543210], // Ua
-		[0xba9876543021, 0x76543210], // Ub
-		[0xba9876542301, 0x76543210], // Z
-		[0xba9876543210, 0x76543021], // Aa
-		[0xba9876543210, 0x76543102], // Ab
-		[0xba9876543210, 0x76542301], // E
-		[0xba9876543012, 0x76543201], // F
-		[0xba9876542130, 0x76543021], // Gb
-		[0xba9876541320, 0x76543102], // Ga
-		[0xba9876543021, 0x76543102], // Gc
-		[0xba9876543102, 0x76543021], // Gd
-		[0xba9876543201, 0x76543201], // Ja
-		[0xba9876543120, 0x76543201], // Jb
-		[0xba9876541230, 0x76543012], // Na
-		[0xba9876543012, 0x76543012], // Nb
-		[0xba9876540213, 0x76543201], // Ra
-		[0xba9876542310, 0x76543201], // Rb
-		[0xba9876541230, 0x76543201], // T
-		[0xba9876543120, 0x76543012], // V
-		[0xba9876543201, 0x76543012]  // Y
+		[0x1032, 0x3210], // H
+		[0x3102, 0x3210], // Ua
+		[0x3021, 0x3210], // Ub
+		[0x2301, 0x3210], // Z
+		[0x3210, 0x3021], // Aa
+		[0x3210, 0x3102], // Ab
+		[0x3210, 0x2301], // E
+		[0x3012, 0x3201], // F
+		[0x2130, 0x3021], // Gb
+		[0x1320, 0x3102], // Ga
+		[0x3021, 0x3102], // Gc
+		[0x3102, 0x3021], // Gd
+		[0x3201, 0x3201], // Ja
+		[0x3120, 0x3201], // Jb
+		[0x1230, 0x3012], // Na
+		[0x3012, 0x3012], // Nb
+		[0x0213, 0x3201], // Ra
+		[0x2310, 0x3201], // Rb
+		[0x1230, 0x3201], // T
+		[0x3120, 0x3012], // V
+		[0x3201, 0x3012]  // Y
 	];
 
 	var pllprobs = [
@@ -1359,7 +1342,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	function getPLLScramble(type, length, cases) {
 		var idx = cases;
 		var pllcase = pll_map[idx];
-		return getAnyScramble(pllcase[0], 0x000000000000, pllcase[1], 0x00000000, [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
+		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, [[], [Ux1], [Ux2], [Ux3]], [[], [Ux1], [Ux2], [Ux3]]);
 	}
 
 	function getEOLineScramble() {
