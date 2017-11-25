@@ -695,6 +695,7 @@ var kernel = (function() {
 
 		function loadData(data) {
 			data = JSON.parse(data);
+			localStorage.clear();
 			for (var key in data) {
 				localStorage[key] = data[key];
 			}
@@ -899,6 +900,8 @@ var kernel = (function() {
 			}, false);
 		}
 
+		cleanLocalStorage();
+
 		// var externJS = $.urlParam('extjs');
 		// if (externJS) {
 		// 	externJS = JSON.parse(decodeURIComponent(externJS));
@@ -912,6 +915,23 @@ var kernel = (function() {
 		// 	}
 		// }
 	});
+
+	function cleanLocalStorage() {
+		var validKeys = ['properties', 'cachedScr'];
+		var removeItems = [];
+		for (var i = 1; i <= ~~getProp('sessionN'); i++) {
+			validKeys.push('session' + i);
+		}
+		for (var i = 0; i<localStorage.length; i++) {
+			var key = localStorage.key(i);
+			if (validKeys.indexOf(key) == -1) {
+				removeItems.push(key);
+			}
+		}
+		for (var i = 0; i < removeItems.length; i++) {
+			delete localStorage[removeItems[i]];
+		}
+	}
 
 	function round(val) {
 		if (val <= 0) {
