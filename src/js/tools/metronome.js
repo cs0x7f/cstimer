@@ -1,4 +1,4 @@
-var image = (function() {
+var metronome = (function() {
 
     var context;
 
@@ -49,7 +49,7 @@ var image = (function() {
     function playAudio() {
         stopAudio();
         if (isEnable) {
-            interval = 60000 / (~~bpmInput.val());
+            var interval = 60000 / (~~bpmInput.val());
             playId = setInterval(playTick, interval);
         }
     }

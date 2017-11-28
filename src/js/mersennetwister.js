@@ -825,357 +825,210 @@ var LZString = (function() {
 
 var redblack = (function() {
 
-    var redblack = {};
-    var root = this;
-
-    redblack.tree = function(cmp) {
-        return new Tree(cmp);
-    };
-
-    var BLACK = 0;
-    var RED = 1;
-
-    function defaultCmp(key1, key2) {
-        return key1 - key2;
-    }
-
-    // Node
-    // ---------------
-
     function Node(key, value) {
-        this.key = key;
-        this.value = value;
-        this.color = RED;
-        this.left = null;
-        this.right = null;
-        this.parent = null;
-        this.count = 1;
+        this.k = key;
+        this.v = value;
+        this.chd = [null, null];
+        this.cnt = 3;
         this.sum = key;
     }
 
-    Node.prototype.grandparent = function() {
-        if (this.parent === null) return null;
-        return this.parent.parent;
-    };
-
-    Node.prototype.sibling = function() {
-        if (this.parent === null) return null;
-        return this === this.parent.left ? this.parent.right : this.parent.left;
-    };
-
-    Node.prototype.uncle = function() {
-        if (this.parent === null) return null;
-        return this.parent.sibling();
-    };
-
-    // Tree
-    // ---------------
-
-    function Tree(cmp) {
+    function RBTree(comparator) {
         this.root = null;
-        this.balancer = new Balancer(this);
-        this.cmp = cmp || defaultCmp;
+        this.cmp = comparator;
     }
 
-    Tree.prototype.find = function(node, key) {
-        while (node !== null) {
-            if (this.cmp(key, node.key) == 0) {
-                return node;
-            } else if (this.cmp(key, node.key) < 0) {
-                node = node.left;
-            } else if (this.cmp(key, node.key) > 0) {
-                node = node.right;
+    RBTree.prototype.find = function(key) {
+        var res = this.root;
+        while (res !== null) {
+            var c = this.cmp(key, res.k);
+            if (c === 0) {
+                return res.v;
+            } else {
+                res = res.chd[c > 0 ^ 0];
             }
         }
-        return node;
+        return undefined;
     };
 
-    Tree.prototype.get = function(key) {
-        var node = this.find(this.root, key);
-        return node === null ? null : node.value;
-    };
-
-    Tree.prototype.getNode = function(key) {
-        var node = this.find(this.root, key);
-        return node;
-    };
-
-    Tree.prototype.size = function(node) {
+    RBTree.prototype.size = function(node) {
         node = node || this.root;
-        return node == null ? 0 : node.count;
+        return node == null ? 0 : (node.cnt >> 1);
     };
 
-    Tree.prototype.sum = function(node) {
+    RBTree.prototype.sum = function(node) {
         node = node || this.root;
         return node == null ? 0 : node.sum;
-    }
+    };
 
-    Tree.prototype.cumSum = function(n_value) {
+    RBTree.prototype.cumSum = function(n_value) {
         if (n_value >= this.size() || this.size() == 0) {
             return this.sum();
         }
         var node = this.root;
         var ret = 0;
         while (n_value > 0) {
-            var leftSize = node.left == null ? 0 : this.size(node.left);
+            var leftSize = (node.chd[0] && node.chd[0].cnt) >> 1;
             if (n_value < leftSize) {
-                node = node.left;
+                node = node.chd[0];
                 continue;
             }
-            var leftSum = node.left == null ? 0 : this.sum(node.left);
+            var leftSum = (node.chd[0] && node.chd[0].sum) | 0;
             if (n_value == leftSize) {
                 return ret + leftSum;
             } else if (n_value == leftSize + 1) {
-                return ret + leftSum + node.key;
+                return ret + leftSum + node.k;
             } else {
-                ret += leftSum + node.key;
+                ret += leftSum + node.k;
                 n_value -= leftSize + 1;
-                node = node.right;
+                node = node.chd[1];
             }
         }
         return ret;
     };
 
-    Tree.prototype.traverse = function(func, reverse) {
-        return reverse ? this.maxtNodes(this.root, func) : this.mintNodes(this.root, func);
-    }
+    RBTree.prototype.traverse = function(func, reverse) {
+        return traverseDir(this.root, func, reverse ^ 0);
+    };
 
-    Tree.prototype.mintNodes = function(node, func) {
-        return node == null || this.mintNodes(node.left, func) && func(node) && this.mintNodes(node.right, func);
-    }
+    function traverseDir(node, func, dir) {
+        return node == null || traverseDir(node.chd[dir ^ 0], func, dir) && func(node) && traverseDir(node.chd[dir ^ 1], func, dir);
+    };
 
-    Tree.prototype.maxtNodes = function(node, func) {
-        return node == null || this.maxtNodes(node.right, func) && func(node) && this.maxtNodes(node.left, func);
-    }
+    RBTree.prototype.insertR = function(node, key, value) {
+        if (node === null) { // empty tree
+            return new Node(key, value);
+        }
+        var dir = this.cmp(node.k, key) < 0 ^ 0;
+        node.cnt += 2;
+        node.sum += key;
+        node.chd[dir] = this.insertR(node.chd[dir], key, value);
+        if (is_red(node.chd[dir])) { /* Case 1 */
+            if (is_red(node.chd[dir ^ 1])) {
+                node.cnt |= 1;
+                node.chd[0].cnt &= ~1;
+                node.chd[1].cnt &= ~1;
+            } else { /* Cases 2 & 3 */
+                if (is_red(node.chd[dir].chd[dir])) {
+                    node = single_rotate(node, dir ^ 1);
+                } else if (is_red(node.chd[dir].chd[dir ^ 1])) {
+                    node = double_rotate(node, dir ^ 1);
+                }
+            }
+        }
+        return node;
+    };
 
-    Tree.prototype.insert = function(key, value) {
-        var newNode = new Node(key, value);
+    RBTree.prototype.insert = function(key, value) {
+        this.root = this.insertR(this.root, key, value);
+        this.root.cnt &= ~1; // make root black
+    };
 
-        if (this.root === null) {
-            this.root = newNode;
-        } else {
-            var node = this.root;
+    var done;
+    RBTree.prototype.remove = function(key) {
+        done = 0;
+        this.root = this.removeR(this.root, key);
+        if (this.root != null) {
+            this.root.cnt &= ~1;
+        }
+    };
 
-            while (true) {
-                node.count++;
-                node.sum += key;
-                if (this.cmp(key, node.key) < 0) {
-                    if (node.left === null) {
-                        node.left = newNode;
-                        break;
-                    } else {
-                        node = node.left;
-                    }
+    RBTree.prototype.removeR = function(node, key) {
+        if (node == null) {
+            done = 1;
+            return null;
+        }
+        node.cnt -= 2;
+        node.sum -= key;
+        if (node.k == key) {
+            if (node.chd[0] == null || node.chd[1] == null) {
+                var save = node.chd[node.chd[0] == null ^ 0]
+                if (is_red(node)) { /* Case 0 */
+                    done = 1;
+                } else if (is_red(save)) {
+                    save.cnt &= ~1;
+                    done = 1;
+                }
+                return save;
+            } else {
+                var heir = node.chd[0];
+                while (heir.chd[1] != null) {
+                    heir = heir.chd[1];
+                }
+                node.k = heir.k;
+                node.v = heir.v;
+                key = heir.k;
+            }
+        }
+        var dir = this.cmp(node.k, key) < 0 ^ 0;
+        node.chd[dir] = this.removeR(node.chd[dir], key);
+
+        if (!done) {
+            node = removeBalance(node, dir);
+        }
+        return node;
+    };
+
+    function removeBalance(node, dir) {
+        var p = node;
+        var s = node.chd[dir ^ 1];
+
+        if (is_red(s)) { /* Case reduction, remove red sibling */
+            node = single_rotate(node, dir);
+            s = p.chd[dir ^ 1];
+        }
+
+        if (s != null) {
+            if (!is_red(s.chd[0]) && !is_red(s.chd[1])) {
+                if (is_red(p)) {
+                    done = 1;
+                }
+                p.cnt &= ~1;
+                s.cnt |= 1;
+            } else {
+                var save = p.cnt & 1;
+                var new_node = (node == p);
+                p = is_red(s.chd[dir ^ 1]) ? single_rotate(p, dir) : double_rotate(p, dir);
+                p.cnt = p.cnt & ~1 | save;
+                p.chd[0].cnt &= ~1;
+                p.chd[1].cnt &= ~1;
+
+                if (new_node) {
+                    node = p;
                 } else {
-                    if (node.right === null) {
-                        node.right = newNode;
-                        break;
-                    } else {
-                        node = node.right;
-                    }
+                    node.chd[dir] = p;
                 }
+                done = 1;
             }
-            newNode.parent = node;
         }
-        this.balancer.inserted(newNode);
+        return node;
     };
 
-    Tree.prototype.remove = function(key) {
-        var node = this.find(this.root, key);
-        if (node === null) return;
-
-        if (node.left !== null && node.right !== null) {
-            var pred = node.left;
-            while (pred.right !== null) pred = pred.right;
-
-            node.key = pred.key;
-            node.value = pred.value;
-            node = pred;
-        }
-
-        var child = (node.right === null) ? node.left : node.right;
-        if (nodeColor(node) === BLACK) {
-            node.color = nodeColor(child);
-            this.balancer.removed(node);
-        }
-
-        this.balancer.replaceNode(node, child);
-
-        if (nodeColor(this.root) === RED) {
-            this.root.color = BLACK;
-        }
-
-        while (node != null) {
-            node.count = 1 + (node.left ? node.left.count : 0) + (node.right ? node.right.count : 0);
-            node.sum = node.key + (node.left ? node.left.sum : 0) + (node.right ? node.right.sum : 0);
-            node = node.parent;
-        }
-    };
-
-    // Balancer
-    // ---------------
-
-    function Balancer(tree) {
-        this.tree = tree;
+    function is_red(node) {
+        return node !== null && (node.cnt & 1) == 1;
     }
 
-    Balancer.prototype.inserted = function(node) {
-        if (node.parent === null) {
-            node.color = BLACK;
-            return;
-        } else if (nodeColor(node.parent) === BLACK) {
-            return;
-        }
+    function single_rotate(root, dir) {
+        var save = root.chd[dir ^ 1];
+        root.chd[dir ^ 1] = save.chd[dir];
+        save.chd[dir] = root;
 
-        var uncle = node.uncle();
-        var grandparent = node.grandparent();
+        root.cnt = ((root.chd[0] && root.chd[0].cnt) & ~1) + ((root.chd[1] && root.chd[1].cnt) & ~1) + 3;
+        save.cnt = ((save.chd[0] && save.chd[0].cnt) & ~1) + ((save.chd[1] && save.chd[1].cnt) & ~1) + 2;
+        root.sum = (root.chd[0] && root.chd[0].sum) + (root.chd[1] && root.chd[1].sum) + root.k;
+        save.sum = (save.chd[0] && save.chd[0].sum) + (save.chd[1] && save.chd[1].sum) + save.k;
 
-        if (uncle !== null && nodeColor(uncle) === RED) {
-            node.parent.color = BLACK;
-            uncle.color = BLACK;
-            grandparent.color = RED;
-            this.inserted(grandparent);
-        } else {
-            if (node === node.parent.right && node.parent === grandparent.left) {
-                this.rotateLeft(node.parent);
-                node = node.left;
-            } else if (node === node.parent.left && node.parent === grandparent.right) {
-                this.rotateRight(node.parent);
-                node = node.right;
-            }
-
-            grandparent = node.grandparent();
-
-            node.parent.color = BLACK;
-            grandparent.color = RED;
-
-            if (node === node.parent.left && node.parent === grandparent.left) {
-                this.rotateRight(grandparent);
-            } else if (node === node.parent.right && node.parent === grandparent.right) {
-                this.rotateLeft(grandparent);
-            }
-        }
-    };
-
-    Balancer.prototype.removed = function(node) {
-        if (node.parent === null) {
-            return;
-        }
-        var sibling = node.sibling();
-
-        if (nodeColor(sibling) === RED) {
-            node.parent.color = RED;
-            sibling.color = BLACK;
-            if (node === node.parent.left) {
-                this.rotateLeft(node.parent);
-            } else {
-                this.rotateRight(node.parent);
-            }
-            sibling = node.sibling();
-        }
-
-        if (nodeColor(node.parent) === BLACK &&
-            nodeColor(sibling) === BLACK &&
-            nodeColor(sibling.left) === BLACK &&
-            nodeColor(sibling.right) === BLACK) {
-
-            sibling.color = RED;
-            this.removed(node.parent);
-        } else {
-            if (nodeColor(node.parent) === RED &&
-                nodeColor(sibling) === BLACK &&
-                nodeColor(sibling.left) === BLACK &&
-                nodeColor(sibling.right) === BLACK) {
-
-                sibling.color = RED;
-                node.parent.color = BLACK;
-            } else {
-                if (node === node.parent.left &&
-                    nodeColor(sibling) === BLACK &&
-                    nodeColor(sibling.left) === RED &&
-                    nodeColor(sibling.right) === BLACK) {
-
-                    sibling.color = RED;
-                    sibling.left.color = BLACK;
-                    this.rotateRight(sibling);
-                } else if (node === node.parent.right &&
-                    nodeColor(sibling) === BLACK &&
-                    nodeColor(sibling.right) === RED &&
-                    nodeColor(sibling.left) === BLACK) {
-
-                    sibling.color = RED;
-                    sibling.right.color = BLACK;
-                    this.rotateLeft(sibling);
-                }
-
-                sibling = node.sibling();
-
-                sibling.color = nodeColor(node.parent);
-                node.parent.color = BLACK;
-
-                if (node === node.parent.left) {
-                    sibling.right.color = BLACK;
-                    this.rotateLeft(node.parent);
-                } else {
-                    sibling.left.color = BLACK;
-                    this.rotateRight(node.parent);
-                }
-            }
-        }
-    };
-
-    Balancer.prototype.replaceNode = function(original, replacement) {
-        if (original.parent === null) {
-            this.tree.root = replacement;
-        } else {
-            if (original === original.parent.left) {
-                original.parent.left = replacement;
-            } else {
-                original.parent.right = replacement;
-            }
-        }
-
-        if (replacement !== null) {
-            replacement.parent = original.parent;
-        }
-    };
-
-    Balancer.prototype.rotateLeft = function(node) {
-        var right = node.right;
-        this.replaceNode(node, right);
-
-        // Update pointers
-        node.right = right.left;
-        if (right.left !== null) right.left.parent = node;
-        right.left = node;
-        node.parent = right;
-        node.count = 1 + (node.left ? node.left.count : 0) + (node.right ? node.right.count : 0);
-        right.count = 1 + (right.left ? right.left.count : 0) + (right.right ? right.right.count : 0);
-        node.sum = node.key + (node.left ? node.left.sum : 0) + (node.right ? node.right.sum : 0);
-        right.sum = right.key + (right.left ? right.left.sum : 0) + (right.right ? right.right.sum : 0);
-    };
-
-    Balancer.prototype.rotateRight = function(node) {
-        var left = node.left;
-        this.replaceNode(node, left);
-
-        // Update pointers
-        node.left = left.right;
-        if (left.right !== null) left.right.parent = node;
-        left.right = node;
-        node.parent = left;
-        node.count = 1 + (node.left ? node.left.count : 0) + (node.right ? node.right.count : 0);
-        left.count = 1 + (left.left ? left.left.count : 0) + (left.right ? left.right.count : 0);
-        node.sum = node.key + (node.left ? node.left.sum : 0) + (node.right ? node.right.sum : 0);
-        left.sum = left.key + (left.left ? left.left.sum : 0) + (left.right ? left.right.sum : 0);
-    };
-
-    // Helpers
-    // ---------------
-
-    function nodeColor(node) {
-        return node === null ? BLACK : node.color;
+        return save;
     }
 
-    return redblack;
+    function double_rotate(root, dir) {
+        root.chd[dir ^ 1] = single_rotate(root.chd[dir ^ 1], dir ^ 1);
+        return single_rotate(root, dir);
+    }
+
+    return {
+        tree: function(cmp) {
+            return new RBTree(cmp);
+        }
+    }
 })();

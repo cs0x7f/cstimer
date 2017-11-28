@@ -96,25 +96,6 @@ var scramble_444 = (function(rn, Cnk, circle) {
     return result;
   }
 
-  // function initDims(arrayClasses, castableTypeMapExprs, queryIdExprs, dimExprs, count, seedType){
-  //   return initDims_0(arrayClasses, castableTypeMapExprs, queryIdExprs, dimExprs, 0, count, seedType);
-  // }
-
-  // function initDims_0(arrayClasses, castableTypeMapExprs, queryIdExprs, dimExprs, index, count, seedType){
-  //   var i_0, isLastDim, length_0, result;
-  //   length_0 = dimExprs[index];
-  //   isLastDim = index == count - 1;
-  //   result = createFromSeed(isLastDim?seedType:0, length_0);
-  //   initValues(arrayClasses[index], castableTypeMapExprs[index], queryIdExprs[index], result);
-  //   if (!isLastDim) {
-  //     ++index;
-  //     for (i_0 = 0; i_0 < length_0; ++i_0) {
-  //       result[i_0] = initDims_0(arrayClasses, castableTypeMapExprs, queryIdExprs, dimExprs, index, count, seedType);
-  //     }
-  //   }
-  //   return result;
-  // }
-
   function initValues(arrayClass, castableTypeMap, queryId, array) {
     $clinit_Array$ExpandoWrapper();
     wrapArray(array, expandoNames_0, expandoValues_0);
@@ -2502,20 +2483,24 @@ var scramble_444 = (function(rn, Cnk, circle) {
     Lcs_threephase_FullCube_2_classLit = createForClass('cs.threephase.', 'FullCube', 160, Ljava_lang_Object_2_classLit),
     _3Lcs_threephase_FullCube_2_classLit = createForArray('[Lcs.threephase.', 'FullCube;', 381, Lcs_threephase_FullCube_2_classLit);
 
-  $clinit_Moves();
-  $clinit_Util_0();
-  $clinit_Center1();
-  $clinit_Center2();
-  $clinit_Center3();
-  $clinit_Edge3();
-  $clinit_CenterCube();
-  $clinit_CornerCube();
-  $clinit_EdgeCube();
-  $clinit_FullCube_0();
+  function init() {
+    init = nullMethod;
+    $clinit_Moves();
+    $clinit_Util_0();
+    $clinit_Center1();
+    $clinit_Center2();
+    $clinit_Center3();
+    $clinit_Edge3();
+    $clinit_CenterCube();
+    $clinit_CornerCube();
+    $clinit_EdgeCube();
+    $clinit_FullCube_0();
+  }
 
   var searcher = new Search_4();
 
   function getRandomScramble() {
+    init();
     return (scramble_333.getRandomScramble() + $randomState(searcher, Math)).replace(/\s+/g, ' ');
   }
 

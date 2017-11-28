@@ -86,15 +86,15 @@ var image = (function() {
             [0, -hsq3 - 1, -0.5]
         ];
 
-        eps = Transform(ep, [0.66, 0, 0]);
-        cps = Transform(cp, [0.66, 0, 0]);
+        var eps = Transform(ep, [0.66, 0, 0]);
+        var cps = Transform(cp, [0.66, 0, 0]);
 
         var udcol = 'UD';
         var ecol = '-B-R-F-L-B-R-F-L';
         var ccol = 'LBBRRFFLBLRBFRLF';
         var colors = {'U': '#ff0', 'R': '#f80', 'F': '#0f0', 'D': '#fff', 'L': '#f00', 'B': '#00f'};
 
-        width = 45;
+        var width = 45;
 
         var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/
 

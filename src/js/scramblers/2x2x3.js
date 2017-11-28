@@ -68,14 +68,13 @@
 
     function generateScramble() {
         init();
-        var a = 0,
-            b, c;
+        var b, c;
         do {
             c = mathlib.rn(40320);
             b = mathlib.rn(6);
         } while (b + c == 0)
-        d = [];
-        for (a = 0; a < 99; a++) {
+        var d = [];
+        for (var a = 0; a < 99; a++) {
             if (search(c, b, a, -1, d)) {
                 break;
             }

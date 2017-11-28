@@ -359,7 +359,7 @@
 				return do15puzzle(true, len);
 			case "clkwca": // Clock (WCA Notation)
 				var clkapp = ["0+", "1+", "2+", "3+", "4+", "5+", "6+", "1-", "2-", "3-", "4-", "5-"];
-				var ret = "UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
+				ret = "UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
 				for (var i = 0; i < 14; i++) {
 					ret = ret.replace('?', rndEl(clkapp));
 				}
@@ -378,7 +378,6 @@
 				return gigascramble(len);
 			case "mgmo": // Megaminx (old style)
 				return oldminxscramble(len);
-				break;
 			case "mgmp": // Megaminx (Pochmann)
 				return pochscramble(10, Math.ceil(len / 10));
 			case "mgmc": // Megaminx (Carrot)
