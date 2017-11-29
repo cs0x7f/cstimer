@@ -8,5 +8,6 @@
 <a class="click" href="?lang=ko">한국어</a>&nbsp;
 <a class="click" href="?lang=nl">Nederlands</a>&nbsp;
 <a class="click" href="?lang=vi">Tiếng Việt</a>&nbsp;
-<a class="click" href="?lang=pt">Português</a><br>
+<a class="click" href="?lang=pt">Português</a>&nbsp;
+<a class="click" href="?lang=da">Dansk</a><br>
 If you are willing to help translating cstimer into your native language, please contact <a class="click" href="mailto:cs0x7f@gmail.com">me</a></p>
