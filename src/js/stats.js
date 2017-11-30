@@ -586,7 +586,7 @@ var stats = (function(kpretty, round) {
 					break;
 				}
 				var trim = avgSizes[j] < 0 ? 0 : Math.ceil(size / 20);
-				var rbt = redblack.tree(dnfsort);
+				var rbt = sbtree.tree(dnfsort);
 				n_dnf[j] = 0;
 				for (var i = 0; i < size; i++) {
 					var t = timeAt(i);
@@ -647,7 +647,7 @@ var stats = (function(kpretty, round) {
 				}
 				var trim = avgSizes[j] < 0 ? 0 : Math.ceil(size / 20);
 				var neff = size - 2 * trim;
-				var rbt = avgTrees[j] || redblack.tree(dnfsort);
+				var rbt = avgTrees[j] || sbtree.tree(dnfsort);
 				n_dnf[j] = n_dnf[j] || 0;
 				if (times.length == size) {
 					for (var k = 0; k < size; k++) {
@@ -1202,7 +1202,7 @@ var stats = (function(kpretty, round) {
 		if (nsolves - trim <= 0) {
 			return [-1, 0, [], []];
 		}
-		var rbt = redblack.tree(dnfsort);
+		var rbt = sbtree.tree(dnfsort);
 		var n_dnf = 0;
 		for (var j = 0; j < nsolves; j++) {
 			var t = timeAt(start + j);
