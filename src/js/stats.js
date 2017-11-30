@@ -180,11 +180,11 @@ var stats = (function(kpretty, round) {
 		var sum = 0;
 		var cntdnf = 0;
 		for (var i=0; i<times.length; i++) {
-			var curTime = times[i][0];
+			var curTime = timesAt(i)[0];
 			if (curTime[0] == -1 || curTime.length <= dim) {
 				cntdnf += 1;
 			} else if (dim == 0) {
-				sum += timesAt(i);
+				sum += timeAt(i);
 			} else if (dim == 1) {
 				sum += curTime[curTime.length-dim];
 			} else {
@@ -214,11 +214,11 @@ var stats = (function(kpretty, round) {
 		var trim = Math.ceil(len/20);
 		var time_list = new Array(len);
 		for (var i=idx; i<idx+len; i++) {
-			if (times[i][0][0] == -1) {
+			var time = timeAt(i);
+			if (time == -1) {
 				cntDNF++;
 				time_list[i-idx] = -1;
 			} else {
-				var time = timesAt(i);
 				best = Math.min(best, time);
 				worst = Math.max(worst, time);
 				total += time;
@@ -277,7 +277,7 @@ var stats = (function(kpretty, round) {
 		}
 
 		function procTxt() {
-			times[cfmIdx][2] = cfmTxtR.val();
+			timesAt(cfmIdx)[2] = cfmTxtR.val();
 			save();
 			getTimeRow(cfmIdx, curDim, cfmIdxRow);
 		}
@@ -294,15 +294,15 @@ var stats = (function(kpretty, round) {
 				}
 				selected = button2time[$(this).html()];
 			}
-			if (times[cfmIdx][0][0] != selected) {
-				times[cfmIdx][0][0] = selected;
+			if (timesAt(cfmIdx)[0][0] != selected) {
+				timesAt(cfmIdx)[0][0] = selected;
 				times_stats.reset();
 				save();
 				updateFrom(cfmIdx, cfmIdxRow);
 				updateUtil();
 			}
 			getTimeRow(cfmIdx, curDim, cfmIdxRow);
-			cfmTime.html(pretty(times[cfmIdx][0], true));
+			cfmTime.html(pretty(timesAt(cfmIdx)[0], true));
 		}
 
 		function procMouse(e) {
@@ -323,9 +323,10 @@ var stats = (function(kpretty, round) {
 			var position = target.offset();
 			position.left += target.outerWidth();
 			position.top -= 30;
-			cfmTime.html(pretty(times[idx][0], true));
-			cfmTxtR.val(times[idx][2]);
-			switch (times[cfmIdx][0][0]) {
+			var time = timesAt(cfmIdx);
+			cfmTime.html(pretty(time[0], true));
+			cfmTxtR.val(time[2]);
+			switch (time[0][0]) {
 				case 0: cfmOKR.prop("checked", true); break;
 				case 2000: cfmP2R.prop("checked", true); break;
 				case -1: cfmDNFR.prop("checked", true); break;
@@ -423,12 +424,13 @@ var stats = (function(kpretty, round) {
 	}
 
 	function getTimeRow(i, dim, tr) {
-		var curTime = times[i][0];
+		var time = timesAt(i);
+		var curTime = time[0];
 
 		var ret = [];
 
 		ret.push(
-			'<td class="times">' + (times[i][2] && "*") + (i+1) + '</td>' +
+			'<td class="times">' + (time[2] && "*") + (i+1) + '</td>' +
 			'<td class="times">' + pretty(curTime, false) + '</td>'
 		);
 
@@ -468,7 +470,7 @@ var stats = (function(kpretty, round) {
 	function updateTable(scroll) {
 		var dim = 1;
 		for (var i=0; i<times.length; i++) {
-			dim = Math.max(dim, times[i][0].length - 1);
+			dim = Math.max(dim, timesAt(i)[0].length - 1);
 		}
 		title.empty().append(
 			'<th></th><th>' + STATS_TIME + '</th><th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
@@ -510,7 +512,7 @@ var stats = (function(kpretty, round) {
 		s.push('<tr><th>time</th>');
 		if (times.length > 0) {
 			var idx = times.length - 1;
-			s.push('<td class="times click" data="cs">' + kpretty(timesAt(idx)) + '</td>');
+			s.push('<td class="times click" data="cs">' + kpretty(timeAt(idx)) + '</td>');
 			s.push('<td class="times click" data="bs">' + kpretty(bestTime) + '</td></tr>');
 		} else {
 			s.push('<td><span>-</span></td>');
@@ -587,7 +589,7 @@ var stats = (function(kpretty, round) {
 				var rbt = redblack.tree(dnfsort);
 				n_dnf[j] = 0;
 				for (var i = 0; i < size; i++) {
-					var t = timesAt(i);
+					var t = timeAt(i);
 					rbt.insert(t, i);
 					n_dnf[j] += t == -1;
 				}
@@ -596,8 +598,8 @@ var stats = (function(kpretty, round) {
 				lastAvg[j] = bestAvg[j];
 				bestAvgIndex[j] = 0;
 				for (var i = size; i < times.length; i++) {
-					var t = timesAt(i);
-					var t0 = timesAt(i - size);
+					var t = timeAt(i);
+					var t0 = timeAt(i - size);
 					rbt.remove(t0);
 					rbt.insert(t, j);
 					n_dnf[j] += (t == -1) - (t0 == -1);
@@ -616,7 +618,7 @@ var stats = (function(kpretty, round) {
 				// console.log(JSON.stringify(avgTrees[j].root).length);
 			}
 			for (var i = 0; i < times.length; i++) {
-				var thisTime = timesAt(i);
+				var thisTime = timeAt(i);
 				if (bestTime < 0 || (thisTime != -1 && thisTime < bestTime)) {
 					bestTime = thisTime;
 					bestTimeIndex = i;
@@ -637,7 +639,7 @@ var stats = (function(kpretty, round) {
 			times.push(val);
 
 			var i = times.length - 1;
-			var t = timesAt(i);
+			var t = timeAt(i);
 			for (var j = 0; j < avgSizes.length; j++) {
 				var size = Math.abs(avgSizes[j]);
 				if (times.length < size) {
@@ -649,14 +651,14 @@ var stats = (function(kpretty, round) {
 				n_dnf[j] = n_dnf[j] || 0;
 				if (times.length == size) {
 					for (var k = 0; k < size; k++) {
-						var t0 = timesAt(k);
+						var t0 = timeAt(k);
 						rbt.insert(t0, k);
 						n_dnf[j] += t0 == -1;
 					}
 					bestAvg[j] = [-1];
 					lastAvg[j] = [];
 				} else {
-					var t0 = timesAt(i - size);
+					var t0 = timeAt(i - size);
 					rbt.remove(t0);
 					rbt.insert(t, i);
 					n_dnf[j] += t == -1;
@@ -723,16 +725,16 @@ var stats = (function(kpretty, round) {
 
 		s.push("\n\n" + hlstr[10] + "\n");
 		for (var i=0; i<nsolves; i++) {
-			var time = times[start+i][0];
+			var time = timesAt(start + i);
 			if (kernel.getProp('printScr')) {
 				s.push((i+1) + ". ");
 			}
 			if ($.inArray(i, data[2])>-1 || $.inArray(i, data[3])>-1) s.push("(");
-			s.push(pretty(time, true));
-			s.push((times[start+i][2] ? "[" + times[start+i][2] + "]" : ""));
+			s.push(pretty(time[0], true));
+			s.push((time[2] ? "[" + time[2] + "]" : ""));
 			if ($.inArray(i, data[2])>-1 || $.inArray(i, data[3])>-1) s.push(")");
 			if (kernel.getProp('printScr')) {
-				s.push("   " + times[start+i][1] + " \n");
+				s.push("   " + time[1] + " \n");
 			} else {
 				s.push(", ");
 			}
@@ -761,12 +763,12 @@ var stats = (function(kpretty, round) {
 		}
 		var s = ["No.;Time;Comment;Scramble"];
 		for (var i=0; i<nsolves; i++) {
-			var time = times[start+i][0];
+			var time = timesAt(start + i);
 			var line = [];
 			line.push(i+1);
-			line.push(pretty(time, true));
-			line.push(csvField(times[start+i][2] ? times[start+i][2] : ""));
-			line.push(times[start+i][1]);
+			line.push(pretty(time[0], true));
+			line.push(csvField(time[2] ? time[2] : ""));
+			line.push(time[1]);
 			s.push(line.join(';'));
 		}
 		s = s.join("\r\n");
@@ -864,8 +866,8 @@ var stats = (function(kpretty, round) {
 		var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
 		var max = 0, min = 0x7fffffff, n_solve = 0, diff;
 		for (var i=0; i<times.length; i++) {
-			if (times[i][0][0] != -1) {
-				var value = timesAt(i);
+			if (timeAt(i) != -1) {
+				var value = timeAt(i);
 				max = Math.max(value, max);
 				min = Math.min(value, min);
 				n_solve++;
@@ -888,8 +890,12 @@ var stats = (function(kpretty, round) {
 		return [max, min, diff];
 	}
 
-	function timesAt(idx) {
+	function timeAt(idx) {
 		return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
+	}
+
+	function timesAt(idx) {
+		return times[idx];
 	}
 
 	var distribution = (function() {
@@ -918,8 +924,8 @@ var stats = (function(kpretty, round) {
 			var cntmax = 0;
 
 			for (var i=0; i<times.length; i++) {
-				if (times[i][0][0] != -1) {
-					var value = timesAt(i);
+				var value = timeAt(i);
+				if (value != -1) {
 					var cur = ~~(value / diff);
 					dis[cur] = (dis[cur] || 0) + 1;
 					cntmax = Math.max(dis[cur], cntmax);
@@ -1034,9 +1040,10 @@ var stats = (function(kpretty, round) {
 			if (times.length > 1) {
 				x = []; y = [];
 				for (var i = 0; i < times.length; i++) {
-					if (times[i][0][0] != -1) {
+					var t = timeAt(i);
+					if (t != -1) {
 						x.push(i / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (timesAt(i) - plotmin) / ploth)));
+						y.push(Math.max(0, Math.min(1, (t - plotmin) / ploth)));
 					}
 				}
 				plot(x, y, '#888');
@@ -1155,14 +1162,14 @@ var stats = (function(kpretty, round) {
 			s.push(hlstr[10]);
 			var timeStr = [];
 			for (var i=0; i<length; i++) {
-				var time = times[i][0];
+				var time = timesAt(i);
 				if (kernel.getProp('printScr')) {
 					timeStr.push((i+1) + ". ");
 				}
-				timeStr.push(pretty(time, true));
-				timeStr.push((times[i][2] ? "[" + times[i][2] + "]" : ""));
+				timeStr.push(pretty(time[0], true));
+				timeStr.push((time[2] ? "[" + time[2] + "]" : ""));
 				if (kernel.getProp('printScr')) {
-					timeStr.push("   " + times[i][1] + " \n");
+					timeStr.push("   " + time[1] + " \n");
 				} else {
 					timeStr.push(", ");
 				}
@@ -1198,7 +1205,7 @@ var stats = (function(kpretty, round) {
 		var rbt = redblack.tree(dnfsort);
 		var n_dnf = 0;
 		for (var j = 0; j < nsolves; j++) {
-			var t = timesAt(start + j);
+			var t = timeAt(start + j);
 			rbt.insert(t, j);
 			n_dnf += t == -1;
 		}
@@ -1206,8 +1213,8 @@ var stats = (function(kpretty, round) {
 		var retAvg = [n_dnf > trim ? -1 : round((rbt.cumSum(nsolves - trim) - rbt.cumSum(trim)) / neff)];
 		var start0 = start - nsolves;
 		for (var i = nsolves; i < length; i++) {
-			var t = timesAt(start + i);
-			var t0 = timesAt(start0 + i);
+			var t = timeAt(start + i);
+			var t0 = timeAt(start0 + i);
 			rbt.remove(t0);
 			rbt.insert(t, j);
 			n_dnf += t == -1;
@@ -1221,7 +1228,7 @@ var stats = (function(kpretty, round) {
 			retAvg = retAvg[0];
 			var timeArr = [];
 			for (var j = 0; j < nsolves; j++) {
-				var t = timesAt(start + j);
+				var t = timeAt(start + j);
 				timeArr.push(t);
 				n_dnf += t == -1;
 			}

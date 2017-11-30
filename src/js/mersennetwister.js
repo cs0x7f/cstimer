@@ -828,7 +828,8 @@ var redblack = (function() {
     function Node(key, value) {
         this.k = key;
         this.v = value;
-        this.chd = [null, null];
+        this[0] = null;
+        this[1] = null;
         this.cnt = 3;
         this.sum = key;
     }
@@ -838,51 +839,44 @@ var redblack = (function() {
         this.cmp = comparator;
     }
 
-    RBTree.prototype.find = function(key) {
-        var res = this.root;
-        while (res !== null) {
-            var c = this.cmp(key, res.k);
-            if (c === 0) {
-                return res.v;
-            } else {
-                res = res.chd[c > 0 ^ 0];
-            }
-        }
-        return undefined;
-    };
+    // RBTree.prototype.find = function(key) {
+    //     var res = this.root;
+    //     while (res !== null) {
+    //         if (key == res.k) {
+    //             return res.v;
+    //         }
+    //         res = res.chd[this.cmp(res.k, key) < 0 ^ 0];
+    //     }
+    //     return undefined;
+    // };
 
-    RBTree.prototype.size = function(node) {
-        node = node || this.root;
+    function size(node) {
         return node == null ? 0 : (node.cnt >> 1);
-    };
+    }
 
-    RBTree.prototype.sum = function(node) {
-        node = node || this.root;
+    function sum(node) {
         return node == null ? 0 : node.sum;
-    };
+    }
 
     RBTree.prototype.cumSum = function(n_value) {
-        if (n_value >= this.size() || this.size() == 0) {
-            return this.sum();
+        if (n_value >= size(this.root) || size(this.root) == 0) {
+            return sum(this.root);
         }
         var node = this.root;
         var ret = 0;
         while (n_value > 0) {
-            var leftSize = (node.chd[0] && node.chd[0].cnt) >> 1;
+            var leftSize = size(node[0]);
             if (n_value < leftSize) {
-                node = node.chd[0];
+                node = node[0];
                 continue;
             }
-            var leftSum = (node.chd[0] && node.chd[0].sum) | 0;
+            ret += sum(node[0]);
             if (n_value == leftSize) {
-                return ret + leftSum;
-            } else if (n_value == leftSize + 1) {
-                return ret + leftSum + node.k;
-            } else {
-                ret += leftSum + node.k;
-                n_value -= leftSize + 1;
-                node = node.chd[1];
+                return ret;
             }
+            ret += node.k;
+            n_value -= leftSize + 1;
+            node = node[1];
         }
         return ret;
     };
@@ -892,7 +886,7 @@ var redblack = (function() {
     };
 
     function traverseDir(node, func, dir) {
-        return node == null || traverseDir(node.chd[dir ^ 0], func, dir) && func(node) && traverseDir(node.chd[dir ^ 1], func, dir);
+        return node == null || traverseDir(node[dir], func, dir) && func(node) && traverseDir(node[dir ^ 1], func, dir);
     };
 
     RBTree.prototype.insertR = function(node, key, value) {
@@ -902,16 +896,16 @@ var redblack = (function() {
         var dir = this.cmp(node.k, key) < 0 ^ 0;
         node.cnt += 2;
         node.sum += key;
-        node.chd[dir] = this.insertR(node.chd[dir], key, value);
-        if (is_red(node.chd[dir])) { /* Case 1 */
-            if (is_red(node.chd[dir ^ 1])) {
+        node[dir] = this.insertR(node[dir], key, value);
+        if (is_red(node[dir])) { /* Case 1 */
+            if (is_red(node[dir ^ 1])) {
                 node.cnt |= 1;
-                node.chd[0].cnt &= ~1;
-                node.chd[1].cnt &= ~1;
+                node[0].cnt &= ~1;
+                node[1].cnt &= ~1;
             } else { /* Cases 2 & 3 */
-                if (is_red(node.chd[dir].chd[dir])) {
+                if (is_red(node[dir][dir])) {
                     node = single_rotate(node, dir ^ 1);
-                } else if (is_red(node.chd[dir].chd[dir ^ 1])) {
+                } else if (is_red(node[dir][dir ^ 1])) {
                     node = double_rotate(node, dir ^ 1);
                 }
             }
@@ -941,8 +935,8 @@ var redblack = (function() {
         node.cnt -= 2;
         node.sum -= key;
         if (node.k == key) {
-            if (node.chd[0] == null || node.chd[1] == null) {
-                var save = node.chd[node.chd[0] == null ^ 0]
+            if (node[0] == null || node[1] == null) {
+                var save = node[node[0] == null ^ 0]
                 if (is_red(node)) { /* Case 0 */
                     done = 1;
                 } else if (is_red(save)) {
@@ -951,9 +945,9 @@ var redblack = (function() {
                 }
                 return save;
             } else {
-                var heir = node.chd[0];
-                while (heir.chd[1] != null) {
-                    heir = heir.chd[1];
+                var heir = node[0];
+                while (heir[1] != null) {
+                    heir = heir[1];
                 }
                 node.k = heir.k;
                 node.v = heir.v;
@@ -961,7 +955,7 @@ var redblack = (function() {
             }
         }
         var dir = this.cmp(node.k, key) < 0 ^ 0;
-        node.chd[dir] = this.removeR(node.chd[dir], key);
+        node[dir] = this.removeR(node[dir], key);
 
         if (!done) {
             node = removeBalance(node, dir);
@@ -971,15 +965,15 @@ var redblack = (function() {
 
     function removeBalance(node, dir) {
         var p = node;
-        var s = node.chd[dir ^ 1];
+        var s = node[dir ^ 1];
 
         if (is_red(s)) { /* Case reduction, remove red sibling */
             node = single_rotate(node, dir);
-            s = p.chd[dir ^ 1];
+            s = p[dir ^ 1];
         }
 
         if (s != null) {
-            if (!is_red(s.chd[0]) && !is_red(s.chd[1])) {
+            if (!is_red(s[0]) && !is_red(s[1])) {
                 if (is_red(p)) {
                     done = 1;
                 }
@@ -988,42 +982,42 @@ var redblack = (function() {
             } else {
                 var save = p.cnt & 1;
                 var new_node = (node == p);
-                p = is_red(s.chd[dir ^ 1]) ? single_rotate(p, dir) : double_rotate(p, dir);
+                p = is_red(s[dir ^ 1]) ? single_rotate(p, dir) : double_rotate(p, dir);
                 p.cnt = p.cnt & ~1 | save;
-                p.chd[0].cnt &= ~1;
-                p.chd[1].cnt &= ~1;
+                p[0].cnt &= ~1;
+                p[1].cnt &= ~1;
 
                 if (new_node) {
                     node = p;
                 } else {
-                    node.chd[dir] = p;
+                    node[dir] = p;
                 }
                 done = 1;
             }
         }
         return node;
-    };
+    }
 
     function is_red(node) {
         return node !== null && (node.cnt & 1) == 1;
     }
 
-    function single_rotate(root, dir) {
-        var save = root.chd[dir ^ 1];
-        root.chd[dir ^ 1] = save.chd[dir];
-        save.chd[dir] = root;
+    function single_rotate(node, dir) {
+        var save = node[dir ^ 1];
+        node[dir ^ 1] = save[dir];
+        save[dir] = node;
 
-        root.cnt = ((root.chd[0] && root.chd[0].cnt) & ~1) + ((root.chd[1] && root.chd[1].cnt) & ~1) + 3;
-        save.cnt = ((save.chd[0] && save.chd[0].cnt) & ~1) + ((save.chd[1] && save.chd[1].cnt) & ~1) + 2;
-        root.sum = (root.chd[0] && root.chd[0].sum) + (root.chd[1] && root.chd[1].sum) + root.k;
-        save.sum = (save.chd[0] && save.chd[0].sum) + (save.chd[1] && save.chd[1].sum) + save.k;
+        save.cnt = node.cnt & ~1;
+        node.cnt = ((size(node[0]) + size(node[1])) << 1) + 3;
+        save.sum = node.sum;
+        node.sum = sum(node[0]) + sum(node[1]) + node.k;
 
         return save;
     }
 
-    function double_rotate(root, dir) {
-        root.chd[dir ^ 1] = single_rotate(root.chd[dir ^ 1], dir ^ 1);
-        return single_rotate(root, dir);
+    function double_rotate(node, dir) {
+        node[dir ^ 1] = single_rotate(node[dir ^ 1], dir ^ 1);
+        return single_rotate(node, dir);
     }
 
     return {

@@ -85,7 +85,7 @@ var scrdata = [
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['sq1', "sqrs", 0],
-		['clock', "clk", 0],
+		['clock', "clko", 0],
 		['skewb', "skbso", 0],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],

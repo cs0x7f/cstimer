@@ -2483,6 +2483,8 @@ var scramble_444 = (function(rn, Cnk, circle) {
     Lcs_threephase_FullCube_2_classLit = createForClass('cs.threephase.', 'FullCube', 160, Ljava_lang_Object_2_classLit),
     _3Lcs_threephase_FullCube_2_classLit = createForArray('[Lcs.threephase.', 'FullCube;', 381, Lcs_threephase_FullCube_2_classLit);
 
+  var searcher;
+
   function init() {
     init = nullMethod;
     $clinit_Moves();
@@ -2495,9 +2497,8 @@ var scramble_444 = (function(rn, Cnk, circle) {
     $clinit_CornerCube();
     $clinit_EdgeCube();
     $clinit_FullCube_0();
+    searcher = new Search_4();
   }
-
-  var searcher = new Search_4();
 
   function getRandomScramble() {
     init();
