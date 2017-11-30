@@ -6,24 +6,23 @@
 	var seq = [];
 	var p = [];
 
-	function helicubescramble(type, len) {
-		var faces = ["UF", "UR", "UB", "UL", "FR", "BR", "BL", "FL", "DF", "DR", "DB", "DL"];
-		// adjacency table
-		var adj = [0x09a, 0x035, 0x06a, 0x0c5, 0x303, 0x606, 0xc0c, 0x909, 0xa90, 0x530, 0xa60, 0x5c0];
+	function adjScramble(faces, adj, len, suffixes) {
+		if (suffixes == undefined) {
+			suffixes = [""];
+		}
 		var used = 0;
 		var face;
 		var ret = [];
 		for (var j = 0; j < len; j++) {
 			do {
-				face = rn(12);
-			} while (((used >> face) & 1) != 0);
-			ret.push(faces[face]);
+				face = rn(faces.length);
+			} while ((used >> face) & 1);
+			ret.push(faces[face] + rndEl(suffixes));
 			used &= ~adj[face];
 			used |= 1 << face;
 		}
 		return ret.join(" ");
 	}
-	scramble.reg('heli', helicubescramble);
 
 	function yj4x4(type, len) {
 		// the idea is to keep the fixed center on U and do Rw or Lw, Fw or Bw, to not disturb it
@@ -332,24 +331,6 @@
 		}
 	}
 
-	function oldminxscramble(len) {
-		var faces = ["F", "B", "U", "D", "L", "DBR", "DL", "BR", "DR", "BL", "R", "DBL"];
-		// adjacency table
-		var adj = [0x554, 0xaa8, 0x691, 0x962, 0xa45, 0x58a, 0x919, 0x626, 0x469, 0x896, 0x1a5, 0x25a];
-		var used = 0;
-		var face;
-		var ret = "";
-		for (var j = 0; j < len; j++) {
-			do {
-				face = rn(12);
-			} while (((used >> face) & 1) != 0);
-			ret += faces[face] + rndEl(minxsuff) + " ";
-			used &= ~adj[face];
-			used |= 1 << face;
-		}
-		return ret;
-	}
-
 	function utilscramble(type, len) {
 		var ret = "";
 		switch (type) {
@@ -377,11 +358,15 @@
 			case "giga": // Gigaminx
 				return gigascramble(len);
 			case "mgmo": // Megaminx (old style)
-				return oldminxscramble(len);
+				return adjScramble(["F", "B", "U", "D", "L", "DBR", "DL", "BR", "DR", "BL", "R", "DBL"], [0x554, 0xaa8, 0x691, 0x962, 0xa45, 0x58a, 0x919, 0x626, 0x469, 0x896, 0x1a5, 0x25a], len);
 			case "mgmp": // Megaminx (Pochmann)
 				return pochscramble(10, Math.ceil(len / 10));
 			case "mgmc": // Megaminx (Carrot)
 				return carrotscramble(10, Math.ceil(len / 10));
+			case "heli":
+				return adjScramble(["UF", "UR", "UB", "UL", "FR", "BR", "BL", "FL", "DF", "DR", "DB", "DL"], [0x09a, 0x035, 0x06a, 0x0c5, 0x303, 0x606, 0xc0c, 0x909, 0xa90, 0x530, 0xa60, 0x5c0], len);
+			case "redi":
+				return adjScramble(["L", "R", "F", "B", "l", "r", "f", "b"], [0x1c, 0x2c, 0x43, 0x83, 0xc1, 0xc2, 0x34, 0x38], len, ["", "'"]);
 			case "pyrm": // Pyraminx (random moves)
 				ret = mega([
 					["U"],
@@ -449,6 +434,6 @@
 	}
 
 
-	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scramble.mega);

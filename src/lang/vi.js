@@ -219,6 +219,9 @@ var scrdata = [
 	['Helicopter Cube', [
 		[' ', "heli", 40]
 	]],
+	['Redi Cube', [
+		[' ', "redi", 20]
+	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
 		['Kiểu cũ', "prco", 70]
