@@ -29,6 +29,7 @@
   <script type="text/javascript" src="js/scramblers/clock.js"></script>
   <script type="text/javascript" src="js/scramblers/333lse.js"></script>
   <script type="text/javascript" src="js/scramblers/utilscramble.js"></script>
+  <script type="text/javascript" src="js/storage.js"></script>
   <script type="text/javascript" src="js/stats.js"></script>
   <script type="text/javascript" src="js/tools.js"></script>
   <script type="text/javascript" src="js/tools/image.js"></script>

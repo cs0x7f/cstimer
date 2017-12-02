@@ -30,6 +30,7 @@ scramblers/2x2x3.js \
 scramblers/clock.js \
 scramblers/333lse.js \
 scramblers/utilscramble.js \
+storage.js \
 stats.js \
 tools.js \
 tools/image.js \

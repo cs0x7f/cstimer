@@ -695,10 +695,13 @@ var kernel = (function() {
 
 		function loadData(data) {
 			data = JSON.parse(data);
-			localStorage.clear();
-			for (var key in data) {
-				localStorage[key] = data[key];
+			if ('properties' in data) {
+				localStorage.clear();
+				localStorage['properties'] = data['properties'];
 			}
+			storage.importAll(data, function() {
+				location.reload();
+			})
 			location.reload();
 		}
 
@@ -755,21 +758,17 @@ var kernel = (function() {
 		}
 
 		function showExportDiv() {
-			var exportObj = {};
-			exportObj["properties"] = localStorage["properties"];
-			for (var i = 1; i <= ~~getProp('sessionN'); i++) {
-				if (localStorage['session' + i] != undefined) {
-					exportObj['session' + i] = localStorage['session' + i];
-				}
-			}
-			expString = JSON.stringify(exportObj);
+			storage.exportAll(function(exportObj) {
+				exportObj["properties"] = localStorage["properties"];
+				var expString = JSON.stringify(exportObj);
 
-			if (window.Blob) {			
-				var blob = new Blob([expString], {'type': 'text/plain'});
-				outFile.attr('href', URL.createObjectURL(blob));
-				outFile.attr('download', 'cstimer.txt');
-			}
-			kernel.showDialog([exportDiv, 0, undefined, 0], 'stats', EXPORT_DATAEXPORT);
+				if (window.Blob) {
+					var blob = new Blob([expString], {'type': 'text/plain'});
+					outFile.attr('href', URL.createObjectURL(blob));
+					outFile.attr('download', 'cstimer.txt');
+				}
+				kernel.showDialog([exportDiv, 0, undefined, 0], 'stats', EXPORT_DATAEXPORT);
+			});
 		}
 
 		$(function() {
