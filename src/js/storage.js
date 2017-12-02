@@ -116,7 +116,7 @@ var storage = (function() {
 						var cursor = event.target.result;
 						if (cursor) {
 							var m = keyre.exec(cursor.key);
-							objectStore.put(cursor.value, getID(i, ~~m[2]));
+							objectStore.put(cursor.value, getID(~~m[1] - 1, ~~m[2]));
 							objectStore.delete(cursor.key);
 							cursor.continue();
 						}
