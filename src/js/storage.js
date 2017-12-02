@@ -53,12 +53,13 @@ var storage = (function() {
 		});
 	}
 
-	function set(sessionIdx, times, callback, startIdx, endIdx) {
+	function set(sessionIdx, times, callback, startIdx) {
 		if (indexedDB) {
 			getTrans("readwrite", function(objectStore) {
-				var boundKeyRange = IDBKeyRange.bound(getID(sessionIdx), getID(sessionIdx + 1), false, true);
+				var startTID = ~~(startIdx / 100); //update from startTID (default: 0)
+				var boundKeyRange = IDBKeyRange.bound(getID(sessionIdx, startTID), getID(sessionIdx + 1), false, true);
 				objectStore.delete(boundKeyRange);
-				for (var i = 0; i < (Math.ceil(times.length / 100) || 1); i++) {
+				for (var i = startTID; i < (Math.ceil(times.length / 100) || 1); i++) {
 					objectStore.put(times.slice(i * 100, (i + 1) * 100), getID(sessionIdx, i));
 				}
 			}, function() {

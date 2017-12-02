@@ -88,7 +88,7 @@ var stats = (function(kpretty, round) {
 			// times.push([time, scramble, ""]);
 			times_stats.push([time, scramble, ""]);
 		}
-		save();
+		save(times.length - 1);
 		if (time.length - 1 > curDim) {
 			updateTable(true);
 		} else {
@@ -162,7 +162,7 @@ var stats = (function(kpretty, round) {
 		}
 		times.splice(index, ~~n_del);
 		times_stats.reset();
-		save();
+		save(index);
 		updateTable(false);
 		return true;
 	}
@@ -269,7 +269,7 @@ var stats = (function(kpretty, round) {
 
 		function procTxt() {
 			timesAt(cfmIdx)[2] = cfmTxtR.val();
-			save();
+			save(cfmIdx);
 			getTimeRow(cfmIdx, curDim, cfmIdxRow);
 		}
 
@@ -288,7 +288,7 @@ var stats = (function(kpretty, round) {
 			if (timesAt(cfmIdx)[0][0] != selected) {
 				timesAt(cfmIdx)[0][0] = selected;
 				times_stats.reset();
-				save();
+				save(cfmIdx);
 				updateFrom(cfmIdx, cfmIdxRow);
 				updateUtil();
 			}
@@ -1384,8 +1384,8 @@ var stats = (function(kpretty, round) {
 		})
 	}
 
-	function save() {
-		storage.set(sessionIdx, times);
+	function save(startIdx) {
+		storage.set(sessionIdx, times, undefined, startIdx);
 	}
 
 	function resultsHeight() {
