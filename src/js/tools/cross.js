@@ -315,7 +315,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				|| scramble[0] == "input" && "|333|222o|".indexOf('|' + tools.scrambleType(scramble[1]) + '|') != -1) {
 			solve_cross(scramble[1], fdiv);
 		} else {
-			fdiv.html(CROSS_UNAVAILABLE);
+			fdiv.html(IMAGE_UNAVAILABLE);
 		}
 	}
 	

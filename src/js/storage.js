@@ -58,7 +58,7 @@ var storage = (function() {
 			getTrans("readwrite", function(objectStore) {
 				var startTID = ~~(startIdx / 100); //update from startTID (default: 0)
 				var boundKeyRange = IDBKeyRange.bound(getID(sessionIdx, startTID), getID(sessionIdx + 1), false, true);
-				objectStore.delete(boundKeyRange);
+				objectStore["delete"](boundKeyRange);
 				for (var i = startTID; i < (Math.ceil(times.length / 100) || 1); i++) {
 					objectStore.put(times.slice(i * 100, (i + 1) * 100), getID(sessionIdx, i));
 				}
@@ -80,7 +80,7 @@ var storage = (function() {
 					var cursor = event.target.result;
 					if (cursor) {
 						Array.prototype.push.apply(times, cursor.value);
-						cursor.continue();
+						cursor["continue"]();
 					}
 				}
 			}, function() {
@@ -109,7 +109,7 @@ var storage = (function() {
 	function del(sessionIdx, sessionIdxMax, callback) {
 		if (indexedDB) {
 			getTrans("readwrite", function(objectStore) {
-				objectStore.delete(IDBKeyRange.bound(getID(sessionIdx), getID(sessionIdx + 1), false, true));
+				objectStore["delete"](IDBKeyRange.bound(getID(sessionIdx), getID(sessionIdx + 1), false, true));
 				for (var i = sessionIdx; i < sessionIdxMax; i++) {
 					var curRange = IDBKeyRange.bound(getID(i + 1), getID(i + 2), false, true);
 					objectStore.openCursor(curRange).onsuccess = function(event) {
@@ -117,8 +117,8 @@ var storage = (function() {
 						if (cursor) {
 							var m = keyre.exec(cursor.key);
 							objectStore.put(cursor.value, getID(~~m[1] - 1, ~~m[2]));
-							objectStore.delete(cursor.key);
-							cursor.continue();
+							objectStore["delete"](cursor.key);
+							cursor["continue"]();
 						}
 					}
 				}
@@ -143,7 +143,7 @@ var storage = (function() {
 						var sessionIdx = ~~m[1];
 						exportObj['session' + sessionIdx] = exportObj['session' + sessionIdx] || [];
 						Array.prototype.push.apply(exportObj['session' + sessionIdx], cursor.value);
-						cursor.continue();
+						cursor["continue"]();
 					}
 				}
 			}, function() {

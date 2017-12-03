@@ -113,7 +113,7 @@
 				|| scramble[0] == "input" && "|333|222o|".indexOf('|' + tools.scrambleType(scramble[1]) + '|') != -1) {
 			solve_eoline(scramble[1], fdiv);
 		} else {
-			fdiv.html(EOLINE_UNAVAILABLE);
+			fdiv.html(IMAGE_UNAVAILABLE);
 		}
 	}
 
