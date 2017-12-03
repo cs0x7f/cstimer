@@ -701,8 +701,7 @@ var kernel = (function() {
 			}
 			storage.importAll(data, function() {
 				location.reload();
-			})
-			location.reload();
+			});
 		}
 
 		function importFile() {
@@ -760,7 +759,7 @@ var kernel = (function() {
 		function showExportDiv() {
 			storage.exportAll(function(exportObj) {
 				exportObj["properties"] = localStorage["properties"];
-				var expString = JSON.stringify(exportObj);
+				expString = JSON.stringify(exportObj);
 
 				if (window.Blob) {
 					var blob = new Blob([expString], {'type': 'text/plain'});
