@@ -609,6 +609,11 @@ input[type="text"] {
 	width: 100%;
 }
 
+.m #timer {
+	height: calc(100% - 59px);
+	height: calc(100% - 11.8vw);
+}
+
 .m #leftbar {
 	left: 0;
 	bottom: 0;
