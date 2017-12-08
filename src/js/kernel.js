@@ -214,11 +214,15 @@ var kernel = (function() {
 			localStorage['properties'] = JSON.stringify(properties);
 		}
 
-		$(function() {
+		function load() {
 			var proStr = localStorage['properties'];
 			if (proStr != undefined && proStr != '') {
 				properties = JSON.parse(proStr);
 			}
+		}
+
+		$(function() {
+			load();
 			ui.addButton('property', BUTTON_OPTIONS, showDiv, 1);
 			regListener('property', 'property', save);
 		});
@@ -227,6 +231,7 @@ var kernel = (function() {
 			get : getProp,
 			set : setProp,
 			reg : regProp,
+			load : load,
 			reload: generateDiv
 		}
 	})();
@@ -698,6 +703,7 @@ var kernel = (function() {
 			if ('properties' in data) {
 				localStorage.clear();
 				localStorage['properties'] = data['properties'];
+				property.load();
 			}
 			storage.importAll(data, function() {
 				location.reload();

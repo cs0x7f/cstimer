@@ -24,9 +24,6 @@ if ($lang == "cn") { ?>
 <?php } else if ($lang == "es") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Cronómetro profesional de speedcubing y entrenamiento </title>
-<?php } else if ($lang == "fr") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
-  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "hu") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professzionбlis Gyorskockбzу/Gyakorlу Idхmйrх </title>
@@ -45,6 +42,9 @@ if ($lang == "cn") { ?>
 <?php } else if ($lang == "da") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionel Rubik's Cube Speedsolving/Trænings Timer </title>
+<?php } else if ($lang == "hr") { ?>
+  <meta name="keywords" content="štoperica, cstimer, štoperica za rubikovu kocku, online štoperica, web štoperica">
+  <title> csTimer - Profesionalna štoperica za brzo slaganje Rubikove kocke </title>
 <?php } else { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
