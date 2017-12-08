@@ -1,7 +1,7 @@
 <?php 
 $req_lang = "en";
 $lang = "en";
-$lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl", "vi" => "vi", "pt" => "pt", "da" => "da");
+$lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl", "vi" => "vi", "pt" => "pt", "da" => "da", "hr" => "hr");
 
 if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
   $req_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 4);
