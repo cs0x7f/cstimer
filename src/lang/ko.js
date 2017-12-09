@@ -83,7 +83,7 @@ var scrdata = [
 		['Megaminx', "mgmp", -70],
 		['Pyraminx', "pyrso", -10],
 		['Square-1', "sqrs", 0],
-		['Clock', "clko", 0],
+		['Clock', "clkwca", 0],
 		['Skewb', "skbso", 0],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
@@ -158,6 +158,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['optimal', "clko", 0],
 		['짧은', "clkc", 0],
 		['효율적인 핀 순서', "clke", 0]
 	]],

@@ -83,7 +83,7 @@ var scrdata = [
 		['五魔方', "mgmp", -70],
 		['金字塔', "pyrso", -10],
 		['Square-1', "sqrs", 0],
-		['魔表', "clko", 0],
+		['魔表', "clkwca", 0],
 		['斜转魔方', "skbso", 0],
 		['六阶速拧', "666wca", -80],
 		['七阶速拧', "777wca", -100],
@@ -158,6 +158,7 @@ var scrdata = [
 	['魔表', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['高效顺序', "clke", 0]
 	]],
