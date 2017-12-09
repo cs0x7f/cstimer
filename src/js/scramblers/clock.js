@@ -1,6 +1,6 @@
 "use strict";
 
-(function(rn, Cnk) {
+var clock = (function(rn, Cnk) {
 	var moveArr = [
 		[ 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],	//UR
 		[ 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0],	//DR
@@ -236,5 +236,9 @@
 	}
 
 	scramble.reg('clko', getScramble);
+
+	return {
+		moveArr: moveArr
+	}
 
 })(mathlib.rn, mathlib.Cnk);

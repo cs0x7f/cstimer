@@ -41,6 +41,99 @@ var image = (function() {
         ctx.stroke();
     }
 
+    var clkImage = (function() {
+        function drawClock(color, trans, time) {
+            if (!ctx) {
+                return;
+            }
+            var points = Transform(Rotate([[1, 1, 0, -1, -1, -1, 1, 0], [0, -1, -8, -1, 0, 1, 1, 0]], time / 6 * Math.PI), trans);
+            var x = points[0];
+            var y = points[1];
+
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x[7], y[7], trans[0] * 9, 0, 2 * Math.PI);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.fillStyle = '#ff0';
+            ctx.strokeStyle = '#f00';
+            ctx.moveTo(x[0], y[0]);
+            ctx.bezierCurveTo(x[1], y[1], x[1], y[1], x[2], y[2]);
+            ctx.bezierCurveTo(x[3], y[3], x[3], y[3], x[4], y[4]);
+            ctx.bezierCurveTo(x[5], y[5], x[6], y[6], x[0], y[0]);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawButton(color, trans) {
+            if (!ctx) {
+                return;
+            }
+            var points = Transform([[0], [0]], trans);
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = '#000';
+            ctx.arc(points[0][0], points[1][0], trans[0] * 3, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        var width = 3;
+        var movere = /([UD][RL]|ALL|[UDRLy])(\d[+-]?)?/
+        var movestr = ['UR', 'DR', 'DL', 'UL', 'U', 'R', 'D', 'L', 'ALL']
+
+        return function(moveseq) {
+            var moves = moveseq.split(/\s+/);
+            var moveArr = clock.moveArr;
+            var flip = 9;
+            var buttons = [0, 0, 0, 0];
+            var clks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            for (var i = 0; i < moves.length; i++) {
+                var m = movere.exec(moves[i]);
+                if (!m) {
+                    continue;
+                }
+                if (m[0] == 'y2') {
+                    flip = 0;
+                    continue;
+                }
+                var axis = movestr.indexOf(m[1]) + flip;
+                if (m[2] == undefined) {
+                    buttons[axis % 9] = 1;
+                    continue;
+                }
+                var power = ~~m[2][0];
+                power = m[2][1] == '+' ? power : 12 - power;
+                for (var j = 0; j < 14; j++) {
+                    clks[j] = (clks[j] + moveArr[axis][j] * power) % 12;
+                }
+            }
+            clks = [clks[0], clks[3], clks[6], clks[1], clks[4], clks[7], clks[2], clks[5], clks[8],
+                12 - clks[2], clks[10], 12 - clks[8], clks[9], clks[11], clks[13], 12 - clks[0], clks[12], 12 - clks[6]];
+            buttons = [buttons[3], buttons[2], buttons[0], buttons[1], 1 - buttons[0], 1 - buttons[1], 1 - buttons[3], 1 - buttons[2]];
+
+            var imgSize = kernel.getProp('imgSize') / 7.5;
+            canvas.width(6.25 * imgSize + 'em');
+            canvas.height(3 * imgSize + 'em');
+            canvas.attr('width', 6.25 * 20 * width);
+            canvas.attr('height', 3 * 20 * width);
+
+            var y = [10, 30, 50];
+            var x = [10, 30, 50, 75, 95, 115];
+            for (var i = 0; i < 18; i++) {
+                drawClock(['#37b', '#5cf'][~~(i/9)], [width, x[~~(i/3)], y[i % 3]], clks[i]);
+            }
+
+            var y = [20, 40];
+            var x = [20, 40, 85, 105];
+            for (var i = 0; i < 8; i++) {
+                drawButton(['#850', '#ff0'][buttons[i]], [width, x[~~(i/2)], y[i % 2]]);
+            }
+        };
+    })();
+
 
     var sq1Image = (function() {
         var posit = [];
@@ -499,6 +592,10 @@ posit:
         }
         if (type == "sq1") {
             sq1Image(scramble[1]);
+            return true;
+        }
+        if (type == "clk") {
+            clkImage(scramble[1]);
             return true;
         }
         return false;

@@ -80,6 +80,8 @@ var tools = (function() {
 			return "skb";
 		} else if (/sq(rs|1[ht])/.exec(scrambleType)) {
 			return "sq1";
+		} else if (/clk(wca|o)/.exec(scrambleType)) {
+			return "clk";
 		}
 	}
 
