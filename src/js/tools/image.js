@@ -2,6 +2,7 @@ var image = (function() {
 
     var canvas, ctx;
     var hsq3 = Math.sqrt(3) / 2;
+    var PI = Math.PI;
 
     function Rotate(arr, theta) {
         return Transform(arr, [Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta), 0]);
@@ -41,18 +42,100 @@ var image = (function() {
         ctx.stroke();
     }
 
+    var mgmImage = (function() {
+        var moveU = [4, 0, 1, 2, 3, 9, 5, 6, 7, 8, 10, 11, 12, 13, 58, 59, 16, 17, 18, 63, 20, 21, 22, 23, 24, 14, 15, 27, 28, 29, 19, 31, 32, 33, 34, 35, 25, 26, 38, 39, 40, 30, 42, 43, 44, 45, 46, 36, 37, 49, 50, 51, 41, 53, 54, 55, 56, 57, 47, 48, 60, 61, 62, 52, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131];
+        var moveR = [81, 77, 78, 3, 4, 86, 82, 83, 8, 85, 87, 122, 123, 124, 125, 121, 127, 128, 129, 130, 126, 131, 89, 90, 24, 25, 88, 94, 95, 29, 97, 93, 98, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 26, 22, 23, 48, 30, 31, 27, 28, 53, 32, 69, 70, 66, 67, 68, 74, 75, 71, 72, 73, 76, 101, 102, 103, 99, 100, 106, 107, 108, 104, 105, 109, 46, 47, 79, 80, 45, 51, 52, 84, 49, 50, 54, 0, 1, 2, 91, 92, 5, 6, 7, 96, 9, 10, 15, 11, 12, 13, 14, 20, 16, 17, 18, 19, 21, 113, 114, 110, 111, 112, 118, 119, 115, 116, 117, 120, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65];
+        var moveD = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 35, 14, 15, 38, 39, 40, 19, 42, 43, 44, 45, 46, 25, 26, 49, 50, 51, 30, 53, 54, 55, 56, 57, 36, 37, 60, 61, 62, 41, 64, 65, 11, 12, 13, 47, 48, 16, 17, 18, 52, 20, 21, 22, 23, 24, 58, 59, 27, 28, 29, 63, 31, 32, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 124, 125, 121, 122, 123, 129, 130, 126, 127, 128, 131];
+        var moveMaps = [moveU, moveR, moveD];
+
+        var width = 40;
+        var cfrac = 0.5;
+        var efrac2 = (Math.sqrt(5) + 1) / 2;
+        var d2x = (1 - cfrac) / 2 / Math.tan(PI / 5);
+        var off1X = 2.6;
+        var off1Y = 2.2;
+        var off2X = off1X + Math.cos(PI * 0.1) * 3 * efrac2;
+        var off2Y = off1Y + Math.sin(PI * 0.1) * 1 * efrac2;
+        var cornX = [0, d2x, 0, -d2x];
+        var cornY = [-1, -(1 + cfrac) / 2, -cfrac, -(1 + cfrac) / 2];
+        var edgeX = [Math.cos(PI*0.1) - d2x, d2x, 0, Math.sin(PI*0.4) * cfrac];
+        var edgeY = [-Math.sin(PI*0.1) + (cfrac - 1) / 2, -(1 + cfrac) / 2, -cfrac, -Math.cos(PI*0.4) * cfrac];
+        var centX = [Math.sin(PI*0.0)*cfrac, Math.sin(PI*0.4)*cfrac, Math.sin(PI*0.8)*cfrac, Math.sin(PI*1.2)*cfrac, Math.sin(PI*1.6)*cfrac];
+        var centY = [-Math.cos(PI*0.0)*cfrac, -Math.cos(PI*0.4)*cfrac, -Math.cos(PI*0.8)*cfrac, -Math.cos(PI*1.2)*cfrac, -Math.cos(PI*1.6)*cfrac];
+        var colors = ['#fff', '#d00', '#060', '#81f', '#fc0', '#00b', '#ffb', '#8df', '#f83', '#7e0', '#f9f', '#999'];
+
+        function drawFace(state, baseIdx, trans, rot) {
+            for (var i = 0; i < 5; i++) {
+                drawPolygon(colors[state[baseIdx + i]], Rotate([cornX, cornY], PI * 2 / 5 * i + rot), trans);
+                drawPolygon(colors[state[baseIdx + i + 5]], Rotate([edgeX, edgeY], PI * 2 / 5 * i + rot), trans);
+            }
+            drawPolygon(colors[state[baseIdx + 10]], Rotate([centX, centY], rot), trans);
+        }
+
+        function doMove(state, axis, inv) {
+            var moveMap = moveMaps[axis];
+            var oldState = state.slice();
+            if (inv) {
+                for (var i = 0; i < 132; i++) {
+                    state[moveMap[i]] = oldState[i];
+                }
+            } else {
+                for (var i = 0; i < 132; i++) {
+                    state[i] = oldState[moveMap[i]];
+                }
+            }
+        }
+
+        var movere = /[RD][+-]{2}|U'?/
+        return function(moveseq) {
+            var state = [];
+            for (var i = 0; i < 12; i++) {
+                for (var j = 0; j < 11; j++) {
+                    state[i * 11 + j] = i;
+                }
+            }
+            var moves = moveseq.split(/\s+/);
+            for (var i = 0; i < moves.length; i++) {
+                var m = movere.exec(moves[i]);
+                if (!m) {
+                    continue;
+                }
+                var axis = "URD".indexOf(m[0][0]);
+                var inv = /[-']/.exec(m[0][1]);
+                doMove(state, axis, inv);
+            }
+            var imgSize = kernel.getProp('imgSize') / 7.5;
+            canvas.width(7 * imgSize + 'em');
+            canvas.height(3.5 * imgSize + 'em');
+            canvas.attr('width', 9.8 * width);
+            canvas.attr('height', 4.9 * width);
+            drawFace(state,   0, [width, off1X +                  0 * efrac2, off1Y +                  0 * efrac2], PI * 0.0);
+            drawFace(state,  11, [width, off1X + Math.cos(PI * 0.1) * efrac2, off1Y + Math.sin(PI * 0.1) * efrac2], PI * 0.2);
+            drawFace(state,  22, [width, off1X + Math.cos(PI * 0.5) * efrac2, off1Y + Math.sin(PI * 0.5) * efrac2], PI * 0.6);
+            drawFace(state,  33, [width, off1X + Math.cos(PI * 0.9) * efrac2, off1Y + Math.sin(PI * 0.9) * efrac2], PI * 1.0);
+            drawFace(state,  44, [width, off1X + Math.cos(PI * 1.3) * efrac2, off1Y + Math.sin(PI * 1.3) * efrac2], PI * 1.4);
+            drawFace(state,  55, [width, off1X + Math.cos(PI * 1.7) * efrac2, off1Y + Math.sin(PI * 1.7) * efrac2], PI * 1.8);
+            drawFace(state,  66, [width, off2X + Math.cos(PI * 0.7) * efrac2, off2Y + Math.sin(PI * 0.7) * efrac2], PI * 0.0);
+            drawFace(state,  77, [width, off2X + Math.cos(PI * 0.3) * efrac2, off2Y + Math.sin(PI * 0.3) * efrac2], PI * 1.6);
+            drawFace(state,  88, [width, off2X + Math.cos(PI * 1.9) * efrac2, off2Y + Math.sin(PI * 1.9) * efrac2], PI * 1.2);
+            drawFace(state,  99, [width, off2X + Math.cos(PI * 1.5) * efrac2, off2Y + Math.sin(PI * 1.5) * efrac2], PI * 0.8);
+            drawFace(state, 110, [width, off2X + Math.cos(PI * 1.1) * efrac2, off2Y + Math.sin(PI * 1.1) * efrac2], PI * 0.4);
+            drawFace(state, 121, [width, off2X +                  0 * efrac2, off2Y +                  0 * efrac2], PI * 1.0);
+        };
+    })();
+
     var clkImage = (function() {
         function drawClock(color, trans, time) {
             if (!ctx) {
                 return;
             }
-            var points = Transform(Rotate([[1, 1, 0, -1, -1, -1, 1, 0], [0, -1, -8, -1, 0, 1, 1, 0]], time / 6 * Math.PI), trans);
+            var points = Transform(Rotate([[1, 1, 0, -1, -1, -1, 1, 0], [0, -1, -8, -1, 0, 1, 1, 0]], time / 6 * PI), trans);
             var x = points[0];
             var y = points[1];
 
             ctx.beginPath();
             ctx.fillStyle = color;
-            ctx.arc(x[7], y[7], trans[0] * 9, 0, 2 * Math.PI);
+            ctx.arc(x[7], y[7], trans[0] * 9, 0, 2 * PI);
             ctx.fill();
 
             ctx.beginPath();
@@ -75,7 +158,7 @@ var image = (function() {
             ctx.beginPath();
             ctx.fillStyle = color;
             ctx.strokeStyle = '#000';
-            ctx.arc(points[0][0], points[1][0], trans[0] * 3, 0, 2 * Math.PI);
+            ctx.arc(points[0][0], points[1][0], trans[0] * 3, 0, 2 * PI);
             ctx.fill();
             ctx.stroke();
         }
@@ -221,16 +304,16 @@ var image = (function() {
                         continue;
                     }
                     drawPolygon(colors[ccol[posit[i]]],
-                        Rotate(cpl, (i - 3) * Math.PI / 6), trans);
+                        Rotate(cpl, (i - 3) * PI / 6), trans);
                     drawPolygon(colors[ccol[posit[i] + 1]],
-                        Rotate(cpr, (i - 3) * Math.PI / 6), trans);
+                        Rotate(cpr, (i - 3) * PI / 6), trans);
                     drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
-                        Rotate(cps, (i - 3) * Math.PI / 6), trans);
+                        Rotate(cps, (i - 3) * PI / 6), trans);
                 } else { //edge piece
                     drawPolygon(colors[ecol[posit[i]]],
-                        Rotate(ep, (i - 5) * Math.PI / 6), trans);
+                        Rotate(ep, (i - 5) * PI / 6), trans);
                     drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
-                        Rotate(eps, (i - 5) * Math.PI / 6), trans);
+                        Rotate(eps, (i - 5) * PI / 6), trans);
                 }
             }
 
@@ -242,16 +325,16 @@ var image = (function() {
                         continue;
                     }
                     drawPolygon(colors[ccol[posit[i]]],
-                        Rotate(cpl, -i * Math.PI / 6), trans);
+                        Rotate(cpl, -i * PI / 6), trans);
                     drawPolygon(colors[ccol[posit[i] + 1]],
-                        Rotate(cpr, -i * Math.PI / 6), trans);
+                        Rotate(cpr, -i * PI / 6), trans);
                     drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
-                        Rotate(cps, -i * Math.PI / 6), trans);
+                        Rotate(cps, -i * PI / 6), trans);
                 } else { //edge piece
                     drawPolygon(colors[ecol[posit[i]]],
-                        Rotate(ep, (-1 - i) * Math.PI / 6), trans);
+                        Rotate(ep, (-1 - i) * PI / 6), trans);
                     drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
-                        Rotate(eps, (-1 - i) * Math.PI / 6), trans);
+                        Rotate(eps, (-1 - i) * PI / 6), trans);
                 }
             }
         }
@@ -596,6 +679,10 @@ posit:
         }
         if (type == "clk") {
             clkImage(scramble[1]);
+            return true;
+        }
+        if (type == "mgm") {
+            mgmImage(scramble[1]);
             return true;
         }
         return false;

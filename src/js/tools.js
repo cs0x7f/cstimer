@@ -82,6 +82,8 @@ var tools = (function() {
 			return "sq1";
 		} else if (/clk(wca|o)/.exec(scrambleType)) {
 			return "clk";
+		} else if (/mgmp/.exec(scrambleType)) {
+			return "mgm";
 		}
 	}
 
