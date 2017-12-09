@@ -333,6 +333,8 @@ textarea {
 .dialog .title {
 	font: 1.5em bold;
 	font-family: Impact;
+	white-space: nowrap;
+	overflow-x: hidden;
 }
 
 .dialog .button {
@@ -348,14 +350,11 @@ textarea {
 .options {
 	height: 100%;
 	line-height: 150%;
+	border-spacing: 0;
 }
 
 .options > tbody {
 	height: 100%;
-}
-
-.options {
-	border-spacing: 0;
 }
 
 .options ul {
@@ -389,6 +388,9 @@ textarea {
 
 .tabValue > * {
 	display: block;
+	max-height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .click, .times, .tab {
