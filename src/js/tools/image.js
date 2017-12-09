@@ -121,6 +121,14 @@ var image = (function() {
             drawFace(state,  99, [width, off2X + Math.cos(PI * 1.5) * efrac2, off2Y + Math.sin(PI * 1.5) * efrac2], PI * 0.8);
             drawFace(state, 110, [width, off2X + Math.cos(PI * 1.1) * efrac2, off2Y + Math.sin(PI * 1.1) * efrac2], PI * 0.4);
             drawFace(state, 121, [width, off2X +                  0 * efrac2, off2Y +                  0 * efrac2], PI * 1.0);
+            if (ctx) {
+                ctx.fillStyle = "#000";
+                ctx.font = "20px serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("U", width * off1X, width * off1Y);
+                ctx.fillText("F", width * off1X, width * (off1Y + Math.sin(PI * 0.5) * efrac2));
+            }
         };
     })();
 
