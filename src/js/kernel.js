@@ -574,7 +574,11 @@ var kernel = (function() {
 		function hashChange() {
 			if (importColor(window.location.hash)) {
 				property.set('color', 'u');
-				window.location.hash = '';
+				if (history && history.replaceState) {
+					history.replaceState(undefined, undefined, "#");
+				} else {
+					window.location.hash = '';
+				}
 			}
 		}
 
