@@ -488,17 +488,14 @@ var kernel = (function() {
 			return "#" + (longFormat ? col[0] + col[0] + col[1] + col[1] + col[2] + col[2] : col[0] + col[1] + col[2]);
 		}
 
-		function importColor() {
-			var val = prompt(COLOR_IMPORT, '');
+		function importColor(val) {
 			var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7})\s*$/
-			if (val === null) {
-				return;
-			}
 			var m = colstr_re.exec(val);
 			if (m) {
 				useColorTemplate(m[1]);
+				return true;
 			} else {
-				alert(COLOR_FAIL);
+				return false;
 			}
 		}
 
@@ -536,7 +533,12 @@ var kernel = (function() {
 						prompt(COLOR_EXPORT, cur_color.join(''));
 						property.set('color', 'u');
 					} else if (value[1] == 'i') {
-						importColor();
+						var val = prompt(COLOR_IMPORT, '');
+						if (val !== null) {
+							if (!importColor(val)) {
+								alert(COLOR_FAIL);
+							}
+						}
 						property.set('color', 'u');
 					} else {
 						useColorTemplate(styles[value[1] == 'r' ? ~~(Math.random() * 6) : (value[1] - 1)]);
@@ -566,6 +568,13 @@ var kernel = (function() {
 					break;
 				default:
 				}
+			}
+		}
+
+		function hashChange() {
+			if (importColor(window.location.hash)) {
+				property.set('color', 'u');
+				window.location.hash = '';
 			}
 		}
 
@@ -612,6 +621,8 @@ var kernel = (function() {
 			setTimeout(toggleLeftBar, 3000);
 			dialog.appendTo('body');
 			$(window).resize(fixOrient);
+			$(window).bind('hashchange', hashChange);
+			hashChange();
 		});
 
 		return {

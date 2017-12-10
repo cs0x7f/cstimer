@@ -85,6 +85,8 @@ csTimer đã đc thử nghiệm trên firefox, Chrome và Safari. Và hoạt đ�
 <li><a class="click" href="/src/">csTimer with uncompressed files</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer">source code of csTimer</a></li>
 </ul>
+<h2>Color Schemes</h2>
+  <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>Thank you for your interest in supporting csTimer!</p>
 <p>Donations will be used to support our developers and purchase equipment. </p>

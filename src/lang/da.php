@@ -86,6 +86,8 @@ csTimer er blevet testet p&aring; Firefox, Chrome og Safari. Og det virker ogs&a
 <li><a class="click" href="/src/">csTimer med ukomprimerede filer</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer">source kode af csTimer</a></li>
 </ul>
+<h2>Color Schemes</h2>
+  <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>Tak for din interesse for at st&oslash;tte csTimer!</p>
 <p>Donationer vil blive brugt til at underst&oslash;tte vores udviklere og k&oslash;bsudstyr. </p>

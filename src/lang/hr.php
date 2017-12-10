@@ -85,6 +85,8 @@ csTimer je testiran na Firefox-u, Chrome-u i Safari-ju. Također, radi vrlo dobr
 <li><a class="click" href="/src/">csTimer s dekompresiranim datotekama</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer">izvorni kod csTimer-a</a></li>
 </ul>
+<h2>Color Schemes</h2>
+  <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>Hvala na interesu za podr&#382;avanje csTimer-a!</p>
 <p>Donacije &#263;e se koristiti za podr&#353;ku programerima i za kupovinu opreme. /p>

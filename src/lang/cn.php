@@ -85,6 +85,8 @@
 <li><a class="click" href="/src/">csTimer with uncompressed files</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer">source code of csTimer</a></li>
 </ul>
+<h2>配色方案</h2>
+  <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>感谢您愿意支持csTimer！您的捐赠将用于支持我们后续的开发和维护费用。</p>
 <p>如果您希望通过PayPal为我们提供捐赠，请单击下面的按钮或<a href="https://www.paypal.me/cs0x7f" class="click">通过PayPal.me</a>。 </p>
