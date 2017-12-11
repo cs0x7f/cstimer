@@ -319,6 +319,7 @@ var PROPERTY_SUMMARY = 'prikaži sažetak prije liste vremena';
 var PROPERTY_IMRENAME = 'preimenuj sesiju odmah nakon kreiranja';
 var PROPERTY_SCR2SS = 'kreiraj novu sesiju kada se promijeni tip scramble-a';
 var PROPERTY_SS2SCR = 'vrati tip scramble-a nakon prebacivanja sesije';
+var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
 var PROPERTY_STATAL = 'Statistički indikatori: ';
 var PROPERTY_DELMUL = 'Omogući višestruko brisanje';
 var MODULE_NAMES = {

@@ -33,13 +33,9 @@ var stats = (function(kpretty, round) {
 			select.val(sessionIdx);
 			kernel.setProp('sessionN', sessionIdxMax);
 
-			var sessionName = JSON.parse(kernel.getProp('sessionName'));
-			sessionName[sessionIdx] = newName;
-			kernel.setProp('sessionName', JSON.stringify(sessionName));
-
-			var sessionScr = JSON.parse(kernel.getProp('sessionScr'));
-			sessionScr[sessionIdx] = curScrType;
-			kernel.setProp('sessionScr', JSON.stringify(sessionScr));
+			var sessionData = JSON.parse(kernel.getProp('sessionData'));
+			sessionData[sessionIdx] = {'name': newName, 'scr': curScrType, 'phases': 1};
+			kernel.setProp('sessionData', JSON.stringify(sessionData));
 
 			if (kernel.getProp('imrename')) {
 				renameSession();
@@ -56,11 +52,12 @@ var stats = (function(kpretty, round) {
 		}
 		kernel.setProp('session', sessionIdx);
 		load();
+		var curSessionData = JSON.parse(kernel.getProp('sessionData'));
 		if (kernel.getProp('ss2scr')) {
-			var sessionScr = JSON.parse(kernel.getProp('sessionScr'));
-			sessionScr[sessionIdx] = sessionScr[sessionIdx] || curScrType;
-			kernel.setProp('sessionScr', JSON.stringify(sessionScr));
-			kernel.setProp('scrType', sessionScr[sessionIdx]);
+			kernel.setProp('scrType', curSessionData[sessionIdx]['scr']);
+		}
+		if (kernel.getProp('ss2phases')) {
+			kernel.setProp('phases', curSessionData[sessionIdx]['phases']);
 		}
 	});
 
@@ -68,12 +65,12 @@ var stats = (function(kpretty, round) {
 
 	function genSelect() {
 		select.empty();
-		var curNameList = JSON.parse(kernel.getProp('sessionName'));
+		var curSessionData = JSON.parse(kernel.getProp('sessionData'));
 		for (var i = 1; i <= sessionIdxMax; i++) {
-			if (curNameList[i] == undefined) {
-				curNameList[i] = i;
+			if (curSessionData[i] == undefined) {
+				curSessionData[i] = {'name': i, 'scr': '333', 'phases': 1};
 			}
-			select.append($('<option />').val(i).html(curNameList[i]));
+			select.append($('<option />').val(i).html(curSessionData[i]['name']));
 		}
 		select.append(newSessionOption, delSessionOption);
 		select.val(sessionIdx);
@@ -107,21 +104,17 @@ var stats = (function(kpretty, round) {
 		if (!confirm(STATS_CFM_DELSS)) {
 			return false;
 		}
-		var sessionName = JSON.parse(kernel.getProp('sessionName'));
-		var sessionScr = JSON.parse(kernel.getProp('sessionScr'));
+		var sessionData = JSON.parse(kernel.getProp('sessionData'));
 		for (var i = sessionIdx; i < sessionIdxMax; i++) {
-			sessionName[i] = sessionName[i + 1];
-			sessionScr[i] = sessionScr[i + 1];
+			sessionData[i] = sessionData[i + 1];
 		}
 		storage.del(sessionIdx, sessionIdxMax);
-		delete sessionName[sessionIdxMax];
-		delete sessionScr[sessionIdxMax];
+		delete sessionData[sessionIdxMax];
 		var prevIdx = sessionIdx;
 		sessionIdx = -1;
 		sessionIdxMax--;
 		kernel.setProp('sessionN', sessionIdxMax);
-		kernel.setProp('sessionName', JSON.stringify(sessionName));
-		kernel.setProp('sessionScr', JSON.stringify(sessionScr));
+		kernel.setProp('sessionData', JSON.stringify(sessionData));
 		if (sessionIdxMax == 0) {
 			select.val('new');
 			select.change();
@@ -1278,6 +1271,7 @@ var stats = (function(kpretty, round) {
 	var stat1, stat2, len1, len2;
 
 	var curScrType = '333';
+	var curPhases = 1;
 
 	var roundMilli = 1;
 
@@ -1297,20 +1291,22 @@ var stats = (function(kpretty, round) {
 			} else if (value[0] == 'session' && ~~value[1] != sessionIdx) {
 				select.val(value[1]);
 				select.change();
-			} else if (value[0] == 'sessionName') {
+			} else if (value[0] == 'sessionData') {
 				genSelect();
-			} else if (value[0] == 'scrType') {
+			} else if (value[0] == 'scrType' || value[0] == 'phases') {
 				curScrType = value[1];
-				var sessionScr = JSON.parse(kernel.getProp('sessionScr'));
-				if (sessionScr[sessionIdx] != value[1]) {
-					if (kernel.getProp('scr2ss')) {
+				var curSessionData = JSON.parse(kernel.getProp('sessionData'));
+				if (value[0] == 'scrType') {
+					if (curSessionData[sessionIdx]['scr'] != value[1] && kernel.getProp('scr2ss')) {
 						select.val('new');
 						select.change();
 					} else {
-						sessionScr[sessionIdx] = value[1];
-						kernel.setProp('sessionScr', JSON.stringify(sessionScr));
+						curSessionData[sessionIdx]['scr'] = value[1];
 					}
+				} else if (value[0] == 'phases') {
+					curSessionData[sessionIdx]['phases'] = value[1];
 				}
+				kernel.setProp('sessionData', JSON.stringify(curSessionData));
 			} else if (value[0] == 'statsum') {
 				updateSumTable();
 			} else if (value[0] == 'statal') {
@@ -1367,12 +1363,12 @@ var stats = (function(kpretty, round) {
 	}
 
 	function renameSession() {
-		var curNameList = JSON.parse(kernel.getProp('sessionName'));
-		var sName = prompt(STATS_SESSION_NAME, curNameList[sessionIdx]);
+		var curSessionData = JSON.parse(kernel.getProp('sessionData'));
+		var sName = prompt(STATS_SESSION_NAME, curSessionData[sessionIdx]['name']);
 		if (sName != null) {
 			sName = $('<div/>').text(sName).html();
-			curNameList[sessionIdx] = sName;
-			kernel.setProp('sessionName', JSON.stringify(curNameList));
+			curSessionData[sessionIdx]['name'] = sName;
+			kernel.setProp('sessionData', JSON.stringify(curSessionData));
 		}
 	}
 
@@ -1399,7 +1395,7 @@ var stats = (function(kpretty, round) {
 	$(function() {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al)|session(:?Name)?|scrType|view)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al)|session(:?Data)?|scrType|phases|view)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
@@ -1409,6 +1405,7 @@ var stats = (function(kpretty, round) {
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false]);
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);
 		kernel.regProp('stats', 'ss2scr', 0, PROPERTY_SS2SCR, [true]);
+		kernel.regProp('stats', 'ss2phases', 0, PROPERTY_SS2PHASES, [true]);
 
 		div.appendTo('body').append(
 			$('<div>').append(
@@ -1436,14 +1433,15 @@ var stats = (function(kpretty, round) {
 		]);
 		kernel.regProp('stats', 'delmul', 0, PROPERTY_DELMUL, [true]);
 		sessionIdxMax = kernel.getProp('sessionN', 15);
-		var sessionName = JSON.parse(kernel.getProp('sessionName', '{}'));
-		var sessionScr = JSON.parse(kernel.getProp('sessionScr', '{}'));
+		var sessionData = JSON.parse(kernel.getProp('sessionData', '{}'));
 		for (var i = 1; i <= sessionIdxMax; i++) {
-			sessionName[i] = sessionName[i] || i;
-			sessionScr[i] = sessionScr[i] || '333';
+			sessionData[i] = sessionData[i] || {
+				'name': (JSON.parse(kernel.getProp('sessionName')) || {})[i] || i,
+				'scr': (JSON.parse(kernel.getProp('sessionScr')) || {})[i] || '333',
+				'phases': 1
+			};
 		}
-		kernel.setProp('sessionName', JSON.stringify(sessionName));
-		kernel.setProp('sessionScr', JSON.stringify(sessionScr));
+		kernel.setProp('sessionData', JSON.stringify(sessionData));
 		genSelect();
 		kernel.getProp('session', 1);
 	});

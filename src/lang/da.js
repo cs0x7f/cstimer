@@ -319,6 +319,7 @@ var PROPERTY_SUMMARY = 'vis sammendrag inden tidslisten';
 var PROPERTY_IMRENAME = 'omdøb session umiddelbart efter oprettelsen';
 var PROPERTY_SCR2SS = 'Opret ny session, når du skifter blandings type';
 var PROPERTY_SS2SCR = 'Gendan blandingstype, når du skifter session';
+var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
 var PROPERTY_STATAL = 'Statistiske indikatorer: ';
 var PROPERTY_DELMUL = 'Tillad flere sletninger ';
 var MODULE_NAMES = {

@@ -319,6 +319,7 @@ var PROPERTY_SUMMARY = 'cho xem bảng thành tích	';
 var PROPERTY_IMRENAME = 'yêu cầu đặt tên ngay sau khi tạo 1 mục';
 var PROPERTY_SCR2SS = 'tạo ngay 1 mục khi chuyển sang scramble khác';
 var PROPERTY_SS2SCR = 'không xóa scramble khi chuyển sang mục khác';
+var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
 var PROPERTY_STATAL = 'Statistical indicators: ';
 var PROPERTY_DELMUL = 'cho phép xóa thời gian cùng 1 lúc';
 var MODULE_NAMES = {
