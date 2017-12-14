@@ -149,6 +149,7 @@ var mathlib = (function() {
 			prun[i] = -1;
 		}
 		prun[init >> 3] ^= 15 << ((init & 7) << 2);
+		var val = 0;
 		// var t = +new Date;
 		for (var l=0; l<=maxd; l++) {
 			var done = 0;
@@ -156,8 +157,16 @@ var mathlib = (function() {
 			var fill = (l + 1) ^ 15;
 			var find = inv ? 0xf : l;
 			var check = inv ? l : 0xf;
-			out: for (var p=0; p<size; p++){
-				if (getPruning(prun, p) != find) {
+
+			out: for (var p = 0; p < size; p++, val >>= 4) {
+				if ((p & 7) == 0) {
+					val = prun[p >> 3];
+					if (!inv && val == -1) {
+						p += 7;
+						continue;
+					}
+				}
+				if ((val & 0xf) != find) {
 					continue;
 				}
 				for (var m=0; m<N_MOVES; m++){

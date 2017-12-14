@@ -1436,8 +1436,8 @@ var stats = (function(kpretty, round) {
 		var sessionData = JSON.parse(kernel.getProp('sessionData', '{}'));
 		for (var i = 1; i <= sessionIdxMax; i++) {
 			sessionData[i] = sessionData[i] || {
-				'name': (JSON.parse(kernel.getProp('sessionName')) || {})[i] || i,
-				'scr': (JSON.parse(kernel.getProp('sessionScr')) || {})[i] || '333',
+				'name': (JSON.parse(kernel.getProp('sessionName') || '{}'))[i] || i,
+				'scr': (JSON.parse(kernel.getProp('sessionScr') || '{}'))[i] || '333',
 				'phases': 1
 			};
 		}
