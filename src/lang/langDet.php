@@ -1,7 +1,7 @@
 <?php 
 $req_lang = "en";
 $lang = "en";
-$lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl", "vi" => "vi", "pt" => "pt", "da" => "da", "hr" => "hr");
+$lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl", "vi" => "vi", "pt" => "pt", "da" => "da", "hr" => "hr", "tr" => "tr");
 
 if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
   $req_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 4);
@@ -45,6 +45,9 @@ if ($lang == "cn") { ?>
 <?php } else if ($lang == "hr") { ?>
   <meta name="keywords" content="štoperica, cstimer, štoperica za rubikovu kocku, online štoperica, web štoperica">
   <title> csTimer - Profesionalna štoperica za brzo slaganje Rubikove kocke </title>
+<?php } else if ($lang == "tr") { ?>
+  <meta name="keywords" content="Kronometre, cstimer, rubik küpü kronometresi, internet kronometresi, web kronometresi">
+  <title> csTimer - profesyonel Rubik Küpü Çözüm/Antreman Kronometresi </title>
 <?php } else { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
