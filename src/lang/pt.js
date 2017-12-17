@@ -320,6 +320,7 @@ var PROPERTY_IMRENAME = 'renomear a sessгo imediatamente depois de criar';
 var PROPERTY_SCR2SS = 'criar uma nova sessгo quando mudar o tipo de embaralhamento';
 var PROPERTY_SS2SCR = 'restaurar o tipo de embaralhamento quando mudar de sessгo';
 var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
+var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistical indicators: ';
 var PROPERTY_DELMUL = 'Ativar deleзгo multipla';
 var MODULE_NAMES = {

@@ -320,6 +320,7 @@ var PROPERTY_IMRENAME = 'Sezon oluşturulduğunda yeniden adlandır';
 var PROPERTY_SCR2SS = 'karıştırma türü değişince yeni sezon oluştur';
 var PROPERTY_SS2SCR = 'sezon değişirken karıştırma türünü koru';
 var PROPERTY_SS2PHASES = 'sezon değişirken çok zamanlı kronometreyi koru';
+var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'İstatistik göstergeleri: ';
 var PROPERTY_DELMUL = 'Çoklu silmeye izin ver';
 var MODULE_NAMES = {

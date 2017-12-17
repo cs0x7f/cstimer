@@ -89,13 +89,18 @@ var stats = (function(kpretty, round) {
 		if (time.length - 1 > curDim) {
 			updateTable(true);
 		} else {
-			title.after(getTimeRow(times.length - 1, curDim));
+			if (kernel.getProp('statinv')) {
+				avgRow.before(getTimeRow(times.length - 1, curDim));
+				scrollDiv.scrollTop(table[0].scrollHeight);
+			} else {
+				title.after(getTimeRow(times.length - 1, curDim));
+				scrollDiv.scrollTop(0);
+			}
 			updateAvgRow(curDim);
 			if (times.length > MAX_ITEMS) {
-				showAllRow.prev().remove();
+				(kernel.getProp('statinv') ? showAllRow.next() : showAllRow.prev()).remove();
 				hideAll();
 			}
-			scrollDiv.scrollTop(0);
 		}
 		updateUtil();
 	}
@@ -332,7 +337,7 @@ var stats = (function(kpretty, round) {
 				}
 				hideFloat();
 				cfmIdx = times.length - 1;
-				cfmIdxRow = title.next();
+				cfmIdxRow = kernel.getProp('statinv') ? avgRow.prev() : title.next();
 				procClk(value);
 				cfmIdx = undefined;
 			},
@@ -341,7 +346,7 @@ var stats = (function(kpretty, round) {
 	})();
 
 	function showAll(e) {
-		var len = showAllRow.index() - 2;
+		var len = (kernel.getProp('statinv') ? avgRow : showAllRow).index() - 2;
 		var end = Math.max(0, times.length - len);
 		var start = Math.max(0, times.length - len - MAX_ITEMS);
 
@@ -349,15 +354,20 @@ var stats = (function(kpretty, round) {
 		for (var i = start; i < end; i++) {
 			rows.push(getTimeRow(i, curDim));
 		}
-		showAllRow.before(rows.reverse().join(""));
+		if (kernel.getProp('statinv')) {
+			showAllRow.after(rows.join(""));
+		} else {
+			showAllRow.before(rows.reverse().join(""));
+		}
 		if (start == 0) {
 			showAllRow.unbind('click').hide();
 		}
 	}
 
 	function hideAll() {
-		for (var len = showAllRow.index() - 2; len > MAX_ITEMS; len--) {
-			showAllRow.prev().remove();
+		var target = kernel.getProp('statinv') ? avgRow : showAllRow;
+		for (var len = target.index() - 2; len > MAX_ITEMS; len--) {
+			(kernel.getProp('statinv') ? showAllRow.next() : showAllRow.prev()).remove();
 		}
 		if (times.length > MAX_ITEMS) {
 			showAllRow.unbind('click').click(showAll).show();
@@ -366,7 +376,7 @@ var stats = (function(kpretty, round) {
 
 	function updateFrom(idx, idxRow) {
 		for (var i = idx + 1; i < idx + Math.max(len1, len2) && i < times.length; i++) {
-			idxRow = idxRow.prev();
+			idxRow = kernel.getProp('statinv') ? idxRow.next() : idxRow.prev();
 			getTimeRow(i, curDim, idxRow);
 		}
 		updateAvgRow(curDim);
@@ -462,21 +472,24 @@ var stats = (function(kpretty, round) {
 				title.append('<th>P.' + (i + 1) + '</th>');
 			}
 		}
-		table.empty().append(avgRow, title);
-		updateAvgRow(dim);
 		var rows = [];
 		for (var i = Math.max(0, times.length - MAX_ITEMS), len = times.length; i < len; i++) {
 			rows.push(getTimeRow(i, dim));
 		}
-		table.append(rows.reverse().join(""), showAllRow);
+		if (kernel.getProp('statinv')) {
+			table.empty().append(title, showAllRow, rows.join(""), avgRow);
+		} else {
+			table.empty().append(avgRow, title, rows.reverse().join(""), showAllRow);
+		}
 		if (times.length > MAX_ITEMS) {
 			showAllRow.unbind('click').click(showAll).show();
 		} else {
 			showAllRow.unbind('click').hide();
 		}
-		scrollDiv.scrollTop(0);
+		updateAvgRow(dim);
 		curDim = dim;
 		updateUtil();
+		scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
 	}
 
 	function updateSumTable() {
@@ -1281,7 +1294,7 @@ var stats = (function(kpretty, round) {
 		} else if (signal == 'scramble') {
 			scramble = value[1];
 		} else if (signal == 'property') {
-			if (/^(:?useMilli|timeFormat|stat[12][tl])$/.exec(value[0])) {
+			if (/^(:?useMilli|timeFormat|stat[12][tl]|statinv)$/.exec(value[0])) {
 				roundMilli = kernel.getProp('useMilli') ? 1 : 10;
 				stat1 = [1, -1][~~kernel.getProp('stat1t')] * kernel.getProp('stat1l');
 				stat2 = [1, -1][~~kernel.getProp('stat2t')] * kernel.getProp('stat2l');
@@ -1395,7 +1408,7 @@ var stats = (function(kpretty, round) {
 	$(function() {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al)|session(:?Data)?|scrType|phases|view)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv)|session(:?Data)?|scrType|phases|view)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
@@ -1406,6 +1419,7 @@ var stats = (function(kpretty, round) {
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);
 		kernel.regProp('stats', 'ss2scr', 0, PROPERTY_SS2SCR, [true]);
 		kernel.regProp('stats', 'ss2phases', 0, PROPERTY_SS2PHASES, [true]);
+		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
 
 		div.appendTo('body').append(
 			$('<div>').append(
@@ -1418,7 +1432,7 @@ var stats = (function(kpretty, round) {
 		kernel.addWindow('stats', BUTTON_TIME_LIST, div, true, true, 4);
 		scrollDiv.bind('scroll', function() {
 			var elem = scrollDiv[0];
-			if (elem.scrollHeight - elem.scrollTop < elem.clientHeight + 5) {
+			if (elem.scrollHeight - elem.scrollTop < elem.clientHeight + 5 && !kernel.getProp('statinv')) {
 				showAllRow.click();
 			}
 		});
