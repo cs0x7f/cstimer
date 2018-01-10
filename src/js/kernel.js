@@ -261,14 +261,14 @@ var kernel = (function() {
 			if (modules[module].button) {//enable
 				mybutton.removeClass("enable");
 				if (!isHide || !modules[module].auto) {
-					modules[module].div.clearQueue().fadeOut(200, (function(module) {
+					modules[module].div.stop(true, true).fadeOut(200, (function(module) {
 						return function() {pushSignal('button', [module, false]);}
 					})(module));
 				}
 			} else {
 				mybutton.addClass("enable");
 				pushSignal('button', [module, true]);
-				modules[module].div.clearQueue().fadeIn(200);
+				modules[module].div.stop(true, true).fadeIn(200);
 				if (isHide && modules[module].auto) {
 					modules[module].div.hide();
 				}
@@ -339,15 +339,15 @@ var kernel = (function() {
 				})(values[i][1])));
 			}
 
-			dialog.fadeTo(100, 0.98);
-			gray.fadeTo(100, 0.25);
+			dialog.stop(true, true).fadeTo(100, 0.98);
+			gray.stop(true, true).fadeTo(100, 0.25);
 			isPopup = true;
 			values[0].focus();
 		}
 
 		function hideDialog() {
 			value.children().appendTo(temp);
-			dialog.fadeOut(100);
+			dialog.stop(true, true).fadeOut(100);
 			gray.hide();
 			isPopup = false;
 			refocus();
@@ -361,7 +361,7 @@ var kernel = (function() {
 			toggleLeftBar();
 			for (var module in modules) {
 				if (modules[module].auto && modules[module].button) {
-					modules[module].div.clearQueue().fadeOut(100);
+					modules[module].div.stop(true, true).fadeOut(100);
 				}
 			}
 			pushSignal('ashow', false);
@@ -375,7 +375,7 @@ var kernel = (function() {
 			toggleLeftBar();
 			for (var module in modules) {
 				if (modules[module].auto && modules[module].button) {
-					modules[module].div.clearQueue().fadeIn(100);
+					modules[module].div.stop(true, true).fadeIn(100);
 				}
 			}
 			pushSignal('ashow', true);
@@ -390,9 +390,9 @@ var kernel = (function() {
 				}
 			}
 			if (avail && !isHide || show || jQuery.fx.off) {
-				leftbar.clearQueue().fadeTo(200, 1);
+				leftbar.stop(true, true).fadeTo(200, 1);
 			} else {
-				leftbar.clearQueue().fadeTo(200, 0.01);
+				leftbar.stop(true, true).fadeTo(200, 0.01);
 			}
 		}
 
@@ -659,7 +659,7 @@ var kernel = (function() {
 
 		function procSignal(signal, value) {
 			if (value[0] == "bgImgO") {
-				img.fadeTo(0, value[1]/100);
+				img.stop(true, true).fadeTo(0, value[1]/100);
 			} else if (value[0] == "bgImgS") {
 				if (value[1] == 'n') {
 					img.hide();
