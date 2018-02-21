@@ -29,7 +29,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         ui.setAutoShow(true);
     }
 
-    var voicem8s = {play: $.noop};
+    var voicem8s = { play: $.noop };
     var voicem12s = voicem8s;
     var voicef8s = voicem8s;
     var voicef12s = voicem8s;
@@ -148,8 +148,12 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             setHtml(rightDiv, rightDiv.html() + val);
         }
 
-        function setStaticAppend(val) {
-            staticAppend = val;
+        function setStaticAppend(val, append) {
+            if (append) {
+                staticAppend += val;
+            } else {
+                staticAppend = val;
+            }
         }
 
         function setEnable(enable) {
@@ -493,12 +497,27 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     }
                     startTime = now;
                     moveCnt = 0;
-                    status = 1;
+                    status = 4;
+                    curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
                     lcd.setRunning(true, true);
                     ui.setAutoShow(false);
                 }
-            } else if (status == 1) {
-                if (twisty.isSolved(twisty) && !started) {
+            } else if (status >= 1) {
+                var curProgress = twisty.isSolved(twisty);
+                // console.log(curProgress);
+                if (curProgress < status) {
+                    for (var i = status; i > curProgress; i--) {
+                        curTime[i] = $.now() - startTime;
+                        if (i != 4) {
+                            lcd.setStaticAppend('+', true);
+                        } else {
+                            lcd.setStaticAppend('<br>=', true);
+                        }
+                        lcd.setStaticAppend(pretty(curTime[i] - ~~curTime[i + 1], true) + '&nbsp;<br>', true);
+                    }
+                }
+                status = Math.min(curProgress, status) || 1;
+                if (curProgress == 0 && !started) {
                     moveCnt += twisty.moveCnt();
                     if (currentScrambleType.match(/^r\d+$/) && currentScramble.length != 0) {
                         if (currentScrambleType != "r3") {
@@ -511,7 +530,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     ui.setAutoShow(true);
                     status = -1;
                     lcd.setRunning(false);
-                    curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0), $.now() - startTime];
+                    // lcd.setStaticAppend('');
+                    // console.log(curTime);
+                    // curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0), $.now() - startTime];
                     lcd.val(curTime[1], true);
                     lcd.append(
                         '<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " fps" + "</div>");
@@ -545,7 +566,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             } else {
                 twistyScene.initializeTwisty({
                     type: "cube",
-                    faceColors: [0xffffff, 0xff9000, 0x00ff00, 0xff0000, 0x0000ff, 0xffff00],
+                    faceColors: [0xffffff, 0xff0000, 0x00ff00, 0xffff00, 0xff9000, 0x0000ff], // U L F D L B
                     dimension: size,
                     stickerWidth: 1.7,
                     scale: 0.9
@@ -555,6 +576,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             twisty = twistyScene.getTwisty();
             if (!temp) {
                 lcd.setRunning(false, true);
+                lcd.setStaticAppend('');
                 setSize(getProp('timerSize'));
             }
         }
@@ -593,7 +615,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     }
                     ui.setAutoShow(false);
                 }
-            } else if (status == -3 || status == -2 || status == 1) { // Scrambled or Running
+            } else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
                 if (keyCode == 27) { //ESC
                     ui.setAutoShow(true);
                     if (status == 1) {

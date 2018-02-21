@@ -344,7 +344,7 @@
 
         function isSolved(twisty) {
             if (!twistyScene.isMoveFinished()) {
-                return false;
+                return 1;
             }
             var state = twisty.cubePieces;
 
@@ -355,11 +355,11 @@
                 for (var stickerIndex = 1, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
                     var sticker = faceStickers[stickerIndex];
                     if (0.1 < Math.abs(matrixVector3Dot(sticker[0], normVector) - stdVal)) {
-                        return false;
+                        return 1;
                     }
                 }
             }
-            return true;
+            return 0;
         }
 
         function isInspectionLegalMove(twisty, move) {

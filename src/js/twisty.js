@@ -282,8 +282,13 @@ window.twistyjs = (function() {
         };
 
         this.isMoveFinished = function() {
-            //		console.log(moveQueue, currentMove, cachedFireMoves);
+            //      console.log(moveQueue, currentMove, cachedFireMoves);
             return moveQueue.length == 0 && currentMove.length == 0 && cachedFireMoves.length == 0;
+        }
+
+        this.isAnimationFinished = function() {
+            //      console.log(moveQueue, currentMove, cachedFireMoves);
+            return currentMove.length == 0;
         }
 
         this.applyMoves = function(moves) {
