@@ -397,8 +397,8 @@
             var faceAdj = (faceIndex + 3) % 6;
             var faceStickers = state[faceAdj];
             for (var stickerIndex = 0; stickerIndex < 9; stickerIndex++) {
-                if (!isInnerProductEqual(faceStickers[stickerIndex], normVector, 1 - dimension) ||
-                    !unsolvedPieces[faceAdj][stickerIndex]) {
+                if (!isInnerProductEqual(faceStickers[stickerIndex], normVector, 1 - dimension) &&
+                    unsolvedPieces[faceAdj][stickerIndex]) {
                     return 3;
                 }
             }
