@@ -394,6 +394,15 @@
             }
 
             //check F2L
+            var faceAdj = (faceIndex + 3) % 6;
+            var faceStickers = state[faceAdj];
+            for (var stickerIndex = 0; stickerIndex < 9; stickerIndex++) {
+                if (!isInnerProductEqual(faceStickers[stickerIndex], normVector, 1 - dimension) ||
+                    !unsolvedPieces[faceAdj][stickerIndex]) {
+                    return 3;
+                }
+            }
+
             for (var faceAdj = 0; faceAdj < numSides; faceAdj++) {
                 if (faceAdj % 3 == faceIndex % 3) {
                     continue;
@@ -403,7 +412,7 @@
                 for (var stickerIndex = 0; stickerIndex < 9; stickerIndex++) {
                     if (unsolvedPieces[faceAdj][stickerIndex] &&
                         (isInnerProductEqual(faceStickers[stickerIndex], normVector, dimension - 1) ||
-                            isInnerProductEqual(faceStickers[stickerIndex], normVector, dimension - 2))) {
+                            isInnerProductEqual(faceStickers[stickerIndex], normVector, 0))) {
                         return 3;
                     }
                 }
