@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'следующий';
 var SCRAMBLE_SCRAMBLE = ' скрамбл';
 var SCRAMBLE_LENGTH = 'длинна';
 var SCRAMBLE_INPUT = 'Вставить Скрамбл(ы)';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'дисплей',
 	"color": 'цвет',
 	"timer": 'таймер',
+	"vrc": 'virtual',
 	"kernel": 'глобальный',
 	"scramble": 'скрамбл',
 	"stats": 'статистика',

@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'next';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'length';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'color',
 	"timer": 'timer',
+	"vrc": 'virtual',
 	"kernel": 'global',
 	"scramble": 'scramble',
 	"stats": 'statistics',

@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'következő';
 var SCRAMBLE_SCRAMBLE = ' keverés';
 var SCRAMBLE_LENGTH = 'hosszúság';
 var SCRAMBLE_INPUT = 'keverések bevitele';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'kijelző',
 	"color": 'color',
 	"timer": 'időmérő',
+	"vrc": 'virtual',
 	"kernel": 'globális',
 	"scramble": 'keverés',
 	"stats": 'statisztikák',

@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'næste';
 var SCRAMBLE_SCRAMBLE = 'blanding';
 var SCRAMBLE_LENGTH = 'længde';
 var SCRAMBLE_INPUT = 'input blanding(er)';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'skærm',
 	"color": 'farve',
 	"timer": 'timer',
+	"vrc": 'virtual',
 	"kernel": 'global',
 	"scramble": 'blanding',
 	"stats": 'statistik',

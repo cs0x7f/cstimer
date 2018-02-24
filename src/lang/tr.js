@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'sonraki';
 var SCRAMBLE_SCRAMBLE = 'karıştırma';
 var SCRAMBLE_LENGTH = 'uzunluk';
 var SCRAMBLE_INPUT = 'karıştırma(lar) içe aktar';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'görünüm',
 	"color": 'renk',
 	"timer": 'kronometre',
+	"vrc": 'virtual',
 	"kernel": 'küresel',
 	"scramble": 'karıştırma',
 	"stats": 'istatistikler',

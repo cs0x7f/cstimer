@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'Prossimo';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'Lunghezza';
 var SCRAMBLE_INPUT = 'Inserisci Scramble';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'schermo',
 	"color": 'colori',
 	"timer": 'cronometro',
+	"vrc": 'virtual',
 	"kernel": 'globale',
 	"scramble": 'scramble',
 	"stats": 'statistiche',

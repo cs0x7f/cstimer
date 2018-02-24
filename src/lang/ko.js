@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = '다음 스크램블';
 var SCRAMBLE_SCRAMBLE = ' 스크램블';
 var SCRAMBLE_LENGTH = '스크램블 길이';
 var SCRAMBLE_INPUT = '스크램블 입력';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": '디스플레이',
 	"color": '색생',
 	"timer": '타이머',
+	"vrc": 'virtual',
 	"kernel": '글로벌',
 	"scramble": '스크램블',
 	"stats": '통계',

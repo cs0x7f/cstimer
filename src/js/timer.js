@@ -483,6 +483,16 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         var insTime = 0;
         var moveCnt = 0;
         var lastMove = "";
+        var totPhases = 1;
+
+        function getMulPhaseAppend(curProgress) {
+            var ret = [];
+            for (var i = totPhases; i > curProgress; i--) {
+                ret.push(pretty(curTime[i] - ~~curTime[i + 1], true));
+            }
+            return curProgress == totPhases || totPhases == 1 ? '' :
+                '<div style="font-size: 0.65em">' + '=' + ret.join('<br>+') + '</div>';
+        }
 
         function moveListener(move, started) {
             if (status == -3 || status == -2) {
@@ -497,26 +507,21 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     }
                     startTime = now;
                     moveCnt = 0;
-                    status = 4;
+                    status = currentScrambleSize == 3 && currentScrambleType != "r3" ? { 'n': 1, 'cfop': 4 }[getProp('vrcMP', 'n')] : 1;
+                    totPhases = status;
                     curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
                     lcd.setRunning(true, true);
                     ui.setAutoShow(false);
                 }
             } else if (status >= 1) {
-                var curProgress = twisty.isSolved(twisty);
-                // console.log(curProgress);
+                var curProgress = twisty.isSolved(twisty, getProp('vrcMP', 'n'));
                 if (curProgress < status) {
                     for (var i = status; i > curProgress; i--) {
                         curTime[i] = $.now() - startTime;
-                        if (i != 4) {
-                            lcd.setStaticAppend('+', true);
-                        } else {
-                            lcd.setStaticAppend('<br>=', true);
-                        }
-                        lcd.setStaticAppend(pretty(curTime[i] - ~~curTime[i + 1], true) + '&nbsp;<br>', true);
                     }
                 }
                 status = Math.min(curProgress, status) || 1;
+                lcd.setStaticAppend(getMulPhaseAppend(status));
                 if (curProgress == 0 && !started) {
                     moveCnt += twisty.moveCnt();
                     if (currentScrambleType.match(/^r\d+$/) && currentScramble.length != 0) {
@@ -530,10 +535,11 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     ui.setAutoShow(true);
                     status = -1;
                     lcd.setRunning(false);
-                    // lcd.setStaticAppend('');
+                    lcd.setStaticAppend('');
                     // console.log(curTime);
                     // curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0), $.now() - startTime];
                     lcd.val(curTime[1], true);
+                    lcd.append(getMulPhaseAppend(0));
                     lcd.append(
                         '<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " fps" + "</div>");
                     // lcd.append("<br>" + moveCnt + "moves");
@@ -793,6 +799,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         regProp('ui', 'showAvg', 0, SHOW_AVG_LABEL, [true]);
         regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100]);
         regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true]);
+
+        regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop'], PROPERTY_VRCMPS.split('|')]);
     });
 
     var fobj;

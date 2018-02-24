@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'sau';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'màn hình chính ',
 	"color": 'màu',
 	"timer": 'timer',
+	"vrc": 'virtual',
 	"kernel": 'global',
 	"scramble": 'scramble',
 	"stats": 'thành tích',

@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = '下一条';
 var SCRAMBLE_SCRAMBLE = '打乱公式';
 var SCRAMBLE_LENGTH = '长度';
 var SCRAMBLE_INPUT = '输入打乱公式';
+var PROPERTY_VRCMP = '多阶段测速：';
+var PROPERTY_VRCMPS = '无|CFOP';
 var scrdata = [
 	['WCA', [
 		['三阶速拧', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": '界面',
 	"color": '配色',
 	"timer": '计时',
+	"vrc": '虚拟魔方',
 	"kernel": '全局',
 	"scramble": '打乱',
 	"stats": '统计',

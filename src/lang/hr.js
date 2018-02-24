@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'slijedeći';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'dužina';
 var SCRAMBLE_INPUT = 'Unesi scramble/ove)';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'boja',
 	"timer": 'štoperica',
+	"vrc": 'virtual',
 	"kernel": 'globalno',
 	"scramble": 'scramble',
 	"stats": 'statistika',

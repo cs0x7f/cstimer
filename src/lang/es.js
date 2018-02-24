@@ -70,6 +70,8 @@ var SCRAMBLE_NEXT = 'siguiente';
 var SCRAMBLE_SCRAMBLE = ' mezcla';
 var SCRAMBLE_LENGTH = 'Longitud';
 var SCRAMBLE_INPUT = 'Introducir mezcla(s)';
+var PROPERTY_VRCMP = 'multi-phase: ';
+var PROPERTY_VRCMPS = 'None|CFOP';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -327,6 +329,7 @@ var MODULE_NAMES = {
 	"ui": 'Interfaz',
 	"color": 'Color',
 	"timer": 'Cronómetro',
+	"vrc": 'virtual',
 	"kernel": 'Global',
 	"scramble": 'Mezclas',
 	"stats": 'Estadísticas',
