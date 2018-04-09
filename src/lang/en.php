@@ -36,6 +36,7 @@ csTimer has been tested on Firefox, Chrome and Safari. And it also works pretty 
  <li><b>Big Cube Training</b> - For big cube, special scrambles supported by csTimer are: scramble of edges of 4x4x4, 5x5x5, 6x6x6, 7x7x7.</li>
  <li><b>3x3x3 BLD Training</b> - For 3x3x3 bld, special scrambles supported by csTimer are: only edges/corners scrambled.</li>
  <li><b>Other Puzzles</b> - csTimer also supports a huge number of puzzles which is not wca's puzzles.</li>
+ <li><b>Scrambling orientation</b> - U white, F green. <a href="https://www.worldcubeassociation.org/regulations/#4d">WCA regulations</a>
 </ul>
 <h3>Statistics</h3>
 <ul>

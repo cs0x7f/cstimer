@@ -36,6 +36,7 @@ csTimer je testiran na Firefox-u, Chrome-u i Safari-ju. Također, radi vrlo dobr
  <li><b>Trening za 'velike' kocke</b> - Za velike kocke. specijalni scramble-ovi podr&#382;ani u csTimer-u su: scramble rubnih dijelova 4x4x4, 5x5x5, 6x6x6, 7x7x7.</li>
  <li><b>3x3x3 naslijepo trening</b> - Za 3x3x3 naslijepo, specijalni scramble-ovi podr&#382;ani u csTimer-u su: scramble-ani samo korneri/rubni dijelovi.</li>
  <li><b>Ostale puzzle</b> - csTimer also supports a huge number of puzzles which is not wca's puzzles.</li>
+ <li><b>Scrambling orientation</b> - U white, F green. <a href="https://www.worldcubeassociation.org/regulations/#4d">WCA regulations</a>
 </ul>
 <h3>Statistika</h3>
 <ul>
