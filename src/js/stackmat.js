@@ -86,7 +86,7 @@ var stackmat = (function() {
 			}
 			lastSgn ^= 1;
 			lenVoltageKeep = 0;
-		} else if (lenVoltageKeep > sample_rate) {
+		} else if (lenVoltageKeep > sample_rate * 2) {
 			appendBit(lastSgn);
 			lenVoltageKeep -= sample_rate;
 		}
