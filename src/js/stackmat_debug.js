@@ -2,35 +2,41 @@
 
 var stackmat = (function() {
 
-    //========== Hardware Part ==========
+//========== Hardware Part ==========
     var audio_context;
     var audio_stream, source, node;
     var sample_rate;
 
     function init() {
-        var getUserMedia = (window.navigator["getUserMedia"] ||
-            window.navigator["webkitGetUserMedia"] ||
-            window.navigator["mozGetUserMedia"] ||
-            window.navigator["msGetUserMedia"]);
+		var getUserMedia = (window.navigator["getUserMedia"] ||
+			window.navigator["webkitGetUserMedia"] ||
+			window.navigator["mozGetUserMedia"] ||
+			window.navigator["msGetUserMedia"]);
 
         var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 
         audio_context = new AudioContext();
 
         sample_rate = audio_context["sampleRate"] / 1200;
+        agc_factor = 0.001 / sample_rate;
 
         edgeIdxDiff = Math.ceil(sample_rate / 6);
         lastVal.length = edgeIdxDiff;
 
         dbgOut = [];
 
-        getUserMedia.call(window.navigator, {
-            "audio": {
-                "optional": [{
-                    "echoCancellation": false
-                }]
+		getUserMedia.call(window.navigator, {
+			"audio": {
+				"echoCancellation": false,
+				"noiseSuppression": false
+			}
+        }, success, function(e) {
+            var l = "";
+            for (var key in e) {
+                l = l + key + ": " + e[key] + "\n";
             }
-        }, success, $.noop);
+            alert(l);
+        });
     }
 
     function stop() {
@@ -42,8 +48,8 @@ var stackmat = (function() {
         }
     }
 
-    var pwr_list = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var last_gain = 1;
+    var last_power = 1;
+    var agc_factor = 0.001;
 
     function success(stream) {
         audio_stream = stream;
@@ -55,28 +61,14 @@ var stackmat = (function() {
             var input = e["inputBuffer"]["getChannelData"](0);
             var output = e["outputBuffer"]["getChannelData"](0);
             //AGC
-            var power = 0;
             for (var i = 0; i < input.length; i++) {
-                power += input[i] * input[i];
+                var power = input[i] * input[i];
+                last_power = Math.max(0.0001, last_power + (power - last_power) * agc_factor);
+                var gain = 1 / Math.sqrt(last_power);
+                procSignal(input[i] * gain, gain);
+                // output[i] = input[i] * gain / 500;
             }
-            power = Math.sqrt(power / input.length);
-            pwr_list.push(power);
-            var sum = 0;
-            for (var i = 0; i < pwr_list.length; i++) {
-                sum += pwr_list[i];
-            }
-            sum /= pwr_list.length;
-            var fix = Math.min(100, 1 / sum);
-
-            var cur_gain = Math.min(last_gain * 0.8 + fix * 0.2, fix);
-
-            for (var i = 0; i < input.length; i++) {
-                // output[i] = input[i] * (cur_gain + (last_gain - cur_gain) * (i / input.length)) / 500;
-                procSignal(input[i] * (last_gain + (cur_gain - last_gain) * (i / input.length)));
-            }
-            last_gain = cur_gain;
-            // console.log(cur_gain);
-            pwr_list = pwr_list.slice(1);
+            $('#agc').html((1 / Math.sqrt(last_power)).toString().slice(0, 5));
             return;
         };
         source["connect"](node);
@@ -92,91 +84,121 @@ var stackmat = (function() {
     var lenVoltageKeep = 0;
 
     var dbgOut = [];
+    var dbgOut2 = [];
+    var dbgOut3 = [];
     var dbg = false;
 
-    function procSignal(signal) {
+    var dataBlob;
+
+    function procSignal(signal, curGain) {
         // signal = Math.max(Math.min(signal, 1), -1);
         // Schmidt trigger
 
-        if (dbg) {
-            dbgOut.push(signal);
-            if (dbgOut.length > 400 * sample_rate) {
-                var highchart = $('#graphContainer').highcharts('StockChart', {
-                    title: {
-                        text: ''
-                    },
-
-                    navigator: {
-                        xAxis: {
-                            labels: {
-                                enabled: false
-                            }
-                        }
-                    },
-
-                    xAxis: {
-                        type: 'datetime',
-                        dateTimeLabelFormats: {
-                            millisecond: '%S.%L',
-                        },
-                        labels: {
-                            enabled: false
-                        }
-                    },
-
-                    yAxis: [{
-                        title: {
-                            text: 'Channel 0'
-                        },
-                        min: -2.5,
-                        max: 2.5
-                    }],
-
-                    rangeSelector: {
-                        buttons: [{
-                            type: 'millisecond',
-                            count: sample_rate * 120,
-                            text: 'In'
-                        }, {
-                            type: 'all',
-                            count: 1,
-                            text: 'All'
-                        }],
-                        selected: 2,
-                        inputEnabled: false
-                    },
-
-                    series: [{
-                        name: 'Channel 0',
-                        data: dbgOut,
-                        gapSize: null,
-                        threshold: null
-                    }],
-                });
-                dbgOut = [];
-                dbg = false;
-            }
-        }
-
         lastVal.unshift(signal);
-        var isEdge = Math.abs(lastVal[edgeIdxDiff] - signal) > THRESHOLD_EDGE;
-        lastVal.pop();
+        var isEdge = (lastVal.pop() - signal) * (lastSgn ? 1 : -1) > THRESHOLD_EDGE &&
+            Math.abs(signal - (lastSgn ? 1 : -1)) - 1 > THRESHOLD_SCHM &&
+            lenVoltageKeep > sample_rate * 0.6;
 
-        var diff = Math.abs(signal - (lastSgn ? 1 : -1)) - 1;
-        if (isEdge && diff > THRESHOLD_SCHM && lenVoltageKeep > sample_rate * 0.6) {
+        if (isEdge) {
             for (var i = 0; i < Math.round(lenVoltageKeep / sample_rate); i++) {
                 appendBit(lastSgn);
             }
             lastSgn ^= 1;
             lenVoltageKeep = 0;
-        } else if (lenVoltageKeep > sample_rate * 6) {
-            for (var i = 0; i < 5; i++) {
-                appendBit(lastSgn);
-            }
-            lenVoltageKeep -= sample_rate * 5;
-        }
+        } else if (lenVoltageKeep > sample_rate * 2) {
+			appendBit(lastSgn);
+			lenVoltageKeep -= sample_rate;
+		}
 
         lenVoltageKeep++;
+
+
+        dbgOut.push(Math.round(signal * 1000) / 1000);
+        dbgOut2.push(Math.round(curGain * 1000) / 1000);
+        dbgOut3.push(lastSgn ? 1 : -1);
+        if (dbgOut.length > 400 * sample_rate) {
+            dbgOut.shift();
+            dbgOut2.shift();
+            dbgOut3.shift();
+        }
+
+        if (dbg) {
+            if (window.Blob) {
+                var dataBlob = new Blob([JSON.stringify(dbgOut)], { 'type': 'text/plain' });
+                $('#dump').attr('href', URL.createObjectURL(dataBlob));
+                $('#dump').attr('download', 'cstimer-stackmat-dump.txt');
+                $('#dump').html('Dump Data' + dbgOut.length);
+            }
+
+            var highchart = $('#graphContainer').highcharts('StockChart', {
+                title: {
+                    text: ''
+                },
+
+                navigator: {
+                    xAxis: {
+                        labels: {
+                            enabled: false
+                        }
+                    }
+                },
+
+                xAxis: {
+                    type: 'datetime',
+                    dateTimeLabelFormats: {
+                        millisecond: '%S.%L',
+                    },
+                    labels: {
+                        enabled: false
+                    }
+                },
+
+                yAxis: [{
+                    title: {
+                        text: 'Channel 0'
+                    },
+                    min: -2.5,
+                    max: 2.5
+                    }],
+
+                rangeSelector: {
+                    buttons: [{
+                        type: 'millisecond',
+                        count: sample_rate * 120,
+                        text: 'In'
+                        }, {
+                        type: 'all',
+                        count: 1,
+                        text: 'All'
+                        }, {
+                        type: 'millisecond',
+                        count: sample_rate * 20,
+                        text: 'Detail'
+                        }],
+                    selected: 0,
+                    inputEnabled: false
+                },
+
+                series: [{
+                    name: 'Channel 0',
+                    data: dbgOut,
+                    gapSize: null,
+                    threshold: null
+                    }, {
+                    name: 'AGC gain',
+                    data: dbgOut2,
+                    gapSize: null,
+                    threshold: null
+                    }, {
+                    name: 'Schmidt Output',
+                    data: dbgOut3,
+                    gapSize: null,
+                    threshold: null
+                    }],
+            });
+            dbg = false;
+        }
+
     }
 
 
@@ -230,6 +252,9 @@ var stackmat = (function() {
         }
     }
 
+    var last_suc_time = +new Date;
+    var last_dbg_time = +new Date;
+
     function decode(byteBuffer) {
         if (byteBuffer.length != 9 && byteBuffer.length != 10) {
             return;
@@ -265,7 +290,18 @@ var stackmat = (function() {
             }
             time_milli = ~~byteBuffer[1] * 60000 + ~~(byteBuffer[2] + byteBuffer[3]) * 1000 + ~~(byteBuffer[4] + byteBuffer[5] + byteBuffer[6]);
         }
-        console.log(byteBuffer.join(""));
+        var suc_time = $.now();
+        // console.log(byteBuffer);
+        $('#data').html(byteBuffer.toString());
+        if (suc_time - last_suc_time > 200) {
+            console.log(suc_time - last_suc_time);
+            if (suc_time - last_dbg_time > 10000) {
+                dbg = true;
+                last_dbg_time = +new Date;
+            }
+        }
+        last_suc_time = suc_time;
+
         var new_state = {}
         new_state.time_milli = time_milli;
         new_state.on = true;
@@ -299,9 +335,9 @@ var stackmat = (function() {
         stop: stop,
         setCallBack: function(func) {
             callback = func;
-        }, 
+        },
         debug: function() {
-        	dbg = true;
+            dbg = true;
         }
     }
 })();

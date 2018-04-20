@@ -18,13 +18,14 @@ var stackmat = (function() {
 		audio_context = new AudioContext();
 
 		sample_rate = audio_context["sampleRate"] / 1200;
-
-		edgeIdxDiff = Math.ceil(sample_rate / 6);
-		lastVal.length = edgeIdxDiff;
-		edgeIdxCur = 0;
+		agc_factor = 0.001 / sample_rate;
+		lastVal.length = Math.ceil(sample_rate / 6);
 
 		getUserMedia.call(window.navigator, {
-			"audio": {"optional": [{"echoCancellation": false}]}
+			"audio": {
+				"echoCancellation": false,
+				"noiseSuppression": false
+			}
 		}, success, $.noop);
 	}
 
@@ -37,8 +38,8 @@ var stackmat = (function() {
 		}
 	}
 
-	var pwr_list = [0,0,0,0,0,0,0,0,0];
-	var last_gain = 1;
+	var last_power = 1;
+	var agc_factor = 0.0001;
 
 	function success(stream) {
 		audio_stream = stream;
@@ -50,28 +51,13 @@ var stackmat = (function() {
 			var input = e["inputBuffer"]["getChannelData"](0);
 			var output = e["outputBuffer"]["getChannelData"](0);
 			//AGC
-			var power = 0;
-			for (var i=0; i<input.length; i++) {
-				power += input[i] * input[i];
-			}
-			power = Math.sqrt(power / input.length);
-			pwr_list.push(power);
-			var sum = 0;
-			for (var i=0; i<pwr_list.length; i++) {
-				sum += pwr_list[i];
-			}
-			sum /= pwr_list.length;
-			var fix = Math.min(100, 1 / sum);
-
-			var cur_gain = Math.min(last_gain * 0.8 + fix * 0.2, fix);
-
 			for (var i = 0; i < input.length; i++) {
-				// output[i] = input[i] * (cur_gain + (last_gain - cur_gain) * (i / input.length)) / 500;
-				procSignal(input[i] * (last_gain + (cur_gain - last_gain) * (i / input.length)));
+				var power = input[i] * input[i];
+				last_power = Math.max(0.0001, last_power + (power - last_power) * agc_factor);
+				var gain = 1 / Math.sqrt(last_power);
+				procSignal(input[i] * gain);
+				// output[i] = input[i] * gain / 500;
 			}
-			last_gain = cur_gain;
-			// console.log(cur_gain);
-			pwr_list = pwr_list.slice(1);
 			return;
 		};
 		source["connect"](node);
@@ -81,8 +67,6 @@ var stackmat = (function() {
 	//========== Audio2Bits Part ==========
 	var lastVal = [];
 	var lastSgn = 0;
-	var edgeIdxDiff = 0;
-	var edgeIdxCur = 0;
 	var THRESHOLD_SCHM = 0.2;
 	var THRESHOLD_EDGE = 0.7;
 	var lenVoltageKeep = 0;
@@ -91,24 +75,21 @@ var stackmat = (function() {
 		// signal = Math.max(Math.min(signal, 1), -1);
 		// Schmidt trigger
 
-		var isEdge = Math.abs(lastVal[edgeIdxCur] - signal) > THRESHOLD_EDGE;
-		lastVal[edgeIdxCur] = signal;
-		edgeIdxCur = (edgeIdxCur + 1) % edgeIdxDiff;
+		lastVal.unshift(signal);
+		var isEdge = (lastVal.pop() - signal) * (lastSgn ? 1 : -1) > THRESHOLD_EDGE &&
+			Math.abs(signal - (lastSgn ? 1 : -1)) - 1 > THRESHOLD_SCHM &&
+			lenVoltageKeep > sample_rate * 0.6;
 
-		var diff = Math.abs(signal - (lastSgn ? 1 : -1)) - 1;
-		if (isEdge && diff > THRESHOLD_SCHM && lenVoltageKeep > sample_rate * 0.6) {
-			for (var i=0; i<Math.round(lenVoltageKeep/sample_rate); i++) {
+		if (isEdge) {
+			for (var i = 0; i < Math.round(lenVoltageKeep / sample_rate); i++) {
 				appendBit(lastSgn);
 			}
 			lastSgn ^= 1;
 			lenVoltageKeep = 0;
-		} else if (lenVoltageKeep > sample_rate * 6) {
-			for (var i=0; i<5; i++) {
-				appendBit(lastSgn);
-			}
-			lenVoltageKeep -= sample_rate * 5;
+		} else if (lenVoltageKeep > sample_rate) {
+			appendBit(lastSgn);
+			lenVoltageKeep -= sample_rate;
 		}
-
 		lenVoltageKeep++;
 	}
 
@@ -128,7 +109,7 @@ var stackmat = (function() {
 		} else {
 			last_bit_length++;
 		}
-		if (last_bit_length > 10) {	//IDLE
+		if (last_bit_length > 10) { //IDLE
 			idle_val = bit;
 			// console.log(bitBuffer.length);
 			bitBuffer = [];
@@ -152,7 +133,7 @@ var stackmat = (function() {
 					bitBuffer = bitBuffer.slice(1);
 				} else {
 					var val = 0;
-					for (var i=8; i>0; i--) {
+					for (var i = 8; i > 0; i--) {
 						val = val << 1 | (bitBuffer[i] == idle_val ? 1 : 0);
 					}
 					byteBuffer.push(String.fromCharCode(val));
@@ -178,7 +159,7 @@ var stackmat = (function() {
 		var time_milli = 0;
 		var checksum = 64;
 		if (byteBuffer.length == 9) {
-			for (var i=1; i<6; i++) {
+			for (var i = 1; i < 6; i++) {
 				if (!re_number.exec(byteBuffer[i])) {
 					return;
 				}
@@ -189,7 +170,7 @@ var stackmat = (function() {
 			}
 			time_milli = ~~byteBuffer[1] * 60000 + ~~(byteBuffer[2] + byteBuffer[3]) * 1000 + ~~(byteBuffer[4] + byteBuffer[5]) * 10;
 		} else if (byteBuffer.length == 10) {
-			for (var i=1; i<7; i++) {
+			for (var i = 1; i < 7; i++) {
 				if (!re_number.exec(byteBuffer[i])) {
 					return;
 				}
@@ -211,8 +192,8 @@ var stackmat = (function() {
 		new_state.greenLight = head == 'A';
 		new_state.leftHand = head == 'L' || head == 'A' || head == 'C';
 		new_state.rightHand = head == 'R' || head == 'A' || head == 'C';
-		new_state.running = (head != 'S' || stackmat_state.signalHeader == 'S') 
-			&& (head == ' ' || new_state.time_milli > stackmat_state.time_milli);
+		new_state.running = (head != 'S' || stackmat_state.signalHeader == 'S') &&
+			(head == ' ' || new_state.time_milli > stackmat_state.time_milli);
 		new_state.signalHeader = head;
 		new_state.unknownRunning = !stackmat_state.on;
 
@@ -225,7 +206,7 @@ var stackmat = (function() {
 		time_milli: 0,
 		on: false,
 		greenLight: false,
-		leftHand: false, 
+		leftHand: false,
 		rightHand: false,
 		running: false,
 		unknownRunning: true,
@@ -236,11 +217,9 @@ var stackmat = (function() {
 
 	return {
 		init: init,
-		stop: stop, 
+		stop: stop,
 		setCallBack: function(func) {
 			callback = func;
 		}
 	}
 })();
-
-

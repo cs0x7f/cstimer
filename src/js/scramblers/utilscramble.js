@@ -192,8 +192,8 @@
 		];
 		var x = 0,
 			y = 3,
-			k, done, r, lastr = 5;
-		ret = "";
+			k, done, r, lastr = 5,
+			ret = "";
 		for (k = 0; k < len; k++) {
 			done = false;
 			while (!done) {
