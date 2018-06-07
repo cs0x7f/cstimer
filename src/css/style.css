@@ -583,6 +583,47 @@ input[type="text"] {
 	text-align: center;
 }
 
+input[type="file"] {
+	width: 100%;
+}
+
+#wcaLogin {
+	display: inline-block;
+	width: 80%;
+	font-size: 1.2em;
+	cursor: pointer;
+	border-collapse: separate;
+	text-align: center;
+	border: 1px solid;
+	border-radius: 5px;
+}
+
+#wcaData {
+	width: 100%;
+}
+
+#wcaLogin img {
+	display: block;
+	height: 2.5em;
+}
+
+#exportTable {
+	display: inline-block;
+	width: 80%;
+	font-size: 1.2em;
+	cursor: pointer;
+	border-collapse: separate;
+	text-align: center;
+}
+
+#exportTable td {
+	border: 1px solid;
+	border-radius: 5px;
+	width: 50%;
+	height: 2.5em;
+	padding: 0.5em;
+}
+
 .m html.p70 {
 	font-size: 1.9vw;
 }

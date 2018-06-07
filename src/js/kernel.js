@@ -701,13 +701,35 @@ var kernel = (function() {
 	})();
 
 	var exportFunc = (function () {
+		var wcaLoginUrl = "https://worldcubeassociation.org/oauth/authorize?client_id=63a89d6694b1ea2d7b7cbbe174939a4d2adf8dd26e69acacd1280af7e7727554&redirect_uri=https%3A%2F%2Fcstimer.net%2F&response_type=code&scope=public";
+
 		var exportDiv = $('<div />');
+		var wcaDataTd = $('<td id="wcaData"></td>');
+		var wcaDataTr = $('<tr>').append('<td><img src="WCAlogo_notext.svg"></img></td>', wcaDataTd);
+		var exportTable = $('<table id="exportTable">');
+
+		var inServWCA = $('<a class="click"/>').html(EXPORT_FROMSERV + '<br>(WCA Account)').click(downloadData);
+		var outServWCA = $('<a class="click"/>').html(EXPORT_TOSERV + '<br>(WCA Account)').click(uploadData);
+
 		var inFile = $('<input type="file" id="file" accept="text/plain"/>').change(importFile);
 		var outFile = $('<a class="click"/>').html(EXPORT_TOFILE);
 		var reader = undefined;
+
 		var inServ = $('<a class="click"/>').html(EXPORT_FROMSERV).click(downloadData);
 		var outServ = $('<a class="click"/>').html(EXPORT_TOSERV).click(uploadData);
+
 		var expString;
+
+		exportTable.append(
+			$('<tr>').append(
+				$('<td>').append(inServWCA),
+				$('<td>').append(outServWCA)),
+			$('<tr>').append(
+				$('<td>').append(inFile),
+				$('<td>').append(outFile)),
+			$('<tr>').append(
+				$('<td>').append(inServ),
+				$('<td>').append(outServ)));
 
 		function importData() {
 			loadData(this.result);
@@ -716,7 +738,9 @@ var kernel = (function() {
 		function loadData(data) {
 			data = JSON.parse(data);
 			if ('properties' in data) {
+				var wcaData = localStorage['wcaData'];
 				localStorage.clear();
+				localStorage['wcaData'] = wcaData;
 				localStorage['properties'] = data['properties'];
 				property.load();
 			}
@@ -735,13 +759,26 @@ var kernel = (function() {
 			}
 		}
 
-		function uploadData() {
-			var id = prompt(EXPORT_USERID);
-			if (id == null) {
-				return;
+		function getId(e) {
+			var id = null;
+			if (e.target === outServWCA[0] || e.target === inServWCA[0]) {
+				id = JSON.parse(localStorage['wcaData'] || '{}')['cstimer_token'];
+			} else {
+				id = prompt(EXPORT_USERID);
+				if (id == null) {
+					return;
+				}
 			}
 			if (!id || !/^[A-Za-z0-9]+$/.exec(id)) {
 				alert(EXPORT_INVID);
+				return;
+			}
+			return id;
+		}
+
+		function uploadData(e) {
+			var id = getId(e);
+			if (!id) {
 				return;
 			}
 			var compExpString = LZString.compressToEncodedURIComponent(expString);
@@ -754,13 +791,9 @@ var kernel = (function() {
 			}, "json");
 		}
 
-		function downloadData() {
-			var id = prompt(EXPORT_USERID);
-			if (id == null) {
-				return;
-			}
-			if (!id || !/^[A-Za-z0-9]+$/.exec(id)) {
-				alert(EXPORT_INVID);
+		function downloadData(e) {
+			var id = getId(e);
+			if (!id) {
 				return;
 			}
 			$.post('https://cstimer.net/userdata.php', {'id': id}, function(val) {
@@ -791,14 +824,59 @@ var kernel = (function() {
 			});
 		}
 
+		function updateUserInfoFromWCA() {
+			var wcaData = JSON.parse(localStorage['wcaData'] || '{}');
+			wcaDataTr.unbind("click");
+			if (!wcaData['access_token']) {
+				wcaDataTd.html('Login Using WCA Account');
+				wcaDataTr.click(function() {
+					location.href = wcaLoginUrl;
+				}).addClass('click');
+				inServWCA.unbind('click').removeClass('click');
+				outServWCA.unbind('click').removeClass('click');
+			} else {
+				var me = wcaData['wca_me'];
+				wcaDataTd.html('WCAID: ' + me['wca_id'] + '<br>' + 'Name: ' + me['name']);
+				wcaDataTr.click(function() {
+					if (confirm('Confirm to log out?')) {
+						logoutFromWCA();
+					}
+				}).addClass('click');
+				inServWCA.unbind('click').addClass('click').click(downloadData);
+				outServWCA.unbind('click').addClass('click').click(uploadData);
+			}
+		}
+
+		function logoutFromWCA() {
+			delete localStorage['wcaData'];
+			updateUserInfoFromWCA();
+		}
+
 		$(function() {
 			ui.addButton('export', BUTTON_EXPORT, showExportDiv, 2);
+			exportDiv.append("<br>", $('<table id="wcaLogin">').append(wcaDataTr), exportTable);
 			if (window.FileReader && window.Blob) {
-				exportDiv.append("<br>", outFile, "<br><br>" + EXPORT_FROMFILE + ": ", inFile).append("<br><br>", outServ, "<br><br>", inServ);
 				reader = new FileReader();
 				reader.onload = importData;
+			}
+
+			if ($.urlParam('code')) {
+				var code = $.urlParam('code');
+				$.post('oauthwca.php', {'code': $.urlParam('code')}, function(val) {
+					console.log(val);
+					if ('access_token' in val) {
+						localStorage['wcaData'] = JSON.stringify(val);
+						updateUserInfoFromWCA();
+					} else {
+						alert(EXPORT_ERROR);
+					}
+					location.href = location.href.replace('code=' + code, '');
+				}, "json").error(function() {
+					alert(EXPORT_ERROR);
+					location.href = location.href.replace('code=' + code, '');
+				});
 			} else {
-				exportDiv.append("<br>", outServ, "<br><br>", inServ); 
+				updateUserInfoFromWCA();
 			}
 		})
 	})();
@@ -936,7 +1014,7 @@ var kernel = (function() {
 	});
 
 	function cleanLocalStorage() {
-		var validKeys = ['properties', 'cachedScr'];
+		var validKeys = ['properties', 'cachedScr', 'wcaData'];
 		var removeItems = [];
 		for (var i = 1; i <= ~~getProp('sessionN'); i++) {
 			validKeys.push('session' + i);
