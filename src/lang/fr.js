@@ -4,71 +4,71 @@ var RESET_LANG = 'Défaut';
 var ABOUT_LANG = 'À propos';
 var ZOOM_LANG = 'Zoom';
 var BUTTON_TIME_LIST = 'LISTE<br>TEMPS';
-var BUTTON_OPTIONS = 'OPTION';
-var BUTTON_EXPORT = 'EXPORT';
-var BUTTON_DONATE = 'DONATE';
+var BUTTON_OPTIONS = 'Options';
+var BUTTON_EXPORT = 'Exporter';
+var BUTTON_DONATE = 'Faire une donation';
 var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
-var PROPERTY_VOICEINS = 'voice alert of WCA inspection: ';
-var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
+var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA : ';
+var PROPERTY_VOICEINS_STR = 'Aucune|Voix masculine|Voix féminine';
 var PROPERTY_USECFM = 'Confirmer le temps (OK/+2/DNF)';
-var PROPERTY_PHASES = 'Multi-phase: ';
-var PROPERTY_TIMERSIZE = 'Taille du chronomètre: ';
-var CFMDIV_CURTIME = 'Le temps est: ';
+var PROPERTY_PHASES = 'Multi-phase : ';
+var PROPERTY_TIMERSIZE = 'Taille du chronomètre : ';
+var CFMDIV_CURTIME = 'Le temps est : ';
 var PROPERTY_USEMILLI = 'Utiliser les millisecondes';
-var PROPERTY_SMALLADP = 'use small font after decimal point';
-var PROPERTY_SCRSIZE = 'Taille du mélange: ';
+var PROPERTY_SMALLADP = 'Utiliser une petite police après la virgule des décimales';
+var PROPERTY_SCRSIZE = 'Taille du mélange : ';
 var PROPERTY_SCRMONO = 'Mélange à espacement fixe';
 var PROPERTY_SCRLIM = 'Limiter la taille de la zone de mélange';
-var PROPERTY_SCRALIGN = 'Alignment of scramble area: ';
-var PROPERTY_SCRALIGN_STR = 'center|left|right';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_USERID = 'Please input your account (only alphabet or number): ';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange : ';
+var PROPERTY_SCRALIGN_STR = 'Centrer|Gauche|Droite';
+var EXPORT_DATAEXPORT = 'Importer/Exporter des données';
+var EXPORT_TOFILE = 'Exporters vers';
+var EXPORT_FROMFILE = 'Importer de';
+var EXPORT_TOSERV = 'Exporter vers un serveur';
+var EXPORT_FROMSERV = 'Importer d\'un serveur';
+var EXPORT_USERID = 'S\'il vous plaît, rentrez votre compte (seulement des lettres ou des chiffres) : ';
+var EXPORT_INVID = 'Seul sont autorisés les lettres et les chiffres !';
+var EXPORT_ERROR = 'Des erreurs se sont produites...';
+var EXPORT_NODATA = 'Aucune donnée n\'a été trouvé sur votre compte';
+var EXPORT_UPLOADED = 'Envoyé avec succès';
 var BUTTON_SCRAMBLE = 'MELA-<br>NGE';
 var BUTTON_TOOLS = 'OUTILS';
 var IMAGE_UNAVAILABLE = 'Non disponible pour ce type de mélange';
-var TOOLS_SELECTFUNC = 'Fonction: ';
+var TOOLS_SELECTFUNC = 'Fonction : ';
 var TOOLS_CROSS = 'Résoudre la croix';
 var TOOLS_EOLINE = 'Résoudre l\'EOLine';
 var TOOLS_IMAGE = 'Schéma du mélange';
 var TOOLS_STATS = 'Statistiques';
 var TOOLS_DISTRIBUTION = 'Répartition des temps';
-var TOOLS_TREND = 'time trend';
-var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange: ';
+var TOOLS_TREND = 'Tendance des temps';
+var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange : ';
 var TIMER_INSPECT = 'Inspection';
 var TIMER_SOLVE = 'Résolution';
 var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'Rafraîchissement du chronomètre: ';
-var PROPERTY_TIMEU_STR = 'normal|0.1s|secondes|inspection|non';
-var PROPERTY_PRETIME = 'Tenir la barre d\'espace appuyée pendant (en secondes): ';
+var PROPERTY_TIMEU = 'Rafraîchissement du chronomètre : ';
+var PROPERTY_TIMEU_STR = 'Normal|0.1s|Secondes|Inspection|Non';
+var PROPERTY_PRETIME = 'Tenir la barre d\'espace appuyée pendant (en secondes) : ';
 var PROPERTY_ENTERING = 'Entrer les temps avec ';
-var PROPERTY_ENTERING_STR = 'clavier|manuellement|stackmat|virtuel';
-var PROPERTY_COLOR = 'Couleur du thème: ';
-var PROPERTY_COLORS = 'font color: |background color: |board color: |button color: |link color: |Logo color: |Logo bgcolor: ';
-var PROPERTY_VIEW = 'UI style is:';
-var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
+var PROPERTY_ENTERING_STR = 'Clavier|Manuellement|Stackmat|Virtuel';
+var PROPERTY_COLOR = 'Couleur du thème : ';
+var PROPERTY_COLORS = 'Couleur de la police : |Couleur de fond : |Couleur de panneau : |Couleur de bouton : |Couleur de lien : |Couleur du logo : |Couleur  de fond du logo : ';
+var PROPERTY_VIEW = 'Le style de l\'interface est :';
+var PROPERTY_VIEW_STR = 'Auto|Mobile|Bureau';
 var COLOR_EXPORT = 'Please save the string for import: ';
 var COLOR_IMPORT = 'Please input the string exported: ';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'aléatoire|style1|style2|style3|noir|blanc|style6|Personnalisée|export...|import...';
-var PROPERTY_FONT = 'Police du chronomètre: ';
-var PROPERTY_FONT_STR = 'digital aléatoire|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'Format du temps: '
+var COLOR_FAIL = 'Données incorrectes, Importation échoué';
+var PROPERTY_FONTCOLOR_STR = 'Noir|Blanc';
+var PROPERTY_COLOR_STR = 'Aléatoire|Style1|Style2|Style3|Noir|Blanc|Style6|Personnalisée|Exporter...|Importer...';
+var PROPERTY_FONT = 'Police du chronomètre : ';
+var PROPERTY_FONT_STR = 'Digital aléatoire|Normal|Digital1|Digital2|Digital3|Digital4|Digital5';
+var PROPERTY_FORMAT = 'Format du temps : '
 var PROPERTY_USEKSC = 'Utiliser les raccourcis clavier';
 var PROPERTY_NTOOLS = 'Nombre d\'outils';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'dernier';
-var SCRAMBLE_NEXT = 'prochain';
-var SCRAMBLE_SCRAMBLE = ' mélange';
-var SCRAMBLE_LENGTH = 'longueur';
+var PROPERTY_AHIDE = 'Cacher tous les éléments lors du chronométrage';
+var SCRAMBLE_LAST = 'Dernier';
+var SCRAMBLE_NEXT = 'Prochain';
+var SCRAMBLE_SCRAMBLE = ' Mélange';
+var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
@@ -301,47 +301,47 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' de 90 degrés dans le sens des aiguilles d\'une montre, | de 90 degrés dans le sens inverse des aiguilles d\'une montre, | de 180 degrés, ';
 var STATS_CFM_RESET = 'Effacer tous les temps de cette session ?';
-var STATS_CFM_DELSS = 'delete this session?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
+var STATS_CFM_DELSS = 'Effacer cette session ?';
+var STATS_CFM_DELMUL = 'Nombre de valeurs effacées de l\'index en cours ?';
 var STATS_CFM_DELETE = 'Effacer ce temps ?';
-var STATS_COMMENT = 'Commentaire: ';
+var STATS_COMMENT = 'Commentaire : ';
 var STATS_CURROUND = 'Statistiques de la moyenne';
 var STATS_CURSESSION = 'Statistiques de la session en cours';
 var STATS_AVG = 'Moyenne';
 var STATS_SOLVE = 'Résolution';
 var STATS_TIME = 'Temps';
 var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Session Name';
-var STATS_STRING = 'meilleure|en cours|moins bonne|Généré par csTimer le %Y-%M-%D|résolutions/total: %d|Résolution|Moyenne sur %mk|Moyenne élaguée sur %mk|Moyenne élaguée: %v{ (σ = %sgm)}|Moyenne: %v|Liste des temps:';
+var STATS_SESSION_NAME = 'Nom de la session';
+var STATS_STRING = 'Meilleure|En cours|Moins bonne|Généré par csTimer le %Y-%M-%D|Résolutions/Total: %d|Résolution|Moyenne sur %mk|Moyenne élaguée sur %mk|Moyenne élaguée: %v{ (σ = %sgm)}|Moyenne: %v|Liste des temps:';
 var STATS_PREC = 'Précision de la répartition des temps: ';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
+var STATS_PREC_STR = 'Auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var PROPERTY_PRINTSCR = 'Montrer les mélanges dans les statistiques';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
+var PROPERTY_SUMMARY = 'Montrer le résumé avant la liste de temps';
+var PROPERTY_IMRENAME = 'Renommer la session immédiatement après création';
+var PROPERTY_SCR2SS = 'Créer une nouvelle session lors du changement de type de mélange';
+var PROPERTY_SS2SCR = 'Restaurer le type de mélange lors d\'un changement de session';
 var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators: ';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
+var PROPERTY_STATINV = 'Inverser la liste des temps';
+var PROPERTY_STATAL = 'Indiquateurs statistiques : ';
+var PROPERTY_DELMUL = 'Activer la suppression multiple';
 var MODULE_NAMES = {
-	"ui": 'affichage',
-	"color": 'couleur',
-	"timer": 'chronomètre',
+	"ui": 'Affichage',
+	"color": 'Couleur',
+	"timer": 'Chronomètre',
 	"vrc": 'virtual',
-	"kernel": 'global',
-	"scramble": 'mélange',
-	"stats": 'statistiques',
-	"tools": 'outils'
+	"kernel": 'Global',
+	"scramble": 'Mélange',
+	"stats": 'Statistiques',
+	"tools": 'Outils'
 };
 var BGIMAGE_URL = 'Entrez l\'adresse URL de l\'image';
 var BGIMAGE_INVALID = 'Adresse invalide';
-var BGIMAGE_OPACITY = 'Opacité de l\'image de fond: ';
-var BGIMAGE_IMAGE = 'Image de fond: ';
+var BGIMAGE_OPACITY = 'Opacité de l\'image de fond : ';
+var BGIMAGE_IMAGE = 'Image de fond : ';
 var BGIMAGE_IMAGE_STR = 'Aucune|Personnalisée|CCT';
 var SHOW_AVG_LABEL = 'Afficher les moyennes en cours';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles: ';
-var SCRGEN_PRE = 'prefix: ';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var TOOLS_SCRGEN = 'Générateur de mélange';
+var SCRGEN_NSCR = 'Nombre de mélanges : ';
+var SCRGEN_PRE = 'Préfixe : ';
+var SCRGEN_GEN = 'Générer des mélanges !';
