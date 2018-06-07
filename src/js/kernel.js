@@ -852,6 +852,15 @@ var kernel = (function() {
 			updateUserInfoFromWCA();
 		}
 
+		function cleanupCode(code) {
+			var curLoc = location.href.replace('code=' + code, '');
+			if (history && history.pushState) {
+				history.pushState(undefined, undefined, curLoc);
+			} else {
+				location.href = curLoc;
+			}
+		}
+
 		$(function() {
 			ui.addButton('export', BUTTON_EXPORT, showExportDiv, 2);
 			exportDiv.append("<br>", $('<table id="wcaLogin">').append(wcaDataTr), exportTable);
@@ -863,17 +872,17 @@ var kernel = (function() {
 			if ($.urlParam('code')) {
 				var code = $.urlParam('code');
 				$.post('oauthwca.php', {'code': $.urlParam('code')}, function(val) {
-					console.log(val);
+					// console.log(val);
 					if ('access_token' in val) {
 						localStorage['wcaData'] = JSON.stringify(val);
 						updateUserInfoFromWCA();
 					} else {
 						alert(EXPORT_ERROR);
 					}
-					location.href = location.href.replace('code=' + code, '');
+					cleanupCode(code);
 				}, "json").error(function() {
 					alert(EXPORT_ERROR);
-					location.href = location.href.replace('code=' + code, '');
+					cleanupCode(code);
 				});
 			} else {
 				updateUserInfoFromWCA();
