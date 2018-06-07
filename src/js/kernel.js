@@ -701,7 +701,7 @@ var kernel = (function() {
 	})();
 
 	var exportFunc = (function () {
-		var wcaLoginUrl = "https://worldcubeassociation.org/oauth/authorize?client_id=63a89d6694b1ea2d7b7cbbe174939a4d2adf8dd26e69acacd1280af7e7727554&redirect_uri=https%3A%2F%2Fcstimer.net%2F&response_type=code&scope=public";
+		var wcaLoginUrl = "https://worldcubeassociation.org/oauth/authorize?client_id=63a89d6694b1ea2d7b7cbbe174939a4d2adf8dd26e69acacd1280af7e7727554&response_type=code&scope=public&redirect_uri=" + encodeURI('https://cstimer.net' + location.pathname);
 
 		var exportDiv = $('<div />');
 		var wcaDataTd = $('<td id="wcaData"></td>');
