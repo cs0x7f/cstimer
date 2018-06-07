@@ -853,7 +853,7 @@ var kernel = (function() {
 		}
 
 		function cleanupCode(code) {
-			var curLoc = location.href.replace('code=' + code, '');
+			var curLoc = location.href.replace('code=' + code, '').replace(/\?$/, '');
 			if (history && history.pushState) {
 				history.pushState(undefined, undefined, curLoc);
 			} else {
