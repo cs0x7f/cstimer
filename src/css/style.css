@@ -587,13 +587,17 @@ input[type="file"] {
 	width: 100%;
 }
 
-#wcaLogin {
-	display: inline-block;
+#wcaLogin, #exportTable {
 	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
 	font-size: 1.2em;
 	cursor: pointer;
 	border-collapse: separate;
 	text-align: center;
+}
+
+#wcaLogin {
 	border: 1px solid;
 	border-radius: 5px;
 }
@@ -605,15 +609,6 @@ input[type="file"] {
 #wcaLogin img {
 	display: block;
 	height: 2.5em;
-}
-
-#exportTable {
-	display: inline-block;
-	width: 80%;
-	font-size: 1.2em;
-	cursor: pointer;
-	border-collapse: separate;
-	text-align: center;
 }
 
 #exportTable td {
