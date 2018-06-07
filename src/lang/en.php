@@ -1,6 +1,6 @@
 <h1>csTimer  version 2017.12.10 - Professional Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
-<p>csTimer is designed for speedsolving cuber. It supports scrambles of many types of puzzles include <b>all the WCA's official puzzle</b>; It integrated with <b>Xcross solver and eoline solver</b>; It supports time statistics, <b>multi-phase timming</b> and several functions supported by other similar software such as: 15s' inspection defined by WCA, etc.</p>
+<p>csTimer is designed for speedsolving cuber. It supports scrambles of many types of puzzles include <b>all the WCA's official puzzle</b>; It integrated with <b>Xcross solver and eoline solver</b>; It supports time statistics, <b>multi-phase timing</b> and several functions supported by other similar software such as: 15s' inspection defined by WCA, etc.</p>
 <p>The timer works well on most browsers, such as: chrome(recommend), firefox, opera, IE7+. And it also works on ipad, iphone and most of the Android platform. </p>
 <p> --- Written by: <a class="click" href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a><br>
  --- UI designed by: <a class="click" href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a><br></p>
@@ -18,7 +18,7 @@ csTimer has been tested on Firefox, Chrome and Safari. And it also works pretty 
  <li><b>Traditional</b> - Press the 'space' key until the font colour toggle green. The timing will start when you release the key and record the solving time when you press the key again.</li>
  <li><b>Pressing time</b> - Same as stackmat, csTimer supports pressing time. You should keep the 'space' key for a while before release it. </li>
  <li><b>WCA inspection</b> - csTimer supports inspection time descriped in wca's regulation. If it is enabled, the timer will be at inspection state after your starting it.</li>
- <li><b>Multi-phase timing</b> - the timer supports multi-phase timming. You may set the number of phase(s), and might press space key several times.</li>
+ <li><b>Multi-phase timing</b> - the timer supports multi-phase timing. You may set the number of phase(s), and might press space key several times.</li>
  <li><b>Input with keyboard</b> - if you wanna use extern timer such as stackmat, you may input time manually.</li>
  <li><b>OK/+2/DNF</b> - if this function is enabled, a confirmation dialog will popupped. You should select whether the solving(finish state) is OK, +2 or DNF. The default value might depend on the inspection time.</li>
  <li><b>Accuracy</b> - the accuracy of the timer is 0.001s or 1 millisecond, and can be showed to 0.01s. </li>
