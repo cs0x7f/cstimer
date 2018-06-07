@@ -8,8 +8,8 @@ var BUTTON_OPTIONS = 'Opties';
 var BUTTON_EXPORT = 'EXPORT';
 var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'Gebruik WCA inspectie';
-var PROPERTY_VOICEINS = 'voice alert of WCA inspection: ';
-var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
+var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection: ';
+var PROPERTY_VOICEINS_STR = 'geen|mannelijke stem|vrouwlijke stem';
 var PROPERTY_USECFM = 'Bevestig tijd(OK/+2/DNF)';
 var PROPERTY_PHASES = 'Meerfasig: ';
 var PROPERTY_TIMERSIZE = 'Grootte timer: ';
@@ -19,18 +19,18 @@ var PROPERTY_SMALLADP = 'Gebruik klein lettertype na de komma';
 var PROPERTY_SCRSIZE = 'Grootte scramble: ';
 var PROPERTY_SCRMONO = 'Monospace scramble';
 var PROPERTY_SCRLIM = 'Limiteer de hoogte van scramble vlak';
-var PROPERTY_SCRALIGN = 'Alignment of scramble area: ';
-var PROPERTY_SCRALIGN_STR = 'center|left|right';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_USERID = 'Please input your account (only alphabet or number): ';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var PROPERTY_SCRALIGN = 'Uitlijnen van scramble vlak: ';
+var PROPERTY_SCRALIGN_STR = 'midden|links|rechts';
+var EXPORT_DATAEXPORT = 'Gegevens Importeren/Exporteren';
+var EXPORT_TOFILE = 'Exporteren naar bestand';
+var EXPORT_FROMFILE = 'Importeren van bestand';
+var EXPORT_TOSERV = 'Exporteren naar server';
+var EXPORT_FROMSERV = 'Importeren van server';
+var EXPORT_USERID = 'Voer aub je account in (alleen letters en cijfers): ';
+var EXPORT_INVID = 'Alleen letters en cijfers zijn toegestaan!';
+var EXPORT_ERROR = 'Er zijn fouten opgetreden...';
+var EXPORT_NODATA = 'Geen gegevens gevonden in je account';
+var EXPORT_UPLOADED = 'Succesvol geupload';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'Hulpmi-<br>ddelen';
 var IMAGE_UNAVAILABLE = 'Niet beschikbaar voor dit type scramble';
@@ -40,23 +40,23 @@ var TOOLS_EOLINE = 'Los EOLine op';
 var TOOLS_IMAGE = 'Teken scramble';
 var TOOLS_STATS = 'Statistiek';
 var TOOLS_DISTRIBUTION = 'Verdeling tijden';
-var TOOLS_TREND = 'time trend';
+var TOOLS_TREND = 'tijd trend';
 var PROPERTY_IMGSIZE = 'Tekstgrootte scramble: ';
 var TIMER_INSPECT = 'Inspectie';
 var TIMER_SOLVE = 'Oplossen';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'Timer update is: ';
+var PROPERTY_USEMOUSE = 'gebruik muis stopwatch';
+var PROPERTY_TIMEU = 'Stopwatch update is: ';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconden|inspectie|geen';
 var PROPERTY_PRETIME = 'Spatiebalk ingedrukt houden voor (seconde(n)): ';
 var PROPERTY_ENTERING = 'Tijden meten met';
-var PROPERTY_ENTERING_STR = 'timer|typen|stackmat|virtueel';
-var PROPERTY_COLOR = 'Selecteer kleurenthema: ';
+var PROPERTY_ENTERING_STR = 'stopwatch|typen|stackmat|virtueel';
+var PROPERTY_COLOR = 'Selecteer kleurenschema: ';
 var PROPERTY_COLORS = 'Lettertype kleur: |Kleur achtergrond: |Board kleur: |Kleur knop: |Kleur link: |Kleur logo: |Logo bgkleur: ';
 var PROPERTY_VIEW = 'UI style is:';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
-var COLOR_EXPORT = 'Please save the string for import: ';
-var COLOR_IMPORT = 'Please input the string exported: ';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
+var COLOR_EXPORT = 'Bewaar aub de tekst voor importeren: ';
+var COLOR_IMPORT = 'Bewaar aub de tekst voor exporteren: ';
+var COLOR_FAIL = 'Incorrecte gegevens, Importeren Mislukt';
 var PROPERTY_FONTCOLOR_STR = 'Zwart|Wit';
 var PROPERTY_COLOR_STR = 'Willekeurig|Stijl1|Stijl2|Stijl3|Zwart|Wit|Stijl6|Handmatig|export...|import...';
 var PROPERTY_FONT = 'Selecteer lettertype timer: ';
@@ -115,7 +115,7 @@ var scrdata = [
 		['Alleen randen', "edges", 0],
 		['Alleen hoeken', "corners", 0],
 		['Laatste laag', "ll", 0],
-		['zb laatste laag', "zbll", 0],
+		['ZB laatste laag', "zbll", 0],
 		['Hoeken laatste laag', "cll", 0],
 		['Randen laatste laag', "ell", 0],
 		['Laatste zes randen', "lse", 0],
@@ -162,7 +162,7 @@ var scrdata = [
 		['wca', "clkwca", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
-		['Efficiencte knop orde', "clke", 0]
+		['Efficiente knop volgorde', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
@@ -172,12 +172,12 @@ var scrdata = [
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
 		['Optimale willekeurige staat', "pyro", 0],
-		['Willekeurige  zetten', "pyrm", 25]
+		['Willekeurige zetten', "pyrm", 25]
 	]],
 	['Square-1', [
 		["WCA", "sqrs", 0],
-		['face draait metrisch', "sq1h", 40],
-		['twist metrisch', "sq1t", 20]
+		['vlak draait metrisch', "sq1h", 40],
+		['draai metrisch', "sq1t", 20]
 	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
@@ -205,7 +205,7 @@ var scrdata = [
 	]],
 	['Gear Cube', [
 		['Willekeurige staat', "gearso", 0],
-		['Optimale willekeurige stat', "gearo", 0],
+		['Optimale willekeurige staat', "gearo", 0],
 		['3-gen', "gear", 10]
 	]],
 	['Cmetrick', [
@@ -300,9 +300,9 @@ var SCRAMBLE_NOOBST = [
 	['Draai de voorkant', 'Draai de achterkant']
 ];
 var SCRAMBLE_NOOBSS = ' 90 graden met de klok mee,| 90 graden tegen de klok in,| 180 graden,';
-var STATS_CFM_RESET = 'Reset alle tijden van deze sessie?';
-var STATS_CFM_DELSS = 'delete this session?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
+var STATS_CFM_RESET = 'Herstel alle tijden van deze sessie?';
+var STATS_CFM_DELSS = 'Verwijder deze sessie?';
+var STATS_CFM_DELMUL = 'Het aantal verwijderde waarden van de huidige index?';
 var STATS_CFM_DELETE = 'Deze tijd verwijderen?';
 var STATS_COMMENT = 'Opmerking:';
 var STATS_CURROUND = 'Gegevens actuele ronde';
@@ -311,20 +311,20 @@ var STATS_AVG = 'Gemiddelde';
 var STATS_SOLVE = 'Opgelost';
 var STATS_TIME = 'Tijd';
 var STATS_SESSION = 'Sessie';
-var STATS_SESSION_NAME = 'Session Name';
-var STATS_STRING = 'Beste|Actuele|Slechtste|Gegenereerd door csTimer op %Y-%M-%D|solves/totaal: %d|enkele|mean van %mk|avg of %mk|Gemiddelde: %v{ (s = %sgm)}|Mean: %v|Lijst met tijden:';
+var STATS_SESSION_NAME = 'Sessie Naam';
+var STATS_STRING = 'Beste|Actuele|Slechtste|Gegenereerd door csTimer op %Y-%M-%D|opgelost/totaal: %d|enkele|mean van %mk|avg of %mk|Gemiddelde: %v{ (s = %sgm)}|Mean: %v|Lijst met tijden:';
 var STATS_PREC = 'precisie tijdsverdeling: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var PROPERTY_PRINTSCR = 'print scramble(s) in statistieken';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators: ';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
+var STATS_TYPELEN = 'lijst %d type|lijst %d lengte|average|mean';
+var PROPERTY_PRINTSCR = 'afdrukken scramble(s) in statistieken';
+var PROPERTY_SUMMARY = 'samenvatting tonen voor tijdlijst';
+var PROPERTY_IMRENAME = 'hernoem sessie direct na aanmaken';
+var PROPERTY_SCR2SS = 'maak nieuwe sessie bij wisselen van scramble type';
+var PROPERTY_SS2SCR = 'herstel scramble tytpe bij wisselen van sessie';
+var PROPERTY_SS2PHASES = 'herstel multi-fase tijdmeting bij wisselen van sessie';
+var PROPERTY_STATINV = 'Omgekeerde tijdenlijst';
+var PROPERTY_STATAL = 'Statistische indicatoren: ';
+var PROPERTY_DELMUL = 'Inschakelen meervoudige verwijdering';
 var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'Kleur',
@@ -337,9 +337,9 @@ var MODULE_NAMES = {
 };
 var BGIMAGE_URL = 'Voer URL in';
 var BGIMAGE_INVALID = 'Ongeldige URL';
-var BGIMAGE_OPACITY = 'Doorschijnheid achtergrondafbeelding: ';
+var BGIMAGE_OPACITY = 'Transparantie achtergrondafbeelding: ';
 var BGIMAGE_IMAGE = 'Achtergrondafbeelding: ';
-var BGIMAGE_IMAGE_STR = 'GeenAutomatischl|CCT';
+var BGIMAGE_IMAGE_STR = 'Geen|Automatischl|CCT';
 var SHOW_AVG_LABEL = 'Toon gemiddelde';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Aantal scrambles: ';
