@@ -859,6 +859,7 @@ var kernel = (function() {
 			} else {
 				location.href = curLoc;
 			}
+			updateUserInfoFromWCA();
 		}
 
 		$(function() {
@@ -875,7 +876,6 @@ var kernel = (function() {
 					// console.log(val);
 					if ('access_token' in val) {
 						localStorage['wcaData'] = JSON.stringify(val);
-						updateUserInfoFromWCA();
 					} else {
 						alert(EXPORT_ERROR);
 					}
@@ -884,6 +884,8 @@ var kernel = (function() {
 					alert(EXPORT_ERROR);
 					cleanupCode(code);
 				});
+				wcaDataTd.html('Authorized<br>Fetching Data...');
+				showExportDiv();
 			} else {
 				updateUserInfoFromWCA();
 			}
