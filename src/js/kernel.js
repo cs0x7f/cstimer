@@ -705,7 +705,7 @@ var kernel = (function() {
 
 		var exportDiv = $('<div />');
 		var wcaDataTd = $('<td id="wcaData"></td>');
-		var wcaDataTr = $('<tr>').append('<td><img src="WCAlogo_notext.svg"></img></td>', wcaDataTd);
+		var wcaDataTr = $('<tr>').append('<td class="img"/>', wcaDataTd);
 		var exportTable = $('<table id="exportTable">');
 
 		var inServWCA = $('<a class="click"/>').html(EXPORT_FROMSERV + '<br>(WCA Account)').click(downloadData);
