@@ -738,7 +738,7 @@ var kernel = (function() {
 		function loadData(data) {
 			data = JSON.parse(data);
 			if ('properties' in data) {
-				var wcaData = localStorage['wcaData'];
+				var wcaData = localStorage['wcaData'] || '{}';
 				localStorage.clear();
 				localStorage['wcaData'] = wcaData;
 				localStorage['properties'] = data['properties'];
@@ -1008,8 +1008,6 @@ var kernel = (function() {
 			}, false);
 		}
 
-		cleanLocalStorage();
-
 		// var externJS = $.urlParam('extjs');
 		// if (externJS) {
 		// 	externJS = JSON.parse(decodeURIComponent(externJS));
@@ -1026,6 +1024,16 @@ var kernel = (function() {
 
 	function cleanLocalStorage() {
 		var validKeys = ['properties', 'cachedScr', 'wcaData'];
+
+		for (var i = 0; i < validKeys.length; i++) {
+			try {
+				var val = localStorage[validKeys[i]] || '{}';
+				JSON.parse(val);
+			} catch (err) {
+				delete localStorage[validKeys[i]];
+			}
+		}
+
 		var removeItems = [];
 		for (var i = 1; i <= ~~getProp('sessionN'); i++) {
 			validKeys.push('session' + i);
@@ -1040,6 +1048,8 @@ var kernel = (function() {
 			delete localStorage[removeItems[i]];
 		}
 	}
+
+	cleanLocalStorage();
 
 	function round(val) {
 		if (val <= 0) {
