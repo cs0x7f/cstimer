@@ -6,10 +6,13 @@ $applicationId = '63a89d6694b1ea2d7b7cbbe174939a4d2adf8dd26e69acacd1280af7e77275
 $applicationSecret = '0000000000000000000000000000000000000000000000000000000000000000';
 $csTimerTokenSalt = '0000000000000000000000000000000000000000000000000000000000000000';
 
-$timerUrl = explode('?', $_SERVER['HTTP_REFERER'])[0];
-if (substr($timerUrl, 0, 20) !== 'https://cstimer.net/') {
+$validUrlRe = '/^(https?:\/\/([^\/]*\.)?cstimer\.net\/(new\/|src\/)?)(timer\.php)?(\?.*)?$/i';
+$matches = array();
+
+if (preg_match($validUrlRe, $_SERVER['HTTP_REFERER'], $matches) == 0) {
 	exit;
 }
+$timerUrl = $matches[1];
 
 $wca = new WcaOauth(array(
 	'applicationId' => $applicationId,
