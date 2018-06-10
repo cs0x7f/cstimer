@@ -609,6 +609,9 @@ var kernel = (function() {
 				$(this).children().children().html('csTimer');
 			});
 			logo.click(function() {
+				if (location.protocol != 'https:' && confirm('Your access to csTimer is unsafe. Press OK for safe access.')) {
+					location.protocol = 'https:';
+				}
 				about.show();
 				showDialog([about, 0, undefined, 0], 'logo', title);
 			});
@@ -627,6 +630,9 @@ var kernel = (function() {
 			$(window).resize(fixOrient);
 			$(window).bind('hashchange', hashChange);
 			hashChange();
+			if (location.protocol != 'https:') {
+				document.title = '[UNSAFE] ' + document.title;
+			}
 		});
 
 		return {
