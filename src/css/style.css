@@ -587,7 +587,7 @@ input[type="file"] {
 	width: 100%;
 }
 
-#wcaLogin, #exportTable {
+#wcaDiv, #exportTable {
 	width: 80%;
 	margin-left: 10%;
 	margin-right: 10%;
@@ -597,13 +597,13 @@ input[type="file"] {
 	text-align: center;
 }
 
-#wcaLogin {
-	border: 1px solid;
-	border-radius: 5px;
+#wcaExport, #wcaData {
+	width: 100%;
 }
 
-#wcaData {
-	width: 100%;
+#wcaDiv {
+	border: 1px dashed;
+	border-radius: 5px;
 }
 
 #wcaLogin .img {
@@ -613,7 +613,7 @@ input[type="file"] {
 	width: 2.5em;
 }
 
-#exportTable td {
+#exportTable td, #wcaExport td {
 	border: 1px solid;
 	border-radius: 5px;
 	width: 50%;

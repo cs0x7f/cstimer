@@ -728,9 +728,6 @@ var kernel = (function() {
 
 		exportTable.append(
 			$('<tr>').append(
-				$('<td>').append(inServWCA),
-				$('<td>').append(outServWCA)),
-			$('<tr>').append(
 				$('<td>').append(inFile),
 				$('<td>').append(outFile)),
 			$('<tr>').append(
@@ -870,7 +867,13 @@ var kernel = (function() {
 
 		$(function() {
 			ui.addButton('export', BUTTON_EXPORT, showExportDiv, 2);
-			exportDiv.append("<br>", $('<table id="wcaLogin">').append(wcaDataTr), exportTable);
+			exportDiv.append("<br>", 
+				$('<div id="wcaDiv">').append(
+					$('<table id="wcaLogin">').append(wcaDataTr), 
+					$('<table id="wcaExport">').append($('<tr>').append(
+						$('<td>').append(inServWCA),
+						$('<td>').append(outServWCA)))),
+					exportTable);
 			if (window.FileReader && window.Blob) {
 				reader = new FileReader();
 				reader.onload = importData;
