@@ -221,7 +221,8 @@ var scrdata = [
 		[' ', "heli", 40]
 	]],
 	['Redi Cube', [
-		[' ', "redi", 20]
+		['MoYu', "redim", 8],
+		['old', "redi", 20]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],

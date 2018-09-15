@@ -331,6 +331,14 @@
 		}
 	}
 
+	function moyuRedi(length) {
+		var ret = [];
+		for (var i=0; i<length; i++) {
+			ret.push(mega([["R"],["L"]], ["","'"], 3 + rn(3)));
+		}
+		return ret.join(' x ');
+	}
+
 	function utilscramble(type, len) {
 		var ret = "";
 		switch (type) {
@@ -367,6 +375,8 @@
 				return adjScramble(["UF", "UR", "UB", "UL", "FR", "BR", "BL", "FL", "DF", "DR", "DB", "DL"], [0x09a, 0x035, 0x06a, 0x0c5, 0x303, 0x606, 0xc0c, 0x909, 0xa90, 0x530, 0xa60, 0x5c0], len);
 			case "redi":
 				return adjScramble(["L", "R", "F", "B", "l", "r", "f", "b"], [0x1c, 0x2c, 0x43, 0x83, 0xc1, 0xc2, 0x34, 0x38], len, ["", "'"]);
+			case "redim":
+				return moyuRedi(len);
 			case "pyrm": // Pyraminx (random moves)
 				ret = mega([
 					["U"],
@@ -434,6 +444,6 @@
 	}
 
 
-	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scramble.mega);
