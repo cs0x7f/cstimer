@@ -837,6 +837,7 @@ var kernel = (function() {
 				var files = data['files'];
 				if (files.length == 0) {
 					alert('No Data Found');
+					updateUserInfoFromGGL();
 					return;
 				}
 				inServGGL.html('Import Data...');
@@ -846,18 +847,17 @@ var kernel = (function() {
 						data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
 					} catch (e) {
 						alert('No Valid Data Found');
+						updateUserInfoFromGGL();
 						return;
 					}
 					loadData(data);
 				}).error(function() {
 					alert(EXPORT_ERROR + '\nPlease Re-login');
 					logoutFromGGL();
-					updateUserInfoFromGGL();
 				});
 			}).error(function() {
 				alert(EXPORT_ERROR + '\nPlease Re-login');
 				logoutFromGGL();
-				updateUserInfoFromGGL();
 			});
 		}
 
@@ -866,6 +866,7 @@ var kernel = (function() {
 			if (!gglData['access_token']) {
 				return;
 			}
+			outServGGL.html('Create File...');
 			$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&access_token=' + gglData['access_token'], {
 				'type': 'POST',
 				'contentType': 'application/json',
@@ -875,12 +876,14 @@ var kernel = (function() {
 				})
 			}).success(function(data, status, xhr) {
 				var uploadUrl = xhr.getResponseHeader('location');
+				outServGGL.html('Uploading Data...');
 				$.ajax(uploadUrl, {
 					'type': 'PUT',
 					'contentType': 'text/plain',
 					'data': LZString.compressToEncodedURIComponent(expString)
 				}).success(function(data, status, xhr) {
-					console.log(data);
+					alert('Export Success');
+					updateUserInfoFromGGL();
 				}).error(function(data, status, xhr) {
 					alert(EXPORT_ERROR);
 					logoutFromGGL();
