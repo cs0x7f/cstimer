@@ -706,23 +706,29 @@ var kernel = (function() {
 		});
 	})();
 
-	var exportFunc = (function () {
-		var wcaLoginUrl = "https://www.worldcubeassociation.org/oauth/authorize?client_id=63a89d6694b1ea2d7b7cbbe174939a4d2adf8dd26e69acacd1280af7e7727554&response_type=code&scope=public&redirect_uri=" + encodeURI(location.href.split('?')[0]);
+	var exportFunc = (function() {
+		var wcaLoginUrl = 'https://www.worldcubeassociation.org/oauth/authorize?client_id=63a89d6694b1ea2d7b7cbbe174939a4d2adf8dd26e69acacd1280af7e7727554&response_type=code&scope=public&redirect_uri=' + encodeURI(location.href.split('?')[0]);
+		var gglLoginUrl = 'https://accounts.google.com/o/oauth2/v2/auth?client_id=738060786798-octf9tngnn8ibd6kau587k34au263485.apps.googleusercontent.com&response_type=token&scope=https://www.googleapis.com/auth/drive.appdata&redirect_uri=' + encodeURI(location.href.split('?')[0]);
 
 		var exportDiv = $('<div />');
-		var wcaDataTd = $('<td id="wcaData"></td>');
-		var wcaDataTr = $('<tr>').append('<td class="img"/>', wcaDataTd);
-		var exportTable = $('<table id="exportTable">');
+		var exportTable = $('<table class="expOauth expUpDown">');
 
-		var inServWCA = $('<a class="click"/>').html(EXPORT_FROMSERV + '<br>(WCA Account)').click(downloadData);
-		var outServWCA = $('<a class="click"/>').html(EXPORT_TOSERV + '<br>(WCA Account)').click(uploadData);
+		var wcaDataTd = $('<td></td>');
+		var wcaDataTr = $('<tr>').append('<td class="img"/>', wcaDataTd);
+		var inServWCA = $('<a class="click"/>').html(EXPORT_FROMSERV + ' (csTimer)').click(downloadData);
+		var outServWCA = $('<a class="click"/>').html(EXPORT_TOSERV + ' (csTimer)').click(uploadData);
+
+		var gglDataTd = $('<td></td>');
+		var gglDataTr = $('<tr>').append('<td class="img"/>', gglDataTd);
+		var inServGGL = $('<a class="click"/>');
+		var outServGGL = $('<a class="click"/>');
 
 		var inFile = $('<input type="file" id="file" accept="text/plain"/>').change(importFile);
 		var outFile = $('<a class="click"/>').html(EXPORT_TOFILE);
 		var reader = undefined;
 
-		var inServ = $('<a class="click"/>').html(EXPORT_FROMSERV).click(downloadData);
-		var outServ = $('<a class="click"/>').html(EXPORT_TOSERV).click(uploadData);
+		var inServ = $('<a class="click"/>').html(EXPORT_FROMSERV + ' (csTimer)').click(downloadData);
+		var outServ = $('<a class="click"/>').html(EXPORT_TOSERV + ' (csTimer)').click(uploadData);
 
 		var expString;
 
@@ -735,15 +741,16 @@ var kernel = (function() {
 				$('<td>').append(outServ)));
 
 		function importData() {
-			loadData(this.result);
+			loadData(JSON.parse(this.result));
 		}
 
 		function loadData(data) {
-			data = JSON.parse(data);
 			if ('properties' in data) {
 				var wcaData = localStorage['wcaData'] || '{}';
+				var gglData = localStorage['gglData'] || '{}';
 				localStorage.clear();
 				localStorage['wcaData'] = wcaData;
+				localStorage['gglData'] = gglData;
 				localStorage['properties'] = data['properties'];
 				property.load();
 			}
@@ -785,13 +792,16 @@ var kernel = (function() {
 				return;
 			}
 			var compExpString = LZString.compressToEncodedURIComponent(expString);
-			$.post('https://cstimer.net/userdata.php', {'id': id, 'data': compExpString}, function(val) {
-				if (val["retcode"] == 0) {
+			$.post('https://cstimer.net/userdata.php', {
+				'id': id,
+				'data': compExpString
+			}, function(val) {
+				if (val['retcode'] == 0) {
 					alert(EXPORT_UPLOADED);
 				} else {
 					alert(EXPORT_ERROR);
 				}
-			}, "json");
+			}, 'json');
 		}
 
 		function downloadData(e) {
@@ -799,44 +809,118 @@ var kernel = (function() {
 			if (!id) {
 				return;
 			}
-			$.post('https://cstimer.net/userdata.php', {'id': id}, function(val) {
-				var retcode = val["retcode"];
+			$.post('https://cstimer.net/userdata.php', {
+				'id': id
+			}, function(val) {
+				var retcode = val['retcode'];
 				if (retcode == 0) {
-					loadData(LZString.decompressFromEncodedURIComponent(val["data"]));
+					loadData(JSON.parse(LZString.decompressFromEncodedURIComponent(val['data'])));
 				} else if (retcode == 404) {
 					alert(EXPORT_NODATA);
 				} else {
 					alert(EXPORT_ERROR);
 				}
-			}, "json").error(function() {
+			}, 'json').error(function() {
 				alert(EXPORT_ERROR);
+			});
+		}
+
+		function downloadDataGGL() {
+			var gglData = JSON.parse(localStorage['gglData'] || '{}');
+			if (!gglData['access_token']) {
+				return;
+			}
+			inServGGL.html('Check File List...');
+			$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27&access_token=' + gglData['access_token'], {
+				'type': 'GET'
+			}).success(function(data, status, xhr) {
+				var files = data['files'];
+				if (files.length == 0) {
+					alert('No Data Found');
+					return;
+				}
+				inServGGL.html('Import Data...');
+				var fileId = files[0]['id'];
+				$.get('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&access_token=' + gglData['access_token']).success(function(data) {
+					try {
+						data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
+					} catch (e) {
+						alert('No Valid Data Found');
+						return;
+					}
+					loadData(data);
+				}).error(function() {
+					alert(EXPORT_ERROR + '\nPlease Re-login');
+					logoutFromGGL();
+					updateUserInfoFromGGL();
+				});
+			}).error(function() {
+				alert(EXPORT_ERROR + '\nPlease Re-login');
+				logoutFromGGL();
+				updateUserInfoFromGGL();
+			});
+		}
+
+		function uploadDataGGL() {
+			var gglData = JSON.parse(localStorage['gglData'] || '{}');
+			if (!gglData['access_token']) {
+				return;
+			}
+			$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&access_token=' + gglData['access_token'], {
+				'type': 'POST',
+				'contentType': 'application/json',
+				'data': JSON.stringify({
+					'parents': ['appDataFolder'],
+					'name': 'cstimer.txt'
+				})
+			}).success(function(data, status, xhr) {
+				var uploadUrl = xhr.getResponseHeader('location');
+				$.ajax(uploadUrl, {
+					'type': 'PUT',
+					'contentType': 'text/plain',
+					'data': LZString.compressToEncodedURIComponent(expString)
+				}).success(function(data, status, xhr) {
+					console.log(data);
+				}).error(function(data, status, xhr) {
+					alert(EXPORT_ERROR);
+					logoutFromGGL();
+				});
+			}).error(function(data, status, xhr) {
+				if (data.status == 401) {
+					alert('Timeout, Please Re-login');
+				} else {
+					alert(EXPORT_ERROR);
+				}
+				logoutFromGGL();
 			});
 		}
 
 		function showExportDiv() {
 			storage.exportAll(function(exportObj) {
-				exportObj["properties"] = localStorage["properties"];
+				exportObj['properties'] = localStorage['properties'];
 				expString = JSON.stringify(exportObj);
 
 				if (window.Blob) {
-					var blob = new Blob([expString], {'type': 'text/plain'});
+					var blob = new Blob([expString], {
+						'type': 'text/plain'
+					});
 					outFile.attr('href', URL.createObjectURL(blob));
 					outFile.attr('download', 'cstimer.txt');
 				}
-				kernel.showDialog([exportDiv, 0, undefined, 0], 'stats', EXPORT_DATAEXPORT);
+				kernel.showDialog([exportDiv, 0, undefined, 0], 'export', EXPORT_DATAEXPORT);
 			});
 		}
 
 		function updateUserInfoFromWCA() {
 			var wcaData = JSON.parse(localStorage['wcaData'] || '{}');
-			wcaDataTr.unbind("click");
+			wcaDataTr.unbind('click');
+			inServWCA.unbind('click').removeClass('click');
+			outServWCA.unbind('click').removeClass('click');
 			if (!wcaData['access_token']) {
 				wcaDataTd.html('Login Using WCA Account');
 				wcaDataTr.click(function() {
 					location.href = wcaLoginUrl;
 				}).addClass('click');
-				inServWCA.unbind('click').removeClass('click');
-				outServWCA.unbind('click').removeClass('click');
 			} else {
 				var me = wcaData['wca_me'];
 				wcaDataTd.html('WCAID: ' + me['wca_id'] + '<br>' + 'Name: ' + me['name']);
@@ -845,8 +929,31 @@ var kernel = (function() {
 						logoutFromWCA();
 					}
 				}).addClass('click');
-				inServWCA.unbind('click').addClass('click').click(downloadData);
-				outServWCA.unbind('click').addClass('click').click(uploadData);
+				inServWCA.addClass('click').click(downloadData);
+				outServWCA.addClass('click').click(uploadData);
+			}
+		}
+
+		function updateUserInfoFromGGL() {
+			var gglData = JSON.parse(localStorage['gglData'] || '{}');
+			gglDataTr.unbind('click');
+			inServGGL.unbind('click').removeClass('click').html(EXPORT_FROMSERV + ' (Google)');
+			outServGGL.unbind('click').removeClass('click').html(EXPORT_TOSERV + ' (Google)');
+			if (!gglData['access_token']) {
+				gglDataTd.html('Login Using Google Account');
+				gglDataTr.click(function() {
+					location.href = gglLoginUrl;
+				}).addClass('click');
+			} else {
+				var me = gglData['ggl_me'];
+				gglDataTd.html('Name: ' + me['displayName'] + '<br>' + 'Email: ' + me['emailAddress']);
+				gglDataTr.click(function() {
+					if (confirm('Confirm to log out?')) {
+						logoutFromGGL();
+					}
+				}).addClass('click');
+				inServGGL.addClass('click').click(downloadDataGGL);
+				outServGGL.addClass('click').click(uploadDataGGL);
 			}
 		}
 
@@ -855,7 +962,12 @@ var kernel = (function() {
 			updateUserInfoFromWCA();
 		}
 
-		function cleanupCode(code) {
+		function logoutFromGGL() {
+			delete localStorage['gglData'];
+			updateUserInfoFromGGL();
+		}
+
+		function cleanupWCACode(code) {
 			var curLoc = location.href.replace('code=' + code, '').replace(/\?$/, '');
 			if (history && history.pushState) {
 				history.pushState(undefined, undefined, curLoc);
@@ -865,38 +977,86 @@ var kernel = (function() {
 			updateUserInfoFromWCA();
 		}
 
+		function cleanupGGLHash() {
+			if (history && history.replaceState) {
+				history.replaceState(undefined, undefined, '#');
+			} else {
+				window.location.hash = '';
+			}
+			updateUserInfoFromGGL();
+		}
+
 		$(function() {
 			ui.addButton('export', BUTTON_EXPORT, showExportDiv, 2);
-			exportDiv.append("<br>", 
-				$('<div id="wcaDiv">').append(
-					$('<table id="wcaLogin">').append(wcaDataTr), 
-					$('<table id="wcaExport">').append($('<tr>').append(
+			exportDiv.append('<br>',
+				$('<div class="expOauth">').append(
+					$('<table id="wcaLogin">').append(wcaDataTr),
+					$('<table class="expUpDown">').append($('<tr>').append(
 						$('<td>').append(inServWCA),
 						$('<td>').append(outServWCA)))),
-					exportTable);
+				$('<div class="expOauth">').append(
+					$('<table id="gglLogin">').append(gglDataTr),
+					$('<table class="expUpDown">').append($('<tr>').append(
+						$('<td>').append(inServGGL),
+						$('<td>').append(outServGGL)))),
+				exportTable);
 			if (window.FileReader && window.Blob) {
 				reader = new FileReader();
 				reader.onload = importData;
 			}
 
-			if ($.urlParam('code')) {
+			if ($.urlParam('code')) { //WCA oauth
 				var code = $.urlParam('code');
-				$.post('oauthwca.php', {'code': $.urlParam('code')}, function(val) {
-					// console.log(val);
+				wcaDataTd.html('Authorized<br>Fetching Data...');
+				$.post('oauthwca.php', {
+					'code': $.urlParam('code')
+				}, function(val) {
 					if ('access_token' in val) {
 						localStorage['wcaData'] = JSON.stringify(val);
 					} else {
 						alert(EXPORT_ERROR);
+						logoutFromWCA();
 					}
-					cleanupCode(code);
-				}, "json").error(function() {
+				}, 'json').error(function() {
 					alert(EXPORT_ERROR);
-					cleanupCode(code);
+					logoutFromWCA();
+				}).always(function() {
+					cleanupWCACode(code);
 				});
-				wcaDataTd.html('Authorized<br>Fetching Data...');
 				showExportDiv();
 			} else {
 				updateUserInfoFromWCA();
+			}
+
+			if ($.hashParam('access_token')) { //Google oauth
+				var access_token = $.hashParam('access_token');
+				gglDataTd.html('Authorized<br>Fetching Data...');
+				$.get('https://www.googleapis.com/drive/v3/about', {
+					'fields': 'user',
+					'access_token': access_token
+				}, function(val) {
+					if ('user' in val) {
+						localStorage['gglData'] = JSON.stringify({
+							'access_token': access_token,
+							'ggl_me': val['user']
+						});
+					} else {
+						alert(EXPORT_ERROR);
+						logoutFromGGL();
+					}
+				}, 'json').error(function(data, status, xhr) {
+					if (data.status == 401) {
+						alert('Timeout, Please Re-login');
+					} else {
+						alert(EXPORT_ERROR);
+					}
+					logoutFromGGL();
+				}).always(function() {
+					cleanupGGLHash(code);
+				});
+				showExportDiv();
+			} else {
+				updateUserInfoFromGGL();
 			}
 		})
 	})();
@@ -1032,7 +1192,7 @@ var kernel = (function() {
 	});
 
 	function cleanLocalStorage() {
-		var validKeys = ['properties', 'cachedScr', 'wcaData'];
+		var validKeys = ['properties', 'cachedScr', 'wcaData', 'gglData'];
 
 		for (var i = 0; i < validKeys.length; i++) {
 			try {

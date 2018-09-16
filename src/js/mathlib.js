@@ -333,12 +333,20 @@ if (window.performance && window.performance.now) {
 	}
 }
 
-$.urlParam = function(name){
+$.urlParam = function(name) {
 	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	if (results==null){
+	if (results == null) {
 		return null;
+	} else {
+		return results[1] || 0;
 	}
-	else{
+}
+
+$.hashParam = function(name) {
+	var results = new RegExp('[#&]' + name + '=([^&#]*)').exec(window.location.hash);
+	if (results == null) {
+		return null;
+	} else {
 		return results[1] || 0;
 	}
 }
