@@ -199,7 +199,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         var isShowAvgDiv = true;
 
         function showAvgDiv(enable) {
-            if (enable && getProp('showAvg') && $.inArray(getProp('input'), ['s', 't', 'i']) != -1) {
+            if (enable && getProp('showAvg') && $.inArray(getProp('input'), ['s', 'm', 't', 'i']) != -1) {
                 if (!isShowAvgDiv) {
                     avgDiv.show();
                     isShowAvgDiv = true;
@@ -465,11 +465,11 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         }
 
         return {
-            setEnable: function(en) {
-                enable = en;
-                if (en) {
+            setEnable: function(input) { //s: stackmat, m: moyu
+                enable = input == 's' || input == 'm';
+                if (enable) {
                     stackmat.setCallBack(stackmatCallback);
-                    stackmat.init();
+                    stackmat.init(input);
                 } else {
                     stackmat.stop();
                 }
@@ -778,7 +778,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 $('#multiphase').css('font-size', getProp('timerSize') / Math.max(getProp('phases'), 4) + 'em')
             }
             if (value[0] == 'input') {
-                stackmatTimer.setEnable(value[1] == 's');
+                stackmatTimer.setEnable(value[1]);
             }
             if (value[0] == 'showAvg') {
                 avgDiv.showAvgDiv(value[1]);
@@ -790,7 +790,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
         regProp('timer', 'useIns', 0, PROPERTY_USEINS, [false]);
         regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
-        regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'v'], PROPERTY_ENTERING_STR.split('|')]);
+        regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v'], PROPERTY_ENTERING_STR.split('|')]);
         regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);
         regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000],
             ['0', '0.3', '0.55(stackmat)', '1']
