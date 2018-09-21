@@ -575,7 +575,7 @@ var kernel = (function() {
 			if (importColor(window.location.hash)) {
 				property.set('color', 'u');
 				if (history && history.replaceState) {
-					history.replaceState(undefined, undefined, "#");
+					history.replaceState(undefined, undefined, window.location.pathname + window.location.search);
 				} else {
 					window.location.hash = '';
 				}
@@ -982,7 +982,7 @@ var kernel = (function() {
 
 		function cleanupGGLHash() {
 			if (history && history.replaceState) {
-				history.replaceState(undefined, undefined, '#');
+				history.replaceState(undefined, undefined, window.location.pathname + window.location.search);
 			} else {
 				window.location.hash = '';
 			}
