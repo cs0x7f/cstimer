@@ -6,6 +6,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=500, user-scalable=no">
+  <link rel="manifest" href="cstimer.webmanifest">
 <?php include('lang/langDet.php');?>
   <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
   <link rel='stylesheet' type='text/css' href='css/style.css'>

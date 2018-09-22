@@ -350,3 +350,20 @@ $.hashParam = function(name) {
 		return results[1] || 0;
 	}
 }
+
+if ('serviceWorker' in navigator) {
+	$(function() {
+		navigator.serviceWorker.register('sw.js').then(function(registration) {
+			console.log('ServiceWorker registration successful with scope:', registration.scope);
+		});
+	});
+} else if (window.applicationCache) {
+	$(function() {
+		applicationCache.addEventListener('updateready', function(e) {
+			if (applicationCache.status == applicationCache.UPDATEREADY) {
+				applicationCache.swapCache();
+				location.reload();
+			}
+		}, false);
+	});
+}

@@ -62,7 +62,7 @@ css = $(addprefix $(dest)/css/, $(shell ls $(src)/css))
 langJS = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.js))
 langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))
 
-all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) $(dest)/cache.manifest
+all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) $(dest)/cache.manifest $(dest)/sw.js
 
 clean:
 	rm -f $(cstimer) $(twisty) $(css) $(langJS) $(langPHP)
@@ -97,6 +97,11 @@ $(dest)/cache.manifest: $(cache)
 	@echo $@
 	@sed -i '$$d' $@
 	@echo -n \# MD5= >> $@
-	@cat $(cache) | md5sum >> $@
+	@cat $(cache) | md5sum | awk '{print $$1}' >> $@
+
+$(dest)/sw.js: $(cache)
+	@echo $@
+	@sed -i '$$d' $@
+	@echo 'var CACHE_NAME = "cstimer_cache_'`cat $(cache) | md5sum | awk '{print $$1}'`'";' >> $@
 
 .PHONY: all

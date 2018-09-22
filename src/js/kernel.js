@@ -1171,15 +1171,6 @@ var kernel = (function() {
 			}
 		});
 
-		if (window.applicationCache) { 
-			applicationCache.addEventListener('updateready', function(e) {
-				if (applicationCache.status == applicationCache.UPDATEREADY) {
-					applicationCache.swapCache();
-					location.reload();
-				}
-			}, false);
-		}
-
 		// var externJS = $.urlParam('extjs');
 		// if (externJS) {
 		// 	externJS = JSON.parse(decodeURIComponent(externJS));

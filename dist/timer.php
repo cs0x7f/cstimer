@@ -19,6 +19,7 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=800">
   <link rel="apple-touch-icon" href="img/cstimer.png">
+  <link rel="manifest" href="cstimer.webmanifest">
 <?php include('lang/langDet.php');?>
   <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
   <link rel='stylesheet' type='text/css' href='css/style.css'>

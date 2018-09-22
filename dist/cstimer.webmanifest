@@ -1,0 +1,11 @@
+{
+  "name": "csTimer",
+  "short_name": "csTimer",
+  "icons": [{
+    "src": "img/cstimer512x512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "start_url": "timer.php",
+  "display": "standalone"
+}
