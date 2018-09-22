@@ -323,10 +323,6 @@ var mathlib = (function() {
 
 })();
 
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-	jQuery.fx.off = true;
-}
-
 if (window.performance && window.performance.now) {
 	$.now = function() {
 		return Math.floor(window.performance.now());
@@ -353,9 +349,7 @@ $.hashParam = function(name) {
 
 if ('serviceWorker' in navigator) {
 	$(function() {
-		navigator.serviceWorker.register('sw.js').then(function(registration) {
-			console.log('ServiceWorker registration successful with scope:', registration.scope);
-		});
+		navigator.serviceWorker.register('sw.js');
 	});
 } else if (window.applicationCache) {
 	$(function() {
