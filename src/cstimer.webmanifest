@@ -1,14 +1,11 @@
 {
-    "name": "csTimer",
-    "short_name": "csTimer",
-    "start_url": ".",
-    "display": "fullscreen",
-    "background_color": "#fff",
-    "description": "ppp111",
-    "icons": [
-    {
-        "src": "cstimer512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    }]
+  "name": "csTimer",
+  "short_name": "csTimer",
+  "icons": [{
+    "src": "cstimer512x512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "start_url": "timer.php",
+  "display": "standalone"
 }
