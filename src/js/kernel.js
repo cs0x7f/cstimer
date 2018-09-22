@@ -1146,13 +1146,13 @@ var kernel = (function() {
 
 		$('#touch')[0].ontouchstart = function(e) {
 			timer.onkeydown(32);
-			e.preventDefault();
+			e.preventDefault && e.preventDefault();
 		}
 		$('#touch')[0].ontouchend = function(e) {
 			timer.onkeyup(32);
-			e.preventDefault();
+			e.preventDefault && e.preventDefault();
 		}
-		$('#touch').bind('touch', function(e){e.preventDefault()});
+		$('#touch').bind('touch', function(e){e.preventDefault && e.preventDefault()});
 
 		/**
 		 * ontouch events might not work on microsoft surface pad or laptop,
@@ -1161,13 +1161,13 @@ var kernel = (function() {
 		$('#touch').mousedown(function(e) {
 			if (e.which == 1 && getProp('useMouse')) { //left button only
 				timer.onkeydown(32);
-				e.preventDefault();
+				e.preventDefault && e.preventDefault();
 			}
 		});
 		$('#touch').mouseup(function(e) {
 			if (e.which == 1 && getProp('useMouse')) {
 				timer.onkeyup(32);
-				e.preventDefault();
+				e.preventDefault && e.preventDefault();
 			}
 		});
 
