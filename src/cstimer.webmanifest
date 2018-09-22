@@ -6,6 +6,6 @@
     "sizes": "512x512",
     "type": "image/png"
   }],
-  "start_url": "timer.php",
+  "start_url": ".",
   "display": "standalone"
 }
