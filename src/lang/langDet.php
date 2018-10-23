@@ -32,7 +32,7 @@ if ($lang == "cn") { ?>
   <title> csTimer - Cronometro Professionale per Speedcubing/Allenamento </title>
 <?php } else if ($lang == "ko") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
-  <title> csTimer - 전문 큐브 타이머 </title>
+  <title> csTimer - 큐브 연습용 초시계 </title>
 <?php } else if ($lang == "nl") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionele Speedcubing/Training Timer </title>
