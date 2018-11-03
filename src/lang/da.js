@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Utilgængelig for denne blandings type';
 var TOOLS_SELECTFUNC = 'Funktion';
 var TOOLS_CROSS = 'løs kryds';
 var TOOLS_EOLINE = 'løs EOLine';
+var TOOLS_ROUX1 = 'løs Roux S1';
 var TOOLS_IMAGE = 'tegn blanding';
 var TOOLS_STATS = 'Statistiker';
 var TOOLS_DISTRIBUTION = 'Tidsfordeling';

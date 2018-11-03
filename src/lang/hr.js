@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Nedostupno za ovaj tip scramble-a';
 var TOOLS_SELECTFUNC = 'Funkcija: ';
 var TOOLS_CROSS = 'složi križ';
 var TOOLS_EOLINE = 'složi EOLine';
+var TOOLS_ROUX1 = 'složi Roux S1';
 var TOOLS_IMAGE = 'prikaži scramble';
 var TOOLS_STATS = 'Statistika';
 var TOOLS_DISTRIBUTION = 'distribucija vremena';

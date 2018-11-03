@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = '해당 유형은 섞기 그림이 지원되지 않습�
 var TOOLS_SELECTFUNC = '기능: ';
 var TOOLS_CROSS = '십자/Xcross 도우미';
 var TOOLS_EOLINE = 'EOLine 도우미';
+var TOOLS_ROUX1 = 'Roux S1 도우미';
 var TOOLS_IMAGE = '섞기 그림';
 var TOOLS_STATS = '통계 정보';
 var TOOLS_DISTRIBUTION = '시간 분포';

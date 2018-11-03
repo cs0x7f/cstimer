@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Non disponible pour ce type de mélange';
 var TOOLS_SELECTFUNC = 'Fonction : ';
 var TOOLS_CROSS = 'Résoudre la croix';
 var TOOLS_EOLINE = 'Résoudre l\'EOLine';
+var TOOLS_ROUX1 = 'solve Roux S1';
 var TOOLS_IMAGE = 'Schéma du mélange';
 var TOOLS_STATS = 'Statistiques';
 var TOOLS_DISTRIBUTION = 'Répartition des temps';

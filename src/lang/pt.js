@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Indisponível para esse tipo de embaralhamento!';
 var TOOLS_SELECTFUNC = 'Função: ';
 var TOOLS_CROSS = 'resolver a cruz';
 var TOOLS_EOLINE = 'resolver a EOLine';
+var TOOLS_ROUX1 = 'resolver a Roux S1';
 var TOOLS_IMAGE = 'desenhar o embaralhamento';
 var TOOLS_STATS = 'Estatisticas';
 var TOOLS_DISTRIBUTION = 'distribuição de tempos';

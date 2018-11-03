@@ -36,6 +36,7 @@ tools.js \
 tools/image.js \
 tools/cross.js \
 tools/eoline.js \
+tools/roux1.js \
 tools/insertionfinder.js \
 tools/metronome.js \
 shortcut.js \

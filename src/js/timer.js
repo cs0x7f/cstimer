@@ -722,6 +722,16 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         }
     })();
 
+
+    var giikerTimer = (function() {
+
+    })();
+
+
+    var giikerVRCTimer = (function() {
+
+    })();
+
     function onkeydown(keyCode) {
         if (ui.isPop()) {
             return;

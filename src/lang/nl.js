@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Niet beschikbaar voor dit type scramble';
 var TOOLS_SELECTFUNC = 'Functie: ';
 var TOOLS_CROSS = 'Los kruis op';
 var TOOLS_EOLINE = 'Los EOLine op';
+var TOOLS_ROUX1 = 'Los Roux S1 op';
 var TOOLS_IMAGE = 'Teken scramble';
 var TOOLS_STATS = 'Statistiek';
 var TOOLS_DISTRIBUTION = 'Verdeling tijden';

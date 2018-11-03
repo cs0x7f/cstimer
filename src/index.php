@@ -36,11 +36,13 @@
   <script type="text/javascript" src="js/tools/image.js"></script>
   <script type="text/javascript" src="js/tools/cross.js"></script>
   <script type="text/javascript" src="js/tools/eoline.js"></script>
+  <script type="text/javascript" src="js/tools/roux1.js"></script>
   <script type="text/javascript" src="js/tools/insertionfinder.js"></script>
   <script type="text/javascript" src="js/tools/metronome.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>
+  <script type="text/javascript" src="js/giiker.js"></script>
   <script type="text/javascript" src="js/threemin.js"></script>
   <script type="text/javascript" src="js/twisty.js"></script>
   <script type="text/javascript" src="js/twisty/twistynnn.js"></script>

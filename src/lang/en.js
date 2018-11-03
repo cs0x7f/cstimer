@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
 var TOOLS_SELECTFUNC = 'Function: ';
 var TOOLS_CROSS = 'solve cross';
 var TOOLS_EOLINE = 'solve EOLine';
+var TOOLS_ROUX1 = 'solve Roux S1';
 var TOOLS_IMAGE = 'draw scramble';
 var TOOLS_STATS = 'Statistics';
 var TOOLS_DISTRIBUTION = 'time distribution';

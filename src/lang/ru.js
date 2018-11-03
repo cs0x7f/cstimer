@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Невозможно для этого типа скр�
 var TOOLS_SELECTFUNC = 'Функция: ';
 var TOOLS_CROSS = 'собрать крест';
 var TOOLS_EOLINE = 'собрать EOLine';
+var TOOLS_ROUX1 = 'собрать Roux S1';
 var TOOLS_IMAGE = 'нарисовать скрамбл';
 var TOOLS_STATS = 'Статистика';
 var TOOLS_DISTRIBUTION = 'распределение времени';

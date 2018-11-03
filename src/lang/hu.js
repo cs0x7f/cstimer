@@ -37,6 +37,7 @@ var IMAGE_UNAVAILABLE = 'Nem elérhető ebben a keverési típusban';
 var TOOLS_SELECTFUNC = 'Funkció: ';
 var TOOLS_CROSS = 'kereszt megoldása';
 var TOOLS_EOLINE = 'EOLine megoldása';
+var TOOLS_ROUX1 = 'Roux S1 megoldása';
 var TOOLS_IMAGE = 'Keverés mutatása';
 var TOOLS_STATS = 'Statisztikák';
 var TOOLS_DISTRIBUTION = 'idő megoszlása';
