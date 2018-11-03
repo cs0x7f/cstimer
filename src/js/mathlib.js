@@ -213,7 +213,9 @@ var mathlib = (function() {
 		[48, 14]
 	];
 
-	CubieCube.prototype.toFaceCube = function() {
+	CubieCube.prototype.toFaceCube = function(cFacelet, eFacelet) {
+		cFacelet = cFacelet || cornerFacelet;
+		eFacelet = eFacelet || edgeFacelet;
 		var ts = "URFDLB";
 		var f = [];
 		for (var i = 0; i < 54; i++) {
@@ -223,13 +225,13 @@ var mathlib = (function() {
 			var j = this.ca[c] & 0x7; // cornercubie with index j is at
 			var ori = this.ca[c] >> 3; // Orientation of this cubie
 			for (var n = 0; n < 3; n++)
-				f[cornerFacelet[c][(n + ori) % 3]] = ts[~~(cornerFacelet[j][n] / 9)];
+				f[cFacelet[c][(n + ori) % 3]] = ts[~~(cFacelet[j][n] / 9)];
 		}
 		for (var e = 0; e < 12; e++) {
 			var j = this.ea[e] >> 1; // edgecubie with index j is at edgeposition
 			var ori = this.ea[e] & 1; // Orientation of this cubie
 			for (var n = 0; n < 2; n++)
-				f[edgeFacelet[e][(n + ori) % 2]] = ts[~~(edgeFacelet[j][n] / 9)];
+				f[eFacelet[e][(n + ori) % 2]] = ts[~~(eFacelet[j][n] / 9)];
 		}
 		return f.join("");
 	}

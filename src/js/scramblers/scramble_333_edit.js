@@ -1354,6 +1354,16 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return getAnyScramble(cases[0], cases[1], 0xffffffff, 0xffffffff);
 	}
 
+	function genFacelet(facelet) {
+		ini();
+		return $solution(search, facelet);
+	}
+
+	function solvFacelet(facelet) {
+		ini();
+		return $solution(search, facelet, 0, 0, 0, 1);
+	}
+
 	scramble.reg('333', getRandomScramble)
 		('333fm', getFMCScramble)
 		('333ni', getRandomOriScramble)
@@ -1390,7 +1400,9 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		getCMLLScramble: getCMLLScramble,
 		getCLLScramble: getCLLScramble,
 		getELLScramble: getELLScramble,
-		getAnyScramble: getAnyScramble
+		getAnyScramble: getAnyScramble,
+		genFacelet: genFacelet,
+		solvFacelet: solvFacelet
 	};
 
 })(mathlib.getNPerm, mathlib.get8Perm, mathlib.setNPerm, mathlib.set8Perm, mathlib.getNParity, mathlib.getPruning, mathlib.Cnk, mathlib.fact, mathlib.rn, mathlib.rndEl);

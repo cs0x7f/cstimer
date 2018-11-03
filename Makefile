@@ -41,7 +41,8 @@ tools/insertionfinder.js \
 tools/metronome.js \
 shortcut.js \
 help.js \
-stackmat.js)
+stackmat.js \
+giiker.js)
 
 cache = $(addprefix $(dest)/, \
 timer.php \
