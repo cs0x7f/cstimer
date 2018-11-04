@@ -72,6 +72,8 @@ var giikerutil = (function(CubieCube) {
 		var cc = new mathlib.CubieCube();
 		cc.fromFacelet(currentRawState);
 		solvedStateInv.invFrom(cc);
+		currentState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+		drawState();
 	}
 
 	function giikerCallback(facelet, prevMoves) {
@@ -81,9 +83,8 @@ var giikerutil = (function(CubieCube) {
 		mathlib.CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
 		mathlib.CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
-		console.log(currentState);
-		drawState();
 		callback(currentState, prevMoves);
+		drawState();
 	}
 
 	function init() {
