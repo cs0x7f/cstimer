@@ -3,6 +3,7 @@
 var giikerutil = (function(CubieCube) {
 
 	var connectClick = $('<span></span>');
+	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
 	var canvas = $('<canvas>');
 	var drawState = (function() {
 		var faceOffsetX = [1, 2, 1, 1, 0, 3];
@@ -49,7 +50,8 @@ var giikerutil = (function(CubieCube) {
 		if (!GiikerCube.isConnected()) {
 			connectClick.html('Connect').addClass('click').click(init);
 		}
-		fdiv.empty().append('Giiker: ', connectClick, '<br><br>', canvas);
+		fdiv.empty().append('Giiker: ', connectClick, '<br>')
+			.append(resetClick.unbind('click').click(markSolved), '<br><br>', canvas);
 		drawState();
 	}
 
@@ -59,13 +61,29 @@ var giikerutil = (function(CubieCube) {
 
 	var callback = $.noop;
 
-	var currentState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+	var currentRawState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+	var currentRawCubie = new mathlib.CubieCube();
+	var currentCubie = new mathlib.CubieCube();
+	var currentState = currentRawState;
+	var solvedStateInv = new mathlib.CubieCube();
+
+	function markSolved() {
+		//mark current state as solved
+		var cc = new mathlib.CubieCube();
+		cc.fromFacelet(currentRawState);
+		solvedStateInv.invFrom(cc);
+	}
 
 	function giikerCallback(facelet, prevMoves) {
 		connectClick.html('Connected').removeClass('click').unbind('click');
-		currentState = facelet;
+		currentRawState = facelet;
+		currentRawCubie.fromFacelet(currentRawState);
+		mathlib.CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
+		mathlib.CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
+		currentState = currentCubie.toFaceCube();
+		console.log(currentState);
 		drawState();
-		callback(facelet, prevMoves);
+		callback(currentState, prevMoves);
 	}
 
 	function init() {

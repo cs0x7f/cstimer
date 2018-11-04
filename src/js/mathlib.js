@@ -236,6 +236,59 @@ var mathlib = (function() {
 		return f.join("");
 	}
 
+	CubieCube.prototype.invFrom = function(cc) {
+		for (var edge = 0; edge < 12; edge++) {
+			this.ea[cc.ea[edge] >> 1] = edge << 1 | cc.ea[edge] & 1;
+		}
+		for (var corn = 0; corn < 8; corn++) {
+			this.ca[cc.ca[corn] & 0x7] = corn | 0x20 >> (cc.ca[corn] >> 3) & 0x18;
+		}
+	}
+
+	CubieCube.prototype.fromFacelet = function(facelet, cFacelet, eFacelet) {
+		cFacelet = cFacelet || cornerFacelet;
+		eFacelet = eFacelet || edgeFacelet;
+		var count = 0;
+		var f = [];
+		var centers = facelet[4] + facelet[13] + facelet[22] + facelet[31] + facelet[40] + facelet[49];
+		for (var i = 0; i < 54; ++i) {
+			f[i] = centers.indexOf(facelet[i]);
+			if (f[i] == -1) {
+				return -1;
+			}
+			count += 1 << (f[i] << 2);
+		}
+		if (count != 0x999999) {
+			return -1;
+		}
+		var col1, col2, i, j, ori;
+		for (i = 0; i < 8; ++i) {
+			for (ori = 0; ori < 3; ++ori)
+				if (f[cFacelet[i][ori]] == 0 || f[cFacelet[i][ori]] == 3)
+					break;
+			col1 = f[cFacelet[i][(ori + 1) % 3]];
+			col2 = f[cFacelet[i][(ori + 2) % 3]];
+			for (j = 0; j < 8; ++j) {
+				if (col1 == ~~(cFacelet[j][1] / 9) && col2 == ~~(cFacelet[j][2] / 9)) {
+					this.ca[i] = j | ori % 3 << 3;
+					break;
+				}
+			}
+		}
+		for (i = 0; i < 12; ++i) {
+			for (j = 0; j < 12; ++j) {
+				if (f[eFacelet[i][0]] == ~~(eFacelet[j][0] / 9) && f[eFacelet[i][1]] == ~~(eFacelet[j][1] / 9)) {
+					this.ea[i] = j << 1;
+					break;
+				}
+				if (f[eFacelet[i][0]] == ~~(eFacelet[j][1] / 9) && f[eFacelet[i][1]] == ~~(eFacelet[j][0] / 9)) {
+					this.ea[i] = j << 1 | 1;
+					break;
+				}
+			}
+		}
+	}
+
 	var moveCube = [];
 	for (var i = 0; i < 18; i++) {
 		moveCube[i] = new CubieCube()
