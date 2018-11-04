@@ -788,7 +788,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     giikerutil.setCallBack(giikerCallback);
                     var ret = giikerutil.init();
                     if (ret) {
-                        ret.catch(function(error) {
+                        ret.then($.noop, function(error) {
                             if (error.code == error.SECURITY_ERR) {
                                 kernel.showDialog([$('<div>Press OK To Connect To Giiker Cube</div>'), function() {
                                     giikerutil.init();

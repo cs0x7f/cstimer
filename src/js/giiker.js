@@ -4,37 +4,41 @@ var DEBUG = false;
 
 var GiikerCube = (function() {
 
-    const SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
-    const CHARACTERISTIC_UUID = '0000aadc-0000-1000-8000-00805f9b34fb';
+    var SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
+    var CHARACTERISTIC_UUID = '0000aadc-0000-1000-8000-00805f9b34fb';
 
-    const SYSTEM_SERVICE_UUID = '0000aaaa-0000-1000-8000-00805f9b34fb';
-    const SYSTEM_READ_UUID = '0000aaab-0000-1000-8000-00805f9b34fb';
-    const SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
+    var SYSTEM_SERVICE_UUID = '0000aaaa-0000-1000-8000-00805f9b34fb';
+    var SYSTEM_READ_UUID = '0000aaab-0000-1000-8000-00805f9b34fb';
+    var SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
 
     var _device = null;
 
-    async function init(timer) {
+    function init(timer) {
 
         if (!window.navigator || !window.navigator.bluetooth) {
             alert("Bluetooth API is not available. Ensure https access, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled");
             return;
         }
 
-        const device = await window.navigator.bluetooth.requestDevice({
+        return window.navigator.bluetooth.requestDevice({
             filters: [{
                 namePrefix: 'GiC',
             }],
             optionalServices: [SERVICE_UUID, SYSTEM_SERVICE_UUID],
+        }).then(function(device) {
+            _device = device;
+            device.gatt.connect().then(function(server) {
+                server.getPrimaryService(SERVICE_UUID).then(function(service) {
+                    service.getCharacteristic(CHARACTERISTIC_UUID).then(function(characteristic) {
+                        characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
+                        characteristic.startNotifications();
+                        characteristic.readValue().then(function(value) {
+                            parseState(value);
+                        })
+                    });
+                })
+            });
         });
-
-        const server = await device.gatt.connect();
-        const service = await server.getPrimaryService(SERVICE_UUID);
-        const characteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
-        await characteristic.startNotifications();
-        const value = await characteristic.readValue();
-        onStateChanged(value);
-        characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
-        _device = device;
     }
 
     function onStateChanged(event) {
