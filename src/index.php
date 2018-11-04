@@ -37,6 +37,7 @@
   <script type="text/javascript" src="js/tools/cross.js"></script>
   <script type="text/javascript" src="js/tools/eoline.js"></script>
   <script type="text/javascript" src="js/tools/roux1.js"></script>
+  <script type="text/javascript" src="js/tools/giikerutil.js"></script>
   <script type="text/javascript" src="js/tools/insertionfinder.js"></script>
   <script type="text/javascript" src="js/tools/metronome.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>

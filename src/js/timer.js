@@ -29,7 +29,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         ui.setAutoShow(true);
     }
 
-    var voicem8s = { play: $.noop };
+    var voicem8s = {
+        play: $.noop
+    };
     var voicem12s = voicem8s;
     var voicef8s = voicem8s;
     var voicef12s = voicem8s;
@@ -507,7 +509,10 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     }
                     startTime = now;
                     moveCnt = 0;
-                    status = currentScrambleSize == 3 && currentScrambleType != "r3" ? { 'n': 1, 'cfop': 4 }[getProp('vrcMP', 'n')] : 1;
+                    status = currentScrambleSize == 3 && currentScrambleType != "r3" ? {
+                        'n': 1,
+                        'cfop': 4
+                    }[getProp('vrcMP', 'n')] : 1;
                     totPhases = status;
                     curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
                     lcd.setRunning(true, true);
@@ -725,6 +730,85 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
     var giikerTimer = (function() {
 
+        var solvedState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+        var enable = false;
+        var waitReadyTid = 0;
+        var insTime = 0;
+
+        function giikerCallback(facelet, prevMoves) {
+            if (!enable) {
+                return;
+            }
+            var now = $.now();
+            if (status == -1 && facelet != solvedState) {
+                startTime = now;
+                if (waitReadyTid) {
+                    clearTimeout(waitReadyTid);
+                }
+                waitReadyTid = setTimeout(function() {
+                    waitReadyTid = 0;
+                    if (status == -1 || status == -3) {
+                        if (status == -1) {
+                            lcd.reset();
+                        }
+                        status = -2;
+                        lcd.fixDisplay(true, true);
+                    }
+                }, 5000);
+            } else if (status == -2) {
+                if (getProp('useIns')) {
+                    insTime = now - startTime;
+                } else {
+                    insTime = 0;
+                }
+                startTime = now;
+                status = 1;
+                curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
+                lcd.fixDisplay(false, true);
+                lcd.setRunning(true);
+                ui.setAutoShow(false);
+            }
+            if (status >= 1 && facelet == solvedState) {
+                status = -1;
+                curTime[1] = now - startTime;
+                ui.setAutoShow(true);
+                lcd.setRunning(false);
+                lcd.fixDisplay(false, true);
+                lcd.val(curTime[1]);
+                if (curTime[1] != 0) {
+                    pushSignal('time', curTime);
+                }
+            }
+        }
+
+        return {
+            setEnable: function(input) { //s: stackmat, m: moyu
+                enable = input == 'g';
+                if (enable) {
+                    giikerutil.setCallBack(giikerCallback);
+                    var ret = giikerutil.init();
+                    if (ret) {
+                        ret.catch(function(error) {
+                            if (error.code == error.SECURITY_ERR) {
+                                kernel.showDialog([$('<div>Press OK To Connect To Giiker Cube</div>'), function() {
+                                    giikerutil.init();
+                                }, 0, 0], 'share', 'Giiker Connect');
+                            }
+                        });
+                    }
+                } else {
+                    GiikerCube.stop();
+                }
+            },
+            onkeydown: function(keyCode) {
+                if (keyCode == 27) {
+                    status = -1;
+                    ui.setAutoShow(true);
+                    lcd.setRunning(false);
+                    lcd.fixDisplay(false, true);
+                }
+            }
+        }
     })();
 
 
@@ -753,6 +837,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 break;
             case 'v':
                 virtual333.onkeydown(keyCode);
+                break;
+            case 'g':
+                giikerTimer.onkeydown(keyCode);
                 break;
         }
     }
@@ -789,6 +876,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             }
             if (value[0] == 'input') {
                 stackmatTimer.setEnable(value[1]);
+                giikerTimer.setEnable(value[1]);
             }
             if (value[0] == 'showAvg') {
                 avgDiv.showAvgDiv(value[1]);
@@ -800,7 +888,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
         regProp('timer', 'useIns', 0, PROPERTY_USEINS, [false]);
         regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
-        regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v'], PROPERTY_ENTERING_STR.split('|')]);
+        regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')]);
         regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);
         regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000],
             ['0', '0.3', '0.55(stackmat)', '1']

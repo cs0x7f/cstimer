@@ -25,7 +25,7 @@ var image = (function() {
     }
 
     // trans: [size, offx, offy] == [size, 0, offx * size, 0, size, offy * size] or [a11 a12 a13 a21 a22 a23]
-    function drawPolygon(color, arr, trans) {
+    function drawPolygon(ctx, color, arr, trans) {
         if (!ctx) {
             return;
         }
@@ -66,10 +66,10 @@ var image = (function() {
 
         function drawFace(state, baseIdx, trans, rot) {
             for (var i = 0; i < 5; i++) {
-                drawPolygon(colors[state[baseIdx + i]], Rotate([cornX, cornY], PI * 2 / 5 * i + rot), trans);
-                drawPolygon(colors[state[baseIdx + i + 5]], Rotate([edgeX, edgeY], PI * 2 / 5 * i + rot), trans);
+                drawPolygon(ctx, colors[state[baseIdx + i]], Rotate([cornX, cornY], PI * 2 / 5 * i + rot), trans);
+                drawPolygon(ctx, colors[state[baseIdx + i + 5]], Rotate([edgeX, edgeY], PI * 2 / 5 * i + rot), trans);
             }
-            drawPolygon(colors[state[baseIdx + 10]], Rotate([centX, centY], rot), trans);
+            drawPolygon(ctx, colors[state[baseIdx + 10]], Rotate([centX, centY], rot), trans);
         }
 
         function doMove(state, axis, inv) {
@@ -311,16 +311,16 @@ var image = (function() {
                     if (posit[i] != posit[(i + 1) % 12]) {
                         continue;
                     }
-                    drawPolygon(colors[ccol[posit[i]]],
+                    drawPolygon(ctx, colors[ccol[posit[i]]],
                         Rotate(cpl, (i - 3) * PI / 6), trans);
-                    drawPolygon(colors[ccol[posit[i] + 1]],
+                    drawPolygon(ctx, colors[ccol[posit[i] + 1]],
                         Rotate(cpr, (i - 3) * PI / 6), trans);
-                    drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
+                    drawPolygon(ctx, colors[udcol[posit[i] >= 8 ? 1 : 0]],
                         Rotate(cps, (i - 3) * PI / 6), trans);
                 } else { //edge piece
-                    drawPolygon(colors[ecol[posit[i]]],
+                    drawPolygon(ctx, colors[ecol[posit[i]]],
                         Rotate(ep, (i - 5) * PI / 6), trans);
-                    drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
+                    drawPolygon(ctx, colors[udcol[posit[i] >= 8 ? 1 : 0]],
                         Rotate(eps, (i - 5) * PI / 6), trans);
                 }
             }
@@ -332,16 +332,16 @@ var image = (function() {
                     if (posit[i] != posit[(i + 1) % 12 + 12]) {
                         continue;
                     }
-                    drawPolygon(colors[ccol[posit[i]]],
+                    drawPolygon(ctx, colors[ccol[posit[i]]],
                         Rotate(cpl, -i * PI / 6), trans);
-                    drawPolygon(colors[ccol[posit[i] + 1]],
+                    drawPolygon(ctx, colors[ccol[posit[i] + 1]],
                         Rotate(cpr, -i * PI / 6), trans);
-                    drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
+                    drawPolygon(ctx, colors[udcol[posit[i] >= 8 ? 1 : 0]],
                         Rotate(cps, -i * PI / 6), trans);
                 } else { //edge piece
-                    drawPolygon(colors[ecol[posit[i]]],
+                    drawPolygon(ctx, colors[ecol[posit[i]]],
                         Rotate(ep, (-1 - i) * PI / 6), trans);
-                    drawPolygon(colors[udcol[posit[i] >= 8 ? 1 : 0]],
+                    drawPolygon(ctx, colors[udcol[posit[i] >= 8 ? 1 : 0]],
                         Rotate(eps, (-1 - i) * PI / 6), trans);
                 }
             }
@@ -400,11 +400,11 @@ var image = (function() {
 
         function face(f) {
             var transform = ftrans[f];
-            drawPolygon(colors[posit[f * 5 + 0]], [[-1, 0, 1, 0], [0, 1, 0, -1]], transform);
-            drawPolygon(colors[posit[f * 5 + 1]], [[-1, -1, 0], [0, -1, -1]], transform);
-            drawPolygon(colors[posit[f * 5 + 2]], [[0, 1, 1], [-1, -1, 0]], transform);
-            drawPolygon(colors[posit[f * 5 + 3]], [[-1, -1, 0], [0, 1, 1]], transform);
-            drawPolygon(colors[posit[f * 5 + 4]], [[0, 1, 1], [1, 1, 0]], transform);
+            drawPolygon(ctx, colors[posit[f * 5 + 0]], [[-1, 0, 1, 0], [0, 1, 0, -1]], transform);
+            drawPolygon(ctx, colors[posit[f * 5 + 1]], [[-1, -1, 0], [0, -1, -1]], transform);
+            drawPolygon(ctx, colors[posit[f * 5 + 2]], [[0, 1, 1], [-1, -1, 0]], transform);
+            drawPolygon(ctx, colors[posit[f * 5 + 3]], [[-1, -1, 0], [0, 1, 1]], transform);
+            drawPolygon(ctx, colors[posit[f * 5 + 4]], [[0, 1, 1], [1, 1, 0]], transform);
         }
 
         return function(moveseq) {
@@ -487,7 +487,7 @@ posit:
                 arroffx[i] *= inv ? -1 : 1;
             }
             for (var idx = 0; idx < 9; idx++) {
-                drawPolygon(colors[posit[f * 9 + idx]], [arrx, (idx >= 6 != inv) ? arry2 : arry1], [width, faceoffx[f] + arroffx[idx], faceoffy[f] + arroffy[idx]]);
+                drawPolygon(ctx, colors[posit[f * 9 + idx]], [arrx, (idx >= 6 != inv) ? arry2 : arry1], [width, faceoffx[f] + arroffx[idx], faceoffy[f] + arroffy[idx]]);
             }
         }
 
@@ -548,7 +548,7 @@ posit:
                 var x = (f == 1 || f == 2) ? size - 1 - i : i;
                 for (var j = 0; j < size; j++) {
                     var y = (f == 0) ? size - 1 - j : j;
-                    drawPolygon(colors[posit[(f * size + y) * size + x]], [[i, i, i + 1, i + 1], [j, j + 1, j + 1, j]], [width, offx, offy]);
+                    drawPolygon(ctx, colors[posit[(f * size + y) * size + x]], [[i, i, i + 1, i + 1], [j, j + 1, j + 1, j]], [width, offx, offy]);
                 }
             }
         }
@@ -716,6 +716,7 @@ posit:
     });
 
     return {
-        draw: genImage
+        draw: genImage,
+        drawPolygon: drawPolygon
     }
 })();
