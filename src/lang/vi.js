@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'dử dụng thời gian chuẩn bị của WCA';
 var PROPERTY_VOICEINS = 'Giọng nói cho thời gian chuẩn bị của WCA: ';
 var PROPERTY_VOICEINS_STR = 'Vô giới tính :)) |Nam giới|Nữ giới';
-var PROPERTY_USECFM = 'xác nhận time(ok/+2/dnf)';
 var PROPERTY_PHASES = 'nhiều đợt: ';
 var PROPERTY_TIMERSIZE = 'kích cớ của timer: ';
-var CFMDIV_CURTIME = 'Thời gian là: ';
 var PROPERTY_USEMILLI = 'sử dụng 0.001s ';
 var PROPERTY_SMALLADP = 'Sử dụng font nhỏ hơn cho chữ số hàng thập phân';
 var PROPERTY_SCRSIZE = 'kích cớ của scramble: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'màn hình chính ',
 	"color": 'màu',
 	"timer": 'timer',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'global',
 	"scramble": 'scramble',
 	"stats": 'thành tích',

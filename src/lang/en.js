@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'use WCA inspection';
 var PROPERTY_VOICEINS = 'voice alert of WCA inspection: ';
 var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
-var PROPERTY_USECFM = 'confirm time(ok/+2/dnf)';
 var PROPERTY_PHASES = 'multi-phase: ';
 var PROPERTY_TIMERSIZE = 'timer size: ';
-var CFMDIV_CURTIME = 'the time is: ';
 var PROPERTY_USEMILLI = 'use milliseconds';
 var PROPERTY_SMALLADP = 'use small font after decimal point';
 var PROPERTY_SCRSIZE = 'scramble size: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'length';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'color',
 	"timer": 'timer',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'global',
 	"scramble": 'scramble',
 	"stats": 'statistics',

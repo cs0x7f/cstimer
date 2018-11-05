@@ -1,3 +1,5 @@
+"use strict";
+
 var storage = (function() {
 	function num2str(val) {
 		val = '' + val;

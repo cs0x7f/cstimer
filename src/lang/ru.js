@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'ПОЖЕРТ-<br>ВОВАТЬ';
 var PROPERTY_USEINS = 'использовать WCA рассмотор';
 var PROPERTY_VOICEINS = 'голосовое предупреждение WCA рассмотра: ';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
-var PROPERTY_USECFM = 'подтвердить время(ок/+2/dnf)';
 var PROPERTY_PHASES = 'мульти-фаза: ';
 var PROPERTY_TIMERSIZE = 'размер таймера: ';
-var CFMDIV_CURTIME = 'время: ';
 var PROPERTY_USEMILLI = 'использовать милисекунды';
 var PROPERTY_SMALLADP = 'использовать маленький шрифт после десятичной точки';
 var PROPERTY_SCRSIZE = 'размер скрамбла: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'длинна';
 var SCRAMBLE_INPUT = 'Вставить Скрамбл(ы)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'дисплей',
 	"color": 'цвет',
 	"timer": 'таймер',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'глобальный',
 	"scramble": 'скрамбл',
 	"stats": 'статистика',

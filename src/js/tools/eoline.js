@@ -1,3 +1,5 @@
+"use strict";
+
 (function(createMove, edgeMove, createPrun, getPruning) {
 	var fmv = [];
 	var pmv = [];

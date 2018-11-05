@@ -10,10 +10,8 @@ var BUTTON_DONATE = '후원';
 var PROPERTY_USEINS = 'WCA 미리보기 사용';
 var PROPERTY_VOICEINS = 'WCA 미리보기 음성 알림: ';
 var PROPERTY_VOICEINS_STR = '없음|남성|여성';
-var PROPERTY_USECFM = '벌칙 적용(OK/+2/DNF)';
 var PROPERTY_PHASES = '다단계 측정: ';
 var PROPERTY_TIMERSIZE = '초시계 크기: ';
-var CFMDIV_CURTIME = '현재 시간: ';
 var PROPERTY_USEMILLI = '0.001초 단위 사용';
 var PROPERTY_SMALLADP = '소수점 뒤 작은 글꼴 사용';
 var PROPERTY_SCRSIZE = '섞기 글꼴 크기: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = '길이';
 var SCRAMBLE_INPUT = '섞기 공식 입력';
 var PROPERTY_VRCMP = '다단계 측정: ';
 var PROPERTY_VRCMPS = '없음|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": '사용자 환경',
 	"color": '색채 배합',
 	"timer": '초시계',
-	"vrc": '가상 큐브',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": '전역',
 	"scramble": '섞기',
 	"stats": '통계',

@@ -10,10 +10,8 @@ var BUTTON_DONATE = '捐赠';
 var PROPERTY_USEINS = '使用WCA观察';
 var PROPERTY_VOICEINS = 'WCA观察语音提示：';
 var PROPERTY_VOICEINS_STR = '无|男声|女声';
-var PROPERTY_USECFM = '确认成绩有效性(OK/+2/DNF)';
 var PROPERTY_PHASES = '多阶段测速：';
 var PROPERTY_TIMERSIZE = '计时器大小：';
-var CFMDIV_CURTIME = '当前时间为:';
 var PROPERTY_USEMILLI = '显示到0.001秒';
 var PROPERTY_SMALLADP = '小数点后使用小字体';
 var PROPERTY_SCRSIZE = '打乱字体大小：';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = '长度';
 var SCRAMBLE_INPUT = '输入打乱公式';
 var PROPERTY_VRCMP = '多阶段测速：';
 var PROPERTY_VRCMPS = '无|CFOP';
+var PROPERTY_GIIKERVRC = '显示虚拟计客魔方';
 var scrdata = [
 	['WCA', [
 		['三阶速拧', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": '界面',
 	"color": '配色',
 	"timer": '计时',
-	"vrc": '虚拟魔方',
+	"vrc": '虚拟&<br>计客魔方',
 	"kernel": '全局',
 	"scramble": '打乱',
 	"stats": '统计',

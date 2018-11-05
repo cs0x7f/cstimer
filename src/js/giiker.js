@@ -4,152 +4,152 @@ var DEBUG = false;
 
 var GiikerCube = (function() {
 
-    var SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
-    var CHARACTERISTIC_UUID = '0000aadc-0000-1000-8000-00805f9b34fb';
+	var SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
+	var CHARACTERISTIC_UUID = '0000aadc-0000-1000-8000-00805f9b34fb';
 
-    var SYSTEM_SERVICE_UUID = '0000aaaa-0000-1000-8000-00805f9b34fb';
-    var SYSTEM_READ_UUID = '0000aaab-0000-1000-8000-00805f9b34fb';
-    var SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
+	var SYSTEM_SERVICE_UUID = '0000aaaa-0000-1000-8000-00805f9b34fb';
+	var SYSTEM_READ_UUID = '0000aaab-0000-1000-8000-00805f9b34fb';
+	var SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
 
-    var _device = null;
+	var _device = null;
 
-    function init(timer) {
+	function init(timer) {
 
-        if (!window.navigator || !window.navigator.bluetooth) {
-            alert("Bluetooth API is not available. Ensure https access, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled");
-            return;
-        }
+		if (!window.navigator || !window.navigator.bluetooth) {
+			alert("Bluetooth API is not available. Ensure https access, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled");
+			return;
+		}
 
-        return window.navigator.bluetooth.requestDevice({
-            filters: [{
-                namePrefix: 'GiC',
-            }],
-            optionalServices: [SERVICE_UUID, SYSTEM_SERVICE_UUID],
-        }).then(function(device) {
-            _device = device;
-            device.gatt.connect().then(function(server) {
-                server.getPrimaryService(SERVICE_UUID).then(function(service) {
-                    service.getCharacteristic(CHARACTERISTIC_UUID).then(function(characteristic) {
-                        characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
-                        characteristic.startNotifications();
-                        characteristic.readValue().then(function(value) {
-                            parseState(value);
-                        })
-                    });
-                })
-            });
-        });
-    }
+		return window.navigator.bluetooth.requestDevice({
+			filters: [{
+				namePrefix: 'GiC',
+			}],
+			optionalServices: [SERVICE_UUID, SYSTEM_SERVICE_UUID],
+		}).then(function(device) {
+			_device = device;
+			device.gatt.connect().then(function(server) {
+				server.getPrimaryService(SERVICE_UUID).then(function(service) {
+					service.getCharacteristic(CHARACTERISTIC_UUID).then(function(characteristic) {
+						characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
+						characteristic.startNotifications();
+						characteristic.readValue().then(function(value) {
+							parseState(value);
+						})
+					});
+				})
+			});
+		});
+	}
 
-    function onStateChanged(event) {
-        var value = event.target.value;
-        parseState(value);
-    }
+	function onStateChanged(event) {
+		var value = event.target.value;
+		parseState(value);
+	}
 
-    var cFacelet = [
-        [26, 15, 29],
-        [20, 8, 9],
-        [18, 38, 6],
-        [24, 27, 44],
-        [51, 35, 17],
-        [45, 11, 2],
-        [47, 0, 36],
-        [53, 42, 33]
-    ];
+	var cFacelet = [
+		[26, 15, 29],
+		[20, 8, 9],
+		[18, 38, 6],
+		[24, 27, 44],
+		[51, 35, 17],
+		[45, 11, 2],
+		[47, 0, 36],
+		[53, 42, 33]
+	];
 
-    var eFacelet = [
-        [25, 28],
-        [23, 12],
-        [19, 7],
-        [21, 41],
-        [32, 16],
-        [5, 10],
-        [3, 37],
-        [30, 43],
-        [52, 34],
-        [48, 14],
-        [46, 1],
-        [50, 39]
-    ];
+	var eFacelet = [
+		[25, 28],
+		[23, 12],
+		[19, 7],
+		[21, 41],
+		[32, 16],
+		[5, 10],
+		[3, 37],
+		[30, 43],
+		[52, 34],
+		[48, 14],
+		[46, 1],
+		[50, 39]
+	];
 
-    function parseState(value) {
-        if (DEBUG) {
-            var giikerState = [];
-            for (var i = 0; i < 20; i++) {
-                giikerState.push("0123456789abcdef" [~~(value.getUint8(i) / 16)]);
-                giikerState.push("0123456789abcdef" [value.getUint8(i) % 16]);
-            }
-            console.log("Raw Data: ", giikerState.join(""));
-        }
+	function parseState(value) {
+		if (DEBUG) {
+			var giikerState = [];
+			for (var i = 0; i < 20; i++) {
+				giikerState.push("0123456789abcdef" [~~(value.getUint8(i) / 16)]);
+				giikerState.push("0123456789abcdef" [value.getUint8(i) % 16]);
+			}
+			console.log("Raw Data: ", giikerState.join(""));
+		}
 
-        var giikerState = [];
-        for (var i = 0; i < 20; i++) {
-            giikerState.push(~~(value.getUint8(i) / 16));
-            giikerState.push(value.getUint8(i) % 16);
-        }
-        var cp = giikerState.slice(0, 8);
-        var co = giikerState.slice(8, 16);
-        var ep = giikerState.slice(16, 28);
-        var eo0 = giikerState.slice(28, 31);
-        var moves = giikerState.slice(32, 40);
-        var eo = [];
-        for (var i = 0; i < 3; i++) {
-            for (var mask = 8; mask != 0; mask >>= 1) {
-                eo.push((eo0[i] & mask) ? 1 : 0);
-            }
-        }
-        var cc = new mathlib.CubieCube();
-        var coMask = [-1, 1, -1, 1, 1, -1, 1, -1];
-        for (var i = 0; i < 8; i++) {
-            cc.ca[i] = (cp[i] - 1) | ((3 + co[i] * coMask[i]) % 3) << 3;
-        }
-        for (var i = 0; i < 12; i++) {
-            cc.ea[i] = (ep[i] - 1) << 1 | eo[i];
-        }
-        var facelet = cc.toFaceCube(cFacelet, eFacelet);
-        var prevMoves = [];
-        for (var i = 0; i < 4; i++) {
-            prevMoves.push("BDLURF" [moves[i * 2] - 1] + " 2'" [moves[i * 2 + 1] - 1]);
-        }
-        if (DEBUG) {
-            console.log("Current State: ", facelet);
-            console.log("A Valid Generator: ", scramble_333.genFacelet(facelet));
-            console.log("Previous Moves: ", prevMoves.reverse().join(" "));
-        }
-        callback(facelet, prevMoves);
-        return [facelet, prevMoves];
-    }
+		var giikerState = [];
+		for (var i = 0; i < 20; i++) {
+			giikerState.push(~~(value.getUint8(i) / 16));
+			giikerState.push(value.getUint8(i) % 16);
+		}
+		var cp = giikerState.slice(0, 8);
+		var co = giikerState.slice(8, 16);
+		var ep = giikerState.slice(16, 28);
+		var eo0 = giikerState.slice(28, 31);
+		var moves = giikerState.slice(32, 40);
+		var eo = [];
+		for (var i = 0; i < 3; i++) {
+			for (var mask = 8; mask != 0; mask >>= 1) {
+				eo.push((eo0[i] & mask) ? 1 : 0);
+			}
+		}
+		var cc = new mathlib.CubieCube();
+		var coMask = [-1, 1, -1, 1, 1, -1, 1, -1];
+		for (var i = 0; i < 8; i++) {
+			cc.ca[i] = (cp[i] - 1) | ((3 + co[i] * coMask[i]) % 3) << 3;
+		}
+		for (var i = 0; i < 12; i++) {
+			cc.ea[i] = (ep[i] - 1) << 1 | eo[i];
+		}
+		var facelet = cc.toFaceCube(cFacelet, eFacelet);
+		var prevMoves = [];
+		for (var i = 0; i < 4; i++) {
+			prevMoves.push("BDLURF" [moves[i * 2] - 1] + " 2'" [moves[i * 2 + 1] - 1]);
+		}
+		if (DEBUG) {
+			console.log("Current State: ", facelet);
+			console.log("A Valid Generator: ", scramble_333.genFacelet(facelet));
+			console.log("Previous Moves: ", prevMoves.reverse().join(" "));
+		}
+		callback(facelet, prevMoves);
+		return [facelet, prevMoves];
+	}
 
-    function stop() {
-        if (!_device) {
-            return;
-        }
-        _device.gatt.disconnect();
-        _device = null;
-    }
+	function stop() {
+		if (!_device) {
+			return;
+		}
+		_device.gatt.disconnect();
+		_device = null;
+	}
 
-    var callback = $.noop;
+	var callback = $.noop;
 
-    function parseStateTest(valueHex) {
-        var ab = new ArrayBuffer(20);
-        var dv = new DataView(ab);
-        for (var i = 0; i < 20; i++) {
-            dv.setUint8(i,
-                "0123456789abcdef".indexOf(valueHex[i * 2]) * 16 +
-                "0123456789abcdef".indexOf(valueHex[i * 2 + 1]));
-        }
-        return parseState(dv);
-    }
+	function parseStateTest(valueHex) {
+		var ab = new ArrayBuffer(20);
+		var dv = new DataView(ab);
+		for (var i = 0; i < 20; i++) {
+			dv.setUint8(i,
+				"0123456789abcdef".indexOf(valueHex[i * 2]) * 16 +
+				"0123456789abcdef".indexOf(valueHex[i * 2 + 1]));
+		}
+		return parseState(dv);
+	}
 
-    return {
-        init: init,
-        stop: stop,
-        isConnected: function() {
-            return _device != null;
-        },
-        setCallBack: function(func) {
-            callback = func;
-        },
-        parseStateTest: parseStateTest
-    }
+	return {
+		init: init,
+		stop: stop,
+		isConnected: function() {
+			return _device != null;
+		},
+		setCallBack: function(func) {
+			callback = func;
+		},
+		parseStateTest: parseStateTest
+	}
 })();

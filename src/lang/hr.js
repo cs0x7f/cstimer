@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DONIRAJ';
 var PROPERTY_USEINS = 'koristi WCA inspekciju';
 var PROPERTY_VOICEINS = 'glasovno upozorenje za WCA inspekciju: ';
 var PROPERTY_VOICEINS_STR = 'bez glasa|muški glas|ženski glas';
-var PROPERTY_USECFM = 'potvrdi vrijeme(ok/+2/dnf)';
 var PROPERTY_PHASES = 'višefazno: ';
 var PROPERTY_TIMERSIZE = 'veličina štoperice: ';
-var CFMDIV_CURTIME = 'vrijeme je: ';
 var PROPERTY_USEMILLI = 'koristi milisekunde';
 var PROPERTY_SMALLADP = 'koristi manji font nakon decimalne točke';
 var PROPERTY_SCRSIZE = 'veličina scramble-a: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'dužina';
 var SCRAMBLE_INPUT = 'Unesi scramble/ove)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'boja',
 	"timer": 'štoperica',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'globalno',
 	"scramble": 'scramble',
 	"stats": 'statistika',

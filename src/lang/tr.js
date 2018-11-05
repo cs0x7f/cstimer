@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'Bağış yap';
 var PROPERTY_USEINS = 'WCA inecelemesi kullan';
 var PROPERTY_VOICEINS = 'WCA incelemesi ses uyarısı: ';
 var PROPERTY_VOICEINS_STR = 'hiçbiri|erkek sesi|kadın sesi';
-var PROPERTY_USECFM = 'süreyi onayla(ok/+2/dnf)';
 var PROPERTY_PHASES = 'çok zamanlı: ';
 var PROPERTY_TIMERSIZE = 'kronometre boyutu';
-var CFMDIV_CURTIME = 'süre: ';
 var PROPERTY_USEMILLI = 'milisaniye kullan';
 var PROPERTY_SMALLADP = 'noktadan sonra küçük karakter kullan';
 var PROPERTY_SCRSIZE = 'karıştırma bouyutu: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'uzunluk';
 var SCRAMBLE_INPUT = 'karıştırma(lar) içe aktar';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'görünüm',
 	"color": 'renk',
 	"timer": 'kronometre',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'küresel',
 	"scramble": 'karıştırma',
 	"stats": 'istatistikler',

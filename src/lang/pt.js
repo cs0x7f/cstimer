@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DOAR';
 var PROPERTY_USEINS = 'usar inspeção da WCA';
 var PROPERTY_VOICEINS = 'aviso de voz da inspeção da WCA: ';
 var PROPERTY_VOICEINS_STR = 'nenhuma|voz masculina|voz feminina';
-var PROPERTY_USECFM = 'confirmar tempo(ok/+2/dnf)';
 var PROPERTY_PHASES = 'várias fases: ';
 var PROPERTY_TIMERSIZE = 'tamanho do cronômetro: ';
-var CFMDIV_CURTIME = 'o tempo é: ';
 var PROPERTY_USEMILLI = 'usar milisegundos';
 var PROPERTY_SMALLADP = 'usar fonte pequena depois do ponto';
 var PROPERTY_SCRSIZE = 'tamanho do embaralhamento: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'tamanho';
 var SCRAMBLE_INPUT = 'colocar embaralhamento(s)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'color',
 	"timer": 'timer',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'global',
 	"scramble": 'scramble',
 	"stats": 'statistics',

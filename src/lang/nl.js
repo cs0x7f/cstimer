@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'Gebruik WCA inspectie';
 var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection: ';
 var PROPERTY_VOICEINS_STR = 'geen|mannelijke stem|vrouwlijke stem';
-var PROPERTY_USECFM = 'Bevestig tijd(OK/+2/DNF)';
 var PROPERTY_PHASES = 'Meerfasig: ';
 var PROPERTY_TIMERSIZE = 'Grootte timer: ';
-var CFMDIV_CURTIME = 'De tijd is: ';
 var PROPERTY_USEMILLI = 'Gebruik milliseconden';
 var PROPERTY_SMALLADP = 'Gebruik klein lettertype na de komma';
 var PROPERTY_SCRSIZE = 'Grootte scramble: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'Lengte';
 var SCRAMBLE_INPUT = 'Scramble(s) invoeren';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'display',
 	"color": 'Kleur',
 	"timer": 'Timer',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'Global',
 	"scramble": 'scramble',
 	"stats": 'Statistiek',

@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'Usa ispezione (WCA)';
 var PROPERTY_VOICEINS = 'voice alert of WCA inspection: ';
 var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
-var PROPERTY_USECFM = 'Conferma tempo(ok/+2/dnf)';
 var PROPERTY_PHASES = 'Multi-fase: ';
 var PROPERTY_TIMERSIZE = 'Dimensione cronometro: ';
-var CFMDIV_CURTIME = 'Il tempo e\': ';
 var PROPERTY_USEMILLI = 'Usa millisecondi';
 var PROPERTY_SMALLADP = 'Usa font piccolo dopo il punto decimale';
 var PROPERTY_SCRSIZE = 'Lunghezza scramble: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'Lunghezza';
 var SCRAMBLE_INPUT = 'Inserisci Scramble';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'schermo',
 	"color": 'colori',
 	"timer": 'cronometro',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'globale',
 	"scramble": 'scramble',
 	"stats": 'statistiche',

@@ -1,3 +1,5 @@
+"use strict";
+
 var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk, getPruning) {
 	var permPrun, flipPrun, ecPrun, fullPrun;
 	var cmv = [];

@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'Doner';
 var PROPERTY_USEINS = 'brug WCA inspektion';
 var PROPERTY_VOICEINS = 'stemme advarsel af WCA inspektion';
 var PROPERTY_VOICEINS_STR = 'ingen|mandlig stemme|kvindelig stemme';
-var PROPERTY_USECFM = 'bekræft tid(ok/+2/bif)';
 var PROPERTY_PHASES = 'multi-fase: ';
 var PROPERTY_TIMERSIZE = 'timer størrelse: ';
-var CFMDIV_CURTIME = 'tiden er: ';
 var PROPERTY_USEMILLI = 'brug millisekunder';
 var PROPERTY_SMALLADP = 'brug lille font efter decimal punkt';
 var PROPERTY_SCRSIZE = 'blanding størrelse';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'længde';
 var SCRAMBLE_INPUT = 'input blanding(er)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'skærm',
 	"color": 'farve',
 	"timer": 'timer',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'global',
 	"scramble": 'blanding',
 	"stats": 'statistik',

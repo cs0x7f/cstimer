@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'WCA memorizációs ideje';
 var PROPERTY_VOICEINS = 'voice alert of WCA inspection: ';
 var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
-var PROPERTY_USECFM = 'eredmény(ok/+2/dnf)';
 var PROPERTY_PHASES = 'több fázis: ';
 var PROPERTY_TIMERSIZE = 'időmérő mérete: ';
-var CFMDIV_CURTIME = 'az eredmény: ';
 var PROPERTY_USEMILLI = 'milliszekundum használata';
 var PROPERTY_SMALLADP = 'use small font after decimal point';
 var PROPERTY_SCRSIZE = 'keverés mérete: ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'hosszúság';
 var SCRAMBLE_INPUT = 'keverések bevitele';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'kijelző',
 	"color": 'color',
 	"timer": 'időmérő',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'globális',
 	"scramble": 'keverés',
 	"stats": 'statisztikák',

@@ -10,10 +10,8 @@ var BUTTON_DONATE = 'Faire une donation';
 var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
 var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA : ';
 var PROPERTY_VOICEINS_STR = 'Aucune|Voix masculine|Voix féminine';
-var PROPERTY_USECFM = 'Confirmer le temps (OK/+2/DNF)';
 var PROPERTY_PHASES = 'Multi-phase : ';
 var PROPERTY_TIMERSIZE = 'Taille du chronomètre : ';
-var CFMDIV_CURTIME = 'Le temps est : ';
 var PROPERTY_USEMILLI = 'Utiliser les millisecondes';
 var PROPERTY_SMALLADP = 'Utiliser une petite police après la virgule des décimales';
 var PROPERTY_SCRSIZE = 'Taille du mélange : ';
@@ -74,6 +72,7 @@ var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
+var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -332,7 +331,7 @@ var MODULE_NAMES = {
 	"ui": 'Affichage',
 	"color": 'Couleur',
 	"timer": 'Chronomètre',
-	"vrc": 'virtual',
+	"vrc": 'virtual&<br>Giiker',
 	"kernel": 'Global',
 	"scramble": 'Mélange',
 	"stats": 'Statistiques',
