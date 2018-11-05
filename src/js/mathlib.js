@@ -1,12 +1,17 @@
 "use strict";
 
-window.onerror = function(msg, url, line) {
+window.onerror = function(msg, url, line, col, error) {
+	if (error === undefined) {
+		error = {};
+	}
 	$.get('bugReport', {
 		'msg': msg,
 		'url': url,
-		'line': line
+		'line': line,
+		'col': col,
+		'stack': error.stack
 	});
-	console.log(msg, url, line);
+	console.log(msg, url, line, col, error);
 };
 
 (function() {
