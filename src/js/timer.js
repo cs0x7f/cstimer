@@ -22,7 +22,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         virtual333.setEnable(type == 'v');
         virtual333.reset();
         lcd.setEnable(type != 'i');
-        lcd.reset(type == 'v');
+        lcd.reset(type == 'v' || type == 'g' && getProp('giiVRC'));
         keyboardTimer.reset();
         inputTimer.setEnable(type == 'i');
         type == 'i' ? $('#touch').hide() : $('#touch').show();
@@ -730,17 +730,122 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
     var giikerTimer = (function() {
 
-        var solvedState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+        var SOLVED_FACELET = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
         var enable = false;
+        var enableVRC = false;
         var waitReadyTid = 0;
         var insTime = 0;
+
+        var giikerVRC = (function() {
+            var twistyScene;
+            var twisty;
+            var isReseted = false;
+            var isLoading = false;
+            // var curVRCFacelet = SOLVED_FACELET;
+            var curVRCCubie = new mathlib.CubieCube();
+            var tmpCubie1 = new mathlib.CubieCube();
+            var tmpCubie2 = new mathlib.CubieCube();
+
+            function resetVRC(temp) {
+                if (twistyScene == undefined || isReseted || !enableVRC) {
+                    return;
+                }
+                isReseted = true;
+                twistyScene.initializeTwisty({
+                    type: "cube",
+                    faceColors: [0xffffff, 0xff0000, 0x00ff00, 0xffff00, 0xff9000, 0x0000ff], // U L F D L B
+                    dimension: 3,
+                    stickerWidth: 1.7,
+                    scale: 0.9
+                });
+                // curVRCFacelet = SOLVED_FACELET;
+                curVRCCubie.fromFacelet(SOLVED_FACELET);
+                twisty = twistyScene.getTwisty();
+                if (!temp) {
+                    setSize(getProp('timerSize'));
+                }
+            }
+
+            function setSize(value) {
+                div.css('height', value * $('#logo').width() / 9 + 'px');
+                twistyScene && twistyScene.resize();
+            }
+
+            function initVRC(div) {
+                if (twistyScene != undefined) {} else if (window.twistyjs != undefined) {
+                    twistyScene = new twistyjs.TwistyScene();
+                    // twistyScene.addMoveListener(moveListener);
+                    div.empty().append(twistyScene.getDomElement());
+                    resetVRC();
+                    twistyScene.resize();
+                    isLoading = false;
+                } else if (!isLoading && document.createElement('canvas').getContext) {
+                    $.getScript("js/twisty.js", initVRC);
+                    isLoading = true;
+                } else {
+                    div.css('height', '');
+                    div.html('--:--');
+                }
+            }
+
+            function setState(state, prevMoves, isFast) {
+                console.log(state);
+                tmpCubie1.fromFacelet(state);
+                var todoMoves = [];
+                var shouldReset = true;
+                for (var i = 0; i < prevMoves.length; i++) {
+                    todoMoves.push(prevMoves[i]);
+                    var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + "'2 ".indexOf(prevMoves[i][1]);
+                    if (!(m >= 0 && m < 18)) {
+                        continue;
+                    }
+                    mathlib.CubieCube.EdgeMult(tmpCubie1, mathlib.CubieCube.moveCube[m], tmpCubie2);
+                    mathlib.CubieCube.CornMult(tmpCubie1, mathlib.CubieCube.moveCube[m], tmpCubie2);
+                    var tmp = tmpCubie1;
+                    tmpCubie1 = tmpCubie2;
+                    tmpCubie2 = tmp;
+                    if (tmpCubie1.isEqual(curVRCCubie)) {
+                        shouldReset = false;
+                        break;
+                    }
+                }
+                if (shouldReset) { //cannot get current state according to prevMoves
+                    resetVRC(false);
+                    curVRCCubie.fromFacelet(SOLVED_FACELET);
+                    todoMoves = scramble_333.genFacelet(state);
+                } else {
+                    todoMoves = todoMoves.reverse().join(' ');
+                }
+                if (todoMoves.match(/^\s*$/)) {
+                    scramble = [];
+                } else {
+                    scramble = twisty.parseScramble(todoMoves);
+                }
+                if (scramble.length < 5) {
+                    twistyScene.addMoves(scramble);
+                } else {
+                    twistyScene.applyMoves(scramble);
+                }
+                isReseted = false;
+                curVRCCubie.fromFacelet(state);
+            }
+
+            return {
+                resetVRC: resetVRC, //reset to solved
+                initVRC: initVRC,
+                setState: setState
+            }
+        })();
 
         function giikerCallback(facelet, prevMoves) {
             if (!enable) {
                 return;
             }
+            if (enableVRC) {
+                giikerVRC.setState(facelet, prevMoves, false);
+            }
             var now = $.now();
-            if (status == -1 && facelet != solvedState) {
+            if (status == -1 && facelet != SOLVED_FACELET) {
                 startTime = now;
                 if (waitReadyTid) {
                     clearTimeout(waitReadyTid);
@@ -749,7 +854,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     waitReadyTid = 0;
                     if (status == -1 || status == -3) {
                         if (status == -1) {
-                            lcd.reset();
+                            lcd.reset(enableVRC);
                         }
                         status = -2;
                         lcd.fixDisplay(true, true);
@@ -765,14 +870,14 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 status = 1;
                 curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
                 lcd.fixDisplay(false, true);
-                lcd.setRunning(true);
+                lcd.setRunning(true, enableVRC);
                 ui.setAutoShow(false);
             }
-            if (status >= 1 && facelet == solvedState) {
+            if (status >= 1 && facelet == SOLVED_FACELET) {
                 status = -1;
                 curTime[1] = now - startTime;
                 ui.setAutoShow(true);
-                lcd.setRunning(false);
+                lcd.setRunning(false, enableVRC);
                 lcd.fixDisplay(false, true);
                 lcd.val(curTime[1]);
                 if (curTime[1] != 0) {
@@ -780,6 +885,20 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 }
             }
         }
+
+        function setVRC(enable) {
+            enableVRC = enable;
+            enable ? div.show() : div.hide();
+            if (enable) {
+                giikerVRC.initVRC(div);
+            }
+        }
+
+        var div = $('<div />');
+
+        $(function() {
+            div.appendTo("#container");
+        });
 
         return {
             setEnable: function(input) { //s: stackmat, m: moyu
@@ -799,21 +918,18 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 } else {
                     GiikerCube.stop();
                 }
+                setVRC(enable && getProp('giiVRC'));
             },
             onkeydown: function(keyCode) {
                 if (keyCode == 27) {
                     status = -1;
                     ui.setAutoShow(true);
-                    lcd.setRunning(false);
+                    lcd.setRunning(false, enableVRC);
                     lcd.fixDisplay(false, true);
                 }
-            }
+            },
+            setVRC: setVRC
         }
-    })();
-
-
-    var giikerVRCTimer = (function() {
-
     })();
 
     function onkeydown(keyCode) {
@@ -862,7 +978,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         }
     }
 
-    var resetCondition = "input|phases|scrType|preScr|useMilli|smallADP".split('|');
+    var resetCondition = "input|phases|scrType|preScr|useMilli|smallADP|giiVRC".split('|');
 
     $(function() {
         container = $('#container');
@@ -881,10 +997,13 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             if (value[0] == 'showAvg') {
                 avgDiv.showAvgDiv(value[1]);
             }
+            if (value[0] == 'giiVRC') {
+                giikerTimer.setEnable(getProp('input'));
+            }
             if ($.inArray(value[0], resetCondition) != -1) {
                 reset();
             }
-        }, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP)$/);
+        }, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC)$/);
         regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
         regProp('timer', 'useIns', 0, PROPERTY_USEINS, [false]);
         regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
@@ -899,6 +1018,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true]);
 
         regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop'], PROPERTY_VRCMPS.split('|')]);
+        regProp('vrc', 'giiVRC', 0, 'PROPERTY_GIIKERVRC', [true]);
     });
 
     var fobj;

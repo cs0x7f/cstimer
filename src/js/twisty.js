@@ -292,7 +292,7 @@ window.twistyjs = (function() {
         }
 
         this.applyMoves = function(moves) {
-            moveQueue = moves;
+            moveQueue = moveQueue.concat(moves);
             while (moveQueue.length > 0) {
                 startMove();
                 twisty.advanceMoveCallback(twisty, currentMove.shift());

@@ -74,6 +74,7 @@ var giikerutil = (function(CubieCube) {
 		solvedStateInv.invFrom(cc);
 		currentState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
 		drawState();
+		callback(currentState, []);
 	}
 
 	function giikerCallback(facelet, prevMoves) {
