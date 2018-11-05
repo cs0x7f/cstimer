@@ -61,7 +61,7 @@ var giikerutil = (function(CubieCube) {
 
 	var callback = $.noop;
 
-	var currentRawState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+	var currentRawState = mathlib.SOLVED_FACELET;
 	var currentRawCubie = new mathlib.CubieCube();
 	var currentCubie = new mathlib.CubieCube();
 	var currentState = currentRawState;
@@ -72,7 +72,7 @@ var giikerutil = (function(CubieCube) {
 		var cc = new mathlib.CubieCube();
 		cc.fromFacelet(currentRawState);
 		solvedStateInv.invFrom(cc);
-		currentState = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
+		currentState = mathlib.SOLVED_FACELET;
 		drawState();
 		callback(currentState, []);
 	}

@@ -536,6 +536,7 @@ var mathlib = (function() {
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		doFaceletMove: doFaceletMove,
+		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
 		rn: rn,
 		rndEl: rndEl,
 		rndProb: rndProb,

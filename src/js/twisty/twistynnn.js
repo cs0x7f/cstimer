@@ -57,12 +57,12 @@
         "D": yy
     };
     var sidesUV = [
-         axify(xx, zzi, yy), //U
-         axify(zzi, yy, xx), //R
-         axify(xx, yy, zz), //F
-         axify(xx, zz, yyi), //D
-         axify(zz, yy, xxi), //L
-         axify(xxi, yy, zzi) //B
+        axify(xx, zzi, yy), //U
+        axify(zzi, yy, xx), //R
+        axify(xx, yy, zz), //F
+        axify(xx, zz, yyi), //D
+        axify(zz, yy, xxi), //L
+        axify(xxi, yy, zzi) //B
     ];
 
     function matrixVector3Dot(m, v) {
@@ -328,117 +328,19 @@
             }
         }
 
-        function getFaceNorm(twisty, faceIndex) {
-            var faceStickers = twisty.cubePieces[faceIndex];
-            for (var faceSideIndex = 0; faceSideIndex < numSides; faceSideIndex++) {
-                if (0.5 > Math.abs(
-                        matrixVector3Dot(faceStickers[4][0], sidesNorm[index_side[faceSideIndex]]) - twisty.options.dimension)) {
-                    return sidesNorm[index_side[faceSideIndex]];
-                }
-            }
-            return null;
-        }
-
-        function isInnerProductEqual(sticker, norm, value) {
-            return 0.5 > Math.abs(matrixVector3Dot(sticker[0], norm) - value);
-        }
-
-        function getMaxProgress(twisty) {
-            var state = twisty.cubePieces;
-            var dimension = twisty.options.dimension;
-
-            var maxLayer = twisty.options.dimension + 0.5;
-            var minLayer = twisty.options.dimension - 0.5;
-            var unsolvedPieces = [];
-
-            for (var faceIndex = 0; faceIndex < numSides; faceIndex++) {
-                var normVector = getFaceNorm(twisty, faceIndex);
-                var faceStickers = state[faceIndex];
-                unsolvedPieces[faceIndex] = [];
-                for (var stickerIndex = 0, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
-                    var sticker = faceStickers[stickerIndex];
-                    unsolvedPieces[faceIndex][stickerIndex] = 0.5 < Math.abs(matrixVector3Dot(sticker[0], normVector) - dimension);
-                }
-            }
-
-            var minVal = 999;
-            for (var faceIndex = 0; faceIndex < numSides; faceIndex++) {
-                minVal = Math.min(minVal, getFaceMaxProgress(twisty, faceIndex, unsolvedPieces));
-            }
-            return minVal;
-        }
-
-        function getFaceMaxProgress(twisty, faceIndex, unsolvedPieces) {
-            var state = twisty.cubePieces;
-            var dimension = twisty.options.dimension;
-
-            //check cross
-            for (var i = 1; i < 9; i += 2) {
-                if (unsolvedPieces[faceIndex][i]) {
-                    return 4;
-                }
-            }
-            var normVector = getFaceNorm(twisty, faceIndex);
-            for (var faceAdj = 0; faceAdj < numSides; faceAdj++) {
-                if (faceAdj % 3 == faceIndex % 3) {
-                    continue;
-                }
-                var adjNormVector = getFaceNorm(twisty, faceAdj)
-                var faceStickers = state[faceAdj];
-                for (var stickerIndex = 1; stickerIndex < 9; stickerIndex += 2) {
-                    if (isInnerProductEqual(faceStickers[stickerIndex], normVector, dimension - 1) &&
-                        unsolvedPieces[faceAdj][stickerIndex]) {
-                        return 4;
-                    }
-                }
-            }
-
-            //check F2L
-            var faceAdj = (faceIndex + 3) % 6;
-            var faceStickers = state[faceAdj];
-            for (var stickerIndex = 0; stickerIndex < 9; stickerIndex++) {
-                if (!isInnerProductEqual(faceStickers[stickerIndex], normVector, 1 - dimension) &&
-                    unsolvedPieces[faceAdj][stickerIndex]) {
-                    return 3;
-                }
-            }
-
-            for (var faceAdj = 0; faceAdj < numSides; faceAdj++) {
-                if (faceAdj % 3 == faceIndex % 3) {
-                    continue;
-                }
-                var adjNormVector = getFaceNorm(twisty, faceAdj)
-                var faceStickers = state[faceAdj];
-                for (var stickerIndex = 0; stickerIndex < 9; stickerIndex++) {
-                    if (unsolvedPieces[faceAdj][stickerIndex] &&
-                        (isInnerProductEqual(faceStickers[stickerIndex], normVector, dimension - 1) ||
-                            isInnerProductEqual(faceStickers[stickerIndex], normVector, 0))) {
-                        return 3;
-                    }
-                }
-            }
-
-            //check OLL
-            var faceAdj = (faceIndex + 3) % 6;
-            var faceStickers = state[faceAdj];
-            for (var stickerIndex = 0; stickerIndex < 9; stickerIndex++) {
-                if (unsolvedPieces[faceAdj][stickerIndex]) {
-                    return 2;
-                }
-            }
-
-            return 1;
-        }
-
         //return 0 if solved
         //return n if n step remained
         function isSolved(twisty) {
             if (!twistyScene.isAnimationFinished()) {
                 return 4;
             }
-            var curProgress = getMaxProgress(twisty);
+            if (twisty.options.dimension == 3) {
+                var curProgress = 4 - cubeutil.getCFOPProgress(getFacelet(twisty));
+                return twistyScene.isMoveFinished() ? curProgress : Math.max(1, curProgress);
+            }
+
             if (!twistyScene.isMoveFinished()) {
-                return Math.max(1, curProgress);
+                return 1;
             }
 
             var state = twisty.cubePieces;
@@ -458,11 +360,39 @@
                 for (var stickerIndex = 1, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
                     var sticker = faceStickers[stickerIndex];
                     if (0.5 < Math.abs(matrixVector3Dot(sticker[0], normVector) - dimension)) {
-                        return curProgress;
+                        return 1;
                     }
                 }
             }
             return 0;
+        }
+
+        function getFacelet(twisty) {
+            twisty = twisty || this;
+            var ret = [];
+            var state = twisty.cubePieces;
+            var dimension = twisty.options.dimension;
+            var xyXchg = [1, 0, 0, 1, 0, 0];
+            var xInv = [1, -1, -1, -1, -1, -1];
+            var yInv = [1, -1, 1, 1, 1, -1];
+            for (var faceIndex = 0; faceIndex < numSides; faceIndex++) {
+                var faceStickers = state[faceIndex];
+                for (var stickerIndex = 0; stickerIndex < faceStickers.length; stickerIndex++) {
+                    var sticker = faceStickers[stickerIndex];
+                    var coord = [];
+                    coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['U'])));
+                    coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['R'])));
+                    coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['F'])));
+                    var idx = coord.indexOf(dimension) + coord.indexOf(-dimension) + 1;
+                    var axis = (dimension - coord[idx]) / 2 + idx;
+                    coord.splice(idx, 1);
+                    var xy = xyXchg[axis];
+                    x = (coord[xy] * xInv[axis] + dimension - 1) / 2;
+                    y = (coord[1 - xy] * yInv[axis] + dimension - 1) / 2;
+                    ret[axis * dimension * dimension + x * dimension + y] = index_side[faceIndex];
+                }
+            }
+            return ret.join("");
         }
 
         function isInspectionLegalMove(twisty, move) {
@@ -521,6 +451,7 @@
             isParallelMove: isParallelMove,
             generateScramble: generateScramble,
             parseScramble: parseScramble,
+            getFacelet: getFacelet,
             moveCnt: moveCnt
         };
     }

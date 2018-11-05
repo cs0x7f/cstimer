@@ -176,6 +176,16 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             staticAppend = "";
         }
 
+
+        function getMulPhaseAppend(curProgress, totPhases) {
+            var ret = [];
+            for (var i = totPhases; i > curProgress; i--) {
+                ret.push(pretty(curTime[i] - ~~curTime[i + 1], true));
+            }
+            return curProgress == totPhases || totPhases == 1 ? '' :
+                '<div style="font-size: 0.65em">' + '=' + ret.join('<br>+') + '</div>';
+        }
+
         $(function() {
             div = $('#lcd');
             $('#multiphase').append(rightDiv);
@@ -189,6 +199,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             append: append,
             setStaticAppend: setStaticAppend,
             fixDisplay: fixDisplay,
+            getMulPhaseAppend: getMulPhaseAppend,
             reset: reset
         }
     })();
@@ -277,7 +288,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 } else if (status == -4) {
                     status = -3;
                     lcd.reset();
-                    startTime = $.now();
+                    startTime = now;
                 }
             }
             lcd.fixDisplay(false, keyCode == 32);
@@ -487,15 +498,6 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         var lastMove = "";
         var totPhases = 1;
 
-        function getMulPhaseAppend(curProgress) {
-            var ret = [];
-            for (var i = totPhases; i > curProgress; i--) {
-                ret.push(pretty(curTime[i] - ~~curTime[i + 1], true));
-            }
-            return curProgress == totPhases || totPhases == 1 ? '' :
-                '<div style="font-size: 0.65em">' + '=' + ret.join('<br>+') + '</div>';
-        }
-
         function moveListener(move, started) {
             if (status == -3 || status == -2) {
                 if (twisty.isInspectionLegalMove(twisty, move)) {
@@ -526,7 +528,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     }
                 }
                 status = Math.min(curProgress, status) || 1;
-                lcd.setStaticAppend(getMulPhaseAppend(status));
+                lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
                 if (curProgress == 0 && !started) {
                     moveCnt += twisty.moveCnt();
                     if (currentScrambleType.match(/^r\d+$/) && currentScramble.length != 0) {
@@ -544,7 +546,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     // console.log(curTime);
                     // curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0), $.now() - startTime];
                     lcd.val(curTime[1], true);
-                    lcd.append(getMulPhaseAppend(0));
+                    lcd.append(lcd.getMulPhaseAppend(0, totPhases));
                     lcd.append(
                         '<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " fps" + "</div>");
                     // lcd.append("<br>" + moveCnt + "moves");
@@ -730,19 +732,18 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
     var giikerTimer = (function() {
 
-        var SOLVED_FACELET = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
         var enable = false;
         var enableVRC = false;
         var waitReadyTid = 0;
         var insTime = 0;
         var div = $('<div />');
+        var totPhases = 1;
 
         var giikerVRC = (function() {
             var twistyScene;
             var twisty;
             var isReseted = false;
             var isLoading = false;
-            // var curVRCFacelet = SOLVED_FACELET;
             var curVRCCubie = new mathlib.CubieCube();
             var tmpCubie1 = new mathlib.CubieCube();
             var tmpCubie2 = new mathlib.CubieCube();
@@ -759,8 +760,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     stickerWidth: 1.7,
                     scale: 0.9
                 });
-                // curVRCFacelet = SOLVED_FACELET;
-                curVRCCubie.fromFacelet(SOLVED_FACELET);
+                curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
                 twisty = twistyScene.getTwisty();
                 if (!temp) {
                     setSize(getProp('timerSize'));
@@ -811,7 +811,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 }
                 if (shouldReset) { //cannot get current state according to prevMoves
                     resetVRC(false);
-                    curVRCCubie.fromFacelet(SOLVED_FACELET);
+                    curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
                     todoMoves = scramble_333.genFacelet(state);
                 } else {
                     todoMoves = todoMoves.reverse().join(' ');
@@ -845,8 +845,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             if (enableVRC) {
                 giikerVRC.setState(facelet, prevMoves, false);
             }
+            // console.log(cubeutil.getCFOPProgress6A(facelet));
             var now = $.now();
-            if (status == -1 && facelet != SOLVED_FACELET) {
+            if (status == -1 && facelet != mathlib.SOLVED_FACELET) {
                 startTime = now;
                 if (waitReadyTid) {
                     clearTimeout(waitReadyTid);
@@ -868,21 +869,40 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     insTime = 0;
                 }
                 startTime = now;
-                status = 1;
+                status = {
+                    'n': 1,
+                    'cfop': 4
+                }[getProp('vrcMP', 'n')];
+                totPhases = status;
                 curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
                 lcd.fixDisplay(false, true);
                 lcd.setRunning(true, enableVRC);
                 ui.setAutoShow(false);
             }
-            if (status >= 1 && facelet == SOLVED_FACELET) {
-                status = -1;
-                curTime[1] = now - startTime;
-                ui.setAutoShow(true);
-                lcd.setRunning(false, enableVRC);
-                lcd.fixDisplay(false, true);
-                lcd.val(curTime[1], enableVRC);
-                if (curTime[1] != 0) {
-                    pushSignal('time', curTime);
+            if (status >= 1) {
+                var curProgress = 4 - cubeutil.getCFOPProgress(facelet);
+                if (curProgress < status) {
+                    for (var i = status; i > curProgress; i--) {
+                        curTime[i] = now - startTime;
+                    }
+                }
+                status = Math.min(curProgress, status) || 1;
+                if (enableVRC) {
+                    lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
+                }
+                if (facelet == mathlib.SOLVED_FACELET) {
+                    status = -1;
+                    curTime[1] = now - startTime;
+                    ui.setAutoShow(true);
+                    lcd.setRunning(false, enableVRC);
+                    lcd.fixDisplay(false, true);
+                    lcd.val(curTime[1], enableVRC);
+                    if (enableVRC) {
+                        lcd.append(lcd.getMulPhaseAppend(0, totPhases));
+                    }
+                    if (curTime[1] != 0) {
+                        pushSignal('time', curTime);
+                    }
                 }
             }
         }
@@ -998,7 +1018,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             if (value[0] == 'showAvg') {
                 avgDiv.showAvgDiv(value[1]);
             }
-            if (value[0] == 'giiVRC') {
+            if (value[0] == 'giiVRC' && value[2] != 'set') {
                 giikerTimer.setEnable(getProp('input'));
             }
             if ($.inArray(value[0], resetCondition) != -1) {
