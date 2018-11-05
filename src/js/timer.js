@@ -843,21 +843,24 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (enableVRC) {
 				giikerVRC.setState(facelet, prevMoves, false);
 			}
-			if (status == -1 && facelet != mathlib.SOLVED_FACELET) {
-				startTime = now;
+			if (status == -1) {
 				if (waitReadyTid) {
 					clearTimeout(waitReadyTid);
-				}
-				waitReadyTid = setTimeout(function() {
 					waitReadyTid = 0;
-					if (status == -1 || status == -3) {
-						if (status == -1) {
-							lcd.reset(enableVRC);
+				}
+				if (facelet != mathlib.SOLVED_FACELET) {				
+					startTime = now;
+					waitReadyTid = setTimeout(function() {
+						waitReadyTid = 0;
+						if (status == -1 || status == -3) {
+							if (status == -1) {
+								lcd.reset(enableVRC);
+							}
+							status = -2;
+							lcd.fixDisplay(true, true);
 						}
-						status = -2;
-						lcd.fixDisplay(true, true);
-					}
-				}, 5000);
+					}, 5000);
+				}
 			} else if (status == -2) {
 				if (getProp('useIns')) {
 					insTime = now - startTime;
