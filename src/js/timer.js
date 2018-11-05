@@ -735,6 +735,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
         var enableVRC = false;
         var waitReadyTid = 0;
         var insTime = 0;
+        var div = $('<div />');
 
         var giikerVRC = (function() {
             var twistyScene;
@@ -771,10 +772,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 twistyScene && twistyScene.resize();
             }
 
-            function initVRC(div) {
+            function initVRC() {
                 if (twistyScene != undefined) {} else if (window.twistyjs != undefined) {
                     twistyScene = new twistyjs.TwistyScene();
-                    // twistyScene.addMoveListener(moveListener);
                     div.empty().append(twistyScene.getDomElement());
                     resetVRC();
                     twistyScene.resize();
@@ -789,7 +789,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             }
 
             function setState(state, prevMoves, isFast) {
-                console.log(state);
+                // console.log(state);
                 tmpCubie1.fromFacelet(state);
                 var todoMoves = [];
                 var shouldReset = true;
@@ -833,7 +833,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             return {
                 resetVRC: resetVRC, //reset to solved
                 initVRC: initVRC,
-                setState: setState
+                setState: setState,
+                setSize: setSize
             }
         })();
 
@@ -879,7 +880,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                 ui.setAutoShow(true);
                 lcd.setRunning(false, enableVRC);
                 lcd.fixDisplay(false, true);
-                lcd.val(curTime[1]);
+                lcd.val(curTime[1], enableVRC);
                 if (curTime[1] != 0) {
                     pushSignal('time', curTime);
                 }
@@ -890,11 +891,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             enableVRC = enable;
             enable ? div.show() : div.hide();
             if (enable) {
-                giikerVRC.initVRC(div);
+                giikerVRC.initVRC();
             }
         }
-
-        var div = $('<div />');
 
         $(function() {
             div.appendTo("#container");
@@ -928,7 +927,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
                     lcd.fixDisplay(false, true);
                 }
             },
-            setVRC: setVRC
+            setVRC: setVRC,
+            setSize: giikerVRC.setSize
         }
     })();
 
@@ -986,6 +986,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
             if (value[0] == 'timerSize') {
                 container.css('font-size', value[1] + 'em');
                 virtual333.setSize(value[1]);
+                giikerTimer.setSize(value[1]);
             }
             if (value[0] == 'timerSize' || value[0] == 'phases') {
                 $('#multiphase').css('font-size', getProp('timerSize') / Math.max(getProp('phases'), 4) + 'em')
