@@ -736,6 +736,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		var insTime = 0;
 		var div = $('<div />');
 		var totPhases = 1;
+		var currentFacelet = mathlib.SOLVED_FACELET;
 
 		var giikerVRC = (function() {
 			var twistyScene;
@@ -836,6 +837,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		})();
 
 		function giikerCallback(facelet, prevMoves) {
+			currentFacelet = facelet;
 			if (!enable) {
 				return;
 			}
@@ -843,23 +845,30 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (enableVRC) {
 				giikerVRC.setState(facelet, prevMoves, false);
 			}
+			if (waitReadyTid) {
+				clearTimeout(waitReadyTid);
+				waitReadyTid = 0;
+			}
 			if (status == -1) {
-				if (waitReadyTid) {
-					clearTimeout(waitReadyTid);
-					waitReadyTid = 0;
-				}
-				if (facelet != mathlib.SOLVED_FACELET) {				
-					startTime = now;
-					waitReadyTid = setTimeout(function() {
-						waitReadyTid = 0;
-						if (status == -1 || status == -3) {
-							if (status == -1) {
-								lcd.reset(enableVRC);
-							}
-							status = -2;
-							lcd.fixDisplay(true, true);
+				if (facelet != mathlib.SOLVED_FACELET) {
+					var delayStart = getProp('giiSD');
+					if (delayStart != 'n') {
+						startTime = now;
+						waitReadyTid = setTimeout(function() {
+							waitReadyTid = 0;
+							markScrambled();
+						}, ~~delayStart * 1000);
+					}
+					var moveStart = getProp('giiSM');
+					if (moveStart != 'n') {
+						var movere = {
+							'x4': /^([URFDLB][ '])\1\1\1$/,
+							'xi2': /^([URFDLB])( \1'\1 \1'|'\1 \1'\1 )$/
+						}[moveStart];
+						if (movere.exec(prevMoves.join(''))) {
+							markScrambled();
 						}
-					}, 5000);
+					}
 				}
 			} else if (status == -2) {
 				if (getProp('useIns')) {
@@ -906,6 +915,16 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 		}
 
+		function markScrambled() {
+			if (status == -1 || status == -3) {
+				if (status == -1) {
+					lcd.reset(enableVRC);
+				}
+				status = -2;
+				lcd.fixDisplay(true, true);
+			}
+		}
+
 		function setVRC(enable) {
 			enableVRC = enable;
 			enable ? div.show() : div.hide();
@@ -944,6 +963,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					ui.setAutoShow(true);
 					lcd.setRunning(false, enableVRC);
 					lcd.fixDisplay(false, true);
+				} else if (keyCode == 32 && getProp('giiSK') && currentFacelet != mathlib.SOLVED_FACELET) {
+					markScrambled();
 				}
 			},
 			setVRC: setVRC,
@@ -1039,6 +1060,10 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop'], PROPERTY_VRCMPS.split('|')]);
 		regProp('vrc', 'giiVRC', 0, PROPERTY_GIIKERVRC, [true]);
+		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['5', ['2', '3', '4', '5', 'n'], PROPERTY_GIISOK_DELAYS.split('|')]);
+		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true]);
+		regProp('vrc', 'giiSM', 1, PROPERTY_GIISOK_MOVE, ['n', ['x4', 'xi2', 'n'], PROPERTY_GIISOK_MOVES.split('|')]);
+		regProp('vrc', 'giiRST', 1, PROPERTY_GIIRST, ['p', ['a', 'p', 'n'], PROPERTY_GIIRSTS.split('|')]);
 	});
 
 	var fobj;

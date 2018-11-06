@@ -73,6 +73,14 @@ var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCMP = 'multi-phase: ';
 var PROPERTY_VRCMPS = 'None|CFOP';
 var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
+var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay: ';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never';
+var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
+var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing: ';
+var PROPERTY_GIISOK_MOVES = 'U4, etc|(U U\')2, (U\' U)2, etc|Never';
+var PROPERTY_GIIRST = 'Reset Giiker cube when connect: ';
+var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],

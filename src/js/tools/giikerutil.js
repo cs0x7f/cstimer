@@ -101,6 +101,7 @@ var giikerutil = (function(CubieCube) {
 		setCallBack: function(func) {
 			callback = func;
 		},
+		markSolved: markSolved,
 		init: init
 	}
 })(mathlib.CubieCube);

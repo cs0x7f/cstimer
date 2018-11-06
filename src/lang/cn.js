@@ -73,6 +73,14 @@ var SCRAMBLE_INPUT = '输入打乱公式';
 var PROPERTY_VRCMP = '多阶段测速：';
 var PROPERTY_VRCMPS = '无|CFOP';
 var PROPERTY_GIIKERVRC = '显示虚拟计客魔方';
+var PROPERTY_GIISOK_DELAY = '保持几秒后标记已打乱：';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|从不';
+var PROPERTY_GIISOK_KEY = '使用空格标记已打乱';
+var PROPERTY_GIISOK_MOVE = '使用转动标记已打乱：';
+var PROPERTY_GIISOK_MOVES = 'U4, 等|(U U\')2, (U\' U)2, 等|从不';
+var PROPERTY_GIIRST = '连接时重置计客魔方：';
+var PROPERTY_GIIRSTS = '总是|询问|从不';
+var CONFIRM_GIIRST = '重置计客魔方为已还原？';
 var scrdata = [
 	['WCA', [
 		['三阶速拧', "333", 0],

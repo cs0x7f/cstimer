@@ -33,7 +33,13 @@ var GiikerCube = (function() {
 						characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
 						characteristic.startNotifications();
 						characteristic.readValue().then(function(value) {
-							parseState(value);
+							var initState = parseState(value);
+							if (initState[0] != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+								var rst = kernel.getProp('giiRST');
+								if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+									giikerutil.markSolved();
+								}
+							}
 						})
 					});
 				})
