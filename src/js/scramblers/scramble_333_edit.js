@@ -519,9 +519,10 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 
 	function $initPhase2(obj) {
 		var cidx, csym, cx, d4e, depth2, edge, esym, i, lm, m, mid, prun, u4e;
-		if (+new Date > (obj.solution == null ? obj.timeOut : obj.timeMin)) {
+		if (obj.probe >= (obj.solution == null ? obj.probeMax : obj.probeMin)) {
 			return 0;
 		}
+		++obj.probe;
 		obj.valid2 = Math.min(obj.valid2, obj.valid1);
 		cidx = obj.corn[obj.valid1] >>> 4;
 		csym = obj.corn[obj.valid1] & 15;
@@ -595,7 +596,7 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 
 		if (depth2 != obj.maxDep2 - 1) { //At least one solution has been found.
 			obj.maxDep2 = Math.min(12, obj.sol - obj.depth1);
-			return (+new Date > obj.timeMin) ? 0 : 1;
+			return (obj.probe > obj.probeMin) ? 0 : 1;
 		} else {
 			return 1;
 		}
@@ -675,11 +676,12 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		return -1;
 	}
 
-	function $solution(obj, facelets, maxDepth, timeOut, timeMin, verbose) {
+	function $solution(obj, facelets, maxDepth, probeMax, probeMin, verbose) {
 		Search_$verify(obj, facelets);
 		obj.sol = (maxDepth || 21) + 1;
-		obj.timeOut = +new Date + (timeOut || 10000);
-		obj.timeMin = obj.timeOut + Math.min((timeMin || 50) - (timeOut || 10000), 0);
+		obj.probe = 0;
+		obj.probeMax = (probeMax || 1000000);
+		obj.probeMin = obj.probeMax + Math.min((probeMin || 50) - obj.probeMax, 0);
 		obj.verbose = verbose || 2;
 		obj.solution = null;
 		return $solve(obj, obj.cc);
@@ -814,8 +816,8 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 	_.maxDep2 = 0;
 	_.sol = 0;
 	_.solution = null;
-	_.timeMin = 0;
-	_.timeOut = 0;
+	_.probeMin = 0;
+	_.probeMax = 0;
 	_.urfIdx = 0;
 	_.preIdx = 0;
 	_.valid1 = 0;

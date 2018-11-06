@@ -81,6 +81,7 @@ var PROPERTY_GIISOK_MOVES = 'U4, 等|(U U\')2, (U\' U)2, 等|从不';
 var PROPERTY_GIIRST = '连接时重置计客魔方：';
 var PROPERTY_GIIRSTS = '总是|询问|从不';
 var CONFIRM_GIIRST = '重置计客魔方为已还原？';
+var PROPERTY_GIIAED = '自动硬件错误检测';
 var scrdata = [
 	['WCA', [
 		['三阶速拧', "333", 0],

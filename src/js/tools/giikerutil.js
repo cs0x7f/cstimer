@@ -67,16 +67,72 @@ var giikerutil = (function(CubieCube) {
 	var currentState = currentRawState;
 	var solvedStateInv = new mathlib.CubieCube();
 
+	var lastTimestamp = $.now();
+	var detectTid = 0;
+
+	function giikerErrorDetect() {
+		if (detectTid) {
+			clearTimeout(detectTid);
+			detectTid = 0;
+		}
+		if (kernel.getProp('giiAED')) {
+			detectTid = setTimeout(function() {
+				if (!simpleErrorDetect(currentCubie)) {
+					return;
+				}
+				var gen = scramble_333.genFacelet(currentCubie.toFaceCube());
+				if (gen.length / 3 < 10) {
+					console.log('Possible error, gen=' + gen.replace(/ /g, '') + ', ignore');
+					return;
+				}
+				console.log('Almost error, gen=' + gen.replace(/ /g, '') + ', mark solved');
+				markSolved();
+			}, 1000);
+		}
+	}
+
+	//check whether cc is a conjugate of a move
+	function simpleErrorDetect(cc) {
+		var errCorn = [],
+			errEdge = [];
+		for (var i = 0; i < 8; i++) {
+			if (cc.ca[i] != i) {
+				errCorn.push(i);
+			}
+		}
+		for (var i = 0; i < 12; i++) {
+			if (cc.ea[i] != (i << 1)) {
+				errEdge.push(i);
+			}
+		}
+		if (errCorn.length != 4 || errEdge.length != 4) {
+			return false;
+		}
+		for (var i = 0; i < 4; i++) { //inplace piese
+			if ((cc.ca[errCorn[i]] & 0x7) == errCorn[i] ||
+				(cc.ea[errEdge[i]] >> 1) == errEdge[i]) {
+				return false;
+			}
+		}
+		// 2, 2 cycles
+		if ((cc.ca[cc.ca[errCorn[0]] & 0x7] & 0x7) == errCorn[0] ||
+			(cc.ea[cc.ea[errEdge[0]] >> 1] >> 1) == errEdge[0]) {
+			return false;
+		}
+		return true;
+	}
+
 	function markSolved() {
 		//mark current state as solved
 		solvedStateInv.invFrom(currentRawCubie);
 		currentState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', currentRawState);
 		drawState();
-		callback(currentState, []);
+		callback(currentState, [], lastTimestamp);
 	}
 
 	function giikerCallback(facelet, prevMoves) {
+		var lastTimestamp = $.now();
 		connectClick.html('Connected').removeClass('click').unbind('click');
 		currentRawState = facelet;
 		currentRawCubie.fromFacelet(currentRawState);
@@ -84,7 +140,8 @@ var giikerutil = (function(CubieCube) {
 		mathlib.CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
 		drawState();
-		callback(currentState, prevMoves);
+		giikerErrorDetect();
+		callback(currentState, prevMoves, lastTimestamp);
 	}
 
 	function init() {

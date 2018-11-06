@@ -81,6 +81,7 @@ var PROPERTY_GIISOK_MOVES = 'U4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIIRST = 'Reset Giiker cube when connect: ';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
+var PROPERTY_GIIAHED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
