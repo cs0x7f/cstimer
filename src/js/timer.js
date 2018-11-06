@@ -850,9 +850,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 			if (status == -1) {
 				if (facelet != mathlib.SOLVED_FACELET) {
+					startTime = now;
 					var delayStart = getProp('giiSD');
 					if (delayStart != 'n') {
-						startTime = now;
 						waitReadyTid = setTimeout(function() {
 							waitReadyTid = 0;
 							markScrambled();
@@ -964,6 +964,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					lcd.fixDisplay(false, true);
 				} else if (keyCode == 32 && getProp('giiSK') && currentFacelet != mathlib.SOLVED_FACELET) {
 					markScrambled();
+					startTime = $.now();
 				}
 			},
 			setVRC: setVRC,
