@@ -80,6 +80,10 @@ var giikerutil = (function(CubieCube) {
 				if (!simpleErrorDetect(currentCubie)) {
 					return;
 				}
+				var facelet = currentCubie.toFaceCube();
+				if (cubeutil.getCFOPProgress(facelet) >= 2) { // all unsolved pieces is on same face
+					return;
+				}
 				var gen = scramble_333.genFacelet(currentCubie.toFaceCube());
 				if (gen.length / 3 < 10) {
 					console.log('Possible error, gen=' + gen.replace(/ /g, '') + ', ignore');

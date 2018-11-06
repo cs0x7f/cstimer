@@ -733,6 +733,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		var enable = false;
 		var enableVRC = false;
 		var waitReadyTid = 0;
+		var moveReadyTid = 0;
 		var insTime = 0;
 		var div = $('<div />');
 		var totPhases = 1;
@@ -836,6 +837,17 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 		})();
 
+		function clearReadyTid() {
+			if (waitReadyTid) {
+				clearTimeout(waitReadyTid);
+				waitReadyTid = 0;
+			}
+			if (moveReadyTid) {
+				clearTimeout(moveReadyTid);
+				moveReadyTid = 0;
+			}
+		}
+
 		function giikerCallback(facelet, prevMoves, now) {
 			currentFacelet = facelet;
 			if (!enable) {
@@ -844,18 +856,13 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (enableVRC) {
 				giikerVRC.setState(facelet, prevMoves, false);
 			}
-			if (waitReadyTid) {
-				clearTimeout(waitReadyTid);
-				waitReadyTid = 0;
-			}
+			clearReadyTid();
 			if (status == -1) {
 				if (facelet != mathlib.SOLVED_FACELET) {
-					startTime = now;
 					var delayStart = getProp('giiSD');
 					if (delayStart != 'n') {
 						waitReadyTid = setTimeout(function() {
-							waitReadyTid = 0;
-							markScrambled();
+							markScrambled(now);
 						}, ~~delayStart * 1000);
 					}
 					var moveStart = getProp('giiSM');
@@ -865,11 +872,13 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 							'xi2': /^([URFDLB])( \1'\1 \1'|'\1 \1'\1 )$/
 						}[moveStart];
 						if (movere.exec(prevMoves.join(''))) {
-							markScrambled();
+							moveReadyTid = setTimeout(function() {
+								markScrambled(now);
+							}, 1000);
 						}
 					}
 				}
-			} else if (status == -2) {
+			} else if (status == -3 || status == -2) {
 				if (getProp('useIns')) {
 					insTime = now - startTime;
 				} else {
@@ -914,13 +923,16 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 		}
 
-		function markScrambled() {
-			if (status == -1 || status == -3) {
-				if (status == -1) {
-					lcd.reset(enableVRC);
-				}
+		function markScrambled(now) {
+			clearReadyTid();
+			if (status == -1) {
 				status = -2;
+				startTime = now;
 				lcd.fixDisplay(true, true);
+				if (getProp('useIns')) {
+					lcd.setRunning(true, enableVRC);
+				}
+				ui.setAutoShow(false);
 			}
 		}
 
@@ -958,14 +970,15 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			},
 			onkeydown: function(keyCode) {
 				if (keyCode == 27) {
+					clearReadyTid();
 					status = -1;
 					ui.setAutoShow(true);
+					lcd.val(0, enableVRC);
 					lcd.setRunning(false, enableVRC);
 					lcd.fixDisplay(false, true);
 				} else if (keyCode == 32 && getProp('giiSK') && currentFacelet != mathlib.SOLVED_FACELET) {
-					markScrambled();
 					if (status == -1) {
-						startTime = $.now();
+						markScrambled($.now());
 					}
 				}
 			},
