@@ -69,10 +69,9 @@ var giikerutil = (function(CubieCube) {
 
 	function markSolved() {
 		//mark current state as solved
-		var cc = new mathlib.CubieCube();
-		cc.fromFacelet(currentRawState);
-		solvedStateInv.invFrom(cc);
+		solvedStateInv.invFrom(currentRawCubie);
 		currentState = mathlib.SOLVED_FACELET;
+		kernel.setProp('giiSolved', currentRawState);
 		drawState();
 		callback(currentState, []);
 	}
@@ -84,11 +83,14 @@ var giikerutil = (function(CubieCube) {
 		mathlib.CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
 		mathlib.CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
-		callback(currentState, prevMoves);
 		drawState();
+		callback(currentState, prevMoves);
 	}
 
 	function init() {
+		currentRawState = kernel.getProp('giiSolved', mathlib.SOLVED_FACELET);
+		currentRawCubie.fromFacelet(currentRawState);
+		solvedStateInv.invFrom(currentRawCubie);
 		GiikerCube.setCallBack(giikerCallback);
 		if (!GiikerCube.isConnected()) {
 			return GiikerCube.init();

@@ -74,9 +74,9 @@ var cubeutil = (function() {
 	}
 
 	//6 axes: D -x-> B -z-> R -x-> U -z-> F -x-> L -z-> D
-	function getProgress6A(facelet, process) {
+	function getProgressNAxis(facelet, process, n_axis) {
 		var maxRet = 0;
-		for (var a = 0; a < 6; a++) {
+		for (var a = 0; a < n_axis; a++) {
 			var colorMap = {};
 			var centers = facelet[4] + facelet[13] + facelet[22] + facelet[31] + facelet[40] + facelet[49];
 			for (var i = 0; i < 6; i++) {
@@ -84,16 +84,24 @@ var cubeutil = (function() {
 			}
 			maxRet = Math.max(maxRet, process(facelet, colorMap));
 			facelet = faceletRot(facelet, (a & 1) ? cubeRotX : cubeRotZ);
+			if (a % 6 == 5) {
+				facelet = faceletRot(facelet, cubeRotZ);
+				facelet = faceletRot(facelet, cubeRotZ);
+			}
+			if (a % 12 == 11) {
+				facelet = faceletRot(facelet, cubeRotY);
+				facelet = faceletRot(facelet, cubeRotY);
+			}
 		}
 		return maxRet;
 	}
 
 	return {
 		getCFOPProgress: function(facelet) {
-			return getProgress6A(facelet, getCFOPProgress);
+			return getProgressNAxis(facelet, getCFOPProgress, 6);
 		},
 		getCF4OPProgress: function(facelet) {
-			return getProgress6A(facelet, getCF4OPProgress);
+			return getProgressNAxis(facelet, getCF4OPProgress, 6);
 		}
 	}
 
