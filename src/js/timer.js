@@ -964,7 +964,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					lcd.fixDisplay(false, true);
 				} else if (keyCode == 32 && getProp('giiSK') && currentFacelet != mathlib.SOLVED_FACELET) {
 					markScrambled();
-					startTime = $.now();
+					if (status == -1) {
+						startTime = $.now();
+					}
 				}
 			},
 			setVRC: setVRC,
