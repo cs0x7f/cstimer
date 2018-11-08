@@ -9,6 +9,9 @@ var cubeutil = (function() {
 	var f2l4Mask = "----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB";
 	var f2lMask = "----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
 	var ollMask = "UUUUUUUUU---RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
+	var roux1Mask = "---------------------F--F--D--D--D-----LLLLLL-----B--B";
+	var roux2Mask = "------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B";
+	var roux3Mask = "U-U---U-UR-RRRRRRRF-FF-FF-FD-DD-DD-DL-LLLLLLLB-BB-BB-B";
 
 	var cubeRotY = [2, 5, 8, 1, 4, 7, 0, 3, 6, 18, 19, 20, 21, 22, 23, 24, 25, 26, 36, 37, 38, 39, 40, 41, 42, 43, 44, 33, 30, 27, 34, 31, 28, 35, 32, 29, 45, 46, 47, 48, 49, 50, 51, 52, 53, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 	var cubeRotX = [53, 52, 51, 50, 49, 48, 47, 46, 45, 11, 14, 17, 10, 13, 16, 9, 12, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24, 25, 26, 42, 39, 36, 43, 40, 37, 44, 41, 38, 35, 34, 33, 32, 31, 30, 29, 28, 27];
@@ -22,67 +25,83 @@ var cubeutil = (function() {
 		return ret.join('');
 	}
 
-	function isSolvedMask(facelet, mask, colorMap) {
+	function solvedProgress(facelet, mask) {
+		mask = mask || mathlib.SOLVED_FACELET;
+		var colorMap = {};
 		for (var i = 0; i < 54; i++) {
 			if (mask[i] == '-') {
 				continue;
 			}
-			if (colorMap[facelet[i]] != mask[i]) {
-				return false;
+			if (facelet[i] in colorMap && colorMap[facelet[i]] != mask[i]) {
+				return 1;
 			}
+			colorMap[facelet[i]] = mask[i];
 		}
-		return true;
+		return 0;
 	}
 
-	//return 0: nothing, 1: cross solved, 2~5: nth f2l solved, 6 oll solved, 7: solved
-	function getCF4OPProgress(facelet, colorMap) {
-		if (!isSolvedMask(facelet, crossMask, colorMap)) {
-			return 0;
+	//return 7: nothing, 6: cross solved, 2~5: nth f2l solved, 1 oll solved, 0: solved
+	function getCF4OPProgress(facelet) {
+		if (solvedProgress(facelet, crossMask)) {
+			return 7;
 		}
 		var numF2L = 0;
-		numF2L += isSolvedMask(facelet, f2l1Mask, colorMap);
-		numF2L += isSolvedMask(facelet, f2l2Mask, colorMap);
-		numF2L += isSolvedMask(facelet, f2l3Mask, colorMap);
-		numF2L += isSolvedMask(facelet, f2l4Mask, colorMap);
-		if (numF2L < 4) {
-			return numF2L + 1;
-		}
-		if (!isSolvedMask(facelet, ollMask, colorMap)) {
-			return 5;
-		}
-		if (!isSolvedMask(facelet, mathlib.SOLVED_FACELET, colorMap)) {
-			return 6;
-		}
-		return 7;
-	}
-
-	//return 0: nothing, 1: cross solved, 2~5: nth f2l solved, 6 oll solved, 7: solved
-	function getCFOPProgress(facelet, colorMap) {
-		if (!isSolvedMask(facelet, crossMask, colorMap)) {
-			return 0;
-		}
-		if (!isSolvedMask(facelet, f2lMask, colorMap)) {
+		numF2L += solvedProgress(facelet, f2l1Mask);
+		numF2L += solvedProgress(facelet, f2l2Mask);
+		numF2L += solvedProgress(facelet, f2l3Mask);
+		numF2L += solvedProgress(facelet, f2l4Mask);
+		if (numF2L > 0) {
+			return 2 + numF2L;
+		} else if (solvedProgress(facelet, ollMask)) {
+			return 2;
+		} else if (solvedProgress(facelet)) {
 			return 1;
 		}
-		if (!isSolvedMask(facelet, ollMask, colorMap)) {
-			return 2;
-		}
-		if (!isSolvedMask(facelet, mathlib.SOLVED_FACELET, colorMap)) {
-			return 3;
-		}
-		return 4;
+		return 0;
 	}
 
+	//return 4: nothing, 3: cross solved, 2: f2l solved, 1 oll solved, 0: solved
+	function getCFOPProgress(facelet) {
+		if (solvedProgress(facelet, crossMask)) {
+			return 4;
+		} else if (solvedProgress(facelet, f2lMask)) {
+			return 3;
+		} else if (solvedProgress(facelet, ollMask)) {
+			return 2;
+		} else if (solvedProgress(facelet)) {
+			return 1;
+		}
+		return 0;
+	}
+
+	//return 2: nothing, 1: f2l solved, 0: solved
+	function getFPProgress(facelet) {
+		if (solvedProgress(facelet, f2lMask)) {
+			return 2;
+		} else if (solvedProgress(facelet)) {
+			return 1;
+		}
+		return 0;
+	}
+
+	//return 4: nothing, 3: block1, 2: block2, 1: cll, 0: solved
+	function getRouxProgress(facelet) {
+		if (solvedProgress(facelet, roux1Mask)) {
+			return 4;
+		} else if (solvedProgress(facelet, roux2Mask)) {
+			return 3;
+		} else if (solvedProgress(facelet, roux3Mask)) {
+			return 2;
+		} else if (solvedProgress(facelet)) {
+			return 1;
+		}
+		return 0;
+	}
 	//6 axes: D -x-> B -z-> R -x-> U -z-> F -x-> L -z-> D
 	function getProgressNAxis(facelet, process, n_axis) {
-		var maxRet = 0;
+		var minRet = 99;
 		for (var a = 0; a < n_axis; a++) {
-			var colorMap = {};
-			var centers = facelet[4] + facelet[13] + facelet[22] + facelet[31] + facelet[40] + facelet[49];
-			for (var i = 0; i < 6; i++) {
-				colorMap[centers[i]] = 'URFDLB' [i];
-			}
-			maxRet = Math.max(maxRet, process(facelet, colorMap));
+			minRet = Math.min(minRet, process(facelet));
 			facelet = faceletRot(facelet, (a & 1) ? cubeRotX : cubeRotZ);
 			if (a % 6 == 5) {
 				facelet = faceletRot(facelet, cubeRotZ);
@@ -93,7 +112,7 @@ var cubeutil = (function() {
 				facelet = faceletRot(facelet, cubeRotY);
 			}
 		}
-		return maxRet;
+		return minRet;
 	}
 
 	return {
@@ -102,6 +121,20 @@ var cubeutil = (function() {
 		},
 		getCF4OPProgress: function(facelet) {
 			return getProgressNAxis(facelet, getCF4OPProgress, 6);
+		},
+		getProgress: function(facelet, progress) {
+			switch (progress) {
+				case 'cfop':
+					return getProgressNAxis(facelet, getCFOPProgress, 6);
+				case 'fp':
+					return getProgressNAxis(facelet, getFPProgress, 6);
+				case 'cf4op':
+					return getProgressNAxis(facelet, getCF4OPProgress, 6);
+				case 'roux':
+					return getProgressNAxis(facelet, getRouxProgress, 24);
+				case 'n':
+					return getProgressNAxis(facelet, solvedProgress, 1);
+			}
 		}
 	}
 

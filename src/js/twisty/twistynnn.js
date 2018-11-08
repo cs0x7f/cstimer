@@ -332,10 +332,10 @@
 		//return n if n step remained
 		function isSolved(twisty) {
 			if (!twistyScene.isAnimationFinished()) {
-				return 4;
+				return 99;
 			}
 			if (twisty.options.dimension == 3) {
-				var curProgress = 4 - cubeutil.getCFOPProgress(getFacelet(twisty));
+				var curProgress = cubeutil.getProgress(getFacelet(twisty), kernel.getProp('vrcMP', 'n'));
 				return twistyScene.isMoveFinished() ? curProgress : Math.max(1, curProgress);
 			}
 

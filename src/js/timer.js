@@ -43,6 +43,14 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		voicef12s = new Audio("data:audio/mp3;base64,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");
 	}
 
+	var nPhases = {
+		'n': 1,
+		'cfop': 4,
+		'fp': 2,
+		'roux': 4,
+		'cf4op': 7
+	}
+
 	var lcd = (function() {
 
 		var div;
@@ -512,10 +520,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					}
 					startTime = now;
 					moveCnt = 0;
-					status = currentScrambleSize == 3 && currentScrambleType != "r3" ? {
-						'n': 1,
-						'cfop': 4
-					}[getProp('vrcMP', 'n')] : 1;
+					status = currentScrambleSize == 3 && currentScrambleType != "r3" ? nPhases[getProp('vrcMP', 'n')] : 1;
 					totPhases = status;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					lcd.setRunning(true, true);
@@ -897,10 +902,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					insTime = 0;
 				}
 				startTime = now;
-				status = {
-					'n': 1,
-					'cfop': 4
-				}[getProp('vrcMP', 'n')];
+				status = nPhases[getProp('vrcMP', 'n')];
 				totPhases = status;
 				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 				lcd.fixDisplay(false, true);
@@ -908,7 +910,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				ui.setAutoShow(false);
 			}
 			if (status >= 1) {
-				var curProgress = 4 - cubeutil.getCFOPProgress(facelet);
+				var curProgress = cubeutil.getProgress(facelet, kernel.getProp('vrcMP', 'n'));
 				if (curProgress < status) {
 					for (var i = status; i > curProgress; i--) {
 						curTime[i] = now - startTime;
@@ -1083,7 +1085,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100]);
 		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true]);
 
-		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop'], PROPERTY_VRCMPS.split('|')]);
+		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'roux'], PROPERTY_VRCMPS.split('|')]);
 		regProp('vrc', 'giiVRC', 0, PROPERTY_GIIKERVRC, [true]);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')]);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true]);
