@@ -62,10 +62,11 @@ var giikerutil = (function(CubieCube) {
 	var callback = $.noop;
 
 	var currentRawState = mathlib.SOLVED_FACELET;
-	var currentRawCubie = new mathlib.CubieCube();
-	var currentCubie = new mathlib.CubieCube();
+	var currentRawCubie = new CubieCube();
+	var currentCubie = new CubieCube();
 	var currentState = currentRawState;
-	var solvedStateInv = new mathlib.CubieCube();
+	var solvedStateInv = new CubieCube();
+	var scrambledCubie = new CubieCube();
 
 	var lastTimestamp = $.now();
 	var detectTid = 0;
@@ -140,8 +141,8 @@ var giikerutil = (function(CubieCube) {
 		connectClick.html('Connected').removeClass('click').unbind('click');
 		currentRawState = facelet;
 		currentRawCubie.fromFacelet(currentRawState);
-		mathlib.CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
-		mathlib.CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
+		CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
+		CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
 		drawState();
 		giikerErrorDetect();
@@ -158,11 +159,45 @@ var giikerutil = (function(CubieCube) {
 		}
 	}
 
+	function checkScramble() {
+		if (curScramble == "") {
+			return false;
+		}
+		return scrambledCubie.isEqual(currentCubie);
+	}
+
+	var curScramble;
+
+	function procScramble(signal, value) {
+		var scrType = value[0];
+		curScramble = value[1];
+		if (tools.puzzleType(scrType) != '333') {
+			curScramble = "";
+			return;
+		}
+		var scr = kernel.parseScramble(curScramble, "URFDLB");
+		var cd = new CubieCube();
+		scrambledCubie.init(cd.ca, cd.ea);
+		for (var i = 0; i < scr.length; i++) {
+			var m = scr[i][0] * 3 + scr[i][2] - 1;
+			CubieCube.EdgeMult(scrambledCubie, CubieCube.moveCube[m], cd);
+			CubieCube.CornMult(scrambledCubie, CubieCube.moveCube[m], cd);
+			var tmp = scrambledCubie;
+			scrambledCubie = cd;
+			cd = tmp;
+		}
+	}
+
+	$(function() {
+		kernel.regListener('giiker', 'scramble', procScramble);
+	});
+
 	return {
 		setCallBack: function(func) {
 			callback = func;
 		},
 		markSolved: markSolved,
+		checkScramble: checkScramble,
 		init: init
 	}
 })(mathlib.CubieCube);

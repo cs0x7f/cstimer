@@ -22,7 +22,7 @@ var GiikerCube = (function() {
 
 		return window.navigator.bluetooth.requestDevice({
 			filters: [{
-				namePrefix: 'GiC',
+				namePrefix: 'Gi',
 			}],
 			optionalServices: [SERVICE_UUID, SYSTEM_SERVICE_UUID],
 		}).then(function(device) {
