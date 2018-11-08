@@ -27,23 +27,23 @@ var GiikerCube = (function() {
 			optionalServices: [SERVICE_UUID, SYSTEM_SERVICE_UUID],
 		}).then(function(device) {
 			_device = device;
-			device.gatt.connect().then(function(server) {
-				server.getPrimaryService(SERVICE_UUID).then(function(service) {
-					service.getCharacteristic(CHARACTERISTIC_UUID).then(function(characteristic) {
-						characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
-						characteristic.startNotifications();
-						characteristic.readValue().then(function(value) {
-							var initState = parseState(value);
-							if (initState[0] != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
-								var rst = kernel.getProp('giiRST');
-								if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
-									giikerutil.markSolved();
-								}
-							}
-						})
-					});
-				})
-			});
+			return device.gatt.connect();
+		}).then(function(server) {
+			return server.getPrimaryService(SERVICE_UUID);
+		}).then(function(service) {
+			return service.getCharacteristic(CHARACTERISTIC_UUID);
+		}).then(function(characteristic) {
+			characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
+			characteristic.readValue().then(function(value) {
+				var initState = parseState(value);
+				if (initState[0] != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+					var rst = kernel.getProp('giiRST');
+					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+						giikerutil.markSolved();
+					}
+				}
+			})
+			return characteristic.startNotifications();
 		});
 	}
 

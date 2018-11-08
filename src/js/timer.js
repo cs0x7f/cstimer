@@ -738,6 +738,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		var div = $('<div />');
 		var totPhases = 1;
 		var currentFacelet = mathlib.SOLVED_FACELET;
+		var moveCnt;
+		var lastAxes = 0;
 
 		var giikerVRC = (function() {
 			var twistyScene;
@@ -856,6 +858,11 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (enableVRC) {
 				giikerVRC.setState(facelet, prevMoves, false);
 			}
+			var curAxis = "URFDLB".indexOf(prevMoves[0][0]);
+			if ((lastAxes & (0x20 >> curAxis)) == 0) {
+				lastAxes = lastAxes & (0x124 >> curAxis) | (0x20 >> curAxis);
+				moveCnt++;
+			}
 			clearReadyTid();
 			if (status == -1) {
 				if (facelet != mathlib.SOLVED_FACELET) {
@@ -908,9 +915,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					}
 				}
 				status = Math.min(curProgress, status) || 1;
-				if (enableVRC) {
-					lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
-				}
+				lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 				if (facelet == mathlib.SOLVED_FACELET) {
 					status = -1;
 					curTime[1] = now - startTime;
@@ -918,9 +923,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					lcd.setRunning(false, enableVRC);
 					lcd.fixDisplay(false, true);
 					lcd.val(curTime[1], enableVRC);
-					if (enableVRC) {
-						lcd.append(lcd.getMulPhaseAppend(0, totPhases));
-					}
+					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
+					lcd.append('<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " fps" + "</div>");
 					if (curTime[1] != 0) {
 						pushSignal('time', curTime);
 					}
@@ -933,6 +937,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (status == -1) {
 				status = -2;
 				startTime = now;
+				moveCnt = 0;
 				lcd.fixDisplay(true, true);
 				if (getProp('useIns')) {
 					lcd.setRunning(true, enableVRC);
