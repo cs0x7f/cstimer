@@ -72,7 +72,11 @@ var metronome = (function() {
 			vol = context.createGain()
 			vol.gain.value = 0.3;
 			vol.connect(context.destination);
-			tools.regTool('mtrnm', 'metronome', execFunc);
+			tools.regTool('mtrnm', TOOLS_METRONOME, execFunc);
 		}
 	});
+
+	return {
+		playTick: playTick
+	}
 })();

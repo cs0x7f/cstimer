@@ -945,6 +945,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					lcd.setRunning(true, enableVRC);
 				}
 				ui.setAutoShow(false);
+				if (getProp('giiBS')) {
+					metronome.playTick();
+				}
 			}
 		}
 
@@ -1090,6 +1093,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')]);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true]);
 		regProp('vrc', 'giiSM', 1, PROPERTY_GIISOK_MOVE, ['n', ['x4', 'xi2', 'n'], PROPERTY_GIISOK_MOVES.split('|')]);
+		regProp('vrc', 'giiBS', 0, PROPERTY_GIISBEEP, [true]);
 		regProp('vrc', 'giiRST', 1, PROPERTY_GIIRST, ['p', ['a', 'p', 'n'], PROPERTY_GIIRSTS.split('|')]);
 		regProp('vrc', 'giiAED', 0, PROPERTY_GIIAED, [false]);
 	});
