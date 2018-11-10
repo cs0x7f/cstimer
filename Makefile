@@ -12,6 +12,7 @@ advanced = -O ADVANCED
 
 timerSrc = $(addprefix $(src)/js/, \
 mathlib.js \
+min2phase.js \
 cubeutil.js \
 mersennetwister.js \
 json.min.js \
