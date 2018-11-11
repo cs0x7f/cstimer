@@ -180,6 +180,9 @@ var giikerutil = (function(CubieCube) {
 		scrambledCubie.init(cd.ca, cd.ea);
 		for (var i = 0; i < scr.length; i++) {
 			var m = scr[i][0] * 3 + scr[i][2] - 1;
+			if (m < 0 || m >= 18) {
+				continue;
+			}
 			CubieCube.EdgeMult(scrambledCubie, CubieCube.moveCube[m], cd);
 			CubieCube.CornMult(scrambledCubie, CubieCube.moveCube[m], cd);
 			var tmp = scrambledCubie;

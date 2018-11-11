@@ -150,11 +150,11 @@ window.twistyjs = (function() {
 			switch (keyCode) {
 				case 37:
 					moveCameraDelta(Math.TAU / 48);
-					e.preventDefault();
+					e.preventDefault && e.preventDefault();
 					break;
 				case 39:
 					moveCameraDelta(-Math.TAU / 48);
-					e.preventDefault();
+					e.preventDefault && e.preventDefault();
 					break;
 			}
 		};
@@ -169,7 +169,7 @@ window.twistyjs = (function() {
 		}
 
 		function onDocumentMouseDown(event) {
-			event.preventDefault();
+			e.preventDefault && e.preventDefault();
 			twistyContainer.addEventListener('mousemove', onDocumentMouseMove, false);
 			twistyContainer.addEventListener('mouseup', onDocumentMouseUp, false);
 			twistyContainer.addEventListener('mouseout', onDocumentMouseOut, false);
@@ -196,14 +196,14 @@ window.twistyjs = (function() {
 
 		function onDocumentTouchStart(event) {
 			if (event.touches.length == 1) {
-				event.preventDefault();
+				event.preventDefault && event.preventDefault();
 				mouseXLast = event.touches[0].pageX;
 			}
 		}
 
 		function onDocumentTouchMove(event) {
 			if (event.touches.length == 1) {
-				event.preventDefault();
+				event.preventDefault && event.preventDefault();
 				mouseX = event.touches[0].pageX;
 				that.cam((mouseXLast - mouseX) / 256);
 				mouseXLast = mouseX;

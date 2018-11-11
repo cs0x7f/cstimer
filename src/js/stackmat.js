@@ -43,7 +43,7 @@ var stackmat = (function() {
 		if (audio_stream != undefined) {
 			source["disconnect"](node);
 			node["disconnect"](audio_context["destination"]);
-			audio_stream["stop"]();
+			audio_stream["stop"] && audio_stream["stop"]();
 			audio_stream = undefined;
 		}
 	}
