@@ -266,7 +266,7 @@ var stats = (function(kpretty, round) {
 		}
 
 		function procTxt() {
-			timesAt(cfmIdx) && timesAt(cfmIdx)[2] = cfmTxtR.val();
+			timesAt(cfmIdx) && (timesAt(cfmIdx)[2] = cfmTxtR.val());
 			save(cfmIdx);
 			getTimeRow(cfmIdx, curDim, cfmIdxRow);
 		}
