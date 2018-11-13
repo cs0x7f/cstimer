@@ -177,7 +177,7 @@ var giikerutil = (function(CubieCube) {
 		if (currentState == mathlib.SOLVED_FACELET) {
 			movesAfterSolved = [];
 		} else {
-			movesAfterSolved.push("URFDLB".indexOf(todoMoves[i][0]) * 3 + " 2'".indexOf(todoMoves[i][1]));
+			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
 		}
 		drawState();
 		giikerErrorDetect();
