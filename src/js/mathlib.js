@@ -174,9 +174,15 @@ var mathlib = (function() {
 		}
 	}
 
+	CubieCube.CubeMult = function(a, b, prod) {
+		CubieCube.CornMult(a, b, prod);
+		CubieCube.EdgeMult(a, b, prod);
+	}
+
 	CubieCube.prototype.init = function(ca, ea) {
 		this.ca = ca.slice();
 		this.ea = ea.slice();
+		return this;
 	}
 
 	CubieCube.prototype.isEqual = function(c) {
@@ -248,6 +254,7 @@ var mathlib = (function() {
 		for (var corn = 0; corn < 8; corn++) {
 			this.ca[cc.ca[corn] & 0x7] = corn | 0x20 >> (cc.ca[corn] >> 3) & 0x18;
 		}
+		return this;
 	}
 
 	CubieCube.prototype.fromFacelet = function(facelet, cFacelet, eFacelet) {
@@ -292,6 +299,7 @@ var mathlib = (function() {
 				}
 			}
 		}
+		return this;
 	}
 
 	var moveCube = [];
@@ -312,6 +320,49 @@ var mathlib = (function() {
 	}
 
 	CubieCube.moveCube = moveCube;
+
+	CubieCube.prototype.edgeCycles = function() {
+		var visited = [];
+		var small_cycles = [0, 0, 0];
+		var cycles = 0;
+		var parity = false;
+		for (var x = 0; x < 12; ++x) {
+			if (visited[x]) {
+				continue
+			}
+			var length = -1;
+			var flip = false;
+			var y = x;
+			do {
+				visited[y] = true;
+				++length;
+				flip ^= this.ea[y] & 1;
+				y = this.ea[y] >> 1;
+			} while (y != x);
+			cycles += length >> 1;
+			if (length & 1) {
+				parity = !parity;
+				++cycles;
+			}
+			if (flip) {
+				if (length == 0) {
+					++small_cycles[0];
+				} else if (length & 1) {
+					small_cycles[2] ^= 1;
+				} else {
+					++small_cycles[1];
+				}
+			}
+		}
+		small_cycles[1] += small_cycles[2];
+		if (small_cycles[0] < small_cycles[1]) {
+			cycles += (small_cycles[0] + small_cycles[1]) >> 1;
+		} else {
+			var flip_cycles = [0, 2, 3, 5, 6, 8, 9];
+			cycles += small_cycles[1] + flip_cycles[(small_cycles[0] - small_cycles[1]) >> 1];
+		}
+		return cycles - parity;
+	}
 
 	function createPrun(prun, init, size, maxd, doMove, N_MOVES, N_POWER, N_INV) {
 		var isMoveTable = $.isArray(doMove);

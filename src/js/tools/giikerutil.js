@@ -78,9 +78,12 @@ var giikerutil = (function(CubieCube) {
 		}
 		if (kernel.getProp('giiAED')) {
 			detectTid = setTimeout(function() {
-				if (!simpleErrorDetect(currentCubie)) {
+				if (checkMoves(movesAfterSolved) == 99) {
 					return;
 				}
+				// if (!simpleErrorDetect(currentCubie)) {
+				// 	return;
+				// }
 				var facelet = currentCubie.toFaceCube();
 				if (cubeutil.getCFOPProgress(facelet) <= 2) { // all unsolved pieces is on same face
 					return;
@@ -96,35 +99,59 @@ var giikerutil = (function(CubieCube) {
 		}
 	}
 
-	//check whether cc is a conjugate of a move
-	function simpleErrorDetect(cc) {
-		var errCorn = [],
-			errEdge = [];
-		for (var i = 0; i < 8; i++) {
-			if (cc.ca[i] != i) {
-				errCorn.push(i);
+	var nodeSearchd = 0;
+
+	function checkMoves(moves) {
+		if (moves.length % 2 == 1) {
+			return 99;
+		}
+		var timespend = [];
+		var stateToEnd = [];
+		stateToEnd[moves.length] = new CubieCube();
+		for (var i = moves.length - 1; i >= 0; i--) {
+			stateToEnd[i] = new CubieCube();
+			CubieCube.CubeMult(CubieCube.moveCube[moves[i]], stateToEnd[i + 1], stateToEnd[i]);
+		}
+		for (var i = 1; i < 3; i++) {
+			nodeSearchd = 0;
+			if (checkSwap(moves, 0, i, new CubieCube(), stateToEnd)) {
+				return i;
+			} else if (nodeSearchd > 9999) {
+				return 99;
 			}
 		}
-		for (var i = 0; i < 12; i++) {
-			if (cc.ea[i] != (i << 1)) {
-				errEdge.push(i);
+		return 99;
+	}
+
+	function checkSwap(moves, start, nswap, stateFromStart, stateToEnd) {
+		if (nswap == 0) {
+			return stateFromStart.isEqual(new CubieCube().invFrom(stateToEnd[start]));
+		}
+		var cctmp = new CubieCube();
+		for (var i = start; i < moves.length - 1; i++) {
+			// try to swap moves[i] and moves[i + 1]
+			if (~~(moves[i] / 3) % 3 == ~~(moves[i + 1] / 3) % 3) {
+				CubieCube.CubeMult(stateFromStart, CubieCube.moveCube[moves[i]], cctmp);
+				stateFromStart.init(cctmp.ca, cctmp.ea);
+				continue;
 			}
-		}
-		if (errCorn.length != 4 || errEdge.length != 4) {
-			return false;
-		}
-		for (var i = 0; i < 4; i++) { //inplace piese
-			if ((cc.ca[errCorn[i]] & 0x7) == errCorn[i] ||
-				(cc.ea[errEdge[i]] >> 1) == errEdge[i]) {
+			var state = new CubieCube().init(stateFromStart.ca, stateFromStart.ea);
+			CubieCube.CubeMult(state, CubieCube.moveCube[moves[i + 1]], cctmp);
+			CubieCube.CubeMult(cctmp, CubieCube.moveCube[moves[i]], state);
+			CubieCube.CubeMult(state, stateToEnd[i + 2], cctmp);
+			if (++nodeSearchd > 9999) {
 				return false;
 			}
+			if (cctmp.edgeCycles() < nswap) {
+				var ret = checkSwap(moves, i + 2, nswap - 1, state, stateToEnd);
+			}
+			if (ret) {
+				return true;
+			}
+			CubieCube.CubeMult(stateFromStart, CubieCube.moveCube[moves[i]], cctmp);
+			stateFromStart.init(cctmp.ca, cctmp.ea);
 		}
-		// 2, 2 cycles
-		if ((cc.ca[cc.ca[errCorn[0]] & 0x7] & 0x7) == errCorn[0] ||
-			(cc.ea[cc.ea[errEdge[0]] >> 1] >> 1) == errEdge[0]) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	function markSolved() {
@@ -132,9 +159,12 @@ var giikerutil = (function(CubieCube) {
 		solvedStateInv.invFrom(currentRawCubie);
 		currentState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', currentRawState);
+		movesAfterSolved = [];
 		drawState();
-		callback(currentState, [], lastTimestamp);
+		callback(currentState, ['U '], lastTimestamp);
 	}
+
+	var movesAfterSolved = [];
 
 	function giikerCallback(facelet, prevMoves) {
 		var lastTimestamp = $.now();
@@ -144,6 +174,11 @@ var giikerutil = (function(CubieCube) {
 		CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
 		CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
+		if (currentState == mathlib.SOLVED_FACELET) {
+			movesAfterSolved = [];
+		} else {
+			movesAfterSolved.push("URFDLB".indexOf(todoMoves[i][0]) * 3 + " 2'".indexOf(todoMoves[i][1]));
+		}
 		drawState();
 		giikerErrorDetect();
 		callback(currentState, prevMoves, lastTimestamp);
