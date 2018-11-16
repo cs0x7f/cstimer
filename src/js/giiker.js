@@ -12,6 +12,7 @@ var GiikerCube = (function() {
 	var SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
 
 	var _device = null;
+	var _server = null;
 	var _characteristic = null;
 
 	function init(timer) {
@@ -30,6 +31,7 @@ var GiikerCube = (function() {
 			_device = device;
 			return device.gatt.connect();
 		}).then(function(server) {
+			_server = server;
 			return server.getPrimaryService(SERVICE_UUID);
 		}).then(function(service) {
 			return service.getCharacteristic(CHARACTERISTIC_UUID);
@@ -46,6 +48,34 @@ var GiikerCube = (function() {
 			}
 			_characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
 			return _characteristic.startNotifications();
+		});
+	}
+
+	function updateBatteryLevel(event) {
+		console.log(event.target.value.getUint8(1));
+	}
+
+	function getBatteryLevel() {
+		var _service;
+		var _read;
+		return _server.getPrimaryService(SYSTEM_SERVICE_UUID).then(function(service) {
+			_service = service;
+			return service.getCharacteristic(SYSTEM_READ_UUID);
+		}).then(function(readCharacteristic) {
+			_read = readCharacteristic;
+			return readCharacteristic.startNotifications();
+		}).then(function() {
+			return _service.getCharacteristic(SYSTEM_WRITE_UUID);
+		}).then(function(writeCharacteristic) {
+			writeCharacteristic.writeValue(new Uint8Array([0xb5]).buffer);
+			return new Promise(function(resolve) {
+				var listener = function(event) {
+					_read.removeEventListener('characteristicvaluechanged', listener);
+					_read.stopNotifications();
+					resolve(event.target.value.getUint8(1));
+				}
+				_read.addEventListener('characteristicvaluechanged', listener);
+			})
 		});
 	}
 
@@ -123,6 +153,7 @@ var GiikerCube = (function() {
 			console.log("Current State: ", facelet);
 			console.log("A Valid Generator: ", scramble_333.genFacelet(facelet));
 			console.log("Previous Moves: ", prevMoves.reverse().join(" "));
+			prevMoves.reverse();
 		}
 		callback(facelet, prevMoves);
 		return [facelet, prevMoves];
@@ -158,6 +189,7 @@ var GiikerCube = (function() {
 		setCallBack: function(func) {
 			callback = func;
 		},
+		getBatteryLevel: getBatteryLevel,
 		parseStateTest: parseStateTest
 	}
 })();

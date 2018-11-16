@@ -973,7 +973,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 						ret.then($.noop, function(error) {
 							if (error.code == error.SECURITY_ERR) {
 								kernel.showDialog([$('<div>Press OK To Connect To Giiker Cube</div>'), function() {
-									giikerutil.init();
+									giikerutil.init().then($.noop, console.log);
 								}, 0, 0], 'share', 'Giiker Connect');
 							}
 						});

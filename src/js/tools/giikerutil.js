@@ -5,6 +5,7 @@ var giikerutil = (function(CubieCube) {
 	var connectClick = $('<span></span>');
 	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
 	var canvas = $('<canvas>');
+	var connectedStr = 'Connected | ??%';
 	var drawState = (function() {
 		var faceOffsetX = [1, 2, 1, 1, 0, 3];
 		var faceOffsetY = [0, 1, 1, 2, 1, 1];
@@ -46,13 +47,27 @@ var giikerutil = (function(CubieCube) {
 		if (!fdiv) {
 			return;
 		}
-		connectClick.html('Connected').removeClass('click').unbind('click');
+		connectClick.html(connectedStr).removeClass('click').unbind('click');
 		if (!GiikerCube.isConnected()) {
 			connectClick.html('Connect').addClass('click').click(init);
 		}
 		fdiv.empty().append('Giiker: ', connectClick, '<br>')
 			.append(resetClick.unbind('click').click(markSolved), '<br><br>', canvas);
 		drawState();
+	}
+
+	var batId = 0;
+
+	function updateBattery() {
+		if (GiikerCube.isConnected()) {
+			GiikerCube.getBatteryLevel().then(function(value) {
+				connectedStr = 'Connected | ' + value + '%';
+				connectClick.html(connectedStr);
+			});
+			batId = setTimeout(updateBattery, 60000);
+		} else {
+			batId = 0;
+		}
 	}
 
 	$(function() {
@@ -168,7 +183,7 @@ var giikerutil = (function(CubieCube) {
 
 	function giikerCallback(facelet, prevMoves) {
 		var lastTimestamp = $.now();
-		connectClick.html('Connected').removeClass('click').unbind('click');
+		connectClick.html(connectedStr).removeClass('click').unbind('click');
 		currentRawState = facelet;
 		currentRawCubie.fromFacelet(currentRawState);
 		CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
@@ -180,6 +195,7 @@ var giikerutil = (function(CubieCube) {
 			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
 		}
 		drawState();
+		batId == 0 && updateBattery();
 		giikerErrorDetect();
 		callback(currentState, prevMoves, lastTimestamp);
 	}
