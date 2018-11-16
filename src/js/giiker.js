@@ -58,24 +58,26 @@ var GiikerCube = (function() {
 	function getBatteryLevel() {
 		var _service;
 		var _read;
+		var _resolve;
+		var listener = function(event) {
+			_resolve(event.target.value.getUint8(1));
+			_read.removeEventListener('characteristicvaluechanged', listener);
+			_read.stopNotifications();
+		};
 		return _server.getPrimaryService(SYSTEM_SERVICE_UUID).then(function(service) {
 			_service = service;
 			return service.getCharacteristic(SYSTEM_READ_UUID);
 		}).then(function(readCharacteristic) {
 			_read = readCharacteristic;
-			return readCharacteristic.startNotifications();
+			_read.addEventListener('characteristicvaluechanged', listener);
+			return _read.startNotifications();
 		}).then(function() {
 			return _service.getCharacteristic(SYSTEM_WRITE_UUID);
 		}).then(function(writeCharacteristic) {
 			writeCharacteristic.writeValue(new Uint8Array([0xb5]).buffer);
 			return new Promise(function(resolve) {
-				var listener = function(event) {
-					_read.removeEventListener('characteristicvaluechanged', listener);
-					_read.stopNotifications();
-					resolve(event.target.value.getUint8(1));
-				}
-				_read.addEventListener('characteristicvaluechanged', listener);
-			})
+				_resolve = resolve;
+			});
 		});
 	}
 
