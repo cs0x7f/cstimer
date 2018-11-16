@@ -12,6 +12,7 @@ var GiikerCube = (function() {
 	var SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
 
 	var _device = null;
+	var _characteristic = null;
 
 	function init(timer) {
 
@@ -33,17 +34,18 @@ var GiikerCube = (function() {
 		}).then(function(service) {
 			return service.getCharacteristic(CHARACTERISTIC_UUID);
 		}).then(function(characteristic) {
-			characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
-			characteristic.readValue().then(function(value) {
-				var initState = parseState(value);
-				if (initState[0] != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
-					var rst = kernel.getProp('giiRST');
-					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
-						giikerutil.markSolved();
-					}
+			_characteristic = characteristic;
+			return characteristic.readValue();
+		}).then(function(value) {
+			var initState = parseState(value);
+			if (initState[0] != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+				var rst = kernel.getProp('giiRST');
+				if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+					giikerutil.markSolved();
 				}
-			})
-			return characteristic.startNotifications();
+			}
+			_characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
+			return _characteristic.startNotifications();
 		});
 	}
 
