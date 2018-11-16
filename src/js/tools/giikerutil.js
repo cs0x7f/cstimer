@@ -30,6 +30,11 @@ var giikerutil = (function(CubieCube) {
 			if (!canvas) {
 				return;
 			}
+			if (kernel.getProp('giiVRC')) {
+				canvas.hide();
+				return;
+			}
+			canvas.show();
 			ctx = canvas[0].getContext('2d');
 			var imgSize = kernel.getProp('imgSize') / 50;
 			canvas.width(39 * imgSize + 'em');
@@ -52,7 +57,7 @@ var giikerutil = (function(CubieCube) {
 			connectClick.html('Connect').addClass('click').click(init);
 		}
 		fdiv.empty().append('Giiker: ', connectClick, '<br>')
-			.append(resetClick.unbind('click').click(markSolved), '<br><br>', canvas);
+			.append(resetClick.unbind('click').click(markSolved), '<br>', canvas);
 		drawState();
 	}
 
@@ -69,10 +74,6 @@ var giikerutil = (function(CubieCube) {
 			batId = 0;
 		}
 	}
-
-	$(function() {
-		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
-	});
 
 	var callback = $.noop;
 
@@ -244,6 +245,8 @@ var giikerutil = (function(CubieCube) {
 
 	$(function() {
 		kernel.regListener('giiker', 'scramble', procScramble);
+		kernel.regListener('tool', 'property', drawState, /^(?:giiVRC)$/);
+		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
 	});
 
 	return {
