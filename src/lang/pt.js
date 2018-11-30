@@ -313,9 +313,9 @@ var SCRAMBLE_NOOBST = [
     ['gire a face da frente', 'gire a face de trás']
 ];
 var SCRAMBLE_NOOBSS = ' 90 graus no sentido horário,| 90 graus no sentido anti-horário,|  180 graus,';
-var STATS_CFM_RESET = 'apagar todos os tempos desta sessão???';
+var STATS_CFM_RESET = 'apagar todos os tempos desta sessão??????';
 var STATS_CFM_DELSS = 'deletar esta sessão???';
-var STATS_CFM_DELMUL = 'Detaletar quantas solves a partir do índice atual?';
+var STATS_CFM_DELMUL = 'Deletar quantas solves a partir do índice atual?';
 var STATS_CFM_DELETE = 'deletar este tempo?';
 var STATS_COMMENT = 'Comentário:';
 var STATS_CURROUND = 'Current Round Statistics';
