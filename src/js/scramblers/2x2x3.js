@@ -1,4 +1,4 @@
-(function(circle, get8Perm) {
+(function (circle, get8Perm) {
     var cmv = [];
     var cprun = [];
 
@@ -34,6 +34,7 @@
         }
         return get8Perm(g, 3);
     }
+
     //	function doMv(idx, m) {
     //		return cmv[~~(idx / 6)][m] * 6 + doEdgeMove(idx % 6, m);
     //	}
@@ -72,7 +73,7 @@
         do {
             c = mathlib.rn(40320);
             b = mathlib.rn(6);
-        } while (b + c == 0)
+        } while (b + c == 0);
         var d = [];
         for (var a = 0; a < 99; a++) {
             if (search(c, b, a, -1, d)) {
@@ -81,5 +82,6 @@
         }
         return d.reverse().join(" ")
     }
+
     scramble.reg('223', generateScramble);
 })(mathlib.circle, mathlib.get8Perm);

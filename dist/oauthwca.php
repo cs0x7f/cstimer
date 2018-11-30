@@ -10,28 +10,28 @@ $validUrlRe = '/^(https?:\/\/([^\/]*\.)?cstimer\.net\/(new\/|src\/)?(timer\.php)
 $matches = array();
 
 if (preg_match($validUrlRe, $_SERVER['HTTP_REFERER'], $matches) == 0) {
-	exit;
+    exit;
 }
 $timerUrl = $matches[1];
 
 $wca = new WcaOauth(array(
-	'applicationId' => $applicationId,
-	'applicationSecret' => $applicationSecret,
-	'redirectUri' => $timerUrl,
-	'scope' => 'public'
+    'applicationId' => $applicationId,
+    'applicationSecret' => $applicationSecret,
+    'redirectUri' => $timerUrl,
+    'scope' => 'public'
 ));
 
-if(isset($_REQUEST["code"]) && !empty($_REQUEST["code"])) {
-	try {
-		$wca->fetchAccessToken($_REQUEST['code']);
-		$user = $wca->getUser();
-		print json_encode(array(
-			'access_token' => $wca->getAccessToken(),
-			'wca_me' => $user,
-			'cstimer_token' => hash('sha256', $csTimerTokenSalt . $user->id)
-		));
-	} catch (Exception $e) {
-		echo $e->getMessage();
-		exit;
-	}
+if (isset($_REQUEST["code"]) && !empty($_REQUEST["code"])) {
+    try {
+        $wca->fetchAccessToken($_REQUEST['code']);
+        $user = $wca->getUser();
+        print json_encode(array(
+            'access_token' => $wca->getAccessToken(),
+            'wca_me' => $user,
+            'cstimer_token' => hash('sha256', $csTimerTokenSalt . $user->id)
+        ));
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        exit;
+    }
 }

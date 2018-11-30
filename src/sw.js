@@ -1,6 +1,6 @@
 var urlsToCache = [
-	'.',
-	'css/style.css'
+    '.',
+    'css/style.css'
 ];
 
 // self.addEventListener('install', function(event) {

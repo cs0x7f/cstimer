@@ -1,4 +1,4 @@
-(function(circle, circleOri) {
+(function (circle, circleOri) {
     var inited = false;
     var prun = [];
     var permmove = [];
@@ -11,7 +11,7 @@
         inited = true;
         mathlib.createMove(permmove, 5760, doPermMove, 2);
         mathlib.createMove(orimove, 32, doOriMove, 2);
-        mathlib.createPrun(prun, 0, 5760 * 32, 14, function(idx, m) {
+        mathlib.createPrun(prun, 0, 5760 * 32, 14, function (idx, m) {
             return permmove[m][idx >> 5] << 5 | orimove[m][idx & 31];
         }, 2);
     }
@@ -30,7 +30,7 @@
                     h = permmove[i][h];
                     g = orimove[i][g];
                     if (search(h, g, maxl - 1, i, sol)) {
-                        sol.push("UM".charAt(i) + "'2 ".charAt(f))
+                        sol.push("UM".charAt(i) + "'2 ".charAt(f));
                         return true;
                     }
                 }
@@ -81,7 +81,7 @@
         do {
             c = mathlib.rn(5760) & 0xfff9;
             b = mathlib.rn(32);
-        } while (b + c == 0)
+        } while (b + c == 0);
         for (a = 0; a < 99; a++) {
             if (search(c, b, a, -1, d)) {
                 break;
@@ -89,5 +89,6 @@
         }
         return d.reverse().join(" ").replace(/ +/g, ' ');
     }
+
     scramble.reg('lsemu', generateScramble);
 })(mathlib.circle, mathlib.circleOri);

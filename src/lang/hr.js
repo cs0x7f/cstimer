@@ -62,7 +62,7 @@ var PROPERTY_FONTCOLOR_STR = 'crno|bijelo';
 var PROPERTY_COLOR_STR = 'nasumično|stil1|stil2|stil3|crno|bijelo|stil6|ručno|izvezi...|uvezi...';
 var PROPERTY_FONT = 'odaberi font štoperice: ';
 var PROPERTY_FONT_STR = 'nasumično digitlni|normalan|digitalni1|digitalni2|digitalni3|digitalni4|digitalni5';
-var PROPERTY_FORMAT = 'format vremena: '
+var PROPERTY_FORMAT = 'format vremena: ';
 var PROPERTY_USEKSC = 'koristi prečace s tipkovnice';
 var PROPERTY_NTOOLS = 'broj alata';
 var PROPERTY_AHIDE = 'Sakrij sve elemente dok štoperica mjeri vrijeme';
@@ -85,232 +85,232 @@ var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
-	['WCA', [
-		['3x3x3', "333", 0],
-		['4x4x4', "444wca", -40],
-		['5x5x5', "555wca", -60],
-		['2x2x2', "222so", 0],
-		['3x3 naslijepo', "333ni", 0],
-		['3x3 ojednoručno', "333oh", 0],
-		['3x3 najmanje poteza', "333fm", 0],
-		['3x3 s nogama', "333ft", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['sq1', "sqrs", 0],
-		['clock', "clkwca", 0],
-		['skewb', "skbso", 0],
-		['6x6x6', "666wca", -80],
-		['7x7x7', "777wca", -100],
-		['4x4 naslijepo', "444bld", -40],
-		['5x5 naslijepo', "555bld", -60],
-		['3x3 višestruko naslijepo', "r3ni", 5]
-	]],
-	['Input', [
-		['Eksterno', "input", 0]
-	]],
-	['===WCA===', [
-		['--', "blank", 0]
-	]],
-	['2x2x2', [
-		["WCA", "222so", 0],
-		['optimalno nasumično stanje', "222o", 0],
-		['3-gen', "2223", 25],
-		['EG', "222eg", 0],
-		['EG0', "222eg0", 0],
-		['EG1', "222eg1", 0],
-		['EG2', "222eg2", 0]
-	]],
-	['3x3x3', [
-		["WCA", "333", 0],
-		['stari stil', "333o", 25],
-		['3x3x3 za noob-ove', "333noob", 25],
-		['samo rubni dijelovi', "edges", 0],
-		['samo korneri', "corners", 0],
-		['zadnji sloj', "ll", 0],
-		['zb zadnjeg sloja', "zbll", 0],
-		['korneri zadnjeg sloja', "cll", 0],
-		['rubni dijelovi zadnjeg sloja', "ell", 0],
-		['zadnjih 6 rubnih dijelova', "lse", 0],
-		['zadnjih 6 rubnih dijelova&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
-		['složeni križ', "f2l", 0],
-		['zadnji slot + zadnji sloj', "lsll2", 0],
-		['2GLL', "2gll", 0],
-		['ZBLS', "zbls", 0],
-		['ZZLL', "zzll", 0],
-		['PLL', "pll", 0],
-		['EOLine', "eoline", 0],
-		['lagani križ', 'easyc', 3]
-	]],
-	['4x4x4', [
-		["WCA", "444wca", 40],
-		['SiGN', "444", 40],
-		['nasumično stanje ', "444o", 0],
-		['YJ', "444yj", 40],
-		['4x4x4 rubni dijelovi', "4edge", 8],
-		['R,r,U,u', "RrUu", 40]
-	]],
-	['5x5x5', [
-		["WCA", "555wca", 60],
-		['SiGN', "555", 60],
-		['5x5x5 rubni dijelovi', "5edge", 8]
-	]],
-	['6x6x6', [
-		["WCA", "666wca", 80],
-		['SiGN', "666si", 80],
-		['prefiks', "666p", 80],
-		['sufiks', "666s", 80],
-		['6x6x6 rubni dijelovi', "6edge", 8]
-	]],
-	['7x7x7', [
-		["WCA", "777wca", 100],
-		['SiGN', "777si", 100],
-		['prefiks', "777p", 100],
-		['sufiks', "777s", 100],
-		['7x7x7 rubni dijelovi', "7edge", 8]
-	]],
-	['Clock', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
-		['sažet', "clkc", 0],
-		['efektivan red pin-ova', "clke", 0]
-	]],
-	['Megaminx', [
-		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
-		['stari stil', "mgmo", 70]
-	]],
-	['Pyraminx', [
-		["WCA", "pyrso", 10],
-		['optimalno nasumično stanje', "pyro", 0],
-		['nasumični potezi', "pyrm", 25]
-	]],
-	['Square-1', [
-		["WCA", "sqrs", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
-	]],
-	['Skewb', [
-		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
-	]],
-	['===OTHER===', [
-		['--', "blank", 0]
-	]],
-	['15 puzzle', [
-		['micanje dijelova', "15p", 80],
-		['prazni potezi', "15pm", 80]
-	]],
-	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
-		['2x3x3 (Domino)', "233", 25],
-		['3x3x4', "334", 40],
-		['3x3x5', "335", 25],
-		['3x3x6', "336", 40],
-		['3x3x7', "337", 40],
-		['8x8x8', "888", 120],
-		['9x9x9', "999", 120],
-		['10x10x10', "101010", 120],
-		['11x11x11', "111111", 120]
-	]],
-	['Gear Cube', [
-		['nasumično stanje', "gearso", 0],
-		['optimalno nasumično stanje', "gearo", 0],
-		['3-gen', "gear", 10]
-	]],
-	['Cmetrick', [
-		[' ', "cm3", 25]
-	]],
-	['Cmetrick Mini', [
-		[' ', "cm2", 25]
-	]],
-	['Gigaminx', [
-		['Pochmann', "giga", 300]
-	]],
-	['Helicopter Cube', [
-		[' ', "heli", 40]
-	]],
-	['Redi Cube', [
-		['MoYu', "redim", 8],
-		['old', "redi", 20]
-	]],
-	['Pyraminx Crystal', [
-		['Pochmann', "prcp", 70],
-		['stari stil', "prco", 70]
-	]],
-	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
-	]],
-	['Square-2', [
-		[' ', "sq2", 20]
-	]],
-	['Super Floppy', [
-		[' ', "sfl", 25]
-	]],
-	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
-	]],
-	['UFO', [
-		['Jaap style', "ufo", 25]
-	]],
-	['Other', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
-	]],
-	['===SPECIAL===', [
-		['--', "blank", 0]
-	]],
-	['3x3x3 subset-ovi', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
-		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
-		['3-generator R,r,U', "RrU", 25],
-		['samo polovični potezi', "half", 25],
-		['zadnji slot + zadnji sloj (stari stil)', "lsll", 15]
-	]],
-	['Bandaged Cube', [
-		['Bicube', "bic", 30],
-		['Square-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
-		['zadnji slot + zadnji sloj', "mlsll", 20]
-	]],
-	['Relays', [
-		['puno 3x3x3 kocaka', "r3", 5],
-		['234 maraton', "r234", 0],
-		['2345 maraton', "r2345", 0],
-		['23456 maraton', "r23456", 0],
-		['234567 maraton', "r234567", 0]
-	]],
-	['===JOKES===', [
-		['--', "blank", 0]
-	]],
-	['1x1x1', [
-		['x y z', "111", 25]
-	]],
-	['-1x-1x-1', [
-		[' ', "-1", 25]
-	]],
-	['1x1x2', [
-		[' ', "112", 25]
-	]],
-	['LOL', [
-		[' ', "lol", 25]
-	]],
-	['Derrick Eide', [
-		[' ', "eide", 25]
-	]]
+    ['WCA', [
+        ['3x3x3', "333", 0],
+        ['4x4x4', "444wca", -40],
+        ['5x5x5', "555wca", -60],
+        ['2x2x2', "222so", 0],
+        ['3x3 naslijepo', "333ni", 0],
+        ['3x3 ojednoručno', "333oh", 0],
+        ['3x3 najmanje poteza', "333fm", 0],
+        ['3x3 s nogama', "333ft", 0],
+        ['megaminx', "mgmp", -70],
+        ['pyraminx', "pyrso", -10],
+        ['sq1', "sqrs", 0],
+        ['clock', "clkwca", 0],
+        ['skewb', "skbso", 0],
+        ['6x6x6', "666wca", -80],
+        ['7x7x7', "777wca", -100],
+        ['4x4 naslijepo', "444bld", -40],
+        ['5x5 naslijepo', "555bld", -60],
+        ['3x3 višestruko naslijepo', "r3ni", 5]
+    ]],
+    ['Input', [
+        ['Eksterno', "input", 0]
+    ]],
+    ['===WCA===', [
+        ['--', "blank", 0]
+    ]],
+    ['2x2x2', [
+        ["WCA", "222so", 0],
+        ['optimalno nasumično stanje', "222o", 0],
+        ['3-gen', "2223", 25],
+        ['EG', "222eg", 0],
+        ['EG0', "222eg0", 0],
+        ['EG1', "222eg1", 0],
+        ['EG2', "222eg2", 0]
+    ]],
+    ['3x3x3', [
+        ["WCA", "333", 0],
+        ['stari stil', "333o", 25],
+        ['3x3x3 za noob-ove', "333noob", 25],
+        ['samo rubni dijelovi', "edges", 0],
+        ['samo korneri', "corners", 0],
+        ['zadnji sloj', "ll", 0],
+        ['zb zadnjeg sloja', "zbll", 0],
+        ['korneri zadnjeg sloja', "cll", 0],
+        ['rubni dijelovi zadnjeg sloja', "ell", 0],
+        ['zadnjih 6 rubnih dijelova', "lse", 0],
+        ['zadnjih 6 rubnih dijelova&ltM,U&gt', "lsemu", 0],
+        ['Roux L10P', "cmll", 0],
+        ['složeni križ', "f2l", 0],
+        ['zadnji slot + zadnji sloj', "lsll2", 0],
+        ['2GLL', "2gll", 0],
+        ['ZBLS', "zbls", 0],
+        ['ZZLL', "zzll", 0],
+        ['PLL', "pll", 0],
+        ['EOLine', "eoline", 0],
+        ['lagani križ', 'easyc', 3]
+    ]],
+    ['4x4x4', [
+        ["WCA", "444wca", 40],
+        ['SiGN', "444", 40],
+        ['nasumično stanje ', "444o", 0],
+        ['YJ', "444yj", 40],
+        ['4x4x4 rubni dijelovi', "4edge", 8],
+        ['R,r,U,u', "RrUu", 40]
+    ]],
+    ['5x5x5', [
+        ["WCA", "555wca", 60],
+        ['SiGN', "555", 60],
+        ['5x5x5 rubni dijelovi', "5edge", 8]
+    ]],
+    ['6x6x6', [
+        ["WCA", "666wca", 80],
+        ['SiGN', "666si", 80],
+        ['prefiks', "666p", 80],
+        ['sufiks', "666s", 80],
+        ['6x6x6 rubni dijelovi', "6edge", 8]
+    ]],
+    ['7x7x7', [
+        ["WCA", "777wca", 100],
+        ['SiGN', "777si", 100],
+        ['prefiks', "777p", 100],
+        ['sufiks', "777s", 100],
+        ['7x7x7 rubni dijelovi', "7edge", 8]
+    ]],
+    ['Clock', [
+        ['jaap', "clk", 0],
+        ['wca', "clkwca", 0],
+        ['optimal', "clko", 0],
+        ['sažet', "clkc", 0],
+        ['efektivan red pin-ova', "clke", 0]
+    ]],
+    ['Megaminx', [
+        ["WCA", "mgmp", 70],
+        ['Carrot', "mgmc", 70],
+        ['stari stil', "mgmo", 70]
+    ]],
+    ['Pyraminx', [
+        ["WCA", "pyrso", 10],
+        ['optimalno nasumično stanje', "pyro", 0],
+        ['nasumični potezi', "pyrm", 25]
+    ]],
+    ['Square-1', [
+        ["WCA", "sqrs", 0],
+        ['face turn metric', "sq1h", 40],
+        ['twist metric', "sq1t", 20]
+    ]],
+    ['Skewb', [
+        ["WCA", "skbso", 0],
+        ['U L R B', "skb", 25]
+    ]],
+    ['===OTHER===', [
+        ['--', "blank", 0]
+    ]],
+    ['15 puzzle', [
+        ['micanje dijelova', "15p", 80],
+        ['prazni potezi', "15pm", 80]
+    ]],
+    ['LxMxN', [
+        ['1x3x3 (Floppy Cube)', "133", 0],
+        ['2x2x3 (Tower Cube)', "223", 0],
+        ['2x3x3 (Domino)', "233", 25],
+        ['3x3x4', "334", 40],
+        ['3x3x5', "335", 25],
+        ['3x3x6', "336", 40],
+        ['3x3x7', "337", 40],
+        ['8x8x8', "888", 120],
+        ['9x9x9', "999", 120],
+        ['10x10x10', "101010", 120],
+        ['11x11x11', "111111", 120]
+    ]],
+    ['Gear Cube', [
+        ['nasumično stanje', "gearso", 0],
+        ['optimalno nasumično stanje', "gearo", 0],
+        ['3-gen', "gear", 10]
+    ]],
+    ['Cmetrick', [
+        [' ', "cm3", 25]
+    ]],
+    ['Cmetrick Mini', [
+        [' ', "cm2", 25]
+    ]],
+    ['Gigaminx', [
+        ['Pochmann', "giga", 300]
+    ]],
+    ['Helicopter Cube', [
+        [' ', "heli", 40]
+    ]],
+    ['Redi Cube', [
+        ['MoYu', "redim", 8],
+        ['old', "redi", 20]
+    ]],
+    ['Pyraminx Crystal', [
+        ['Pochmann', "prcp", 70],
+        ['stari stil', "prco", 70]
+    ]],
+    ['Siamese Cube', [
+        ['1x1x3 block', "sia113", 25],
+        ['1x2x3 block', "sia123", 25],
+        ['2x2x2 block', "sia222", 25]
+    ]],
+    ['Square-2', [
+        [' ', "sq2", 20]
+    ]],
+    ['Super Floppy', [
+        [' ', "sfl", 25]
+    ]],
+    ['Super Square-1', [
+        ['twist metric', "ssq1t", 20]
+    ]],
+    ['UFO', [
+        ['Jaap style', "ufo", 25]
+    ]],
+    ['Other', [
+        ['FTO (Face-Turning Octahedron)', "fto", 25]
+    ]],
+    ['===SPECIAL===', [
+        ['--', "blank", 0]
+    ]],
+    ['3x3x3 subset-ovi', [
+        ['2-generator R,U', "2gen", 25],
+        ['2-generator L,U', "2genl", 25],
+        ['Roux-generator M,U', "roux", 25],
+        ['3-generator F,R,U', "3gen_F", 25],
+        ['3-generator R,U,L', "3gen_L", 25],
+        ['3-generator R,r,U', "RrU", 25],
+        ['samo polovični potezi', "half", 25],
+        ['zadnji slot + zadnji sloj (stari stil)', "lsll", 15]
+    ]],
+    ['Bandaged Cube', [
+        ['Bicube', "bic", 30],
+        ['Square-1 /,(1,0)', "bsq", 25]
+    ]],
+    ['Megaminx subsets', [
+        ['2-generator R,U', "minx2g", 30],
+        ['zadnji slot + zadnji sloj', "mlsll", 20]
+    ]],
+    ['Relays', [
+        ['puno 3x3x3 kocaka', "r3", 5],
+        ['234 maraton', "r234", 0],
+        ['2345 maraton', "r2345", 0],
+        ['23456 maraton', "r23456", 0],
+        ['234567 maraton', "r234567", 0]
+    ]],
+    ['===JOKES===', [
+        ['--', "blank", 0]
+    ]],
+    ['1x1x1', [
+        ['x y z', "111", 25]
+    ]],
+    ['-1x-1x-1', [
+        [' ', "-1", 25]
+    ]],
+    ['1x1x2', [
+        [' ', "112", 25]
+    ]],
+    ['LOL', [
+        [' ', "lol", 25]
+    ]],
+    ['Derrick Eide', [
+        [' ', "eide", 25]
+    ]]
 ];
 var SCRAMBLE_NOOBST = [
-	['okreni gornju stranu', 'okreni donju stranu'],
-	['okreni desnu stranu', 'okreni lijevu stranu'],
-	['okreni prednju stranu', 'okreni stražnju stranu']
+    ['okreni gornju stranu', 'okreni donju stranu'],
+    ['okreni desnu stranu', 'okreni lijevu stranu'],
+    ['okreni prednju stranu', 'okreni stražnju stranu']
 ];
 var SCRAMBLE_NOOBSS = ' u smjeru kazaljke na satu za 90°,| suprotno smjeru kazaljke na satu za 90°,| za 180°,';
 var STATS_CFM_RESET = 'resetiraj sva vremena u ovoj sesiji?';
@@ -339,14 +339,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistički indikatori: ';
 var PROPERTY_DELMUL = 'Omogući višestruko brisanje';
 var MODULE_NAMES = {
-	"ui": 'display',
-	"color": 'boja',
-	"timer": 'štoperica',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'globalno',
-	"scramble": 'scramble',
-	"stats": 'statistika',
-	"tools": 'alati'
+    "ui": 'display',
+    "color": 'boja',
+    "timer": 'štoperica',
+    "vrc": 'virtual&<br>Giiker',
+    "kernel": 'globalno',
+    "scramble": 'scramble',
+    "stats": 'statistika',
+    "tools": 'alati'
 };
 var BGIMAGE_URL = 'unesi url slike';
 var BGIMAGE_INVALID = 'nevažeći url';

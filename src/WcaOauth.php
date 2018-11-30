@@ -44,9 +44,9 @@ class WcaOauth
 
     /**
      * Send request to WCA and return JSON.
-     * @param  string $url        URL to send request
+     * @param  string $url URL to send request
      * @param  array $postParams POST data to include in the request (optional)
-     * @param  array $headers    Headers to set in the request (optional)
+     * @param  array $headers Headers to set in the request (optional)
      * @return array             JSON decoded array
      */
     protected function curlJson($url, $postParams = null, $headers = null)
@@ -139,7 +139,7 @@ class WcaOauth
         }
 
         $headers = array(
-          "Authorization: Bearer $this->accessToken",
+            "Authorization: Bearer $this->accessToken",
         );
 
         return $this->curlJson(self::USER_URI, null, $headers)->me;

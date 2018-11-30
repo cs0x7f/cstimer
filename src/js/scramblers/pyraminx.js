@@ -1,4 +1,4 @@
-(function(circle) {
+(function (circle) {
     var solv = new mathlib.Solver(4, 2, [[0, l, 360], [0, i, 2592]]);
 
     function l(a, c) {
@@ -49,6 +49,7 @@
         for (e = 4; 0 <= e; e--) h = 2 * h + b[e];
         return h
     }
+
     var k = [1, 1, 1, 3, 12, 60, 360];
 
     function getScramble(type) {
@@ -72,5 +73,6 @@
         } while (len < 6);
         return k
     }
+
     scramble.reg(['pyro', 'pyrso'], getScramble);
 })(mathlib.circle);

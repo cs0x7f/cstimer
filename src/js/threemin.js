@@ -3,27 +3,27 @@ if (!window.Int32Array) {
     window.Int32Array = Array;
     window.Float32Array = Array
 }
-THREE.Color = function(hex) {
+THREE.Color = function (hex) {
     this.setHex(hex)
 };
 THREE.Color.prototype = {
-    copy: function(color) {
+    copy: function (color) {
         this.r = color.r;
         this.g = color.g;
         this.b = color.b;
         this.hex = color.hex
     },
-    setHex: function(hex) {
+    setHex: function (hex) {
         this.hex = ~~hex & 16777215;
         this.updateRGB()
     },
-    setRGB: function(r, g, b) {
+    setRGB: function (r, g, b) {
         this.r = r;
         this.g = g;
         this.b = b;
         this.updateHex()
     },
-    setHSV: function(h, s, v) {
+    setHSV: function (h, s, v) {
         var r, g, b, i, f, p, q, t;
         if (v == 0) r = g = b = 0;
         else {
@@ -68,61 +68,61 @@ THREE.Color.prototype = {
         }
         this.setRGB(r, g, b)
     },
-    updateHex: function() {
+    updateHex: function () {
         this.hex = ~~(this.r * 255) << 16 ^ ~~(this.g * 255) << 8 ^ ~~(this.b * 255)
     },
-    updateRGB: function() {
+    updateRGB: function () {
         this.r = (this.hex >> 16 & 255) / 255;
         this.g = (this.hex >> 8 & 255) / 255;
         this.b = (this.hex & 255) / 255
     },
-    clone: function() {
+    clone: function () {
         return new THREE.Color(this.hex)
     }
 };
-THREE.Vector2 = function(x, y) {
+THREE.Vector2 = function (x, y) {
     this.set(x || 0, y || 0)
 };
 THREE.Vector2.prototype = {
-    set: function(x, y) {
+    set: function (x, y) {
         this.x = x;
         this.y = y;
         return this
     },
-    copy: function(v) {
+    copy: function (v) {
         this.x = v.x;
         this.y = v.y;
         return this
     },
-    clone: function() {
+    clone: function () {
         return new THREE.Vector2(this.x, this.y)
     },
-    add: function(v1, v2) {
+    add: function (v1, v2) {
         this.x = v1.x + v2.x;
         this.y = v1.y + v2.y;
         return this
     },
-    addSelf: function(v) {
+    addSelf: function (v) {
         this.x += v.x;
         this.y += v.y;
         return this
     },
-    sub: function(v1, v2) {
+    sub: function (v1, v2) {
         this.x = v1.x - v2.x;
         this.y = v1.y - v2.y;
         return this
     },
-    subSelf: function(v) {
+    subSelf: function (v) {
         this.x -= v.x;
         this.y -= v.y;
         return this
     },
-    multiplyScalar: function(s) {
+    multiplyScalar: function (s) {
         this.x *= s;
         this.y *= s;
         return this
     },
-    divideScalar: function(s) {
+    divideScalar: function (s) {
         if (s) {
             this.x /=
                 s;
@@ -130,99 +130,99 @@ THREE.Vector2.prototype = {
         } else this.set(0, 0);
         return this
     },
-    negate: function() {
+    negate: function () {
         return this.multiplyScalar(-1)
     },
-    dot: function(v) {
+    dot: function (v) {
         return this.x * v.x + this.y * v.y
     },
-    lengthSq: function() {
+    lengthSq: function () {
         return this.x * this.x + this.y * this.y
     },
-    length: function() {
+    length: function () {
         return Math.sqrt(this.lengthSq())
     },
-    normalize: function() {
+    normalize: function () {
         return this.divideScalar(this.length())
     },
-    setLength: function(l) {
+    setLength: function (l) {
         return this.normalize().multiplyScalar(l)
     },
-    unit: function() {
+    unit: function () {
         return this.normalize()
     }
 };
-THREE.Vector3 = function(x, y, z) {
+THREE.Vector3 = function (x, y, z) {
     this.set(x || 0, y || 0, z || 0)
 };
 THREE.Vector3.prototype = {
-    set: function(x, y, z) {
+    set: function (x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
         return this
     },
-    copy: function(v) {
+    copy: function (v) {
         this.x = v.x;
         this.y = v.y;
         this.z = v.z;
         return this
     },
-    clone: function() {
+    clone: function () {
         return new THREE.Vector3(this.x, this.y, this.z)
     },
-    add: function(v1, v2) {
+    add: function (v1, v2) {
         this.x = v1.x + v2.x;
         this.y = v1.y + v2.y;
         this.z = v1.z + v2.z;
         return this
     },
-    addSelf: function(v) {
+    addSelf: function (v) {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
         return this
     },
-    addScalar: function(s) {
+    addScalar: function (s) {
         this.x += s;
         this.y += s;
         this.z += s;
         return this
     },
-    sub: function(v1, v2) {
+    sub: function (v1, v2) {
         this.x = v1.x - v2.x;
         this.y = v1.y - v2.y;
         this.z = v1.z - v2.z;
         return this
     },
-    subSelf: function(v) {
+    subSelf: function (v) {
         this.x -= v.x;
         this.y -= v.y;
         this.z -= v.z;
         return this
     },
-    multiply: function(a, b) {
+    multiply: function (a, b) {
         this.x = a.x * b.x;
         this.y = a.y * b.y;
         this.z = a.z * b.z;
         return this
     },
-    multiplySelf: function(v) {
+    multiplySelf: function (v) {
         this.x *= v.x;
         this.y *= v.y;
         this.z *= v.y;
         return this
     },
-    multiplyScalar: function(s) {
+    multiplyScalar: function (s) {
         this.x *= s;
         this.y *= s;
         this.z *= s;
         return this
     },
-    divideSelf: function(v) {
+    divideSelf: function (v) {
         return this.divide(this, v)
     },
-    divideScalar: function(s) {
+    divideScalar: function (s) {
         if (s) {
             this.x /= s;
             this.y /= s;
@@ -230,49 +230,49 @@ THREE.Vector3.prototype = {
         } else this.set(0, 0, 0);
         return this
     },
-    negate: function() {
+    negate: function () {
         return this.multiplyScalar(-1)
     },
-    dot: function(v) {
+    dot: function (v) {
         return this.x * v.x + this.y * v.y + this.z * v.z
     },
-    lengthSq: function() {
+    lengthSq: function () {
         return this.x * this.x + this.y * this.y + this.z * this.z
     },
-    length: function() {
+    length: function () {
         return Math.sqrt(this.lengthSq())
     },
-    lengthManhattan: function() {
+    lengthManhattan: function () {
         return this.x + this.y + this.z
     },
-    normalize: function() {
+    normalize: function () {
         return this.divideScalar(this.length())
     },
-    setLength: function(l) {
+    setLength: function (l) {
         return this.normalize().multiplyScalar(l)
     },
-    cross: function(a, b) {
+    cross: function (a, b) {
         this.x = a.y * b.z - a.z * b.y;
         this.y = a.z * b.x - a.x * b.z;
         this.z = a.x * b.y - a.y * b.x;
         return this
     },
-    crossSelf: function(v) {
+    crossSelf: function (v) {
         return this.set(this.y *
             v.z - this.z * v.y, this.z * v.x - this.x * v.z, this.x * v.y - this.y * v.x)
     },
-    distanceTo: function(v) {
+    distanceTo: function (v) {
         return Math.sqrt(this.distanceToSquared(v))
     },
-    distanceToSquared: function(v) {
+    distanceToSquared: function (v) {
         return (new THREE.Vector3).sub(this, v).lengthSq()
     },
-    setPositionFromMatrix: function(m) {
+    setPositionFromMatrix: function (m) {
         this.x = m.n14;
         this.y = m.n24;
         this.z = m.n34
     },
-    setRotationFromMatrix: function(m) {
+    setRotationFromMatrix: function (m) {
         var cosY = Math.cos(this.y);
         this.y = Math.asin(m.n13);
         if (Math.abs(cosY) > 1.0E-5) {
@@ -284,63 +284,63 @@ THREE.Vector3.prototype = {
                 m.n22)
         }
     },
-    isZero: function() {
+    isZero: function () {
         return this.lengthSq() < 1.0E-4
     }
 };
-THREE.Vector4 = function(x, y, z, w) {
+THREE.Vector4 = function (x, y, z, w) {
     this.set(x || 0, y || 0, z || 0, w || 1)
 };
 THREE.Vector4.prototype = {
-    set: function(x, y, z, w) {
+    set: function (x, y, z, w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
         return this
     },
-    copy: function(v) {
+    copy: function (v) {
         return this.set(v.x, v.y, v.z, v.w || 1)
     },
-    clone: function() {
+    clone: function () {
         return new THREE.Vector4(this.x, this.y, this.z, this.w)
     },
-    add: function(v1, v2) {
+    add: function (v1, v2) {
         this.x = v1.x + v2.x;
         this.y = v1.y + v2.y;
         this.z = v1.z + v2.z;
         this.w = v1.w + v2.w;
         return this
     },
-    addSelf: function(v) {
+    addSelf: function (v) {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
         this.w += v.w;
         return this
     },
-    sub: function(v1, v2) {
+    sub: function (v1, v2) {
         this.x = v1.x - v2.x;
         this.y = v1.y - v2.y;
         this.z = v1.z - v2.z;
         this.w = v1.w - v2.w;
         return this
     },
-    subSelf: function(v) {
+    subSelf: function (v) {
         this.x -= v.x;
         this.y -= v.y;
         this.z -= v.z;
         this.w -= v.w;
         return this
     },
-    multiplyScalar: function(s) {
+    multiplyScalar: function (s) {
         this.x *= s;
         this.y *= s;
         this.z *= s;
         this.w *= s;
         return this
     },
-    divideScalar: function(s) {
+    divideScalar: function (s) {
         if (s) {
             this.x /= s;
             this.y /= s;
@@ -349,25 +349,25 @@ THREE.Vector4.prototype = {
         } else this.set(0, 0, 0, 1);
         return this
     },
-    negate: function() {
+    negate: function () {
         return this.multiplyScalar(-1)
     },
-    dot: function(v) {
+    dot: function (v) {
         return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w
     },
-    lengthSq: function() {
+    lengthSq: function () {
         return this.dot(this)
     },
-    length: function() {
+    length: function () {
         return Math.sqrt(this.lengthSq())
     },
-    normalize: function() {
+    normalize: function () {
         return this.divideScalar(this.length())
     },
-    setLength: function(l) {
+    setLength: function (l) {
         return this.normalize().multiplyScalar(l)
     },
-    lerpSelf: function(v, alpha) {
+    lerpSelf: function (v, alpha) {
         this.x += (v.x - this.x) * alpha;
         this.y += (v.y - this.y) * alpha;
         this.z += (v.z - this.z) * alpha;
@@ -375,23 +375,23 @@ THREE.Vector4.prototype = {
         return this
     }
 };
-THREE.Ray = function(origin, direction) {
+THREE.Ray = function (origin, direction) {
     this.origin = origin || new THREE.Vector3;
     this.direction = direction || new THREE.Vector3
 };
 THREE.Ray.prototype = {
-    intersectScene: function(scene) {
+    intersectScene: function (scene) {
         return this.intersectObjects(scene.objects)
     },
-    intersectObjects: function(objects) {
+    intersectObjects: function (objects) {
         var i, l, object, intersects = [];
         for (i = 0, l = objects.length; i < l; i++) intersects = intersects.concat(this.intersectObject(objects[i]));
-        intersects.sort(function(a, b) {
+        intersects.sort(function (a, b) {
             return a.distance - b.distance
         });
         return intersects
     },
-    intersectObject: function(object) {
+    intersectObject: function (object) {
         if (object instanceof THREE.Particle) {
             var distance = distanceFromIntersection(this.origin, this.direction, object);
             if (!distance || distance >
@@ -460,7 +460,7 @@ THREE.Ray.prototype = {
         }
 
         function pointInFace3(p,
-            a, b, c) {
+                              a, b, c) {
             var v0 = c.clone().subSelf(a),
                 v1 = b.clone().subSelf(a),
                 v2 = p.clone().subSelf(a),
@@ -476,38 +476,39 @@ THREE.Ray.prototype = {
         }
     }
 };
-THREE.Rectangle = function() {
+THREE.Rectangle = function () {
     var _left, _top, _right, _bottom, _width, _height, _isEmpty = true;
 
     function resize() {
         _width = _right - _left;
         _height = _bottom - _top
     }
-    this.getX = function() {
+
+    this.getX = function () {
         return _left
     };
-    this.getY = function() {
+    this.getY = function () {
         return _top
     };
-    this.getWidth = function() {
+    this.getWidth = function () {
         return _width
     };
-    this.getHeight = function() {
+    this.getHeight = function () {
         return _height
     };
-    this.getLeft = function() {
+    this.getLeft = function () {
         return _left
     };
-    this.getTop = function() {
+    this.getTop = function () {
         return _top
     };
-    this.getRight = function() {
+    this.getRight = function () {
         return _right
     };
-    this.getBottom = function() {
+    this.getBottom = function () {
         return _bottom
     };
-    this.set = function(left, top, right, bottom) {
+    this.set = function (left, top, right, bottom) {
         _isEmpty =
             false;
         _left = left;
@@ -516,7 +517,7 @@ THREE.Rectangle = function() {
         _bottom = bottom;
         resize()
     };
-    this.addPoint = function(x, y) {
+    this.addPoint = function (x, y) {
         if (_isEmpty) {
             _isEmpty = false;
             _left = x;
@@ -532,7 +533,7 @@ THREE.Rectangle = function() {
             resize()
         }
     };
-    this.add3Points = function(x1, y1, x2, y2, x3, y3) {
+    this.add3Points = function (x1, y1, x2, y2, x3, y3) {
         if (_isEmpty) {
             _isEmpty = false;
             _left = x1 < x2 ? x1 < x3 ? x1 : x3 : x2 < x3 ? x2 : x3;
@@ -549,7 +550,7 @@ THREE.Rectangle = function() {
             resize()
         }
     };
-    this.addRectangle = function(r) {
+    this.addRectangle = function (r) {
         if (_isEmpty) {
             _isEmpty = false;
             _left = r.getLeft();
@@ -566,24 +567,24 @@ THREE.Rectangle = function() {
             resize()
         }
     };
-    this.inflate = function(v) {
+    this.inflate = function (v) {
         _left -= v;
         _top -= v;
         _right += v;
         _bottom += v;
         resize()
     };
-    this.minSelf = function(r) {
+    this.minSelf = function (r) {
         _left = _left > r.getLeft() ? _left : r.getLeft();
         _top = _top > r.getTop() ? _top : r.getTop();
         _right = _right < r.getRight() ? _right : r.getRight();
         _bottom = _bottom < r.getBottom() ? _bottom : r.getBottom();
         resize()
     };
-    this.instersects = function(r) {
+    this.instersects = function (r) {
         return Math.min(_right, r.getRight()) - Math.max(_left, r.getLeft()) >= 0 && Math.min(_bottom, r.getBottom()) - Math.max(_top, r.getTop()) >= 0
     };
-    this.empty = function() {
+    this.empty = function () {
         _isEmpty = true;
         _left = 0;
         _top = 0;
@@ -591,15 +592,15 @@ THREE.Rectangle = function() {
         _bottom = 0;
         resize()
     };
-    this.isEmpty = function() {
+    this.isEmpty = function () {
         return _isEmpty
     }
 };
-THREE.Matrix3 = function() {
+THREE.Matrix3 = function () {
     this.m = []
 };
 THREE.Matrix3.prototype = {
-    transpose: function() {
+    transpose: function () {
         var tmp, m = this.m;
         tmp = m[1];
         m[1] = m[3];
@@ -612,7 +613,7 @@ THREE.Matrix3.prototype = {
         m[7] = tmp;
         return this
     },
-    transposeIntoArray: function(r) {
+    transposeIntoArray: function (r) {
         var m = this.m;
         r[0] = m[0];
         r[1] = m[3];
@@ -626,13 +627,13 @@ THREE.Matrix3.prototype = {
         return this
     }
 };
-THREE.Matrix4 = function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
+THREE.Matrix4 = function (n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
     this.set(n11 || 1, n12 || 0, n13 || 0, n14 || 0, n21 || 0, n22 || 1, n23 || 0, n24 || 0, n31 || 0, n32 || 0, n33 || 1, n34 || 0, n41 || 0, n42 || 0, n43 || 0, n44 || 1);
     this.flat = new Array(16);
     this.m33 = new THREE.Matrix3
 };
 THREE.Matrix4.prototype = {
-    set: function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
+    set: function (n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
         this.n11 = n11;
         this.n12 = n12;
         this.n13 = n13;
@@ -651,16 +652,16 @@ THREE.Matrix4.prototype = {
         this.n44 = n44;
         return this
     },
-    identity: function() {
+    identity: function () {
         this.set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
         return this
     },
-    copy: function(m) {
+    copy: function (m) {
         this.set(m.n11, m.n12, m.n13, m.n14, m.n21, m.n22, m.n23, m.n24, m.n31, m.n32, m.n33, m.n34, m.n41,
             m.n42, m.n43, m.n44);
         return this
     },
-    lookAt: function(eye, center, up) {
+    lookAt: function (eye, center, up) {
         var x = THREE.Matrix4.__v1,
             y = THREE.Matrix4.__v2,
             z = THREE.Matrix4.__v3;
@@ -683,7 +684,7 @@ THREE.Matrix4.prototype = {
         this.n33 = z.z;
         return this
     },
-    multiplyVector3: function(v) {
+    multiplyVector3: function (v) {
         var vx = v.x,
             vy = v.y,
             vz = v.z,
@@ -694,7 +695,7 @@ THREE.Matrix4.prototype = {
         v.z = (this.n31 * vx + this.n32 * vy + this.n33 * vz + this.n34) * d;
         return v
     },
-    multiplyVector4: function(v) {
+    multiplyVector4: function (v) {
         var vx = v.x,
             vy = v.y,
             vz = v.z,
@@ -705,9 +706,9 @@ THREE.Matrix4.prototype = {
         v.w = this.n41 * vx + this.n42 * vy + this.n43 * vz + this.n44 * vw;
         return v
     },
-    rotateAxis: function(v) {
+    rotateAxis: function (v) {
         var vx =
-            v.x,
+                v.x,
             vy = v.y,
             vz = v.z;
         v.x = vx * this.n11 + vy * this.n12 + vz * this.n13;
@@ -716,7 +717,7 @@ THREE.Matrix4.prototype = {
         v.normalize();
         return v
     },
-    crossVector: function(a) {
+    crossVector: function (a) {
         var v = new THREE.Vector4;
         v.x = this.n11 * a.x + this.n12 * a.y + this.n13 * a.z + this.n14 * a.w;
         v.y = this.n21 * a.x + this.n22 * a.y + this.n23 * a.z + this.n24 * a.w;
@@ -724,11 +725,11 @@ THREE.Matrix4.prototype = {
         v.w = a.w ? this.n41 * a.x + this.n42 * a.y + this.n43 * a.z + this.n44 * a.w : 1;
         return v
     },
-    multiply: function(a, b) {
+    multiply: function (a, b) {
         var a11 = a.n11,
             a12 = a.n12,
             a13 =
-            a.n13,
+                a.n13,
             a14 = a.n14,
             a21 = a.n21,
             a22 = a.n22,
@@ -777,7 +778,7 @@ THREE.Matrix4.prototype = {
         this.n44 = a41 * b14 + a42 * b24 + a43 * b34 + a44;
         return this
     },
-    multiplyToArray: function(a, b, r) {
+    multiplyToArray: function (a, b, r) {
         this.multiply(a, b);
         r[0] = this.n11;
         r[1] = this.n21;
@@ -797,11 +798,11 @@ THREE.Matrix4.prototype = {
         r[15] = this.n44;
         return this
     },
-    multiplySelf: function(m) {
+    multiplySelf: function (m) {
         this.multiply(this, m);
         return this
     },
-    multiplyScalar: function(s) {
+    multiplyScalar: function (s) {
         this.n11 *= s;
         this.n12 *= s;
         this.n13 *= s;
@@ -820,7 +821,7 @@ THREE.Matrix4.prototype = {
         this.n44 *= s;
         return this
     },
-    determinant: function() {
+    determinant: function () {
         var n11 = this.n11,
             n12 = this.n12,
             n13 = this.n13,
@@ -840,7 +841,7 @@ THREE.Matrix4.prototype = {
         return n14 * n23 * n32 * n41 - n13 * n24 * n32 * n41 - n14 * n22 * n33 * n41 + n12 * n24 * n33 * n41 + n13 * n22 * n34 * n41 - n12 * n23 * n34 * n41 - n14 * n23 * n31 * n42 + n13 * n24 * n31 * n42 + n14 * n21 * n33 * n42 - n11 * n24 * n33 * n42 - n13 * n21 * n34 * n42 + n11 * n23 * n34 * n42 + n14 * n22 * n31 * n43 - n12 * n24 * n31 * n43 - n14 * n21 * n32 * n43 + n11 * n24 * n32 * n43 + n12 * n21 * n34 * n43 - n11 * n22 * n34 * n43 - n13 * n22 * n31 * n44 + n12 * n23 * n31 * n44 + n13 * n21 * n32 * n44 - n11 *
             n23 * n32 * n44 - n12 * n21 * n33 * n44 + n11 * n22 * n33 * n44
     },
-    transpose: function() {
+    transpose: function () {
         var tmp;
         tmp = this.n21;
         this.n21 = this.n12;
@@ -862,7 +863,7 @@ THREE.Matrix4.prototype = {
         this.n43 = tmp;
         return this
     },
-    clone: function() {
+    clone: function () {
         var m = new THREE.Matrix4;
         m.n11 = this.n11;
         m.n12 = this.n12;
@@ -883,7 +884,7 @@ THREE.Matrix4.prototype = {
         m.n44 = this.n44;
         return m
     },
-    flatten: function() {
+    flatten: function () {
         this.flat[0] = this.n11;
         this.flat[1] = this.n21;
         this.flat[2] = this.n31;
@@ -903,7 +904,7 @@ THREE.Matrix4.prototype = {
             this.n44;
         return this.flat
     },
-    flattenToArray: function(flat) {
+    flattenToArray: function (flat) {
         flat[0] = this.n11;
         flat[1] = this.n21;
         flat[2] = this.n31;
@@ -922,7 +923,7 @@ THREE.Matrix4.prototype = {
         flat[15] = this.n44;
         return flat
     },
-    flattenToArrayOffset: function(flat, offset) {
+    flattenToArrayOffset: function (flat, offset) {
         flat[offset] = this.n11;
         flat[offset + 1] = this.n21;
         flat[offset + 2] = this.n31;
@@ -941,34 +942,34 @@ THREE.Matrix4.prototype = {
         flat[offset + 15] = this.n44;
         return flat
     },
-    setTranslation: function(x, y, z) {
+    setTranslation: function (x, y, z) {
         this.set(1, 0, 0, x, 0, 1, 0, y, 0, 0, 1, z, 0, 0, 0, 1);
         return this
     },
-    setScale: function(x, y, z) {
+    setScale: function (x, y, z) {
         this.set(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1);
         return this
     },
-    setRotationX: function(theta) {
+    setRotationX: function (theta) {
         var c = Math.cos(theta),
             s =
-            Math.sin(theta);
+                Math.sin(theta);
         this.set(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
         return this
     },
-    setRotationY: function(theta) {
+    setRotationY: function (theta) {
         var c = Math.cos(theta),
             s = Math.sin(theta);
         this.set(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
         return this
     },
-    setRotationZ: function(theta) {
+    setRotationZ: function (theta) {
         var c = Math.cos(theta),
             s = Math.sin(theta);
         this.set(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
         return this
     },
-    setRotationAxis: function(axis, angle) {
+    setRotationAxis: function (axis, angle) {
         var c = Math.cos(angle),
             s = Math.sin(angle),
             t = 1 - c,
@@ -981,34 +982,34 @@ THREE.Matrix4.prototype = {
             z - s * x, 0, tx * z - s * y, ty * z + s * x, t * z * z + c, 0, 0, 0, 0, 1);
         return this
     },
-    setPosition: function(v) {
+    setPosition: function (v) {
         this.n14 = v.x;
         this.n24 = v.y;
         this.n34 = v.z;
         return this
     },
-    getPosition: function() {
+    getPosition: function () {
         if (!this.position) this.position = new THREE.Vector3;
         this.position.set(this.n14, this.n24, this.n34);
         return this.position
     },
-    getColumnX: function() {
+    getColumnX: function () {
         if (!this.columnX) this.columnX = new THREE.Vector3;
         this.columnX.set(this.n11, this.n21, this.n31);
         return this.columnX
     },
-    getColumnY: function() {
+    getColumnY: function () {
         if (!this.columnY) this.columnY = new THREE.Vector3;
         this.columnY.set(this.n12,
             this.n22, this.n32);
         return this.columnY
     },
-    getColumnZ: function() {
+    getColumnZ: function () {
         if (!this.columnZ) this.columnZ = new THREE.Vector3;
         this.columnZ.set(this.n13, this.n23, this.n33);
         return this.columnZ
     },
-    setRotationFromEuler: function(v) {
+    setRotationFromEuler: function (v) {
         var x = v.x,
             y = v.y,
             z = v.z,
@@ -1031,9 +1032,9 @@ THREE.Matrix4.prototype = {
         this.n33 = a * c;
         return this
     },
-    setRotationFromQuaternion: function(q) {
+    setRotationFromQuaternion: function (q) {
         var x =
-            q.x,
+                q.x,
             y = q.y,
             z = q.z,
             w = q.w,
@@ -1060,7 +1061,7 @@ THREE.Matrix4.prototype = {
         this.n33 = 1 - (xx + yy);
         return this
     },
-    scale: function(v) {
+    scale: function (v) {
         var x = v.x,
             y = v.y,
             z = v.z;
@@ -1078,13 +1079,13 @@ THREE.Matrix4.prototype = {
         this.n43 *= z;
         return this
     },
-    extractPosition: function(m) {
+    extractPosition: function (m) {
         this.n14 =
             m.n14;
         this.n24 = m.n24;
         this.n34 = m.n34
     },
-    extractRotation: function(m, s) {
+    extractRotation: function (m, s) {
         var invScaleX = 1 / s.x,
             invScaleY = 1 / s.y,
             invScaleZ = 1 / s.z;
@@ -1099,7 +1100,7 @@ THREE.Matrix4.prototype = {
         this.n33 = m.n33 * invScaleZ
     }
 };
-THREE.Matrix4.makeInvert = function(m1, m2) {
+THREE.Matrix4.makeInvert = function (m1, m2) {
     var n11 = m1.n11,
         n12 = m1.n12,
         n13 = m1.n13,
@@ -1139,7 +1140,7 @@ THREE.Matrix4.makeInvert = function(m1, m2) {
     m2.multiplyScalar(1 / m1.determinant());
     return m2
 };
-THREE.Matrix4.makeInvert3x3 = function(m1) {
+THREE.Matrix4.makeInvert3x3 = function (m1) {
     var m33 = m1.m33,
         m33m = m33.m,
         a11 = m1.n33 * m1.n22 - m1.n32 * m1.n23,
@@ -1167,7 +1168,7 @@ THREE.Matrix4.makeInvert3x3 = function(m1) {
     m33m[8] = idet * a33;
     return m33
 };
-THREE.Matrix4.makeFrustum = function(left, right, bottom, top, near, far) {
+THREE.Matrix4.makeFrustum = function (left, right, bottom, top, near, far) {
     var m, x, y, a, b, c, d;
     m = new THREE.Matrix4;
     x = 2 * near / (right - left);
@@ -1194,7 +1195,7 @@ THREE.Matrix4.makeFrustum = function(left, right, bottom, top, near, far) {
     m.n44 = 0;
     return m
 };
-THREE.Matrix4.makePerspective = function(fov, aspect, near, far) {
+THREE.Matrix4.makePerspective = function (fov, aspect, near, far) {
     var ymax, ymin, xmin, xmax;
     ymax = near * Math.tan(fov * Math.PI / 360);
     ymin = -ymax;
@@ -1202,7 +1203,7 @@ THREE.Matrix4.makePerspective = function(fov, aspect, near, far) {
     xmax = ymax * aspect;
     return THREE.Matrix4.makeFrustum(xmin, xmax, ymin, ymax, near, far)
 };
-THREE.Matrix4.makeOrtho = function(left, right, top, bottom, near, far) {
+THREE.Matrix4.makeOrtho = function (left, right, top, bottom, near, far) {
     var m, x, y, z, w, h, p;
     m = new THREE.Matrix4;
     w = right - left;
@@ -1232,7 +1233,7 @@ THREE.Matrix4.makeOrtho = function(left, right, top, bottom, near, far) {
 THREE.Matrix4.__v1 = new THREE.Vector3;
 THREE.Matrix4.__v2 = new THREE.Vector3;
 THREE.Matrix4.__v3 = new THREE.Vector3;
-THREE.Object3D = function() {
+THREE.Object3D = function () {
     this.parent = undefined;
     this.children = [];
     this.up = new THREE.Vector3(0, 1, 0);
@@ -1256,24 +1257,24 @@ THREE.Object3D = function() {
     this.name = ""
 };
 THREE.Object3D.prototype = {
-    translate: function(distance, axis) {
+    translate: function (distance, axis) {
         this.matrix.rotateAxis(axis);
         this.position.addSelf(axis.multiplyScalar(distance))
     },
-    translateX: function(distance) {
+    translateX: function (distance) {
         this.translate(distance, this._vector.set(1, 0, 0))
     },
-    translateY: function(distance) {
+    translateY: function (distance) {
         this.translate(distance, this._vector.set(0, 1, 0))
     },
-    translateZ: function(distance) {
+    translateZ: function (distance) {
         this.translate(distance, this._vector.set(0, 0, 1))
     },
-    lookAt: function(vector) {
+    lookAt: function (vector) {
         this.matrix.lookAt(vector, this.position, this.up);
         if (this.rotationAutoUpdate) this.rotation.setRotationFromMatrix(this.matrix)
     },
-    addChild: function(child) {
+    addChild: function (child) {
         if (this.children.indexOf(child) === -1) {
             if (child.parent !== undefined) child.parent.removeChild(child);
             child.parent = this;
@@ -1283,14 +1284,14 @@ THREE.Object3D.prototype = {
             if (scene !== undefined && scene instanceof THREE.Scene) scene.addChildRecurse(child)
         }
     },
-    removeChild: function(child) {
+    removeChild: function (child) {
         var childIndex = this.children.indexOf(child);
         if (childIndex !== -1) {
             child.parent = undefined;
             this.children.splice(childIndex, 1)
         }
     },
-    getChildByName: function(name, doRecurse) {
+    getChildByName: function (name, doRecurse) {
         var c,
             cl, child, recurseResult;
         for (c = 0, cl = this.children.length; c < cl; c++) {
@@ -1303,7 +1304,7 @@ THREE.Object3D.prototype = {
         }
         return undefined
     },
-    updateMatrix: function() {
+    updateMatrix: function () {
         this.matrix.setPosition(this.position);
         if (this.useQuaternion) this.matrix.setRotationFromQuaternion(this.quaternion);
         else this.matrix.setRotationFromEuler(this.rotation);
@@ -1314,7 +1315,7 @@ THREE.Object3D.prototype = {
         }
         this.matrixWorldNeedsUpdate = true
     },
-    update: function(parentMatrixWorld, forceUpdate, camera) {
+    update: function (parentMatrixWorld, forceUpdate, camera) {
         this.matrixAutoUpdate && this.updateMatrix();
         if (this.matrixWorldNeedsUpdate || forceUpdate) {
             if (parentMatrixWorld) this.matrixWorld.multiply(parentMatrixWorld, this.matrix);
@@ -1327,25 +1328,25 @@ THREE.Object3D.prototype = {
         for (var i = 0, l = this.children.length; i < l; i++) this.children[i].update(this.matrixWorld, forceUpdate, camera)
     }
 };
-THREE.Quaternion = function(x, y, z, w) {
+THREE.Quaternion = function (x, y, z, w) {
     this.set(x || 0, y || 0, z || 0, w !== undefined ? w : 1)
 };
 THREE.Quaternion.prototype = {
-    set: function(x, y, z, w) {
+    set: function (x, y, z, w) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
         return this
     },
-    copy: function(q) {
+    copy: function (q) {
         this.x = q.x;
         this.y = q.y;
         this.z = q.z;
         this.w = q.w;
         return this
     },
-    setFromEuler: function(vec3) {
+    setFromEuler: function (vec3) {
         var c = 0.5 * Math.PI / 360,
             x = vec3.x * c,
             y = vec3.y * c,
@@ -1364,8 +1365,8 @@ THREE.Quaternion.prototype = {
         this.z = c1 * s2 * c3 - s1 * c2 * s3;
         return this
     },
-    setFromAxisAngle: function(axis,
-        angle) {
+    setFromAxisAngle: function (axis,
+                                angle) {
         var halfAngle = angle / 2,
             s = Math.sin(halfAngle);
         this.x = axis.x * s;
@@ -1374,20 +1375,20 @@ THREE.Quaternion.prototype = {
         this.w = Math.cos(halfAngle);
         return this
     },
-    calculateW: function() {
+    calculateW: function () {
         this.w = -Math.sqrt(Math.abs(1 - this.x * this.x - this.y * this.y - this.z * this.z));
         return this
     },
-    inverse: function() {
+    inverse: function () {
         this.x *= -1;
         this.y *= -1;
         this.z *= -1;
         return this
     },
-    length: function() {
+    length: function () {
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w)
     },
-    normalize: function() {
+    normalize: function () {
         var l = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
         if (l ==
             0) {
@@ -1404,7 +1405,7 @@ THREE.Quaternion.prototype = {
         }
         return this
     },
-    multiplySelf: function(quat2) {
+    multiplySelf: function (quat2) {
         var qax = this.x,
             qay = this.y,
             qaz = this.z,
@@ -1419,7 +1420,7 @@ THREE.Quaternion.prototype = {
         this.w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
         return this
     },
-    multiply: function(q1, q2) {
+    multiply: function (q1, q2) {
         this.x = q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x;
         this.y = -q1.x *
             q2.z + q1.y * q2.w + q1.z * q2.x + q1.w * q2.y;
@@ -1427,7 +1428,7 @@ THREE.Quaternion.prototype = {
         this.w = -q1.x * q2.x - q1.y * q2.y - q1.z * q2.z + q1.w * q2.w;
         return this
     },
-    multiplyVector3: function(vec, dest) {
+    multiplyVector3: function (vec, dest) {
         if (!dest) dest = vec;
         var x = vec.x,
             y = vec.y,
@@ -1446,7 +1447,7 @@ THREE.Quaternion.prototype = {
         return dest
     }
 };
-THREE.Quaternion.slerp = function(qa, qb, qm, t) {
+THREE.Quaternion.slerp = function (qa, qb, qm, t) {
     var cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
     if (Math.abs(cosHalfTheta) >= 1) {
         qm.w = qa.w;
@@ -1473,10 +1474,10 @@ THREE.Quaternion.slerp = function(qa, qb, qm, t) {
     qm.z = qa.z * ratioA + qb.z * ratioB;
     return qm
 };
-THREE.Vertex = function(position) {
+THREE.Vertex = function (position) {
     this.position = position || new THREE.Vector3
 };
-THREE.Face3 = function(a, b, c, normal, color, materials) {
+THREE.Face3 = function (a, b, c, normal, color, materials) {
     this.a = a;
     this.b = b;
     this.c = c;
@@ -1488,7 +1489,7 @@ THREE.Face3 = function(a, b, c, normal, color, materials) {
     this.materials = materials instanceof Array ? materials : [materials];
     this.centroid = new THREE.Vector3
 };
-THREE.Face4 = function(a, b, c, d, normal, color, materials) {
+THREE.Face4 = function (a, b, c, d, normal, color, materials) {
     this.a = a;
     this.b = b;
     this.c = c;
@@ -1501,21 +1502,21 @@ THREE.Face4 = function(a, b, c, d, normal, color, materials) {
     this.materials = materials instanceof Array ? materials : [materials];
     this.centroid = new THREE.Vector3
 };
-THREE.UV = function(u, v) {
+THREE.UV = function (u, v) {
     this.set(u || 0, v || 0)
 };
 THREE.UV.prototype = {
-    set: function(u, v) {
+    set: function (u, v) {
         this.u = u;
         this.v = v;
         return this
     },
-    copy: function(uv) {
+    copy: function (uv) {
         this.set(uv.u, uv.v);
         return this
     }
 };
-THREE.Geometry = function() {
+THREE.Geometry = function () {
     this.id = "Geometry" + THREE.GeometryIdCounter++;
     this.vertices = [];
     this.colors = [];
@@ -1532,7 +1533,7 @@ THREE.Geometry = function() {
     this.hasTangents = false
 };
 THREE.Geometry.prototype = {
-    computeCentroids: function() {
+    computeCentroids: function () {
         var f, fl, face;
         for (f = 0, fl = this.faces.length; f < fl; f++) {
             face = this.faces[f];
@@ -1551,7 +1552,7 @@ THREE.Geometry.prototype = {
             }
         }
     },
-    computeFaceNormals: function(useVertexNormals) {
+    computeFaceNormals: function (useVertexNormals) {
         var n, nl, v, vl, vertex, f, fl, face, vA, vB, vC, cb = new THREE.Vector3,
             ab = new THREE.Vector3;
         for (f = 0, fl = this.faces.length; f < fl; f++) {
@@ -1574,14 +1575,14 @@ THREE.Geometry.prototype = {
             }
         }
     },
-    computeVertexNormals: function() {
+    computeVertexNormals: function () {
         var v, vl, f, fl, face, vertices;
         if (this.__tmpVertices == undefined) {
             this.__tmpVertices = new Array(this.vertices.length);
             vertices = this.__tmpVertices;
             for (v = 0, vl = this.vertices.length; v < vl; v++) vertices[v] = new THREE.Vector3;
             for (f = 0, fl = this.faces.length; f <
-                fl; f++) {
+            fl; f++) {
                 face = this.faces[f];
                 if (face instanceof THREE.Face3) face.vertexNormals = [new THREE.Vector3, new THREE.Vector3, new THREE.Vector3];
                 else if (face instanceof THREE.Face4) face.vertexNormals = [new THREE.Vector3, new THREE.Vector3, new THREE.Vector3, new THREE.Vector3]
@@ -1618,8 +1619,9 @@ THREE.Geometry.prototype = {
             }
         }
     },
-    computeTangents: function() {
-        var f, fl, v, vl, i, il, vertexIndex, face, uv, vA, vB, vC, uvA, uvB, uvC, x1, x2, y1, y2, z1, z2, s1, s2, t1, t2, r, t, test, tan1 = [],
+    computeTangents: function () {
+        var f, fl, v, vl, i, il, vertexIndex, face, uv, vA, vB, vC, uvA, uvB, uvC, x1, x2, y1, y2, z1, z2, s1, s2, t1,
+            t2, r, t, test, tan1 = [],
             tan2 = [],
             sdir = new THREE.Vector3,
             tdir = new THREE.Vector3,
@@ -1660,6 +1662,7 @@ THREE.Geometry.prototype = {
             tan2[b].addSelf(tdir);
             tan2[c].addSelf(tdir)
         }
+
         for (f = 0, fl = this.faces.length; f < fl; f++) {
             face = this.faces[f];
             uv = this.faceVertexUvs[0][f];
@@ -1673,7 +1676,7 @@ THREE.Geometry.prototype = {
         for (f = 0, fl = this.faces.length; f < fl; f++) {
             face = this.faces[f];
             for (i =
-                0; i < face.vertexNormals.length; i++) {
+                     0; i < face.vertexNormals.length; i++) {
                 n.copy(face.vertexNormals[i]);
                 vertexIndex = face[faceIndex[i]];
                 t = tan1[vertexIndex];
@@ -1687,13 +1690,13 @@ THREE.Geometry.prototype = {
         }
         this.hasTangents = true
     },
-    computeBoundingBox: function() {
+    computeBoundingBox: function () {
         var vertex;
         if (this.vertices.length > 0) {
             this.boundingBox = {
                 "x": [this.vertices[0].position.x, this.vertices[0].position.x],
                 "y": [this.vertices[0].position.y,
-this.vertices[0].position.y],
+                    this.vertices[0].position.y],
                 "z": [this.vertices[0].position.z, this.vertices[0].position.z]
             };
             for (var v = 1, vl = this.vertices.length; v < vl; v++) {
@@ -1707,14 +1710,14 @@ this.vertices[0].position.y],
             }
         }
     },
-    computeBoundingSphere: function() {
+    computeBoundingSphere: function () {
         var radius = 0;
         for (var v = 0, vl = this.vertices.length; v < vl; v++) radius = Math.max(radius, this.vertices[v].position.length());
         this.boundingSphere = {
             radius: radius
         }
     },
-    computeEdgeFaces: function() {
+    computeEdgeFaces: function () {
         function edge_hash(a, b) {
             return Math.min(a, b) + "_" + Math.max(a, b)
         }
@@ -1732,6 +1735,7 @@ this.vertices[0].position.y],
                 map[hash].array.push(i)
             }
         }
+
         var i, il, v1, v2, j, k, face, faceIndices, faceIndex, edge, hash, vfMap = {};
         for (i = 0, il = this.faces.length; i < il; i++) {
             face = this.faces[i];
@@ -1769,7 +1773,7 @@ this.vertices[0].position.y],
     }
 };
 THREE.GeometryIdCounter = 0;
-THREE.Camera = function(fov, aspect, near, far, target) {
+THREE.Camera = function (fov, aspect, near, far, target) {
     THREE.Object3D.call(this);
     this.fov = fov || 50;
     this.aspect = aspect || 1;
@@ -1784,15 +1788,15 @@ THREE.Camera = function(fov, aspect, near, far, target) {
 THREE.Camera.prototype = new THREE.Object3D;
 THREE.Camera.prototype.constructor = THREE.Camera;
 THREE.Camera.prototype.supr = THREE.Object3D.prototype;
-THREE.Camera.prototype.translate = function(distance, axis) {
+THREE.Camera.prototype.translate = function (distance, axis) {
     this.matrix.rotateAxis(axis);
     this.position.addSelf(axis.multiplyScalar(distance));
     this.target.position.addSelf(axis.multiplyScalar(distance))
 };
-THREE.Camera.prototype.updateProjectionMatrix = function() {
+THREE.Camera.prototype.updateProjectionMatrix = function () {
     this.projectionMatrix = THREE.Matrix4.makePerspective(this.fov, this.aspect, this.near, this.far)
 };
-THREE.Camera.prototype.update = function(parentMatrixWorld, forceUpdate, camera) {
+THREE.Camera.prototype.update = function (parentMatrixWorld, forceUpdate, camera) {
     if (this.useTarget) {
         this.matrix.lookAt(this.position, this.target.position, this.up);
         this.matrix.setPosition(this.position);
@@ -1813,14 +1817,14 @@ THREE.Camera.prototype.update = function(parentMatrixWorld, forceUpdate, camera)
     }
     for (var i = 0; i < this.children.length; i++) this.children[i].update(this.matrixWorld, forceUpdate, camera)
 };
-THREE.Light = function(hex) {
+THREE.Light = function (hex) {
     THREE.Object3D.call(this);
     this.color = new THREE.Color(hex)
 };
 THREE.Light.prototype = new THREE.Object3D;
 THREE.Light.prototype.constructor = THREE.Light;
 THREE.Light.prototype.supr = THREE.Object3D.prototype;
-THREE.Material = function(parameters) {
+THREE.Material = function (parameters) {
     this.id = THREE.MaterialCounter.value++;
     parameters = parameters || {};
     this.opacity = parameters.opacity !== undefined ? parameters.opacity : 1;
@@ -1842,7 +1846,7 @@ THREE.AdditiveAlphaBlending = 4;
 THREE.MaterialCounter = {
     value: 0
 };
-THREE.MeshBasicMaterial = function(parameters) {
+THREE.MeshBasicMaterial = function (parameters) {
     THREE.Material.call(this, parameters);
     parameters = parameters || {};
     this.color = parameters.color !== undefined ? new THREE.Color(parameters.color) : new THREE.Color(16777215);
@@ -1864,14 +1868,15 @@ THREE.MeshBasicMaterial = function(parameters) {
 };
 THREE.MeshBasicMaterial.prototype = new THREE.Material;
 THREE.MeshBasicMaterial.prototype.constructor = THREE.MeshBasicMaterial;
-THREE.MeshFaceMaterial = function() {};
-THREE.Particle = function(materials) {
+THREE.MeshFaceMaterial = function () {
+};
+THREE.Particle = function (materials) {
     THREE.Object3D.call(this);
     this.materials = materials instanceof Array ? materials : [materials]
 };
 THREE.Particle.prototype = new THREE.Object3D;
 THREE.Particle.prototype.constructor = THREE.Particle;
-THREE.Line = function(geometry, materials, type) {
+THREE.Line = function (geometry, materials, type) {
     THREE.Object3D.call(this);
     this.geometry = geometry;
     this.materials = materials instanceof Array ? materials : [materials];
@@ -1881,7 +1886,7 @@ THREE.LineStrip = 0;
 THREE.LinePieces = 1;
 THREE.Line.prototype = new THREE.Object3D;
 THREE.Line.prototype.constructor = THREE.Line;
-THREE.Mesh = function(geometry, materials) {
+THREE.Mesh = function (geometry, materials) {
     THREE.Object3D.call(this);
     this.geometry = geometry;
     this.materials = materials && materials.length ? materials : [materials];
@@ -1906,12 +1911,12 @@ THREE.Mesh = function(geometry, materials) {
 THREE.Mesh.prototype = new THREE.Object3D;
 THREE.Mesh.prototype.constructor = THREE.Mesh;
 THREE.Mesh.prototype.supr = THREE.Object3D.prototype;
-THREE.Mesh.prototype.getMorphTargetIndexByName = function(name) {
+THREE.Mesh.prototype.getMorphTargetIndexByName = function (name) {
     if (this.morphTargetDictionary[name] !== undefined) return this.morphTargetDictionary[name];
     console.log("THREE.Mesh.getMorphTargetIndexByName: morph target " + name + " does not exist. Returning 0.");
     return 0
 };
-THREE.Bone = function(belongsToSkin) {
+THREE.Bone = function (belongsToSkin) {
     THREE.Object3D.call(this);
     this.skin = belongsToSkin;
     this.skinMatrix = new THREE.Matrix4;
@@ -1920,7 +1925,7 @@ THREE.Bone = function(belongsToSkin) {
 THREE.Bone.prototype = new THREE.Object3D;
 THREE.Bone.prototype.constructor = THREE.Bone;
 THREE.Bone.prototype.supr = THREE.Object3D.prototype;
-THREE.Bone.prototype.update = function(parentSkinMatrix, forceUpdate, camera) {
+THREE.Bone.prototype.update = function (parentSkinMatrix, forceUpdate, camera) {
     if (this.matrixAutoUpdate) forceUpdate |= this.updateMatrix();
     if (forceUpdate || this.matrixWorldNeedsUpdate) {
         if (parentSkinMatrix) this.skinMatrix.multiply(parentSkinMatrix, this.matrix);
@@ -1939,7 +1944,7 @@ THREE.Bone.prototype.update = function(parentSkinMatrix, forceUpdate, camera) {
     } else
         for (i = 0; i < l; i++) this.children[i].update(this.skinMatrix, forceUpdate, camera)
 };
-THREE.Bone.prototype.addChild = function(child) {
+THREE.Bone.prototype.addChild = function (child) {
     if (this.children.indexOf(child) === -1) {
         if (child.parent !== undefined) child.parent.removeChild(child);
         child.parent = this;
@@ -1947,7 +1952,7 @@ THREE.Bone.prototype.addChild = function(child) {
         if (!(child instanceof THREE.Bone)) this.hasNoneBoneChildren = true
     }
 };
-THREE.Sound = function(sources, radius, volume, loop) {
+THREE.Sound = function (sources, radius, volume, loop) {
     THREE.Object3D.call(this);
     this.isLoaded = false;
     this.isAddedToDOM = false;
@@ -1982,7 +1987,7 @@ THREE.Sound = function(sources, radius, volume, loop) {
 THREE.Sound.prototype = new THREE.Object3D;
 THREE.Sound.prototype.constructor = THREE.Sound;
 THREE.Sound.prototype.supr = THREE.Object3D.prototype;
-THREE.Sound.prototype.onLoad = function() {
+THREE.Sound.prototype.onLoad = function () {
     var sound = this.THREESound;
     if (sound.isLoaded) return;
     this.removeEventListener("canplay", this.onLoad, true);
@@ -1990,32 +1995,32 @@ THREE.Sound.prototype.onLoad = function() {
     sound.duration = this.duration;
     if (sound.isPlaying) sound.play()
 };
-THREE.Sound.prototype.addToDOM = function(parent) {
+THREE.Sound.prototype.addToDOM = function (parent) {
     this.isAddedToDOM = true;
     parent.appendChild(this.domElement)
 };
-THREE.Sound.prototype.play = function(startTime) {
+THREE.Sound.prototype.play = function (startTime) {
     this.isPlaying = true;
     if (this.isLoaded) {
         this.domElement.play();
         if (startTime) this.domElement.currentTime = startTime % this.duration
     }
 };
-THREE.Sound.prototype.pause = function() {
+THREE.Sound.prototype.pause = function () {
     this.isPlaying = false;
     this.domElement.pause()
 };
-THREE.Sound.prototype.stop = function() {
+THREE.Sound.prototype.stop = function () {
     this.isPlaying = false;
     this.domElement.pause();
     this.domElement.currentTime = 0
 };
-THREE.Sound.prototype.calculateVolumeAndPan = function(cameraRelativePosition) {
+THREE.Sound.prototype.calculateVolumeAndPan = function (cameraRelativePosition) {
     var distance = cameraRelativePosition.length();
     if (distance <= this.radius) this.domElement.volume = this.volume * (1 - distance / this.radius);
     else this.domElement.volume = 0
 };
-THREE.Sound.prototype.update = function(parentMatrixWorld, forceUpdate, camera) {
+THREE.Sound.prototype.update = function (parentMatrixWorld, forceUpdate, camera) {
     if (this.matrixAutoUpdate) {
         this.matrix.setPosition(this.position);
         forceUpdate = true
@@ -2029,7 +2034,7 @@ THREE.Sound.prototype.update = function(parentMatrixWorld, forceUpdate, camera) 
     var i, l = this.children.length;
     for (i = 0; i < l; i++) this.children[i].update(this.matrixWorld, forceUpdate, camera)
 };
-THREE.Scene = function() {
+THREE.Scene = function () {
     THREE.Object3D.call(this);
     this.matrixAutoUpdate = false;
     this.fog = null;
@@ -2043,11 +2048,11 @@ THREE.Scene = function() {
 THREE.Scene.prototype = new THREE.Object3D;
 THREE.Scene.prototype.constructor = THREE.Scene;
 THREE.Scene.prototype.supr = THREE.Object3D.prototype;
-THREE.Scene.prototype.addChild = function(child) {
+THREE.Scene.prototype.addChild = function (child) {
     this.supr.addChild.call(this, child);
     this.addChildRecurse(child)
 };
-THREE.Scene.prototype.addChildRecurse = function(child) {
+THREE.Scene.prototype.addChildRecurse = function (child) {
     if (child instanceof THREE.Light) {
         if (this.lights.indexOf(child) === -1) this.lights.push(child)
     } else if (child instanceof THREE.Sound) {
@@ -2059,11 +2064,11 @@ THREE.Scene.prototype.addChildRecurse = function(child) {
         }
     for (var c = 0; c < child.children.length; c++) this.addChildRecurse(child.children[c])
 };
-THREE.Scene.prototype.removeChild = function(child) {
+THREE.Scene.prototype.removeChild = function (child) {
     this.supr.removeChild.call(this, child);
     this.removeChildRecurse(child)
 };
-THREE.Scene.prototype.removeChildRecurse = function(child) {
+THREE.Scene.prototype.removeChildRecurse = function (child) {
     if (child instanceof THREE.Light) {
         var i = this.lights.indexOf(child);
         if (i !== -1) this.lights.splice(i, 1)
@@ -2083,7 +2088,7 @@ THREE.Scene.prototype.addObject = THREE.Scene.prototype.addChild;
 THREE.Scene.prototype.removeObject = THREE.Scene.prototype.removeChild;
 THREE.Scene.prototype.addLight = THREE.Scene.prototype.addChild;
 THREE.Scene.prototype.removeLight = THREE.Scene.prototype.removeChild;
-THREE.Projector = function() {
+THREE.Projector = function () {
     var _object, _objectCount, _objectPool = [],
         _vertex, _vertexCount, _vertexPool = [],
         _face, _face3Count, _face3Pool = [],
@@ -2096,21 +2101,21 @@ THREE.Projector = function() {
         _projScreenObjectMatrix = new THREE.Matrix4,
         _frustum = [new THREE.Vector4, new THREE.Vector4, new THREE.Vector4, new THREE.Vector4, new THREE.Vector4, new THREE.Vector4],
         _clippedVertex1PositionScreen =
-        new THREE.Vector4,
+            new THREE.Vector4,
         _clippedVertex2PositionScreen = new THREE.Vector4,
         _face3VertexNormals;
-    this.projectVector = function(vector, camera) {
+    this.projectVector = function (vector, camera) {
         _projScreenMatrix.multiply(camera.projectionMatrix, camera.matrixWorldInverse);
         _projScreenMatrix.multiplyVector3(vector);
         return vector
     };
-    this.unprojectVector = function(vector, camera) {
+    this.unprojectVector = function (vector, camera) {
         _projScreenMatrix.multiply(camera.matrixWorld, THREE.Matrix4.makeInvert(camera.projectionMatrix));
         _projScreenMatrix.multiplyVector3(vector);
         return vector
     };
-    this.projectObjects = function(scene, camera,
-        sort) {
+    this.projectObjects = function (scene, camera,
+                                    sort) {
         var renderList = [],
             o, ol, objects, object, matrix;
         _objectCount = 0;
@@ -2128,11 +2133,13 @@ THREE.Projector = function() {
         sort && renderList.sort(painterSort);
         return renderList
     };
-    this.projectScene = function(scene, camera, sort) {
+    this.projectScene = function (scene, camera, sort) {
         var renderList = [],
             near = camera.near,
             far = camera.far,
-            o, ol, v, vl, f, fl, n, nl, c, cl, u, ul, objects, object, objectMatrix, objectMatrixRotation, objectMaterials, objectOverdraw, geometry, vertices, vertex, vertexPositionScreen, faces, face, faceVertexNormals, normal, faceVertexUvs, uvs, v1, v2, v3, v4;
+            o, ol, v, vl, f, fl, n, nl, c, cl, u, ul, objects, object, objectMatrix, objectMatrixRotation,
+            objectMaterials, objectOverdraw, geometry, vertices, vertex, vertexPositionScreen, faces, face,
+            faceVertexNormals, normal, faceVertexUvs, uvs, v1, v2, v3, v4;
         _face3Count = 0;
         _face4Count = 0;
         _lineCount = 0;
@@ -2204,7 +2211,7 @@ THREE.Projector = function() {
                         objectMatrixRotation.multiplyVector3(normal)
                     }
                     for (c =
-                        0, cl = faceVertexUvs.length; c < cl; c++) {
+                             0, cl = faceVertexUvs.length; c < cl; c++) {
                         uvs = faceVertexUvs[c][f];
                         if (!uvs) continue;
                         for (u = 0, ul = uvs.length; u < ul; u++) _face.uvs[c][u] = uvs[u]
@@ -2351,7 +2358,7 @@ THREE.Projector = function() {
         }
     }
 };
-THREE.CanvasRenderer = function(parameters) {
+THREE.CanvasRenderer = function (parameters) {
     var _this = this,
         _renderList = null,
         _projector = new THREE.Projector,
@@ -2366,7 +2373,7 @@ THREE.CanvasRenderer = function(parameters) {
         _contextFillStyle = null,
         _contextLineWidth = null,
         _contextLineCap =
-        null,
+            null,
         _contextLineJoin = null,
         _v1, _v2, _v3, _v4, _v5 = new THREE.RenderableVertex,
         _v6 = new THREE.RenderableVertex,
@@ -2381,12 +2388,13 @@ THREE.CanvasRenderer = function(parameters) {
         _enableLighting = false,
         _light = new THREE.Color,
         _ambientLight =
-        new THREE.Color,
+            new THREE.Color,
         _directionalLights = new THREE.Color,
         _pointLights = new THREE.Color,
         _pi2 = Math.PI * 2,
         _vector3 = new THREE.Vector3,
-        _pixelMap, _pixelMapContext, _pixelMapImage, _pixelMapData, _gradientMap, _gradientMapContext, _gradientMapQuality = 16;
+        _pixelMap, _pixelMapContext, _pixelMapImage, _pixelMapData, _gradientMap, _gradientMapContext,
+        _gradientMapQuality = 16;
     _pixelMap = document.createElement("canvas");
     _pixelMap.width = _pixelMap.height = 2;
     _pixelMapContext = _pixelMap.getContext("2d");
@@ -2409,7 +2417,7 @@ THREE.CanvasRenderer = function(parameters) {
         vertices: 0,
         faces: 0
     };
-    this.setSize = function(width, height) {
+    this.setSize = function (width, height) {
         _canvasWidth =
             width;
         _canvasHeight = height;
@@ -2426,16 +2434,16 @@ THREE.CanvasRenderer = function(parameters) {
         _contextLineCap = null;
         _contextLineJoin = null
     };
-    this.setClearColor = function(color, opacity) {
+    this.setClearColor = function (color, opacity) {
         _clearColor = color;
         _clearOpacity = opacity
     };
     this.setClearColorHex =
-        function(hex, opacity) {
+        function (hex, opacity) {
             _clearColor.setHex(hex);
             _clearOpacity = opacity
         };
-    this.clear = function() {
+    this.clear = function () {
         _context.setTransform(1, 0, 0, -1, _canvasWidthHalf, _canvasHeightHalf);
         if (!_clearRect.isEmpty()) {
             _clearRect.inflate(1);
@@ -2451,7 +2459,7 @@ THREE.CanvasRenderer = function(parameters) {
             _clearRect.empty()
         }
     };
-    this.render = function(scene, camera) {
+    this.render = function (scene, camera) {
         var e, el, element, m, ml, fm, fml, material;
         this.autoClear ? this.clear() : _context.setTransform(1, 0, 0, -1, _canvasWidthHalf, _canvasHeightHalf);
         _this.data.vertices = 0;
@@ -2703,22 +2711,22 @@ THREE.CanvasRenderer = function(parameters) {
                             _uvs[uv2].v, _uvs[uv3].u, _uvs[uv3].v)
                     }
                 } else if (material.envMap) {
-                if (material.envMap.mapping instanceof THREE.SphericalReflectionMapping) {
-                    var cameraMatrix = camera.matrixWorldInverse;
-                    _vector3.copy(element.vertexNormalsWorld[0]);
-                    _uv1x = (_vector3.x * cameraMatrix.n11 + _vector3.y * cameraMatrix.n12 + _vector3.z * cameraMatrix.n13) * 0.5 + 0.5;
-                    _uv1y = -(_vector3.x * cameraMatrix.n21 + _vector3.y * cameraMatrix.n22 + _vector3.z * cameraMatrix.n23) * 0.5 + 0.5;
-                    _vector3.copy(element.vertexNormalsWorld[1]);
-                    _uv2x = (_vector3.x * cameraMatrix.n11 +
-                        _vector3.y * cameraMatrix.n12 + _vector3.z * cameraMatrix.n13) * 0.5 + 0.5;
-                    _uv2y = -(_vector3.x * cameraMatrix.n21 + _vector3.y * cameraMatrix.n22 + _vector3.z * cameraMatrix.n23) * 0.5 + 0.5;
-                    _vector3.copy(element.vertexNormalsWorld[2]);
-                    _uv3x = (_vector3.x * cameraMatrix.n11 + _vector3.y * cameraMatrix.n12 + _vector3.z * cameraMatrix.n13) * 0.5 + 0.5;
-                    _uv3y = -(_vector3.x * cameraMatrix.n21 + _vector3.y * cameraMatrix.n22 + _vector3.z * cameraMatrix.n23) * 0.5 + 0.5;
-                    texturePath(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, material.envMap.image, _uv1x, _uv1y, _uv2x, _uv2y, _uv3x,
-                        _uv3y)
-                }
-            } else material.wireframe ? strokePath(material.color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin) : fillPath(material.color);
+                    if (material.envMap.mapping instanceof THREE.SphericalReflectionMapping) {
+                        var cameraMatrix = camera.matrixWorldInverse;
+                        _vector3.copy(element.vertexNormalsWorld[0]);
+                        _uv1x = (_vector3.x * cameraMatrix.n11 + _vector3.y * cameraMatrix.n12 + _vector3.z * cameraMatrix.n13) * 0.5 + 0.5;
+                        _uv1y = -(_vector3.x * cameraMatrix.n21 + _vector3.y * cameraMatrix.n22 + _vector3.z * cameraMatrix.n23) * 0.5 + 0.5;
+                        _vector3.copy(element.vertexNormalsWorld[1]);
+                        _uv2x = (_vector3.x * cameraMatrix.n11 +
+                            _vector3.y * cameraMatrix.n12 + _vector3.z * cameraMatrix.n13) * 0.5 + 0.5;
+                        _uv2y = -(_vector3.x * cameraMatrix.n21 + _vector3.y * cameraMatrix.n22 + _vector3.z * cameraMatrix.n23) * 0.5 + 0.5;
+                        _vector3.copy(element.vertexNormalsWorld[2]);
+                        _uv3x = (_vector3.x * cameraMatrix.n11 + _vector3.y * cameraMatrix.n12 + _vector3.z * cameraMatrix.n13) * 0.5 + 0.5;
+                        _uv3y = -(_vector3.x * cameraMatrix.n21 + _vector3.y * cameraMatrix.n22 + _vector3.z * cameraMatrix.n23) * 0.5 + 0.5;
+                        texturePath(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, material.envMap.image, _uv1x, _uv1y, _uv2x, _uv2y, _uv3x,
+                            _uv3y)
+                    }
+                } else material.wireframe ? strokePath(material.color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin) : fillPath(material.color);
             else if (material instanceof THREE.MeshLambertMaterial) {
                 if (material.map && !material.wireframe) {
                     if (material.map.mapping instanceof THREE.UVMapping) {
@@ -2831,9 +2839,9 @@ THREE.CanvasRenderer = function(parameters) {
                         material.wireframe ? strokePath(_color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin) :
                             fillPath(_color)
                     } else {
-                drawQuad(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, _v4x, _v4y);
-                material.wireframe ? strokePath(material.color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin) : fillPath(material.color)
-            } else if (material instanceof THREE.MeshNormalMaterial) {
+                    drawQuad(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, _v4x, _v4y);
+                    material.wireframe ? strokePath(material.color, material.wireframeLinewidth, material.wireframeLinecap, material.wireframeLinejoin) : fillPath(material.color)
+                } else if (material instanceof THREE.MeshNormalMaterial) {
                 _color.r = normalToComponent(element.normalWorld.x);
                 _color.g = normalToComponent(element.normalWorld.y);
                 _color.b = normalToComponent(element.normalWorld.z);
@@ -2892,7 +2900,7 @@ THREE.CanvasRenderer = function(parameters) {
         function texturePath(x0, y0, x1, y1, x2, y2, bitmap, u0, v0, u1, v1, u2, v2) {
             var a, b, c, d, e, f, det, idet, width = bitmap.width - 1,
                 height =
-                bitmap.height - 1;
+                    bitmap.height - 1;
             u0 *= width;
             v0 *= height;
             u1 *= width;
@@ -2962,7 +2970,7 @@ THREE.CanvasRenderer = function(parameters) {
         function normalToComponent(normal) {
             var component = (normal + 1) * 0.5;
             return component < 0 ? 0 : component >
-                1 ? 1 : component
+            1 ? 1 : component
         }
 
         function expand(v1, v2) {
@@ -3031,16 +3039,16 @@ THREE.CanvasRenderer = function(parameters) {
         return str
     }
 };
-THREE.RenderableVertex = function() {
+THREE.RenderableVertex = function () {
     this.positionWorld = new THREE.Vector3;
     this.positionScreen = new THREE.Vector4;
     this.visible = true
 };
-THREE.RenderableVertex.prototype.copy = function(vertex) {
+THREE.RenderableVertex.prototype.copy = function (vertex) {
     this.positionWorld.copy(vertex.positionWorld);
     this.positionScreen.copy(vertex.positionScreen)
 };
-THREE.RenderableFace3 = function() {
+THREE.RenderableFace3 = function () {
     this.v1 = new THREE.RenderableVertex;
     this.v2 = new THREE.RenderableVertex;
     this.v3 = new THREE.RenderableVertex;
@@ -3054,7 +3062,7 @@ THREE.RenderableFace3 = function() {
     this.uvs = [[]];
     this.z = null
 };
-THREE.RenderableFace4 = function() {
+THREE.RenderableFace4 = function () {
     this.v1 = new THREE.RenderableVertex;
     this.v2 = new THREE.RenderableVertex;
     this.v3 = new THREE.RenderableVertex;
@@ -3069,11 +3077,11 @@ THREE.RenderableFace4 = function() {
     this.uvs = [[]];
     this.z = null
 };
-THREE.RenderableObject = function() {
+THREE.RenderableObject = function () {
     this.object = null;
     this.z = null
 };
-THREE.RenderableParticle = function() {
+THREE.RenderableParticle = function () {
     this.x = null;
     this.y = null;
     this.z = null;
@@ -3081,13 +3089,13 @@ THREE.RenderableParticle = function() {
     this.scale = new THREE.Vector2;
     this.materials = null
 };
-THREE.RenderableLine = function() {
+THREE.RenderableLine = function () {
     this.z = null;
     this.v1 = new THREE.RenderableVertex;
     this.v2 = new THREE.RenderableVertex;
     this.materials = null
 };
-THREE.Plane = function(width, height, segmentsWidth, segmentsHeight) {
+THREE.Plane = function (width, height, segmentsWidth, segmentsHeight) {
     THREE.Geometry.call(this);
     var ix, iy, width_half = width / 2,
         height_half = height / 2,
@@ -3119,10 +3127,10 @@ THREE.Plane = function(width, height, segmentsWidth, segmentsHeight) {
 THREE.Plane.prototype = new THREE.Geometry;
 THREE.Plane.prototype.constructor = THREE.Plane;
 
-var cancelRequestAnimFrame = function() {
-    return window.cancelAnimationFrame || 
-        window.webkitCancelRequestAnimationFrame || 
-        window.mozCancelRequestAnimationFrame || 
-        window.oCancelRequestAnimationFrame || 
+var cancelRequestAnimFrame = function () {
+    return window.cancelAnimationFrame ||
+        window.webkitCancelRequestAnimationFrame ||
+        window.mozCancelRequestAnimationFrame ||
+        window.oCancelRequestAnimationFrame ||
         window.msCancelRequestAnimationFrame || clearTimeout
 }();

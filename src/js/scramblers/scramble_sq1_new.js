@@ -878,11 +878,11 @@ TODO:
         BARREL_rPAW
     ];
 
-    function randomIdx(caso){
+    function randomIdx(caso) {
         return caso[~~(Math.random() * (caso.length + 1))];
     }
 
-    function randomCaso(){
+    function randomCaso() {
         return casos[~~(Math.random() * (casos.length + 1))];
     }
 
@@ -892,6 +892,7 @@ TODO:
         var scrambleString = Search_solution(new Search_Search, FullCube_randomCubeIdx(randomIdx(randomCaso())));
         return scrambleString;
     }
+
     scramble.reg('sqrs', kk);
 
     /*
