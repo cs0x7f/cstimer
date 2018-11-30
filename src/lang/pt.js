@@ -36,7 +36,7 @@ var TOOLS_SELECTFUNC = 'Função: ';
 var TOOLS_CROSS = 'resolver a cruz';
 var TOOLS_EOLINE = 'resolver a EOLine';
 var TOOLS_ROUX1 = 'resolver a Roux S1';
-var TOOLS_GIIKER = 'Giiker Cube';
+var TOOLS_GIIKER = 'cubo Giiker';
 var TOOLS_IMAGE = 'desenhar o embaralhamento';
 var TOOLS_STATS = 'Estatisticas';
 var TOOLS_DISTRIBUTION = 'distribuição de tempos';
@@ -46,11 +46,11 @@ var PROPERTY_IMGSIZE = 'Tamanho da imagem do scramble: ';
 var TIMER_INSPECT = 'inspecionando';
 var TIMER_SOLVE = 'resolvendo';
 var PROPERTY_USEMOUSE = 'usar mouse como cronômetro';
-var PROPERTY_TIMEU = 'a atualização do cronфmetro é: ';
+var PROPERTY_TIMEU = 'a atualização do cronômetro é: ';
 var PROPERTY_TIMEU_STR = 'padrão|0.1s|segundos|inspeção|nenhuma';
 var PROPERTY_PRETIME = 'tempo mantendo a barra de espaços pressionada (segundo(s)): ';
 var PROPERTY_ENTERING = 'colocar tempos ';
-var PROPERTY_ENTERING_STR = 'cronômetro|digitando|stackmat|MoYuTimer|virtual|Giiker';
+var PROPERTY_ENTERING_STR = 'cronômetro|digitação|stackmat|Timer da MoYu|puzzle virtual|Giiker';
 var PROPERTY_COLOR = 'escolha um tema de cores: ';
 var PROPERTY_COLORS = 'cor da fonte: |cor do fundo: |cor da borda: |cor do botгo: |cor dos links: |Cor da logo: |cor de fundo da logo: ';
 var PROPERTY_VIEW = 'estilo do site é:';
@@ -65,25 +65,25 @@ var PROPERTY_FONT_STR = 'digital aleatória|normal|digital1|digital2|digital3|di
 var PROPERTY_FORMAT = 'formato do tempo: ';
 var PROPERTY_USEKSC = 'usar atalhos do teclado';
 var PROPERTY_NTOOLS = 'número de ferramentas';
-var PROPERTY_AHIDE = 'Esconder TODOS os elementos enquanto resolve';
+var PROPERTY_AHIDE = 'Esconder TODOS os elementos enquanto se resolve';
 var SCRAMBLE_LAST = 'último';
 var SCRAMBLE_NEXT = 'próximo';
 var SCRAMBLE_SCRAMBLE = ' embaralhamento';
 var SCRAMBLE_LENGTH = 'tamanho';
 var SCRAMBLE_INPUT = 'colocar embaralhamento(s)';
-var PROPERTY_VRCMP = 'multi-phase: ';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
+var PROPERTY_VRCMP = 'múltiplas fases: ';
+var PROPERTY_VRCMPS = 'Nenhum|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_GIIKERVRC = 'Mostrar cubo Giiker virtual';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay: ';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Embaralhado corretamente';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing: ';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect: ';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIISBEEP = 'Apitar quando estiver embaralhado';
+var PROPERTY_GIIRST = 'Resetar cubo Giiker quando conectado: ';
+var PROPERTY_GIIRSTS = 'Sempre|Perguntar|Nunca';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_GIIAED = 'Detecção de erro de hardware automática';
 var scrdata = [
     ['WCA', [
         ['3x3x3', "333", 0],
@@ -334,22 +334,22 @@ var PROPERTY_SUMMARY = 'mostrar dados antes da lista de tempos';
 var PROPERTY_IMRENAME = 'renomear a sessão imediatamente depois de criar';
 var PROPERTY_SCR2SS = 'criar uma nova sessão quando mudar o tipo de embaralhamento';
 var PROPERTY_SS2SCR = 'restaurar o tipo de embaralhamento quando mudar de sessão';
-var PROPERTY_SS2PHASES = 'restaurar multi-phase timing quando mudar de sessão';
+var PROPERTY_SS2PHASES = 'restaurar modadlidade de múltiplas fases quando mudar de sessão';
 var PROPERTY_STATINV = 'Lista de tempos ao contrário';
 var PROPERTY_STATAL = 'Indicadores estatísticos: ';
 var PROPERTY_DELMUL = 'Ativar deleção múltipla';
 var MODULE_NAMES = {
-    "ui": 'display',
-    "color": 'color',
-    "timer": 'timer',
+    "ui": 'Tela',
+    "color": 'Cor',
+    "timer": 'Timer',
     "vrc": 'virtual&<br>Giiker',
-    "kernel": 'global',
-    "scramble": 'scramble',
-    "stats": 'statistics',
-    "tools": 'tools'
+    "kernel": 'Global',
+    "scramble": 'Embaralhamento',
+    "stats": 'Estatísticas',
+    "tools": 'Ferramentas'
 };
-var BGIMAGE_URL = 'por favor, coloque o url da imagem';
-var BGIMAGE_INVALID = 'url inválido';
+var BGIMAGE_URL = 'por favor, insira o url da imagem';
+var BGIMAGE_INVALID = 'url inválido!';
 var BGIMAGE_OPACITY = 'opacidade da imagem de fundo: ';
 var BGIMAGE_IMAGE = 'imagem de fundo: ';
 var BGIMAGE_IMAGE_STR = 'nenhum|manual|CCT';
