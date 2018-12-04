@@ -238,6 +238,18 @@ var stats = (function(kpretty, round) {
 		}
 	}
 
+	function prettyMPA(time) { // multi phase append, e.g. "=XXX+XXX+XXX..."
+		if (time.length == 2) {
+			return ""
+		}
+		var ret = [];
+		ret.push(kpretty(time[time.length - 1]));
+		for (var j = time.length - 2; j >= 1; j--) {
+			ret.push(kpretty(time[j] - time[j + 1]));
+		}
+		return "=" + ret.join("+");
+	}
+
 	var floatCfm = (function() {
 		var floatDiv = $('<div />').addClass('popup').mouseleave(hideFloat);
 		var cfmTime = $('<span style="font-size:1.2em"/>');
@@ -719,7 +731,7 @@ var stats = (function(kpretty, round) {
 		s.push("\n\n" + hlstr[10] + "\n");
 		for (var i = 0; i < nsolves; i++) {
 			var time = timesAt(start + i);
-			var c = pretty(time[0], true) + (time[2] ? "[" + time[2] + "]" : "");
+			var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
 			if ($.inArray(i, data[2]) > -1 || $.inArray(i, data[3]) > -1) {
 				c = "(" + c + ")";
 			}
@@ -758,6 +770,9 @@ var stats = (function(kpretty, round) {
 			alert('Do not support your browser!');
 		}
 		var s = ["No.;Time;Comment;Scramble;Date"];
+		for (var i = 0; i < curDim; i++) {
+			s[0] += ";P." + (i + 1);
+		}
 		for (var i = 0; i < nsolves; i++) {
 			var time = timesAt(start + i);
 			var line = [];
@@ -766,6 +781,13 @@ var stats = (function(kpretty, round) {
 			line.push(csvField(time[2] ? time[2] : ""));
 			line.push(time[1]);
 			line.push(time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
+			line.push(kpretty(time[0][time[0].length - 1]));
+			for (var j = time[0].length - 2; j >= 1; j--) {
+				line.push(kpretty(time[0][j] - time[0][j + 1]));
+			}
+			for (var j = time[0].length - 1; j < curDim; j++) {
+				line.push('');
+			}
 			s.push(line.join(';'));
 		}
 		s = s.join("\r\n");
@@ -1167,7 +1189,7 @@ var stats = (function(kpretty, round) {
 			var timeStr = [];
 			for (var i = 0; i < length; i++) {
 				var time = timesAt(i);
-				var c = pretty(time[0], true) + (time[2] ? "[" + time[2] + "]" : "");
+				var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
 				if (kernel.getProp('printScr')) {
 					c += "   " + time[1];
 				}
