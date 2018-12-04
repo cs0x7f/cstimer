@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'BEÁL-<br>LÍTÁSOK';
 var BUTTON_EXPORT = 'EXPORT';
 var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'WCA memorizációs ideje';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'voice alert of WCA inspection: ';
 var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
 var PROPERTY_PHASES = 'több fázis: ';

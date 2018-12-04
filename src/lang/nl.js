@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'Opties';
 var BUTTON_EXPORT = 'EXPORT';
 var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'Gebruik WCA inspectie';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection: ';
 var PROPERTY_VOICEINS_STR = 'geen|mannelijke stem|vrouwlijke stem';
 var PROPERTY_PHASES = 'Meerfasig: ';

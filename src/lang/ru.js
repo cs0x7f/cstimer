@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'НАСТ-<br>РОЙКИ';
 var BUTTON_EXPORT = 'ЗАГРУ-<br>ЗИТЬ';
 var BUTTON_DONATE = 'ПОЖЕРТ-<br>ВОВАТЬ';
 var PROPERTY_USEINS = 'использовать WCA рассмотор';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'голосовое предупреждение WCA рассмотра: ';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
 var PROPERTY_PHASES = 'мульти-фаза: ';

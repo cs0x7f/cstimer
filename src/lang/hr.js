@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'OPCIJE';
 var BUTTON_EXPORT = 'IZVEZI';
 var BUTTON_DONATE = 'DONIRAJ';
 var PROPERTY_USEINS = 'koristi WCA inspekciju';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'glasovno upozorenje za WCA inspekciju: ';
 var PROPERTY_VOICEINS_STR = 'bez glasa|muški glas|ženski glas';
 var PROPERTY_PHASES = 'višefazno: ';

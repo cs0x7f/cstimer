@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = '설정';
 var BUTTON_EXPORT = '내보내기';
 var BUTTON_DONATE = '후원';
 var PROPERTY_USEINS = 'WCA 미리보기 사용';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'WCA 미리보기 음성 알림: ';
 var PROPERTY_VOICEINS_STR = '없음|남성|여성';
 var PROPERTY_PHASES = '다단계 측정: ';

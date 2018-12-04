@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = '设置';
 var BUTTON_EXPORT = '导出';
 var BUTTON_DONATE = '捐赠';
 var PROPERTY_USEINS = '使用WCA观察';
+var PROPERTY_USEINS_STR = '总是|盲拧除外|从不';
 var PROPERTY_VOICEINS = 'WCA观察语音提示：';
 var PROPERTY_VOICEINS_STR = '无|男声|女声';
 var PROPERTY_PHASES = '多阶段测速：';

@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'OPÇÕES';
 var BUTTON_EXPORT = 'EXPORTAR';
 var BUTTON_DONATE = 'DOAR';
 var PROPERTY_USEINS = 'usar inspeção da WCA';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'aviso de voz da inspeção da WCA: ';
 var PROPERTY_VOICEINS_STR = 'nenhuma|voz masculina|voz feminina';
 var PROPERTY_PHASES = 'várias fases: ';

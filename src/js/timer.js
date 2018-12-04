@@ -51,6 +51,17 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		'cf4op': 7
 	}
 
+	function checkUseIns() {
+		var ret = getProp('useIns');
+		if (ret === true || ret == 'a') {
+			return true;
+		} else if (ret === false || ret == 'n') {
+			return false;
+		} else if (ret == 'b') {
+			return /^(333ni|444bld|555bld|r3ni)$/.exec(getProp('scrType')) == null;
+		}
+	}
+
 	var lcd = (function() {
 
 		var div;
@@ -80,7 +91,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 			var time = $.now() - startTime;
 			var curAppend = runningDiv === rightDiv ? staticAppend : "";
-			if (status == -3 || (status == -2 && getProp('useIns'))) {
+			if (status == -3 || (status == -2 && checkUseIns())) {
 				setHtml(runningDiv, (getProp('timeU') != 'n' ? ((time > 17000) ? 'DNF' : (time > 15000) ? '+2' : 15 - ~~(time / 1000)) : TIMER_INSPECT) + curAppend);
 			} else { //>0
 				var pret = pretty(time, true);
@@ -121,10 +132,10 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (status == 0) {
 				lcd.color('red');
 			} else if (status == -1 || status == -4) {
-				setColor(isKeyDown && isSpace ? (getProp('useIns') ? '#0d0' : '#f00') : '');
+				setColor(isKeyDown && isSpace ? (checkUseIns() ? '#0d0' : '#f00') : '');
 			} else if (status == -2) {
 				setColor(isKeyDown && isSpace ? '#0d0' : '');
-				run = getProp('useIns');
+				run = checkUseIns();
 			} else if (status == -3) {
 				setColor(isKeyDown && isSpace ? '#dd0' : '#f00');
 				run = true;
@@ -289,7 +300,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				} else if (status == -2) {
 					var time = now;
 					status = getProp('phases');
-					var insTime = getProp('useIns') ? (time - startTime) : 0;
+					var insTime = checkUseIns() ? (time - startTime) : 0;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					startTime = time;
 					lcd.reset();
@@ -334,9 +345,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					}
 				}
 			} else if (keyCode == 32) {
-				if ((status == (getProp('useIns') ? -3 : -1)) && pressreadyId == undefined) {
+				if ((status == (checkUseIns() ? -3 : -1)) && pressreadyId == undefined) {
 					pressreadyId = setTimeout(pressReady, getProp('preTime'));
-				} else if (status == -1 && getProp('useIns')) {
+				} else if (status == -1 && checkUseIns()) {
 					status = -4;
 				}
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
@@ -458,7 +469,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				status = 1;
 				startTime = now - curTime;
 				ui.setAutoShow(false);
-			} else if (status == -1 && getProp('useIns') && curTime == 0 && (state.rightHand || state.leftHand)) {
+			} else if (status == -1 && checkUseIns() && curTime == 0 && (state.rightHand || state.leftHand)) {
 				status = -3;
 				ui.setAutoShow(false);
 				startTime = now;
@@ -468,7 +479,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				ui.setAutoShow(true);
 			}
 			if (lastRun && !state.running && state.time_milli != 0) {
-				inspectionTime = getProp('useIns') ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
+				inspectionTime = checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				pushSignal('time', [inspectionTime, ~~curTime]);
 			}
 			lastRun = state.running;
@@ -513,7 +524,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				if (twisty.isInspectionLegalMove(twisty, move)) {
 					return;
 				} else {
-					if (getProp('useIns')) {
+					if (checkUseIns()) {
 						insTime = now - startTime;
 					} else {
 						insTime = 0;
@@ -620,7 +631,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (status == -1) { // idle
 				if (keyCode == 32) {
 					scrambleIt();
-					if (getProp('useIns')) {
+					if (checkUseIns()) {
 						status = -3; //inspection
 						startTime = now;
 						lcd.setRunning(true, true);
@@ -896,7 +907,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					}
 				}
 			} else if (status == -3 || status == -2) {
-				if (getProp('useIns')) {
+				if (checkUseIns()) {
 					insTime = now - startTime;
 				} else {
 					insTime = 0;
@@ -941,7 +952,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				startTime = now;
 				moveCnt = 0;
 				lcd.fixDisplay(true, true);
-				if (getProp('useIns')) {
+				if (checkUseIns()) {
 					lcd.setRunning(true, enableVRC);
 				}
 				ui.setAutoShow(false);
@@ -1076,7 +1087,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC)$/);
 		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
-		regProp('timer', 'useIns', 0, PROPERTY_USEINS, [false]);
+		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')]);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
 		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')]);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);

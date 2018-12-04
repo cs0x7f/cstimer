@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'Cài đặt';
 var BUTTON_EXPORT = 'Giải phóng';
 var BUTTON_DONATE = 'DONATE';
 var PROPERTY_USEINS = 'dử dụng thời gian chuẩn bị của WCA';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'Giọng nói cho thời gian chuẩn bị của WCA: ';
 var PROPERTY_VOICEINS_STR = 'Vô giới tính :)) |Nam giới|Nữ giới';
 var PROPERTY_PHASES = 'nhiều đợt: ';

@@ -8,6 +8,7 @@ var BUTTON_OPTIONS = 'Indstillinger';
 var BUTTON_EXPORT = 'Upload';
 var BUTTON_DONATE = 'Doner';
 var PROPERTY_USEINS = 'brug WCA inspektion';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'stemme advarsel af WCA inspektion';
 var PROPERTY_VOICEINS_STR = 'ingen|mandlig stemme|kvindelig stemme';
 var PROPERTY_PHASES = 'multi-fase: ';
