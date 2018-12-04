@@ -331,6 +331,7 @@ var STATS_PREC = 'preciznost raspona vremena: ';
 var STATS_PREC_STR = 'automatska|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'izlistaj %d tip|izlistaj %d dužinu|prosjek|srednju vrijednost';
 var PROPERTY_PRINTSCR = 'ispiši scramble/ove u statistici';
+var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'prikaži sažetak prije liste vremena';
 var PROPERTY_IMRENAME = 'preimenuj sesiju odmah nakon kreiranja';
 var PROPERTY_SCR2SS = 'kreiraj novu sesiju kada se promijeni tip scramble-a';

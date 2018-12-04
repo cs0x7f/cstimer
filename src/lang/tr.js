@@ -331,6 +331,7 @@ var STATS_PREC = 'Süre dağılım aralığı: ';
 var STATS_PREC_STR = 'otomatik|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'liste %d türü|liste %d uzunluğu|ortalama|genel ortalama';
 var PROPERTY_PRINTSCR = 'karıştırmaları istatistiklerde göster';
+var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'Süre listesinden önce özeti göster';
 var PROPERTY_IMRENAME = 'Sezon oluşturulduğunda yeniden adlandır';
 var PROPERTY_SCR2SS = 'karıştırma türü değişince yeni sezon oluştur';

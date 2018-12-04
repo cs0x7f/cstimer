@@ -331,6 +331,7 @@ var STATS_PREC = 'precisão da distribuição de tempos: ';
 var STATS_PREC_STR = 'automático|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var PROPERTY_PRINTSCR = 'mostrar embaralhamentos nas estatísticas';
+var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'mostrar dados antes da lista de tempos';
 var PROPERTY_IMRENAME = 'renomear a sessão imediatamente depois de criar';
 var PROPERTY_SCR2SS = 'criar uma nova sessão quando mudar o tipo de embaralhamento';

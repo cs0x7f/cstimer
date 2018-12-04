@@ -331,6 +331,7 @@ var STATS_PREC = 'time distribution precision: ';
 var STATS_PREC_STR = 'tự động|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var PROPERTY_PRINTSCR = 'In scramble trong thành tích';
+var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'cho xem bảng thành tích	';
 var PROPERTY_IMRENAME = 'yêu cầu đặt tên ngay sau khi tạo 1 mục';
 var PROPERTY_SCR2SS = 'tạo ngay 1 mục khi chuyển sang scramble khác';

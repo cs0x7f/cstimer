@@ -331,6 +331,7 @@ var STATS_PREC = 'time distribution precision: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
+var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'show summary before time list';
 var PROPERTY_IMRENAME = 'rename session immediately after creation';
 var PROPERTY_SCR2SS = 'create new session when switching scramble type';

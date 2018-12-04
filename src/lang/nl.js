@@ -331,6 +331,7 @@ var STATS_PREC = 'precisie tijdsverdeling: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'lijst %d type|lijst %d lengte|average|mean';
 var PROPERTY_PRINTSCR = 'afdrukken scramble(s) in statistieken';
+var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'samenvatting tonen voor tijdlijst';
 var PROPERTY_IMRENAME = 'hernoem sessie direct na aanmaken';
 var PROPERTY_SCR2SS = 'maak nieuwe sessie bij wisselen van scramble type';

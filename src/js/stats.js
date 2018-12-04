@@ -719,17 +719,20 @@ var stats = (function(kpretty, round) {
 		s.push("\n\n" + hlstr[10] + "\n");
 		for (var i = 0; i < nsolves; i++) {
 			var time = timesAt(start + i);
-			if (kernel.getProp('printScr')) {
-				s.push((i + 1) + ". ");
+			var c = pretty(time[0], true) + (time[2] ? "[" + time[2] + "]" : "");
+			if ($.inArray(i, data[2]) > -1 || $.inArray(i, data[3]) > -1) {
+				c = "(" + c + ")";
 			}
-			if ($.inArray(i, data[2]) > -1 || $.inArray(i, data[3]) > -1) s.push("(");
-			s.push(pretty(time[0], true));
-			s.push((time[2] ? "[" + time[2] + "]" : ""));
-			if ($.inArray(i, data[2]) > -1 || $.inArray(i, data[3]) > -1) s.push(")");
 			if (kernel.getProp('printScr')) {
-				s.push("   " + time[1] + " \n");
+				c += "   " + time[1];
+			}
+			if (kernel.getProp('printDate')) {
+				c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
+			}
+			if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
+				s.push((i + 1) + ". " + c + " \n");
 			} else {
-				s.push(", ");
+				s.push(c + ", ")
 			}
 		}
 		s = s.join("");
@@ -754,7 +757,7 @@ var stats = (function(kpretty, round) {
 		if (!window.Blob) {
 			alert('Do not support your browser!');
 		}
-		var s = ["No.;Time;Comment;Scramble"];
+		var s = ["No.;Time;Comment;Scramble;Date"];
 		for (var i = 0; i < nsolves; i++) {
 			var time = timesAt(start + i);
 			var line = [];
@@ -762,6 +765,7 @@ var stats = (function(kpretty, round) {
 			line.push(pretty(time[0], true));
 			line.push(csvField(time[2] ? time[2] : ""));
 			line.push(time[1]);
+			line.push(time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
 			s.push(line.join(';'));
 		}
 		s = s.join("\r\n");
@@ -1163,15 +1167,17 @@ var stats = (function(kpretty, round) {
 			var timeStr = [];
 			for (var i = 0; i < length; i++) {
 				var time = timesAt(i);
+				var c = pretty(time[0], true) + (time[2] ? "[" + time[2] + "]" : "");
 				if (kernel.getProp('printScr')) {
-					timeStr.push((i + 1) + ". ");
+					c += "   " + time[1];
 				}
-				timeStr.push(pretty(time[0], true));
-				timeStr.push((time[2] ? "[" + time[2] + "]" : ""));
-				if (kernel.getProp('printScr')) {
-					timeStr.push("   " + time[1] + " \n");
+				if (kernel.getProp('printDate')) {
+					c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
+				}
+				if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
+					timeStr.push((i + 1) + ". " + c + " \n");
 				} else {
-					timeStr.push(", ");
+					timeStr.push(c + ", ")
 				}
 			}
 			timeStr = timeStr.join("");
@@ -1415,6 +1421,7 @@ var stats = (function(kpretty, round) {
 
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true]);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true]);
+		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false]);
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false]);
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);
 		kernel.regProp('stats', 'ss2scr', 0, PROPERTY_SS2SCR, [true]);
