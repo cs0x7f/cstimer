@@ -229,6 +229,9 @@ TODO:
 		var top = 0, bottom = 0;
 		for (var i=len-1; i>=0; i--) {
 				var val = obj.Search_move[i];
+				if (i == obj.Search_length1 - 1) {
+					s += "//";
+				}
 				//console.log(val);
 				if (val > 0) {
 					val = 12 - val;

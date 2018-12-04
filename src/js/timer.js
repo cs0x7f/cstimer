@@ -513,7 +513,6 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
 		function onkeydown(keyCode) {
 			var now = $.now();
-			console.log(status);
 
 			if (keyCode == 32 && status == -1 && checkUseIns()) {
 				status = -4;
