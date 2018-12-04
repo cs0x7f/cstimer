@@ -458,6 +458,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				lcd.val();
 				lcd.setRunning(false);
 				lcd.color('');
+				ui.setAutoShow(true);
 				return;
 			}
 			var curTime = state.time_milli;
@@ -497,6 +498,36 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			lcd.setRunning(status == -3 || (state.running && state.signalHeader != 67));
 		}
 
+		function onkeyup(keyCode) {
+			var now = $.now();
+			if (keyCode == 32 && status == -4) {
+				status = -3;
+				lcd.reset();
+				startTime = now;
+			}
+			lcd.fixDisplay(false, keyCode == 32);
+			if (keyCode == 32) {
+				kernel.clrKey();
+			}
+		}
+
+		function onkeydown(keyCode) {
+			var now = $.now();
+			console.log(status);
+
+			if (keyCode == 32 && status == -1 && checkUseIns()) {
+				status = -4;
+			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
+				status = -1;
+				lcd.val(0);
+				ui.setAutoShow(true);
+			}
+			lcd.fixDisplay(true, keyCode == 32);
+			if (keyCode == 32) {
+				kernel.clrKey();
+			}
+		}
+
 		return {
 			setEnable: function(input) { //s: stackmat, m: moyu
 				enable = input == 's' || input == 'm';
@@ -506,7 +537,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				} else {
 					stackmat.stop();
 				}
-			}
+			},
+			onkeyup: onkeyup,
+			onkeydown: onkeydown
 		}
 	})();
 
@@ -1030,6 +1063,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			case 't':
 				keyboardTimer.onkeydown(keyCode);
 				break;
+			case 's':
+				stackmatTimer.onkeydown(keyCode);
 			case 'i':
 				break;
 			case 'v':
@@ -1054,8 +1089,13 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		} else {
 			focusObj.blur();
 		}
-		if (getProp('input') == 't') {
-			keyboardTimer.onkeyup(keyCode);
+		switch (getProp('input')) {
+			case 't':
+				keyboardTimer.onkeyup(keyCode);
+				break;
+			case 's':
+				stackmatTimer.onkeyup(keyCode);
+				break;
 		}
 	}
 
