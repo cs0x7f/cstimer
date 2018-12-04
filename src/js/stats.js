@@ -79,11 +79,11 @@ var stats = (function(kpretty, round) {
 	function push(time) {
 		if (typeof time[0] == "string") {
 			// times.push([time[2], time[1] || scramble, time[0]]);
-			times_stats.push([time[2], time[1] || scramble, time[0]]);
+			times_stats.push([time[2], time[1] || scramble, time[0], Math.round((new Date().getTime() - time[2][1]) / 1000)]);
 			time = time[2];
 		} else {
 			// times.push([time, scramble, ""]);
-			times_stats.push([time, scramble, ""]);
+			times_stats.push([time, scramble, "", Math.round((new Date().getTime() - time[1]) / 1000)]);
 		}
 		save(times.length - 1);
 		if (time.length - 1 > curDim) {
