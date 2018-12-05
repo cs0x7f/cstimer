@@ -11,7 +11,7 @@ Compiled to Javascript using GWT.
  */
 "use strict";
 
-var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity, getPruning, Cnk, fact, rn, rndEl) {
+var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl) {
 
 	var Ux1 = 0,
 		Ux2 = 1,
@@ -136,42 +136,6 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		[50, 39],
 		[48, 14]
 	];
-
-	function toCubieCube(f, ccRet) {
-		var col1, col2, i, j, ori;
-		for (i = 0; i < 8; ++i)
-			ccRet.cp[i] = 0;
-		for (i = 0; i < 12; ++i)
-			ccRet.ep[i] = 0;
-		for (i = 0; i < 8; ++i) {
-			for (ori = 0; ori < 3; ++ori)
-				if (f[cornerFacelet[i][ori]] == 0 || f[cornerFacelet[i][ori]] == 3)
-					break;
-			col1 = f[cornerFacelet[i][(ori + 1) % 3]];
-			col2 = f[cornerFacelet[i][(ori + 2) % 3]];
-			for (j = 0; j < 8; ++j) {
-				if (col1 == ~~(cornerFacelet[j][1] / 9) && col2 == ~~(cornerFacelet[j][2] / 9)) {
-					ccRet.cp[i] = j;
-					ccRet.co[i] = ori % 3;
-					break;
-				}
-			}
-		}
-		for (i = 0; i < 12; ++i) {
-			for (j = 0; j < 12; ++j) {
-				if (f[edgeFacelet[i][0]] == ~~(edgeFacelet[j][0] / 9) && f[edgeFacelet[i][1]] == ~~(edgeFacelet[j][1] / 9)) {
-					ccRet.ep[i] = j;
-					ccRet.eo[i] = 0;
-					break;
-				}
-				if (f[edgeFacelet[i][0]] == ~~(edgeFacelet[j][1] / 9) && f[edgeFacelet[i][1]] == ~~(edgeFacelet[j][0] / 9)) {
-					ccRet.ep[i] = j;
-					ccRet.eo[i] = 1;
-					break;
-				}
-			}
-		}
-	}
 
 	function toFaceCube(cc) {
 		var c, e, f, i, j, n, ori, ts;
@@ -648,4 +612,4 @@ var scramble_333 = (function(getNPerm, get8Perm, setNPerm, set8Perm, getNParity,
 		solvFacelet: solvFacelet
 	};
 
-})(mathlib.getNPerm, mathlib.get8Perm, mathlib.setNPerm, mathlib.set8Perm, mathlib.getNParity, mathlib.getPruning, mathlib.Cnk, mathlib.fact, mathlib.rn, mathlib.rndEl);
+})(mathlib.getNPerm, mathlib.setNPerm, mathlib.set8Perm, mathlib.getNParity, mathlib.rn, mathlib.rndEl);
