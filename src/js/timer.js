@@ -463,7 +463,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 			var curTime = state.time_milli;
 			if (state.running) {
-				if (status == -3) {
+				if (status == -3 || status == -4) {
 					inspectionTime = now - startTime - curTime;
 					lcd.reset();
 				}
@@ -474,7 +474,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				status = -3;
 				ui.setAutoShow(false);
 				startTime = now;
-			} else if (status != -3) {
+			} else if (status != -3 && status != -4) {
 				status = -1;
 				lcd.val(curTime);
 				ui.setAutoShow(true);
@@ -516,6 +516,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
 			if (keyCode == 32 && status == -1 && checkUseIns()) {
 				status = -4;
+				startTime = now;
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
 				status = -1;
 				lcd.val(0);
