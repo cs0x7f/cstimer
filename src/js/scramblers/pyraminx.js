@@ -5,28 +5,14 @@
 	]);
 
 	function l(a, c) {
-		for (var e = [], j = 5517840, f = 0, b = 0; 5 > b; b++) {
-			var h = k[5 - b],
-				d = ~~(a / h),
-				f = f ^ d;
-			a = a - d * h;
-			d = d << 2;
-			e[b] = j >> d & 15;
-			h = (1 << d) - 1;
-			j = (j & h) + (j >> 4 & ~h)
-		}
-		0 == (f & 1) ? e[5] = j : (e[5] = e[4], e[4] = j);
+		var e = [];
+		mathlib.set8Perm(e, a << 1, 6);
+		1 == mathlib.getNParity(a << 1, 6) && circle(e, 4, 5);
 		0 == c && circle(e, 0, 1, 3);
 		1 == c && circle(e, 1, 2, 5);
 		2 == c && circle(e, 0, 4, 2);
 		3 == c && circle(e, 3, 5, 4);
-		a = 0;
-		j = 5517840;
-		for (b = 0; 4 > b; b++) d = e[b] << 2,
-			a *= 6 - b,
-			a += j >> d & 15,
-			j -= 1118480 << d;
-		return a
+		return mathlib.get8Perm(e, 6) >> 1;
 	}
 
 	function i(a, c) {
