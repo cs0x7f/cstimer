@@ -2,28 +2,14 @@
 	function l(a, c) {
 		var ax = a % 12;
 		a = ~~(a / 12);
-		for (var e = [], j = 5517840, f = 0, b = 0; 5 > b; b++) {
-			var h = k[5 - b],
-				d = ~~(a / h),
-				f = f ^ d;
-			a = a - d * h;
-			d = d << 2;
-			e[b] = j >> d & 15;
-			h = (1 << d) - 1;
-			j = (j & h) + (j >> 4 & ~h)
-		}
-		0 == (f & 1) ? e[5] = j : (e[5] = e[4], e[4] = j);
+		var e = [];
+		mathlib.set8Perm(e, a << 1, 6);
+		1 == mathlib.getNParity(a << 1, 6) && circle(e, 4, 5);
 		0 == c && circle(e, 0, 3, 1);
 		2 == c && circle(e, 1, 5, 2);
 		1 == c && circle(e, 0, 2, 4);
 		3 == c && circle(e, 3, 4, 5);
-		a = 0;
-		j = 5517840;
-		for (b = 0; 4 > b; b++) d = e[b] << 2,
-			a *= 6 - b,
-			a += j >> d & 15,
-			j -= 1118480 << d;
-		return a * 12 + cornerpermmv[ax][c];
+		return (mathlib.get8Perm(e, 6) >> 1) * 12 + cornerpermmv[ax][c];
 	}
 
 	function i(idx, move) {
@@ -104,10 +90,7 @@
 			var pow = 1 - sol[i][1];
 			if (axis == 2) { //step two.
 				for (var p = 0; p <= pow; p++) {
-					var temp = move2str[0];
-					move2str[0] = move2str[1];
-					move2str[1] = move2str[3];
-					move2str[3] = temp;
+					circle(move2str, 0, 3, 1);
 				}
 			}
 			ret.push(move2str[axis] + ((pow == 1) ? "'" : ""));
