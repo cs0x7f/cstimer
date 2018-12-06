@@ -1156,13 +1156,14 @@ var stats = (function(kpretty, round) {
 				'rank': rank + 0.5
 			};
 			fixRank();
+			times = [];
+			save();
 			genSelect();
+			loadSession(sessionIdx);
 
 			if (kernel.getProp('imrename')) {
 				renameSession();
 			}
-			times = [];
-			save();
 		}
 
 		function deleteSession(ssidx) {
