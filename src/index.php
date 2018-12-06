@@ -17,6 +17,7 @@
   <script type="text/javascript" src="js/mersennetwister.js"></script>
   <script type="text/javascript" src="js/json.min.js"></script>
   <script type="text/javascript" src="js/kernel.js"></script>
+  <script type="text/javascript" src="js/logohint.js"></script>
   <script type="text/javascript" src="js/timer.js"></script>
   <script type="text/javascript" src="js/scramble.js"></script>
   <script type="text/javascript" src="js/scramblers/megascramble.js"></script>

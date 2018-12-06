@@ -245,7 +245,6 @@ var kernel = (function() {
 		var modules = {};//{module: {button: enable/disable, div: divObj, auto: autohide/none}}
 		var isHide = false;
 		var isPopup = false;
-		var logo;
 		var gray;
 		var leftbar;
 		var donateDiv = $('<div />');
@@ -597,29 +596,13 @@ var kernel = (function() {
 			regProp('color', 'col-link', 3, parr[4], []);
 			regProp('color', 'col-logo', 3, parr[5], []);
 			regProp('color', 'col-logoback', 3, parr[6], []);
-			var about = $('#about');
-			var title = about.children('h1').appendTo(kernel.temp).html();
 
 			gray = $('#gray');
-			logo = $('#logo');
-			logo.mouseenter(function() {
-				$(this).children().children().html('ABOUT');
-			});
-			logo.mouseleave(function() {
-				$(this).children().children().html('csTimer');
-			});
-			logo.click(function() {
-				if (location.protocol != 'https:' && confirm('Your access to csTimer is unsafe. Press OK for safe access.')) {
-					location.protocol = 'https:';
-				}
-				about.show();
-				showDialog([about, 0, undefined, 0], 'logo', title);
-			});
+
 			$('.donate').appendTo(donateDiv);
 			addButton('donate', BUTTON_DONATE, function() {
 				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE);
 			}, 5);
-			about.hide();
 			leftbar.appendTo('body').mouseenter(function() {
 				toggleLeftBar(true);
 			}).mouseleave(function() {

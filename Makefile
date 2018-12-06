@@ -17,6 +17,7 @@ cubeutil.js \
 mersennetwister.js \
 json.min.js \
 kernel.js \
+logohint.js \
 timer.js \
 scramble.js \
 scramblers/megascramble.js \

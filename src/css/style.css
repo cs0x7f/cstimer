@@ -255,6 +255,27 @@ textarea {
 	width: 100%;
 	border-width: 2px;
 	border-width: 0.15rem;
+	overflow-x: hidden;
+	white-space: nowrap;
+}
+
+#leftbar #logo.hint > div > span {
+	-webkit-animation: flyLeft 3s 1 linear;
+	-moz-animation: flyLeft 3s 1 linear;
+	animation: flyLeft 3s 1 linear;
+	font-family: sans-serif;
+}
+
+@keyframes flyLeft {
+	to {transform: translateX(-100%);}
+}
+
+@-webkit-keyframes flyLeft {
+	to {transform: translateX(-100%);}
+}
+
+@-moz-keyframes flyLeft {
+	to {transform: translateX(-100%);}
 }
 
 .mybutton {
