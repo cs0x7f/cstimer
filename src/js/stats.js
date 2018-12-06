@@ -1110,7 +1110,12 @@ var stats = (function(kpretty, round) {
 			select.empty();
 			for (var i = 1; i <= sessionIdxMax; i++) {
 				if (sessionData[i] == undefined) {
-					sessionData[i] = {'name': i, 'scr': '333', 'phases': 1, 'rank': i};
+					sessionData[i] = {
+						'name': i,
+						'scr': '333',
+						'phases': 1,
+						'rank': i
+					};
 				}
 			}
 			fixRank();
@@ -1126,7 +1131,9 @@ var stats = (function(kpretty, round) {
 			for (var i = sessionIdxMin; i <= sessionIdxMax; i++) {
 				ssSorted.push(i);
 			}
-			ssSorted.sort(function(a, b) {return sessionData[a]['rank'] - sessionData[b]['rank']});
+			ssSorted.sort(function(a, b) {
+				return sessionData[a]['rank'] - sessionData[b]['rank']
+			});
 			for (var i = 0; i < ssSorted.length; i++) {
 				sessionData[ssSorted[i]]['rank'] = i + 1;
 			}
@@ -1142,7 +1149,12 @@ var stats = (function(kpretty, round) {
 			var newName = (curDate.getMonth() + 1) + "." + curDate.getDate() + ' ' + curScrType;
 
 			kernel.setProp('sessionN', sessionIdxMax);
-			sessionData[sessionIdx] = {'name': newName, 'scr': curScrType, 'phases': 1, 'rank': rank + 0.5};
+			sessionData[sessionIdx] = {
+				'name': newName,
+				'scr': curScrType,
+				'phases': 1,
+				'rank': rank + 0.5
+			};
 			fixRank();
 			genSelect();
 
@@ -1247,7 +1259,10 @@ var stats = (function(kpretty, round) {
 
 		function genMgrTable() {
 			fixRank();
-			ssmgrTable.empty().append('<tr><th></th><th>Session Name</th><th>Session Details</th><th colspan=5>Operation</th></tr>');
+			ssmgrTable.empty().append('<tr><th></th><th>' +
+				STATS_SSMGR_NAME + '</th><th>' +
+				STATS_SSMGR_DETAIL + '</th><th colspan=5>' +
+				STATS_SSMGR_OP + '</th></tr>');
 			for (var i = 0; i < ssSorted.length; i++) {
 				var ssData = sessionData[ssSorted[i]];
 				var ssStat = '';
@@ -1255,21 +1270,21 @@ var stats = (function(kpretty, round) {
 					var s = ssData['stat'];
 					ssStat = STATS_SOLVE + ': ' + (s[0] - s[1]) + '/' + s[0] + ' ' + STATS_AVG + ': ' + kpretty(s[2]) + ' &nbsp; ';
 				}
-				ssmgrTable.append('<tr><td>' + (i + 1) + '</td>'
-					+ '<td class="click" data="s">' + ssData['name'] + '</td>'
-					+ '<td>' + ssStat + scramble.getTypeName(ssData['scr']) + ' &nbsp; ' + ssData['phases'] + ' phase(s)</td>'
-					+ '<td class="click" data="u">&#8593;</td>'
-					+ '<td class="click" data="d">&#8595;</td>'
-					+ '<td class="click" data="r">&#9997;</td>'
-					+ '<td class="click" data="+">+</td>'
-					+ '<td class="click" data="x">X</td>' + '</tr>');
+				ssmgrTable.append('<tr><td>' + (i + 1) + '</td>' +
+					'<td class="click" data="s">' + ssData['name'] + '</td>' +
+					'<td>' + ssStat + scramble.getTypeName(ssData['scr']) + ' &nbsp; ' + ssData['phases'] + ' phase(s)</td>' +
+					'<td class="click" data="u">&#8593;</td>' +
+					'<td class="click" data="d">&#8595;</td>' +
+					'<td class="click" data="r">&#9997;</td>' +
+					'<td class="click" data="+">+</td>' +
+					'<td class="click" data="x">X</td>' + '</tr>');
 			}
 			ssmgrTable.unbind('click').click(mgrClick);
 		}
 
 		function showMgrTable() {
 			genMgrTable();
-			kernel.showDialog([ssmgrDiv, 0, undefined, 0], 'stats', 'Session Manage');
+			kernel.showDialog([ssmgrDiv, 0, undefined, 0], 'stats', STATS_SSMGR_TITLE);
 		}
 
 		function procSignal(signal, value) {
