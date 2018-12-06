@@ -318,10 +318,10 @@ var image = (function() {
 
 			var imgSize = kernel.getProp('imgSize') / 10;
 			canvas.width(11 * imgSize / 1.3 + 'em');
-			canvas.height(5.4 * imgSize / 1.3 + 'em');
+			canvas.height(6.3 * imgSize / 1.3 + 'em');
 
 			canvas.attr('width', 11 * width);
-			canvas.attr('height', 5.4 * width);
+			canvas.attr('height', 6.3 * width);
 
 			var trans = [width, 2.7, 2.7];
 			//draw top
@@ -363,6 +363,15 @@ var image = (function() {
 					drawPolygon(ctx, colors[udcol[posit[i] >= 8 ? 1 : 0]],
 						Rotate(eps, (-1 - i) * PI / 6), trans);
 				}
+			}
+
+			var trans = [width, 2.7 + 2.7, 2.7 + 3.0];
+			//draw middle
+			drawPolygon(ctx, colors['L'], [[-hsq3 - 1, -hsq3 - 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
+			if (mid == 0) {
+				drawPolygon(ctx, colors['L'], [[hsq3 + 1, hsq3 + 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
+			} else {
+				drawPolygon(ctx, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
 			}
 		}
 	})();
