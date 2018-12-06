@@ -1294,14 +1294,11 @@ var stats = (function(kpretty, round) {
 					kernel.setProp('sessionData', JSON.stringify(sessionData));
 				}
 			} else if (signal == 'ctrl' && value[0] == 'stats') {
-				if (value[1] == '+') {
-					if (sessionIdx < sessionIdxMax) {
-						kernel.setProp('session', sessionIdx + 1);
-					}
-				} else if (value[1] == '-') {
-					if (sessionIdx > sessionIdxMin) {
-						kernel.setProp('session', sessionIdx - 1);
-					}
+				var rank = sessionData[sessionIdx]['rank'];
+				if (value[1] == '+' && rank < sessionIdxMax) {
+					kernel.setProp('session', ssSorted[rank]);
+				} else if (value[1] == '-' && rank > sessionIdxMin) {
+					kernel.setProp('session', ssSorted[rank - 2]);
 				}
 			}
 		}
