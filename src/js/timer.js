@@ -392,7 +392,9 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		var input = $('<textarea id="inputTimer" rows="1" />');;
 
 		function parseInput() {
-			var reg = /^(?:[\d]+\. )?(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?\s*(?:\[([^\]]+)\])?(?:   (.*))?$/;
+			//                       |1st     |2nd    |3rd    |4th        |5th        |6th                 |7th              |8th
+			var reg = /^(?:[\d]+\. )?(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?(?:=([\d:.+]+?))?\s*(?:\[([^\]]+)\])?(?:   ([^@].*))?$/;
+			var timeRe = /^(\d*?):?(\d*?):?(\d*\.?\d*?)$/;
 			var arr = input.val().split(/\s*[,\n]\s*/);
 			var time, ins, comment, scramble;
 			for (var i = 0; i < arr.length; i++) {
@@ -410,9 +412,28 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					} else {
 						ins = 0;
 					}
-					comment = m[6] || "";
-					scramble = m[7];
-					curTime = [comment, scramble, [ins, time]];
+					var timeSplit = [];
+					if (m[6]) { //multi-phase timing
+						timeSplit = m[6].split('+').reverse();
+						var timeRemain = time;
+						for (var j = 0; j < timeSplit.length; j++) {
+							var mt = timeRe.exec(timeSplit[j]);
+							if (mt == null) {
+								timeRemain = 1e8;
+								break;
+							}
+							timeRemain -= Math.round(3600000 * ~~(mt[1]) + 60000 * ~~(mt[2]) + 1000 * parseFloat(mt[3]));
+							timeSplit[j] = Math.max(0, timeRemain);
+						}
+						if (Math.abs(timeRemain) > 10 * timeSplit.length) {
+							timeSplit = [];
+						} else {
+							timeSplit.pop();
+						}
+					}
+					comment = m[7] || "";
+					scramble = m[8];
+					curTime = [comment, scramble, [ins, time].concat(timeSplit)];
 					pushSignal('time', curTime);
 					kernel.clrKey();
 				}
