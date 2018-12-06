@@ -108,27 +108,24 @@ var storage = (function() {
 		}
 	}
 
+	//delete sessionIdx, and replace with sessionIdxMax
 	function del(sessionIdx, sessionIdxMax, callback) {
 		if (indexedDB) {
 			getTrans("readwrite", function(objectStore) {
 				objectStore["delete"](IDBKeyRange.bound(getID(sessionIdx), getID(sessionIdx + 1), false, true));
-				for (var i = sessionIdx; i < sessionIdxMax; i++) {
-					var curRange = IDBKeyRange.bound(getID(i + 1), getID(i + 2), false, true);
-					objectStore.openCursor(curRange).onsuccess = function(event) {
-						var cursor = event.target.result;
-						if (cursor) {
-							var m = keyre.exec(cursor.key);
-							objectStore.put(cursor.value, getID(~~m[1] - 1, ~~m[2]));
-							objectStore["delete"](cursor.key);
-							cursor["continue"]();
-						}
+				var range = IDBKeyRange.bound(getID(sessionIdxMax), getID(sessionIdxMax + 1), false, true);
+				objectStore.openCursor(range).onsuccess = function(event) {
+					var cursor = event.target.result;
+					if (cursor) {
+						var m = keyre.exec(cursor.key);
+						objectStore.put(cursor.value, getID(sessionIdx, ~~m[2]));
+						objectStore["delete"](cursor.key);
+						cursor["continue"]();
 					}
 				}
 			}, callback);
 		} else {
-			for (var i = sessionIdx; i < sessionIdxMax; i++) {
-				localStorage['session' + i] = localStorage['session' + (i + 1)] || '[]';
-			}
+			localStorage['session' + sessionIdx] = localStorage['session' + sessionIdxMax]
 			delete localStorage['session' + sessionIdxMax];
 			callback && requestAnimFrame(callback);
 		}

@@ -5,8 +5,6 @@ var stats = (function(kpretty, round) {
 	var div = $('<div id="stats" />');
 	var stext = $('<textarea rows="10" readonly />');
 	var scrollDiv = $('<div class="myscroll" />');
-	var newSessionOption = $('<option />').val('new').html('New..');
-	var delSessionOption = $('<option />').val('del').html('Delete..');
 
 	var table = $('<table />').click(procClick).addClass("table");
 	var title = $('<tr />');
@@ -17,75 +15,18 @@ var stats = (function(kpretty, round) {
 	var sumtable = $('<table class="sumtable" />').click(infoClick).addClass("table");
 	var sumtableDiv = $('<div class="statc" />');
 
-	var sessionIdxMax = 15;
-	var sessionIdxMin = 1;
-
 	var MAX_ITEMS = 50;
-
-	var select = $('<select />').change(function() {
-		kernel.blur();
-		if (select.val() == 'new') {
-			sessionIdx = sessionIdxMax + 1;
-			sessionIdxMax++;
-			var curDate = new Date();
-			var newName = (curDate.getMonth() + 1) + "." + curDate.getDate() + ' ' + curScrType;
-			newSessionOption.before($('<option />').val(sessionIdx).html(newName))
-			select.val(sessionIdx);
-			kernel.setProp('sessionN', sessionIdxMax);
-
-			var sessionData = JSON.parse(kernel.getProp('sessionData'));
-			sessionData[sessionIdx] = {'name': newName, 'scr': curScrType, 'phases': 1};
-			kernel.setProp('sessionData', JSON.stringify(sessionData));
-
-			if (kernel.getProp('imrename')) {
-				renameSession();
-			}
-			times = [];
-			save();
-		} else if (select.val() == 'del') {
-			if (!deleteSession()) {
-				select.val(sessionIdx);
-			}
-			return;
-		} else {
-			sessionIdx = ~~select.val();
-		}
-		kernel.setProp('session', sessionIdx);
-		load();
-		var curSessionData = JSON.parse(kernel.getProp('sessionData'));
-		if (kernel.getProp('ss2scr')) {
-			kernel.setProp('scrType', curSessionData[sessionIdx]['scr']);
-		}
-		if (kernel.getProp('ss2phases')) {
-			kernel.setProp('phases', curSessionData[sessionIdx]['phases']);
-		}
-	});
-
-	var sessionIdx = -1;
-
-	function genSelect() {
-		select.empty();
-		var curSessionData = JSON.parse(kernel.getProp('sessionData'));
-		for (var i = 1; i <= sessionIdxMax; i++) {
-			if (curSessionData[i] == undefined) {
-				curSessionData[i] = {'name': i, 'scr': '333', 'phases': 1};
-			}
-			select.append($('<option />').val(i).html(curSessionData[i]['name']));
-		}
-		select.append(newSessionOption, delSessionOption);
-		select.val(sessionIdx);
-	}
 
 	function push(time) {
 		if (typeof time[0] == "string") {
-			// times.push([time[2], time[1] || scramble, time[0]]);
-			times_stats.push([time[2], time[1] || scramble, time[0], Math.round((new Date().getTime() - time[2][1]) / 1000)]);
+			// times.push([time[2], time[1] || curScramble, time[0]]);
+			times_stats.push([time[2], time[1] || curScramble, time[0], Math.round((new Date().getTime() - time[2][1]) / 1000)]);
 			time = time[2];
 		} else {
-			// times.push([time, scramble, ""]);
-			times_stats.push([time, scramble, "", Math.round((new Date().getTime() - time[1]) / 1000)]);
+			// times.push([time, curScramble, ""]);
+			times_stats.push([time, curScramble, "", Math.round((new Date().getTime() - time[1]) / 1000)]);
 		}
-		save(times.length - 1);
+		sessionManager.save(times.length - 1);
 		if (time.length - 1 > curDim) {
 			updateTable(true);
 		} else {
@@ -105,42 +46,13 @@ var stats = (function(kpretty, round) {
 		updateUtil();
 	}
 
-	function deleteSession() {
-		if (!confirm(STATS_CFM_DELSS)) {
-			return false;
-		}
-		var sessionData = JSON.parse(kernel.getProp('sessionData'));
-		for (var i = sessionIdx; i < sessionIdxMax; i++) {
-			sessionData[i] = sessionData[i + 1];
-		}
-		storage.del(sessionIdx, sessionIdxMax);
-		delete sessionData[sessionIdxMax];
-		var prevIdx = sessionIdx;
-		sessionIdx = -1;
-		sessionIdxMax--;
-		kernel.setProp('sessionN', sessionIdxMax);
-		kernel.setProp('sessionData', JSON.stringify(sessionData));
-		if (sessionIdxMax == 0) {
-			select.val('new');
-			select.change();
-		} else {
-			if (prevIdx > sessionIdxMax) {
-				kernel.setProp('session', sessionIdxMax);
-			} else {
-				select.val(prevIdx);
-				select.change();
-			}
-		}
-		return true;
-	}
-
 	function reset() {
 		if (!confirm(STATS_CFM_RESET)) {
 			return;
 		}
 		times = [];
 		times_stats.reset();
-		save();
+		sessionManager.save();
 		updateTable(false);
 		kernel.blur();
 	}
@@ -160,7 +72,7 @@ var stats = (function(kpretty, round) {
 		}
 		times.splice(index, ~~n_del);
 		times_stats.reset();
-		save(index);
+		sessionManager.save(index);
 		updateTable(false);
 		return true;
 	}
@@ -279,7 +191,7 @@ var stats = (function(kpretty, round) {
 
 		function procTxt() {
 			timesAt(cfmIdx) && (timesAt(cfmIdx)[2] = cfmTxtR.val());
-			save(cfmIdx);
+			sessionManager.save(cfmIdx);
 			getTimeRow(cfmIdx, curDim, cfmIdxRow);
 		}
 
@@ -298,7 +210,7 @@ var stats = (function(kpretty, round) {
 			if (timesAt(cfmIdx)[0][0] != selected) {
 				timesAt(cfmIdx)[0][0] = selected;
 				times_stats.reset();
-				save(cfmIdx);
+				sessionManager.save(cfmIdx);
 				updateFrom(cfmIdx, cfmIdxRow);
 				updateUtil();
 			}
@@ -1151,6 +1063,282 @@ var stats = (function(kpretty, round) {
 	})();
 
 
+	var sessionManager = (function() {
+
+		var sessionIdxMax = 15;
+		var sessionIdxMin = 1;
+		var sessionIdx = -1;
+
+		var ssmgrDiv = $('<div />');
+		var ssmgrTable = $('<table />').appendTo(ssmgrDiv).addClass('table ssmgr');
+
+		var newSessionOption = $('<option />').val('new').html('New..');
+		var delSessionOption = $('<option />').val('del').html('Delete..');
+		var sessionData;
+		var ssSorted;
+
+		var select = $('<select />').change(function() {
+			kernel.blur();
+			if (select.val() == 'new') {
+				createSession();
+			} else if (select.val() == 'del') {
+				if (!deleteSession(sessionIdx)) {
+					select.val(sessionIdx);
+				}
+				return;
+			} else {
+				sessionIdx = ~~select.val();
+			}
+			loadSession(sessionIdx);
+		});
+
+		function loadSession(ssidx) {
+			sessionIdx = ssidx;
+			kernel.setProp('session', sessionIdx);
+			load();
+			var curSessionData = sessionData[sessionIdx];
+			if (kernel.getProp('ss2scr')) {
+				kernel.setProp('scrType', curSessionData['scr']);
+			}
+			if (kernel.getProp('ss2phases')) {
+				kernel.setProp('phases', curSessionData['phases']);
+			}
+			select.val(sessionIdx);
+		}
+
+		function genSelect() {
+			select.empty();
+			for (var i = 1; i <= sessionIdxMax; i++) {
+				if (sessionData[i] == undefined) {
+					sessionData[i] = {'name': i, 'scr': '333', 'phases': 1, 'rank': i};
+				}
+			}
+			fixRank();
+			for (var i = 0; i < ssSorted.length; i++) {
+				select.append($('<option />').val(ssSorted[i]).html(sessionData[ssSorted[i]]['name']));
+			}
+			select.append(newSessionOption, delSessionOption);
+			select.val(sessionIdx);
+		}
+
+		function fixRank() {
+			ssSorted = [];
+			for (var i = sessionIdxMin; i <= sessionIdxMax; i++) {
+				ssSorted.push(i);
+			}
+			ssSorted.sort(function(a, b) {return sessionData[a]['rank'] - sessionData[b]['rank']});
+			for (var i = 0; i < ssSorted.length; i++) {
+				sessionData[ssSorted[i]]['rank'] = i + 1;
+			}
+			kernel.setProp('sessionData', JSON.stringify(sessionData));
+		}
+
+		function createSession(rank) {
+			if (rank == undefined) {
+				rank = sessionIdxMax;
+			}
+			sessionIdx = ++sessionIdxMax;
+			var curDate = new Date();
+			var newName = (curDate.getMonth() + 1) + "." + curDate.getDate() + ' ' + curScrType;
+
+			kernel.setProp('sessionN', sessionIdxMax);
+			sessionData[sessionIdx] = {'name': newName, 'scr': curScrType, 'phases': 1, 'rank': rank + 0.5};
+			fixRank();
+			genSelect();
+
+			if (kernel.getProp('imrename')) {
+				renameSession();
+			}
+			times = [];
+			save();
+		}
+
+		function deleteSession(ssidx) {
+			if (!confirm(STATS_CFM_DELSS)) {
+				return false;
+			}
+			// if not the last session, then swap to last session
+			if (ssidx != sessionIdxMax) {
+				sessionData[ssidx] = sessionData[sessionIdxMax];
+			}
+			delete sessionData[sessionIdxMax];
+			storage.del(ssidx, sessionIdxMax);
+
+			sessionIdxMax--;
+			kernel.setProp('sessionN', sessionIdxMax);
+			kernel.setProp('sessionData', JSON.stringify(sessionData));
+			if (sessionIdxMax == 0) {
+				createSession();
+			} else if (sessionIdx == ssidx) {
+				kernel.setProp('session', 1);
+			} else if (sessionIdx == sessionIdxMax + 1) {
+				select.val(ssidx);
+				select.change();
+			}
+			return true;
+		}
+
+		function renameSession(ssidx) {
+			if (ssidx === undefined) {
+				ssidx = sessionIdx;
+			}
+			var sName = prompt(STATS_SESSION_NAME, sessionData[ssidx]['name']);
+			if (sName != null) {
+				sName = $('<div/>').text(sName).html();
+				sessionData[ssidx]['name'] = sName;
+				kernel.setProp('sessionData', JSON.stringify(sessionData));
+			}
+		}
+
+		function load() {
+			storage.get(sessionIdx, function(timesNew) {
+				times = timesNew;
+				times_stats.reset();
+				updateTable(false);
+				sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
+				kernel.setProp('sessionData', JSON.stringify(sessionData));
+			})
+		}
+
+		function save(startIdx) {
+			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
+			kernel.setProp('sessionData', JSON.stringify(sessionData));
+			storage.set(sessionIdx, times, undefined, startIdx);
+		}
+
+		function mgrClick(e) {
+			var target = $(e.target);
+			if (!target.is('td') || !target.hasClass('click')) {
+				return;
+			}
+			var rank = ~~target.prevAll().eq(-1).html();
+			var idx = ssSorted[rank - 1];
+			switch (target.attr('data')) {
+				case 'r':
+					renameSession(idx);
+					break;
+				case 'u':
+					if (rank != 1) {
+						sessionData[idx]['rank']--;
+						sessionData[ssSorted[rank - 2]]['rank']++;
+						kernel.setProp('sessionData', JSON.stringify(sessionData));
+					}
+					break;
+				case 'd': //swap
+					if (rank != ssSorted.length) {
+						sessionData[idx]['rank']++;
+						sessionData[ssSorted[rank]]['rank']--;
+						kernel.setProp('sessionData', JSON.stringify(sessionData));
+					}
+					break;
+				case 's':
+					loadSession(idx);
+					break;
+				case '+':
+					createSession(rank);
+					break;
+				case 'x': //delete session
+					deleteSession(idx);
+					break;
+			}
+			genSelect();
+			genMgrTable();
+		}
+
+		function genMgrTable() {
+			fixRank();
+			ssmgrTable.empty().append('<tr><th></th><th>Session Name</th><th>Session Details</th><th colspan=5>Operation</th></tr>');
+			for (var i = 0; i < ssSorted.length; i++) {
+				var ssData = sessionData[ssSorted[i]];
+				var ssStat = '';
+				if ('stat' in ssData) {
+					var s = ssData['stat'];
+					ssStat = STATS_SOLVE + ': ' + (s[0] - s[1]) + '/' + s[0] + ' ' + STATS_AVG + ': ' + kpretty(s[2]) + ' &nbsp; ';
+				}
+				ssmgrTable.append('<tr><td>' + (i + 1) + '</td>'
+					+ '<td class="click" data="s">' + ssData['name'] + '</td>'
+					+ '<td>' + ssStat + scramble.getTypeName(ssData['scr']) + ' &nbsp; ' + ssData['phases'] + ' phase(s)</td>'
+					+ '<td class="click" data="u">&#8593;</td>'
+					+ '<td class="click" data="d">&#8595;</td>'
+					+ '<td class="click" data="r">&#9997;</td>'
+					+ '<td class="click" data="+">+</td>'
+					+ '<td class="click" data="x">X</td>' + '</tr>');
+			}
+			ssmgrTable.unbind('click').click(mgrClick);
+		}
+
+		function showMgrTable() {
+			genMgrTable();
+			kernel.showDialog([ssmgrDiv, 0, undefined, 0], 'stats', 'Session Manage');
+		}
+
+		function procSignal(signal, value) {
+			if (signal == 'property') {
+				if (value[0] == 'session' && ~~value[1] != sessionIdx) {
+					select.val(value[1]);
+					select.change();
+				} else if (value[0] == 'sessionData') {
+					sessionData = JSON.parse(value[1]);
+					genSelect();
+				} else if (value[0] == 'scrType' || value[0] == 'phases') {
+					curScrType = value[1];
+					if (value[0] == 'scrType') {
+						if (sessionData[sessionIdx]['scr'] != value[1] && kernel.getProp('scr2ss')) {
+							createSession();
+						} else {
+							sessionData[sessionIdx]['scr'] = value[1];
+						}
+					} else if (value[0] == 'phases') {
+						sessionData[sessionIdx]['phases'] = value[1];
+					}
+					kernel.setProp('sessionData', JSON.stringify(sessionData));
+				}
+			} else if (signal == 'ctrl' && value[0] == 'stats') {
+				if (value[1] == '+') {
+					if (sessionIdx < sessionIdxMax) {
+						kernel.setProp('session', sessionIdx + 1);
+					}
+				} else if (value[1] == '-') {
+					if (sessionIdx > sessionIdxMin) {
+						kernel.setProp('session', sessionIdx - 1);
+					}
+				}
+			}
+		}
+
+		$(function() {
+			kernel.regListener('ssmgr', 'property', procSignal, /^(:?session(:?Data)?|scrType|phases)$/);
+			kernel.regListener('ssmgr', 'ctrl', procSignal, /^stats$/);
+
+			sessionIdxMax = kernel.getProp('sessionN', 15);
+			sessionData = JSON.parse(kernel.getProp('sessionData', '{}'));
+			for (var i = 1; i <= sessionIdxMax; i++) {
+				sessionData[i] = sessionData[i] || {
+					'name': (JSON.parse(kernel.getProp('sessionName') || '{}'))[i] || i,
+					'scr': (JSON.parse(kernel.getProp('sessionScr') || '{}'))[i] || '333',
+					'phases': 1,
+					'rank': i
+				};
+				sessionData[i]['rank'] = sessionData[i]['rank'] || i;
+			}
+			kernel.setProp('sessionData', JSON.stringify(sessionData));
+			genSelect();
+			kernel.getProp('session', 1);
+		});
+
+		return {
+			getSelect: function() {
+				return select;
+			},
+			showMgrTable: showMgrTable,
+			genSelect: genSelect,
+			load: load,
+			save: save
+		}
+
+	})();
+
+
 	function getStats() {
 		var theStats = times_stats.getAllStats();
 		var numdnf = theStats[0];
@@ -1307,7 +1495,7 @@ var stats = (function(kpretty, round) {
 		return true;
 	}
 
-	var scramble = "";
+	var curScramble = "";
 
 	var stat1, stat2, len1, len2;
 
@@ -1320,7 +1508,7 @@ var stats = (function(kpretty, round) {
 		if (signal == 'time') {
 			push(value);
 		} else if (signal == 'scramble') {
-			scramble = value[1];
+			curScramble = value[1];
 		} else if (signal == 'property') {
 			if (/^(:?useMilli|timeFormat|stat[12][tl]|statinv)$/.exec(value[0])) {
 				roundMilli = kernel.getProp('useMilli') ? 1 : 10;
@@ -1329,25 +1517,6 @@ var stats = (function(kpretty, round) {
 				len1 = Math.abs(stat1);
 				len2 = Math.abs(stat2);
 				updateTable(false);
-			} else if (value[0] == 'session' && ~~value[1] != sessionIdx) {
-				select.val(value[1]);
-				select.change();
-			} else if (value[0] == 'sessionData') {
-				genSelect();
-			} else if (value[0] == 'scrType' || value[0] == 'phases') {
-				curScrType = value[1];
-				var curSessionData = JSON.parse(kernel.getProp('sessionData'));
-				if (value[0] == 'scrType') {
-					if (curSessionData[sessionIdx]['scr'] != value[1] && kernel.getProp('scr2ss')) {
-						select.val('new');
-						select.change();
-					} else {
-						curSessionData[sessionIdx]['scr'] = value[1];
-					}
-				} else if (value[0] == 'phases') {
-					curSessionData[sessionIdx]['phases'] = value[1];
-				}
-				kernel.setProp('sessionData', JSON.stringify(curSessionData));
 			} else if (value[0] == 'statsum') {
 				updateSumTable();
 			} else if (value[0] == 'statal') {
@@ -1381,14 +1550,6 @@ var stats = (function(kpretty, round) {
 				if (times.length != 0) {
 					delIdx(times.length - 1);
 				}
-			} else if (value[1] == '+') {
-				if (sessionIdx < sessionIdxMax) {
-					kernel.setProp('session', sessionIdx + 1);
-				}
-			} else if (value[1] == '-') {
-				if (sessionIdx > sessionIdxMin) {
-					kernel.setProp('session', sessionIdx - 1);
-				}
 			} else if (value[1] == 'OK') {
 				floatCfm.setCfm(0);
 			} else if (value[1] == '+2') {
@@ -1403,33 +1564,11 @@ var stats = (function(kpretty, round) {
 		}
 	}
 
-	function renameSession() {
-		var curSessionData = JSON.parse(kernel.getProp('sessionData'));
-		var sName = prompt(STATS_SESSION_NAME, curSessionData[sessionIdx]['name']);
-		if (sName != null) {
-			sName = $('<div/>').text(sName).html();
-			curSessionData[sessionIdx]['name'] = sName;
-			kernel.setProp('sessionData', JSON.stringify(curSessionData));
-		}
-	}
-
-	function load() {
-		storage.get(sessionIdx, function(timesNew) {
-			times = timesNew;
-			times_stats.reset();
-			updateTable(false);
-		})
-	}
-
-	function save(startIdx) {
-		storage.set(sessionIdx, times, undefined, startIdx);
-	}
-
 	function resultsHeight() {
 		if ($('html').hasClass('m')) {
 			scrollDiv.height(Math.max(sumtableDiv.height(), avgRow.height() + title.height() * 2));
 		} else if (scrollDiv[0].offsetParent != null) {
-			scrollDiv.outerHeight(~~(div.height() - select.parent().outerHeight() - sumtableDiv.outerHeight() - 5));
+			scrollDiv.outerHeight(~~(div.height() - sessionManager.getSelect().parent().outerHeight() - sumtableDiv.outerHeight() - 5));
 		}
 	}
 
@@ -1452,8 +1591,8 @@ var stats = (function(kpretty, round) {
 
 		div.appendTo('body').append(
 			$('<div>').append(
-				$('<span class="click" />').html(STATS_SESSION).click(renameSession),
-				select, $('<input type="button">').val('X').click(reset)),
+				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
+				sessionManager.getSelect(), $('<input type="button">').val('X').click(reset)),
 			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
 		$(window).bind('resize', resultsHeight);
@@ -1475,17 +1614,5 @@ var stats = (function(kpretty, round) {
 			['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'Custom']
 		]);
 		kernel.regProp('stats', 'delmul', 0, PROPERTY_DELMUL, [true]);
-		sessionIdxMax = kernel.getProp('sessionN', 15);
-		var sessionData = JSON.parse(kernel.getProp('sessionData', '{}'));
-		for (var i = 1; i <= sessionIdxMax; i++) {
-			sessionData[i] = sessionData[i] || {
-				'name': (JSON.parse(kernel.getProp('sessionName') || '{}'))[i] || i,
-				'scr': (JSON.parse(kernel.getProp('sessionScr') || '{}'))[i] || '333',
-				'phases': 1
-			};
-		}
-		kernel.setProp('sessionData', JSON.stringify(sessionData));
-		genSelect();
-		kernel.getProp('session', 1);
 	});
 })(kernel.pretty, kernel.round);

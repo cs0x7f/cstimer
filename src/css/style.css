@@ -465,6 +465,10 @@ table.sumtable td, table.sumtable th {
 	padding: 0.3rem;
 }
 
+.ssmgr {
+	width: 100%;
+}
+
 .cntbar {
 	display: inline-block;
 	text-align: center;
