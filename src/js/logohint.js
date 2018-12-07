@@ -31,7 +31,7 @@ var logohint = (function() {
 		curMsg = msgList.shift();
 		if (curMsg == undefined) {
 			logocc.removeClass('hint');
-			logocc.html('<div class="pad" style="width: ' + logo.width() + 'px; ">csTimer</div>');
+			logocc.html('csTimer');
 			return;
 		}
 		logocc.html('<div class="pad" style="width: ' + logo.width() + 'px; ">csTimer</div><span style="font-family: sans-serief; margin: 0 1em 0 1em;">' + curMsg + '</span><div class="pad" style="width: ' + logo.width() + 'px; position: absolute;">csTimer</div>');
