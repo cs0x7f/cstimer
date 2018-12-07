@@ -398,7 +398,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			var timeRe = /^(\d*?):?(\d*?):?(\d*\.?\d*?)$/;
 			var arr = input.val();
 			var now = $.now();
-			if (/^[\s\n]+$/.exec(arr) && now > lastEmptyTrigger + 500) {
+			if (/^[\s\n]*$/.exec(arr) && now > lastEmptyTrigger + 500) {
 				kernel.pushSignal('ctrl', ['scramble', 'next']);
 				lastEmptyTrigger = now;
 				input.val('');
@@ -470,7 +470,10 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 
 		return {
 			setEnable: setEnable,
-			parseInput: parseInput
+			parseInput: parseInput,
+			clear: function() {
+				input.val('');
+			}
 		}
 	})();
 
@@ -1114,7 +1117,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		var focusObj = $(document.activeElement);
 		if (focusObj.is('input, textarea, select')) {
 			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer' && keyCode == 13) {
-				inputTimer.parseInput();
+				inputTimer.clear();
 			}
 			return;
 		} else {
