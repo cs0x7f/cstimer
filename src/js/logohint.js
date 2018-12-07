@@ -36,6 +36,12 @@ var logohint = (function() {
 		}
 		logocc.html('<div style="width: ' + logo.width() + 'px; display: inline-block;"></div>' + curMsg);
 		logo.removeClass('hint');
+		var duration = (curMsg.length + 10) * 0.1 + 's';
+		logocc.css({
+			'-webkit-animation-duration': duration,
+			'-moz-animation-duration': duration,
+			'animation-duration': duration
+		});
 		setTimeout(function() {
 			logo.addClass('hint');
 		});
