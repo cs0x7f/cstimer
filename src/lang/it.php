@@ -1,4 +1,4 @@
-<h1>csTimer  version 2018.11.05 - Cronometro Professionale per Speedcubing/Allenamento</h1>
+<h1>csTimer  version 2018.12.07 - Cronometro Professionale per Speedcubing/Allenamento</h1>
 <?php include('lang.php') ?>
 <p>csTimer e' pensato per gli speedcubers. Supporta scrambles di molti tipi di puzzle inclusi <b>tutti i puzzle ufficiali WCA</b>; Integra <b>i risolutori Xcross ed eoline</b>; calcola statistiche temporali, <b>cronometra multi-fase</b> e ha molte altre funzioni presenti anche su software simili come ad esempio consente di eseguire i 15s di ispezione definiti dalla WCA, etc.</p>
 <p>csTimer funziona bene con la maggior parte dei browser, come: chrome(consigliato), firefox, opera, IE7+. Funziona inoltre su ipad, iphone e molti device Android. </p>

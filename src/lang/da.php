@@ -1,4 +1,4 @@
-<h1>csTimer  version 2018.11.05 - Professionel Speedcubing/Tr&aelig;nings Timer</h1>
+<h1>csTimer  version 2018.12.07 - Professionel Speedcubing/Tr&aelig;nings Timer</h1>
 <?php include('lang.php') ?>
 <p>csTimer er designet for speedsolving cuber. Den st&oslash;tter scrambles af mange typer af puzzles inklurederet <b>alle WCA's officielle puzzle</b>; Den er integreret med <b> Xcross l&oslash;ser og eoline l&oslash;ser </b>; Den st&oslash;tter tids statistikker, <b>multi-fase timing</b> og andre funktioner st&oslash;ttet af anndre lignende software som: 15s' inspektion definerede af WCA, etc.</p>
 <p>Timeren virker godt 
