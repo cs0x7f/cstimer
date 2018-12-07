@@ -637,8 +637,8 @@ var stats = (function(kpretty, round) {
 		if (kernel.getProp('printDate')) {
 			var tstart = timesAt(start);
 			var tend = timesAt(start + nsolves - 1);
-			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString()) : 'N/A'))
-				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString()) : 'N/A'));
+			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString().replace(',', '')) : 'N/A'))
+				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString().replace(',', '')) : 'N/A'));
 		}
 		var now = new Date();
 		var s = [hlstr[3]
@@ -670,7 +670,7 @@ var stats = (function(kpretty, round) {
 				c += "   " + time[1];
 			}
 			if (kernel.getProp('printDate')) {
-				c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
+				c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString().replace(',', '')) : 'N/A');
 			}
 			if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
 				s.push((i + 1) + ". " + c + " \n");
@@ -711,7 +711,7 @@ var stats = (function(kpretty, round) {
 			line.push(pretty(time[0], true));
 			line.push(csvField(time[2] ? time[2] : ""));
 			line.push(time[1]);
-			line.push(time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
+			line.push(time[3] ? (new Date(time[3] * 1000).toLocaleString().replace(',', '')) : 'N/A');
 			line.push(kpretty(time[0][time[0].length - 1]));
 			for (var j = time[0].length - 2; j >= 1; j--) {
 				line.push(kpretty(time[0][j] - time[0][j + 1]));
@@ -1382,8 +1382,8 @@ var stats = (function(kpretty, round) {
 		if (kernel.getProp('printDate')) {
 			var tstart = timesAt(0);
 			var tend = timesAt(length - 1);
-			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString()) : 'N/A'))
-				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString()) : 'N/A'));
+			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString().replace(',', '')) : 'N/A'))
+				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString().replace(',', '')) : 'N/A'));
 		}
 		var now = new Date();
 		var s = [hlstr[3]
@@ -1421,7 +1421,7 @@ var stats = (function(kpretty, round) {
 					c += "   " + time[1];
 				}
 				if (kernel.getProp('printDate')) {
-					c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString()) : 'N/A');
+					c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString().replace(',', '')) : 'N/A');
 				}
 				if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
 					timeStr.push((i + 1) + ". " + c + " \n");
