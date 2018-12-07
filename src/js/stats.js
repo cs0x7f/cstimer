@@ -1232,7 +1232,7 @@ var stats = (function(kpretty, round) {
 			if (!target.is('td') || !target.hasClass('click')) {
 				return;
 			}
-			var rank = ~~target.prevAll().eq(-1).html();
+			var rank = ~~target.prevAll().eq(-1).html().replace("*", "");
 			var idx = ssSorted[rank - 1];
 			switch (target.attr('data')) {
 				case 'r':
@@ -1279,7 +1279,7 @@ var stats = (function(kpretty, round) {
 					var s = ssData['stat'];
 					ssStat = STATS_SOLVE + ': ' + (s[0] - s[1]) + '/' + s[0] + ' ' + STATS_AVG + ': ' + kpretty(s[2]) + ' &nbsp; ';
 				}
-				ssmgrTable.append('<tr><td>' + (i + 1) + '</td>' +
+				ssmgrTable.append('<tr><td>' + (i + 1) + (ssSorted[i] == sessionIdx ? '*' : '') + '</td>' +
 					'<td class="click" data="s">' + ssData['name'] + '</td>' +
 					'<td>' + ssStat + scramble.getTypeName(ssData['scr']) + ' &nbsp; ' + ssData['phases'] + ' phase(s)</td>' +
 					'<td class="click" data="u">&#8593;</td>' +
