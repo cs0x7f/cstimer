@@ -7,7 +7,7 @@ yui = lib/yuicompressor.jar
 externJQ = --externs lib/jquery-1.7.js
 externTwisty = --externs $(src)/js/threemin.js --externs $(src)/js/twisty.js --externs $(dest)/js/twisty.js
 externLang = --externs $(src)/lang/cn.js
-compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization
+compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3
 advanced = -O ADVANCED
 
 timerSrc = $(addprefix $(src)/js/, \
