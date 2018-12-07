@@ -496,12 +496,17 @@ var scramble = (function(rn, rndEl) {
 				genScramble();
 			}
 		});
-		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
+		title.append($('<nobr>').append($('<span class="click">').html('&nbsp;&#8593;&nbsp;').click(function() {
+			title.hide();
+		}), select, ' ', select2, ' ', scrOpt), " <wbr>");
 		// title.append($('<nobr>').append(SCRAMBLE_LENGTH + ': ', scrLen), " <wbr>");
 		title.append($('<nobr>').append(last, '/', next, SCRAMBLE_SCRAMBLE));
 		div.append(title, sdiv).appendTo('body');
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
+		sdiv.click(function() {
+			title.show();
+		});
 	});
 
 	return {
