@@ -558,6 +558,15 @@ var stats = (function(kpretty, round) {
 
 			var i = times.length - 1;
 			var t = timeAt(i);
+
+			var bestHintList = [];
+			if (bestTime < 0 || (t != -1 && t < bestTime)) {
+				if (bestTime >= 0) {
+					bestHintList.push('single');
+				}
+				bestTime = t;
+				bestTimeIndex = i;
+			}
 			for (var j = 0; j < avgSizes.length; j++) {
 				var size = Math.abs(avgSizes[j]);
 				if (times.length < size) {
@@ -587,15 +596,17 @@ var stats = (function(kpretty, round) {
 				// }
 				var curVal = n_dnf[j] > trim ? -1 : round((rbt.cumSum(size - trim) - rbt.cumSum(trim)) / neff);
 				if (bestAvg[j][0] < 0 || (curVal != -1 && curVal < bestAvg[j][0])) {
+					if (bestAvg[j][0] >= 0) {
+						bestHintList.push((avgSizes[j] > 0 ? "ao" : "mo") + size);
+					}
 					bestAvg[j][0] = curVal;
 					bestAvgIndex[j] = i - size + 1;
 				}
 				lastAvg[j][0] = curVal;
 				avgTrees[j] = rbt;
 			}
-			if (bestTime < 0 || (t != -1 && t < bestTime)) {
-				bestTime = t;
-				bestTimeIndex = i;
+			if (bestHintList.length != 0) {
+				logohint.push("Session best " + bestHintList.join(" ") + "!");
 			}
 			if (t > worstTime) {
 				worstTime = t;
