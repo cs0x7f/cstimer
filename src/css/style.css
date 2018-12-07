@@ -259,11 +259,16 @@ textarea {
 	white-space: nowrap;
 }
 
-#leftbar #logo.hint > div > span {
-	-webkit-animation: flyLeft 3s 1 linear;
-	-moz-animation: flyLeft 3s 1 linear;
-	animation: flyLeft 3s 1 linear;
-	font-family: sans-serif;
+#leftbar #logo > div > span > div.pad {
+	display: inline-block;
+	top: 0;
+	bottom: 0;
+}
+
+#leftbar #logo > div > span.hint {
+	-webkit-animation: flyLeft 3s 1 ease-in-out;
+	-moz-animation: flyLeft 3s 1 ease-in-out;
+	animation: flyLeft 3s 1 ease-in-out;
 }
 
 @keyframes flyLeft {

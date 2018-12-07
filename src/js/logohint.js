@@ -20,7 +20,7 @@ var logohint = (function() {
 
 	function render() {
 		if (isMouseIn) {
-			logo.removeClass('hint');
+			logocc.removeClass('hint');
 			logocc.html('ABOUT');
 			curMsg = undefined;
 			return;
@@ -30,20 +30,20 @@ var logohint = (function() {
 		}
 		curMsg = msgList.shift();
 		if (curMsg == undefined) {
-			logo.removeClass('hint');
-			logocc.html('csTimer');
+			logocc.removeClass('hint');
+			logocc.html('<div class="pad" style="width: ' + logo.width() + 'px; ">csTimer</div>');
 			return;
 		}
-		logocc.html('<div style="width: ' + logo.width() + 'px; display: inline-block;"></div>' + curMsg);
-		logo.removeClass('hint');
-		var duration = (curMsg.length + 10) * 0.1 + 's';
+		logocc.html('<div class="pad" style="width: ' + logo.width() + 'px; ">csTimer</div><span style="font-family: sans-serief; margin: 0 1em 0 1em;">' + curMsg + '</span><div class="pad" style="width: ' + logo.width() + 'px; position: absolute;">csTimer</div>');
+		logocc.removeClass('hint');
+		var duration = (curMsg.length + 15) * 0.1 + 's';
 		logocc.css({
 			'-webkit-animation-duration': duration,
 			'-moz-animation-duration': duration,
 			'animation-duration': duration
 		});
 		setTimeout(function() {
-			logo.addClass('hint');
+			logocc.addClass('hint');
 		});
 	}
 
