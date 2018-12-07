@@ -389,13 +389,22 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 	})();
 
 	var inputTimer = (function() {
-		var input = $('<textarea id="inputTimer" rows="1" />');;
+		var input = $('<textarea id="inputTimer" rows="1" />');
+		var lastEmptyTrigger = 0;
 
 		function parseInput() {
 			//                       |1st     |2nd    |3rd    |4th        |5th        |6th                 |7th              |8th
 			var reg = /^(?:[\d]+\. )?(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?(?:=([\d:.+]+?))?\s*(?:\[([^\]]+)\])?(?:   ([^@].*))?$/;
 			var timeRe = /^(\d*?):?(\d*?):?(\d*\.?\d*?)$/;
-			var arr = input.val().split(/\s*[,\n]\s*/);
+			var arr = input.val();
+			var now = $.now();
+			if (/^[\s\n]+$/.exec(arr) && now > lastEmptyTrigger + 500) {
+				kernel.pushSignal('ctrl', ['scramble', 'next']);
+				lastEmptyTrigger = now;
+				input.val('');
+				return;
+			}
+			arr = arr.split(/\s*[,\n]\s*/);
 			var time, ins, comment, scramble;
 			for (var i = 0; i < arr.length; i++) {
 				var m = reg.exec(arr[i]);
