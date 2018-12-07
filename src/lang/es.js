@@ -330,7 +330,7 @@ var STATS_SOLVE = 'Resolución';
 var STATS_TIME = 'Tiempo';
 var STATS_SESSION = 'Sesión';
 var STATS_SESSION_NAME = 'Session Name';
-var STATS_STRING = 'Mejor|Actual|Peor|Generado por csTimer el %Y-%M-%D|resoluciones/total: %d|Single|Media de %mk|Avg de %mk|Average: %v{ (σ = %sgm)}|Media: %v|Lista de tiempos:';
+var STATS_STRING = 'Mejor|Actual|Peor|Generado por csTimer el %Y-%M-%D|resoluciones/total: %d|Single|Media de %mk|Avg de %mk|Average: %v{ (σ = %sgm)}|Media: %v|Lista de tiempos:|solving from %s to %e';
 var STATS_PREC = 'Precisión de la distribución de tiempos: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';

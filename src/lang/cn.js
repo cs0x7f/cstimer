@@ -330,7 +330,7 @@ var STATS_SOLVE = '还原';
 var STATS_TIME = '时间';
 var STATS_SESSION = '分组';
 var STATS_SESSION_NAME = '分组名称';
-var STATS_STRING = '最快|当前|最慢|该统计信息由csTimer自动生成于%Y年%M月%D日|还原/总数：%d|单次时间|%mk次平均|%mk次去尾|总去尾：%v{ (σ = %sgm)}|总平均：%v|详细时间:';
+var STATS_STRING = '最快|当前|最慢|该统计信息由csTimer自动生成于%Y年%M月%D日|还原/总数：%d|单次时间|%mk次平均|%mk次去尾|总去尾：%v{ (σ = %sgm)}|总平均：%v|详细时间:|还原于%s至%e';
 var STATS_PREC = '时间分布显示精度：';
 var STATS_PREC_STR = '自动|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = '滚动列表%d类型|滚动列表%d长度|去尾平均|平均';

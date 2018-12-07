@@ -330,7 +330,7 @@ var STATS_SOLVE = 'сборка';
 var STATS_TIME = 'время';
 var STATS_SESSION = 'Сессия';
 var STATS_SESSION_NAME = 'Название Сессии';
-var STATS_STRING = 'лучшее|текущее|худшее|Сгенерираванно csTimer\'ом на %Y-%M-%D|сборок/всего: %d|один|средний  %mk|срд of %mk|Средний: %v{ (σ = %sgm)}|Средний: %v|Time List:';
+var STATS_STRING = 'лучшее|текущее|худшее|Сгенерираванно csTimer\'ом на %Y-%M-%D|сборок/всего: %d|один|средний  %mk|срд of %mk|Средний: %v{ (σ = %sgm)}|Средний: %v|Time List:|solving from %s to %e';
 var STATS_PREC = 'точное распределение времени: ';
 var STATS_PREC_STR = 'авто|0.1с|0.2с|0.5с|1с|2с|5с|10с|20с|50с|100с';
 var STATS_TYPELEN = 'список %d тип|список %d ширина|средний|средний';

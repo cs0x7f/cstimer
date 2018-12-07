@@ -330,7 +330,7 @@ var STATS_SOLVE = 'Opgelost';
 var STATS_TIME = 'Tijd';
 var STATS_SESSION = 'Sessie';
 var STATS_SESSION_NAME = 'Sessie Naam';
-var STATS_STRING = 'Beste|Actuele|Slechtste|Gegenereerd door csTimer op %Y-%M-%D|opgelost/totaal: %d|enkele|mean van %mk|avg of %mk|Gemiddelde: %v{ (s = %sgm)}|Mean: %v|Lijst met tijden:';
+var STATS_STRING = 'Beste|Actuele|Slechtste|Gegenereerd door csTimer op %Y-%M-%D|opgelost/totaal: %d|enkele|mean van %mk|avg of %mk|Gemiddelde: %v{ (s = %sgm)}|Mean: %v|Lijst met tijden:|solving from %s to %e';
 var STATS_PREC = 'precisie tijdsverdeling: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'lijst %d type|lijst %d lengte|average|mean';

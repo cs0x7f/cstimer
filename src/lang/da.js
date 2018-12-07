@@ -330,7 +330,7 @@ var STATS_SOLVE = 'Løs';
 var STATS_TIME = 'Tid';
 var STATS_SESSION = 'Session';
 var STATS_SESSION_NAME = 'Session navn';
-var STATS_STRING = 'bedste|nuværrende|værste|Genereret af csTimer på %Y-%M-%D|løsninger/total: %d|single|mean af %mk| gns af %mk|Gennemsnit: %v{ (s = %sgm)}|Mean: %v|Tid Liste:';
+var STATS_STRING = 'bedste|nuværrende|værste|Genereret af csTimer på %Y-%M-%D|løsninger/total: %d|single|mean af %mk| gns af %mk|Gennemsnit: %v{ (s = %sgm)}|Mean: %v|Tid Liste:|solving from %s to %e';
 var STATS_PREC = 'tidsfordeling præcision: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'liste %d type|liste %d længde|gennemsnit|mean';

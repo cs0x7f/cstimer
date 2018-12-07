@@ -330,7 +330,7 @@ var STATS_SOLVE = 'slaganje';
 var STATS_TIME = 'vrijeme';
 var STATS_SESSION = 'Sesija';
 var STATS_SESSION_NAME = 'Ime sesije';
-var STATS_STRING = 'najbolje|trenutno|najgore|Generirao csTimer %Y-%M-%D|slaganja/total: %d|pojedinačno|srednja vrijednost od %mk|prosjek od %mk|Prosjek: %v{ (σ = %sgm)}|Srednja vrijednost: %v|Lista vremena:';
+var STATS_STRING = 'najbolje|trenutno|najgore|Generirao csTimer %Y-%M-%D|slaganja/total: %d|pojedinačno|srednja vrijednost od %mk|prosjek od %mk|Prosjek: %v{ (σ = %sgm)}|Srednja vrijednost: %v|Lista vremena:|solving from %s to %e';
 var STATS_PREC = 'preciznost raspona vremena: ';
 var STATS_PREC_STR = 'automatska|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'izlistaj %d tip|izlistaj %d dužinu|prosjek|srednju vrijednost';

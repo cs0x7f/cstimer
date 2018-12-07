@@ -330,7 +330,7 @@ var STATS_SOLVE = 'megoldás';
 var STATS_TIME = 'eredmény';
 var STATS_SESSION = 'Időszak';
 var STATS_SESSION_NAME = 'Session Name';
-var STATS_STRING = 'legjobb|pillanatnyi|legrosszabb|csTimer által generálva  %év-%hó-%napján|megoldások/összes: %d|egyedüli|mean of %mk|avg of %mk|Átlag: %v{ (σ = %sgm)}|Mean: %v|Idő lista:';
+var STATS_STRING = 'legjobb|pillanatnyi|legrosszabb|csTimer által generálva  %év-%hó-%napján|megoldások/összes: %d|egyedüli|mean of %mk|avg of %mk|Átlag: %v{ (σ = %sgm)}|Mean: %v|Idő lista:|solving from %s to %e';
 var STATS_PREC = 'Idő kijelzés pontossága: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
