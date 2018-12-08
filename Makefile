@@ -3,7 +3,6 @@ ifndef dest
 	dest = dist
 endif
 closure = lib/compiler.jar
-yui = lib/yuicompressor.jar
 externJQ = --externs lib/jquery-1.7.js
 externTwisty = --externs $(src)/js/threemin.js --externs $(src)/js/twisty.js --externs $(dest)/js/twisty.js
 externLang = --externs $(src)/lang/cn.js
@@ -89,7 +88,7 @@ $(twisty): $(twistySrc)
 
 $(css): $(dest)/css/%.css: $(src)/css/%.css
 	@echo $@
-	@java -jar $(yui) --type css $< -o $@
+	@cp $< $@
 
 $(langPHP): $(dest)/lang/%: $(src)/lang/%
 	@echo $@
