@@ -1333,8 +1333,26 @@ var stats = (function(kpretty, round) {
 		}
 
 		function importSessions(data) {
-			console.log('import sessions');
-			console.log(data);
+			if (!data || data.length == 0) {
+				return;
+			}
+			var currentSessionIdx = sessionIdx;
+			for (var i = 0; i < data.length; i++) {
+				//session = {'name': name, 'scr': scr, 'phases': phases, 'times': times}
+				var sessionDetail = data[i];
+				sessionIdx  = ++sessionIdxMax;
+				sessionData[sessionIdx] = {
+					'name': sessionDetail['name'] || sessionIdx,
+					'scr': sessionDetail['scr'] || '333',
+					'phases': sessionDetail['phases'] || 1,
+					'rank': sessionIdxMax
+				};
+				kernel.setProp('sessionN', sessionIdxMax);
+				times = sessionDetail['times'];
+				save();
+			}
+			genSelect();
+			loadSession(currentSessionIdx);
 		}
 
 		$(function() {
