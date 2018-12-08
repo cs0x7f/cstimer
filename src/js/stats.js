@@ -1332,6 +1332,11 @@ var stats = (function(kpretty, round) {
 			}
 		}
 
+		function importSessions(data) {
+			console.log('import sessions');
+			console.log(data);
+		}
+
 		$(function() {
 			kernel.regListener('ssmgr', 'property', procSignal, /^(:?session(:?Data)?|scrType|phases)$/);
 			kernel.regListener('ssmgr', 'ctrl', procSignal, /^stats$/);
@@ -1357,6 +1362,7 @@ var stats = (function(kpretty, round) {
 				return select;
 			},
 			showMgrTable: showMgrTable,
+			importSessions: importSessions,
 			genSelect: genSelect,
 			load: load,
 			save: save
@@ -1688,4 +1694,8 @@ var stats = (function(kpretty, round) {
 			hideSessionOptions();
 		}
 	});
+
+	return {
+		importSessions: sessionManager.importSessions
+	}
 })(kernel.pretty, kernel.round);

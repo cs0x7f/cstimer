@@ -706,9 +706,9 @@ var kernel = (function() {
 		var inServGGL = $('<a class="click"/>');
 		var outServGGL = $('<a class="click"/>');
 
-		var inFile = $('<input type="file" id="file" accept="text/plain"/>').change(importFile);
+		var inFile = $('<input type="file" id="file" accept="text/plain"/>');
+		var inOtherFile = $('<input type="file" id="file" accept="text/plain"/>');
 		var outFile = $('<a class="click"/>').html(EXPORT_TOFILE);
-		var reader = undefined;
 
 		var inServ = $('<a class="click"/>').html(EXPORT_FROMSERV + ' (csTimer)').click(downloadData);
 		var outServ = $('<a class="click"/>').html(EXPORT_TOSERV + ' (csTimer)').click(uploadData);
@@ -717,11 +717,19 @@ var kernel = (function() {
 
 		exportTable.append(
 			$('<tr>').append(
-				$('<td>').append(inFile),
+				$('<td>').append($('<a class="click"/>').html(EXPORT_FROMFILE).click(function() {
+					inFile.click();
+				})),
 				$('<td>').append(outFile)),
 			$('<tr>').append(
 				$('<td>').append(inServ),
-				$('<td>').append(outServ)));
+				$('<td>').append(outServ)),
+			$('<tr>').append(
+				$('<td colspan=2>').append($('<a class="click"/>').html(EXPORT_FROMOTHER).click(function() {
+					inOtherFile.click();
+				}))
+			)
+		);
 
 		function importData() {
 			loadData(JSON.parse(this.result));
@@ -742,7 +750,7 @@ var kernel = (function() {
 			});
 		}
 
-		function importFile() {
+		function importFile(reader) {
 			if (this.files.length) {
 				var f = this.files[0];
 				// console.log(f);
@@ -987,8 +995,14 @@ var kernel = (function() {
 						$('<td>').append(outServGGL)))),
 				exportTable);
 			if (window.FileReader && window.Blob) {
-				reader = new FileReader();
+				var reader = new FileReader();
 				reader.onload = importData;
+				var readerOther = new FileReader();
+				readerOther.onload = function() {
+					stats.importSessions(TimerDataConverter(this.result));
+				};
+				inFile.change(importFile.bind(inFile[0], reader))
+				inOtherFile.change(importFile.bind(inOtherFile[0], readerOther));
 			}
 
 			if ($.urlParam('code')) { //WCA oauth

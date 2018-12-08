@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'Сохранить в';
 var EXPORT_FROMFILE = 'Загрузить из';
 var EXPORT_TOSERV = 'Сохранить на сервер';
 var EXPORT_FROMSERV = 'Загрузить из сервера';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Пожалуйста введите свой аккаунт (только алфавит или числа): ';
 var EXPORT_INVID = 'Разрешены только алфавит и числа!';
 var EXPORT_ERROR = 'Произошли некоторые ошибки...';

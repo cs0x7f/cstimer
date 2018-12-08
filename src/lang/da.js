@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'Export til fil';
 var EXPORT_FROMFILE = 'Import til fil';
 var EXPORT_TOSERV = 'Export til server';
 var EXPORT_FROMSERV = 'Import fra server';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Vær venlig og sæt din konto ind (kun alfabetisk eller nummere) ';
 var EXPORT_INVID = 'Kun alfabetiks eller nummere er tilladt!';
 var EXPORT_ERROR = 'Nogle fejl opstod...';

@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'Izvezi u datoteku';
 var EXPORT_FROMFILE = 'Uvezi iz datoteke';
 var EXPORT_TOSERV = 'Izvezi na server';
 var EXPORT_FROMSERV = 'Uvezi iz servera';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Unesi svoj korisnički račun (samo slova ili brojevi): ';
 var EXPORT_INVID = 'Dozvoljena su samo slova ili brojevi!';
 var EXPORT_ERROR = 'Dogodile su se neke greške...';

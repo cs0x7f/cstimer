@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'dosyaya aktar';
 var EXPORT_FROMFILE = 'dosyadan aktar';
 var EXPORT_TOSERV = 'servera aktar';
 var EXPORT_FROMSERV = 'serverdan aktar';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Lütfen hesabınızı girin (sadece harf veya numara): ';
 var EXPORT_INVID = 'sadece harf veya numara kullanılabilir';
 var EXPORT_ERROR = 'Bir hata oluştu...';

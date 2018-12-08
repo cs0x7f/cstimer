@@ -25,6 +25,7 @@ var EXPORT_TOFILE = '파일로 내보내기';
 var EXPORT_FROMFILE = '파일로부터 가져오기';
 var EXPORT_TOSERV = '서버로 내보내기';
 var EXPORT_FROMSERV = '서버로부터 가져오기';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = '계정을 입력해주세요 (영문, 숫자만 사용 가능): ';
 var EXPORT_INVID = '계정 이름에는 영문과 숫자만 사용할 수 있다구욧!';
 var EXPORT_ERROR = '알 수 없는 오류가 발생했나봐요... ㅠㅠ';

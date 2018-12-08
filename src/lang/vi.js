@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'giải phóng thành file';
 var EXPORT_FROMFILE = 'Thu thập từ file';
 var EXPORT_TOSERV = 'Giải phóng ra server';
 var EXPORT_FROMSERV = 'Thu thập từ  server';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Hãy viết mã riêng đặc biệt của bạn (chỉ viết bằng chữ cái và số): ';
 var EXPORT_INVID = 'Chỉ được viết chữ cái hoặc con số!';
 var EXPORT_ERROR = 'Có lỗi xảy ra...';

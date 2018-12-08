@@ -579,3 +579,43 @@ if ('serviceWorker' in navigator) {
 		}, false);
 	});
 }
+
+var TimerDataConverter = (function() {
+
+	// {'name': [regex, converter]}
+	var Timers = {}
+
+	Timers['csTimer'] = [/^{"session1"/i, function(data) {
+
+	}];
+	Timers['ZYXTimer'] = [/^Session: /i, function(data) {
+
+	}];
+	Timers['TwistyTimer'] = [/^Puzzle,Category,Time\(millis\),Date\(millis\),Scramble,Penalty,Comment/i, function(data) {
+
+	}];
+	Timers['BlockKeeper'] = [/^{"puzzles":\[{"name":/i, function(data) {
+
+	}];
+	Timers['PrismaTimer'] = [/^[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\n/i, function(data) {
+
+	}];
+
+	function convert(data) {
+		console.log(data);
+		var ret = undefined;
+		for (var timer in Timers) {
+			if (Timers[timer][0].exec(data)) {
+				console.log('try read by ' + timer);
+				try {
+					ret = Timers[timer][1](data);
+				} catch (e) {}
+			}
+		}
+		return ret;
+	}
+
+	//return [session1, session2, session3, ...]
+	//session = {'name': name, 'scr': scr, 'phases': phases, 'times': times}
+	return convert;
+})();

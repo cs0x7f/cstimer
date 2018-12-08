@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'Exportar como arquivo';
 var EXPORT_FROMFILE = 'Importar arquivo';
 var EXPORT_TOSERV = 'Exportar para o servidor';
 var EXPORT_FROMSERV = 'Importar do servidor';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Por favor coloque sua conta (apenas alfabeto ou números): ';
 var EXPORT_INVID = 'Apenas alfabeto ou números são permitidos!';
 var EXPORT_ERROR = 'Alguns erros ocorreram...';

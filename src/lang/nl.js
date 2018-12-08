@@ -25,6 +25,7 @@ var EXPORT_TOFILE = 'Exporteren naar bestand';
 var EXPORT_FROMFILE = 'Importeren van bestand';
 var EXPORT_TOSERV = 'Exporteren naar server';
 var EXPORT_FROMSERV = 'Importeren van server';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Voer aub je account in (alleen letters en cijfers): ';
 var EXPORT_INVID = 'Alleen letters en cijfers zijn toegestaan!';
 var EXPORT_ERROR = 'Er zijn fouten opgetreden...';

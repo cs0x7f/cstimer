@@ -25,6 +25,7 @@ var EXPORT_TOFILE = '导出到文件';
 var EXPORT_FROMFILE = '从文件导入';
 var EXPORT_TOSERV = '导出到服务器';
 var EXPORT_FROMSERV = '从服务器导入';
+var EXPORT_FROMOTHER = '从其他计时器导入分组';
 var EXPORT_USERID = '请输入帐号（限字母或数字）：';
 var EXPORT_INVID = '帐号名只能包含字母或数字！';
 var EXPORT_ERROR = '出错了，我也想知道为什么……';
