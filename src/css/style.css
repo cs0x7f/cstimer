@@ -574,11 +574,23 @@ table.sumtable td, table.sumtable th {
 	bottom: 20%;
 }
 
-.dialogscropt label {
+.sflt > div {
+	white-space: nowrap;
+}
+
+.sflt > div > div {
+	white-space: normal;
+}
+
+.dialogscropt .sflt label, .dialogscropt .sflt > div > span:first-child {
 	display: inline-block;
-	width: 10em;
+	min-width: 45%;
 	text-align: left;
-	padding: 0.2em;
+	padding: 0.2em 0.2em 0.2em 5%;
+}
+
+.dialogscropt .sflt label {
+	min-width: 24%;
 }
 
 select, input[type='button'], input[type='text'] {
@@ -785,7 +797,7 @@ html.m.p150 {
 	bottom: 12.2vw;
 }
 
-.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogexport, .m .dialoglogo {
+.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {
 	left: 5%;
 	right: 5%;
 }

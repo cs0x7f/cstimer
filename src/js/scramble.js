@@ -6,7 +6,7 @@ var scramble = (function(rn, rndEl) {
 	var select2 = $('<select />');
 	var scrOpt = $('<input type="button" class="icon">').val('\ue994');
 	var scrOptDiv = $('<div>');
-	var scrFltUl = $('<ul>');
+	var scrFltDiv = $('<div class="sflt">');
 	var scrFltSelAll = $('<input type="button">').val('Select All');
 	var scrFltSelNon = $('<input type="button">').val('Select None');
 	var scrLen = $('<input type="text" maxlength="3">');
@@ -215,8 +215,9 @@ var scramble = (function(rn, rndEl) {
 	}
 
 	function showScrOpt() {
-		scrFltUl.empty();
+		scrFltDiv.empty();
 		var chkBoxList = [];
+		var chkLabelList = [];
 		var modified = false;
 		if (type in filters) {
 			var data = filters[type].slice();
@@ -225,20 +226,80 @@ var scramble = (function(rn, rndEl) {
 				curData = scrFlt[1] || data;
 			}
 			// console.log(scrFlt, curData);
-			scrFltUl.append('<br>', scrFltSelAll, scrFltSelNon, '<br>');
+			scrFltDiv.append('<br>', scrFltSelAll, scrFltSelNon, '<br><br>');
+			var dataGroup = {};
+			var dataGroupCnt = {};
+			for (var i = 0; i < data.length; i++) {
+				var spl = data[i].indexOf('-');
+				if (spl == -1) {
+					dataGroup[data[i]] = [i];
+					continue;
+				}
+				var group = data[i].slice(0, spl);
+				dataGroup[group] = dataGroup[group] || [];
+				dataGroup[group].push(i);
+			}
 			for (var i = 0; i < data.length; i++) {
 				var chkBox = $('<input type="checkbox">').val(i);
 				if (curData[i] != null) {
 					chkBox[0].checked = true;
 				}
 				chkBoxList.push(chkBox);
-				scrFltUl.append($('<label>').append(chkBox, data[i]));
+				chkLabelList.push($('<label>').append(chkBox, data[i]));
 			}
+
+			function cntSel(g) {
+				var cnt = 0;
+				$.each(dataGroup[g], function(idx, val) {
+					cnt += chkBoxList[val][0].checked ? 1 : 0;
+				});
+				return cnt + '/' + dataGroup[g].length;
+			}
+
+			for (var g in dataGroup) {
+				if (dataGroup[g].length == 1) {
+					scrFltDiv.append(chkLabelList[dataGroup[g][0]]);
+				}
+			}
+			for (var g in dataGroup) {
+				if (dataGroup[g].length == 1) {
+					continue;
+				}
+				scrFltDiv.append($('<div>').attr('data', g).append(
+					$('<span>').html(g + ' ' + cntSel(g)), ' | ',
+					$('<span class="click">').html('All').click(function() {
+						var g = $(this).parent().attr('data');
+						$.each(dataGroup[g], function(idx, val) {
+							chkBoxList[val][0].checked = true;
+						});
+						$(this).parent().children().first().html(g + ' ' + cntSel(g));
+					}), ' | ',
+					$('<span class="click">').html('None').click(function() {
+						var g = $(this).parent().attr('data');
+						$.each(dataGroup[g], function(idx, val) {
+							chkBoxList[val][0].checked = false;
+						});
+						$(this).parent().children().first().html(g + ' ' + cntSel(g));
+					}), ' | ',
+					$('<span class="click">[+]</span>').click(function() {
+						$(this).next().toggle();
+					}),
+					$('<div>').append($.map(dataGroup[g], function(val) {
+						chkBoxList[val].change(function() {
+							var g = $(this).parent().parent().parent().attr('data');
+							$(this).parent().parent().parent().children().first().html(g + ' ' + cntSel(g));
+						});
+						return chkLabelList[val];
+					})).hide())
+				);
+			}
+
 			scrFltSelAll.unbind('click').click(function() {
 				for (var i = 0; i < chkBoxList.length; i++) {
 					if (!chkBoxList[i][0].checked) {
 						chkBoxList[i][0].checked = true;
 					}
+					chkBoxList[i].change();
 				}
 			});
 			scrFltSelNon.unbind('click').click(function() {
@@ -246,6 +307,7 @@ var scramble = (function(rn, rndEl) {
 					if (chkBoxList[i][0].checked) {
 						chkBoxList[i][0].checked = false;
 					}
+					chkBoxList[i].change();
 				}
 			});
 		}
@@ -476,7 +538,7 @@ var scramble = (function(rn, rndEl) {
 		select2.change(loadScrOptsAndGen);
 		scrLen.change(genScramble);
 		scrOpt.click(showScrOpt);
-		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltUl);
+		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltDiv);
 
 		var last = $('<span />').addClass('click').html(SCRAMBLE_LAST).click(function() {
 			sdiv.html(lastscramble);
