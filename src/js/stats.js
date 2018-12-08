@@ -632,13 +632,14 @@ var stats = (function(kpretty, round) {
 			var tend = timesAt(start + nsolves - 1);
 			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString().replace(',', '')) : 'N/A'))
 				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString().replace(',', '')) : 'N/A'));
+			tstr = " (" + tstr + ")";
 		}
 		var now = new Date();
 		var s = [hlstr[3]
 			.replace("%Y", now.getFullYear())
 			.replace("%M", now.getMonth() + 1)
 			.replace("%D", now.getDate())
-			+ " (" + tstr + ")" + "\n"];
+			+ tstr + "\n"];
 		if (id > 1) {
 			if (id == 2) {
 				s.push(hlstr[8]); //"Session average";
@@ -1377,13 +1378,14 @@ var stats = (function(kpretty, round) {
 			var tend = timesAt(length - 1);
 			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString().replace(',', '')) : 'N/A'))
 				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString().replace(',', '')) : 'N/A'));
+			tstr = " (" + tstr + ")";
 		}
 		var now = new Date();
 		var s = [hlstr[3]
 			.replace("%Y", now.getFullYear())
 			.replace("%M", now.getMonth() + 1)
 			.replace("%D", now.getDate())
-			+ " (" + tstr + ")"];
+			+ tstr];
 		s.push(hlstr[4].replace("%d", (length - numdnf) + "/" + length) + '\n');
 		s.push(hlstr[5]);
 		s.push('    ' + hlstr[0] + ": " + kpretty(bestTime));
