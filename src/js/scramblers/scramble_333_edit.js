@@ -179,10 +179,6 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	var search = new min2phase.Search();
 
-	function getRandomOriScramble() {
-		return getRandomScramble() + rndEl(["", "Rw ", "Rw2 ", "Rw' ", "Fw ", "Fw' "]) + rndEl(["", "Uw", "Uw2", "Uw'"]);
-	}
-
 	function getRandomScramble() {
 		return getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff);
 	}
@@ -573,7 +569,6 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	scramble.reg('333', getRandomScramble)
 		('333fm', getFMCScramble)
-		('333ni', getRandomOriScramble)
 		('edges', getEdgeScramble)
 		('corners', getCornerScramble)
 		('ll', getLLScramble)

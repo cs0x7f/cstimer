@@ -13,9 +13,7 @@ var scramble = (function(rn, rndEl) {
 	var sdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
 		'333oh': '333',
-		'333ft': '333',
-		'444bld': '444wca',
-		'555bld': '555wca'
+		'333ft': '333'
 	};
 
 	var scrFlt = "";
