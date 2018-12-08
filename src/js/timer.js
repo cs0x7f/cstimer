@@ -1189,7 +1189,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		if (fobj != undefined) {
 			fobj.focus();
 		} else {
-			$(document.activeElement).blur();
+			document.activeElement.blur();
 		}
 	}
 

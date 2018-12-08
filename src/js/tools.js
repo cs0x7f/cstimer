@@ -3,13 +3,12 @@
 var tools = (function() {
 	var curScramble = ['-', ''];
 	var isEn = false;
-	// var func = 'cross';
 
 	var divs = [];
 
 	function execFunc(idx, signal) {
 		if (idx == -1) {
-			for (var i=0; i<kernel.getProp('NTools'); i++) {
+			for (var i = 0; i < kernel.getProp('NTools'); i++) {
 				execFunc(i, signal);
 			}
 			return;
@@ -34,7 +33,7 @@ var tools = (function() {
 			if (tool == funcs[idx]) {
 				toolBox[tool](undefined, signal);
 			}
-		}		
+		}
 	}
 
 	function scrambleType(scramble) {
@@ -90,28 +89,25 @@ var tools = (function() {
 	var fdivs = [];
 	var funcs = ['image', 'stats', 'cross'];
 	var funcSelects = [];
-	for (var i=0; i<4; i++) {
+	var funcSpan = [];
+	for (var i = 0; i < 4; i++) {
 		fdivs[i] = $('<div />');
+		funcSpan[i] = $('<span />');
 		funcSelects[i] = $('<select />');
 		divs[i] = $('<div />');
 	}
-	// var fdiv = fdivs[0];
-	// var funcSelect = funcSelects[0];
 
 	function procSignal(signal, value) {
 		if (signal == 'property') {
-			// if (value[0] == 'toolsfunc') {
-				// func = value[1];
-			// }
 			if (value[0] == 'imgSize') {
-				for (var i=0; i<kernel.getProp('NTools'); i++) {
+				for (var i = 0; i < kernel.getProp('NTools'); i++) {
 					if (funcs[i] == 'image') {
 						execFunc(i, signal);
 					}
 				}
 			} else if (value[0] == 'NTools') {
-				for (var i=0; i<4; i++) {
-					if (i<value[1]) {
+				for (var i = 0; i < 4; i++) {
+					if (i < value[1]) {
 						divs[i].show();
 						if (fdivs[i].html() == '') {
 							execFunc(i, signal);
@@ -131,13 +127,31 @@ var tools = (function() {
 				execFunc(-1, signal);
 				return;
 			}
-			for (var i=0; i<kernel.getProp('NTools'); i++) {
+			for (var i = 0; i < kernel.getProp('NTools'); i++) {
 				if (isEn && fdivs[i].html() == '') {
 					execFunc(i, signal);
 				}
 			}
 		}
-		// robot.procSignal(signal, value);
+	}
+
+	function hideFuncSpan() {
+		for (var i = 0; i < 4; i++) {
+			funcSpan[i].hide();
+		}
+		kernel.blur();
+		kernel.setProp('toolHide', true);
+	}
+
+	function showFuncSpan(e) {
+		if ($(e.target).hasClass('click') || $(e.target).is('input, textarea, select')) {
+			return;
+		}
+		for (var i = 0; i < 4; i++) {
+			funcSpan[i].show();
+		}
+		kernel.blur();
+		kernel.setProp('toolHide', false);
 	}
 
 	$(function() {
@@ -147,9 +161,12 @@ var tools = (function() {
 		kernel.regListener('tools', 'button', procSignal, /^tools$/);
 
 		var mainDiv = $('<div id="toolsDiv"/>').appendTo('body');
-		for (var i=0; i<4; i++) {
+		for (var i = 0; i < 4; i++) {
+			var hideButton = $('<input type="button" value="&#8675;">').click(hideFuncSpan);
+			fdivs[i].click(showFuncSpan);
 			funcSelects[i].change(changeSelect);
-			divs[i].append(fdivs[i], "<br>", TOOLS_SELECTFUNC, funcSelects[i]).appendTo(mainDiv);
+			funcSpan[i].append("<br>", hideButton, ' ', TOOLS_SELECTFUNC, funcSelects[i]);
+			divs[i].append(fdivs[i], funcSpan[i]).appendTo(mainDiv);
 			if (i == 1) {
 				mainDiv.append('<br>');
 			}
@@ -165,6 +182,10 @@ var tools = (function() {
 		}
 		funcs = JSON.parse(funcStr);
 		kernel.addWindow('tools', BUTTON_TOOLS, mainDiv, false, true, 6);
+
+		if (kernel.getProp('toolHide', false)) {
+			hideFuncSpan();
+		}
 	});
 
 	/**
@@ -174,14 +195,14 @@ var tools = (function() {
 
 	function regTool(name, str, execFunc) {
 		toolBox[name] = execFunc;
-		for (var i=0; i<4; i++) {
+		for (var i = 0; i < 4; i++) {
 			funcSelects[i].append($('<option />').val(name).html(str)).val(funcs[i]);
 		}
 	}
 
 	function changeSelect() {
 		kernel.blur();
-		for (var i=0; i<4; i++) {
+		for (var i = 0; i < 4; i++) {
 			var newVal = funcSelects[i].val();
 			if (funcs[i] != newVal) {
 				disableFunc(i, 'property');
@@ -197,7 +218,7 @@ var tools = (function() {
 		getCurScramble: function() {
 			return curScramble;
 		},
-		scrambleType: scrambleType, 
+		scrambleType: scrambleType,
 		puzzleType: puzzleType
 	}
 

@@ -496,9 +496,11 @@ var scramble = (function(rn, rndEl) {
 				genScramble();
 			}
 		});
-		title.append($('<nobr>').append($('<span class="click">').html('&nbsp;&#8593;&nbsp;').click(function() {
+		title.append($('<nobr>').append($('<input type="button" value="&#8673;">').click(function() {
 			title.hide();
-		}), select, ' ', select2, ' ', scrOpt), " <wbr>");
+			kernel.blur();
+			kernel.setProp('scrHide', true);
+		}), ' ', select, ' ', select2, ' ', scrOpt), " <wbr>");
 		// title.append($('<nobr>').append(SCRAMBLE_LENGTH + ': ', scrLen), " <wbr>");
 		title.append($('<nobr>').append(last, '/', next, SCRAMBLE_SCRAMBLE));
 		div.append(title, sdiv).appendTo('body');
@@ -506,7 +508,12 @@ var scramble = (function(rn, rndEl) {
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
 		sdiv.click(function() {
 			title.show();
+			kernel.blur();
+			kernel.setProp('scrHide', false);
 		});
+		if (kernel.getProp('scrHide', false)) {
+			title.hide();
+		}
 	});
 
 	return {
