@@ -5,6 +5,8 @@ var stats = (function(kpretty, round) {
 	var div = $('<div id="stats" />');
 	var stext = $('<textarea rows="10" readonly />');
 	var scrollDiv = $('<div class="myscroll" />');
+	var statOptDiv = $('<div>');
+	var hideOptButton = $('<input type="button" value="&#8675;">');
 
 	var table = $('<table />').click(procClick).addClass("table");
 	var title = $('<tr />');
@@ -384,21 +386,14 @@ var stats = (function(kpretty, round) {
 	}
 
 	function updateTable(scroll) {
-		var dim = 1;
+		curDim = 1;
 		for (var i = 0; i < times.length; i++) {
-			dim = Math.max(dim, timesAt(i)[0].length - 1);
+			curDim = Math.max(curDim, timesAt(i)[0].length - 1);
 		}
-		title.empty().append(
-			'<th></th><th>' + STATS_TIME + '</th><th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
-		);
-		if (dim > 1) {
-			for (var i = 0; i < dim; i++) {
-				title.append('<th>P.' + (i + 1) + '</th>');
-			}
-		}
+		updateTitleRow();
 		var rows = [];
 		for (var i = Math.max(0, times.length - MAX_ITEMS), len = times.length; i < len; i++) {
-			rows.push(getTimeRow(i, dim));
+			rows.push(getTimeRow(i, curDim));
 		}
 		if (kernel.getProp('statinv')) {
 			table.empty().append(title, showAllRow, rows.join(""), avgRow);
@@ -410,8 +405,7 @@ var stats = (function(kpretty, round) {
 		} else {
 			showAllRow.unbind('click').hide();
 		}
-		updateAvgRow(dim);
-		curDim = dim;
+		updateAvgRow(curDim);
 		updateUtil();
 		scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
 	}
@@ -427,7 +421,6 @@ var stats = (function(kpretty, round) {
 		}
 		times_stats.getAllStats();
 		var s = [];
-		s.push('<tr><th></th><th>' + hlstr[1] + '</th><th>' + hlstr[0] + '</th></tr>');
 		s.push('<tr><th>time</th>');
 		if (times.length > 0) {
 			var idx = times.length - 1;
@@ -446,7 +439,7 @@ var stats = (function(kpretty, round) {
 			}
 		}
 		s = s.join("");
-		sumtable.html(s);
+		sumtable.empty().append($('<tr>').append(getShowOptTh(), '<th>' + hlstr[1] + '</th><th>' + hlstr[0] + '</th>'), s);
 		resultsHeight();
 	}
 
@@ -1534,6 +1527,42 @@ var stats = (function(kpretty, round) {
 		return true;
 	}
 
+	function getShowOptTh() {
+		var sopth = $('<th>');
+		if (kernel.getProp('statHide')) {
+			sopth.addClass('click').html('&#8673;').click(showSessionOptions);
+		}
+		return sopth;
+	}
+
+	function updateTitleRow() {
+		title.empty().append(
+			kernel.getProp('statsum') ? '<th>' : getShowOptTh(),
+			'<th>' + STATS_TIME + '</th><th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
+		);
+		if (curDim > 1) {
+			for (var i = 0; i < curDim; i++) {
+				title.append('<th>P.' + (i + 1) + '</th>');
+			}
+		}
+	}
+
+	function hideSessionOptions() {
+		statOptDiv.hide();
+		kernel.blur();
+		kernel.setProp('statHide', true);
+		updateTitleRow();
+		updateSumTable();
+	}
+
+	function showSessionOptions() {
+		statOptDiv.show();
+		kernel.blur();
+		kernel.setProp('statHide', false);
+		updateTitleRow();
+		updateSumTable();
+	}
+
 	var curScramble = "";
 
 	var stat1, stat2, len1, len2;
@@ -1607,7 +1636,7 @@ var stats = (function(kpretty, round) {
 		if ($('html').hasClass('m')) {
 			scrollDiv.height(Math.max(sumtableDiv.height(), avgRow.height() + title.height() * 2));
 		} else if (scrollDiv[0].offsetParent != null) {
-			scrollDiv.outerHeight(~~(div.height() - sessionManager.getSelect().parent().outerHeight() - sumtableDiv.outerHeight() - 5));
+			scrollDiv.outerHeight(~~(div.height() - (statOptDiv.is(':hidden') ? 0 : statOptDiv.outerHeight()) - sumtableDiv.outerHeight() - 5));
 		}
 	}
 
@@ -1629,7 +1658,7 @@ var stats = (function(kpretty, round) {
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
 
 		div.appendTo('body').append(
-			$('<div>').append(
+			statOptDiv.append(hideOptButton.click(hideSessionOptions), ' ',
 				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
 				sessionManager.getSelect(), $('<input type="button">').val('X').click(reset)),
 			sumtableDiv.append(sumtable),
@@ -1653,5 +1682,8 @@ var stats = (function(kpretty, round) {
 			['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'Custom']
 		]);
 		kernel.regProp('stats', 'delmul', 0, PROPERTY_DELMUL, [true]);
+		if (kernel.getProp('statHide', false)) {
+			hideSessionOptions();
+		}
 	});
 })(kernel.pretty, kernel.round);

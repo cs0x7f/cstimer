@@ -739,8 +739,15 @@ input[type="file"] {
 
 .m #stats {
 	top: auto;
+	max-width: 100%;
 	bottom: 61px;
 	bottom: 12.2vw;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+
+.m #stats table {
+	min-width: initial;
 	white-space: nowrap;
 }
 
