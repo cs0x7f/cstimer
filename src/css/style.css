@@ -250,12 +250,12 @@ textarea {
 }
 
 #leftbar #logo {
-	font-size: 3.3em;
+	font-size: 3.2em;
 	font-family: MyImpact;
 	width: 100%;
 	border-width: 2px;
 	border-width: 0.15rem;
-	overflow-x: hidden;
+	overflow: hidden;
 	white-space: nowrap;
 }
 
@@ -465,6 +465,10 @@ textarea {
 	width: 100%;
 }
 
+.myscroll::-webkit-scrollbar {
+	display: none;
+}
+
 .statc {
 	display: inline-block;
 	width: 100%;
@@ -656,30 +660,37 @@ input[type="file"] {
 	padding: 0.5em;
 }
 
-.m html.p70 {
-	font-size: 1.9vw;
+html.m.p70 {
+	font-size: 1.47vw;
+	font-size: calc(0.63vw + 1.12vh);
 }
-.m html.p80 {
-	font-size: 2.2vw;
+html.m.p80 {
+	font-size: 1.68vw;
+	font-size: calc(0.72vw + 1.28vh);
 }
-.m html.p90 {
-	font-size: 2.5vw;
+html.m.p90 {
+	font-size: 1.89vw;
+	font-size: calc(0.81vw + 1.44vh);
 }
-.m html {
-	font-size: 2.8vw;
+html.m {
+	font-size: 2.10vw;
+	font-size: calc(0.90vw + 1.60vh);
 }
-.m html.p110 {
-	font-size: 3.1vw;
+html.m.p110 {
+	font-size: 2.31vw;
+	font-size: calc(0.99vw + 1.76vh);
 }
-.m html.p125 {
-	font-size: 3.5vw;
+html.m.p125 {
+	font-size: 2.62vw;
+	font-size: calc(1.12vw + 2.00vh);
 }
-.m html.p150 {
-	font-size: 4.2vw;
+html.m.p150 {
+	font-size: 3.15vw;
+	font-size: calc(1.35vw + 2.40vh);
 }
 
 .m #timer, .m #touch {
-	font-size: 0.8em;
+	font-size: 0.6em;
 	left: 0;
 	width: 100%;
 }
