@@ -696,7 +696,7 @@ var TimerDataConverter = (function() {
 				ret.push({
 					'name': name,
 					'phases': 1,
-					'scr': ScrambleMap[line[0]],
+					'scr': ScrambleMap[line[0]] || '333',
 					'times': []
 				});
 			}

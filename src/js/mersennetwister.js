@@ -833,6 +833,7 @@ var sbtree = (function() {
 		this[1] = null;
 		this.cnt = 1;
 		this.sum = key;
+		this.sk2 = Math.pow(key, 2);
 	}
 
 	function SBTree(comparator) {
@@ -859,6 +860,10 @@ var sbtree = (function() {
 		return node == null ? 0 : node.sum;
 	}
 
+	function sk2(node) {
+		return node == null ? 0 : node.sk2;
+	}
+
 	SBTree.prototype.cumSum = function(n_value) {
 		if (n_value >= size(this.root) || size(this.root) == 0) {
 			return sum(this.root);
@@ -882,6 +887,45 @@ var sbtree = (function() {
 		return ret;
 	};
 
+	SBTree.prototype.cumSk2 = function(n_value) {
+		if (n_value >= size(this.root) || size(this.root) == 0) {
+			return sk2(this.root);
+		}
+		var node = this.root;
+		var ret = 0;
+		while (n_value > 0) {
+			var leftSize = size(node[0]);
+			if (n_value < leftSize) {
+				node = node[0];
+				continue;
+			}
+			ret += sk2(node[0]);
+			if (n_value == leftSize) {
+				return ret;
+			}
+			ret += Math.pow(node.k, 2);
+			n_value -= leftSize + 1;
+			node = node[1];
+		}
+		return ret;
+	};
+
+	SBTree.prototype.rank = function(nth) {
+		var node = this.root;
+		while (node) {
+			var leftSize = size(node[0]);
+			if (nth < leftSize) {
+				node = node[0];
+			} else if (nth == leftSize) {
+				return node.k;
+			} else {
+				nth -= leftSize + 1;
+				node = node[1];
+			}
+		}
+		return nth < 0 ? -1e300 : 1e300;
+	};
+
 	SBTree.prototype.traverse = function(func, reverse) {
 		return traverseDir(this.root, func, reverse ^ 0);
 	};
@@ -896,6 +940,7 @@ var sbtree = (function() {
 		}
 		node.cnt += 1;
 		node.sum += key;
+		node.sk2 += Math.pow(key, 2);
 		var dir = this.cmp(node.k, key) < 0 ^ 0;
 		node[dir] = this.insertR(node[dir], key, value);
 		if (size(node[dir][dir]) > size(node[dir ^ 1])) {
@@ -920,6 +965,7 @@ var sbtree = (function() {
 		}
 		node.cnt -= 1;
 		node.sum -= key;
+		node.sk2 -= Math.pow(key, 2);
 		if (node.k == key) {
 			if (node[0] == null || node[1] == null) {
 				return node[node[0] == null ^ 0];
@@ -947,6 +993,8 @@ var sbtree = (function() {
 		node.cnt = size(node[0]) + size(node[1]) + 1;
 		save.sum = node.sum;
 		node.sum = sum(node[0]) + sum(node[1]) + node.k;
+		save.sk2 = node.sk2;
+		node.sk2 = sk2(node[0]) + sk2(node[1]) + Math.pow(node.k, 2);
 
 		return save;
 	}

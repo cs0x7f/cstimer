@@ -460,6 +460,7 @@ var stats = (function(kpretty, round) {
 	var worstTime = -1;
 	var worstTimeIndex = 0;
 
+
 	var times_stats = (function() {
 		var avgTrees = [];
 		var n_dnf = [];
@@ -605,12 +606,38 @@ var stats = (function(kpretty, round) {
 				worstTime = t;
 				worstTimeIndex = i;
 			}
-			if (t == -1) { numdnf++; } else { sessionsum += t; }
+			if (t == -1) {
+				numdnf++;
+			} else {
+				sessionsum += t;
+			}
+		}
+
+		function getMinMaxInt() {
+			var theStats = getAllStats();
+			if (theStats[0] == times.length) {
+				return null;
+			}
+			var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
+			var diff;
+			if (kernel.getProp('disPrec') == 'a') {
+				diff = (worstTime - bestTime) / 10;
+				for (var i = 0; i < diffValues.length; i++) {
+					if (diff < diffValues[i]) {
+						diff = diffValues[i];
+						break;
+					}
+				}
+			} else {
+				diff = diffValues[kernel.getProp('disPrec')];
+			}
+			return [worstTime, bestTime, diff];
 		}
 
 		return {
 			reset: reset,
 			getAllStats: getAllStats,
+			getMinMaxInt: getMinMaxInt,
 			push: push
 		}
 	})();
@@ -618,11 +645,15 @@ var stats = (function(kpretty, round) {
 	function setHighlight(start, nsolves, id, mean) {
 		if (times.length == 0) return;
 		var data = [0, [null], [null]];
+		var trim = 0,
+			triml = 0,
+			trimr = 0;
 		if (start + nsolves != 0) {
 			if (mean) {
 				data = runAvgMean(start, nsolves, 0, 0);
 			} else {
 				data = runAvgMean(start, nsolves);
+				trim = Math.ceil(nsolves / 20);
 			}
 		}
 
@@ -657,7 +688,12 @@ var stats = (function(kpretty, round) {
 		for (var i = 0; i < nsolves; i++) {
 			var time = timesAt(start + i);
 			var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
-			if ($.inArray(i, data[2]) > -1 || $.inArray(i, data[3]) > -1) {
+			var t = timeAt(start + i);
+			if (triml < trim && dnfsort(t, data[2]) <= 0) {
+				triml++;
+				c = "(" + c + ")";
+			} else if (trimr < trim && dnfsort(t, data[3]) >= 0) {
+				trimr++;
 				c = "(" + c + ")";
 			}
 			if (kernel.getProp('printScr')) {
@@ -806,37 +842,6 @@ var stats = (function(kpretty, round) {
 
 	})();
 
-	function getMinMaxInt() {
-		var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
-		var max = 0,
-			min = 0x7fffffff,
-			n_solve = 0,
-			diff;
-		for (var i = 0; i < times.length; i++) {
-			if (timeAt(i) != -1) {
-				var value = timeAt(i);
-				max = Math.max(value, max);
-				min = Math.min(value, min);
-				n_solve++;
-			}
-		}
-		if (n_solve == 0) {
-			return null;
-		}
-		if (kernel.getProp('disPrec') == 'a') {
-			diff = (max - min) / 10;
-			for (var i = 0; i < diffValues.length; i++) {
-				if (diff < diffValues[i]) {
-					diff = diffValues[i];
-					break;
-				}
-			}
-		} else {
-			diff = diffValues[kernel.getProp('disPrec')];
-		}
-		return [max, min, diff];
-	}
-
 	function timeAt(idx) {
 		return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
 	}
@@ -858,7 +863,7 @@ var stats = (function(kpretty, round) {
 			}
 			div.empty();
 
-			var data = getMinMaxInt();
+			var data = times_stats.getMinMaxInt();
 
 			if (!data) {
 				return;
@@ -961,7 +966,7 @@ var stats = (function(kpretty, round) {
 			ctx.fillText((stat2 > 0 ? "ao" : "mo") + len2, 350, 13);
 			ctx.strokeStyle = '#00f'; ctx.beginPath(); ctx.moveTo(390, 7); ctx.lineTo(450, 7); ctx.stroke();
 
-			var data = getMinMaxInt();
+			var data = times_stats.getMinMaxInt();
 			if (!data) {
 				return;
 			}
@@ -1467,6 +1472,7 @@ var stats = (function(kpretty, round) {
 	}
 
 	function dnfsort(a, b) {
+		if (a == b) return 0;
 		if (a < 0) return 1;
 		if (b < 0) return -1;
 		return a - b;
@@ -1500,34 +1506,10 @@ var stats = (function(kpretty, round) {
 			n_dnf -= t0 == -1;
 			retAvg.push(n_dnf > trim ? -1 : round((rbt.cumSum(nsolves - trim) - rbt.cumSum(trim)) / neff));
 		}
-		var mintList = [];
-		var maxtList = [];
-		var variance = 0;
-		if (!onlyavg && length == nsolves) {
-			retAvg = retAvg[0];
-			var timeArr = [];
-			for (var j = 0; j < nsolves; j++) {
-				var t = timeAt(start + j);
-				timeArr.push(t);
-				n_dnf += t == -1;
-			}
-			if (trim != 0) {
-				rbt.traverse(function(node) {
-					timeArr[node.v] = 0;
-					return mintList.push(node.v) < trim;
-				}, false);
-				rbt.traverse(function(node) {
-					timeArr[node.v] = 0;
-					return maxtList.push(node.v) < trim;
-				}, true);
-			}
-			for (var j = 0; j < nsolves; j++) {
-				variance += Math.pow(timeArr[j], 2);
-			}
-			var avg = (rbt.cumSum(nsolves - trim) - rbt.cumSum(trim));
-			variance = Math.sqrt((variance - avg * avg / neff) / (neff - 1)) / 1000;
-		}
-		return [retAvg, variance, mintList, maxtList];
+		var avg = rbt.cumSum(nsolves - trim) - rbt.cumSum(trim);
+		var variance = rbt.cumSk2(nsolves - trim) - rbt.cumSk2(trim)
+		variance = Math.sqrt((variance - avg * avg / neff) / (neff - 1)) / 1000;
+		return [retAvg, variance, rbt.rank(trim - 1), rbt.rank(nsolves - trim)];
 	}
 
 	function trim(number, nDigits) {
