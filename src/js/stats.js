@@ -1170,6 +1170,7 @@ var stats = (function(kpretty, round) {
 			};
 			fixRank();
 			times = [];
+			times_stats.reset();
 			save();
 			genSelect();
 			loadSession(sessionIdx);
@@ -1349,6 +1350,7 @@ var stats = (function(kpretty, round) {
 				};
 				kernel.setProp('sessionN', sessionIdxMax);
 				times = sessionDetail['times'];
+				times_stats.reset();
 				save();
 			}
 			genSelect();

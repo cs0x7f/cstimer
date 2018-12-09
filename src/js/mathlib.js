@@ -586,8 +586,55 @@ var TimerDataConverter = (function() {
 	var Timers = {}
 
 	Timers['csTimer'] = [/^{"session1"/i, function(data) {
+		data = JSON.parse(data);
+		var sessionData = {};
+		try {
+			sessionData = JSON.parse(JSON.parse(data['properties'])['sessionData']);
+		} catch (e) {}
 
+		var ret = [];
+		for (var key in data) {
+			var m = /^session(\d+)$/.exec(key);
+			if (!m) {
+				continue;
+			}
+			var curSession = {};
+			var times = [];
+			try {
+				times = JSON.parse(data[key]);
+			} catch (e) {}
+			// ensure valid times, and do not import empty sessions
+			if (!$.isArray(times) || times.length == 0) {
+				continue;
+			}
+			var validTimes = [];
+			for (var i = 0; i < times.length; i++) {
+				var time = times[i];
+				if (!$.isArray(time) || !$.isArray(time[0])) {
+					continue;
+				}
+				time[0] = $.map(time[0], Number);
+				validTimes.push(time);
+			}
+			curSession['times'] = validTimes;
+			if (~~m[1] in sessionData) {
+				var curData = sessionData[~~m[1]];
+				curSession['name'] = curData['name'] || m[1];
+				curSession['scr'] = curData['scr'];
+				curSession['phases'] = curData['phases'];
+				curSession['rank'] = curData['rank'];
+			} else {
+				curSession['name'] = m[1];
+				curSession['rank'] = ret.length + 1;
+			}
+			ret.push(curSession);
+		}
+		ret.sort(function(a, b) {
+			return a['rank'] - b['rank'];
+		});
+		return ret;
 	}];
+
 	Timers['ZYXTimer'] = [/^Session: /i, function(data) {
 
 	}];
