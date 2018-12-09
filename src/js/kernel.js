@@ -706,8 +706,8 @@ var kernel = (function() {
 		var inServGGL = $('<a class="click"/>');
 		var outServGGL = $('<a class="click"/>');
 
-		var inFile = $('<input type="file" id="file" accept="text/plain"/>');
-		var inOtherFile = $('<input type="file" id="file" accept="text/plain"/>');
+		var inFile = $('<input type="file" id="file" accept="text/*"/>');
+		var inOtherFile = $('<input type="file" id="file" accept="text/*"/>');
 		var outFile = $('<a class="click"/>').html(EXPORT_TOFILE);
 
 		var inServ = $('<a class="click"/>').html(EXPORT_FROMSERV + ' (csTimer)').click(downloadData);
@@ -753,10 +753,7 @@ var kernel = (function() {
 		function importFile(reader) {
 			if (this.files.length) {
 				var f = this.files[0];
-				// console.log(f);
-				if (/text\/\w+/.test(f.type)) {
-					reader.readAsText(f);
-				}
+				reader.readAsText(f);
 			}
 		}
 
@@ -999,7 +996,10 @@ var kernel = (function() {
 				reader.onload = importData;
 				var readerOther = new FileReader();
 				readerOther.onload = function() {
-					stats.importSessions(TimerDataConverter(this.result));
+					var n_import = stats.importSessions(TimerDataConverter(this.result));
+					if (n_import == 0) {
+						logohint.push('No session imported');
+					}
 				};
 				inFile.change(importFile.bind(inFile[0], reader))
 				inOtherFile.change(importFile.bind(inOtherFile[0], readerOther));

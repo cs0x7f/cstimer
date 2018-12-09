@@ -638,12 +638,67 @@ var TimerDataConverter = (function() {
 	Timers['ZYXTimer'] = [/^Session: /i, function(data) {
 
 	}];
+
 	Timers['TwistyTimer'] = [/^Puzzle,Category,Time\(millis\),Date\(millis\),Scramble,Penalty,Comment/i, function(data) {
 
 	}];
-	Timers['BlockKeeper'] = [/^{"puzzles":\[{"name":/i, function(data) {
 
+	Timers['BlockKeeper'] = [/^{"puzzles":\[{"name":/i, function(data) {
+		data = JSON.parse(data)["puzzles"];
+		var ScrambleMap = {
+			'3x3x3': '333',
+			'2x2x2': '222so',
+			'4x4x4': '444wca',
+			'5x5x5': '555wca',
+			'Pyraminx': 'pyrso',
+			'Skewb': 'skbso',
+			'Megaminx': 'mgmp',
+			'Square-1': 'sqrs',
+			'Clock': 'clkwca',
+			'6x6x6': '666wca',
+			'7x7x7': '777wca',
+			'3x3x3 BLD': '333ni',
+			'4x4x4 BLD': '444bld',
+			'5x5x5 BLD': '555bld'
+		};
+
+		var ret = [];
+		$.each(data, function(idx, puzzle) {
+			var puzzleName = puzzle['name'];
+			var puzzleScr = puzzle['scrambler'];
+			var puzzleSplit = puzzle['splits'];
+			$.each(puzzle['sessions'], function(idx, session) {
+				var sessionName = session['name'];
+				var timeList = [];
+				$.each(session['records'], function(idx, val) {
+					var time = [0, Math.round(val['time'] * 1000)];
+					switch (val['result']) {
+						case '+2':
+							time[0] = 2000;
+							break;
+						case 'DNF':
+							time[0] = -1;
+							break;
+					}
+					Array.prototype.push.apply(time, $.map(val['split'].reverse(), function(value) {
+						return Math.round(value * 1000);
+					}));
+					timeList.push([time, val['scramble'], val['comment'] || '', Math.round(val['date'] / 1000)]);
+				});
+				if (timeList.length == 0) {
+					return;
+				}
+				ret.push({
+					'name': (puzzleName + '-' + sessionName),
+					'phases': puzzleSplit,
+					'scr': ScrambleMap[puzzleScr] || '333',
+					'times': timeList
+				})
+			});
+		});
+		return ret;
 	}];
+
 	Timers['PrismaTimer'] = [/^[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\n/i, function(data) {
 
 	}];

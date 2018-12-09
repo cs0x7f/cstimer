@@ -1355,6 +1355,9 @@ var stats = (function(kpretty, round) {
 			}
 			genSelect();
 			loadSession(currentSessionIdx);
+			showMgrTable();
+			logohint.push('Import %d session(s)'.replace('%d', data.length));
+			return data.length;
 		}
 
 		$(function() {
