@@ -18,16 +18,16 @@ var sbtree = (function() {
 		this.cmp = comparator;
 	}
 
-	// SBTree.prototype.find = function(key) {
-	//     var res = this.root;
-	//     while (res !== null) {
-	//         if (key == res.k) {
-	//             return res.v;
-	//         }
-	//         res = res.chd[this.cmp(res.k, key) < 0 ^ 0];
-	//     }
-	//     return undefined;
-	// };
+	SBTree.prototype.find = function(key) {
+		var node = this.root;
+		while (node !== null) {
+			if (key == node.k) {
+				return node.v;
+			}
+			node = node[this.cmp(node.k, key) < 0 ^ 0];
+		}
+		return undefined;
+	};
 
 	function size(node) {
 		return node == null ? 0 : node.cnt;
@@ -103,6 +103,21 @@ var sbtree = (function() {
 		return nth < 0 ? -1e300 : 1e300;
 	};
 
+	SBTree.prototype.rankOf = function(key) {
+		var node = this.root;
+		var rank = 0;
+		while (node) {
+			var cmp = this.cmp(node.k, key);
+			if (cmp < 0) {
+				rank += size(node[0]) + 1;
+				node = node[1];
+			} else {
+				node = node[0];
+			}
+		}
+		return rank;
+	};
+
 	SBTree.prototype.traverse = function(func, reverse) {
 		return traverseDir(this.root, func, reverse ^ 0);
 	};
@@ -130,10 +145,12 @@ var sbtree = (function() {
 
 	SBTree.prototype.insert = function(key, value) {
 		this.root = this.insertR(this.root, key, value);
+		return this;
 	};
 
 	SBTree.prototype.remove = function(key) {
 		this.root = this.removeR(this.root, key);
+		return this;
 	};
 
 	SBTree.prototype.removeR = function(node, key) {

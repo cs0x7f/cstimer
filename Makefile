@@ -36,6 +36,7 @@ scramble/clock.js \
 scramble/333lse.js \
 scramble/utilscramble.js \
 lib/storage.js \
+stats/timestat.js \
 stats/stats.js \
 tools/tools.js \
 tools/image.js \
