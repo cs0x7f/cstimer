@@ -496,6 +496,28 @@ var mathlib = (function() {
 		return curIdx;
 	}
 
+	function time2str(unix) {
+		var date = new Date(unix * 1000);
+		return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) +
+			' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
+	}
+
+	var timeRe = /^\s*(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)\s*$/
+	function str2time(val) {
+		var m = timeRe.exec(val);
+		if (!m) {
+			return null;
+		}
+		var date = new Date(0);
+		date.setFullYear(~~m[1]);
+		date.setMonth(~~m[2] - 1);
+		date.setDate(~~m[3]);
+		date.setHours(~~m[4]);
+		date.setMinutes(~~m[5]);
+		date.setSeconds(~~m[6]);
+		return ~~(date.getTime() / 1000);
+	}
+
 	return {
 		Cnk: Cnk,
 		fact: fact,
@@ -515,6 +537,8 @@ var mathlib = (function() {
 		rn: rn,
 		rndEl: rndEl,
 		rndProb: rndProb,
+		time2str: time2str,
+		str2time: str2time,
 		Solver: Solver
 	}
 })();

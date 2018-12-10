@@ -23,7 +23,7 @@ var stats = (function(kpretty, round) {
 		if (typeof time[0] == "string") {
 			// times.push([time[2], time[1] || curScramble, time[0]]);
 			// times_stats.push([time[2], time[1] || curScramble, time[0], Math.round((new Date().getTime() - time[2][1]) / 1000)]);
-			times.push([time[2], time[1] || curScramble, time[0], Math.round((new Date().getTime() - time[2][1]) / 1000)])
+			times.push([time[2], time[1] || curScramble, time[0], time[3] || Math.round((new Date().getTime() - time[2][1]) / 1000)])
 			times_stats.pushed();
 			time = time[2];
 		} else {
@@ -484,8 +484,8 @@ var stats = (function(kpretty, round) {
 		if (kernel.getProp('printDate')) {
 			var tstart = timesAt(start);
 			var tend = timesAt(start + nsolves - 1);
-			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? (new Date(tstart[3] * 1000).toLocaleString().replace(',', '')) : 'N/A'))
-				.replace("%e", (tend && tend[3] ? (new Date(tend[3] * 1000 + tend[0][1]).toLocaleString().replace(',', '')) : 'N/A'));
+			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? mathlib.time2str(tstart[3]) : 'N/A'))
+				.replace("%e", (tend && tend[3] ? mathlib.time2str(tend[3]) : 'N/A'));
 			tstr = " (" + tstr + ")";
 		}
 		var now = new Date();
@@ -1340,7 +1340,7 @@ var stats = (function(kpretty, round) {
 					c += "   " + time[1];
 				}
 				if (kernel.getProp('printDate')) {
-					c += "   @" + (time[3] ? (new Date(time[3] * 1000).toLocaleString().replace(',', '')) : 'N/A');
+					c += "   @" + (time[3] ? mathlib.time2str(time[3]) : 'N/A');
 				}
 				if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
 					timeStr.push((i + 1) + ". " + c + " \n");

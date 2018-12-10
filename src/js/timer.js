@@ -444,6 +444,10 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					scramble = m[8];
 					//TODO timestamp = m[9]
 					curTime = [comment, scramble, [ins, time].concat(timeSplit)];
+					var timestamp = mathlib.str2time(m[9]);
+					if (timestamp) {
+						curTime.push(timestamp);
+					}
 					pushSignal('time', curTime);
 					kernel.clrKey();
 				}
