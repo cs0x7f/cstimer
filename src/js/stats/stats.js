@@ -1114,7 +1114,7 @@ var stats = (function(kpretty, round) {
 		}
 
 		function splitSession() {
-			var n_split = prompt('Number of oldest times split from current session?', ~~(times.length / 2));
+			var n_split = prompt('Number of latest times split from current session?', ~~(times.length / 2));
 			if (n_split == null) {
 				return;
 			}
@@ -1124,12 +1124,12 @@ var stats = (function(kpretty, round) {
 				return;
 			}
 			var curSessionIdx = sessionIdx;
-			var targetTimes = times.slice(0, n_split);
+			var targetTimes = times.slice(n_split);
 			initNewSession();
 			storage.set(sessionIdx, targetTimes);
 
 			sessionIdx = curSessionIdx;
-			times = times.slice(n_split);
+			times = times.slice(0, n_split);
 			times_stats.reset();
 			save();
 			sessionLoaded(times);
