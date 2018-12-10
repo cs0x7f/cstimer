@@ -1006,10 +1006,7 @@ var stats = (function(kpretty, round) {
 			}
 		}
 
-		function deleteSession(ssidx) {
-			if (!confirm(STATS_CFM_DELSS)) {
-				return false;
-			}
+		function doSessionDeletion(ssidx) {
 			// if not the last session, then swap to last session
 			if (ssidx != sessionIdxMax) {
 				sessionData[ssidx] = sessionData[sessionIdxMax];
@@ -1028,6 +1025,13 @@ var stats = (function(kpretty, round) {
 				select.val(ssidx);
 				select.change();
 			}
+		}
+
+		function deleteSession(ssidx) {
+			if (!confirm(STATS_CFM_DELSS)) {
+				return false;
+			}
+			doSessionDeletion();
 			return true;
 		}
 
@@ -1099,7 +1103,7 @@ var stats = (function(kpretty, round) {
 					deleteSession(idx);
 					break;
 				case 'm': //append current session to
-					appendSessionTo(idx);
+					mergeSessionTo(idx);
 					break;
 				case 'p': //split current session
 					splitSession();
@@ -1131,19 +1135,22 @@ var stats = (function(kpretty, round) {
 			sessionLoaded(times);
 		}
 
-		function appendSessionTo(idx) {
+		function mergeSessionTo(idx) {
 			if (sessionIdx == idx) { // do not append self
 				return;
 			}
 			if (!confirm('Append all times in current session to the end of selected session?')) {
 				return;
 			}
+			var prevSession = sessionIdx;
 			storage.get(idx, function(timesNew) {
 				Array.prototype.push.apply(timesNew, times);
-				storage.set(idx, timesNew);
-				delete sessionData[idx]['stat'];
 				kernel.setProp('sessionData', JSON.stringify(sessionData));
-				genMgrTable();
+				storage.set(idx, timesNew, function() {
+					delete sessionData[idx]['stat'];
+					loadSession(idx);
+					doSessionDeletion(prevSession);
+				});
 			})
 		}
 
