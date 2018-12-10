@@ -219,6 +219,19 @@ var scramble = (function(rn, rndEl) {
 		var chkBoxList = [];
 		var chkLabelList = [];
 		var modified = false;
+		if (type == 'sqrs') {
+			var sq1lvcbCheck = $('<input type="checkbox">').change(function() {
+				if ($(this)[0].checked) {
+					kernel.setProp('sq1lvcb', true);
+				} else {
+					kernel.setProp('sq1lvcb', false);
+				}
+				genScramble(); //flush cache
+				genScramble();
+			});
+			sq1lvcbCheck[0].checked = kernel.getProp('sq1lvcb', false);
+			scrFltDiv.append($('<label>').append(sq1lvcbCheck, 'Use /// when leaving cubeshape'));
+		}
 		if (type in filters) {
 			var data = filters[type].slice();
 			var curData = data;
