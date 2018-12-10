@@ -1147,6 +1147,52 @@ var stats = (function(kpretty, round) {
 			}
 			var prevSession = sessionIdx;
 			storage.get(idx, function(timesNew) {
+				// var maxTsNew = 0;
+				// var minTsNew = 1e300;
+				// for (var i = 0; i < timesNew.length; i++) {
+				// 	maxTsNew = Math.max(maxTsNew, timesNew[i][3] || 0);
+				// 	minTsNew = Math.min(minTsNew, timesNew[i][3] || 0);
+				// }
+				// var maxTs = 0;
+				// var minTs = 1e300;
+				// for (var i = 0; i < times.length; i++) {
+				// 	maxTs = Math.max(maxTs, times[i][3] || 0);
+				// 	minTs = Math.min(minTs, times[i][3] || 0);
+				// }
+				// if (maxTsNew <= minTs) { // correct
+				// 	Array.prototype.push.apply(timesNew, times);
+				// } else if (maxTs <= minTsNew) { // should exchange
+				// 	Array.prototype.push.apply(times, timesNew);
+				// 	timesNew = times;
+				// } else { // should sort
+				// 	var shouldSort = confirm('Timestamps of two sessions are interleaved, should be sorted after merge?');
+				// 	if (shouldSort) {
+				// 		var newArray = [];
+				// 		for (var i = 0; i < timesNew.length; i++) {
+				// 			newArray.push(i);
+				// 		}
+				// 		for (var i = 0; i < times.length; i++) {
+				// 			newArray.push(~i);
+				// 		}
+				// 		newArray.sort(function(a, b) {
+				// 			var vala = (a < 0 ? times[~a] : timesNew[a])[3] || 0;
+				// 			var valb = (b < 0 ? times[~b] : timesNew[b])[3] || 0;
+				// 			if (vala != valb) {
+				// 				return vala - valb;
+				// 			}
+				// 			if ((a ^ b) < 0) {
+				// 				return b - a;
+				// 			}
+				// 			return (a - b) ^ (a >> 31);
+				// 		});
+				// 		for (var i = 0; i < newArray.length; i++) {
+				// 			newArray[i] = newArray[i] < 0 ? times[~newArray[i]] : timesNew[newArray[i]];
+				// 		}
+				// 		timesNew = newArray;
+				// 	} else {
+				// 		Array.prototype.push.apply(timesNew, times);
+				// 	}
+				// }
 				Array.prototype.push.apply(timesNew, times);
 				storage.set(idx, timesNew, function() {
 					delete sessionData[idx]['stat'];
