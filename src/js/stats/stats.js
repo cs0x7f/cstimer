@@ -1031,7 +1031,7 @@ var stats = (function(kpretty, round) {
 			if (!confirm(STATS_CFM_DELSS)) {
 				return false;
 			}
-			doSessionDeletion();
+			doSessionDeletion(ssidx);
 			return true;
 		}
 
