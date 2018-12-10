@@ -1126,13 +1126,15 @@ var stats = (function(kpretty, round) {
 			var curSessionIdx = sessionIdx;
 			var targetTimes = times.slice(-n_split);
 			initNewSession();
-			storage.set(sessionIdx, targetTimes);
-
-			sessionIdx = curSessionIdx;
-			times = times.slice(0, -n_split);
-			times_stats.reset();
-			save();
-			sessionLoaded(times);
+			storage.set(sessionIdx, targetTimes, function() {
+				sessionIdx = curSessionIdx;
+				times = times.slice(0, -n_split);
+				times_stats.reset();
+				save();
+				delete sessionData[sessionIdx]['stat'];
+				kernel.setProp('sessionData', JSON.stringify(sessionData));
+				sessionLoaded(times);
+			});
 		}
 
 		function mergeSessionTo(idx) {
@@ -1145,9 +1147,9 @@ var stats = (function(kpretty, round) {
 			var prevSession = sessionIdx;
 			storage.get(idx, function(timesNew) {
 				Array.prototype.push.apply(timesNew, times);
-				kernel.setProp('sessionData', JSON.stringify(sessionData));
 				storage.set(idx, timesNew, function() {
 					delete sessionData[idx]['stat'];
+					kernel.setProp('sessionData', JSON.stringify(sessionData));
 					loadSession(idx);
 					doSessionDeletion(prevSession);
 				});
