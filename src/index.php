@@ -11,7 +11,11 @@
   <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
   <link rel='stylesheet' type='text/css' href='css/style.css'>
   <script type="text/javascript" src="js/lib/jquery-1.8.0.js"></script>
+  <script type="text/javascript" src="js/lib/utillib.js"></script>
   <script type="text/javascript" src="js/lib/mathlib.js"></script>
+  <script type="text/javascript" src="js/lib/sbtree.js"></script>
+  <script type="text/javascript" src="js/lib/tdconverter.js"></script>
+  <script type="text/javascript" src="js/lib/lzstring.js"></script>
   <script type="text/javascript" src="js/lib/min2phase.js"></script>
   <script type="text/javascript" src="js/lib/cubeutil.js"></script>
   <script type="text/javascript" src="js/lib/mersennetwister.js"></script>

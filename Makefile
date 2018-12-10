@@ -8,9 +8,12 @@ externTwisty = --externs $(dest)/js/twisty.js
 externLang = --externs $(src)/lang/cn.js
 compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3
 advanced = -O ADVANCED
-
 timerSrc = $(addprefix $(src)/js/, \
+lib/utillib.js \
 lib/mathlib.js \
+lib/sbtree.js \
+lib/tdconverter.js \
+lib/lzstring.js \
 lib/min2phase.js \
 lib/cubeutil.js \
 lib/mersennetwister.js \
