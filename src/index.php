@@ -10,32 +10,32 @@
 <?php include('lang/langDet.php');?>
   <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
   <link rel='stylesheet' type='text/css' href='css/style.css'>
-  <script type="text/javascript" src="js/jquery-1.8.0.js"></script>
-  <script type="text/javascript" src="js/mathlib.js"></script>
-  <script type="text/javascript" src="js/min2phase.js"></script>
-  <script type="text/javascript" src="js/cubeutil.js"></script>
-  <script type="text/javascript" src="js/mersennetwister.js"></script>
-  <script type="text/javascript" src="js/json.min.js"></script>
+  <script type="text/javascript" src="js/lib/jquery-1.8.0.js"></script>
+  <script type="text/javascript" src="js/lib/mathlib.js"></script>
+  <script type="text/javascript" src="js/lib/min2phase.js"></script>
+  <script type="text/javascript" src="js/lib/cubeutil.js"></script>
+  <script type="text/javascript" src="js/lib/mersennetwister.js"></script>
+  <script type="text/javascript" src="js/lib/json.min.js"></script>
   <script type="text/javascript" src="js/kernel.js"></script>
   <script type="text/javascript" src="js/logohint.js"></script>
   <script type="text/javascript" src="js/timer.js"></script>
-  <script type="text/javascript" src="js/scramble.js"></script>
-  <script type="text/javascript" src="js/scramblers/megascramble.js"></script>
-  <script type="text/javascript" src="js/scramblers/scramble_333_edit.js"></script>
-  <script type="text/javascript" src="js/scramblers/scramble_444.js"></script>
-  <script type="text/javascript" src="js/scramblers/scramble_sq1_new.js"></script>
-  <script type="text/javascript" src="js/scramblers/pyraminx.js"></script>
-  <script type="text/javascript" src="js/scramblers/skewb.js"></script>
-  <script type="text/javascript" src="js/scramblers/2x2x2.js"></script>
-  <script type="text/javascript" src="js/scramblers/gearcube.js"></script>
-  <script type="text/javascript" src="js/scramblers/1x3x3.js"></script>
-  <script type="text/javascript" src="js/scramblers/2x2x3.js"></script>
-  <script type="text/javascript" src="js/scramblers/clock.js"></script>
-  <script type="text/javascript" src="js/scramblers/333lse.js"></script>
-  <script type="text/javascript" src="js/scramblers/utilscramble.js"></script>
-  <script type="text/javascript" src="js/storage.js"></script>
-  <script type="text/javascript" src="js/stats.js"></script>
-  <script type="text/javascript" src="js/tools.js"></script>
+  <script type="text/javascript" src="js/scramble/scramble.js"></script>
+  <script type="text/javascript" src="js/scramble/megascramble.js"></script>
+  <script type="text/javascript" src="js/scramble/scramble_333_edit.js"></script>
+  <script type="text/javascript" src="js/scramble/scramble_444.js"></script>
+  <script type="text/javascript" src="js/scramble/scramble_sq1_new.js"></script>
+  <script type="text/javascript" src="js/scramble/pyraminx.js"></script>
+  <script type="text/javascript" src="js/scramble/skewb.js"></script>
+  <script type="text/javascript" src="js/scramble/2x2x2.js"></script>
+  <script type="text/javascript" src="js/scramble/gearcube.js"></script>
+  <script type="text/javascript" src="js/scramble/1x3x3.js"></script>
+  <script type="text/javascript" src="js/scramble/2x2x3.js"></script>
+  <script type="text/javascript" src="js/scramble/clock.js"></script>
+  <script type="text/javascript" src="js/scramble/333lse.js"></script>
+  <script type="text/javascript" src="js/scramble/utilscramble.js"></script>
+  <script type="text/javascript" src="js/lib/storage.js"></script>
+  <script type="text/javascript" src="js/stats/stats.js"></script>
+  <script type="text/javascript" src="js/tools/tools.js"></script>
   <script type="text/javascript" src="js/tools/image.js"></script>
   <script type="text/javascript" src="js/tools/cross.js"></script>
   <script type="text/javascript" src="js/tools/eoline.js"></script>
@@ -47,8 +47,8 @@
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>
   <script type="text/javascript" src="js/giiker.js"></script>
-  <script type="text/javascript" src="js/threemin.js"></script>
-  <script type="text/javascript" src="js/twisty.js"></script>
+  <script type="text/javascript" src="js/lib/threemin.js"></script>
+  <script type="text/javascript" src="js/twisty/twisty.js"></script>
   <script type="text/javascript" src="js/twisty/twistynnn.js"></script>
   <script type="text/javascript" src="js/twisty/twistysq1.js"></script>
   <script type="text/javascript" src="js/twisty/twistyskb.js"></script>

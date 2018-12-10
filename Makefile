@@ -4,37 +4,37 @@ ifndef dest
 endif
 closure = lib/compiler.jar
 externJQ = --externs lib/jquery-1.7.js
-externTwisty = --externs $(src)/js/threemin.js --externs $(src)/js/twisty.js --externs $(dest)/js/twisty.js
+externTwisty = --externs $(dest)/js/twisty.js
 externLang = --externs $(src)/lang/cn.js
 compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3
 advanced = -O ADVANCED
 
 timerSrc = $(addprefix $(src)/js/, \
-mathlib.js \
-min2phase.js \
-cubeutil.js \
-mersennetwister.js \
-json.min.js \
+lib/mathlib.js \
+lib/min2phase.js \
+lib/cubeutil.js \
+lib/mersennetwister.js \
+lib/json.min.js \
 kernel.js \
 logohint.js \
 timer.js \
-scramble.js \
-scramblers/megascramble.js \
-scramblers/scramble_333_edit.js \
-scramblers/scramble_444.js \
-scramblers/scramble_sq1_new.js \
-scramblers/pyraminx.js \
-scramblers/skewb.js \
-scramblers/2x2x2.js \
-scramblers/gearcube.js \
-scramblers/1x3x3.js \
-scramblers/2x2x3.js \
-scramblers/clock.js \
-scramblers/333lse.js \
-scramblers/utilscramble.js \
-storage.js \
-stats.js \
-tools.js \
+scramble/scramble.js \
+scramble/megascramble.js \
+scramble/scramble_333_edit.js \
+scramble/scramble_444.js \
+scramble/scramble_sq1_new.js \
+scramble/pyraminx.js \
+scramble/skewb.js \
+scramble/2x2x2.js \
+scramble/gearcube.js \
+scramble/1x3x3.js \
+scramble/2x2x3.js \
+scramble/clock.js \
+scramble/333lse.js \
+scramble/utilscramble.js \
+lib/storage.js \
+stats/stats.js \
+tools/tools.js \
 tools/image.js \
 tools/cross.js \
 tools/eoline.js \
@@ -54,12 +54,13 @@ js/twisty.js \
 css/style.css) $(langJS) $(langPHP)
 
 
-twistySrc = \
-$(src)/js/threemin.js \
-$(src)/js/twisty.js \
-$(src)/js/twisty/twistynnn.js \
-$(src)/js/twisty/twistysq1.js \
-$(src)/js/twisty/twistyskb.js
+twistySrc = $(addprefix $(src)/js/, \
+lib/threemin.js \
+twisty/twisty.js \
+twisty/twistynnn.js \
+twisty/twistysq1.js \
+twisty/twistyskb.js)
+
 
 cstimer = $(dest)/js/cstimer.js
 twisty = $(dest)/js/twisty.js
