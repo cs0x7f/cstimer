@@ -1028,7 +1028,8 @@ var stats = (function(kpretty, round) {
 		}
 
 		function deleteSession(ssidx) {
-			if (!confirm(STATS_CFM_DELSS)) {
+			if (('stat' in sessionData[ssidx] ? sessionData[ssidx]['stat'][0] : 1) != 0 &&
+				!confirm(STATS_CFM_DELSS)) {
 				return false;
 			}
 			doSessionDeletion(ssidx);
