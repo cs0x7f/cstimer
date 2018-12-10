@@ -1124,12 +1124,12 @@ var stats = (function(kpretty, round) {
 				return;
 			}
 			var curSessionIdx = sessionIdx;
-			var targetTimes = times.slice(n_split);
+			var targetTimes = times.slice(-n_split);
 			initNewSession();
 			storage.set(sessionIdx, targetTimes);
 
 			sessionIdx = curSessionIdx;
-			times = times.slice(0, n_split);
+			times = times.slice(0, -n_split);
 			times_stats.reset();
 			save();
 			sessionLoaded(times);
