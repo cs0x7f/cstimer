@@ -642,18 +642,36 @@ var stats = (function(kpretty, round) {
 		}
 	})();
 
+	function getTrimList(start, nsolves, trim, thresL, thresR) {
+		var trimlList = [];
+		var trimrList = [];
+		for (var i = 0; i < nsolves; i++) {
+			var t = timeAt(start + i);
+			var cmpl = dnfsort(t, thresL);
+			var cmpr = dnfsort(thresR, t);
+			if (cmpl < 0) {
+				trimlList.push(i);
+			} else if (cmpr < 0) {
+				trimrList.push(i);
+			} else if (cmpl == 0 && trimlList.length < trim) {
+				trimlList.unshift(i);
+			} else if (cmpr == 0 && trimrList.length < trim) {
+				trimrList.unshift(i);
+			}
+		}
+		return trimlList.slice(-trim).concat(trimrList.slice(-trim));
+	}
+
 	function setHighlight(start, nsolves, id, mean) {
 		if (times.length == 0) return;
 		var data = [0, [null], [null]];
-		var trim = 0,
-			triml = 0,
-			trimr = 0;
+		var trimList = [];
 		if (start + nsolves != 0) {
 			if (mean) {
 				data = runAvgMean(start, nsolves, 0, 0);
 			} else {
 				data = runAvgMean(start, nsolves);
-				trim = Math.ceil(nsolves / 20);
+				trimList = getTrimList(start, nsolves, Math.ceil(nsolves / 20), data[2], data[3]);
 			}
 		}
 
@@ -688,12 +706,7 @@ var stats = (function(kpretty, round) {
 		for (var i = 0; i < nsolves; i++) {
 			var time = timesAt(start + i);
 			var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
-			var t = timeAt(start + i);
-			if (triml < trim && dnfsort(t, data[2]) <= 0) {
-				triml++;
-				c = "(" + c + ")";
-			} else if (trimr < trim && dnfsort(t, data[3]) >= 0) {
-				trimr++;
+			if ($.inArray(i, trimList) != -1) {
 				c = "(" + c + ")";
 			}
 			if (kernel.getProp('printScr')) {
