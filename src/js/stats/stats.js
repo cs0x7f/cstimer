@@ -52,17 +52,6 @@ var stats = (function(kpretty, round) {
 		updateUtil();
 	}
 
-	function reset() {
-		if (!confirm(STATS_CFM_RESET)) {
-			return;
-		}
-		times = [];
-		times_stats.reset(times.length);
-		sessionManager.save();
-		updateTable(false);
-		kernel.blur();
-	}
-
 	function delIdx(index) {
 		var n_del;
 		if (kernel.getProp("delmul")) {
@@ -987,9 +976,9 @@ var stats = (function(kpretty, round) {
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 		}
 
-		function createSession(rank) {
-			if (rank == undefined) {
-				rank = sessionIdxMax;
+		function initNewSession(rank) {
+			if (!$.isNumeric(rank)) {
+				rank = (sessionData[sessionIdx] || {})['rank'] || sessionIdxMax;
 			}
 			sessionIdx = ++sessionIdxMax;
 			var curDate = new Date();
@@ -1002,11 +991,14 @@ var stats = (function(kpretty, round) {
 				'phases': 1,
 				'rank': rank + 0.5
 			};
-			fixRank();
+			genSelect();
+		}
+
+		function createSession(rank) {
+			initNewSession(rank);
 			times = [];
 			times_stats.reset(times.length);
 			save();
-			genSelect();
 			loadSession(sessionIdx);
 
 			if (kernel.getProp('imrename')) {
@@ -1051,14 +1043,19 @@ var stats = (function(kpretty, round) {
 			}
 		}
 
+		function sessionLoaded(timesNew) {
+			times = timesNew;
+			times_stats.reset(times.length);
+			updateTable(false);
+			if (!('stat' in sessionData[sessionIdx])) {
+				setTimeout(genMgrTable, 0);
+			}
+			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
+			kernel.setProp('sessionData', JSON.stringify(sessionData));
+		}
+
 		function load() {
-			storage.get(sessionIdx, function(timesNew) {
-				times = timesNew;
-				times_stats.reset(times.length);
-				updateTable(false);
-				sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
-				kernel.setProp('sessionData', JSON.stringify(sessionData));
-			})
+			storage.get(sessionIdx, sessionLoaded);
 		}
 
 		function save(startIdx) {
@@ -1101,31 +1098,85 @@ var stats = (function(kpretty, round) {
 				case 'x': //delete session
 					deleteSession(idx);
 					break;
+				case 'm': //append current session to
+					appendSessionTo(idx);
+					break;
+				case 'p': //split current session
+					splitSession();
+					break;
 			}
 			genSelect();
 			genMgrTable();
 		}
 
+		function splitSession() {
+			var n_split = prompt('Number of oldest times split from current session?', ~~(times.length / 2));
+			if (n_split == null) {
+				return;
+			}
+			n_split = ~~n_split;
+			if (n_split < 1 || n_split > times.length - 1) {
+				alert('Should split or leave 1 time at least');
+				return;
+			}
+			var curSessionIdx = sessionIdx;
+			var targetTimes = times.slice(0, n_split);
+			initNewSession();
+			storage.set(sessionIdx, targetTimes);
+
+			sessionIdx = curSessionIdx;
+			times = times.slice(n_split);
+			times_stats.reset();
+			save();
+			sessionLoaded(times);
+		}
+
+		function appendSessionTo(idx) {
+			if (sessionIdx == idx) { // do not append self
+				return;
+			}
+			if (!confirm('Append all times in current session to the end of selected session?')) {
+				return;
+			}
+			storage.get(idx, function(timesNew) {
+				Array.prototype.push.apply(timesNew, times);
+				storage.set(idx, timesNew);
+				delete sessionData[idx]['stat'];
+				kernel.setProp('sessionData', JSON.stringify(sessionData));
+				genMgrTable();
+			})
+		}
+
 		function genMgrTable() {
 			fixRank();
-			ssmgrTable.empty().append('<tr><th></th><th>' +
+			ssmgrTable.empty().append(
+				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption>' +
+				'<tr><th></th><th>' +
 				STATS_SSMGR_NAME + '</th><th>' +
-				STATS_SSMGR_DETAIL + '</th><th colspan=5>' +
+				STATS_SOLVE + '</th><th>' +
+				STATS_AVG + '</th><th>' +
+				SCRAMBLE_SCRAMBLE + '</th><th>' +
+				'P.' + '</th><th colspan=6>' +
 				STATS_SSMGR_OP + '</th></tr>');
 			for (var i = 0; i < ssSorted.length; i++) {
 				var ssData = sessionData[ssSorted[i]];
-				var ssStat = '';
+				var ssStat = ['?/?', '?'];
 				if ('stat' in ssData) {
 					var s = ssData['stat'];
-					ssStat = STATS_SOLVE + ': ' + (s[0] - s[1]) + '/' + s[0] + ' ' + STATS_AVG + ': ' + kpretty(s[2]) + ' &nbsp; ';
+					ssStat[0] = (s[0] - s[1]) + '/' + s[0];
+					ssStat[1] = kpretty(s[2]);
 				}
 				ssmgrTable.append('<tr><td>' + (i + 1) + (ssSorted[i] == sessionIdx ? '*' : '') + '</td>' +
 					'<td class="click" data="s">' + ssData['name'] + '</td>' +
-					'<td>' + ssStat + scramble.getTypeName(ssData['scr']) + ' &nbsp; ' + ssData['phases'] + ' phase(s)</td>' +
+					'<td>' + ssStat[0] + '</td>' +
+					'<td>' + ssStat[1] + '</td>' +
+					'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
+					'<td>' + ssData['phases'] + '</td>' +
 					'<td class="click" data="u">&#8593;</td>' +
 					'<td class="click" data="d">&#8595;</td>' +
 					'<td class="click" data="r">&#9997;</td>' +
 					'<td class="click" data="+">+</td>' +
+					'<td class="click" data=' + (ssSorted[i] == sessionIdx ? '"p">&#8697;</td>' : '"m">&#8676;</td>') +
 					'<td class="click" data="x">X</td>' + '</tr>');
 			}
 			ssmgrTable.unbind('click').click(mgrClick);
@@ -1221,6 +1272,7 @@ var stats = (function(kpretty, round) {
 			showMgrTable: showMgrTable,
 			importSessions: importSessions,
 			genSelect: genSelect,
+			createSession: createSession,
 			load: load,
 			save: save
 		}
@@ -1456,7 +1508,7 @@ var stats = (function(kpretty, round) {
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
-				reset();
+				sessionManager.createSession();
 			} else if (value[1] == 'undo') {
 				if (times.length != 0) {
 					delIdx(times.length - 1);
@@ -1503,7 +1555,7 @@ var stats = (function(kpretty, round) {
 		div.appendTo('body').append(
 			statOptDiv.append(hideOptButton.click(hideSessionOptions), ' ',
 				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
-				sessionManager.getSelect(), $('<input type="button">').val('X').click(reset)),
+				sessionManager.getSelect(), $('<input type="button">').val('+').click(sessionManager.createSession)),
 			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
 		$(window).bind('resize', resultsHeight);
