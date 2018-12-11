@@ -529,7 +529,7 @@ var stats = (function(kpretty, round) {
 		s = s.join("");
 		s = s.substr(0, s.length - 2);
 		stext.val(s);
-		kernel.showDialog([stext, 0, undefined, 0, ['Export CSV', function() {
+		kernel.showDialog([stext, clearText, undefined, clearText, ['Export CSV', function() {
 			exportCSV(start, nsolves);
 			return false;
 		}]], 'stats', STATS_CURROUND);
@@ -1335,6 +1335,9 @@ var stats = (function(kpretty, round) {
 
 	})();
 
+	function clearText() {
+		stext.val('');
+	}
 
 	function getStats() {
 		var theStats = times_stats.getAllStats();
@@ -1401,7 +1404,7 @@ var stats = (function(kpretty, round) {
 		}
 		s = s.join("\n");
 		stext.val(s);
-		kernel.showDialog([stext, 0, undefined, 0, ['Export CSV', function() {
+		kernel.showDialog([stext, clearText, undefined, clearText, ['Export CSV', function() {
 			exportCSV(0, length);
 			return false;
 		}]], 'stats', STATS_CURSESSION);
