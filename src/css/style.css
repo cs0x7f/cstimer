@@ -574,6 +574,11 @@ table.sumtable td, table.sumtable th {
 	bottom: 20%;
 }
 
+.dialogexport {
+	top: 15%;
+	bottom: 15%;
+}
+
 .sflt > div {
 	white-space: nowrap;
 }

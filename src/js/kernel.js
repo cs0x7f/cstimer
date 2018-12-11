@@ -403,7 +403,7 @@ var kernel = (function() {
 			"#logo{color:?;border-color:?;background-color:?}" +
 			".mybutton,.tab,.cntbar{border-color:?}" +
 			".mybutton:hover,.tab:hover,.mywindow,.popup,.dialog{background-color:?}" +
-			".mybutton.enable,.tab.enable,.cntbar{background-color:?}" +
+			".mybutton.enable,.tab.enable,.cntbar,.selected{background-color:?}" +
 			"#gray{background-color:?}" +
 			".times:hover,.click:hover,textarea{background-color:?}" +
 			".click{color:?}" +

@@ -1222,7 +1222,7 @@ var stats = (function(kpretty, round) {
 					ssStat[0] = (s[0] - s[1]) + '/' + s[0];
 					ssStat[1] = kpretty(s[2]);
 				}
-				ssmgrTable.append('<tr><td>' + (i + 1) + (ssSorted[i] == sessionIdx ? '*' : '') + '</td>' +
+				ssmgrTable.append('<tr' + (ssSorted[i] == sessionIdx ? ' class="selected"' : '') + '><td>' + (i + 1) + '</td>' +
 					'<td class="click" data="s">' + ssData['name'] + '</td>' +
 					'<td>' + ssStat[0] + '</td>' +
 					'<td>' + ssStat[1] + '</td>' +
