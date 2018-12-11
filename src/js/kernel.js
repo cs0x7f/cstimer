@@ -625,6 +625,7 @@ var kernel = (function() {
 			addWindow: addWindow,
 			addButton: addButton,
 			showDialog: showDialog,
+			hideDialog: hideDialog,
 			isDialogShown: isDialogShown,
 			setAutoShow: function(visible) {
 				visible = visible || !getProp('ahide');
@@ -1237,6 +1238,7 @@ var kernel = (function() {
 		addButton: ui.addButton,
 		pushSignal: pushSignal,
 		showDialog: ui.showDialog,
+		hideDialog: ui.hideDialog,
 		isDialogShown: ui.isDialogShown,
 		clrKey: function(){keyback = false;},
 		temp: temp,

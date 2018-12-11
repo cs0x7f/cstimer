@@ -567,6 +567,13 @@ table.sumtable td, table.sumtable th {
 	bottom: 20%;
 }
 
+.dialogcfm {
+	left: 30%;
+	right: 30%;
+	top: 30%;
+	bottom: 30%;
+}
+
 .dialoginput, .dialogstats, .dialogssmgr, .dialogexport, .dialogscropt {
 	left: 20%;
 	right: 20%;
@@ -805,6 +812,13 @@ html.m.p150 {
 .m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {
 	left: 5%;
 	right: 5%;
+}
+
+.m .dialogcfm {
+	left: 15%;
+	right: 15%;
+	top: 25%;
+	bottom: 25%;
 }
 
 .m .dialogexport {

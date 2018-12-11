@@ -158,109 +158,127 @@ var stats = (function(kpretty, round) {
 	}
 
 	var floatCfm = (function() {
-		var floatDiv = $('<div />').addClass('popup').mouseleave(hideFloat);
-		var cfmTime = $('<span style="font-size:1.2em"/>');
-		var cfmOKR = $('<span class="click">').html("OK").click(procClk);
-		var cfmP2R = $('<span class="click">').html("+2").click(procClk);
-		var cfmDNFR = $('<span class="click">').html("DNF").click(procClk);
-		var cfmTxtR = $('<input type="text">').css('width', '8em').change(procTxt);
-		var cfmDelR = $('<input type="button">').val("X").click(procClk);
-		var cfmIdx;
+		var cfmDiv = $('<div style="text-align:center; font-family: initial;">');
+		var cfmTime = $('<span style="font-size:2.5em;"/>');
+		var cfmTxtR = $('<input type="text">').css('width', '8em');
+		var cfmDelR = $('<input type="button" data="d">').val("X");
+		var cfmScrR = $('<input type="text" readonly>').css('width', '8em');
+		var cfmDate = $('<input type="text" readonly>').css('width', '8em');
+
+		var cfmIdx = 0;
 		var cfmIdxRow;
 
-		var hideId;
-
-		var button2time = {"OK": 0, "+2": 2000, "DNF": -1};
-
-		function hideFloat() {
-			if (cfmIdx != undefined && hideId == undefined) {
-				procTxt();
-			}
-			if (hideId != undefined) {
-				floatDiv.hide();
-				hideId = undefined;
-			} else {
-				hideId = setTimeout(hideFloat, 100);
-			}
-		}
-
 		function procTxt() {
-			timesAt(cfmIdx) && (timesAt(cfmIdx)[2] = cfmTxtR.val());
+			timesAt(cfmIdx)[2] = cfmTxtR.val();
 			sessionManager.save(cfmIdx);
 			getTimeRow(cfmIdx, curDim, cfmIdxRow);
 		}
 
-		function procClk(selected) {
-			if (!$.isNumeric(selected)) {
-				var value = $(this).val();
-				if (value == 'X') {
-					if (delIdx(cfmIdx)) {
-						cfmIdx = undefined;
-						hideFloat();
-					}
-					return;
-				}
-				selected = button2time[$(this).html()];
-			}
-			if (timesAt(cfmIdx)[0][0] != selected) {
-				timesAt(cfmIdx)[0][0] = selected;
-				times_stats.reset(times.length);
-				sessionManager.save(cfmIdx);
-				updateFrom(cfmIdx, cfmIdxRow);
-				updateUtil();
-			}
-			getTimeRow(cfmIdx, curDim, cfmIdxRow);
-			cfmTime.html(pretty(timesAt(cfmIdx)[0], true));
-		}
-
-		function procMouse(e) {
-			var target = $(e.target)
-			var prev = target.prevAll();
-			var row = prev.length;
-			var idx = ~~(row == 0 ? target : prev.eq(-1)).html().replace("*", "") - 1;
-			if (row > 1 || !target.is('td')) {
-				cfmIdx = undefined;
-				hideFloat();
+		function procClk(e) {
+			var target = $(e.target);
+			var which = target.attr('data');
+			if (!which) {
 				return;
 			}
-			if (row == 0) {
-				target = target.next();
+			if (which == 'p') {
+				var selected = {"OK": 0, "+2": 2000, "DNF": -1}[target.html()];
+				setPenalty(selected, cfmIdx, cfmIdxRow);
+			} else if (which == 'd') {
+				if (delIdx(cfmIdx)) {
+					cfmIdx = undefined;
+					hideToTools();
+				}
 			}
+		}
+
+		function delLast() {
+			if (times.length != 0 && delIdx(times.length - 1)) {
+				cfmIdx = undefined;
+				hideToTools();
+			}
+		}
+
+		function hideToTools() {
+			if (kernel.isDialogShown('cfm')) {
+				kernel.hideDialog();
+			}
+			if (toolDiv) {
+				cfmDiv.css('font-size', '0.8em');
+				toolDiv.empty().append(cfmDiv);
+				cfmIdx = times.length - 1;
+				cfmIdxRow = kernel.getProp('statinv') ? avgRow.prev() : title.next();
+				genDiv();
+			}
+		}
+
+		function genDiv() {
+			if (!times[cfmIdx]) {
+				cfmDiv.empty();
+				return;
+			}
+			var time = timesAt(cfmIdx);
+			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')
+				.append('<span class="click" data="p">OK</span> | <span class="click" data="p">+2</span> | <span class="click" data="p">DNF</span>', ' | ', cfmDelR)
+				.append('<br>', $('<table style="display:inline-block;">').append(
+					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
+					$('<tr>').append('<td>' + SCRAMBLE_SCRAMBLE + '</td>', $('<td>').append(cfmScrR)),
+					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
+				)).unbind('click').click(procClk);
+			cfmTime.html(pretty(time[0], true));
+			cfmScrR.val(time[1]);
+			cfmDate.val(time[3] ? mathlib.time2str(time[3]) : 'N/A')
+			cfmTxtR.val(time[2]).unbind('change').change(procTxt);
+		}
+
+		function proc(idx, target) {
 			cfmIdx = idx;
 			cfmIdxRow = target.parent();
-			var position = target.offset();
-			position.left += target.outerWidth();
-			position.top -= 30;
-			var time = timesAt(cfmIdx);
-			cfmTime.html(pretty(time[0], true));
-			cfmTxtR.val(time[2]);
-			switch (time[0][0]) {
-			case 0: cfmOKR.prop("checked", true); break;
-			case 2000: cfmP2R.prop("checked", true); break;
-			case -1: cfmDNFR.prop("checked", true); break;
+			genDiv();
+			cfmDiv.css('font-size', '1.2em');
+			kernel.showDialog([cfmDiv, hideToTools, undefined, hideToTools], 'cfm', 'Times No.' + (idx + 1));
+		}
+
+		function setPenalty(value, idx, idxRow) {
+			if (timesAt(idx)[0][0] == value) {
+				return;
 			}
-			hideId && clearTimeout(hideId);
-			hideId = undefined;
-			floatDiv.show().offset(position);
+			timesAt(idx)[0][0] = value;
+			times_stats.reset(times.length);
+			sessionManager.save(idx);
+			updateFrom(idx, idxRow);
+			updateUtil();
+			getTimeRow(idx, curDim, idxRow);
+			if (idx == cfmIdx) {
+				genDiv();
+			}
+		}
+
+		function setCfm(value) {
+			if (times.length == 0) {
+				return;
+			}
+			setPenalty(value, times.length - 1, kernel.getProp('statinv') ? avgRow.prev() : title.next());
+		}
+
+		var toolDiv;
+
+		function execFunc(fdiv, signal) {
+			toolDiv = fdiv;
+			if (fdiv == undefined) {
+				return;
+			}
+			hideToTools();
 		}
 
 		$(function() {
-			scrollDiv.mouseover(procMouse);
-			floatDiv.appendTo('body').append(cfmTime, " ", cfmDelR, "<br>", cfmOKR, " | ", cfmP2R, " | ", cfmDNFR, "<br>" + STATS_COMMENT, cfmTxtR);
+			tools.regTool('cfm', TOOLS_CFMTIME, execFunc);
+			kernel.regListener('cfm', 'session', hideToTools);
 		});
 
 		return {
-			setCfm: function(value) {
-				if (times.length == 0) {
-					return;
-				}
-				hideFloat();
-				cfmIdx = times.length - 1;
-				cfmIdxRow = kernel.getProp('statinv') ? avgRow.prev() : title.next();
-				procClk(value);
-				cfmIdx = undefined;
-			},
-			hide: hideFloat
+			proc: proc,
+			delLast: delLast,
+			setCfm: setCfm
 		}
 	})();
 
@@ -315,8 +333,8 @@ var stats = (function(kpretty, round) {
 			return;
 		}
 		switch (row) {
-			case 0: setHighlight(idx, 1, 10, true); floatCfm.hide(); break;
-			case 1: break;
+			case 0: setHighlight(idx, 1, 10, true); break;
+			case 1: floatCfm.proc(idx, target); break;
 			case 2: setHighlight(idx - len1 + 1, len1, len1 * 10, stat1 < 0); break;
 			case 3: setHighlight(idx - len2 + 1, len2, len2 * 10, stat2 < 0); break;
 		}
@@ -529,7 +547,7 @@ var stats = (function(kpretty, round) {
 		s = s.join("");
 		s = s.substr(0, s.length - 2);
 		stext.val(s);
-		kernel.showDialog([stext, clearText, undefined, clearText, ['Export CSV', function() {
+		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
 			exportCSV(start, nsolves);
 			return false;
 		}]], 'stats', STATS_CURROUND);
@@ -715,7 +733,7 @@ var stats = (function(kpretty, round) {
 				}
 				str.push(label + "+: " + '<span class="cntbar" style="width: ' + (dis[i] || 0) / cntmax * 10 + 'em;">' + (dis[i] || 0) + "</span>");
 			}
-			div.html(str.join("<br>"));
+			div.html(str.join('<br>'));
 		}
 
 		function execFunc(fdiv, signal) {
@@ -1057,6 +1075,7 @@ var stats = (function(kpretty, round) {
 			if (kernel.isDialogShown('ssmgr')) {
 				genMgrTable();
 			}
+			kernel.pushSignal('session', 'load');
 		}
 
 		function load() {
@@ -1115,13 +1134,13 @@ var stats = (function(kpretty, round) {
 		}
 
 		function splitSession() {
-			var n_split = prompt('Number of latest times split from current session?', ~~(times.length / 2));
+			var n_split = prompt(STATS_ALERTSPL, ~~(times.length / 2));
 			if (n_split == null) {
 				return;
 			}
 			n_split = ~~n_split;
 			if (n_split < 1 || n_split > times.length - 1) {
-				alert('Should split or leave 1 time at least');
+				alert(STATS_ALERTSPL);
 				return;
 			}
 			var curSessionIdx = sessionIdx;
@@ -1137,7 +1156,7 @@ var stats = (function(kpretty, round) {
 		}
 
 		function mergeSessionTo(idx) {
-			if (sessionIdx == idx || !confirm('Append all times in current session to the end of selected session?')) {
+			if (sessionIdx == idx || !confirm(STATS_ALERTMG)) {
 				return;
 			}
 			var prevSession = sessionIdx;
@@ -1564,9 +1583,7 @@ var stats = (function(kpretty, round) {
 			if (value[1] == 'clr') {
 				sessionManager.createSession();
 			} else if (value[1] == 'undo') {
-				if (times.length != 0) {
-					delIdx(times.length - 1);
-				}
+				floatCfm.delLast();
 			} else if (value[1] == 'OK') {
 				floatCfm.setCfm(0);
 			} else if (value[1] == '+2') {
