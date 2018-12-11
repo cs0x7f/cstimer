@@ -4,6 +4,7 @@ var giikerutil = (function(CubieCube) {
 
 	var connectClick = $('<span></span>');
 	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
+	var algCubingClick = $('<a target="_blank">0 move(s)</a>').addClass('click');
 	var canvas = $('<canvas>');
 	var connectedStr = 'Connected | ??%';
 	var drawState = (function() {
@@ -57,7 +58,7 @@ var giikerutil = (function(CubieCube) {
 			connectClick.html('Connect').addClass('click').click(init);
 		}
 		fdiv.empty().append('Giiker: ', connectClick, '<br>')
-			.append(resetClick.unbind('click').click(markSolved), '<br>', canvas);
+			.append(resetClick.unbind('click').click(markSolved), '<br>', 'Reconstruction: ', algCubingClick, '<br>', canvas);
 		drawState();
 	}
 
@@ -176,6 +177,7 @@ var giikerutil = (function(CubieCube) {
 		currentState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', currentRawState);
 		movesAfterSolved = [];
+		scrambleLength = 0;
 		drawState();
 		callback(currentState, ['U '], lastTimestamp);
 	}
@@ -190,10 +192,19 @@ var giikerutil = (function(CubieCube) {
 		CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
 		CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
+		movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
+		if (movesAfterSolved.length > 10) {
+			var moveStr = $.map(movesAfterSolved, function(val) {
+				return "URFDLB"[~~(val / 3)] + " 2'"[val % 3];
+			})
+			algCubingClick.attr('href',
+				'https://alg.cubing.net/?alg=' + moveStr.slice(scrambleLength).join('_') +
+				'&setup=' + moveStr.slice(0, scrambleLength).join('_'));
+			algCubingClick.html(movesAfterSolved.length + ' move(s)');
+		}
 		if (currentState == mathlib.SOLVED_FACELET) {
 			movesAfterSolved = [];
-		} else {
-			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
+			scrambleLength = 0;
 		}
 		drawState();
 		batId == 0 && updateBattery();
@@ -243,6 +254,12 @@ var giikerutil = (function(CubieCube) {
 		}
 	}
 
+	var scrambleLength = 0;
+
+	function markScrambled() {
+		scrambleLength = movesAfterSolved.length;
+	}
+
 	$(function() {
 		kernel.regListener('giiker', 'scramble', procScramble);
 		kernel.regListener('tool', 'property', drawState, /^(?:giiVRC)$/);
@@ -255,6 +272,7 @@ var giikerutil = (function(CubieCube) {
 		},
 		markSolved: markSolved,
 		checkScramble: checkScramble,
+		markScrambled: markScrambled,
 		init: init
 	}
 })(mathlib.CubieCube);

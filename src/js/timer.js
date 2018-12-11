@@ -1019,6 +1019,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		function markScrambled(now) {
 			clearReadyTid();
 			if (status == -1) {
+				giikerutil.markScrambled();
 				if (!giikerutil.checkScramble()) {
 					pushSignal('scramble', ['333', scramble_333.genFacelet(currentFacelet)]);
 				}
