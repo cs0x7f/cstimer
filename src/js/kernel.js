@@ -288,7 +288,6 @@ var kernel = (function() {
 
 		/**
 		 * value = [obj, ok, cancel, gray, [name, bool click()]]
-		 * position = [top, left, height, width]
 		 */
 		var dialog = $('<div />').addClass('dialog');
 		var title = $('<div />').addClass('title');
@@ -298,8 +297,8 @@ var kernel = (function() {
 		var CAN = $('<input type="button" class="buttonOK">').val(CANCEL_LANG);
 		dialog.append(title, value, buttons);
 
-		function showDialog(values, position, titlestr) {
-			dialog.removeClass().addClass('dialog').addClass('dialog' + position);
+		function showDialog(values, diagclass, titlestr) {
+			dialog.removeClass().addClass('dialog').addClass('dialog' + diagclass);
 			title.html(titlestr);
 			value.children().appendTo(temp);
 			values[0].appendTo(value.empty());
@@ -346,7 +345,7 @@ var kernel = (function() {
 
 		function hideDialog() {
 			value.children().appendTo(temp);
-			dialog.stop(true, true).fadeOut(100);
+			dialog.stop(true, true).fadeOut(100).removeClass();
 			gray.hide();
 			isPopup = false;
 			refocus();
@@ -393,6 +392,10 @@ var kernel = (function() {
 			} else {
 				leftbar.stop(true, true).fadeTo(200, 0.01);
 			}
+		}
+
+		function isDialogShown(diagclass) {
+			return dialog.hasClass('dialog' + diagclass);
 		}
 
 		var color = $('<style>').appendTo('head');
@@ -622,6 +625,7 @@ var kernel = (function() {
 			addWindow: addWindow,
 			addButton: addButton,
 			showDialog: showDialog,
+			isDialogShown: isDialogShown,
 			setAutoShow: function(visible) {
 				visible = visible || !getProp('ahide');
 				if (visible) {
@@ -1233,6 +1237,7 @@ var kernel = (function() {
 		addButton: ui.addButton,
 		pushSignal: pushSignal,
 		showDialog: ui.showDialog,
+		isDialogShown: ui.isDialogShown,
 		clrKey: function(){keyback = false;},
 		temp: temp,
 		reprop: property.reload,

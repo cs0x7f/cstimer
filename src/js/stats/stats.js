@@ -1048,19 +1048,19 @@ var stats = (function(kpretty, round) {
 			}
 		}
 
-		function sessionLoaded(timesNew) {
+		function sessionLoaded(sessionIdx, timesNew) {
 			times = timesNew;
 			times_stats.reset(times.length);
 			updateTable(false);
-			if (!('stat' in sessionData[sessionIdx])) {
-				setTimeout(genMgrTable, 0);
-			}
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
+			if (kernel.isDialogShown('ssmgr')) {
+				genMgrTable();
+			}
 		}
 
 		function load() {
-			storage.get(sessionIdx, sessionLoaded);
+			storage.get(sessionIdx, sessionLoaded.bind(undefined, sessionIdx));
 		}
 
 		function save(startIdx) {
@@ -1132,17 +1132,12 @@ var stats = (function(kpretty, round) {
 				times = times.slice(0, -n_split);
 				times_stats.reset();
 				save();
-				delete sessionData[sessionIdx]['stat'];
-				kernel.setProp('sessionData', JSON.stringify(sessionData));
-				sessionLoaded(times);
+				sessionLoaded(sessionIdx, times);
 			});
 		}
 
 		function mergeSessionTo(idx) {
-			if (sessionIdx == idx) { // do not append self
-				return;
-			}
-			if (!confirm('Append all times in current session to the end of selected session?')) {
+			if (sessionIdx == idx || !confirm('Append all times in current session to the end of selected session?')) {
 				return;
 			}
 			var prevSession = sessionIdx;
@@ -1222,7 +1217,7 @@ var stats = (function(kpretty, round) {
 					ssStat[0] = (s[0] - s[1]) + '/' + s[0];
 					ssStat[1] = kpretty(s[2]);
 				}
-				ssmgrTable.append('<tr' + (ssSorted[i] == sessionIdx ? ' class="selected"' : '') + '><td>' + (i + 1) + '</td>' +
+				ssmgrTable.append('<tr' + (ssSorted[i] == sessionIdx ? ' class="selected"' : '') + '><td>' + (i + 1) + (ssSorted[i] == sessionIdx ? '*' : '') + '</td>' +
 					'<td class="click" data="s">' + ssData['name'] + '</td>' +
 					'<td>' + ssStat[0] + '</td>' +
 					'<td>' + ssStat[1] + '</td>' +
@@ -1240,7 +1235,7 @@ var stats = (function(kpretty, round) {
 
 		function showMgrTable() {
 			genMgrTable();
-			kernel.showDialog([ssmgrDiv, 0, undefined, 0], 'stats', STATS_SSMGR_TITLE);
+			kernel.showDialog([ssmgrDiv, 0, undefined, 0], 'ssmgr', STATS_SSMGR_TITLE);
 		}
 
 		function procSignal(signal, value) {
