@@ -991,6 +991,7 @@ var stats = (function(kpretty, round) {
 
 		var ssmgrDiv = $('<div />');
 		var ssmgrTable = $('<table />').appendTo(ssmgrDiv).addClass('table ssmgr');
+		var funcButton = $('<input type="button">').val('+');
 
 		var sessionData;
 		var ssSorted;
@@ -1083,14 +1084,6 @@ var stats = (function(kpretty, round) {
 			}
 		}
 
-		function createAndDel() {
-			var curSession = sessionIdx;
-			createSession();
-			if (kernel.getProp('statclr', false) && confirm(STATS_CFM_DELSS)) {
-				doSessionDeletion(curSession);
-			}
-		}
-
 		function doSessionDeletion(ssidx) {
 			// if not the last session, then swap to last session
 			if (ssidx != sessionIdxMax) {
@@ -1118,6 +1111,17 @@ var stats = (function(kpretty, round) {
 			}
 			doSessionDeletion(ssidx);
 			return true;
+		}
+
+		function clearSession() {
+			if (!confirm(STATS_CFM_RESET)) {
+				return;
+			}
+			times = [];
+			times_stats.reset();
+			save();
+			updateTable(false);
+			kernel.blur();
 		}
 
 		function renameSession(ssidx) {
@@ -1401,6 +1405,12 @@ var stats = (function(kpretty, round) {
 						sessionData[sessionIdx]['phases'] = value[1];
 					}
 					kernel.setProp('sessionData', JSON.stringify(sessionData));
+				} else if (value[0] == 'statclr') {
+					if (value[1]) {
+						funcButton.val('X').unbind('click').click(clearSession);
+					} else {
+						funcButton.val('+').unbind('click').click(createSession);
+					}
 				}
 			} else if (signal == 'ctrl' && value[0] == 'stats') {
 				var rank = sessionData[sessionIdx]['rank'];
@@ -1444,7 +1454,7 @@ var stats = (function(kpretty, round) {
 		}
 
 		$(function() {
-			kernel.regListener('ssmgr', 'property', procSignal, /^(:?session(:?Data)?|scrType|phases)$/);
+			kernel.regListener('ssmgr', 'property', procSignal, /^(:?session(:?Data)?|scrType|phases|statclr)$/);
 			kernel.regListener('ssmgr', 'ctrl', procSignal, /^stats$/);
 
 			sessionIdxMax = kernel.getProp('sessionN', 15);
@@ -1460,7 +1470,9 @@ var stats = (function(kpretty, round) {
 			},
 			showMgrTable: showMgrTable,
 			importSessions: importSessions,
-			createAndDel: createAndDel,
+			getButton: function() {
+				return funcButton;
+			},
 			rank2idx: rank2idx,
 			load: load,
 			save: save
@@ -1665,7 +1677,7 @@ var stats = (function(kpretty, round) {
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
-				sessionManager.createAndDel();
+				sessionManager.getButton().click();
 			} else if (value[1] == 'undo') {
 				floatCfm.delLast();
 			} else if (value[1] == 'OK') {
@@ -1708,11 +1720,11 @@ var stats = (function(kpretty, round) {
 		kernel.setProp('ss2scr', true);
 		kernel.setProp('ss2phases', true);
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
-		kernel.regProp('stats', 'statclr', 0, STATS_STATDEL, [false]);
+		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true]);
 
 		div.appendTo('body').append(
 			statOptDiv.append(hideOptButton.click(hideSessionOptions),
-				sessionManager.getSelect(), $('<input type="button">').val('+').click(sessionManager.createAndDel)),
+				sessionManager.getSelect(), sessionManager.getButton()),
 			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
 		$(window).bind('resize', resultsHeight);
