@@ -574,9 +574,16 @@ table.sumtable td, table.sumtable th {
 	bottom: 30%;
 }
 
-.dialoginput, .dialogstats, .dialogssmgr, .dialogexport, .dialogscropt {
+.dialoginput, .dialogstats, .dialogexport, .dialogscropt {
 	left: 20%;
 	right: 20%;
+	top: 20%;
+	bottom: 20%;
+}
+
+.dialogssmgr {
+	left: 15%;
+	right: 15%;
 	top: 20%;
 	bottom: 20%;
 }

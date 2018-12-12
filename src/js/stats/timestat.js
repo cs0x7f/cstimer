@@ -120,5 +120,31 @@ var TimeStat = (function() {
 		return [this.worstTime, this.bestTime, diff];
 	}
 
+	//ret length: length - nsolves + 1
+	TimeStat.prototype.runAvgMean = function(start, length, size, trim, onlyavg) {
+		size = size || length;
+		if (trim === undefined) {
+			trim = Math.ceil(size / 20);
+		}
+		if (size - trim <= 0) {
+			return [-1, 0, [], []];
+		}
+		var rbt = sbtree.tree(this.timeSort);
+		for (var j = 0; j < size; j++) {
+			rbt.insert(this.timeAt(start + j), j);
+		}
+		var neff = size - 2 * trim;
+		var retAvg = [(rbt.rankOf(-1) < size - trim) ? -1 : kernel.round((rbt.cumSum(size - trim) - rbt.cumSum(trim)) / neff)];
+		var start0 = start - size;
+		for (var i = size; i < length; i++) {
+			rbt.remove(this.timeAt(start0 + i)).insert(this.timeAt(start + i), j);
+			retAvg.push((rbt.rankOf(-1) < size - trim) ? -1 : kernel.round((rbt.cumSum(size - trim) - rbt.cumSum(trim)) / neff));
+		}
+		var avg = rbt.cumSum(size - trim) - rbt.cumSum(trim);
+		var variance = rbt.cumSk2(size - trim) - rbt.cumSk2(trim)
+		variance = Math.sqrt((variance - avg * avg / neff) / (neff - 1)) / 1000;
+		return [retAvg, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
+	}
+
 	return TimeStat;
 })();
