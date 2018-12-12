@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'baggrunds billede gennemsigtigheds: ';
 var BGIMAGE_IMAGE = 'baggrunds billede: ';
 var BGIMAGE_IMAGE_STR = 'ingen|manual|CCT';
 var SHOW_AVG_LABEL = 'Vis Gns Etiket';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'BlandingsGenerator';
 var SCRGEN_NSCR = 'Nummere af blandinger: ';
 var SCRGEN_PRE = 'præfiks: ';

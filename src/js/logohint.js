@@ -92,13 +92,15 @@ var logohint = (function() {
 			kernel.showDialog([about, 0, undefined, 0], 'logo', title);
 		});
 		about.hide();
+		kernel.regProp('ui', 'useLogo', 0, USE_LOGOHINT, [true]);
+
 
 		enabled = checkAnimation();
 	});
 
 	return {
 		push: function(msg) {
-			if (!enabled) {
+			if (!enabled || !kernel.getProp('useLogo', true)) {
 				return;
 			}
 			msgList.push(msg);

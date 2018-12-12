@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'arkaplan resmi şeffaflığı: ';
 var BGIMAGE_IMAGE = 'arkaplan resmi: ';
 var BGIMAGE_IMAGE_STR = 'hiçbiri|manual|CCT';
 var SHOW_AVG_LABEL = 'ortalama göstergesini göster';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'karıştırma oluşturucu';
 var SCRGEN_NSCR = 'karıştırmaların sayısı: ';
 var SCRGEN_PRE = 'karıştırma öncesi: ';

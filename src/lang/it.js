@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'Opacità immagine di sfondo: ';
 var BGIMAGE_IMAGE = 'Immagine di sfondo: ';
 var BGIMAGE_IMAGE_STR = 'nessuna|manuale|CCT';
 var SHOW_AVG_LABEL = 'Mostra svg sotto al cronometro';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'Generatore di scramble';
 var SCRGEN_NSCR = 'Numbero di scrambles: ';
 var SCRGEN_PRE = 'Prefisso: ';

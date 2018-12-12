@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'помутнение фонового изображен�
 var BGIMAGE_IMAGE = 'фоновое изображение: ';
 var BGIMAGE_IMAGE_STR = 'нет|мануал|CCT';
 var SHOW_AVG_LABEL = 'Показывать Таблицу Avg';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ГенераторСкрамблов';
 var SCRGEN_NSCR = 'Количество скрамблов: ';
 var SCRGEN_PRE = 'prefix: ';

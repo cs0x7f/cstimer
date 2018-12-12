@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'providnost pozadinske slike: ';
 var BGIMAGE_IMAGE = 'pozadinska slika: ';
 var BGIMAGE_IMAGE_STR = 'ništa|ručno|CCT';
 var SHOW_AVG_LABEL = 'Prikaži oznaku prosjeka';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'Generator scramble-ova';
 var SCRGEN_NSCR = 'Broj scramble-ova: ';
 var SCRGEN_PRE = 'prefiks: ';

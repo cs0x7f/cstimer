@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'opacidade da imagem de fundo: ';
 var BGIMAGE_IMAGE = 'imagem de fundo: ';
 var BGIMAGE_IMAGE_STR = 'nenhum|manual|CCT';
 var SHOW_AVG_LABEL = 'Mostrar averages rápidas na frente';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'Gerador de Embaralhamentos';
 var SCRGEN_NSCR = 'Número de embaralhamentos: ';
 var SCRGEN_PRE = 'prefixo: ';

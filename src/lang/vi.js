@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'Background: ';
 var BGIMAGE_IMAGE = 'background : ';
 var BGIMAGE_IMAGE_STR = 'none|tự chọn|CCT';
 var SHOW_AVG_LABEL = 'cho xem avg ở dưới timer';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'số scrambles: ';
 var SCRGEN_PRE = 'prefix: ';

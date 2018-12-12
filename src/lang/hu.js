@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'háttérkép halványsága: ';
 var BGIMAGE_IMAGE = 'háttérkép: ';
 var BGIMAGE_IMAGE_STR = 'nincs|kézi|CCT';
 var SHOW_AVG_LABEL = 'Avg Label mutatása';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Number of scrambles: ';
 var SCRGEN_PRE = 'prefix: ';

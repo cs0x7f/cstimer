@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'Opacidad de la imagen de fondo: ';
 var BGIMAGE_IMAGE = 'Imagen de fondo: ';
 var BGIMAGE_IMAGE_STR = 'ninguna|manual|CCT';
 var SHOW_AVG_LABEL = 'Mostrar la información de avg';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Number of scrambles: ';
 var SCRGEN_PRE = 'prefix: ';

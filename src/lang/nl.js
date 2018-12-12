@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'Transparantie achtergrondafbeelding: ';
 var BGIMAGE_IMAGE = 'Achtergrondafbeelding: ';
 var BGIMAGE_IMAGE_STR = 'Geen|Automatischl|CCT';
 var SHOW_AVG_LABEL = 'Toon gemiddelde';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Aantal scrambles: ';
 var SCRGEN_PRE = 'prefix: ';

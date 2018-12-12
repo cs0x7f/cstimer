@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'Opacité de l\'image de fond : ';
 var BGIMAGE_IMAGE = 'Image de fond : ';
 var BGIMAGE_IMAGE_STR = 'Aucune|Personnalisée|CCT';
 var SHOW_AVG_LABEL = 'Afficher les moyennes en cours';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'Générateur de mélange';
 var SCRGEN_NSCR = 'Nombre de mélanges : ';
 var SCRGEN_PRE = 'Préfixe : ';

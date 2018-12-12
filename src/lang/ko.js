@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = '배경 그림 투명도: ';
 var BGIMAGE_IMAGE = '배경 그림: ';
 var BGIMAGE_IMAGE_STR = '없음|직접 입력|CCT';
 var SHOW_AVG_LABEL = '초시계 아래에 평균 정보 표시';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = '섞기 생성기';
 var SCRGEN_NSCR = '섞기 개수:';
 var SCRGEN_PRE = '번호 표기:';

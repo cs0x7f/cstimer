@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = 'background image opacity: ';
 var BGIMAGE_IMAGE = 'background image: ';
 var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
 var SHOW_AVG_LABEL = 'Show Avg Label';
+var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Number of scrambles: ';
 var SCRGEN_PRE = 'prefix: ';

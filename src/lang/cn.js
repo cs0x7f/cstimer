@@ -367,6 +367,7 @@ var BGIMAGE_OPACITY = '背景图片不透明度：';
 var BGIMAGE_IMAGE = '背景图片：';
 var BGIMAGE_IMAGE_STR = '无|自定义|CCT';
 var SHOW_AVG_LABEL = '显示平均标签';
+var USE_LOGOHINT = '在Logo中提示信息';
 var TOOLS_SCRGEN = '打乱生成器';
 var SCRGEN_NSCR = '打乱个数：';
 var SCRGEN_PRE = '前缀：';
