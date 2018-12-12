@@ -1385,7 +1385,26 @@ var stats = (function(kpretty, round) {
 
 		function showMgrTable() {
 			genMgrTable();
-			kernel.showDialog([ssmgrDiv, 0, undefined, 0], 'ssmgr', STATS_SSMGR_TITLE);
+			kernel.showDialog([ssmgrDiv, 0, undefined, 0, ['Order by scramble', function() {
+				if (!confirm('Sort all session by scramble?')) {
+					return false;
+				}
+				var ssSorted = [];
+				for (var i = sessionIdxMin; i <= sessionIdxMax; i++) {
+					ssSorted.push(i);
+				}
+				ssSorted.sort(function(a, b) {
+					var idxa = scramble.getTypeIdx(sessionData[a]['scr']);
+					var idxb = scramble.getTypeIdx(sessionData[b]['scr']);
+					return idxa == idxb ? (sessionData[a]['rank'] - sessionData[b]['rank']) : (idxa - idxb);
+				});
+				for (var i = 0; i < ssSorted.length; i++) {
+					sessionData[ssSorted[i]]['rank'] = i + 1;
+				}
+				fixRank();
+				genMgrTable();
+				return false;
+			}]], 'ssmgr', STATS_SSMGR_TITLE);
 		}
 
 		function procSignal(signal, value) {
@@ -1551,7 +1570,7 @@ var stats = (function(kpretty, round) {
 		}
 		s = s.join("\n");
 		stext.val(s);
-		kernel.showDialog([stext, clearText, undefined, clearText, ['Export CSV', function() {
+		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
 			exportCSV(0, length);
 			return false;
 		}]], 'stats', STATS_CURSESSION);

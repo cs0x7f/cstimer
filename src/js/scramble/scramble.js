@@ -454,6 +454,17 @@ var scramble = (function(rn, rndEl) {
 		return "";
 	}
 
+	function getTypeIdx(type) {
+		for (var i = 0; i < scrdata.length; i++) {
+			for (var j = 0; j < scrdata[i][1].length; j++) {
+				if (scrdata[i][1][j][1] == type) {
+					return i * 100 + j;
+				}
+			}
+		}
+		return 1e300;
+	}
+
 	var scrambleGenerator = (function() {
 		var tdiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em');
 		var button = $('<span />').addClass('click').html(SCRGEN_GEN);
@@ -595,6 +606,7 @@ var scramble = (function(rn, rndEl) {
 		mega: mega,
 		formatScramble: formatScramble,
 		getTypeName: getTypeName,
+		getTypeIdx: getTypeIdx,
 		// scrambleOK: scrambleOK,
 		rndState: rndState
 	}
