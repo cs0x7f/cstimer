@@ -1005,8 +1005,8 @@ var stats = (function(kpretty, round) {
 			kernel.setProp('sessionN', sessionIdxMax);
 			sessionData[sessionIdx] = {
 				'name': newName,
-				'scr': curScrType,
-				'phases': 1,
+				'scr': (sessionData[ssSorted[rank - 1]] || {})['scr'] || curScrType,
+				'phases': (sessionData[ssSorted[rank - 1]] || {})['phases'] || 1,
 				'rank': rank + 0.5
 			};
 			genSelect();
@@ -1266,8 +1266,8 @@ var stats = (function(kpretty, round) {
 					sessionData = JSON.parse(value[1]);
 					genSelect();
 				} else if (value[0] == 'scrType' || value[0] == 'phases') {
-					curScrType = value[1];
 					if (value[0] == 'scrType') {
+						curScrType = value[1];
 						if (sessionData[sessionIdx]['scr'] != value[1] && kernel.getProp('scr2ss')) {
 							createSession();
 						} else {
