@@ -620,7 +620,7 @@ var stats = (function(kpretty, round) {
 		var toolDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em')
 		var infoDiv = $('<div />');
 		var labelSelect = $('<select>');
-		var timeSelect = $('<select>').append(
+		var dateSelect = $('<select>').append(
 			$('<option>').val(-1).html('any time'),
 			$('<option>').val(1).html('past 24 hours'),
 			$('<option>').val(7).html('past 7 days'),
@@ -646,7 +646,7 @@ var stats = (function(kpretty, round) {
 			var sessionN = ~~kernel.getProp('sessionN');
 			var sessionData = JSON.parse(kernel.getProp('sessionData'));
 			var selectedLabel = labelSelect.val();
-			var timeThreshold = timeSelect.val() == -1 ? -1 : (~~(+new Date / 1000) - timeSelect.val() * 86400);
+			var dateThreshold = dateSelect.val() == -1 ? -1 : (~~(+new Date / 1000) - dateSelect.val() * 86400);
 			for (var i = 0; i < sessionN; i++) {
 				var idx = sessionManager.rank2idx(i + 1);
 				if (sessionData[idx]['label'] != selectedLabel) {
@@ -657,7 +657,7 @@ var stats = (function(kpretty, round) {
 						return new Promise(function(resolve) {
 							storage.get(idx, function(newTimes) {
 								for (var i = 0; i < newTimes.length; i++) {
-									if ((newTimes[i][3] || 0) < timeThreshold) {
+									if ((newTimes[i][3] || 0) < dateThreshold) {
 										continue;
 									}
 									hugeTimes.push(newTimes[i]);
@@ -710,7 +710,7 @@ var stats = (function(kpretty, round) {
 			if (/^scr/.exec(signal)) {
 				return;
 			}
-			fdiv.empty().append(toolDiv.append('Label: ', labelSelect, timeSelect, ' ', calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv));
+			fdiv.empty().append(toolDiv.append('Label: ', labelSelect, dateSelect, ' ', calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv));
 		}
 
 		function procSignal(signal, value) {
