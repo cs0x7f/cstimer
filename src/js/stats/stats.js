@@ -1067,6 +1067,7 @@ var stats = (function(kpretty, round) {
 			times_stats.reset(times.length);
 			save();
 			loadSession(sessionIdx);
+			kernel.blur();
 
 			if (kernel.getProp('imrename')) {
 				renameSession();
