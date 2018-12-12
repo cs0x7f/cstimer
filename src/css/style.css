@@ -469,13 +469,6 @@ textarea {
 	display: none;
 }
 
-.statsel {
-	display:inline-block;
-	min-width: 8em;
-	padding: 2px;
-	padding: 0.15rem;
-}
-
 .statc {
 	display: inline-block;
 	width: 100%;

@@ -996,7 +996,21 @@ var stats = (function(kpretty, round) {
 		var sessionData;
 		var ssSorted;
 
-		var select = $('<span class="click statsel">').click(showMgrTable);
+		var newSessionOption = $('<option />').val('new').html('New..');
+		var delSessionOption = $('<option />').val('del').html('Delete..');
+		var select = $('<select />').change(function() {
+			kernel.blur();
+			if (select.val() == 'new') {
+				createSession();
+			} else if (select.val() == 'del') {
+				if (!deleteSession(sessionIdx)) {
+					select.val(sessionIdx);
+				}
+				return;
+			} else {
+				loadSession(~~select.val());
+			}
+		});
 
 		function loadSession(ssidx) {
 			sessionIdx = ssidx;
@@ -1009,7 +1023,7 @@ var stats = (function(kpretty, round) {
 			if (kernel.getProp('ss2phases')) {
 				kernel.setProp('phases', curSessionData['phases']);
 			}
-			fixSessionSpan();
+			fixSessionSelect();
 		}
 
 		function fixSessionData() {
@@ -1024,9 +1038,14 @@ var stats = (function(kpretty, round) {
 			fixRank();
 		}
 
-		function fixSessionSpan() {
+		function fixSessionSelect() {
 			fixSessionData();
-			select.html(STATS_SESSION + ' ' + (sessionData[sessionIdx] || {})['name'] + ' ');
+			select.empty();
+			for (var i = 0; i < ssSorted.length; i++) {
+				select.append($('<option />').val(ssSorted[i]).html(sessionData[ssSorted[i]]['name']));
+			}
+			select.append(newSessionOption, delSessionOption);
+			select.val(sessionIdx);
 		}
 
 		function fixRank() {
@@ -1068,7 +1087,7 @@ var stats = (function(kpretty, round) {
 					'rank': rank + 0.5
 				};
 			}
-			fixSessionSpan();
+			fixSessionSelect();
 		}
 
 		function createSession(rank, copy) {
@@ -1214,7 +1233,7 @@ var stats = (function(kpretty, round) {
 					byGroup = 'scr';
 					break;
 			}
-			fixSessionSpan();
+			fixSessionSelect();
 			genMgrTable();
 		}
 
@@ -1418,7 +1437,7 @@ var stats = (function(kpretty, round) {
 					loadSession(value[1]);
 				} else if (value[0] == 'sessionData') {
 					sessionData = JSON.parse(value[1]);
-					fixSessionSpan();
+					fixSessionSelect();
 				} else if (value[0] == 'scrType' || value[0] == 'phases') {
 					if (value[0] == 'scrType') {
 						curScrType = value[1];
@@ -1468,7 +1487,7 @@ var stats = (function(kpretty, round) {
 				times_stats.reset(times.length);
 				save();
 			}
-			fixSessionSpan();
+			fixSessionSelect();
 			loadSession(currentSessionIdx);
 			showMgrTable();
 			logohint.push('Import %d session(s)'.replace('%d', data.length));
@@ -1485,7 +1504,7 @@ var stats = (function(kpretty, round) {
 
 			sessionIdxMax = kernel.getProp('sessionN', 15);
 			sessionData = JSON.parse(kernel.getProp('sessionData', '{}'));
-			fixSessionSpan();
+			fixSessionSelect();
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 			kernel.getProp('session', 1);
 		});
@@ -1749,7 +1768,8 @@ var stats = (function(kpretty, round) {
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true]);
 
 		div.appendTo('body').append(
-			statOptDiv.append(hideOptButton.click(hideSessionOptions),
+			statOptDiv.append(hideOptButton.click(hideSessionOptions), ' ',
+				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
 				sessionManager.getSelect(), sessionManager.getButton()),
 			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
