@@ -649,7 +649,7 @@ var stats = (function(kpretty, round) {
 			var dateThreshold = dateSelect.val() == -1 ? -1 : (~~(+new Date / 1000) - dateSelect.val() * 86400);
 			for (var i = 0; i < sessionN; i++) {
 				var idx = sessionManager.rank2idx(i + 1);
-				if (sessionData[idx]['label'] != selectedLabel) {
+				if (sessionData[idx]['name'] != selectedLabel && selectedLabel != '*') {
 					continue;
 				}
 				loadproc = loadproc.then((function(idx) {
@@ -710,16 +710,16 @@ var stats = (function(kpretty, round) {
 			if (/^scr/.exec(signal)) {
 				return;
 			}
-			fdiv.empty().append(toolDiv.append('Label: ', labelSelect, dateSelect, ' ', calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv));
+			fdiv.empty().append(toolDiv.append('Name: ', labelSelect, dateSelect, ' ', calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv));
 		}
 
 		function procSignal(signal, value) {
 			if (value[0] == 'sessionData') {
 				var sessionData = JSON.parse(value[1]);
 				var labelList = [];
-				labelSelect.empty();
+				labelSelect.empty().append($('<option />').val('*').html('Any'));
 				$.each(sessionData, function(idx, val) {
-					var curLabel = val['label'];
+					var curLabel = val['name'];
 					if ($.inArray(curLabel, labelList) == -1) {
 						labelList.push(curLabel);
 						labelSelect.append($('<option />').val(curLabel).html(curLabel));
@@ -1019,7 +1019,6 @@ var stats = (function(kpretty, round) {
 					'phases': 1,
 				};
 				sessionData[i]['rank'] = sessionData[i]['rank'] || i;
-				sessionData[i]['label'] = sessionData[i]['label'] || sessionData[i]['scr'];
 			}
 			fixRank();
 		}
@@ -1059,7 +1058,6 @@ var stats = (function(kpretty, round) {
 				'phases': prevData['phases'] || 1,
 				'rank': rank + 0.5
 			};
-			sessionData[sessionIdx]['label'] = prevData['label'] || sessionData[sessionIdx]['scr'];
 			fixSessionSpan();
 		}
 
@@ -1116,18 +1114,6 @@ var stats = (function(kpretty, round) {
 			}
 		}
 
-		function relabelSession(ssidx) {
-			if (ssidx === undefined) {
-				ssidx = sessionIdx;
-			}
-			var sName = prompt('STATS_SESSION_LABEL', sessionData[ssidx]['label']);
-			if (sName != null) {
-				sName = $('<div/>').text(sName).html();
-				sessionData[ssidx]['label'] = sName;
-				kernel.setProp('sessionData', JSON.stringify(sessionData));
-			}
-		}
-
 		function sessionLoaded(sessionIdx, timesNew) {
 			times = timesNew;
 			times_stats.reset(times.length);
@@ -1152,17 +1138,15 @@ var stats = (function(kpretty, round) {
 
 		function mgrClick(e) {
 			var target = $(e.target);
-			if (!target.is('td') || !target.hasClass('click')) {
+			if (!target.is('td, th') || !target.hasClass('click')) {
 				return;
 			}
-			var rank = ~~target.prevAll().eq(-1).html().replace("*", "");
+			var row = target.parent();
+			var rank = ~~row.children().first().html().replace("*", "");
 			var idx = ssSorted[rank - 1];
 			switch (target.attr('data')) {
 				case 'r':
 					renameSession(idx);
-					break;
-				case 'l':
-					relabelSession(idx);
 					break;
 				case 'u':
 					if (rank != 1) {
@@ -1192,6 +1176,12 @@ var stats = (function(kpretty, round) {
 					break;
 				case 'p': //split current session
 					splitSession();
+					break;
+				case 'e':
+					expandRankGroup(target.parent());
+					return;
+				case 'g':
+					byGroup = !byGroup;
 					break;
 			}
 			fixSessionSpan();
@@ -1282,38 +1272,89 @@ var stats = (function(kpretty, round) {
 			})
 		}
 
+		function getMgrRowAtRank(rank) {
+			var idx = ssSorted[rank - 1];
+			var ssData = sessionData[idx];
+			var ssStat = ['?/?', '?'];
+			if ('stat' in ssData) {
+				var s = ssData['stat'];
+				ssStat[0] = (s[0] - s[1]) + '/' + s[0];
+				ssStat[1] = kpretty(s[2]);
+			}
+			return '<tr' + (idx == sessionIdx ? ' class="selected"' : '') + '><td>' + rank + (idx == sessionIdx ? '*' : '') + '</td>' +
+				'<td class="click" data="s">' + ssData['name'] + '</td>' +
+				'<td>' + ssStat[0] + '</td>' +
+				'<td>' + ssStat[1] + '</td>' +
+				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
+				'<td>' + ssData['phases'] + '</td>' +
+				'<td class="click" data="u">&#8593;</td>' +
+				'<td class="click" data="d">&#8595;</td>' +
+				'<td class="click" data="r">&#9997;</td>' +
+				'<td class="click" data="+">+</td>' +
+				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;</td>' : '"m">&#8676;</td>') +
+				'<td class="click" data="x">X</td>' + '</tr>';
+		}
+
+		function getMgrRowAtGroup(group) {
+			var ssData = sessionData[ssSorted[group[0]]];
+			var isInGroup = false;
+			var ssNames = [];
+			for (var i = 0; i < group.length; i++) {
+				var idx = ssSorted[group[i]];
+				isInGroup = isInGroup || sessionIdx == idx;
+				ssNames.push(sessionData[idx]['name']);
+			}
+			ssNames = ssNames.join(', ');
+			if (ssNames.length > 25) {
+				ssNames = ssNames.slice(0, 22) + '...';
+			}
+			return '<tr' + (isInGroup ? ' class="selected"' : '') + '><td class="click" data="e">' + (isInGroup ? '*' : '') + '[+]</td>' +
+				'<td class="click" data="e" colspan=3>' + group.length + ' session(s): ' + ssNames + '</td>' +
+				'<td>' + scramble.getTypeName(ssData['scr']) + '</td><td colspan=7 /></tr>';
+		}
+
+		function expandRankGroup(curTr) {
+			for (var elem = curTr.next(); elem.is(":hidden"); elem = elem.next()) {
+				elem.show();
+			}
+			curTr.hide();
+		}
+
+		var byGroup = false;
+
 		function genMgrTable() {
 			fixRank();
 			ssmgrTable.empty().append(
 				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption>' +
-				'<tr><th></th><th>' +
+				'<tr><th class="click" data="g">' + (byGroup ? '[+]' : '[-]') + '</th><th>' +
 				STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th>' +
 				STATS_AVG + '</th><th>' +
 				SCRAMBLE_SCRAMBLE + '</th><th>' +
 				'P.' + '</th><th colspan=6>' +
-				STATS_SSMGR_OP + '</th><th>' + 'label' + '</th></tr>');
+				STATS_SSMGR_OP + '</th></tr>');
+
+
+			var groups = [];
+			var gscr = NaN;
 			for (var i = 0; i < ssSorted.length; i++) {
 				var ssData = sessionData[ssSorted[i]];
-				var ssStat = ['?/?', '?'];
-				if ('stat' in ssData) {
-					var s = ssData['stat'];
-					ssStat[0] = (s[0] - s[1]) + '/' + s[0];
-					ssStat[1] = kpretty(s[2]);
+				if (ssData['scr'] == gscr && byGroup) {
+					groups[groups.length - 1].push(i);
+				} else {
+					groups.push([i]);
+					gscr = ssData['scr'];
 				}
-				ssmgrTable.append('<tr' + (ssSorted[i] == sessionIdx ? ' class="selected"' : '') + '><td>' + (i + 1) + (ssSorted[i] == sessionIdx ? '*' : '') + '</td>' +
-					'<td class="click" data="s">' + ssData['name'] + '</td>' +
-					'<td>' + ssStat[0] + '</td>' +
-					'<td>' + ssStat[1] + '</td>' +
-					'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
-					'<td>' + ssData['phases'] + '</td>' +
-					'<td class="click" data="u">&#8593;</td>' +
-					'<td class="click" data="d">&#8595;</td>' +
-					'<td class="click" data="r">&#9997;</td>' +
-					'<td class="click" data="+">+</td>' +
-					'<td class="click" data=' + (ssSorted[i] == sessionIdx ? '"p">&#8697;</td>' : '"m">&#8676;</td>') +
-					'<td class="click" data="x">X</td>' +
-					'<td class="click" data="l">' + (ssData['label'] || 'N/A') + '</td>' + '</tr>');
+			}
+			for (var i = 0; i < groups.length; i++) {
+				if (groups[i].length == 1) {
+					ssmgrTable.append(getMgrRowAtRank(groups[i][0] + 1));
+				} else {
+					ssmgrTable.append(getMgrRowAtGroup(groups[i]));
+					for (var j = 0; j < groups[i].length; j++) {
+						ssmgrTable.append($(getMgrRowAtRank(groups[i][j] + 1)).hide());
+					}
+				}
 			}
 			ssmgrTable.unbind('click').click(mgrClick);
 		}
@@ -1366,8 +1407,7 @@ var stats = (function(kpretty, round) {
 					'name': sessionDetail['name'] || sessionIdx,
 					'scr': sessionDetail['scr'] || '333',
 					'phases': sessionDetail['phases'] || 1,
-					'rank': sessionIdxMax,
-					'label': sessionDetail['scr'] || '333'
+					'rank': sessionIdxMax
 				};
 				kernel.setProp('sessionN', sessionIdxMax);
 				times = sessionDetail['times'];
