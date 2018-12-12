@@ -1203,7 +1203,13 @@ var stats = (function(kpretty, round) {
 					expandRankGroup(target.parent());
 					return;
 				case 'g':
-					byGroup = !byGroup;
+					byGroup = false;
+					break;
+				case 'gn':
+					byGroup = 'name';
+					break;
+				case 'gs':
+					byGroup = 'scr';
 					break;
 			}
 			fixSessionSpan();
@@ -1324,15 +1330,14 @@ var stats = (function(kpretty, round) {
 			for (var i = 0; i < group.length; i++) {
 				var idx = ssSorted[group[i]];
 				isInGroup = isInGroup || sessionIdx == idx;
-				ssNames.push(sessionData[idx]['name']);
+				ssNames.push(sessionData[idx]['name'] + '(' + scramble.getTypeName(sessionData[idx]['scr']) + ')');
 			}
 			ssNames = ssNames.join(', ');
-			if (ssNames.length > 25) {
-				ssNames = ssNames.slice(0, 22) + '...';
+			if (ssNames.length > 45) {
+				ssNames = ssNames.slice(0, 42) + '...';
 			}
 			return '<tr' + (isInGroup ? ' class="selected"' : '') + '><td class="click" data="e">' + (isInGroup ? '*' : '') + '[+]</td>' +
-				'<td class="click" data="e" colspan=3>' + group.length + ' session(s): ' + ssNames + '</td>' +
-				'<td>' + scramble.getTypeName(ssData['scr']) + '</td><td colspan=7 /></tr>';
+				'<td class="click" data="e" colspan=11>' + group.length + ' session(s): ' + ssNames + '</td></tr>';
 		}
 
 		function expandRankGroup(curTr) {
@@ -1347,25 +1352,22 @@ var stats = (function(kpretty, round) {
 		function genMgrTable() {
 			fixRank();
 			ssmgrTable.empty().append(
-				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption>' +
-				'<tr><th class="click" data="g">' + (byGroup ? '[+]' : '[-]') + '</th><th>' +
-				STATS_SSMGR_NAME + '</th><th>' +
-				STATS_SOLVE + '</th><th>' +
-				STATS_AVG + '</th><th>' +
-				SCRAMBLE_SCRAMBLE + '</th><th>' +
-				'P.' + '</th><th colspan=6>' +
-				STATS_SSMGR_OP + '</th></tr>');
-
+				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption><tr>' +
+				(byGroup ? '<th class="click" data="g">[+]' : '<th>') + '</th>' +
+				'<th class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
+				STATS_SOLVE + '</th><th>' + STATS_AVG +
+				'</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
+				'</th><th>P.</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>');
 
 			var groups = [];
 			var gscr = NaN;
 			for (var i = 0; i < ssSorted.length; i++) {
 				var ssData = sessionData[ssSorted[i]];
-				if (ssData['scr'] == gscr && byGroup) {
+				if (byGroup && ssData[byGroup] == gscr) {
 					groups[groups.length - 1].push(i);
 				} else {
 					groups.push([i]);
-					gscr = ssData['scr'];
+					gscr = ssData[byGroup];
 				}
 			}
 			for (var i = 0; i < groups.length; i++) {
