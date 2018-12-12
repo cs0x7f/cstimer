@@ -982,7 +982,7 @@ var stats = (function(kpretty, round) {
 		var sessionData;
 		var ssSorted;
 
-		var select = $('<span class="click" style="min-width: 8em; display:inline-block;">').click(showMgrTable);
+		var select = $('<span class="click statsel">').click(showMgrTable);
 
 		function loadSession(ssidx) {
 			sessionIdx = ssidx;
@@ -1637,8 +1637,8 @@ var stats = (function(kpretty, round) {
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
 
 		div.appendTo('body').append(
-			statOptDiv.append(hideOptButton.click(hideSessionOptions), ' ',
-				sessionManager.getSelect(), ' ', $('<input type="button">').val('+').click(sessionManager.createSession)),
+			statOptDiv.append(hideOptButton.click(hideSessionOptions),
+				sessionManager.getSelect(), $('<input type="button">').val('+').click(sessionManager.createSession)),
 			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
 		$(window).bind('resize', resultsHeight);
