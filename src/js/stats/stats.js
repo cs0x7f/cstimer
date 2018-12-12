@@ -1042,7 +1042,7 @@ var stats = (function(kpretty, round) {
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 		}
 
-		function initNewSession(rank) {
+		function initNewSession(rank, copy) {
 			if (!$.isNumeric(rank)) {
 				rank = (sessionData[sessionIdx] || {})['rank'] || sessionIdxMax;
 			}
@@ -1052,17 +1052,26 @@ var stats = (function(kpretty, round) {
 
 			kernel.setProp('sessionN', sessionIdxMax);
 			var prevData = sessionData[ssSorted[rank - 1]] || {};
-			sessionData[sessionIdx] = {
-				'name': prevData['name'] || newName,
-				'scr': prevData['scr'] || curScrType,
-				'phases': prevData['phases'] || 1,
-				'rank': rank + 0.5
-			};
+			if (copy === undefined || copy) {
+				sessionData[sessionIdx] = {
+					'name': prevData['name'] || newName,
+					'scr': prevData['scr'] || curScrType,
+					'phases': prevData['phases'] || 1,
+					'rank': rank + 0.5
+				};
+			} else {
+				sessionData[sessionIdx] = {
+					'name': newName,
+					'scr': curScrType,
+					'phases': 1,
+					'rank': rank + 0.5
+				};
+			}
 			fixSessionSpan();
 		}
 
-		function createSession(rank) {
-			initNewSession(rank);
+		function createSession(rank, copy) {
+			initNewSession(rank, copy);
 			times = [];
 			times_stats.reset(times.length);
 			save();
@@ -1071,6 +1080,14 @@ var stats = (function(kpretty, round) {
 
 			if (kernel.getProp('imrename')) {
 				renameSession();
+			}
+		}
+
+		function createAndDel() {
+			var curSession = sessionIdx;
+			createSession();
+			if (kernel.getProp('statclr', false) && confirm(STATS_CFM_DELSS)) {
+				doSessionDeletion(curSession);
 			}
 		}
 
@@ -1376,7 +1393,7 @@ var stats = (function(kpretty, round) {
 					if (value[0] == 'scrType') {
 						curScrType = value[1];
 						if (sessionData[sessionIdx]['scr'] != value[1] && kernel.getProp('scr2ss')) {
-							createSession();
+							createSession(undefined, false);
 						} else {
 							sessionData[sessionIdx]['scr'] = value[1];
 						}
@@ -1443,7 +1460,7 @@ var stats = (function(kpretty, round) {
 			},
 			showMgrTable: showMgrTable,
 			importSessions: importSessions,
-			createSession: createSession,
+			createAndDel: createAndDel,
 			rank2idx: rank2idx,
 			load: load,
 			save: save
@@ -1648,7 +1665,7 @@ var stats = (function(kpretty, round) {
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
-				sessionManager.createSession();
+				sessionManager.createAndDel();
 			} else if (value[1] == 'undo') {
 				floatCfm.delLast();
 			} else if (value[1] == 'OK') {
@@ -1686,13 +1703,16 @@ var stats = (function(kpretty, round) {
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false]);
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false]);
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);
-		kernel.regProp('stats', 'ss2scr', 0, PROPERTY_SS2SCR, [true]);
-		kernel.regProp('stats', 'ss2phases', 0, PROPERTY_SS2PHASES, [true]);
+		// kernel.regProp('stats', 'ss2scr', 0, PROPERTY_SS2SCR, [true]);
+		// kernel.regProp('stats', 'ss2phases', 0, PROPERTY_SS2PHASES, [true]);
+		kernel.setProp('ss2scr', true);
+		kernel.setProp('ss2phases', true);
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
+		kernel.regProp('stats', 'statclr', 0, STATS_STATDEL, [false]);
 
 		div.appendTo('body').append(
 			statOptDiv.append(hideOptButton.click(hideSessionOptions),
-				sessionManager.getSelect(), $('<input type="button">').val('+').click(sessionManager.createSession)),
+				sessionManager.getSelect(), $('<input type="button">').val('+').click(sessionManager.createAndDel)),
 			sumtableDiv.append(sumtable),
 			scrollDiv.append(table));
 		$(window).bind('resize', resultsHeight);

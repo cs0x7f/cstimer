@@ -341,6 +341,7 @@ var STATS_STRING = 'migliore|corrente|peggiore|Generato Da csTimer il %Y-%M-%D|r
 var STATS_PREC = 'Precisione distribuzione temporale: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
+var STATS_STATDEL = 'Delete old session when creating';
 var PROPERTY_PRINTSCR = 'Stampa scramble(s) con le statistiche';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'show summary before time list';
