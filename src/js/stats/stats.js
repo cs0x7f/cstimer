@@ -1337,7 +1337,7 @@ var stats = (function(kpretty, round) {
 				ssNames = ssNames.slice(0, 42) + '...';
 			}
 			return '<tr' + (isInGroup ? ' class="selected"' : '') + '><td class="click" data="e">' + (isInGroup ? '*' : '') + '[+]</td>' +
-				'<td class="click" data="e" colspan=11>' + group.length + ' session(s): ' + ssNames + '</td></tr>';
+				'<td class="click" data="e" colspan=11 style="text-align:left;">' + group.length + ' session(s): ' + ssNames + '</td></tr>';
 		}
 
 		function expandRankGroup(curTr) {
