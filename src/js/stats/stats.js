@@ -1141,6 +1141,7 @@ var stats = (function(kpretty, round) {
 			times_stats.reset(times.length);
 			updateTable(false);
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
+			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times[times.length - 1] || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 			if (kernel.isDialogShown('ssmgr')) {
 				genMgrTable();
@@ -1154,6 +1155,7 @@ var stats = (function(kpretty, round) {
 
 		function save(startIdx) {
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats.getAllStats());
+			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times[times.length - 1] || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 			storage.set(sessionIdx, times, undefined, startIdx);
 		}
@@ -1293,6 +1295,7 @@ var stats = (function(kpretty, round) {
 				Array.prototype.push.apply(timesNew, times);
 				storage.set(idx, timesNew, function() {
 					delete sessionData[idx]['stat'];
+					sessionData[sessionIdx]['date'] = [(timesNew[0] || [])[3], (timesNew[timesNew.length - 1] || [])[3]];
 					kernel.setProp('sessionData', JSON.stringify(sessionData));
 					loadSession(idx);
 					doSessionDeletion(prevSession);
@@ -1313,6 +1316,7 @@ var stats = (function(kpretty, round) {
 				'<td class="click" data="s">' + ssData['name'] + '</td>' +
 				'<td>' + ssStat[0] + '</td>' +
 				'<td>' + ssStat[1] + '</td>' +
+				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
 				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
 				'<td>' + ssData['phases'] + '</td>' +
 				'<td class="click" data="u">&#8593;</td>' +
@@ -1337,7 +1341,7 @@ var stats = (function(kpretty, round) {
 				ssNames = ssNames.slice(0, 42) + '...';
 			}
 			return '<tr' + (isInGroup ? ' class="selected"' : '') + '><td class="click" data="e">' + (isInGroup ? '*' : '') + '[+]</td>' +
-				'<td class="click" data="e" colspan=11 style="text-align:left;">' + group.length + ' session(s): ' + ssNames + '</td></tr>';
+				'<td class="click" data="e" colspan=12 style="text-align:left;">' + group.length + ' session(s): ' + ssNames + '</td></tr>';
 		}
 
 		function expandRankGroup(curTr) {
@@ -1356,6 +1360,7 @@ var stats = (function(kpretty, round) {
 				(byGroup ? '<th class="click" data="g">[+]' : '<th>') + '</th>' +
 				'<th class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th>' + STATS_AVG +
+				'</th><th>' + STATS_DATE +
 				'</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
 				'</th><th>P.</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>');
 
