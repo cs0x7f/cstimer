@@ -1058,7 +1058,7 @@ var stats = (function(kpretty, round) {
 
 			kernel.setProp('sessionN', sessionIdxMax);
 			sessionData[sessionIdx] = {
-				'name': newName,
+				'name': (sessionData[ssSorted[rank - 1]] || {})['name'] || newName,
 				'scr': (sessionData[ssSorted[rank - 1]] || {})['scr'] || curScrType,
 				'phases': (sessionData[ssSorted[rank - 1]] || {})['phases'] || 1,
 				'rank': rank + 0.5
