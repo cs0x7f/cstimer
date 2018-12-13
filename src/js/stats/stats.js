@@ -1002,7 +1002,7 @@ var stats = (function(kpretty, round) {
 		var select = $('<select />').change(function() {
 			kernel.blur();
 			if (select.val() == 'new') {
-				createSession();
+				createSession(sessionIdxMax, false);
 			} else if (select.val() == 'del') {
 				if (!deleteSession(sessionIdx)) {
 					select.val(sessionIdx);
