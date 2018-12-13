@@ -499,7 +499,7 @@ var stats = (function(kpretty, round) {
 		}
 
 		var tstr = "";
-		if (kernel.getProp('printDate')) {
+		if (kernel.getProp('printDate') && nsolves > 2) {
 			var tstart = timesAt(start);
 			var tend = timesAt(start + nsolves - 1);
 			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? mathlib.time2str(tstart[3]) : 'N/A'))
@@ -1538,7 +1538,7 @@ var stats = (function(kpretty, round) {
 		var length = times.length;
 
 		var tstr = "";
-		if (kernel.getProp('printDate')) {
+		if (kernel.getProp('printDate') && length > 2) {
 			var tstart = timesAt(0);
 			var tend = timesAt(length - 1);
 			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? mathlib.time2str(tstart[3]) : 'N/A'))
