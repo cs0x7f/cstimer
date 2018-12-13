@@ -725,8 +725,6 @@ var stats = (function(kpretty, round) {
 						labelSelect.append($('<option />').val(curLabel).html(curLabel));
 					}
 				});
-			} else if (value[0] == 'statal') {
-				hugeStats = new TimeStat(avgSizesStd(value[1]), 0, hugeTimeAt, dnfsort);
 			}
 		}
 
@@ -734,12 +732,15 @@ var stats = (function(kpretty, round) {
 			if (typeof tools != "undefined") {
 				tools.regTool('stats', TOOLS_STATS, execFunc);
 			}
-			kernel.regListener('labelstat', 'property', procSignal, /^sessionData|statal$/);
+			kernel.regListener('labelstat', 'property', procSignal, /^sessionData$/);
 
 		});
 
 		return {
-			update: $.noop
+			update: $.noop,
+			updateStatal: function(avgSizes) {
+				hugeStats = new TimeStat(avgSizes, 0, hugeTimeAt, dnfsort);
+			}
 		}
 
 	})();
@@ -1716,6 +1717,7 @@ var stats = (function(kpretty, round) {
 				var avgSizesNew = avgSizesStd(statal);
 				avgSizes = avgSizesNew;
 				times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
+				assistant.updateStatal(avgSizes);
 				updateUtil();
 			} else if (value[0] == 'view') {
 				resultsHeight();
