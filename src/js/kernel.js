@@ -848,6 +848,13 @@ var kernel = (function() {
 					alert(EXPORT_ERROR + '\nPlease Re-login');
 					logoutFromGGL();
 				});
+
+				// removeRedundantGoogleFiles
+				for (var i = 10; i < files.length; i++) {
+					$.ajax('https://www.googleapis.com/drive/v3/files/' + files[i]['id'] + '?access_token=' + gglData['access_token'], {
+						'type': 'DELETE'
+					});
+				}
 			}).error(function() {
 				alert(EXPORT_ERROR + '\nPlease Re-login');
 				logoutFromGGL();
