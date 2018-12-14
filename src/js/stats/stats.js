@@ -465,26 +465,6 @@ var stats = (function(kpretty, round) {
 	var avgSizes = [-3, 5, 12, 50, 100, 1000];
 	var times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
 
-	function getTrimList(start, nsolves, trim, thresL, thresR) {
-		var trimlList = [];
-		var trimrList = [];
-		for (var i = 0; i < nsolves; i++) {
-			var t = timeAt(start + i);
-			var cmpl = dnfsort(t, thresL);
-			var cmpr = dnfsort(thresR, t);
-			if (cmpl < 0) {
-				trimlList.push(i);
-			} else if (cmpr < 0) {
-				trimrList.push(i);
-			} else if (cmpl == 0 && trimlList.length < trim) {
-				trimlList.unshift(i);
-			} else if (cmpr == 0 && trimrList.length < trim) {
-				trimrList.unshift(i);
-			}
-		}
-		return trimlList.slice(-trim).concat(trimrList.slice(-trim));
-	}
-
 	function setHighlight(start, nsolves, id, mean) {
 		if (times.length == 0) return;
 		var data = [0, [null], [null]];
@@ -494,7 +474,7 @@ var stats = (function(kpretty, round) {
 				data = times_stats.runAvgMean(start, nsolves, 0, 0);
 			} else {
 				data = times_stats.runAvgMean(start, nsolves);
-				trimList = getTrimList(start, nsolves, Math.ceil(nsolves / 20), data[2], data[3]);
+				trimList = times_stats.getTrimList(start, nsolves, Math.ceil(nsolves / 20), data[2], data[3]);
 			}
 		}
 
@@ -619,14 +599,15 @@ var stats = (function(kpretty, round) {
 
 		var toolDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em')
 		var infoDiv = $('<div />');
-		var labelSelect = $('<select>');
+		var nameSelect = $('<select>');
 		var dateSelect = $('<select>').append(
-			$('<option>').val(-1).html('any time'),
+			$('<option>').val(-1).html('any date'),
 			$('<option>').val(1).html('past 24 hours'),
 			$('<option>').val(7).html('past 7 days'),
 			$('<option>').val(30).html('past 30 days'),
 			$('<option>').val(365).html('past 365 days'),
 		).val(-1);
+		var scrSelect = $('<select>');
 		var calcSpan = $('<span class="click">Calc</span>');
 		var hugeStats = new TimeStat([], 0, hugeTimeAt, dnfsort);
 		var hugeTimes = [];
@@ -640,16 +621,18 @@ var stats = (function(kpretty, round) {
 			var sessionRankList = [1, 2, 3, 4, 5];
 
 			hugeTimes = [];
-			var loadproc = new Promise(function(resolve) {
-				resolve();
-			});
+			var loadproc = Promise.resolve();
 			var sessionN = ~~kernel.getProp('sessionN');
 			var sessionData = JSON.parse(kernel.getProp('sessionData'));
-			var selectedLabel = labelSelect.val();
+			var selectedName = nameSelect.val();
+			var selectedScr = scrSelect.val();
 			var dateThreshold = dateSelect.val() == -1 ? -1 : (~~(+new Date / 1000) - dateSelect.val() * 86400);
 			for (var i = 0; i < sessionN; i++) {
 				var idx = sessionManager.rank2idx(i + 1);
-				if (sessionData[idx]['name'] != selectedLabel && selectedLabel != '*') {
+				if (selectedName != '*' && sessionData[idx]['name'] != selectedName) {
+					continue;
+				}
+				if (selectedScr != '*' && sessionData[idx['scr'] != selectedScr]) {
 					continue;
 				}
 				loadproc = loadproc.then((function(idx) {
@@ -668,37 +651,39 @@ var stats = (function(kpretty, round) {
 					};
 				})(idx));
 			}
-			loadproc.then(function() {
-				hugeStats.reset(hugeTimes.length);
-				var theStats = hugeStats.getAllStats();
-				var numdnf = theStats[0];
-				var sessionmean = theStats[1];
+			loadproc.then(updateSpan);
+		}
 
-				var s = [];
-				s.push('<span>' + hlstr[4].replace("%d", (hugeStats.timesLen - numdnf) + "/" + hugeStats.timesLen) + ', ' + hlstr[9].replace("%v", kpretty(sessionmean)) + '</span>\n');
-				s.push(hlstr[0] + ": " + kpretty(hugeStats.bestTime));
-				s.push(' | ' + hlstr[2] + ": " + kpretty(hugeStats.worstTime) + "\n");
-				var hasTable = false;
-				var tableHead = '<table class="table"><tr><td></td><td>' + hlstr[1] + '</td><td>' + hlstr[0] + '</td></tr>';
-				for (var j = 0; j < avgSizes.length; j++) {
-					var size = Math.abs(avgSizes[j]);
-					if (hugeStats.timesLen >= size) {
-						if (hugeStats.bestAvg[j].length < 2) {
-							hugeStats.lastAvg[j] = hugeStats.runAvgMean(hugeStats.timesLen - size, size, 0, avgSizes[j] < 0 ? 0 : undefined);
-							hugeStats.bestAvg[j] = hugeStats.runAvgMean(hugeStats.bestAvgIndex[j], size, 0, avgSizes[j] < 0 ? 0 : undefined);
-						}
-						hasTable || (hasTable = true, s.push(tableHead));
-						s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
-						s.push('<td><span>' + kpretty(hugeStats.lastAvg[j][0]) + " (σ=" + trim(hugeStats.lastAvg[j][1], 2) +
-							')</span></td>');
-						s.push('<td><span>' + kpretty(hugeStats.bestAvg[j][0]) + " (σ=" + trim(hugeStats.bestAvg[j][1], 2) +
-							')</span></td></tr>');
+		function updateSpan() {
+			hugeStats.reset(hugeTimes.length);
+			var theStats = hugeStats.getAllStats();
+			var numdnf = theStats[0];
+			var sessionmean = theStats[1];
+
+			var s = [];
+			s.push('<span>' + hlstr[4].replace("%d", (hugeStats.timesLen - numdnf) + "/" + hugeStats.timesLen) + ', ' + hlstr[9].replace("%v", kpretty(sessionmean)) + '</span>\n');
+			s.push(hlstr[0] + ": " + kpretty(hugeStats.bestTime));
+			s.push(' | ' + hlstr[2] + ": " + kpretty(hugeStats.worstTime) + "\n");
+			var hasTable = false;
+			var tableHead = '<table class="table"><tr><td></td><td>' + hlstr[1] + '</td><td>' + hlstr[0] + '</td></tr>';
+			for (var j = 0; j < avgSizes.length; j++) {
+				var size = Math.abs(avgSizes[j]);
+				if (hugeStats.timesLen >= size) {
+					if (hugeStats.bestAvg[j].length < 2) {
+						hugeStats.lastAvg[j] = hugeStats.runAvgMean(hugeStats.timesLen - size, size, 0, avgSizes[j] < 0 ? 0 : undefined);
+						hugeStats.bestAvg[j] = hugeStats.runAvgMean(hugeStats.bestAvgIndex[j], size, 0, avgSizes[j] < 0 ? 0 : undefined);
 					}
+					hasTable || (hasTable = true, s.push(tableHead));
+					s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
+					s.push('<td><span>' + kpretty(hugeStats.lastAvg[j][0]) + " (σ=" + trim(hugeStats.lastAvg[j][1], 2) +
+						')</span></td>');
+					s.push('<td><span>' + kpretty(hugeStats.bestAvg[j][0]) + " (σ=" + trim(hugeStats.bestAvg[j][1], 2) +
+						')</span></td></tr>');
 				}
-				hasTable && s.push('</table>');
-				s = s.join("");
-				infoDiv.html(s.replace(/\n/g, '<br>'));
-			});
+			}
+			hasTable && s.push('</table>');
+			s = s.join("");
+			infoDiv.html(s.replace(/\n/g, '<br>'));
 		}
 
 		var isEnable = false;
@@ -710,19 +695,26 @@ var stats = (function(kpretty, round) {
 			if (/^scr/.exec(signal)) {
 				return;
 			}
-			fdiv.empty().append(toolDiv.append('Name: ', labelSelect, dateSelect, ' ', calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv));
+			fdiv.empty().append(toolDiv.append(nameSelect, dateSelect, scrSelect, ' ', calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv));
 		}
 
 		function procSignal(signal, value) {
 			if (value[0] == 'sessionData') {
 				var sessionData = JSON.parse(value[1]);
-				var labelList = [];
-				labelSelect.empty().append($('<option />').val('*').html('Any'));
+				var nameList = [];
+				var scrList = [];
+				nameSelect.empty().append($('<option />').val('*').html('any name'));
+				scrSelect.empty().append($('<option />').val('*').html('any scramble'));
 				$.each(sessionData, function(idx, val) {
 					var curLabel = val['name'];
-					if ($.inArray(curLabel, labelList) == -1) {
-						labelList.push(curLabel);
-						labelSelect.append($('<option />').val(curLabel).html(curLabel));
+					if ($.inArray(curLabel, nameList) == -1) {
+						nameList.push(curLabel);
+						nameSelect.append($('<option />').val(curLabel).html(curLabel));
+					}
+					var curScr = val['scr'];
+					if ($.inArray(curScr, scrList) == -1) {
+						scrList.push(curScr);
+						scrSelect.append($('<option />').val(curScr).html(scramble.getTypeName(curScr)));
 					}
 				});
 			}

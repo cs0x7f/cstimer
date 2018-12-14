@@ -146,5 +146,25 @@ var TimeStat = (function() {
 		return [retAvg, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
 	}
 
+	TimeStat.prototype.getTrimList = function(start, nsolves, trim, thresL, thresR) {
+		var trimlList = [];
+		var trimrList = [];
+		for (var i = 0; i < nsolves; i++) {
+			var t = this.timeAt(start + i);
+			var cmpl = this.timeSort(t, thresL);
+			var cmpr = this.timeSort(thresR, t);
+			if (cmpl < 0) {
+				trimlList.push(i);
+			} else if (cmpr < 0) {
+				trimrList.push(i);
+			} else if (cmpl == 0 && trimlList.length < trim) {
+				trimlList.unshift(i);
+			} else if (cmpr == 0 && trimrList.length < trim) {
+				trimrList.unshift(i);
+			}
+		}
+		return trimlList.slice(-trim).concat(trimrList.slice(-trim));
+	}
+
 	return TimeStat;
 })();
