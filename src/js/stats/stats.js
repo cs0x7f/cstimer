@@ -226,7 +226,7 @@ var stats = (function(kpretty, round) {
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
 			cfmScrR.val(time[1]);
-			cfmDate.val(time[3] ? mathlib.time2str(time[3]) : 'N/A')
+			cfmDate.val(mathlib.time2str(time[3]))
 			cfmTxtR.val(time[2]).unbind('change').change(procTxt);
 		}
 
@@ -465,6 +465,25 @@ var stats = (function(kpretty, round) {
 	var avgSizes = [-3, 5, 12, 50, 100, 1000];
 	var times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
 
+	function detailTimeLine(idx, timesAt, trimList) {
+		var time = timesAt(idx);
+		var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
+		if ($.inArray(idx, trimList) != -1) {
+			c = "(" + c + ")";
+		}
+		if (kernel.getProp('printScr')) {
+			c += "   " + time[1];
+		}
+		if (kernel.getProp('printDate')) {
+			c += "   @" + mathlib.time2str(time[3]);
+		}
+		if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
+			return (idx + 1) + ". " + c + " \n";
+		} else {
+			return c + ", ";
+		}
+	}
+
 	function setHighlight(times_stats, timesAt, start, nsolves, id, mean) {
 		if (times_stats.timesLen == 0) return;
 		var data = [0, [null], [null]];
@@ -482,8 +501,8 @@ var stats = (function(kpretty, round) {
 		if (kernel.getProp('printDate') && nsolves > 2) {
 			var tstart = timesAt(start);
 			var tend = timesAt(start + nsolves - 1);
-			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? mathlib.time2str(tstart[3]) : 'N/A'))
-				.replace("%e", (tend && tend[3] ? mathlib.time2str(tend[3]) : 'N/A'));
+			tstr = hlstr[11].replace("%s", mathlib.time2str(tstart && tstart[3]))
+				.replace("%e", mathlib.time2str(tend && tend[3]));
 			tstr = " (" + tstr + ")";
 		}
 		var now = new Date();
@@ -507,25 +526,9 @@ var stats = (function(kpretty, round) {
 
 		s.push("\n\n" + hlstr[10] + "\n");
 		for (var i = 0; i < nsolves; i++) {
-			var time = timesAt(start + i);
-			var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
-			if ($.inArray(i, trimList) != -1) {
-				c = "(" + c + ")";
-			}
-			if (kernel.getProp('printScr')) {
-				c += "   " + time[1];
-			}
-			if (kernel.getProp('printDate')) {
-				c += "   @" + (time[3] ? mathlib.time2str(time[3]) : 'N/A');
-			}
-			if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
-				s.push((i + 1) + ". " + c + " \n");
-			} else {
-				s.push(c + ", ")
-			}
+			s.push(detailTimeLine(start + i, timesAt, trimList));
 		}
-		s = s.join("");
-		s = s.substr(0, s.length - 2);
+		s = s.join("").slice(0, -2);
 		stext.val(s);
 		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
 			exportCSV(start, nsolves);
@@ -557,7 +560,7 @@ var stats = (function(kpretty, round) {
 			line.push(pretty(time[0], true));
 			line.push(csvField(time[2] ? time[2] : ""));
 			line.push(time[1]);
-			line.push(time[3] ? mathlib.time2str(time[3]) : 'N/A');
+			line.push(mathlib.time2str(time[3]));
 			line.push(kpretty(time[0][time[0].length - 1]));
 			for (var j = time[0].length - 2; j >= 1; j--) {
 				line.push(kpretty(time[0][j] - time[0][j + 1]));
@@ -1577,8 +1580,8 @@ var stats = (function(kpretty, round) {
 		if (kernel.getProp('printDate') && length > 2) {
 			var tstart = timesAt(0);
 			var tend = timesAt(length - 1);
-			tstr = hlstr[11].replace("%s", (tstart && tstart[3] ? mathlib.time2str(tstart[3]) : 'N/A'))
-				.replace("%e", (tend && tend[3] ? mathlib.time2str(tend[3]) : 'N/A'));
+			tstr = hlstr[11].replace("%s", mathlib.time2str(tstart && tstart[3]))
+				.replace("%e", mathlib.time2str(tend && tend[3]));
 			tstr = " (" + tstr + ")";
 		}
 		var now = new Date();
@@ -1611,22 +1614,9 @@ var stats = (function(kpretty, round) {
 			s.push(hlstr[10]);
 			var timeStr = [];
 			for (var i = 0; i < length; i++) {
-				var time = timesAt(i);
-				var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
-				if (kernel.getProp('printScr')) {
-					c += "   " + time[1];
-				}
-				if (kernel.getProp('printDate')) {
-					c += "   @" + (time[3] ? mathlib.time2str(time[3]) : 'N/A');
-				}
-				if (kernel.getProp('printScr') || kernel.getProp('printDate')) {
-					timeStr.push((i + 1) + ". " + c + " \n");
-				} else {
-					timeStr.push(c + ", ")
-				}
+				timeStr.push(detailTimeLine(i, timesAt, []));
 			}
-			timeStr = timeStr.join("");
-			timeStr = timeStr.substr(0, timeStr.length - 2);
+			timeStr = timeStr.join("").slice(0, -2);
 			s.push(timeStr);
 		}
 		s = s.join("\n");
