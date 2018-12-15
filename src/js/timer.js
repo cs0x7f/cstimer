@@ -530,6 +530,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				lcd.color('#0d0');
 			} else if (state.rightHand && state.leftHand) {
 				lcd.color('#f00');
+			} else if (status == -4) {
+				lcd.color('#0d0');
 			} else {
 				lcd.color('');
 			}
@@ -542,8 +544,8 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				status = -3;
 				lcd.reset();
 				startTime = now;
+				lcd.fixDisplay(false, keyCode == 32);
 			}
-			lcd.fixDisplay(false, keyCode == 32);
 			if (keyCode == 32) {
 				kernel.clrKey();
 			}
@@ -555,12 +557,12 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (keyCode == 32 && status == -1 && checkUseIns()) {
 				status = -4;
 				startTime = now;
+				lcd.fixDisplay(true, true);
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
 				status = -1;
 				lcd.val(0);
-				ui.setAutoShow(true);
+				lcd.fixDisplay(true, false);
 			}
-			lcd.fixDisplay(true, keyCode == 32);
 			if (keyCode == 32) {
 				kernel.clrKey();
 			}

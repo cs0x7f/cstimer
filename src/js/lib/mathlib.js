@@ -496,13 +496,19 @@ var mathlib = (function() {
 		return curIdx;
 	}
 
-	function time2str(unix) {
+	function time2str(unix, format) {
 		if (!unix) {
 			return 'N/A';
 		}
+		format = format || '%Y-%M-%D %h:%m:%s';
 		var date = new Date(unix * 1000);
-		return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2) +
-			' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
+		return format
+			.replace('%Y', date.getFullYear())
+			.replace('%M', ('0' + (date.getMonth() + 1)).slice(-2))
+			.replace('%D', ('0' + date.getDate()).slice(-2))
+			.replace('%h', ('0' + date.getHours()).slice(-2))
+			.replace('%m', ('0' + date.getMinutes()).slice(-2))
+			.replace('%s', ('0' + date.getSeconds()).slice(-2));
 	}
 
 	var timeRe = /^\s*(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)\s*$/

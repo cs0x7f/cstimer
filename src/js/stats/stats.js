@@ -487,7 +487,7 @@ var stats = (function(kpretty, round, kpround) {
 		s = s.join("").slice(0, -2);
 		stext.val(s);
 		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
-			exportCSV(start, nsolves);
+			exportCSV(times_stats, timesAt, start, nsolves);
 			return false;
 		}]], 'stats', STATS_CURROUND);
 		stext[0].select();
@@ -500,8 +500,8 @@ var stats = (function(kpretty, round, kpround) {
 		return val;
 	}
 
-	function exportCSV(start, nsolves) {
-		if (times.length == 0) return;
+	function exportCSV(times_stats, timesAt, start, nsolves) {
+		if (times_stats.timesLen == 0) return;
 		if (!window.Blob) {
 			alert('Do not support your browser!');
 		}
@@ -530,7 +530,7 @@ var stats = (function(kpretty, round, kpround) {
 		var blob = new Blob([s], { 'type': 'text/csv' });
 		var outFile = $('<a class="click"/>').appendTo('body');
 		outFile.attr('href', URL.createObjectURL(blob));
-		outFile.attr('download', 'csTimerExport.csv');
+		outFile.attr('download', 'csTimerExport_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.csv');
 		outFile[0].click();
 		outFile.remove();
 	}
@@ -1570,7 +1570,7 @@ var stats = (function(kpretty, round, kpround) {
 		s = s.join("\n");
 		stext.val(s);
 		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
-			exportCSV(0, length);
+			exportCSV(times_stats, timesAt, 0, length);
 			return false;
 		}]], 'stats', STATS_CURSESSION);
 		stext[0].select();

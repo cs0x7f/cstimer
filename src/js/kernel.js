@@ -908,7 +908,7 @@ var kernel = (function() {
 						'type': 'text/plain'
 					});
 					outFile.attr('href', URL.createObjectURL(blob));
-					outFile.attr('download', 'cstimer.txt');
+					outFile.attr('download', 'cstimer_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.txt');
 				}
 				kernel.showDialog([exportDiv, 0, undefined, 0], 'export', EXPORT_DATAEXPORT);
 			});
