@@ -17,8 +17,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="format-detection" content="telephone=no">
-  <meta name="viewport" content="width=800">
-  <link rel="apple-touch-icon" href="img/cstimer.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <link rel="apple-touch-icon" href="cstimer512x512.png">
   <link rel="manifest" href="cstimer.webmanifest">
 <?php include('lang/langDet.php');?>
   <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
