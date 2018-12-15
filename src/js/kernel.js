@@ -501,6 +501,10 @@ var kernel = (function() {
 			}
 		}
 
+		function exportColor() {
+			return cur_color.join('');
+		}
+
 		var isMobileView = false;
 
 		function fixOrient() {
@@ -532,7 +536,7 @@ var kernel = (function() {
 					if (value[1] == 'u') {//user defined
 						return;
 					} else if (value[1] == 'e') {
-						prompt(COLOR_EXPORT, cur_color.join(''));
+						prompt(COLOR_EXPORT, exportColor());
 						property.set('color', 'u');
 					} else if (value[1] == 'i') {
 						var val = prompt(COLOR_IMPORT, '');
@@ -627,6 +631,7 @@ var kernel = (function() {
 			showDialog: showDialog,
 			hideDialog: hideDialog,
 			isDialogShown: isDialogShown,
+			exportColor: exportColor,
 			setAutoShow: function(visible) {
 				visible = visible || !getProp('ahide');
 				if (visible) {
@@ -1251,6 +1256,7 @@ var kernel = (function() {
 		showDialog: ui.showDialog,
 		hideDialog: ui.hideDialog,
 		isDialogShown: ui.isDialogShown,
+		exportColor: ui.exportColor,
 		clrKey: function(){keyback = false;},
 		temp: temp,
 		reprop: property.reload,

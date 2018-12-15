@@ -7,6 +7,6 @@ $(function() {
   s.parentNode.insertBefore(hm, s);
 });
 kernel.regListener('baidu', 'property', function(signal, value) {
-  _hmt.push(['_trackEvent', 'scrType', value[1]]);
-}, /^scrType$/);
+  _hmt.push(['_trackEvent', 'color', kernel.exportColor()]);
+}, /^color$/);
 </script>
