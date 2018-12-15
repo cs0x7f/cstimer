@@ -77,13 +77,15 @@ var TimeStat = (function() {
 				for (var k = 0; k < size; k++) {
 					rbt.insert(this.timeAt(k), k);
 				}
-				this.bestAvg[j] = [-1];
+				this.bestAvg[j] = [-1, 0, -1, -1];
 				this.bestAvgIndex[j] = 0;
-				this.lastAvg[j] = [];
+				this.lastAvg[j] = [-1, 0, -1, -1];
 			} else {
 				rbt.remove(this.timeAt(i - size)).insert(t, i);
 			}
-			var curVal = [(rbt.rankOf(-1) < size - trim) ? -1 : kernel.round((rbt.cumSum(size - trim) - rbt.cumSum(trim)) / neff)];
+			var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
+			var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
+			var curVal = [(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
 			if (this.timeSort(curVal[0], this.bestAvg[j][0]) < 0) {
 				if (this.bestAvg[j][0] >= 0 && !next) {
 					bestHintList.push((this.avgSizes[j] > 0 ? "ao" : "mo") + size);
@@ -121,29 +123,35 @@ var TimeStat = (function() {
 	}
 
 	//ret length: length - nsolves + 1
-	TimeStat.prototype.runAvgMean = function(start, length, size, trim, onlyavg) {
+	TimeStat.prototype.runAvgMean = function(start, length, size, trim) {
 		size = size || length;
 		if (trim === undefined) {
 			trim = Math.ceil(size / 20);
 		}
+		if (start < 0 || start + length > this.timesLen) {
+			return;
+		}
 		if (size - trim <= 0) {
-			return [-1, 0, [], []];
+			return [-1, 0, -1, -1];
 		}
 		var rbt = sbtree.tree(this.timeSort);
 		for (var j = 0; j < size; j++) {
 			rbt.insert(this.timeAt(start + j), j);
 		}
 		var neff = size - 2 * trim;
-		var retAvg = [(rbt.rankOf(-1) < size - trim) ? -1 : kernel.round((rbt.cumSum(size - trim) - rbt.cumSum(trim)) / neff)];
+		var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
+		var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
+		var ret = [
+			[(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)]
+		];
 		var start0 = start - size;
 		for (var i = size; i < length; i++) {
 			rbt.remove(this.timeAt(start0 + i)).insert(this.timeAt(start + i), j);
-			retAvg.push((rbt.rankOf(-1) < size - trim) ? -1 : kernel.round((rbt.cumSum(size - trim) - rbt.cumSum(trim)) / neff));
+			sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
+			variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
+			ret.push([(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)]);
 		}
-		var avg = rbt.cumSum(size - trim) - rbt.cumSum(trim);
-		var variance = rbt.cumSk2(size - trim) - rbt.cumSk2(trim)
-		variance = Math.sqrt((variance - avg * avg / neff) / (neff - 1)) / 1000;
-		return [retAvg, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
+		return ret;
 	}
 
 	TimeStat.prototype.getTrimList = function(start, nsolves, trim, thresL, thresR) {

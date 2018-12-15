@@ -342,6 +342,7 @@ var STATS_PREC = '시간 분포 정밀도: ';
 var STATS_PREC_STR = '자동|0.1초|0.2초|0.5초|1초|2초|5초|10초|20초|50초|100초';
 var STATS_TYPELEN = '목록%d 유형|목록%d 길이|절단평균|평균';
 var STATS_STATCLR = 'Enable session emptying';
+var STATS_ABSIDX = 'Show absolute index in statistics report';
 var PROPERTY_PRINTSCR = '통계 정보에 섞기 포함';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = '시간목록 위에 통계 요약 표시';

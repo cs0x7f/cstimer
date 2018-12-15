@@ -1105,6 +1105,10 @@ var kernel = (function() {
 		return s.reverse().join("");
 	}
 
+	function prettyRound(time, small) {
+		return pretty(round(time), small);
+	}
+
 	var scrambleReg = /^([\d])?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
 
 	function parseScramble(scramble, moveMap) {
@@ -1253,6 +1257,7 @@ var kernel = (function() {
 		parseScramble: parseScramble,
 		blur: refocus,
 		ui: ui, 
+		pround: prettyRound,
 		round: round
 	};
 })();

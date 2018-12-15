@@ -342,6 +342,7 @@ var STATS_PREC = 'точное распределение времени: ';
 var STATS_PREC_STR = 'авто|0.1с|0.2с|0.5с|1с|2с|5с|10с|20с|50с|100с';
 var STATS_TYPELEN = 'список %d тип|список %d ширина|средний|средний';
 var STATS_STATCLR = 'Enable session emptying';
+var STATS_ABSIDX = 'Show absolute index in statistics report';
 var PROPERTY_PRINTSCR = 'печатать скрамблы в статистику';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'как суммарный после списка времени';

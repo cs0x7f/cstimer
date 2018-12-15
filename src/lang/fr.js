@@ -342,6 +342,7 @@ var STATS_PREC = 'Précision de la répartition des temps: ';
 var STATS_PREC_STR = 'Auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
+var STATS_ABSIDX = 'Show absolute index in statistics report';
 var PROPERTY_PRINTSCR = 'Montrer les mélanges dans les statistiques';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'Montrer le résumé avant la liste de temps';

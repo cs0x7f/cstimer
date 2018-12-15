@@ -342,6 +342,7 @@ var STATS_PREC = 'tidsfordeling præcision: ';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'liste %d type|liste %d længde|gennemsnit|mean';
 var STATS_STATCLR = 'Enable session emptying';
+var STATS_ABSIDX = 'Show absolute index in statistics report';
 var PROPERTY_PRINTSCR = 'print blanding(erne) i statistikker';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'vis sammendrag inden tidslisten';

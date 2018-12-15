@@ -342,6 +342,7 @@ var STATS_PREC = '时间分布显示精度：';
 var STATS_PREC_STR = '自动|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = '滚动列表%d类型|滚动列表%d长度|去尾平均|平均';
 var STATS_STATCLR = '启用分组清空';
+var STATS_ABSIDX = '在统计报告中显示绝对索引';
 var PROPERTY_PRINTSCR = '成绩统计中显示打乱';
 var PROPERTY_PRINTDATE = '成绩统计中显示日期';
 var PROPERTY_SUMMARY = '成绩列表前显示摘要';

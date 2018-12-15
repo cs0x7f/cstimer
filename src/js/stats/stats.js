@@ -1,6 +1,6 @@
 "use strict";
 
-var stats = (function(kpretty, round) {
+var stats = (function(kpretty, round, kpround) {
 	var times = [];
 	var div = $('<div id="stats" />');
 	var stext = $('<textarea rows="10" readonly />');
@@ -91,49 +91,6 @@ var stats = (function(kpretty, round) {
 			return -1;
 		} else {
 			return sum / (times.length - cntdnf);
-		}
-	}
-
-	/**
-	 * return [best, avg, mean, avgExceptDNF, cntDNF], -1 == unknown or DNF
-	 */
-	function getBestAvgIdx(idx, len) {
-		if (!(idx >= 0 && idx + len <= times.length)) {
-			return;
-		} else if (len == 0) {
-			return [-1, -1, -1, -1, 0];
-		}
-		var total = 0;
-		var best = 0x7fffffff;
-		var worst = 0;
-		var cntDNF = 0;
-		var trim = Math.ceil(len / 20);
-		var time_list = new Array(len);
-		for (var i = idx; i < idx + len; i++) {
-			var time = timeAt(i);
-			if (time == -1) {
-				cntDNF++;
-				time_list[i - idx] = -1;
-			} else {
-				best = Math.min(best, time);
-				worst = Math.max(worst, time);
-				total += time;
-				time_list[i - idx] = time;
-			}
-		}
-		time_list.sort(dnfsort);
-		var totaltrim = 0;
-		for (var i = trim; i < len - trim; i++) {
-			totaltrim += time_list[i];
-		}
-		if (cntDNF == len) {
-			return [-1, -1, -1, -1, cntDNF];
-		} else if (cntDNF > trim) {
-			return [best, -1, -1, round(total / (len - cntDNF)), cntDNF];
-		} else if (cntDNF <= trim && cntDNF != 0) {
-			return [best, round(totaltrim / (len - 2 * trim)), -1, round(total / (len - cntDNF)), cntDNF];
-		} else {
-			return [best, round(totaltrim / (len - 2 * trim)), round(total / len), round(total / len), cntDNF];
 		}
 	}
 
@@ -341,11 +298,11 @@ var stats = (function(kpretty, round) {
 	}
 
 	function getAvgSignal(i) {
-		var st1 = getBestAvgIdx(i - len1 + 1, len1);
-		var st2 = getBestAvgIdx(i - len2 + 1, len2);
+		var st1 = times_stats.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
+		var st2 = times_stats.runAvgMean(i - len2 + 1, len2, 0, stat2 > 0 ? undefined : 0);
 		kernel.pushSignal('avg', [
-			(stat1 > 0 ? 'ao' : 'mo') + len1 + ": " + (st1 ? kpretty(st1[stat1 > 0 ? 1 : 2]) : "-"),
-			(stat2 > 0 ? 'ao' : 'mo') + len2 + ": " + (st2 ? kpretty(st2[stat2 > 0 ? 1 : 2]) : "-"),
+			(stat1 > 0 ? 'ao' : 'mo') + len1 + ": " + (st1 ? kpround(st1[0][0]) : "-"),
+			(stat2 > 0 ? 'ao' : 'mo') + len2 + ": " + (st2 ? kpround(st2[0][0]) : "-"),
 			st1 ? [i - len1 + 1, len1, len1 * 10, stat1 < 0] : undefined,
 			st2 ? [i - len2 + 1, len2, len2 * 10, stat2 < 0] : undefined,
 			setHighlight.bind(undefined, times_stats, timesAt)
@@ -363,11 +320,11 @@ var stats = (function(kpretty, round) {
 			'<td class="times">' + pretty(curTime, false) + '</td>'
 		);
 
-		var st1 = getBestAvgIdx(i - len1 + 1, len1);
-		var st2 = getBestAvgIdx(i - len2 + 1, len2);
+		var st1 = times_stats.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
+		var st2 = times_stats.runAvgMean(i - len2 + 1, len2, 0, stat2 > 0 ? undefined : 0);
 		ret.push(
-			'<td' + (st1 ? ' class="times"' : "") + '>' + (st1 ? kpretty(st1[stat1 > 0 ? 1 : 2]) : "-") + '</td>' +
-			'<td' + (st2 ? ' class="times"' : "") + '>' + (st2 ? kpretty(st2[stat2 > 0 ? 1 : 2]) : "-") + '</td>'
+			'<td' + (st1 ? ' class="times"' : "") + '>' + (st1 ? kpround(st1[0][0]) : "-") + '</td>' +
+			'<td' + (st2 ? ' class="times"' : "") + '>' + (st2 ? kpround(st2[0][0]) : "-") + '</td>'
 		);
 		if (dim > 1) {
 			ret.push('<td>' + kpretty(curTime[curTime.length - 1]) + '</td>');
@@ -388,10 +345,10 @@ var stats = (function(kpretty, round) {
 		var len = times.length;
 		var data = times_stats.getAllStats();
 		avgRow.append('<th colspan="4">' + STATS_SOLVE + ': ' + (len - data[0]) + '/' + len + '<br>' +
-			STATS_AVG + ': ' + kpretty(data[1]) + '</th>').css('font-size', '1.2em')
+			STATS_AVG + ': ' + kpround(data[1]) + '</th>').css('font-size', '1.2em')
 		if (dim > 1) {
 			for (var j = 1; j <= dim; j++) {
-				avgRow.append('<th>' + kpretty(getMean(j)) + '</th>').css('font-size', '');
+				avgRow.append('<th>' + kpround(getMean(j)) + '</th>').css('font-size', '');
 			}
 		}
 	}
@@ -445,8 +402,8 @@ var stats = (function(kpretty, round) {
 			var size = Math.abs(avgSizes[j]);
 			if (times.length >= size) {
 				s.push('<tr><th>' + 'am' [avgSizes[j] >>> 31] + 'o' + size + '</th>');
-				s.push('<td class="times click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpretty(times_stats.lastAvg[j][0]) + '</td>');
-				s.push('<td class="times click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpretty(times_stats.bestAvg[j][0]) + '</td></tr>');
+				s.push('<td class="times click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats.lastAvg[j][0]) + '</td>');
+				s.push('<td class="times click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats.bestAvg[j][0]) + '</td></tr>');
 			}
 		}
 		s = s.join("");
@@ -465,8 +422,7 @@ var stats = (function(kpretty, round) {
 	var avgSizes = [-3, 5, 12, 50, 100, 1000];
 	var times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
 
-	function detailTimeLine(idx, timesAt, trimList) {
-		var time = timesAt(idx);
+	function detailTimeLine(idx, time, trimList) {
 		var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
 		if ($.inArray(idx, trimList) != -1) {
 			c = "(" + c + ")";
@@ -490,9 +446,9 @@ var stats = (function(kpretty, round) {
 		var trimList = [];
 		if (start + nsolves != 0) {
 			if (mean) {
-				data = times_stats.runAvgMean(start, nsolves, 0, 0);
+				data = times_stats.runAvgMean(start, nsolves, 0, 0)[0];
 			} else {
-				data = times_stats.runAvgMean(start, nsolves);
+				data = times_stats.runAvgMean(start, nsolves)[0];
 				trimList = times_stats.getTrimList(start, nsolves, Math.ceil(nsolves / 20), data[2], data[3]);
 			}
 		}
@@ -521,12 +477,12 @@ var stats = (function(kpretty, round) {
 			} else {
 				s.push(hlstr[7].replace("%mk", ~~(id / 10))); //"Average of "+~~(id/10);
 			}
-			s.push(": " + kpretty(data[0]));
+			s.push(": " + kpround(data[0]));
 		}
 
 		s.push("\n\n" + hlstr[10] + "\n");
 		for (var i = 0; i < nsolves; i++) {
-			s.push(detailTimeLine(start + i, timesAt, trimList));
+			s.push(detailTimeLine(kernel.getProp('absidx') ? start + i : i, timesAt(start + i), trimList));
 		}
 		s = s.join("").slice(0, -2);
 		stext.val(s);
@@ -688,7 +644,7 @@ var stats = (function(kpretty, round) {
 			}
 
 			var s = [];
-			s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (hugeStats.timesLen - numdnf) + "/" + hugeStats.timesLen) + ', ' + hlstr[9].replace("%v", kpretty(sessionmean)) + '</span>\n');
+			s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (hugeStats.timesLen - numdnf) + "/" + hugeStats.timesLen) + ', ' + hlstr[9].replace("%v", kpround(sessionmean)) + '</span>\n');
 			s.push('<span>' + 'Totally spent: %d'.replace("%d", kpretty(totalTime)) + '</span>\n');
 			s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + kpretty(hugeStats.bestTime) + '</span>');
 			s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + kpretty(hugeStats.worstTime) + "</span>\n");
@@ -697,15 +653,11 @@ var stats = (function(kpretty, round) {
 			for (var j = 0; j < avgSizes.length; j++) {
 				var size = Math.abs(avgSizes[j]);
 				if (hugeStats.timesLen >= size) {
-					if (hugeStats.bestAvg[j].length < 2) {
-						hugeStats.lastAvg[j] = hugeStats.runAvgMean(hugeStats.timesLen - size, size, 0, avgSizes[j] < 0 ? 0 : undefined);
-						hugeStats.bestAvg[j] = hugeStats.runAvgMean(hugeStats.bestAvgIndex[j], size, 0, avgSizes[j] < 0 ? 0 : undefined);
-					}
 					hasTable || (hasTable = true, s.push(tableHead));
 					s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
-					s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpretty(hugeStats.lastAvg[j][0]) + " (σ=" + trim(hugeStats.lastAvg[j][1], 2) +
+					s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(hugeStats.lastAvg[j][0]) + " (σ=" + trim(hugeStats.lastAvg[j][1], 2) +
 						')</span></td>');
-					s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpretty(hugeStats.bestAvg[j][0]) + " (σ=" + trim(hugeStats.bestAvg[j][1], 2) +
+					s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(hugeStats.bestAvg[j][0]) + " (σ=" + trim(hugeStats.bestAvg[j][1], 2) +
 						')</span></td></tr>');
 				}
 			}
@@ -947,22 +899,22 @@ var stats = (function(kpretty, round) {
 			}
 			if (times.length > len1) {
 				x = []; y = [];
-				var ao5 = times_stats.runAvgMean(0, times.length, len1, stat1 > 0 ? undefined : 0)[0];
+				var ao5 = times_stats.runAvgMean(0, times.length, len1, stat1 > 0 ? undefined : 0);
 				for (var i = 0; i < ao5.length; i++) {
-					if (ao5[i] != -1) {
+					if (ao5[i][0] != -1) {
 						x.push((i + len1 - 1) / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (ao5[i] - plotmin) / ploth)));
+						y.push(Math.max(0, Math.min(1, (ao5[i][0] - plotmin) / ploth)));
 					}
 				}
 				plot(x, y, '#f00');
 			}
 			if (times.length > len2) {
 				x = []; y = [];
-				var ao12 = times_stats.runAvgMean(0, times.length, len2, stat2 > 0 ? undefined : 0)[0];
+				var ao12 = times_stats.runAvgMean(0, times.length, len2, stat2 > 0 ? undefined : 0);
 				for (var i = 0; i < ao12.length; i++) {
-					if (ao12[i] != -1) {
+					if (ao12[i][0] != -1) {
 						x.push((i + len2 - 1) / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (ao12[i] - plotmin) / ploth)));
+						y.push(Math.max(0, Math.min(1, (ao12[i][0] - plotmin) / ploth)));
 					}
 				}
 				plot(x, y, '#00f');
@@ -1369,7 +1321,7 @@ var stats = (function(kpretty, round) {
 			if ('stat' in ssData) {
 				var s = ssData['stat'];
 				ssStat[0] = (s[0] - s[1]) + '/' + s[0];
-				ssStat[1] = kpretty(s[2]);
+				ssStat[1] = kpround(s[2]);
 			}
 			return '<tr' + (idx == sessionIdx ? ' class="selected"' : '') + '><td>' + rank + (idx == sessionIdx ? '*' : '') + '</td>' +
 				'<td class="click" data="s">' + ssData['name'] + '</td>' +
@@ -1572,7 +1524,7 @@ var stats = (function(kpretty, round) {
 	function getStats(times_stats, timesAt) {
 		var theStats = times_stats.getAllStats();
 		var numdnf = theStats[0];
-		var sessionavg = times_stats.runAvgMean(0, times.length);
+		var sessionavg = times_stats.runAvgMean(0, times.length)[0];
 		var sessionmean = theStats[1];
 		var length = times_stats.timesLen;
 
@@ -1597,24 +1549,20 @@ var stats = (function(kpretty, round) {
 		for (var j = 0; j < avgSizes.length; j++) {
 			var size = Math.abs(avgSizes[j]);
 			if (length >= size) {
-				if (times_stats.bestAvg[j].length < 2) {
-					times_stats.lastAvg[j] = times_stats.runAvgMean(times_stats.timesLen - size, size, 0, avgSizes[j] < 0 ? 0 : undefined);
-					times_stats.bestAvg[j] = times_stats.runAvgMean(times_stats.bestAvgIndex[j], size, 0, avgSizes[j] < 0 ? 0 : undefined);
-				}
 				s.push(hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
-				s.push('    ' + hlstr[1] + ": " + kpretty(times_stats.lastAvg[j][0]) + " (σ = " + trim(times_stats.lastAvg[j][1], 2) + ")");
-				s.push('    ' + hlstr[0] + ": " + kpretty(times_stats.bestAvg[j][0]) + " (σ = " + trim(times_stats.bestAvg[j][1], 2) + ")\n");
+				s.push('    ' + hlstr[1] + ": " + kpround(times_stats.lastAvg[j][0]) + " (σ = " + trim(times_stats.lastAvg[j][1], 2) + ")");
+				s.push('    ' + hlstr[0] + ": " + kpround(times_stats.bestAvg[j][0]) + " (σ = " + trim(times_stats.bestAvg[j][1], 2) + ")\n");
 			}
 		}
 
-		s.push(hlstr[8].replace("%v", kpretty(sessionavg[0])).replace("%sgm", trim(sessionavg[1], 2)).replace(/[{}]/g, ""));
-		s.push(hlstr[9].replace("%v", kpretty(sessionmean) + '\n'));
+		s.push(hlstr[8].replace("%v", kpround(sessionavg[0])).replace("%sgm", trim(sessionavg[1], 2)).replace(/[{}]/g, ""));
+		s.push(hlstr[9].replace("%v", kpround(sessionmean) + '\n'));
 
 		if (length != 0) {
 			s.push(hlstr[10]);
 			var timeStr = [];
 			for (var i = 0; i < length; i++) {
-				timeStr.push(detailTimeLine(i, timesAt, []));
+				timeStr.push(detailTimeLine(i, timesAt(i), []));
 			}
 			timeStr = timeStr.join("").slice(0, -2);
 			s.push(timeStr);
@@ -1794,6 +1742,7 @@ var stats = (function(kpretty, round) {
 		kernel.setProp('ss2phases', true);
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true]);
+		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false]);
 
 		div.appendTo('body').append(
 			statOptDiv.append(hideOptButton.click(hideSessionOptions), ' ',
@@ -1828,4 +1777,4 @@ var stats = (function(kpretty, round) {
 	return {
 		importSessions: sessionManager.importSessions
 	}
-})(kernel.pretty, kernel.round);
+})(kernel.pretty, kernel.round, kernel.pround);
