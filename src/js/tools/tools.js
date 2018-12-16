@@ -99,7 +99,7 @@ var tools = (function() {
 
 	function procSignal(signal, value) {
 		if (signal == 'property') {
-			if (value[0] == 'imgSize') {
+			if (value[0] == 'imgSize' || /^col/.exec(value[0])) {
 				for (var i = 0; i < kernel.getProp('NTools'); i++) {
 					if (funcs[i] == 'image') {
 						execFunc(i, signal);
@@ -155,7 +155,7 @@ var tools = (function() {
 	}
 
 	$(function() {
-		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools)$/);
+		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm))$/);
 		kernel.regListener('tools', 'scramble', procSignal);
 		kernel.regListener('tools', 'scrambleX', procSignal);
 		kernel.regListener('tools', 'button', procSignal, /^tools$/);

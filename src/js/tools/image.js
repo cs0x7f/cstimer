@@ -93,6 +93,7 @@ var image = (function() {
 
 		var movere = /[RD][+-]{2}|U'?/
 		return function(moveseq) {
+			colors = kernel.getProp('colmgm').match(colre);
 			var state = [];
 			for (var i = 0; i < 12; i++) {
 				for (var j = 0; j < 11; j++) {
@@ -302,6 +303,15 @@ var image = (function() {
 		var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/
 
 		return function(moveseq) {
+			var cols = kernel.getProp('colsq1').match(colre);
+			colors = {
+				'U': cols[0],
+				'R': cols[1],
+				'F': cols[2],
+				'D': cols[3],
+				'L': cols[4],
+				'B': cols[5]
+			};
 			posit = [0, 0, 1, 2, 2, 3, 4, 4, 5, 6, 6, 7, 8, 8, 9, 10, 10, 11, 12, 12, 13, 14, 14, 15];
 			mid = 0;
 			var moves = moveseq.split('/');
@@ -451,6 +461,7 @@ var image = (function() {
 		}
 
 		return function(moveseq) {
+			colors = kernel.getProp('colskb').match(colre);
 			var cnt = 0;
 			for (var i = 0; i < 6; i++) {
 				for (var f = 0; f < 5; f++) {
@@ -535,6 +546,7 @@ posit:
 		}
 
 		return function(moveseq) {
+			colors = kernel.getProp('colpyr').match(colre);
 			var cnt = 0;
 			for (var i = 0; i < 4; i++) {
 				for (var f = 0; f < 9; f++) {
@@ -672,6 +684,7 @@ posit:
 		}
 
 		return function(size, moveseq) {
+			colors = kernel.getProp('colcube').match(colre);
 			var cnt = 0;
 			for (var i = 0; i < 6; i++) {
 				for (var f = 0; f < size * size; f++) {
@@ -754,7 +767,15 @@ posit:
 		}
 	}
 
+	var colre = /#[0-9a-fA-F]{3}/g;
+
 	$(function() {
+		kernel.regProp('color', 'colcube', 4, 'Cube', ['#ff0#fa0#00f#fff#f00#0d0']);
+		kernel.regProp('color', 'colpyr', 4, 'Pyraminx', ['#0f0#f00#00f#ff0']);
+		kernel.regProp('color', 'colskb', 4, 'Skewb', ['#fff#00f#f00#ff0#0f0#f80']);
+		kernel.regProp('color', 'colmgm', 4, 'Megaminx', ['#fff#d00#060#81f#fc0#00b#ffb#8df#f83#7e0#f9f#999']);
+		kernel.regProp('color', 'colsq1', 4, 'SQ1', ['#ff0#f80#0f0#fff#f00#00f']);
+
 		canvas = $('<canvas>');
 		if (canvas[0].getContext) {
 			tools.regTool('image', TOOLS_IMAGE, execFunc);

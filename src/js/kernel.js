@@ -93,7 +93,13 @@ var kernel = (function() {
 					setProp(key, target.prop('checked'));
 					break;
 				case 'color':
-					setProp(key, target.val());
+					if (!target.attr('data')) {
+						setProp(key, target.val());
+					} else {
+						var idx = ~~target.attr('data') * 4 - 4;
+						var val = properties[key];
+						setProp(key, [val.slice(0, idx), ui.nearColor(target.val()), val.slice(idx + 4)].join(''));
+					}
 					break;
 				case 'text':
 				case 'button':
@@ -132,10 +138,10 @@ var kernel = (function() {
 					var proSet = proSets[module][key];
 					var curVal = properties[key];
 					var type = proSet[1];
-					if (type == 0) {
+					if (type == 0) { //checkbox
 						proSet[0] = $('<input type="checkbox" name="' + key + '">').prop('checked', curVal).click(procClick);
 						curDiv[1].append($('<li />').append($('<label>').append(proSet[0], proSet[2])));
-					} else if (type == 1) {
+					} else if (type == 1) { //select
 						proSet[0] = $('<select name="' + key + '">');
 						var vals = proSet[3][1];
 						var strs = proSet[3][2];
@@ -145,14 +151,22 @@ var kernel = (function() {
 						proSet[0].val(properties[key]);
 						proSet[0].change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
-					} else if (type == 2) {
+					} else if (type == 2) { //range
 						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(properties[key]).change(procClick);
 						var inc = $('<input type="button" value="+" name="' + key + '">').click(procClick);
 						var dec = $('<input type="button" value="-" name="' + key + '">').click(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], '('+proSet[3][1]+'~'+proSet[3][2]+')', proSet[0], inc, dec));
-					} else if (type == 3) {
+					} else if (type == 3) { //color
 						proSet[0] = $('<input type="color" name="' + key + '">').val(properties[key]).change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
+					} else if (type == 4) { //multiple colors
+						var val = properties[key].match(/#[0-9a-fA-F]{3}/g);
+						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(properties[key]);
+						var colorsInput = [];
+						for (var i = 0; i < val.length; i++) {
+							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val(ui.nearColor(val[i], 0, true)).change(procClick));
+						}
+						curDiv[1].append($('<li />').append(proSet[2], proSet[0], colorsInput));
 					}
 				}
 			}
@@ -632,6 +646,7 @@ var kernel = (function() {
 			hideDialog: hideDialog,
 			isDialogShown: isDialogShown,
 			exportColor: exportColor,
+			nearColor: nearColor,
 			setAutoShow: function(visible) {
 				visible = visible || !getProp('ahide');
 				if (visible) {

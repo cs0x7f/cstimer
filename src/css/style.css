@@ -652,6 +652,10 @@ input[type="file"] {
 	width: 100%;
 }
 
+input[type="color"].mulcolor {
+	width: 1.5em;
+}
+
 .expOauth {
 	width: 80%;
 	margin-left: 10%;

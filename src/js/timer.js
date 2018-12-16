@@ -643,6 +643,15 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			}
 		}
 
+		function col2std(col, faceMap) {
+			var ret = [];
+			col = col.match(/#[0-9a-fA-F]{3}/g);
+			for (var i = 0; i < col.length; i++) {
+				ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
+			}
+			return ret;
+		}
+
 		function reset(temp) {
 			if (twistyScene == undefined || isReseted || !isEnable) {
 				return;
@@ -655,19 +664,19 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 			if (currentScrambleSize == 12) {
 				twistyScene.initializeTwisty({
 					type: "skewb",
-					faceColors: [0xffffff, 0xff9000, 0x00ff00, 0xff0000, 0x0000ff, 0xffff00],
+					faceColors: col2std(kernel.getProp('colskb'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
 				});
 			} else if (currentScrambleSize == 1) {
 				twistyScene.initializeTwisty({
 					type: "sq1",
-					faceColors: [0xffff00, 0x0000ff, 0xff0000, 0x00ff00, 0xff8800, 0xffffff],
+					faceColors: col2std(kernel.getProp('colsq1'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
 				});
 			} else {
 				twistyScene.initializeTwisty({
 					type: "cube",
-					faceColors: [0xffffff, 0xff0000, 0x00ff00, 0xffff00, 0xff9000, 0x0000ff], // U L F D L B
+					faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
 					dimension: size,
 					stickerWidth: 1.7,
 					scale: 0.9
@@ -846,7 +855,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				isReseted = true;
 				twistyScene.initializeTwisty({
 					type: "cube",
-					faceColors: [0xffffff, 0xff0000, 0x00ff00, 0xffff00, 0xff9000, 0x0000ff], // U L F D L B
+					faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
 					dimension: 3,
 					stickerWidth: 1.7,
 					scale: 0.9
