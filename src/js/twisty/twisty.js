@@ -57,9 +57,6 @@ window.twistyjs = (function() {
 		var twistyCanvas;
 		var cameraTheta = 0;
 
-		/* http://tauday.com/ ;-) */
-		Math.TAU = Math.PI * 2;
-
 		/*
 		 * Initialization Methods
 		 */

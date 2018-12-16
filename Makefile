@@ -63,7 +63,8 @@ lib/threemin.js \
 twisty/twisty.js \
 twisty/twistynnn.js \
 twisty/twistysq1.js \
-twisty/twistyskb.js)
+twisty/twistyskb.js \
+twisty/twistyminx.js)
 
 
 cstimer = $(dest)/js/cstimer.js

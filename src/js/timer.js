@@ -667,6 +667,12 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					faceColors: col2std(kernel.getProp('colskb'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
 				});
+			} else if (currentScrambleSize == 13) {
+				twistyScene.initializeTwisty({
+					type: "mgm",
+					faceColors: col2std(kernel.getProp('colmgm'), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]),
+					scale: 0.9
+				});
 			} else if (currentScrambleSize == 1) {
 				twistyScene.initializeTwisty({
 					type: "sq1",
@@ -766,7 +772,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		var currentScramble;
 		var currentScrambleType;
 		var currentScrambleSize;
-		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb'];
+		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm'];
 		var isReseted = false;
 
 		function procSignal(signal, value) {
@@ -774,7 +780,7 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 				currentScrambleType = value[0];
 				currentScramble = value[1];
 				var puzzleType = tools.puzzleType(currentScrambleType);
-				for (var size = 12; size > 0; size--) {
+				for (var size = types.length - 1; size > 0; size--) {
 					if (types[size] == puzzleType) {
 						if (currentScrambleSize != size) {
 							currentScrambleSize = size

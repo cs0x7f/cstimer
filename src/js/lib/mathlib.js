@@ -527,6 +527,8 @@ var mathlib = (function() {
 		return ~~(date.getTime() / 1000);
 	}
 
+	Math.TAU = Math.PI * 2;
+
 	return {
 		Cnk: Cnk,
 		fact: fact,
