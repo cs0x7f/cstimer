@@ -179,7 +179,7 @@ var stats = (function(kpretty, round, kpround) {
 				.append('<br>', $('<table style="display:inline-block;">').append(
 					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
 					$('<tr>').append('<td>' + SCRAMBLE_SCRAMBLE + '</td>', $('<td>').append(cfmScrR)),
-					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
+					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate))
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
 			cfmScrR.val(time[1]);
@@ -564,7 +564,7 @@ var stats = (function(kpretty, round, kpround) {
 			$('<option>').val(1).html('past 24 hours'),
 			$('<option>').val(7).html('past 7 days'),
 			$('<option>').val(30).html('past 30 days'),
-			$('<option>').val(365).html('past 365 days'),
+			$('<option>').val(365).html('past 365 days')
 		).val(-1);
 		var scrSelect = $('<select>');
 		var calcSpan = $('<span class="click">Calc</span>');
