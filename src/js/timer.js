@@ -583,6 +583,15 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		}
 	})();
 
+	function col2std(col, faceMap) {
+		var ret = [];
+		col = col.match(/#[0-9a-fA-F]{3}/g);
+		for (var i = 0; i < col.length; i++) {
+			ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
+		}
+		return ret;
+	}
+
 	var virtual333 = (function() {
 		var twistyScene;
 		var twisty;
@@ -641,15 +650,6 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 					pushSignal('time', curTime);
 				}
 			}
-		}
-
-		function col2std(col, faceMap) {
-			var ret = [];
-			col = col.match(/#[0-9a-fA-F]{3}/g);
-			for (var i = 0; i < col.length; i++) {
-				ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
-			}
-			return ret;
 		}
 
 		function reset(temp) {

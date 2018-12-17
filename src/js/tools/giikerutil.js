@@ -10,7 +10,7 @@ var giikerutil = (function(CubieCube) {
 	var drawState = (function() {
 		var faceOffsetX = [1, 2, 1, 1, 0, 3];
 		var faceOffsetY = [0, 1, 1, 2, 1, 1];
-		var colors = ['#fff', '#f00', '#0d0', '#ff0', '#fa0', '#00f'];
+		var colors = ['#ff0', '#fa0', '#00f', '#fff', '#f00', '#0d0'];
 		var width = 30;
 		var ctx;
 
@@ -19,7 +19,7 @@ var giikerutil = (function(CubieCube) {
 				offy = 10 / 3 * faceOffsetY[f];
 			for (var x = 0; x < 3; x++) {
 				for (var y = 0; y < 3; y++) {
-					image.drawPolygon(ctx, colors["URFDLB".indexOf(facelet[(f * 3 + y) * 3 + x])], [
+					image.drawPolygon(ctx, colors["DLBURF".indexOf(facelet[(f * 3 + y) * 3 + x])], [
 						[x, x, x + 1, x + 1],
 						[y, y + 1, y + 1, y]
 					], [width, offx, offy]);
@@ -35,6 +35,7 @@ var giikerutil = (function(CubieCube) {
 				canvas.hide();
 				return;
 			}
+			colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
 			canvas.show();
 			ctx = canvas[0].getContext('2d');
 			var imgSize = kernel.getProp('imgSize') / 50;
