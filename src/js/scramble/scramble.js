@@ -130,7 +130,7 @@ var scramble = (function(rn, rndEl) {
 	function scrambleOK(scrStr) {
 		scramble = (scrStr || scramble).replace(/(\s*)$/, "");
 		sdiv.html(scramble);
-		kernel.pushSignal('scramble', [type, scramble]);
+		kernel.pushSignal('scramble', [type, scramble.replace(/&nbsp;/g, ' ')]);
 	}
 
 	function inputOK() {
