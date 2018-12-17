@@ -1723,7 +1723,7 @@ var stats = (function(kpretty, round, kpround) {
 				var statal = value[1];
 				if (statal == 'u') {
 					if (value[2] == 'modify') {
-						var input = prompt('Statistics Details', 'mo3 ao5 ao12 ao100');
+						var input = prompt('Statistics Details', kernel.getProp('statalu') || 'mo3 ao5 ao12 ao100');
 						if (/([am]o\d+[\s,;]*)+/.exec(input)) {
 							kernel.setProp('statalu', input);
 							statal = input;
