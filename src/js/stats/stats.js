@@ -1418,6 +1418,7 @@ var stats = (function(kpretty, round, kpround) {
 					sessionData[ssSorted[i]]['rank'] = i + 1;
 				}
 				fixRank();
+				fixSessionSelect();
 				genMgrTable();
 				return false;
 			}]], 'ssmgr', STATS_SSMGR_TITLE);
