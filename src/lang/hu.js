@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'Roux S1 megoldása';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Keverés mutatása';
 var TOOLS_STATS = 'Statisztikák';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'idő megoszlása';
 var TOOLS_TREND = 'time trend';
 var TOOLS_METRONOME = 'metronome';

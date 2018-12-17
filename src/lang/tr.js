@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'Roux S1 çözümü';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'karıştırmayı göster';
 var TOOLS_STATS = 'İstatistikler';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Süre dağılımı';
 var TOOLS_TREND = 'Süre grafiği';
 var TOOLS_METRONOME = 'metronome';

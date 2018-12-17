@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'собрать Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'нарисовать скрамбл';
 var TOOLS_STATS = 'Статистика';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'распределение времени';
 var TOOLS_TREND = 'тенденция времени';
 var TOOLS_METRONOME = 'metronome';

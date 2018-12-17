@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'solve Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'draw scramble';
 var TOOLS_STATS = 'Statistics';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'time distribution';
 var TOOLS_TREND = 'time trend';
 var TOOLS_METRONOME = 'metronome';

@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'Los Roux S1 op';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Teken scramble';
 var TOOLS_STATS = 'Statistiek';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Verdeling tijden';
 var TOOLS_TREND = 'tijd trend';
 var TOOLS_METRONOME = 'metronome';

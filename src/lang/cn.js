@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = '桥式S1求解';
 var TOOLS_GIIKER = '计客魔方';
 var TOOLS_IMAGE = '打乱图案';
 var TOOLS_STATS = '统计数据';
+var TOOLS_HUGESTATS = '跨分组统计';
 var TOOLS_DISTRIBUTION = '时间分布';
 var TOOLS_TREND = '时间趋势';
 var TOOLS_METRONOME = '节拍器';

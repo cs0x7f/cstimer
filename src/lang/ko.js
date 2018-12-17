@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'Roux S1 도우미';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = '섞기 그림';
 var TOOLS_STATS = '통계 정보';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = '시간 분포';
 var TOOLS_TREND = '시간 추이';
 var TOOLS_METRONOME = 'metronome';

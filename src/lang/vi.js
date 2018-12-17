@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'giải Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'vẽ scramble';
 var TOOLS_STATS = 'Thành tích ( kiểu 1)';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Thành tích ( kiểu 2)';
 var TOOLS_TREND = 'Thành tích ( kiểu 3)';
 var TOOLS_METRONOME = 'metronome';

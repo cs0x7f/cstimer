@@ -14,7 +14,9 @@ var stats = (function(kpretty, round, kpround) {
 	var avgRow = $('<tr class="times" />');
 	var showAllRow = $('<tr class="click" ><th class="click" colspan="15">...</th></tr>');
 
-	var sumtable = $('<table class="sumtable" />').click(infoClick).addClass("table");
+	var sumtable = $('<table class="sumtable" />').click(function(e) {
+		infoClick(times_stats, timesAt, e);
+	}).addClass("table");
 	var sumtableDiv = $('<div class="statc" />');
 
 	var MAX_ITEMS = 50;
@@ -535,7 +537,7 @@ var stats = (function(kpretty, round, kpround) {
 		outFile.remove();
 	}
 
-	function infoClick(e) {
+	function infoClick(times_stats, timesAt, e) {
 		var which = $(e.target).attr('data');
 		if (which == undefined) {
 			return;
@@ -544,6 +546,7 @@ var stats = (function(kpretty, round, kpround) {
 		switch (which.substr(0, 2)) {
 		case 'bs': setHighlight(times_stats, timesAt, times_stats.bestTimeIndex, 1, 10, true); break;
 		case 'cs': setHighlight(times_stats, timesAt, times_stats.timesLen - 1, 1, 10, true); break;
+		case 'ws': setHighlight(times_stats, timesAt, times_stats.worstTimeIndex, 1, 10, true); break;
 		case 'bm': setHighlight(times_stats, timesAt, times_stats.bestAvgIndex[idx], -avgSizes[idx], -avgSizes[idx] * 10, true); break;
 		case 'cm': setHighlight(times_stats, timesAt, times_stats.timesLen + avgSizes[idx], -avgSizes[idx], -avgSizes[idx] * 10, true); break;
 		case 'ba': setHighlight(times_stats, timesAt, times_stats.bestAvgIndex[idx], avgSizes[idx], avgSizes[idx] * 10, false); break;
@@ -554,7 +557,7 @@ var stats = (function(kpretty, round, kpround) {
 
 	var hlstr = STATS_STRING.split('|');
 
-	var assistant = (function() {
+	var crossSessionStats = (function() {
 
 		var toolDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em')
 		var infoDiv = $('<div />');
@@ -580,9 +583,6 @@ var stats = (function(kpretty, round, kpround) {
 		}
 
 		function updateInfo() {
-
-			var sessionRankList = [1, 2, 3, 4, 5];
-
 			hugeTimes = [];
 			var loadproc = Promise.resolve();
 			var sessionN = ~~kernel.getProp('sessionN');
@@ -599,20 +599,18 @@ var stats = (function(kpretty, round, kpround) {
 					continue;
 				}
 				loadproc = loadproc.then((function(idx) {
-					return function() {
-						return new Promise(function(resolve) {
-							storage.get(idx, function(newTimes) {
-								for (var i = 0; i < newTimes.length; i++) {
-									if ((newTimes[i][3] || 0) < dateThreshold) {
-										continue;
-									}
-									hugeTimes.push(newTimes[i]);
+					return new Promise(function(resolve) {
+						storage.get(idx, function(newTimes) {
+							for (var i = 0; i < newTimes.length; i++) {
+								if ((newTimes[i][3] || 0) < dateThreshold) {
+									continue;
 								}
-								resolve();
-							});
+								hugeTimes.push(newTimes[i]);
+							}
+							resolve();
 						});
-					};
-				})(idx));
+					});
+				}).bind(undefined, idx));
 			}
 			loadproc.then(function() {
 				var sortedArr = [];
@@ -666,24 +664,6 @@ var stats = (function(kpretty, round, kpround) {
 			infoDiv.html(s.replace(/\n/g, '<br>'));
 		}
 
-		function hugeInfoClick(e) {
-			var which = $(e.target).attr('data');
-			if (which == undefined) {
-				return;
-			}
-			var idx = ~~(which.substr(2));
-			switch (which.substr(0, 2)) {
-			case 'bs': setHighlight(hugeStats, hugeTimesAt, hugeStats.bestTimeIndex, 1, 10, true); break;
-			case 'cs': setHighlight(hugeStats, hugeTimesAt, hugeStats.timesLen - 1, 1, 10, true); break;
-			case 'ws': setHighlight(hugeStats, hugeTimesAt, hugeStats.worstTimeIndex, 1, 10, true); break;
-			case 'bm': setHighlight(hugeStats, hugeTimesAt, hugeStats.bestAvgIndex[idx], -avgSizes[idx], -avgSizes[idx] * 10, true); break;
-			case 'cm': setHighlight(hugeStats, hugeTimesAt, hugeStats.timesLen + avgSizes[idx], -avgSizes[idx], -avgSizes[idx] * 10, true); break;
-			case 'ba': setHighlight(hugeStats, hugeTimesAt, hugeStats.bestAvgIndex[idx], avgSizes[idx], avgSizes[idx] * 10, false); break;
-			case 'ca': setHighlight(hugeStats, hugeTimesAt, hugeStats.timesLen - avgSizes[idx], avgSizes[idx], avgSizes[idx] * 10, false); break;
-			case 'tt': getStats(hugeStats, hugeTimesAt); break;
-			}
-		}
-
 		var isEnable = false;
 
 		function execFunc(fdiv, signal) {
@@ -694,7 +674,9 @@ var stats = (function(kpretty, round, kpround) {
 				return;
 			}
 			fdiv.empty().append(toolDiv.append(nameSelect, dateSelect, scrSelect, ' ',
-				calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv.unbind('click').click(hugeInfoClick)));
+				calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv.unbind('click').click(function(e) {
+					infoClick(hugeStats, hugeTimesAt, e);
+				})));
 		}
 
 		function procSignal(signal, value) {
@@ -721,7 +703,7 @@ var stats = (function(kpretty, round, kpround) {
 
 		$(function() {
 			if (typeof tools != "undefined") {
-				tools.regTool('stats', TOOLS_STATS, execFunc);
+				tools.regTool('hugestats', TOOLS_HUGESTATS, execFunc);
 			}
 			kernel.regListener('labelstat', 'property', procSignal, /^sessionData$/);
 
@@ -735,6 +717,73 @@ var stats = (function(kpretty, round, kpround) {
 		}
 
 	})();
+
+	var assistant = (function() {
+
+		var infoDiv = $('<div />').css('text-align', 'center');
+
+		function updateInfo() {
+			if (!isEnable) {
+				return;
+			}
+
+			var theStats = times_stats.getAllStats();
+			var numdnf = theStats[0];
+			var sessionmean = theStats[1];
+
+			var totalTime = 0;
+			for (var i = 0; i < times.length; i++) {
+				totalTime += times[i][0][1];
+			}
+			var s = [];
+			s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats.timesLen - numdnf) + "/" + times_stats.timesLen) + ', ' + hlstr[9].replace("%v", kpround(sessionmean)) + '</span>\n');
+			s.push('<span>' + 'Totally spent: %d'.replace("%d", kpretty(totalTime)) + '</span>\n');
+			s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + kpretty(times_stats.bestTime) + '</span>');
+			s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + kpretty(times_stats.worstTime) + "</span>\n");
+			var hasTable = false;
+			var tableHead = '<table class="table"><tr><td></td><td>' + hlstr[1] + '</td><td>' + hlstr[0] + '</td></tr>';
+			for (var j = 0; j < avgSizes.length; j++) {
+				var size = Math.abs(avgSizes[j]);
+				if (times_stats.timesLen >= size) {
+					hasTable || (hasTable = true, s.push(tableHead));
+					s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
+					s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats.lastAvg[j][0]) + " (σ=" + trim(times_stats.lastAvg[j][1], 2) +
+						')</span></td>');
+					s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats.bestAvg[j][0]) + " (σ=" + trim(times_stats.bestAvg[j][1], 2) +
+						')</span></td></tr>');
+				}
+			}
+			hasTable && s.push('</table>');
+			s = s.join("");
+			infoDiv.html(s.replace(/\n/g, '<br>'));
+		}
+
+		var isEnable = false;
+
+		function execFunc(fdiv, signal) {
+			if (!(isEnable = (fdiv != undefined))) {
+				return;
+			}
+			if (/^scr/.exec(signal)) {
+				return;
+			}
+			fdiv.empty().append(infoDiv.unbind('click').click(function(e) {
+				infoClick(times_stats, timesAt, e);
+			}));
+			updateInfo();
+		}
+
+		$(function() {
+			if (typeof tools != "undefined") {
+				tools.regTool('stats', TOOLS_STATS, execFunc);
+			}
+		});
+
+		return {
+			update: updateInfo
+		}
+	})();
+
 
 	function timeAt(idx) {
 		return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
@@ -1692,7 +1741,7 @@ var stats = (function(kpretty, round, kpround) {
 				var avgSizesNew = avgSizesStd(statal);
 				avgSizes = avgSizesNew;
 				times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
-				assistant.updateStatal(avgSizes);
+				crossSessionStats.updateStatal(avgSizes);
 				updateUtil();
 			} else if (value[0] == 'view') {
 				resultsHeight();

@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'složi Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'prikaži scramble';
 var TOOLS_STATS = 'Statistika';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'distribucija vremena';
 var TOOLS_TREND = 'trend vremena';
 var TOOLS_METRONOME = 'metronome';

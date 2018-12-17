@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'resolver o Roux S1';
 var TOOLS_GIIKER = 'cubo Giiker';
 var TOOLS_IMAGE = 'desenhar o embaralhamento';
 var TOOLS_STATS = 'Estatíticas';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Distribuição dos tempos';
 var TOOLS_TREND = 'Gráfico dos tempos';
 var TOOLS_METRONOME = 'Metrônomo';

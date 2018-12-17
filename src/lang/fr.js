@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'solve Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Schéma du mélange';
 var TOOLS_STATS = 'Statistiques';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Répartition des temps';
 var TOOLS_TREND = 'Tendance des temps';
 var TOOLS_METRONOME = 'metronome';

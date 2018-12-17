@@ -41,6 +41,7 @@ var TOOLS_ROUX1 = 'løs Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'tegn blanding';
 var TOOLS_STATS = 'Statistiker';
+var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Tidsfordeling';
 var TOOLS_TREND = 'Tidsudvikling';
 var TOOLS_METRONOME = 'metronome';
