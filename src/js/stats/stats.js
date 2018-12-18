@@ -792,12 +792,12 @@ var stats = (function(kpretty, round, kpround) {
 
 	function timeAtDim(dim, idx) {
 		var curTime = times[idx][0];
-		if (curTime[0] == -1) {
+		if (curTime[0] == -1 || curTime.length <= dim) {
 			return -1;
 		}
 		var ret = dim == 0 ?
 			(curTime[0] + curTime[1]) :
-			((curTime[curTime.length - dim] || 0) - (curTime[curTime.length - dim + 1] || 0));
+			(curTime[curTime.length - dim] - (curTime[curTime.length - dim + 1] || 0));
 		return roundMilli * ~~(ret / roundMilli);
 	}
 
