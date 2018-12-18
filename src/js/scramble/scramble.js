@@ -421,6 +421,8 @@ var scramble = execBoth(function(rn, rndEl) {
 				} else if (value[1] == 'r') {
 					div.css('text-align', 'right');
 				}
+			} else if (value[0] == 'sq1lvcb') {
+				alias['sqrs'] = value[1] ? 'sqrs1' : 'sqrs';
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -553,7 +555,7 @@ var scramble = execBoth(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align)$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align)|sq1lvcb$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50]);
@@ -568,6 +570,7 @@ var scramble = execBoth(function(rn, rndEl) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
 		}
 		kernel.getProp('scrType', '333');
+		kernel.getProp('sq1lvcb', false);
 
 		select.change(loadSelect2);
 		select2.change(loadScrOptsAndGen);

@@ -226,7 +226,7 @@ TODO:
 			bottom = 0;
 		for (var i = len - 1; i >= 0; i--) {
 			var val = obj.Search_move[i];
-			if (i == obj.Search_length1 - 1 && kernel && kernel.getProp && kernel.getProp('sq1lvcb', false)) {
+			if (i == obj.Search_length1 - 1 && obj.sq1lvcb) {
 				s += "//";
 			}
 			//console.log(val);
@@ -790,15 +790,19 @@ TODO:
 	var scpprobs = [10, 16, 16, 16, 16, 24, 16, 8, 72, 48, 24, 72, 48, 24, 72, 48, 24, 96, 64, 32, 96, 64, 32, 96, 64, 32, 72, 48, 24, 72, 48, 24, 72, 48, 24, 4, 16, 16, 24, 24, 24, 16, 16, 16, 24, 16, 32, 48, 48, 48, 32, 32, 32, 48, 16, 48, 48, 48, 32, 32, 32, 48, 36, 72, 72, 48, 48, 48, 72, 36, 72, 48, 48, 48, 72, 36, 48, 48, 48, 72, 16, 32, 32, 48, 16, 32, 48, 16, 48, 36];
 	var scpcases = [x44_STAR, x53_STAR, x62_STAR, x71_STAR, x8_STAR, x222_PAIRED, x222_PERPENDICULAR, x222_PARALLEL, x33_PAIRED, x33_PERPENDICULAR, x33_PARALLEL, x321_PAIRED, x321_PERPENDICULAR, x321_PARALLEL, x312_PAIRED, x312_PERPENDICULAR, x312_PARALLEL, L42_PAIRED, L42_PERPENDICULAR, L42_PARALLEL, R42_PAIRED, R42_PERPENDICULAR, R42_PARALLEL, x411_PAIRED, x411_PERPENDICULAR, x411_PARALLEL, L51_PAIRED, L51_PERPENDICULAR, L51_PARALLEL, R51_PAIRED, R51_PERPENDICULAR, R51_PARALLEL, x6_PAIRED, x6_PERPENDICULAR, x6_PARALLEL, SQUARE_SQUARE, SQUARE_KITE, SQUARE_BARREL, SQUARE_SHIELD, SQUARE_lFIST, SQUARE_rFIST, SQUARE_lPAW, SQUARE_rPAW, SQUARE_MUSHROOM, SQUARE_SCALLOP, KITE_KITE, KITE_BARREL, KITE_SHIELD, KITE_lFIST, KITE_rFIST, KITE_lPAW, KITE_rPAW, KITE_MUSHROOM, KITE_SCALLOP, BARREL_BARREL, BARREL_SHIELD, BARREL_lFIST, BARREL_rFIST, BARREL_lPAW, BARREL_rPAW, BARREL_MUSHROOM, BARREL_SCALLOP, SHIELD_SHIELD, SHIELD_lFIST, SHIELD_rFIST, SHIELD_lPAW, SHIELD_rPAW, SHIELD_MUSHROOM, SHIELD_SCALLOP, llFIST_lFIST, lFIST_rFIST, lFIST_lPAW, lFIST_rPAW, lFIST_MUSHROOM, lFIST_SCALLOP, rFIST_rFIST, rFIST_lPAW, rFIST_rPAW, rFIST_MUSHROOM, rFIST_SCALLOP, lPAW_lPAW, lPAW_rPAW, lPAW_MUSHROOM, lPAW_SCALLOP, rPAW_rPAW, rPAW_MUSHROOM, rPAW_SCALLOP, MUSHROOM_MUSHROOM, MUSHROOM_SCALLOP, SCALLOP_SCALLOP];
 
+	var search = new Search_Search;
+
 	function square1SolverGetRandomScramble(type, length, cases) {
 		Shape_$clinit();
 		Square_$clinit();
+		search.sq1lvcb = type == 'sqrs1';
 		var idx = mathlib.rndEl(scpcases[cases]);
-		var scrambleString = Search_solution(new Search_Search, FullCube_randomCube(idx));
+		var scrambleString = Search_solution(search, FullCube_randomCube(idx));
 		return scrambleString;
 	}
 
-	scramble.reg('sqrs', square1SolverGetRandomScramble, [scpfilter, scpprobs]);
+	scramble.reg('sqrs', square1SolverGetRandomScramble, [scpfilter, scpprobs])
+		('sqrs1', square1SolverGetRandomScramble, [scpfilter, scpprobs]);
 
 
 	return {
