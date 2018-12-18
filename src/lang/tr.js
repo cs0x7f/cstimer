@@ -325,6 +325,7 @@ var STATS_COMMENT = 'Yorum';
 var STATS_DATE = 'Date';
 var STATS_CURROUND = 'Şu anki tur istatistikleri';
 var STATS_CURSESSION = 'Şu anki sezon istatistikleri';
+var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
 var STATS_SSMGR_NAME = 'Name';

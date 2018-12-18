@@ -325,6 +325,7 @@ var STATS_COMMENT = 'Comentario';
 var STATS_DATE = 'Date';
 var STATS_CURROUND = 'Estadísticas de la ronda actual';
 var STATS_CURSESSION = 'Estadísticas de la sesión actual';
+var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
 var STATS_SSMGR_NAME = 'Name';

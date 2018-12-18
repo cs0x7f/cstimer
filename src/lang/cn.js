@@ -325,6 +325,7 @@ var STATS_COMMENT = '注释';
 var STATS_DATE = '日期';
 var STATS_CURROUND = '本轮统计信息';
 var STATS_CURSESSION = '本组统计信息';
+var STATS_CURSPLIT = '本组分段%d统计信息';
 var STATS_EXPORTCSV = '导出CSV';
 var STATS_SSMGR_TITLE = '分组管理';
 var STATS_SSMGR_NAME = '名称';

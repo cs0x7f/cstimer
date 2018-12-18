@@ -325,6 +325,7 @@ var STATS_COMMENT = '설명';
 var STATS_DATE = 'Date';
 var STATS_CURROUND = '회차 통계 정보';
 var STATS_CURSESSION = '모둠 통계 정보';
+var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
 var STATS_SSMGR_NAME = 'Name';

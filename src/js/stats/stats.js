@@ -11,7 +11,7 @@ var stats = (function(kpretty, round, kpround) {
 	var table = $('<table />').click(procClick).addClass("table");
 	var title = $('<tr />');
 
-	var avgRow = $('<tr class="times" />');
+	var avgRow = $('<tr />');
 	var showAllRow = $('<tr class="click" ><th class="click" colspan="15">...</th></tr>');
 
 	var sumtable = $('<table class="sumtable" />').click(function(e) {
@@ -81,12 +81,8 @@ var stats = (function(kpretty, round, kpround) {
 			var curTime = timesAt(i)[0];
 			if (curTime[0] == -1 || curTime.length <= dim) {
 				cntdnf += 1;
-			} else if (dim == 0) {
-				sum += timeAt(i);
-			} else if (dim == 1) {
-				sum += curTime[curTime.length - dim];
 			} else {
-				sum += curTime[curTime.length - dim] - curTime[curTime.length - dim + 1];
+				sum += timeAtDim(dim, i);
 			}
 		}
 		if (cntdnf == times.length) {
@@ -299,6 +295,16 @@ var stats = (function(kpretty, round, kpround) {
 		}
 	}
 
+	function procAvgClick(e) {
+		var target = $(e.target);
+		var idx = ~~target.attr('data');
+		var stats = times_stats;
+		if (idx != 0) {
+			stats = new TimeStat(avgSizes, times.length, timeAtDim.bind(undefined, idx), dnfsort);
+		}
+		getStats(stats, timesAt, idx == 0 ? 0 : STATS_CURSPLIT.replace('%d', idx));
+	}
+
 	function getAvgSignal(i) {
 		var st1 = times_stats.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
 		var st2 = times_stats.runAvgMean(i - len2 + 1, len2, 0, stat2 > 0 ? undefined : 0);
@@ -343,14 +349,14 @@ var stats = (function(kpretty, round, kpround) {
 	}
 
 	function updateAvgRow(dim) {
-		avgRow.empty().unbind("click").click(getStats.bind(null, times_stats, timesAt));
+		avgRow.empty().unbind("click").click(procAvgClick);
 		var len = times.length;
 		var data = times_stats.getAllStats();
-		avgRow.append('<th colspan="4">' + STATS_SOLVE + ': ' + (len - data[0]) + '/' + len + '<br>' +
+		avgRow.append('<th colspan="4" data="0" class="times">' + STATS_SOLVE + ': ' + (len - data[0]) + '/' + len + '<br>' +
 			STATS_AVG + ': ' + kpround(data[1]) + '</th>').css('font-size', '1.2em')
 		if (dim > 1) {
 			for (var j = 1; j <= dim; j++) {
-				avgRow.append('<th>' + kpround(getMean(j)) + '</th>').css('font-size', '');
+				avgRow.append('<th data="' + j + '" class="times">' + kpround(getMean(j)) + '</th>').css('font-size', '');
 			}
 		}
 	}
@@ -784,10 +790,18 @@ var stats = (function(kpretty, round, kpround) {
 		}
 	})();
 
-
-	function timeAt(idx) {
-		return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
+	function timeAtDim(dim, idx) {
+		var curTime = times[idx][0];
+		if (curTime[0] == -1) {
+			return -1;
+		}
+		var ret = dim == 0 ?
+			(curTime[0] + curTime[1]) :
+			((curTime[curTime.length - dim] || 0) - (curTime[curTime.length - dim + 1] || 0));
+		return roundMilli * ~~(ret / roundMilli);
 	}
+
+	var timeAt = timeAtDim.bind(undefined, 0);
 
 	function timesAt(idx) {
 		return times[idx];
@@ -1571,7 +1585,7 @@ var stats = (function(kpretty, round, kpround) {
 		stext.val('');
 	}
 
-	function getStats(times_stats, timesAt) {
+	function getStats(times_stats, timesAt, title) {
 		var theStats = times_stats.getAllStats();
 		var numdnf = theStats[0];
 		var sessionavg = times_stats.runAvgMean(0, times.length)[0];
@@ -1622,7 +1636,7 @@ var stats = (function(kpretty, round, kpround) {
 		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
 			exportCSV(times_stats, timesAt, 0, length);
 			return false;
-		}]], 'stats', STATS_CURSESSION);
+		}]], 'stats', title || STATS_CURSESSION);
 		stext[0].select();
 	}
 

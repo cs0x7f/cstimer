@@ -325,6 +325,7 @@ var STATS_COMMENT = 'Commento';
 var STATS_DATE = 'Date';
 var STATS_CURROUND = 'Statistiche del Turno Corrente';
 var STATS_CURSESSION = 'Statistiche della Sessione Corrente';
+var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
 var STATS_SSMGR_NAME = 'Name';
