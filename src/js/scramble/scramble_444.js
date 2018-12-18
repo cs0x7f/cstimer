@@ -2505,7 +2505,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
     return (scramble_333.getRandomScramble() + $randomState(searcher, Math)).replace(/\s+/g, ' ');
   }
 
-  scramble.reg('444o', getRandomScramble)
+  scramble.reg('444wca', getRandomScramble)
 
   return {
     getRandomScramble: getRandomScramble

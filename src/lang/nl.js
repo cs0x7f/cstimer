@@ -147,9 +147,9 @@ var scrdata = [
 		['Makkelijk kruis', 'easyc', 3]
 	]],
 	['4x4x4', [
-		["WCA", "444wca", 40],
+		["WCA", "444wca", -40],
+		['random move', "444m", 40],
 		['SiGN', "444", 40],
-		['Willekeurige staat', "444o", 0],
 		['YJ', "444yj", 40],
 		['4x4x4 randen', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]

@@ -90,36 +90,61 @@ var scramble = execBoth(function(rn, rndEl) {
 
 	var cacheTid = 0;
 
-	function genCachedScramble(realType, len, detailType) {
+	function genCachedScramble(args, detailType) {
 		if (csTimerWorker && csTimerWorker.getScramble) {
-			var args = [realType, len, rndState(scrFlt[1], probs[realType])];
 			cacheTid = cacheTid || csTimerWorker.getScramble(args, function(detailType, scramble) {
 				console.log(detailType + ' cached by csTimerWorker');
-				localStorage['cachedScr'] = JSON.stringify([detailType, scramble]);
-				cacheTid = 0;
+				saveCachedScramble(detailType, scramble)
 			}.bind(undefined, detailType));
 		} else {
-			cacheTid = cacheTid || setTimeout(function() {
-				localStorage['cachedScr'] = JSON.stringify([detailType, scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]))]);
-				cacheTid = 0;
-			}, 500);
+			cacheTid = cacheTid || setTimeout(function(detailType, args) {
+				var scrambler = scramblers[args[0]];
+				saveCachedScramble(detailType, scrambler.apply(scrambler, args));
+			}.bind(undefined, detailType, args), 500);
 		}
 	}
+
+	function saveCachedScramble(detailType, scramble) {
+		var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
+		if ($.isArray(cachedScr)) {
+			cachedScr = {};
+		}
+		cachedScr[detailType] = scramble;
+		localStorage['cachedScr'] = JSON.stringify(cachedScr);
+		cacheTid = 0;
+	}
+
+	$(function() {
+		if (!csTimerWorker || !csTimerWorker.getScramble) {
+			return;
+		}
+		var forceCached = ['["444wca",40,null,null]'];
+		var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
+		if ($.isArray(cachedScr)) {
+			cachedScr = {};
+		}
+		for (var i = 0; i < forceCached.length; i++) {
+			if (!(forceCached[i] in cachedScr)) {
+				setTimeout(genCachedScramble.bind(undefined, JSON.parse(forceCached[i]), forceCached[i]), 2500 + rn(5000));
+			}
+		}
+	});
 
 	function calcScramble() {
 		scramble = "";
 		var realType = alias[type] || type;
 
 		if (realType in scramblers) {
-			var cachedScramble = JSON.parse(localStorage['cachedScr'] || null);
+			var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
 			var detailType = JSON.stringify([realType, len, scrFlt[1], probs[realType]]);
-			if (cachedScramble && cachedScramble[0] == detailType){
-				scramble = cachedScramble[1];
-				delete localStorage['cachedScr'];
+			if (detailType in cachedScr) {
+				scramble = cachedScr[detailType];
+				delete cachedScr[detailType];
+				localStorage['cachedScr'] = JSON.stringify(cachedScr);
 			} else {
 				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
 			}
-			genCachedScramble(realType, len, detailType);
+			genCachedScramble([realType, len, rndState(scrFlt[1], probs[realType])], detailType);
 			return;
 		}
 
@@ -423,6 +448,11 @@ var scramble = execBoth(function(rn, rndEl) {
 				}
 			} else if (value[0] == 'sq1lvcb') {
 				alias['sqrs'] = value[1] ? 'sqrs1' : 'sqrs';
+			} else if (value[0] == 'scrFast') {
+				alias['444wca'] = value[1] ? '444m' : '444wca';
+				if (type == '444wca') {
+					genScramble();
+				}
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -555,7 +585,7 @@ var scramble = execBoth(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align)|sq1lvcb$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast)|sq1lvcb$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50]);
@@ -565,6 +595,7 @@ var scramble = execBoth(function(rn, rndEl) {
 		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['', ['', 'z2', "z'", 'z', "x'", 'x'],
 			['', 'z2', "z'", 'z', "x'", 'x']
 		]);
+		kernel.regProp('scramble', 'scrFast', 0, "Using fast scramble for 4x4x4 (non-official)", [false]);
 
 		for (var i = 0; i < scrdata.length; i++) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
