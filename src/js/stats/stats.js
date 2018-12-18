@@ -726,7 +726,7 @@ var stats = (function(kpretty, round, kpround) {
 
 	var assistant = (function() {
 
-		var infoDiv = $('<div />').css('text-align', 'center');
+		var infoDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em');
 
 		function updateInfo() {
 			if (!isEnable) {
