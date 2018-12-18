@@ -1,6 +1,6 @@
 "use strict";
 
-var kernel = (function() {
+var kernel = execMain(function() {
 	$.ajaxSetup({'cache':true});
 
 	var temp = $('<div />').css('visibility', 'hidden');
@@ -1281,5 +1281,5 @@ var kernel = (function() {
 		pround: prettyRound,
 		round: round
 	};
-})();
+});
  

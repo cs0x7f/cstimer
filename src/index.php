@@ -52,6 +52,7 @@
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>
   <script type="text/javascript" src="js/giiker.js"></script>
+  <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>
   <script type="text/javascript" src="js/twisty/twisty.js"></script>
   <script type="text/javascript" src="js/twisty/twistynnn.js"></script>

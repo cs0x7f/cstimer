@@ -1,6 +1,6 @@
 "use strict";
 
-var shortcuts= (function(){
+var shortcuts= execMain(function(){
 	
 	/**
 	 * {keycode: [value, signal]}
@@ -58,4 +58,4 @@ var shortcuts= (function(){
 		kernel.regListener('shortcut', 'keydown', onkeydown);
 		kernel.regProp('tools', 'useKSC', 0, PROPERTY_USEKSC, [true]);
 	});
-})();
+});

@@ -1,6 +1,6 @@
 "use strict";
 
-var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
+var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 	var container;
 
 	/**
@@ -1224,4 +1224,4 @@ var timer = (function(regListener, regProp, getProp, pretty, ui, pushSignal) {
 		showAvgDiv: avgDiv.showAvgDiv,
 		refocus: refocus
 	};
-})(kernel.regListener, kernel.regProp, kernel.getProp, kernel.pretty, kernel.ui, kernel.pushSignal);
+}, [kernel.regListener, kernel.regProp, kernel.getProp, kernel.pretty, kernel.ui, kernel.pushSignal]);

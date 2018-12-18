@@ -226,7 +226,7 @@ TODO:
 			bottom = 0;
 		for (var i = len - 1; i >= 0; i--) {
 			var val = obj.Search_move[i];
-			if (i == obj.Search_length1 - 1 && kernel.getProp('sq1lvcb', false)) {
+			if (i == obj.Search_length1 - 1 && kernel && kernel.getProp && kernel.getProp('sq1lvcb', false)) {
 				s += "//";
 			}
 			//console.log(val);

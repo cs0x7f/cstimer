@@ -1,6 +1,6 @@
 "use strict";
 
-var stats = (function(kpretty, round, kpround) {
+var stats = execMain(function(kpretty, round, kpround) {
 	var times = [];
 	var div = $('<div id="stats" />');
 	var stext = $('<textarea rows="10" readonly />');
@@ -1841,4 +1841,4 @@ var stats = (function(kpretty, round, kpround) {
 	return {
 		importSessions: sessionManager.importSessions
 	}
-})(kernel.pretty, kernel.round, kernel.pround);
+}, [kernel.pretty, kernel.round, kernel.pround]);

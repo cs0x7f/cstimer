@@ -1,6 +1,6 @@
 "use strict";
 
-var help = (function(){
+var help = execMain(function(){
 
 	var docs = {};
 
@@ -57,4 +57,4 @@ var help = (function(){
 		updateTable();
 		$('#about').html(table);
 	});
-})();
+});

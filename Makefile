@@ -49,7 +49,8 @@ tools/metronome.js \
 shortcut.js \
 help.js \
 stackmat.js \
-giiker.js)
+giiker.js \
+worker.js)
 
 cache = $(addprefix $(dest)/, \
 timer.php \

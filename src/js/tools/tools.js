@@ -1,6 +1,6 @@
 "use strict";
 
-var tools = (function() {
+var tools = execMain(function() {
 	var curScramble = ['-', ''];
 	var isEn = false;
 
@@ -221,5 +221,4 @@ var tools = (function() {
 		scrambleType: scrambleType,
 		puzzleType: puzzleType
 	}
-
-})();
+});

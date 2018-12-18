@@ -1,6 +1,6 @@
 "use strict";
 
-(function(CubieCube) {
+execMain(function(CubieCube) {
 
 	var cc = new CubieCube();
 	var cd = new CubieCube();
@@ -122,4 +122,4 @@
 	return {
 		solve: solveRoux1
 	}
-})(mathlib.CubieCube);
+}, [mathlib.CubieCube]);

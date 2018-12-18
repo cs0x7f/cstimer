@@ -1,5 +1,5 @@
 "use strict";
-var scramble = (function(rn, rndEl) {
+var scramble = execBoth(function(rn, rndEl) {
 	var div = $('<div id="scrambleDiv"/>');
 	var title = $('<div />').addClass('title');
 	var select = $('<select />');
@@ -23,12 +23,9 @@ var scramble = (function(rn, rndEl) {
 	var inputScramble = [];
 
 	function mega(turns, suffixes, length) {
-		if (suffixes == undefined) {
-			suffixes = [""];
-		}
-		if (length == undefined) {
-			length = len;
-		}
+		turns = turns || [[""]];
+		suffixes = suffixes || [""];
+		length = length || len;
 		var donemoves = 0;
 		var lastaxis = -1;
 		var s = [];
@@ -93,22 +90,36 @@ var scramble = (function(rn, rndEl) {
 
 	var cacheTid = 0;
 
+	function genCachedScramble(realType, len, detailType) {
+		if (csTimerWorker && csTimerWorker.getScramble) {
+			var args = [realType, len, rndState(scrFlt[1], probs[realType])];
+			cacheTid = cacheTid || csTimerWorker.getScramble(args, function(detailType, scramble) {
+				console.log(detailType + ' cached by csTimerWorker');
+				localStorage['cachedScr'] = JSON.stringify([detailType, scramble]);
+				cacheTid = 0;
+			}.bind(undefined, detailType));
+		} else {
+			cacheTid = cacheTid || setTimeout(function() {
+				localStorage['cachedScr'] = JSON.stringify([detailType, scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]))]);
+				cacheTid = 0;
+			}, 500);
+		}
+	}
+
 	function calcScramble() {
 		scramble = "";
 		var realType = alias[type] || type;
 
 		if (realType in scramblers) {
 			var cachedScramble = JSON.parse(localStorage['cachedScr'] || null);
-			if (cachedScramble && cachedScramble[0] == JSON.stringify([realType, len, scrFlt[1], probs[realType]])){
+			var detailType = JSON.stringify([realType, len, scrFlt[1], probs[realType]]);
+			if (cachedScramble && cachedScramble[0] == detailType){
 				scramble = cachedScramble[1];
 				delete localStorage['cachedScr'];
 			} else {
 				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
 			}
-			cacheTid = cacheTid || setTimeout(function() {
-				localStorage['cachedScr'] = JSON.stringify([JSON.stringify([realType, len, scrFlt[1], probs[realType]]), scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]))]);
-				cacheTid = 0;
-			}, 500);
+			genCachedScramble(realType, len, detailType);
 			return;
 		}
 
@@ -611,26 +622,75 @@ var scramble = (function(rn, rndEl) {
 		rndState: rndState
 	}
 
-})(mathlib.rn, mathlib.rndEl);
+}, function(rn, rndEl) {
 
-// if (window.Worker) {
-// 	var async_scramble = new Worker("js/async_scramble.js");
-// 	async_scramble.onmessage = function(event) {
-// 		// console.log(event);
-// 		var data = event.data;
-// 		if (data[0] == 'reg') {
-// 			// console.log(data[0], data[1]);
-// 			data = data[1];
-// 			scramble.reg(data[0], function(arg1, arg2, arg3) {
-// 				async_scramble.postMessage([arg1, arg2, arg3]);
-// 			}, data[1]);
-// 		} else if (data[0] == 's') {
-// 			scramble.scrambleOK(data[1]);
-// 		}
-// 	}
-// } else {
-// 	$.ajax({
-// 		url: 'js/async_scramble.js',
-// 		dataType: "script"
-// 	});
-// }
+	function mega(turns, suffixes, length) {
+		turns = turns || [[""]];
+		suffixes = suffixes || [""];
+		length = length || len;
+		var donemoves = 0;
+		var lastaxis = -1;
+		var s = [];
+		var first, second;
+		for (var i = 0; i < length; i++) {
+			do {
+				first = rn(turns.length);
+				second = rn(turns[first].length);
+				if (first != lastaxis) {
+					donemoves = 0;
+					lastaxis = first;
+				}
+			} while (((donemoves >> second) & 1) != 0);
+			donemoves |= 1 << second;
+			if (turns[first][second].constructor == Array) {
+				s.push(rndEl(turns[first][second]) + rndEl(suffixes));
+			} else {
+				s.push(turns[first][second] + rndEl(suffixes));
+			}
+		}
+		return s.join(' ');
+	}
+
+	var scramblers = {};
+
+	function regScrambler(type, callback, filter_and_probs) {
+		if ($.isArray(type)) {
+			for (var i = 0; i < type.length; i++) {
+				scramblers[type[i]] = callback;
+			}
+		} else {
+			scramblers[type] = callback;
+		}
+		return regScrambler;
+	}
+
+	/**
+	 *	format string,
+	 *		${args} => scramblers[scrType](scrType, scrArg)
+	 *		#{args} => mega(args)
+	 */
+	function formatScramble(str) {
+		var repfunc = function(match, p1) {
+			if (match[0] == '$') {
+				var args = [p1];
+				if (p1[0] == '[') {
+					args = JSON.parse(p1);
+				}
+				return scramblers[args[0]].apply(this, args);
+			} else if (match[0] == '#') {
+				return mega.apply(this, JSON.parse('[' + p1 + ']'));
+			} else {
+				return '';
+			}
+		};
+		var re1 = /[$#]\{([^\}]+)\}/g;
+		return str.replace(re1, repfunc);
+	}
+
+	return {
+		reg: regScrambler,
+		scramblers: scramblers,
+		mega: mega,
+		formatScramble: formatScramble
+	}
+}, [mathlib.rn, mathlib.rndEl]);

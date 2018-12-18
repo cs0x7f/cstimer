@@ -1,4 +1,4 @@
-var insertionFinder = (function() {
+var insertionFinder = execMain(function() {
 	var scrambleInput = $('<textarea rows="3" style="width: 100%" />');
 	var skeletonInput = $('<textarea rows="3" style="width: 100%" />');
 	var resultOutput = $('<textarea rows="5" style="width: 100%" readonly />');
@@ -49,4 +49,4 @@ var insertionFinder = (function() {
 		div.append("scramble:", "<br>", scrambleInput, "<br>", "skeleton:", "<br>", skeletonInput, "<br>", button, "<br>", resultOutput);
 		tools.regTool('if', 'InsertionFinder', execFunc);
 	});
-})();
+});

@@ -1,6 +1,6 @@
 "use strict";
 
-(function(createMove, edgeMove, createPrun, getPruning) {
+execMain(function(createMove, edgeMove, createPrun, getPruning) {
 	var fmv = [];
 	var pmv = [];
 	var fprun = [];
@@ -126,5 +126,5 @@
 	return {
 		solve: solve_eoline
 	}
-})(mathlib.createMove, mathlib.edgeMove, mathlib.createPrun, mathlib.getPruning);
+}, [mathlib.createMove, mathlib.edgeMove, mathlib.createPrun, mathlib.getPruning]);
 

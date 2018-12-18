@@ -1,6 +1,6 @@
 "use strict";
 
-var metronome = (function() {
+var metronome = execMain(function() {
 
 	var context;
 
@@ -79,4 +79,4 @@ var metronome = (function() {
 	return {
 		playTick: playTick
 	}
-})();
+});

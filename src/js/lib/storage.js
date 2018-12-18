@@ -1,6 +1,6 @@
 "use strict";
 
-var storage = (function() {
+var storage = execMain(function() {
 	function num2str(val) {
 		val = '' + val;
 		return String.fromCharCode(47 + val.length) + val;
@@ -193,4 +193,4 @@ var storage = (function() {
 		importAll: importAll,
 		exportAll: exportAll
 	}
-})();
+});

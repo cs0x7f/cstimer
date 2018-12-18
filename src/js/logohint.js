@@ -1,6 +1,6 @@
 "use strict";
 
-var logohint = (function() {
+var logohint = execMain(function() {
 
 	var msgList = [];
 	var curMsg;
@@ -107,4 +107,4 @@ var logohint = (function() {
 			render();
 		}
 	}
-})();
+});

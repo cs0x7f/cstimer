@@ -1,6 +1,6 @@
 "use strict";
 
-var image = (function() {
+var image = execMain(function() {
 
 	var canvas, ctx;
 	var hsq3 = Math.sqrt(3) / 2;
@@ -786,4 +786,4 @@ posit:
 		draw: genImage,
 		drawPolygon: drawPolygon
 	}
-})();
+});

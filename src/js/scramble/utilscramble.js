@@ -333,8 +333,11 @@
 
 	function moyuRedi(length) {
 		var ret = [];
-		for (var i=0; i<length; i++) {
-			ret.push(mega([["R"],["L"]], ["","'"], 3 + rn(3)));
+		for (var i = 0; i < length; i++) {
+			ret.push(mega([
+				["R"],
+				["L"]
+			], ["", "'"], 3 + rn(3)));
 		}
 		return ret.join(' x ');
 	}
@@ -383,7 +386,7 @@
 					["L"],
 					["R"],
 					["B"]
-				], ["!", "'"]);
+				], ["!", "'"], len);
 				var cnt = 0;
 				var rnd = [];
 				for (var i = 0; i < 4; i++) {
@@ -431,13 +434,13 @@
 				ret += "Error: subscript out of range";
 				return ret;
 			case "333noob": // 3x3x3 for noobs
-				ret = mega(SCRAMBLE_NOOBST, SCRAMBLE_NOOBSS.split('|')).replace(/t/, "T");
+				ret = mega(SCRAMBLE_NOOBST, SCRAMBLE_NOOBSS.split('|'), len).replace(/t/, "T");
 				return ret.substr(0, ret.length - 2) + ".";
 			case "lol": // LOL
 				ret = mega([
 					["L"],
 					["O"]
-				]);
+				], 0, len);
 				return ret.replace(/ /g, "");
 		}
 		console.log('Error');

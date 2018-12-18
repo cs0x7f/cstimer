@@ -1,6 +1,6 @@
 "use strict";
 
-var giikerutil = (function(CubieCube) {
+var giikerutil = execMain(function(CubieCube) {
 
 	var connectClick = $('<span></span>');
 	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
@@ -276,4 +276,4 @@ var giikerutil = (function(CubieCube) {
 		markScrambled: markScrambled,
 		init: init
 	}
-})(mathlib.CubieCube);
+}, [mathlib.CubieCube]);
