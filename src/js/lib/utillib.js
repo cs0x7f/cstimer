@@ -4,10 +4,10 @@ var isInWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof Wo
 
 function execBoth(funcMain, funcWorker, params) {
 	if (!isInWorker && funcMain) {
-		return funcMain.apply(this, params);
+		return funcMain.apply(this, params || []);
 	}
 	if (isInWorker && funcWorker) {
-		return funcWorker.apply(this, params);
+		return funcWorker.apply(this, params || []);
 	}
 	return {};
 }
