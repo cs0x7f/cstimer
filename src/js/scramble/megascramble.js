@@ -86,23 +86,19 @@
 
 	function formatScramble(type, length) {
 		var value = args2[type].replace(/%l/g, length).replace(/%c/g, '["","2","\'"]');
-		// console.log(value);
-		var ret = scramble.formatScramble(value);
-		// console.log(ret);
-		return ret;
+		return scrMgr.formatScramble(value);
 	}
 
-	
 	for (var i in args) {
-		scramble.reg(i, megascramble);
+		scrMgr.reg(i, megascramble);
 	}
 
 	for (var i in args2) {
-		scramble.reg(i, formatScramble);
+		scrMgr.reg(i, formatScramble);
 	}
 
 	for (var i in edges) {
-		scramble.reg(i, edgescramble);
+		scrMgr.reg(i, edgescramble);
 	}
 
 	function edge(start, end, moves, len) {
@@ -155,4 +151,4 @@
 		scramble += " " + rndEl(end);
 		return scramble;
 	}
-})(scramble.mega, mathlib.rn, mathlib.rndEl);
+})(scrMgr.mega, mathlib.rn, mathlib.rndEl);

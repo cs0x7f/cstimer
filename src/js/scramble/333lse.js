@@ -89,5 +89,5 @@
 		}
 		return d.reverse().join(" ").replace(/ +/g, ' ');
 	}
-	scramble.reg('lsemu', generateScramble);
+	scrMgr.reg('lsemu', generateScramble);
 })(mathlib.circle, mathlib.circleOri);

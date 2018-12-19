@@ -24,6 +24,9 @@ var csTimerWorker = execBoth(function() {
 		return msgid;
 	}
 
+	worker.postMessage([0, 'set', ['SCRAMBLE_NOOBST', SCRAMBLE_NOOBST]]);
+	worker.postMessage([0, 'set', ['SCRAMBLE_NOOBSS', SCRAMBLE_NOOBSS]]);
+
 	return {
 		getScramble: getScramble
 	}
@@ -35,9 +38,12 @@ var csTimerWorker = execBoth(function() {
 		var details = data[2];
 		var ret = undefined;
 		switch (type) {
-			case 'scramble': //TODO
-				var scrambler = scramble.scramblers[details[0]];
+			case 'scramble': //generate scramble cache
+				var scrambler = scrMgr.scramblers[details[0]];
 				ret = scrambler.apply(scrambler, details);
+				break;
+			case 'set': //set global values
+				self[details[0]] = details[1];
 				break;
 			default:
 				break;

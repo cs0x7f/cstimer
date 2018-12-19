@@ -234,7 +234,7 @@ var clock = (function(rn, Cnk) {
 		return scramble;
 	}
 
-	scramble.reg('clko', getScramble);
+	scrMgr.reg('clko', getScramble);
 
 	return {
 		moveArr: moveArr

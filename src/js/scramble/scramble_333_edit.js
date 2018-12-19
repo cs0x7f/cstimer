@@ -567,7 +567,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return search.solution(facelet, 21, 1e9, 50, 0);
 	}
 
-	scramble.reg('333', getRandomScramble)
+	scrMgr.reg('333', getRandomScramble)
 		('333fm', getFMCScramble)
 		('edges', getEdgeScramble)
 		('corners', getCornerScramble)

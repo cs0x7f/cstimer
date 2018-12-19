@@ -801,7 +801,7 @@ TODO:
 		return scrambleString;
 	}
 
-	scramble.reg('sqrs', square1SolverGetRandomScramble, [scpfilter, scpprobs])
+	scrMgr.reg('sqrs', square1SolverGetRandomScramble, [scpfilter, scpprobs])
 		('sqrs1', square1SolverGetRandomScramble, [scpfilter, scpprobs]);
 
 

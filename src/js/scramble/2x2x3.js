@@ -81,5 +81,5 @@
 		}
 		return d.reverse().join(" ")
 	}
-	scramble.reg('223', generateScramble);
+	scrMgr.reg('223', generateScramble);
 })(mathlib.circle, mathlib.get8Perm);

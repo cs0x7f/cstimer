@@ -61,5 +61,5 @@
 		} while (len < 6);
 		return k
 	}
-	scramble.reg(['pyro', 'pyrso'], getScramble);
+	scrMgr.reg(['pyro', 'pyrso'], getScramble);
 })(mathlib.circle);

@@ -135,6 +135,6 @@
 		}
 		return sol.reverse().join(" ");
 	}
-	scramble.reg(['gearo', 'gearso'], generateScramble);
+	scrMgr.reg(['gearo', 'gearso'], generateScramble);
 	return generateScramble;
 })(mathlib.circle);

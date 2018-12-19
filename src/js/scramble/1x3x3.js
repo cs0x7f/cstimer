@@ -21,5 +21,5 @@
 		c = c * 2 + ((mathlib.getNParity(c >> 3, 4) ^ (c >> 1) ^ (c >> 2) ^ c) & 1);
 		return solv.toStr(solv.search([c], 0), "RLFB", [""]);
 	}
-	scramble.reg('133', generateScramble);
+	scrMgr.reg('133', generateScramble);
 }) (mathlib.circle);

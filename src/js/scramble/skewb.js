@@ -109,5 +109,5 @@
 		var sol = solv.search([perm, twst], l).reverse();
 		return getSolution(sol);
 	}
-	scramble.reg(['skbo', 'skbso'], getScramble);
+	scrMgr.reg(['skbo', 'skbso'], getScramble);
 })(mathlib.circle);

@@ -85,7 +85,7 @@
 		return s;
 	}
 
-	scramble.reg('444yj', yj4x4);
+	scrMgr.reg('444yj', yj4x4);
 
 	function bicube(type, len) {
 		function canMove(face) {
@@ -164,7 +164,7 @@
 		return s;
 	}
 
-	scramble.reg('bic', bicube);
+	scrMgr.reg('bic', bicube);
 
 
 
@@ -402,12 +402,12 @@
 				for (var i = 0; i < len; i++) {
 					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333}";
 				}
-				return scramble.formatScramble(ret);
+				return scrMgr.formatScramble(ret);
 			case "r3ni": // multiple 3x3x3 bld
 				for (var i = 0; i < len; i++) {
 					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333ni}";
 				}
-				return scramble.formatScramble(ret);
+				return scrMgr.formatScramble(ret);
 			case "sq1h": // Square-1 (turn metric)
 				return sq1_scramble(1, len);
 			case "sq1t": // Square-1 (twist metric)
@@ -447,6 +447,6 @@
 	}
 
 
-	scramble.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
-})(mathlib.rn, mathlib.rndEl, scramble.mega);
+})(mathlib.rn, mathlib.rndEl, scrMgr.mega);

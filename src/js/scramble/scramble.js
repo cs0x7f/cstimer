@@ -1,26 +1,6 @@
 "use strict";
-var scramble = execBoth(function(rn, rndEl) {
-	var div = $('<div id="scrambleDiv"/>');
-	var title = $('<div />').addClass('title');
-	var select = $('<select />');
-	var select2 = $('<select />');
-	var scrOpt = $('<input type="button" class="icon">').val('\ue994');
-	var scrOptDiv = $('<div>');
-	var scrFltDiv = $('<div class="sflt">');
-	var scrFltSelAll = $('<input type="button">').val('Select All');
-	var scrFltSelNon = $('<input type="button">').val('Select None');
-	var scrLen = $('<input type="text" maxlength="3">');
-	var sdiv = $('<div id="scrambleTxt"/>');
-	var alias = {
-		'333oh': '333',
-		'333ft': '333'
-	};
 
-	var scrFlt = "";
-
-	var inputText = $('<textarea />');
-
-	var inputScramble = [];
+var scrMgr = (function(rn, rndEl) {
 
 	function mega(turns, suffixes, length) {
 		turns = turns || [[""]];
@@ -49,6 +29,117 @@ var scramble = execBoth(function(rn, rndEl) {
 		return s.join(' ');
 	}
 
+	/**
+	 *	{type: callback(type, length, state)}
+	 *	callback return: scramble string or undefined means delay
+	 */
+	var scramblers = {};
+
+	/**
+	 *	{type: [str1, str2, ..., strN]}
+	 */
+	var filters = {};
+
+	/**
+	 *	{type: [prob1, prob2, ..., probN]}
+	 */
+	var probs = {};
+
+	/**
+	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN]]
+	 */
+	function regScrambler(type, callback, filter_and_probs) {
+		// console.log(type);
+		if ($.isArray(type)) {
+			for (var i = 0; i < type.length; i++) {
+				scramblers[type[i]] = callback;
+			}
+		} else {
+			scramblers[type] = callback;
+			if (filter_and_probs != undefined) {
+				filters[type] = filter_and_probs[0];
+				probs[type] = filter_and_probs[1];
+			}
+		}
+		return regScrambler;
+	}
+
+	/**
+	 *	format string,
+	 *		${args} => scramblers[scrType](scrType, scrArg)
+	 *		#{args} => mega(args)
+	 */
+	function formatScramble(str) {
+		var repfunc = function(match, p1) {
+			if (match[0] == '$') {
+				var args = [p1];
+				if (p1[0] == '[') {
+					args = JSON.parse(p1);
+				}
+				return scramblers[args[0]].apply(this, args);
+			} else if (match[0] == '#') {
+				return mega.apply(this, JSON.parse('[' + p1 + ']'));
+			} else {
+				return '';
+			}
+		};
+		var re1 = /[$#]\{([^\}]+)\}/g;
+		return str.replace(re1, repfunc);
+	}
+
+	function rndState(filter, probs) {
+		if (probs == undefined) {
+			return undefined;
+		}
+		var ret = probs.slice();
+		if (filter == undefined) {
+			filter = ret;
+		}
+		for (var i = 0; i < filter.length; i++) {
+			if (!filter[i]) {
+				ret[i] = 0;
+			}
+		}
+		return mathlib.rndProb(ret);
+	}
+
+	return {
+		reg: regScrambler,
+		scramblers: scramblers,
+		filters: filters,
+		probs: probs,
+		mega: mega,
+		formatScramble: formatScramble,
+		rndState: rndState
+	}
+})(mathlib.rn, mathlib.rndEl);
+
+
+var scramble = execMain(function(rn, rndEl) {
+	var scramblers = scrMgr.scramblers;
+	var filters = scrMgr.filters;
+	var probs = scrMgr.probs;
+
+	var div = $('<div id="scrambleDiv"/>');
+	var title = $('<div />').addClass('title');
+	var select = $('<select />');
+	var select2 = $('<select />');
+	var scrOpt = $('<input type="button" class="icon">').val('\ue994');
+	var scrOptDiv = $('<div>');
+	var scrFltDiv = $('<div class="sflt">');
+	var scrFltSelAll = $('<input type="button">').val('Select All');
+	var scrFltSelNon = $('<input type="button">').val('Select None');
+	var scrLen = $('<input type="text" maxlength="3">');
+	var sdiv = $('<div id="scrambleTxt"/>');
+	var alias = {
+		'333oh': '333',
+		'333ft': '333'
+	};
+
+	var scrFlt = "";
+	var inputText = $('<textarea />');
+	var inputScramble = [];
+
 	function genScramble() {
 		kernel.blur();
 		isDisplayLast = false;
@@ -56,6 +147,9 @@ var scramble = execBoth(function(rn, rndEl) {
 		lasttype = type;
 		typeExIn = (!type || type == 'input') ? typeExIn : type;
 		lastscramble = scramble;
+		if (lastscramble) {
+			lastClick.addClass('click').unbind('click').click(procLastClick);
+		}
 
 		type = select2.val();
 		len = ~~scrLen.val();
@@ -69,15 +163,34 @@ var scramble = execBoth(function(rn, rndEl) {
 		requestAnimFrame(doScrambleIt);
 	}
 
-	// #################### SCRAMBLING ####################
-
 
 	var type, lasttype, typeExIn = '333o';
 	var len = 0;
-	var cubesuff = ["", "2", "'"];
-	var minxsuff = ["", "2", "'", "2'"];
+
 	var scramble, lastscramble;
 	var isDisplayLast = false;
+	var lastClick = $('<span />').html(SCRAMBLE_LAST);
+	var nextClick = $('<span />').addClass('click').html(SCRAMBLE_NEXT).click(procNextClick);
+
+	function procLastClick() {
+		isDisplayLast = true;
+		sdiv.html(lastscramble);
+		lastClick.removeClass('click').unbind('click');
+		if (lastscramble != undefined) {
+			kernel.pushSignal('scrambleX', [lasttype, lastscramble]);
+		}
+	}
+
+	function procNextClick() {
+		if (isDisplayLast) {
+			isDisplayLast = false;
+			sdiv.html(scramble);
+			lastClick.addClass('click').unbind('click').click(procLastClick);
+			kernel.pushSignal('scrambleX', [type, scramble]);
+		} else {
+			genScramble();
+		}
+	}
 
 	function doScrambleIt() {
 		calcScramble();
@@ -181,41 +294,6 @@ var scramble = execBoth(function(rn, rndEl) {
 		kernel.setProp('scrType', typeExIn);
 	}
 
-	/**
-	 *	{type: callback(type, length, state)}
-	 *	callback return: scramble string or undefined means delay
-	 */
-	var scramblers = {};
-
-	/**
-	 *	{type: [str1, str2, ..., strN]}
-	 */
-	var filters = {};
-
-	/**
-	 *	{type: [prob1, prob2, ..., probN]}
-	 */
-	var probs = {};
-
-	/**
-	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN]]
-	 */
-	function regScrambler(type, callback, filter_and_probs) {
-		// console.log(type);
-		if ($.isArray(type)) {
-			for (var i = 0; i < type.length; i++) {
-				scramblers[type[i]] = callback;
-			}
-		} else {
-			scramblers[type] = callback;
-			if (filter_and_probs != undefined) {
-				filters[type] = filter_and_probs[0];
-				probs[type] = filter_and_probs[1];
-			}
-		}
-		return regScrambler;
-	}
-
 	function loadSelect2(idx) {
 		if (!$.isNumeric(idx)) {
 			idx = 0;
@@ -262,7 +340,6 @@ var scramble = execBoth(function(rn, rndEl) {
 				} else {
 					kernel.setProp('sq1lvcb', false);
 				}
-				genScramble(); //flush cache
 				genScramble();
 			});
 			sq1lvcbCheck[0].checked = kernel.getProp('sq1lvcb', false);
@@ -461,15 +538,9 @@ var scramble = execBoth(function(rn, rndEl) {
 			}
 		} else if (signal == 'ctrl' && value[0] == 'scramble') {
 			if (value[1] == 'last') {
-				sdiv.html(lastscramble);
-				isDisplayLast = true;
+				procLastClick();
 			} else if (value[1] == 'next') {
-				if (isDisplayLast) {
-					isDisplayLast = false;
-					sdiv.html(scramble);
-				} else {
-					genScramble();
-				}
+				procNextClick();
 			}
 		}
 	}
@@ -541,47 +612,7 @@ var scramble = execBoth(function(rn, rndEl) {
 		}
 	})();
 
-	/**
-	 *	format string, 
-	 *		${args} => scramblers[scrType](scrType, scrArg)
-	 *		#{args} => mega(args)
-	 */
-	function formatScramble(str) {
-		var repfunc = function(match, p1) {
-			// console.log(match);
-			if (match[0] == '$') {
-				var args = [p1];
-				if (p1[0] == '[') {
-					args = JSON.parse(p1);
-				}
-				// console.log(args[0]);
-				// console.log(scramblers[args[0]]);
-				return scramblers[args[0]].apply(this, args);
-			} else if (match[0] == '#') {
-				return mega.apply(this, JSON.parse('[' + p1 + ']'));
-			} else {
-				return '';
-			}
-		};
-		var re1 = /[$#]\{([^\}]+)\}/g;
-		return str.replace(re1, repfunc);
-	}
-
-	function rndState(filter, probs) {
-		if (probs == undefined) {
-			return undefined;
-		}
-		var ret = probs.slice();
-		if (filter == undefined) {
-			filter = ret;
-		}
-		for (var i = 0; i < filter.length; i++) {
-			if (!filter[i]) {
-				ret[i] = 0;
-			}
-		}
-		return mathlib.rndProb(ret);
-	}
+	var rndState = scrMgr.rndState;
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
@@ -609,29 +640,13 @@ var scramble = execBoth(function(rn, rndEl) {
 		scrOpt.click(showScrOpt);
 		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltDiv);
 
-		var last = $('<span />').addClass('click').html(SCRAMBLE_LAST).click(function() {
-			sdiv.html(lastscramble);
-			isDisplayLast = true;
-			if (lastscramble != undefined) {
-				kernel.pushSignal('scrambleX', [lasttype, lastscramble]);
-			}
-		});
-		var next = $('<span />').addClass('click').html(SCRAMBLE_NEXT).click(function() {
-			if (isDisplayLast) {
-				isDisplayLast = false;
-				sdiv.html(scramble);
-				kernel.pushSignal('scrambleX', [type, scramble]);
-			} else {
-				genScramble();
-			}
-		});
 		title.append($('<nobr>').append($('<input type="button" value="&#8673;">').click(function() {
 			title.hide();
 			kernel.blur();
 			kernel.setProp('scrHide', true);
 		}), ' ', select, ' ', select2, ' ', scrOpt), " <wbr>");
 		// title.append($('<nobr>').append(SCRAMBLE_LENGTH + ': ', scrLen), " <wbr>");
-		title.append($('<nobr>').append(last, '/', next, SCRAMBLE_SCRAMBLE));
+		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
 		div.append(title, sdiv).appendTo('body');
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
@@ -646,85 +661,7 @@ var scramble = execBoth(function(rn, rndEl) {
 	});
 
 	return {
-		reg: regScrambler,
-		scramblers: scramblers,
-		mega: mega,
-		formatScramble: formatScramble,
 		getTypeName: getTypeName,
-		getTypeIdx: getTypeIdx,
-		// scrambleOK: scrambleOK,
-		rndState: rndState
-	}
-
-}, function(rn, rndEl) {
-
-	function mega(turns, suffixes, length) {
-		turns = turns || [[""]];
-		suffixes = suffixes || [""];
-		length = length || len;
-		var donemoves = 0;
-		var lastaxis = -1;
-		var s = [];
-		var first, second;
-		for (var i = 0; i < length; i++) {
-			do {
-				first = rn(turns.length);
-				second = rn(turns[first].length);
-				if (first != lastaxis) {
-					donemoves = 0;
-					lastaxis = first;
-				}
-			} while (((donemoves >> second) & 1) != 0);
-			donemoves |= 1 << second;
-			if (turns[first][second].constructor == Array) {
-				s.push(rndEl(turns[first][second]) + rndEl(suffixes));
-			} else {
-				s.push(turns[first][second] + rndEl(suffixes));
-			}
-		}
-		return s.join(' ');
-	}
-
-	var scramblers = {};
-
-	function regScrambler(type, callback, filter_and_probs) {
-		if ($.isArray(type)) {
-			for (var i = 0; i < type.length; i++) {
-				scramblers[type[i]] = callback;
-			}
-		} else {
-			scramblers[type] = callback;
-		}
-		return regScrambler;
-	}
-
-	/**
-	 *	format string,
-	 *		${args} => scramblers[scrType](scrType, scrArg)
-	 *		#{args} => mega(args)
-	 */
-	function formatScramble(str) {
-		var repfunc = function(match, p1) {
-			if (match[0] == '$') {
-				var args = [p1];
-				if (p1[0] == '[') {
-					args = JSON.parse(p1);
-				}
-				return scramblers[args[0]].apply(this, args);
-			} else if (match[0] == '#') {
-				return mega.apply(this, JSON.parse('[' + p1 + ']'));
-			} else {
-				return '';
-			}
-		};
-		var re1 = /[$#]\{([^\}]+)\}/g;
-		return str.replace(re1, repfunc);
-	}
-
-	return {
-		reg: regScrambler,
-		scramblers: scramblers,
-		mega: mega,
-		formatScramble: formatScramble
+		getTypeIdx: getTypeIdx
 	}
 }, [mathlib.rn, mathlib.rndEl]);
