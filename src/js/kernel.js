@@ -33,6 +33,8 @@ var kernel = execMain(function() {
 
 		var properties = {};//{key: value}
 
+		var defaultProps = {};
+
 		/**
 		 * {module: {key: [form, type, discribe, values]}}
 		 * values:
@@ -50,14 +52,11 @@ var kernel = execMain(function() {
 		var isDivOut = true;
 
 		function resetPropertyes() {
-			for (var module in proSets) {
-				for (var key in proSets[module]) {
-					var proSet = proSets[module][key];
-					var newVal = proSet[3][0];
-					if (properties[key] != newVal && newVal != undefined) {
-						properties[key] = newVal;
-						pushSignal('property', [key, newVal, 'reset']);
-					}
+			for (var key in defaultProps) {
+				var newVal = defaultProps[key];
+				if (newVal !== undefined && getProp(key) !== newVal) {
+					delete properties[key];
+					pushSignal('property', [key, newVal, 'reset']);
 				}
 			}
 		}
@@ -97,7 +96,7 @@ var kernel = execMain(function() {
 						setProp(key, target.val());
 					} else {
 						var idx = ~~target.attr('data') * 4 - 4;
-						var val = properties[key];
+						var val = getProp(key);
 						setProp(key, [val.slice(0, idx), ui.nearColor(target.val()), val.slice(idx + 4)].join(''));
 					}
 					break;
@@ -136,7 +135,7 @@ var kernel = execMain(function() {
 
 				for (var key in proSets[module]) {
 					var proSet = proSets[module][key];
-					var curVal = properties[key];
+					var curVal = getProp(key);
 					var type = proSet[1];
 					if (type == 0) { //checkbox
 						proSet[0] = $('<input type="checkbox" name="' + key + '">').prop('checked', curVal).click(procClick);
@@ -148,20 +147,20 @@ var kernel = execMain(function() {
 						for (var i=0; i<vals.length; i++) {
 							proSet[0].append($('<option />').val(vals[i]).html(strs[i]));
 						}
-						proSet[0].val(properties[key]);
+						proSet[0].val(getProp(key));
 						proSet[0].change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
 					} else if (type == 2) { //range
-						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(properties[key]).change(procClick);
+						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(getProp(key)).change(procClick);
 						var inc = $('<input type="button" value="+" name="' + key + '">').click(procClick);
 						var dec = $('<input type="button" value="-" name="' + key + '">').click(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], '('+proSet[3][1]+'~'+proSet[3][2]+')', proSet[0], inc, dec));
 					} else if (type == 3) { //color
-						proSet[0] = $('<input type="color" name="' + key + '">').val(properties[key]).change(procClick);
+						proSet[0] = $('<input type="color" name="' + key + '">').val(getProp(key)).change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
 					} else if (type == 4) { //multiple colors
-						var val = properties[key].match(/#[0-9a-fA-F]{3}/g);
-						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(properties[key]);
+						var val = getProp(key).match(/#[0-9a-fA-F]{3}/g);
+						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(getProp(key));
 						var colorsInput = [];
 						for (var i = 0; i < val.length; i++) {
 							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val(ui.nearColor(val[i], 0, true)).change(procClick));
@@ -188,13 +187,14 @@ var kernel = execMain(function() {
 		}
 
 		function getProp(key, set) {
-			if (properties[key] == undefined && set != undefined) {
-				properties[key] = set;
+			if (set != undefined && defaultProps[key] == undefined) {
+				defaultProps[key] = set;
+				pushSignal('property', [key, getProp(key), 'set']);
 			}
-			if (set != undefined) {
-				pushSignal('property', [key, properties[key], 'set']);
+			if (properties[key] === defaultProps[key]) {
+				delete properties[key];
 			}
-			return properties[key];
+			return (key in properties) ? properties[key] : defaultProps[key];
 		}
 
 		function setProp(key, value) {
@@ -204,9 +204,9 @@ var kernel = execMain(function() {
 					break;
 				}
 			}
-			if (properties[key] != value) {
+			if (getProp(key) !== value) {
 				properties[key] = value;
-				pushSignal('property', [key, value, 'modify']);
+				pushSignal('property', [key, getProp(key), 'modify']);
 			}
 		}
 
@@ -216,12 +216,8 @@ var kernel = execMain(function() {
 				proSets[module] = {};
 			}
 			proSets[module][key] = [undefined, type, discribe, values];
-			if (properties[key] != undefined || values[0] == undefined) {
-				//Has been read from cookie, get, post, localstorage, etc.
-			} else {
-				properties[key] = values[0];
-			}
-			pushSignal('property', [key, properties[key], 'set']);
+			defaultProps[key] = values[0];
+			pushSignal('property', [key, getProp(key), 'set']);
 		}
 
 		function save() {
@@ -610,13 +606,13 @@ var kernel = execMain(function() {
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
-			regProp('color', 'col-font', 1, parr[0], ['#000', ['#000', '#fff'], PROPERTY_FONTCOLOR_STR.split('|')]);
-			regProp('color', 'col-back', 3, parr[1], []);
-			regProp('color', 'col-board', 3, parr[2], []);
-			regProp('color', 'col-button', 3, parr[3], []);
-			regProp('color', 'col-link', 3, parr[4], []);
-			regProp('color', 'col-logo', 3, parr[5], []);
-			regProp('color', 'col-logoback', 3, parr[6], []);
+			regProp('color', 'col-font', 1, parr[0], ['#000000', ['#000000', '#ffffff'], PROPERTY_FONTCOLOR_STR.split('|')]);
+			regProp('color', 'col-back', 3, parr[1], ['#eeffcc']);
+			regProp('color', 'col-board', 3, parr[2], ['#ffdddd']);
+			regProp('color', 'col-button', 3, parr[3], ['#ffbbbb']);
+			regProp('color', 'col-link', 3, parr[4], ['#0000ff']);
+			regProp('color', 'col-logo', 3, parr[5], ['#ffff00']);
+			regProp('color', 'col-logoback', 3, parr[6], ['#000000']);
 
 			gray = $('#gray');
 
