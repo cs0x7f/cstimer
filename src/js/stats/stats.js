@@ -469,12 +469,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				.replace("%e", mathlib.time2str(tend && tend[3]));
 			tstr = " (" + tstr + ")";
 		}
-		var now = new Date();
-		var s = [hlstr[3]
-			.replace("%Y", now.getFullYear())
-			.replace("%M", now.getMonth() + 1)
-			.replace("%D", now.getDate())
-			+ tstr + "\n"];
+		var s = [mathlib.time2str(+new Date / 1000, hlstr[3]) + tstr + "\n"];
 		if (id > 1) {
 			if (id == 2) {
 				s.push(hlstr[8]); //"Session average";
@@ -1600,12 +1595,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				.replace("%e", mathlib.time2str(tend && tend[3]));
 			tstr = " (" + tstr + ")";
 		}
-		var now = new Date();
-		var s = [hlstr[3]
-			.replace("%Y", now.getFullYear())
-			.replace("%M", now.getMonth() + 1)
-			.replace("%D", now.getDate())
-			+ tstr];
+		var s = [mathlib.time2str(+new Date / 1000, hlstr[3]) + tstr];
 		s.push(hlstr[4].replace("%d", (length - numdnf) + "/" + length) + '\n');
 		s.push(hlstr[5]);
 		s.push('    ' + hlstr[0] + ": " + kpretty(times_stats.bestTime));
