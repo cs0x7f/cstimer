@@ -1112,6 +1112,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 		}
 
+		function sessionIdent(idx) {
+			return sessionData[idx]['rank'] + '-' + sessionData[idx]['name'];
+		}
+
 		function initNewSession(rank, copy) {
 			if (!$.isNumeric(rank)) {
 				rank = (sessionData[sessionIdx] || {})['rank'] || sessionIdxMax;
@@ -1175,7 +1179,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function deleteSession(ssidx) {
 			if (('stat' in sessionData[ssidx] ? sessionData[ssidx]['stat'][0] : 1) != 0 &&
-				!confirm(STATS_CFM_DELSS)) {
+				!confirm(STATS_CFM_DELSS.replace('%s', sessionIdent(ssidx)))) {
 				return false;
 			}
 			doSessionDeletion(ssidx);
@@ -1288,7 +1292,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function splitSession() {
-			var n_split = prompt(STATS_ALERTSPL, ~~(times.length / 2));
+			var n_split = prompt(STATS_PROMPTSPL.replace('%s', sessionIdent(sessionIdx)), ~~(times.length / 2));
 			if (n_split == null) {
 				return;
 			}
@@ -1310,7 +1314,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function mergeSessionTo(idx) {
-			if (sessionIdx == idx || !confirm(STATS_ALERTMG)) {
+			if (sessionIdx == idx || !confirm(STATS_ALERTMG.replace('%f', sessionIdent(sessionIdx)).replace('%t', sessionIdent(idx)))) {
 				return;
 			}
 			var prevSession = sessionIdx;
