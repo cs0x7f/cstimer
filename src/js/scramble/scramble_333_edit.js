@@ -94,6 +94,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	function initMove() {
+		initMove = $.noop;
 		var a, p;
 		moveCube[0] = new CubieCube1(15120, 0, 119750400, 0);
 		moveCube[3] = new CubieCube1(21021, 1494, 323403417, 0);
@@ -159,21 +160,6 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return String.fromCharCode.apply(null, f);
 	}
 
-	function initialize() {
-		// var startTime = +new Date;
-		initMove();
-		initialized = true;
-	}
-
-	var initialized = false;
-
-	function ini() {
-		if (!initialized) {
-			initialize()
-			initialized = true;
-		}
-	}
-
 
 	// SCRAMBLERS
 
@@ -187,7 +173,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		var scramble = "",
 			axis1, axis2, axisl1, axisl2;
 		do {
-			scramble = getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff);
+			scramble = getRandomScramble();
 			var moveseq = scramble.split(' ');
 			if (moveseq.length < 3) {
 				continue;
@@ -278,14 +264,30 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return ret;
 	}
 
+	var aufsuff = [
+		[],
+		[Ux1],
+		[Ux2],
+		[Ux3]
+	];
+
+	var rlpresuff = [
+		[],
+		[Rx1, Lx3],
+		[Rx2, Lx2],
+		[Rx3, Lx1]
+	];
+
+	var rlappsuff = ["", "x'", "x2", "x"];
+
+	var emptysuff = [
+		[]
+	];
+
 	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp, _rndpre) {
-		ini();
-		_rndapp = _rndapp || [
-			[]
-		];
-		_rndpre = _rndpre || [
-			[]
-		];
+		initMove();
+		_rndapp = _rndapp || emptysuff;
+		_rndpre = _rndpre || emptysuff;
 		_ep = parseMask(_ep, 12);
 		_eo = parseMask(_eo, 12);
 		_cp = parseMask(_cp, 8);
@@ -411,28 +413,12 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	var zbfilter = ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'PLL'];
 
 	function getZBLLScramble(type, length, cases) {
-		var idx = cases;
-		var zbcase = zbll_map[idx];
-		return getAnyScramble(0xba987654ffff, 0, zbcase[0] + 0x76540000, zbcase[1], [
-			[],
-			[Ux1],
-			[Ux2],
-			[Ux3]
-		], [
-			[],
-			[Ux1],
-			[Ux2],
-			[Ux3]
-		]);
+		var zbcase = zbll_map[cases];
+		return getAnyScramble(0xba987654ffff, 0, zbcase[0] + 0x76540000, zbcase[1], aufsuff, aufsuff);
 	}
 
 	function getZZLLScramble() {
-		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, [
-			[],
-			[Ux1],
-			[Ux2],
-			[Ux3]
-		]);
+		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, aufsuff);
 	}
 
 	function getZBLSScramble() {
@@ -440,41 +426,13 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	function getLSEScramble() {
-		switch (rn(4)) {
-			case 0:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000);
-			case 1:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [
-					[Rx1, Lx3]
-				]) + "x'";
-			case 2:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [
-					[Rx2, Lx2]
-				]) + "x2";
-			case 3:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [
-					[Rx3, Lx1]
-				]) + "x";
-		}
+		var rnd4 = rn(4);
+		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
 	}
 
 	function getCMLLScramble() {
-		switch (rn(4)) {
-			case 0:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff);
-			case 1:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [
-					[Rx1, Lx3]
-				]) + "x'";
-			case 2:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [
-					[Rx2, Lx2]
-				]) + "x2";
-			case 3:
-				return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [
-					[Rx3, Lx1]
-				]) + "x";
-		}
+		var rnd4 = rn(4);
+		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
 	}
 
 	function getCLLScramble() {
@@ -486,12 +444,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	function get2GLLScramble() {
-		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x76543210, 0x0000ffff, [
-			[],
-			[Ux1],
-			[Ux2],
-			[Ux3]
-		]);
+		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x76543210, 0x0000ffff, aufsuff);
 	}
 
 	var pll_map = [
@@ -537,17 +490,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	function getPLLScramble(type, length, cases) {
 		var idx = cases;
 		var pllcase = pll_map[idx];
-		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, [
-			[],
-			[Ux1],
-			[Ux2],
-			[Ux3]
-		], [
-			[],
-			[Ux1],
-			[Ux2],
-			[Ux3]
-		]);
+		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, aufsuff, aufsuff);
 	}
 
 	function getEOLineScramble() {
