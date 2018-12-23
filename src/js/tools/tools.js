@@ -55,7 +55,7 @@ var tools = execMain(function() {
 	function puzzleType(scrambleType) {
 		if (/^222(so|[236o]|eg[012]?)$/.exec(scrambleType)) {
 			return "222";
-		} else if (/^(333(oh?|ni|f[mt])?|(z[zb]|[cep]|cm|2g|ls)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|zbls|roux|RrU|half|easyc|eoline)$/.exec(scrambleType)) {
+		} else if (/^(333(oh?|ni|f[mt])?|(z[zb]|[coep]|cm|2g|ls)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|zbls|roux|RrU|half|easyc|eoline)$/.exec(scrambleType)) {
 			return "333";
 		} else if (/^(444(o|wca|yj|bld)?|4edge|RrUu)$/.exec(scrambleType)) {
 			return "444";

@@ -231,7 +231,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (!csTimerWorker || !csTimerWorker.getScramble) {
 			return;
 		}
-		var forceCached = ['["444wca",40,null,null]'];
+		var forceCached = ['["444wca",40,null]'];
 		var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
 		if ($.isArray(cachedScr)) {
 			cachedScr = {};
@@ -249,7 +249,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 		if (realType in scramblers) {
 			var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
-			var detailType = JSON.stringify([realType, len, scrFlt[1], probs[realType]]);
+			var detailType = JSON.stringify([realType, len, scrFlt[1]]);
 			if (detailType in cachedScr) {
 				scramble = cachedScr[detailType];
 				delete cachedScr[detailType];
@@ -321,7 +321,7 @@ var scramble = execMain(function(rn, rndEl) {
 		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, filters[curType]])));
 		scrOpt[0].disabled = scrLen[0].disabled && !(curType in filters);
 		if (scrFlt[0] != curType) {
-			scrFlt = [curType, filters[curType]];
+			scrFlt = [curType, filters[curType] && mathlib.valuedArray(filters[curType].length, 1)];
 			kernel.setProp('scrFlt', JSON.stringify(scrFlt));
 		}
 		// console.log(scrFlt);
@@ -346,7 +346,7 @@ var scramble = execMain(function(rn, rndEl) {
 			scrFltDiv.append($('<label>').append(sq1lvcbCheck, 'Use /// when leaving cubeshape'));
 		}
 		if (type in filters) {
-			var data = filters[type].slice();
+			var data = filters[type];
 			var curData = data;
 			if (scrFlt[0] == type) {
 				curData = scrFlt[1] || data;
@@ -367,7 +367,7 @@ var scramble = execMain(function(rn, rndEl) {
 			}
 			for (var i = 0; i < data.length; i++) {
 				var chkBox = $('<input type="checkbox">').val(i);
-				if (curData[i] != null) {
+				if (curData[i]) {
 					chkBox[0].checked = true;
 				}
 				chkBoxList.push(chkBox);
@@ -440,11 +440,11 @@ var scramble = execMain(function(rn, rndEl) {
 
 		function procDialog() {
 			if (type in filters) {
-				var data = filters[type].slice();
+				var data = mathlib.valuedArray(filters[type].length, 1);
 				var hasVal = false;
 				for (var i = 0; i < chkBoxList.length; i++) {
 					if (!chkBoxList[i][0].checked) {
-						data[i] = null;
+						data[i] = 0;
 					} else {
 						hasVal = true;
 					}

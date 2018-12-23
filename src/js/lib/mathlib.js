@@ -512,6 +512,7 @@ var mathlib = (function() {
 	}
 
 	var timeRe = /^\s*(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)\s*$/
+
 	function str2time(val) {
 		var m = timeRe.exec(val);
 		if (!m) {
@@ -525,6 +526,14 @@ var mathlib = (function() {
 		date.setMinutes(~~m[5]);
 		date.setSeconds(~~m[6]);
 		return ~~(date.getTime() / 1000);
+	}
+
+	function valuedArray(len, val) {
+		var ret = [];
+		for (var i = 0; i < len; i++) {
+			ret[i] = val;
+		}
+		return ret;
 	}
 
 	Math.TAU = Math.PI * 2;
@@ -550,6 +559,7 @@ var mathlib = (function() {
 		rndProb: rndProb,
 		time2str: time2str,
 		str2time: str2time,
+		valuedArray: valuedArray,
 		Solver: Solver
 	}
 })();

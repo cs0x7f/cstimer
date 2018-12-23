@@ -142,6 +142,7 @@ var scrdata = [
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
 		['ZZLL', "zzll", 0],
+		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Cruz sencilla', 'easyc', 3]

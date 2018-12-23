@@ -488,9 +488,76 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	];
 
 	function getPLLScramble(type, length, cases) {
-		var idx = cases;
-		var pllcase = pll_map[idx];
+		var pllcase = pll_map[cases];
 		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, aufsuff, aufsuff);
+	}
+
+	var oll_map = [
+		[0x0000, 0x0000], // PLL
+		[0x1111, 0x1212], // Point-1
+		[0x1111, 0x1122], // Point-2
+		[0x1111, 0x0222], // Point-3
+		[0x1111, 0x0111], // Point-4
+		[0x0011, 0x2022], // Square-5
+		[0x0011, 0x1011], // Square-6
+		[0x0011, 0x2202], // SLBS-7
+		[0x0011, 0x0111], // SLBS-8
+		[0x0011, 0x1110], // Fish-9
+		[0x0011, 0x2220], // Fish-10
+		[0x0011, 0x0222], // SLBS-11
+		[0x0011, 0x1101], // SLBS-12
+		[0x0101, 0x2022], // Knight-13
+		[0x0101, 0x0111], // Knight-14
+		[0x0101, 0x0222], // Knight-15
+		[0x0101, 0x1011], // Knight-16
+		[0x1111, 0x0102], // Point-17
+		[0x1111, 0x0012], // Point-18
+		[0x1111, 0x0021], // Point-19
+		[0x1111, 0x0000], // CO-20
+		[0x0000, 0x1212], // OCLL-21
+		[0x0000, 0x1122], // OCLL-22
+		[0x0000, 0x0012], // OCLL-23
+		[0x0000, 0x0021], // OCLL-24
+		[0x0000, 0x0102], // OCLL-25
+		[0x0000, 0x0111], // OCLL-26
+		[0x0000, 0x0222], // OCLL-27
+		[0x0011, 0x0000], // CO-28
+		[0x0011, 0x0210], // Awkward-29
+		[0x0011, 0x2100], // Awkward-30
+		[0x0011, 0x0021], // P-31
+		[0x0011, 0x1002], // P-32
+		[0x0101, 0x0021], // T-33
+		[0x0101, 0x0210], // C-34
+		[0x0011, 0x1020], // Fish-35
+		[0x0011, 0x0102], // W-36
+		[0x0011, 0x2010], // Fish-37
+		[0x0011, 0x0201], // W-38
+		[0x0101, 0x1020], // BLBS-39
+		[0x0101, 0x0102], // BLBS-40
+		[0x0011, 0x1200], // Awkward-41
+		[0x0011, 0x0120], // Awkward-42
+		[0x0011, 0x0012], // P-43
+		[0x0011, 0x2001], // P-44
+		[0x0101, 0x0012], // T-45
+		[0x0101, 0x0120], // C-46
+		[0x0011, 0x1221], // L-47
+		[0x0011, 0x1122], // L-48
+		[0x0011, 0x2112], // L-49
+		[0x0011, 0x2211], // L-50
+		[0x0101, 0x1221], // I-51
+		[0x0101, 0x1122], // I-52
+		[0x0011, 0x2121], // L-53
+		[0x0011, 0x1212], // L-54
+		[0x0101, 0x2121], // I-55
+		[0x0101, 0x1212], // I-56
+		[0x0101, 0x0000], // CO-57
+	];
+	var ollprobs = [1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2];
+	var ollfilter = ['PLL', 'Point-1', 'Point-2', 'Point-3', 'Point-4', 'Square-5', 'Square-6', 'SLBS-7', 'SLBS-8', 'Fish-9', 'Fish-10', 'SLBS-11', 'SLBS-12', 'Knight-13', 'Knight-14', 'Knight-15', 'Knight-16', 'Point-17', 'Point-18', 'Point-19', 'CO-20', 'OCLL-21', 'OCLL-22', 'OCLL-23', 'OCLL-24', 'OCLL-25', 'OCLL-26', 'OCLL-27', 'CO-28', 'Awkward-29', 'Awkward-30', 'P-31', 'P-32', 'T-33', 'C-34', 'Fish-35', 'W-36', 'Fish-37', 'W-38', 'BLBS-39', 'BLBS-40', 'Awkward-41', 'Awkward-42', 'P-43', 'P-44', 'T-45', 'C-46', 'L-47', 'L-48', 'L-49', 'L-50', 'I-51', 'I-52', 'L-53', 'L-54', 'I-55', 'I-56', 'CO-57'];
+
+	function getOLLScramble(type, length, cases) {
+		var ollcase = oll_map[cases];
+		return getAnyScramble(0xba987654ffff, ollcase[0], 0x7654ffff, ollcase[1], aufsuff, aufsuff);
 	}
 
 	function getEOLineScramble() {
@@ -525,6 +592,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('cll', getCLLScramble)
 		('ell', getELLScramble)
 		('pll', getPLLScramble, [pllfilter, pllprobs])
+		('oll', getOLLScramble, [ollfilter, ollprobs])
 		('2gll', get2GLLScramble)
 		('easyc', getEasyCrossScramble)
 		('eoline', getEOLineScramble);
