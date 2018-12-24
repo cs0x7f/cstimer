@@ -585,7 +585,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	function col2std(col, faceMap) {
 		var ret = [];
-		col = col.match(/#[0-9a-fA-F]{3}/g);
+		col = (col || '').match(/#[0-9a-fA-F]{3}/g) || [];
 		for (var i = 0; i < col.length; i++) {
 			ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
 		}

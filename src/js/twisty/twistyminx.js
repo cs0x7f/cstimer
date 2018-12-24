@@ -60,31 +60,31 @@
 	];
 
 	var edge = [
-		[cfrac * sin(0.1) - wg * sin(0.05), (1 - cfrac) * cos(0.1) - wg],
-		[-cfrac * sin(0.1) + wg * sin(0.05), (1 - cfrac) * cos(0.1) - wg],
-		[sin(-0.1) - (1 - cfrac) / 2 / sin(-0.1) - wg * sin(0.05), wg],
-		[sin(0.1) - (1 - cfrac) / 2 / sin(0.1) + wg * sin(0.05), wg]
+		[cfrac * sin(0.1) - wg * sin(0.05), (1 - cfrac) * cos(0.1) - wg - 0.2],
+		[-cfrac * sin(0.1) + wg * sin(0.05), (1 - cfrac) * cos(0.1) - wg - 0.2],
+		[sin(-0.1) - (1 - cfrac) / 2 / sin(-0.1) - wg * sin(0.05), wg - 0.2],
+		[sin(0.1) - (1 - cfrac) / 2 / sin(0.1) + wg * sin(0.05), wg - 0.2]
 	]
 
 	var corn = [
-		[0, wg / cos(0.1)],
-		[d2x - wg / sin(0.1), (1 - cfrac) / 2],
-		[0, 1 - cfrac - wg / cos(0.1)],
-		[-d2x + wg / sin(0.1), (1 - cfrac) / 2]
+		[0, wg / cos(0.1) - 0.2],
+		[d2x - wg / sin(0.1), (1 - cfrac) / 2 - 0.2],
+		[0, 1 - cfrac - wg / cos(0.1) - 0.2],
+		[-d2x + wg / sin(0.1), (1 - cfrac) / 2 - 0.2]
 	];
 
 	var ctdis = (Math.cos(Math.PI / 5) + Math.cos(Math.PI / 5) * Math.cos(Math.PI / 5) - wg) * 2 / Math.sqrt(5);
 	var facelets = [
-		[edge, 0, -cos(0.1), ctdis, 0.1],
-		[edge, 0, -cos(0.1), ctdis, 0.3],
-		[edge, 0, -cos(0.1), ctdis, 0.5],
-		[edge, 0, -cos(0.1), ctdis, 0.7],
-		[edge, 0, -cos(0.1), ctdis, 0.9],
-		[corn, 0, -1, ctdis, 0.0],
-		[corn, 0, -1, ctdis, 0.2],
-		[corn, 0, -1, ctdis, 0.4],
-		[corn, 0, -1, ctdis, 0.6],
-		[corn, 0, -1, ctdis, 0.8],
+		[edge, 0, 0.2 - cos(0.1), ctdis, 0.1],
+		[edge, 0, 0.2 - cos(0.1), ctdis, 0.3],
+		[edge, 0, 0.2 - cos(0.1), ctdis, 0.5],
+		[edge, 0, 0.2 - cos(0.1), ctdis, 0.7],
+		[edge, 0, 0.2 - cos(0.1), ctdis, 0.9],
+		[corn, 0, -0.8, ctdis, 0.0],
+		[corn, 0, -0.8, ctdis, 0.2],
+		[corn, 0, -0.8, ctdis, 0.4],
+		[corn, 0, -0.8, ctdis, 0.6],
+		[corn, 0, -0.8, ctdis, 0.8],
 		[ct, 0, 0, ctdis, 0],
 		[ct2, 0, 0, ctdis, 0]
 	];
@@ -360,7 +360,7 @@
 		}
 
 		function isInspectionLegalMove(twisty, move) {
-			return move[0] >= 4 && move[0] <= 6;
+			return Math.abs(move[2]) >= 3 && Math.abs(move[3]) >= 3;
 		}
 
 		function isParallelMove(twisty, move1, move2) {

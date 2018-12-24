@@ -1153,7 +1153,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.blur();
 
 			if (kernel.getProp('imrename')) {
-				renameSession();
+				renameSession(sessionIdx, true);
 			}
 		}
 
@@ -1197,11 +1197,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.blur();
 		}
 
-		function renameSession(ssidx) {
+		function renameSession(ssidx, isCreate) {
 			if (ssidx === undefined) {
 				ssidx = sessionIdx;
 			}
-			var sName = prompt(STATS_SESSION_NAME, sessionData[ssidx]['name']);
+			var sName = prompt(isCreate ? STATS_SESSION_NAMEC : STATS_SESSION_NAME, sessionData[ssidx]['name']);
 			if (sName != null) {
 				sName = $('<div/>').text(sName).html();
 				sessionData[ssidx]['name'] = sName;

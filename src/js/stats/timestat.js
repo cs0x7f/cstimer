@@ -60,7 +60,7 @@ var TimeStat = (function() {
 			this.worstTime = this.timesLen == 0 ? -1 : this.tree.rank(Math.max(0, this.tree.rankOf(-1) - 1));
 			this.worstTimeIndex = this.tree.find(this.worstTime);
 
-			if (this.timeSort(t, prevBest) < 0) {
+			if (this.timeSort(t, prevBest) < 0 && prevBest != -1) {
 				bestHintList.push('single');
 			}
 		}
