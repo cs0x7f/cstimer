@@ -430,9 +430,26 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
 	}
 
-	function getCMLLScramble() {
+	var cmll_map = [
+		0x0000, // O or solved
+		0x1212, // H
+		0x0102, // L
+		0x1122, // Pi
+		0x0222, // S
+		0x0021, // T
+		0x0012, // U
+		0x0111 // aS
+	];
+	var cmprobs = [6, 12, 24, 24, 24, 24, 24, 24];
+	var cmfilter = ['O', 'H', 'L', 'Pi', 'S', 'T', 'U', 'aS'];
+
+	function getCMLLScramble(type, length, cases) {
 		var rnd4 = rn(4);
-		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, 0x0000ffff, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
+		var presuff = [];
+		for (var i = 0; i < aufsuff.length; i++) {
+			presuff.push(aufsuff[i].concat(rlpresuff[rnd4]));
+		}
+		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, cmll_map[cases], presuff, aufsuff) + rlappsuff[rnd4];
 	}
 
 	function getCLLScramble() {
@@ -588,7 +605,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('zzll', getZZLLScramble)
 		('zbls', getZBLSScramble)
 		('lse', getLSEScramble)
-		('cmll', getCMLLScramble)
+		('cmll', getCMLLScramble, [cmfilter, cmprobs])
 		('cll', getCLLScramble)
 		('ell', getELLScramble)
 		('pll', getPLLScramble, [pllfilter, pllprobs])
