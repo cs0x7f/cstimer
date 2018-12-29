@@ -55,3 +55,4 @@ if ($lang == "cn") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
+  <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>

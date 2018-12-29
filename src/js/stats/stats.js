@@ -1732,7 +1732,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				if (statal == 'u') {
 					if (value[2] == 'modify') {
 						var input = prompt('Statistics Details', kernel.getProp('statalu') || 'mo3 ao5 ao12 ao100');
-						if (/([am]o\d+[\s,;]*)+/.exec(input)) {
+						if (/^\s*([am]o\d+[\s,;]*)+\s*$/.exec(input)) {
 							kernel.setProp('statalu', input);
 							statal = input;
 						} else {
@@ -1747,6 +1747,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 					}
 				}
 				var avgSizesNew = avgSizesStd(statal);
+				if (!avgSizesNew) {
+					kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
+					kernel.reprop();
+					return;
+				}
 				avgSizes = avgSizesNew;
 				times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
 				crossSessionStats.updateStatal(avgSizes);

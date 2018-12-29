@@ -21,7 +21,6 @@
   <link rel="apple-touch-icon" href="cstimer512x512.png">
   <link rel="manifest" href="cstimer.webmanifest">
 <?php include('lang/langDet.php');?>
-  <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
   <link rel='stylesheet' type='text/css' href='css/style.css'>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/cstimer.js"></script>
