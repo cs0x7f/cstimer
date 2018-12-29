@@ -126,7 +126,10 @@ var kernel = execMain(function() {
 			subDivs = {};
 			left.empty();
 			right.empty();
-			for (var module in proSets) {
+			for (var module in MODULE_NAMES) {
+				if (module == 'kernel') {
+					continue;
+				}
 				if (selectedTab === 0) {
 					selectedTab = module;
 				}
@@ -582,8 +585,29 @@ var kernel = execMain(function() {
 				case 'view':
 					fixOrient();
 					break;
+				case 'wndScr':
+					setWndFixed('scramble', value[1] == 'f');
+					break;
+				case 'wndStat':
+					setWndFixed('stats', value[1] == 'f');
+					break;
+				case 'wndTool':
+					setWndFixed('tools', value[1] == 'f');
+					break;
 				default:
 				}
+			}
+		}
+
+		function setWndFixed(module, fixed) {
+			if (!modules[module]) {
+				$(setWndFixed.bind(undefined, module, fixed));
+				return;
+			}
+			if (fixed) {
+				modules[module].div.addClass('fixed');
+			} else {
+				modules[module].div.removeClass('fixed');
 			}
 		}
 
@@ -599,7 +623,7 @@ var kernel = execMain(function() {
 		}
 
 		$(function() {
-			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view)/);
+			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view|wnd(?:Scr|Stat|Tool))/);
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_FONT_STR.split('|')]);
 			regProp('ui', 'ahide', 0, PROPERTY_AHIDE, [true]);
@@ -613,6 +637,10 @@ var kernel = execMain(function() {
 			regProp('color', 'col-link', 3, parr[4], ['#0000ff']);
 			regProp('color', 'col-logo', 3, parr[5], ['#ffff00']);
 			regProp('color', 'col-logoback', 3, parr[6], ['#000000']);
+
+			regProp('scramble', 'wndScr', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
+			regProp('stats', 'wndStat', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
+			regProp('tools', 'wndTool', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
 
 			gray = $('#gray');
 

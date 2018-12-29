@@ -314,6 +314,12 @@ textarea {
 	border: 0.15rem solid;
 }
 
+.mywindow.fixed {
+	background-color: transparent;
+	border-color: transparent;
+	box-shadow: none;
+}
+
 #gray {
 	z-index: 50;
 	position: fixed;
