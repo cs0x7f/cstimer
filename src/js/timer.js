@@ -645,7 +645,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(curTime[1], true);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append(
-						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " fps" + "</div>");
+						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
 					// lcd.append("<br>" + moveCnt + "moves");
 					pushSignal('time', curTime);
 				}
@@ -1023,10 +1023,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					curTime[1] = now - startTime;
 					ui.setAutoShow(true);
 					lcd.setRunning(false, enableVRC);
+					lcd.setStaticAppend('');
 					lcd.fixDisplay(false, true);
 					lcd.val(curTime[1], enableVRC);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
-					lcd.append('<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " fps" + "</div>");
+					lcd.append('<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
 					if (curTime[1] != 0) {
 						pushSignal('time', curTime);
 					}
