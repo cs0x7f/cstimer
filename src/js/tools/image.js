@@ -770,12 +770,6 @@ posit:
 	var colre = /#[0-9a-fA-F]{3}/g;
 
 	$(function() {
-		kernel.regProp('color', 'colcube', 4, 'Cube', ['#ff0#fa0#00f#fff#f00#0d0']);
-		kernel.regProp('color', 'colpyr', 4, 'Pyraminx', ['#0f0#f00#00f#ff0']);
-		kernel.regProp('color', 'colskb', 4, 'Skewb', ['#fff#00f#f00#ff0#0f0#f80']);
-		kernel.regProp('color', 'colmgm', 4, 'Megaminx', ['#fff#d00#060#81f#fc0#00b#ffb#8df#f83#7e0#f9f#999']);
-		kernel.regProp('color', 'colsq1', 4, 'SQ1', ['#ff0#f80#0f0#fff#f00#00f']);
-
 		canvas = $('<canvas>');
 		if (canvas[0].getContext) {
 			tools.regTool('image', TOOLS_IMAGE, execFunc);

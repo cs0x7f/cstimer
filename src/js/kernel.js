@@ -637,6 +637,11 @@ var kernel = execMain(function() {
 			regProp('color', 'col-link', 3, parr[4], ['#0000ff']);
 			regProp('color', 'col-logo', 3, parr[5], ['#ffff00']);
 			regProp('color', 'col-logoback', 3, parr[6], ['#000000']);
+			regProp('color', 'colcube', 4, 'Cube', ['#ff0#fa0#00f#fff#f00#0d0']);
+			regProp('color', 'colpyr', 4, 'Pyraminx', ['#0f0#f00#00f#ff0']);
+			regProp('color', 'colskb', 4, 'Skewb', ['#fff#00f#f00#ff0#0f0#f80']);
+			regProp('color', 'colmgm', 4, 'Megaminx', ['#fff#d00#060#81f#fc0#00b#ffb#8df#f83#7e0#f9f#999']);
+			regProp('color', 'colsq1', 4, 'SQ1', ['#ff0#f80#0f0#fff#f00#00f']);
 
 			regProp('scramble', 'wndScr', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
 			regProp('stats', 'wndStat', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);

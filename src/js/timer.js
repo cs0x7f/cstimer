@@ -921,6 +921,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				} else {
 					todoMoves = todoMoves.reverse().join(' ');
 				}
+				var scramble;
 				if (todoMoves.match(/^\s*$/)) {
 					scramble = [];
 				} else {
@@ -1185,19 +1186,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				reset();
 			}
 		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC)$/);
-		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
-		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')]);
-		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
-		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')]);
-		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);
-		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000],
-			['0', '0.3', '0.55(stackmat)', '1']
-		]);
-		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10]);
-		regProp('ui', 'showAvg', 0, SHOW_AVG_LABEL, [true]);
-		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100]);
-		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true]);
-
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'roux'], PROPERTY_VRCMPS.split('|')]);
 		regProp('vrc', 'giiVRC', 0, PROPERTY_GIIKERVRC, [true]);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')]);
@@ -1206,6 +1194,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'giiBS', 0, PROPERTY_GIISBEEP, [true]);
 		regProp('vrc', 'giiRST', 1, PROPERTY_GIIRST, ['p', ['a', 'p', 'n'], PROPERTY_GIIRSTS.split('|')]);
 		regProp('vrc', 'giiAED', 0, PROPERTY_GIIAED, [false]);
+		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false]);
+		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')]);
+		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
+		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')]);
+		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);
+		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')]);
+		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10]);
+		regProp('ui', 'showAvg', 0, SHOW_AVG_LABEL, [true]);
+		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100]);
+		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true]);
 	});
 
 	var fobj;
