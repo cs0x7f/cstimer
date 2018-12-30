@@ -55,4 +55,8 @@ if ($lang == "cn") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
-  <script type="text/javascript"><?php include('lang/'.$lang.'.js');?></script>
+  <script type="text/javascript">
+var LANG_SET = '|en|zh-cn|es|fr|hu|it|ko|nl|vi|pt|da|hr|tr|ru';
+var LANG_STR = 'English|简体中文|Español|Français|Magyar|Italiano|한국어|Nederlands|Tiếng Việt|Português|Dansk|Hrvatski|Türkçe|Pусский';
+<?php include('lang/'.$lang.'.js');?>
+  </script>

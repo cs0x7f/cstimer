@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistički indikatori: ';
 var PROPERTY_DELMUL = 'Omogući višestruko brisanje';
 var MODULE_NAMES = {
+	"kernel": 'globalno',
 	"ui": 'display',
 	"color": 'boja',
 	"timer": 'štoperica',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'globalno',
 	"scramble": 'scramble',
 	"stats": 'statistika',
-	"tools": 'alati'
+	"tools": 'alati',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'unesi url slike';
 var BGIMAGE_INVALID = 'nevažeći url';

@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'İstatistik göstergeleri: ';
 var PROPERTY_DELMUL = 'Çoklu silmeye izin ver';
 var MODULE_NAMES = {
+	"kernel": 'küresel',
 	"ui": 'görünüm',
 	"color": 'renk',
 	"timer": 'kronometre',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'küresel',
 	"scramble": 'karıştırma',
 	"stats": 'istatistikler',
-	"tools": 'yardımcılar'
+	"tools": 'yardımcılar',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'lütfen resim url\'sini girin';
 var BGIMAGE_INVALID = 'geçersiz url';

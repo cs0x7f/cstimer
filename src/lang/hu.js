@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistical indicators: ';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var MODULE_NAMES = {
+	"kernel": 'globális',
 	"ui": 'kijelző',
 	"color": 'color',
 	"timer": 'időmérő',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'globális',
 	"scramble": 'keverés',
 	"stats": 'statisztikák',
-	"tools": 'eszközök'
+	"tools": 'eszközök',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'Kérlek másold be a kép URL-jét.';
 var BGIMAGE_INVALID = 'érvénytelen URL';

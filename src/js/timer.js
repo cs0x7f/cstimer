@@ -1202,7 +1202,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')]);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10]);
-		regProp('ui', 'showAvg', 0, SHOW_AVG_LABEL, [true]);
+		regProp('kernel', 'showAvg', 0, SHOW_AVG_LABEL, [true]);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100]);
 		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true]);
 	});

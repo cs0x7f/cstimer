@@ -401,6 +401,7 @@ textarea {
 	text-align: center;
 	margin: 5px;
 	margin: 0.35rem;
+	margin-right: 0;
 	border-radius: 5px;
 	border-radius: 0.35rem;
 	font-family: Impact;
@@ -416,6 +417,8 @@ textarea {
 	text-align: left;
 	border: 1px solid;
 	border: 0.1rem solid;
+	border-radius: 5px;
+	border-radius: 0.35rem;
 }
 
 .tabValue > * {

@@ -127,9 +127,6 @@ var kernel = execMain(function() {
 			left.empty();
 			right.empty();
 			for (var module in MODULE_NAMES) {
-				if (module == 'kernel') {
-					continue;
-				}
 				if (selectedTab === 0) {
 					selectedTab = module;
 				}
@@ -147,7 +144,7 @@ var kernel = execMain(function() {
 						proSet[0] = $('<select name="' + key + '">');
 						var vals = proSet[3][1];
 						var strs = proSet[3][2];
-						for (var i=0; i<vals.length; i++) {
+						for (var i = 0; i < vals.length; i++) {
 							proSet[0].append($('<option />').val(vals[i]).html(strs[i]));
 						}
 						proSet[0].val(getProp(key));
@@ -157,7 +154,8 @@ var kernel = execMain(function() {
 						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(getProp(key)).change(procClick);
 						var inc = $('<input type="button" value="+" name="' + key + '">').click(procClick);
 						var dec = $('<input type="button" value="-" name="' + key + '">').click(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], '('+proSet[3][1]+'~'+proSet[3][2]+')', proSet[0], inc, dec));
+						curDiv[1].append($('<li />').append(proSet[2], '(' + proSet[3][1] + '~' + proSet[3][2] + ')',
+							$('<span>').css('white-space', 'nowrap').append(dec, proSet[0], inc)));
 					} else if (type == 3) { //color
 						proSet[0] = $('<input type="color" name="' + key + '">').val(getProp(key)).change(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
@@ -169,6 +167,14 @@ var kernel = execMain(function() {
 							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val(ui.nearColor(val[i], 0, true)).change(procClick));
 						}
 						curDiv[1].append($('<li />').append(proSet[2], proSet[0], colorsInput));
+					} else if (type == 5) { //select using a href
+						var item = $('<li />').append(proSet[2]);
+						var vals = proSet[3][1];
+						var strs = proSet[3][2];
+						for (var i = 0; i < vals.length; i++) {
+							item.append('<a class="click" href="' + vals[i] + '">' + strs[i] + '</a> ');
+						}
+						curDiv[1].append(item);
 					}
 				}
 			}
@@ -252,6 +258,11 @@ var kernel = execMain(function() {
 	var getProp = property.get;
 	var setProp = property.set;
 	var regProp = property.reg;
+
+	$(function() {
+		regProp('kernel', 'lang', 5, 'Language: ',
+			['en', LANG_SET.replace(/\|/g, '|?lang=').split('|').slice(1), LANG_STR.split('|')]);
+	})
 
 	var ui = (function() {
 
@@ -626,7 +637,7 @@ var kernel = execMain(function() {
 			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view|wnd(?:Scr|Stat|Tool))/);
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_FONT_STR.split('|')]);
-			regProp('ui', 'ahide', 0, PROPERTY_AHIDE, [true]);
+			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
@@ -1188,8 +1199,8 @@ var kernel = execMain(function() {
 	var keyback = true;
 
 	$(function() {
-		regProp('ui', 'useMilli', 0, PROPERTY_USEMILLI, [false]);
-		regProp('ui', 'timeFormat', 1, PROPERTY_FORMAT, ['h', ['h', 'm', 's'], ['hh:mm:ss.XX(X)', 'mm:ss.XX(X)', 'ss.XX(X)']]);
+		regProp('kernel', 'useMilli', 0, PROPERTY_USEMILLI, [false]);
+		regProp('kernel', 'timeFormat', 1, PROPERTY_FORMAT, ['h', ['h', 'm', 's'], ['hh:mm:ss.XX(X)', 'mm:ss.XX(X)', 'ss.XX(X)']]);
 		temp.appendTo('body');
 
 		$(document).keydown(function(e) {

@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Omgekeerde tijdenlijst';
 var PROPERTY_STATAL = 'Statistische indicatoren: ';
 var PROPERTY_DELMUL = 'Inschakelen meervoudige verwijdering';
 var MODULE_NAMES = {
+	"kernel": 'Global',
 	"ui": 'display',
 	"color": 'Kleur',
 	"timer": 'Timer',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'Global',
 	"scramble": 'scramble',
 	"stats": 'Statistiek',
-	"tools": 'Hulpmiddelen'
+	"tools": 'Hulpmiddelen',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'Voer URL in';
 var BGIMAGE_INVALID = 'Ongeldige URL';

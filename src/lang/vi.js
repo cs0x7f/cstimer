@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistical indicators: ';
 var PROPERTY_DELMUL = 'cho phép xóa thời gian cùng 1 lúc';
 var MODULE_NAMES = {
+	"kernel": 'global',
 	"ui": 'màn hình chính ',
 	"color": 'màu',
 	"timer": 'timer',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'global',
 	"scramble": 'scramble',
 	"stats": 'thành tích',
-	"tools": 'công cụ'
+	"tools": 'công cụ',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'Yêu cầu nhập URL của ảnh';
 var BGIMAGE_INVALID = 'URL không hợp lệ';

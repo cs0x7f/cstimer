@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistiske indikatorer: ';
 var PROPERTY_DELMUL = 'Tillad flere sletninger ';
 var MODULE_NAMES = {
+	"kernel": 'global',
 	"ui": 'skærm',
 	"color": 'farve',
 	"timer": 'timer',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'global',
 	"scramble": 'blanding',
 	"stats": 'statistik',
-	"tools": 'værktøj'
+	"tools": 'værktøj',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'Vør venlig og sæt billedets url';
 var BGIMAGE_INVALID = 'ugyldig url';

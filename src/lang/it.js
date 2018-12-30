@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistical indicators: ';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var MODULE_NAMES = {
+	"kernel": 'globale',
 	"ui": 'schermo',
 	"color": 'colori',
 	"timer": 'cronometro',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'globale',
 	"scramble": 'scramble',
 	"stats": 'statistiche',
-	"tools": 'strumenti'
+	"tools": 'strumenti',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'Inserire url dell\'immagine';
 var BGIMAGE_INVALID = 'URL non valida';

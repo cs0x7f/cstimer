@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'Lista de tempos ao contrário';
 var PROPERTY_STATAL = 'Indicadores estatísticos: ';
 var PROPERTY_DELMUL = 'Ativar deleção múltipla';
 var MODULE_NAMES = {
+	"kernel": 'Global',
 	"ui": 'Tela',
 	"color": 'Cor',
 	"timer": 'Timer',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'Global',
 	"scramble": 'Embaralhamento',
 	"stats": 'Estatísticas',
-	"tools": 'Ferramentas'
+	"tools": 'Ferramentas',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'por favor, insira o url da imagem';
 var BGIMAGE_INVALID = 'url inválido!';

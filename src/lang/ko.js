@@ -358,14 +358,14 @@ var PROPERTY_STATINV = '시간목록 역순으로 표시';
 var PROPERTY_STATAL = '통계지표: ';
 var PROPERTY_DELMUL = '일괄 삭제 허용';
 var MODULE_NAMES = {
+	"kernel": '전역',
 	"ui": '사용자 환경',
 	"color": '색채 배합',
 	"timer": '초시계',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": '전역',
 	"scramble": '섞기',
 	"stats": '통계',
-	"tools": '도구'
+	"tools": '도구',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = '그림 파일 주소를 입력하세요(URL)';
 var BGIMAGE_INVALID = '잘못된 주소';

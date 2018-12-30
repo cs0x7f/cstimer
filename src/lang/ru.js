@@ -358,14 +358,14 @@ var PROPERTY_STATINV = 'обратный список времени';
 var PROPERTY_STATAL = 'Статистические индикаторы: ';
 var PROPERTY_DELMUL = 'Включить множественное удаление';
 var MODULE_NAMES = {
+	"kernel": 'глобальный',
 	"ui": 'дисплей',
 	"color": 'цвет',
 	"timer": 'таймер',
-	"vrc": 'virtual&<br>Giiker',
-	"kernel": 'глобальный',
 	"scramble": 'скрамбл',
 	"stats": 'статистика',
-	"tools": 'инструменты'
+	"tools": 'инструменты',
+	"vrc": 'virtual&<br>Giiker'
 };
 var BGIMAGE_URL = 'пожалуйста вставьте изображение\'я url';
 var BGIMAGE_INVALID = 'неверный url';

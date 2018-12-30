@@ -358,14 +358,14 @@ var PROPERTY_STATINV = '倒序显示成绩列表';
 var PROPERTY_STATAL = '统计指标：';
 var PROPERTY_DELMUL = '启用批量删除';
 var MODULE_NAMES = {
+	"kernel": '全局',
 	"ui": '界面',
 	"color": '配色',
 	"timer": '计时',
-	"vrc": '虚拟&<br>计客魔方',
-	"kernel": '全局',
 	"scramble": '打乱',
 	"stats": '统计',
-	"tools": '工具'
+	"tools": '工具',
+	"vrc": '虚拟&<br>计客魔方'
 };
 var BGIMAGE_URL = '请输入图片地址(url)';
 var BGIMAGE_INVALID = '无效地址';
