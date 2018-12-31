@@ -1239,7 +1239,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			var row = target.parent();
-			var rank = ~~row.children().first().html().replace("*", "");
+			var child = row.children();
+			if (child.length < 7) {
+				child = row.prev().children();
+			}
+			var rank = ~~child.first().html().replace(/-.*$/, "");
 			var idx = ssSorted[rank - 1];
 			switch (target.attr('data')) {
 				case 'r':
@@ -1385,8 +1389,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				ssStat[0] = (s[0] - s[1]) + '/' + s[0];
 				ssStat[1] = kpround(s[2]);
 			}
-			return '<tr' + (idx == sessionIdx ? ' class="selected"' : '') + '><td>' + rank + (idx == sessionIdx ? '*' : '') + '</td>' +
-				'<td class="click" data="s">' + ssData['name'] + '</td>' +
+			return '<tr class="' + (idx == sessionIdx ? 'selected mhide' : 'mhide') + '">' +
+				'<td class="click" data="s">' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
 				'<td>' + ssStat[0] + '</td>' +
 				'<td>' + ssStat[1] + '</td>' +
 				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
@@ -1396,8 +1400,24 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<td class="click" data="d">&#8595;</td>' +
 				'<td class="click" data="r">&#9997;</td>' +
 				'<td class="click" data="+">+</td>' +
-				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;</td>' : '"m">&#8676;</td>') +
-				'<td class="click" data="x">X</td>' + '</tr>';
+				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
+				'<td class="click" data="x">X</td>' + '</tr>' +
+
+				'<tr class="' + (idx == sessionIdx ? 'selected mshow' : 'mshow') + '">' +
+				'<td class="click" data="s" rowspan=2>' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
+				'<td>' + ssStat[0] + '</td>' +
+				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
+				'<td class="click" data="u">&#8593;</td>' +
+				'<td class="click" data="r">&#9997;</td>' +
+				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
+				'</tr>' +
+				'<tr class="' + (idx == sessionIdx ? 'selected mshow' : 'mshow') + '">' +
+				'<td>' + ssStat[1] + '</td>' +
+				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '&nbsp;' + ssData['phases'] + 'P.</td>' +
+				'<td class="click" data="d">&#8595;</td>' +
+				'<td class="click" data="+">+</td>' +
+				'<td class="click" data="x">X</td>' +
+				'</tr>';
 		}
 
 		function getMgrRowAtGroup(group) {
@@ -1413,15 +1433,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (ssNames.length > 45) {
 				ssNames = ssNames.slice(0, 42) + '...';
 			}
-			return '<tr' + (isInGroup ? ' class="selected"' : '') + '><td class="click" data="e">' + (isInGroup ? '*' : '') + '[+]</td>' +
-				'<td class="click" data="e" colspan=12 style="text-align:left;">' + group.length + ' session(s): ' + ssNames + '</td></tr>';
+			return '<tr' + (isInGroup ? ' class="selected"' : '') + '>' +
+				'<td class="click" data="e" colspan=12 style="text-align:left;">' +
+				(isInGroup ? '*' : '') + '[+] ' + group.length + ' session(s): ' + ssNames + '</td></tr>';
 		}
 
 		function expandRankGroup(curTr) {
 			for (var elem = curTr.next(); elem.is(":hidden"); elem = elem.next()) {
-				elem.show();
+				elem.css('display', '');
 			}
-			curTr.hide();
+			curTr.remove();
 		}
 
 		var byGroup = false;
@@ -1429,13 +1450,17 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function genMgrTable() {
 			fixRank();
 			ssmgrTable.empty().append(
-				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption><tr>' +
-				(byGroup ? '<th class="click" data="g">[+]' : '<th>') + '</th>' +
-				'<th class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
+				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption>' +
+				'<tr class="mhide"><th class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th>' + STATS_AVG +
 				'</th><th>' + STATS_DATE +
 				'</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
-				'</th><th>P.</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>');
+				'</th><th>P.</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>' +
+				'<tr class="mshow"><th rowspan=2 class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
+				STATS_SOLVE + '</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
+				'</th><th colspan=3 rowspan=2>' + STATS_SSMGR_OP + '</th></tr>' +
+				'<tr class="mshow"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + ' & P.</th></tr>'
+			);
 
 			var groups = [];
 			var gscr = NaN;

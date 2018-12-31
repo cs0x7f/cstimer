@@ -733,6 +733,10 @@ html.m.p150 {
 	font-size: calc(1.35vw + 2.40vh);
 }
 
+html.m .mhide, html:not(.m) .mshow {
+	display: none;
+}
+
 .m #timer, .m #touch {
 	font-size: 0.6em;
 	left: 0;
