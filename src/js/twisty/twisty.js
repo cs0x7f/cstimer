@@ -207,8 +207,6 @@ window.twistyjs = (function() {
 			}
 		}
 
-
-
 		function render() {
 			renderer.render(scene, camera);
 		}
@@ -255,36 +253,25 @@ window.twistyjs = (function() {
 			currentMove.push(moveQueue.shift());
 			moveProgress.push(0);
 			currentMoveStartTime.push($.now());
-			//log(moveToString(currentMove));
-			//		console.log(currentMove);
 			fireMoveStarted(currentMove[currentMove.length - 1]);
 		}
 
-		//TODO 20110906: Handle illegal moves robustly.
-		function queueMoves(moves) {
+		this.addMoves = function(moves) {
+			if (!kernel.getProp('vrcSpeed', 100)) {
+				this.applyMoves(moves);
+				return;
+			}
 			moveQueue = moveQueue.concat(moves);
 			if (moveQueue.length > 0) {
 				startAnimation();
 			}
-		}
-		this.animateMoves = function(moves) {
-			animationStep = 0.1;
-			queueMoves(moves);
-		};
-
-		this.addMoves = function(moves) {
-			queueMoves(moves);
-			updateSpeed();
-			//		console.log(currentMove, moveProgress, currentMoveStartTime);
 		};
 
 		this.isMoveFinished = function() {
-			//      console.log(moveQueue, currentMove, cachedFireMoves);
 			return moveQueue.length == 0 && currentMove.length == 0 && cachedFireMoves.length == 0;
 		}
 
 		this.isAnimationFinished = function() {
-			//      console.log(moveQueue, currentMove, cachedFireMoves);
 			return currentMove.length == 0;
 		}
 
@@ -298,13 +285,6 @@ window.twistyjs = (function() {
 			}
 			render();
 		};
-
-		//TODO: Make time-based / framerate-compensating
-		function updateSpeed() {
-			animationStep = Math.min(0.15 + 0.1 * moveQueue.length, 1);
-		}
-
-		var animationStep = 0.1;
 
 		var cachedFireMoves = [];
 
@@ -363,7 +343,7 @@ window.twistyjs = (function() {
 
 		function animateLoop(timeStamp) {
 			timeStamp = $.now();
-			var timeProgress = (timeStamp - lastTimeStamp) / 100 * (moveQueue.length + 2) / 2;
+			var timeProgress = (timeStamp - lastTimeStamp) / (kernel.getProp('vrcSpeed', 100) || 1e-3) * (moveQueue.length + 2) / 2;
 			lastTimeStamp = timeStamp;
 			stepAnimation(Math.max(Math.min(timeProgress, 1), 0.0001) /*animationStep*/ );
 			render();
