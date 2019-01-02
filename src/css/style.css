@@ -737,6 +737,14 @@ html.m .mhide, html:not(.m) .mshow {
 	display: none;
 }
 
+.mshow.t td, .mshow.t th {
+	border-bottom-style: dashed;
+}
+
+.mshow.b td, .mshow.b th {
+	border-top-style: none;
+}
+
 .m #timer, .m #touch {
 	font-size: 0.6em;
 	left: 0;

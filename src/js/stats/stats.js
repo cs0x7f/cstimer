@@ -1403,7 +1403,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
 				'<td class="click" data="x">X</td>' + '</tr>' +
 
-				'<tr class="' + (idx == sessionIdx ? 'selected mshow' : 'mshow') + '">' +
+				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow t">' +
 				'<td class="click" data="s" rowspan=2>' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
 				'<td>' + ssStat[0] + '</td>' +
 				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
@@ -1411,7 +1411,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<td class="click" data="r">&#9997;</td>' +
 				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
 				'</tr>' +
-				'<tr class="' + (idx == sessionIdx ? 'selected mshow' : 'mshow') + '">' +
+				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow b">' +
 				'<td>' + ssStat[1] + '</td>' +
 				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '&nbsp;' + ssData['phases'] + 'P.</td>' +
 				'<td class="click" data="d">&#8595;</td>' +
@@ -1456,10 +1456,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'</th><th>' + STATS_DATE +
 				'</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
 				'</th><th>P.</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>' +
-				'<tr class="mshow"><th rowspan=2 class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
+				'<tr class="mshow t"><th rowspan=2 class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
 				'</th><th colspan=3 rowspan=2>' + STATS_SSMGR_OP + '</th></tr>' +
-				'<tr class="mshow"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + ' & P.</th></tr>'
+				'<tr class="mshow b"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + ' & P.</th></tr>'
 			);
 
 			var groups = [];
