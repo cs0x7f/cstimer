@@ -8,7 +8,7 @@ var BUTTON_OPTIONS = 'Options';
 var BUTTON_EXPORT = 'Exporter';
 var BUTTON_DONATE = 'Faire une donation';
 var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
-var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
+var PROPERTY_USEINS_STR = 'Toujours|Sauf BLD|Jamais';
 var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA : ';
 var PROPERTY_VOICEINS_STR = 'Aucune|Voix masculine|Voix féminine';
 var PROPERTY_PHASES = 'Multi-phase : ';
@@ -19,17 +19,17 @@ var PROPERTY_SCRSIZE = 'Taille du mélange : ';
 var PROPERTY_SCRMONO = 'Mélange à espacement fixe';
 var PROPERTY_SCRLIM = 'Limiter la taille de la zone de mélange';
 var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange : ';
-var PROPERTY_SCRALIGN_STR = 'Centrer|Gauche|Droite';
+var PROPERTY_SCRALIGN_STR = 'Centré|Gauche|Droite';
 var EXPORT_DATAEXPORT = 'Importer/Exporter des données';
-var EXPORT_TOFILE = 'Exporters vers';
+var EXPORT_TOFILE = 'Exporter vers';
 var EXPORT_FROMFILE = 'Importer de';
 var EXPORT_TOSERV = 'Exporter vers un serveur';
 var EXPORT_FROMSERV = 'Importer d\'un serveur';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
-var EXPORT_USERID = 'S\'il vous plaît, rentrez votre compte (seulement des lettres ou des chiffres) : ';
-var EXPORT_INVID = 'Seul sont autorisés les lettres et les chiffres !';
+var EXPORT_FROMOTHER = 'Importer d\'un autre chronomètre';
+var EXPORT_USERID = 'S\'il vous plaît, rentrez votre compte (seulement des chiffres ou des lettres) : ';
+var EXPORT_INVID = 'Chiffres ou lettres seulement!';
 var EXPORT_ERROR = 'Des erreurs se sont produites...';
-var EXPORT_NODATA = 'Aucune donnée n\'a été trouvé sur votre compte';
+var EXPORT_NODATA = 'Aucune donnée n\'a été trouvée sur votre compte';
 var EXPORT_UPLOADED = 'Envoyé avec succès';
 var BUTTON_SCRAMBLE = 'MELA-<br>NGE';
 var BUTTON_TOOLS = 'OUTILS';
@@ -37,21 +37,21 @@ var IMAGE_UNAVAILABLE = 'Non disponible pour ce type de mélange';
 var TOOLS_SELECTFUNC = 'Fonction : ';
 var TOOLS_CROSS = 'Résoudre la croix';
 var TOOLS_EOLINE = 'Résoudre l\'EOLine';
-var TOOLS_ROUX1 = 'solve Roux S1';
+var TOOLS_ROUX1 = 'Résoudre 1er bloc Roux';
 var TOOLS_GIIKER = 'Giiker Cube';
-var TOOLS_IMAGE = 'Schéma du mélange';
+var TOOLS_IMAGE = 'Image du mélange';
 var TOOLS_STATS = 'Statistiques';
-var TOOLS_HUGESTATS = 'cross-session stats';
+var TOOLS_HUGESTATS = 'Stats sur plusieurs sessions';
 var TOOLS_DISTRIBUTION = 'Répartition des temps';
 var TOOLS_TREND = 'Tendance des temps';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_METRONOME = 'Métronome';
+var TOOLS_CFMTIME = 'Confirmer le temps';
 var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange : ';
 var TIMER_INSPECT = 'Inspection';
 var TIMER_SOLVE = 'Résolution';
-var PROPERTY_USEMOUSE = 'use mouse timer';
+var PROPERTY_USEMOUSE = 'Lancer le chonomètre avec la souris';
 var PROPERTY_TIMEU = 'Rafraîchissement du chronomètre : ';
-var PROPERTY_TIMEU_STR = 'Normal|0.1s|Secondes|Inspection|Non';
+var PROPERTY_TIMEU_STR = 'Normal|0.1s|Secondes|Inspection|Aucun';
 var PROPERTY_PRETIME = 'Tenir la barre d\'espace appuyée pendant (en secondes) : ';
 var PROPERTY_ENTERING = 'Entrer les temps avec ';
 var PROPERTY_ENTERING_STR = 'Clavier|Manuellement|Stackmat|MoYuTimer|Virtuel|Giiker';
@@ -59,9 +59,9 @@ var PROPERTY_COLOR = 'Couleur du thème : ';
 var PROPERTY_COLORS = 'Couleur de la police : |Couleur de fond : |Couleur de panneau : |Couleur de bouton : |Couleur de lien : |Couleur du logo : |Couleur  de fond du logo : ';
 var PROPERTY_VIEW = 'Le style de l\'interface est :';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Bureau';
-var COLOR_EXPORT = 'Please save the string for import: ';
-var COLOR_IMPORT = 'Please input the string exported: ';
-var COLOR_FAIL = 'Données incorrectes, Importation échoué';
+var COLOR_EXPORT = 'Sauvegarder le texte pour l\'importer ailleurs :';
+var COLOR_IMPORT = 'Entrer le texte exporté : ';
+var COLOR_FAIL = 'Données incorrectes, Import échoué';
 var PROPERTY_FONTCOLOR_STR = 'Noir|Blanc';
 var PROPERTY_COLOR_STR = 'Aléatoire|Style1|Style2|Style3|Noir|Blanc|Style6|Personnalisée|Exporter...|Importer...';
 var PROPERTY_FONT = 'Police du chronomètre : ';
@@ -76,18 +76,18 @@ var SCRAMBLE_SCRAMBLE = ' Mélange';
 var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
 var PROPERTY_VRCMP = 'multi-phase: ';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay: ';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing: ';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect: ';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_VRCMPS = 'Aucun|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_GIIKERVRC = 'Montrer le Giiker Cube virtuel';
+var PROPERTY_GIISOK_DELAY = 'Considérer comme mélangé si immobile pendant: ';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Jamais|Mélangé correctement';
+var PROPERTY_GIISOK_KEY = 'Marquer le cube comme mélangé avec la barre d\'espace';
+var PROPERTY_GIISOK_MOVE = 'Marquer le cube comme mélangé en faisant ';
+var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Jamais';
+var PROPERTY_GIISBEEP = 'Bip quand le cube est marqué comme mélangé';
+var PROPERTY_GIIRST = 'Remettre le Giiker Cube à zéro quand il se connecte: ';
+var PROPERTY_GIIRSTS = 'Toujours|Demande|Jamais';
+var CONFIRM_GIIRST = 'Remettre le Giiker Cube à zéro (état résolu)?';
+var PROPERTY_GIIAED = 'Détection automatique d\'erreur hardware';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -110,14 +110,14 @@ var scrdata = [
 		['3x3 mbld', "r3ni", 5]
 	]],
 	['Entrer', [
-		['外部', "input", 0]
+		['Externe', "input", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['2x2x2', [
 		["WCA", "222so", 0],
-		['Algorithme optimal', "222o", 0],
+		['État aléatoire optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -149,7 +149,7 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['Au hasard', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['Arêtes 4x4x4', "4edge", 8],
@@ -200,7 +200,7 @@ var scrdata = [
 		["WCA", "skbso", 0],
 		['U L R B', "skb", 25]
 	]],
-	['===OTHER===', [
+	['===AUTRE===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -262,7 +262,7 @@ var scrdata = [
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
+	['Autre', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
 	['===SPECIAL===', [
@@ -319,43 +319,43 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' de 90 degrés dans le sens des aiguilles d\'une montre, | de 90 degrés dans le sens inverse des aiguilles d\'une montre, | de 180 degrés, ';
 var STATS_CFM_RESET = 'Effacer tous les temps de cette session ?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_DELSS = 'Effacer la session [%s]?';
 var STATS_CFM_DELMUL = 'Nombre de valeurs effacées de l\'index en cours ?';
 var STATS_CFM_DELETE = 'Effacer ce temps ?';
 var STATS_COMMENT = 'Commentaire';
 var STATS_DATE = 'Date';
 var STATS_CURROUND = 'Statistiques de la moyenne';
 var STATS_CURSESSION = 'Statistiques de la session en cours';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
+var STATS_CURSPLIT = 'Statistiques de la phase %d de la session en cours';
 var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OP = 'Operation';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_SSMGR_TITLE = 'Gestion des sessions';
+var STATS_SSMGR_NAME = 'Nom';
+var STATS_SSMGR_DETAIL = 'Détails de la session';
+var STATS_SSMGR_OP = 'Opération';
+var STATS_ALERTMG = 'Déplacer tous les temps de la session [%f] à la fin de la session [%f]?';
+var STATS_PROMPTSPL = 'Nombre de temps à diviser de la session [%s] (en partant de la fin)?';
+var STATS_ALERTSPL = 'Il faut laisser au moins un temps, ou fusionner la session avec une autre';
 var STATS_AVG = 'Moyenne';
-var STATS_SOLVE = 'Résolution';
+var STATS_SOLVE = 'Résolutions';
 var STATS_TIME = 'Temps';
 var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
-var STATS_STRING = 'Meilleure|En cours|Moins bonne|Généré par csTimer le %Y-%M-%D|Résolutions/Total: %d|Résolution|Moyenne sur %mk|Moyenne élaguée sur %mk|Moyenne élaguée: %v{ (σ = %sgm)}|Moyenne: %v|Liste des temps:|solving from %s to %e';
+var STATS_SESSION_NAME = 'Modifier le nom de la session';
+var STATS_SESSION_NAMEC = 'Nom de la nouvelle session';
+var STATS_STRING = 'Meilleure|En cours|Moins bonne|Généré par csTimer le %Y-%M-%D|Résolutions/Total: %d|Résolution|Moyenne sur %mk|Moyenne élaguée sur %mk|Moyenne élaguée: %v{ (σ = %sgm)}|Moyenne: %v|Liste des temps:|résolutions de %s à %e';
 var STATS_PREC = 'Précision de la répartition des temps: ';
 var STATS_PREC_STR = 'Auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var STATS_STATCLR = 'Enable session emptying';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
+var STATS_TYPELEN = 'Type de la liste %d|Longueur de la liste %d|moyenne élaguée|moyenne';
+var STATS_STATCLR = 'Autoriser la suppression de tous les temps d\'une session';
+var STATS_ABSIDX = 'Montrer les indices absolus dans les reports statistiques';
 var PROPERTY_PRINTSCR = 'Montrer les mélanges dans les statistiques';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
+var PROPERTY_PRINTDATE = 'Montrer la date des résolutions dans les statistiques';
 var PROPERTY_SUMMARY = 'Montrer le résumé avant la liste de temps';
 var PROPERTY_IMRENAME = 'Renommer la session immédiatement après création';
 var PROPERTY_SCR2SS = 'Créer une nouvelle session lors du changement de type de mélange';
 var PROPERTY_SS2SCR = 'Restaurer le type de mélange lors d\'un changement de session';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
+var PROPERTY_SS2PHASES = 'Restaurer le chnonométrage multi-phase lors d\'un changement de session';
 var PROPERTY_STATINV = 'Inverser la liste des temps';
-var PROPERTY_STATAL = 'Indiquateurs statistiques : ';
+var PROPERTY_STATAL = 'Indicateurs statistiques : ';
 var PROPERTY_DELMUL = 'Activer la suppression multiple';
 var MODULE_NAMES = {
 	"kernel": 'Global',
@@ -365,7 +365,7 @@ var MODULE_NAMES = {
 	"scramble": 'Mélange',
 	"stats": 'Statistiques',
 	"tools": 'Outils',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtuel&<br>Giiker'
 };
 var BGIMAGE_URL = 'Entrez l\'adresse URL de l\'image';
 var BGIMAGE_INVALID = 'Adresse invalide';
@@ -373,7 +373,7 @@ var BGIMAGE_OPACITY = 'Opacité de l\'image de fond : ';
 var BGIMAGE_IMAGE = 'Image de fond : ';
 var BGIMAGE_IMAGE_STR = 'Aucune|Personnalisée|CCT';
 var SHOW_AVG_LABEL = 'Afficher les moyennes en cours';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'Afficher des messages dans le logo';
 var TOOLS_SCRGEN = 'Générateur de mélange';
 var SCRGEN_NSCR = 'Nombre de mélanges : ';
 var SCRGEN_PRE = 'Préfixe : ';
