@@ -226,7 +226,7 @@ TODO:
 			bottom = 0;
 		for (var i = len - 1; i >= 0; i--) {
 			var val = obj.Search_move[i];
-			if (i == obj.Search_length1 - 1 && obj.sq1lvcb) {
+			if (i == obj.Search_length1 - 2 && obj.sq1lvcb) {
 				s += "//";
 			}
 			//console.log(val);
@@ -674,124 +674,115 @@ TODO:
 		return -low - 1;
 	}
 
-	var x44_STAR = [18];
-	var x53_STAR = [19];
-	var x62_STAR = [3];
-	var x71_STAR = [1];
-	var x8_STAR = [0];
+	// Star_x8 = [0];
+	// Star_x71 = [1];
+	// Star_x62 = [3];
+	// Star_x44 = [18];
+	// Star_x53 = [19];
 
-	var x222_PAIRED = [305];
-	var x222_PERPENDICULAR = [306];
-	var x222_PARALLEL = [307];
+	// Square_Scallop = [1004];
+	// Square_rPawn = [1005];
+	// Square_Shield = [1006];
+	// Square_Barrel = [1007];
+	// Square_rFist = [1008];
+	// Square_Mushroom = [1009];
+	// Square_lPawn = [1011];
+	// Square_Square = [1015];
+	// Square_lFist = [1016];
+	// Square_Kite = [1018];
 
-	var x33_PAIRED = [144];
-	var x33_PERPENDICULAR = [145];
-	var x33_PARALLEL = [146];
+	// Kite_Scallop = [1154];
+	// Kite_rPawn = [1155];
+	// Kite_Shield = [1156];
+	// Kite_Barrel = [1157];
+	// Kite_rFist = [1158];
+	// Kite_Mushroom = [1159];
+	// Kite_lPawn = [1161];
+	// Kite_lFist = [1166];
+	// Kite_Kite = [1168];
 
-	var x321_PAIRED = [182];
-	var x321_PERPENDICULAR = [183];
-	var x321_PARALLEL = [184];
+	// Barrel_Scallop = [424];
+	// Barrel_rPawn = [425];
+	// Barrel_Shield = [426];
+	// Barrel_Barrel = [427];
+	// Barrel_rFist = [428];
+	// Barrel_Mushroom = [429];
+	// Barrel_lPawn = [431];
+	// Barrel_lFist = [436];
 
-	var x312_PAIRED = [157];
-	var x312_PERPENDICULAR = [158];
-	var x312_PARALLEL = [159];
+	// Scallop_Scallop = [95];
+	// Scallop_rPawn = [218];
+	// Scallop_Shield = [341];
+	// Scallop_rFist = [482];
+	// Scallop_Mushroom = [528];
+	// Scallop_lPawn = [632];
+	// Scallop_lFist = [1050];
 
-	var L42_PAIRED = [59];
-	var L42_PERPENDICULAR = [60];
-	var L42_PARALLEL = [61];
+	// Shield_rPawn = [342];
+	// Shield_Shield = [343];
+	// Shield_rFist = [345];
+	// Shield_Mushroom = [346];
+	// Shield_lPawn = [348];
+	// Shield_lFist = [353];
 
-	var R42_PAIRED = [21];
-	var R42_PERPENDICULAR = [22];
-	var R42_PARALLEL = [23];
+	// Mushroom_rPawn = [223];
+	// Mushroom_rFist = [487];
+	// Mushroom_Mushroom = [533];
+	// Mushroom_lPawn = [535];
+	// Mushroom_lFist = [1055];
 
-	var x411_PAIRED = [34];
-	var x411_PERPENDICULAR = [35];
-	var x411_PARALLEL = [36];
+	// Pawn_rPawn_rPawn = [219];
+	// Pawn_rPawn_lPawn = [225];
+	// Pawn_rPawn_rFist = [483];
+	// Pawn_lPawn_rFist = [489];
+	// Pawn_lPawn_lPawn = [639];
+	// Pawn_rPawn_lFist = [1051];
+	// Pawn_lPawn_lFist = [1057];
 
-	var L51_PAIRED = [71];
-	var L51_PERPENDICULAR = [72];
-	var L51_PARALLEL = [73];
+	// Fist_rFist_rFist = [486];
+	// Fist_lFist_rFist = [1054];
+	// Fist_lFist_lFist = [1062];
 
-	var R51_PAIRED = [46];
-	var R51_PERPENDICULAR = [47];
-	var R51_PARALLEL = [48];
+	// Pair_x6 = [6];
+	// Pair_r42 = [21];
+	// Pair_x411 = [34];
+	// Pair_r51 = [46];
+	// Pair_l42 = [59];
+	// Pair_l51 = [71];
+	// Pair_x33 = [144];
+	// Pair_x312 = [157];
+	// Pair_x321 = [182];
+	// Pair_x222 = [305];
 
-	var x6_PAIRED = [6];
-	var x6_PERPENDICULAR = [7];
-	var x6_PARALLEL = [8];
+	// L_x6 = [7];
+	// L_r42 = [22];
+	// L_x411 = [35];
+	// L_r51 = [47];
+	// L_l42 = [60];
+	// L_l51 = [72];
+	// L_x33 = [145];
+	// L_x312 = [158];
+	// L_x321 = [183];
+	// L_x222 = [306];
 
-	var SQUARE_SQUARE = [1015];
-	var SQUARE_KITE = [1018];
-	var SQUARE_BARREL = [1007];
-	var SQUARE_SHIELD = [1006];
-	var SQUARE_lFIST = [1016];
-	var SQUARE_rFIST = [1008];
-	var SQUARE_lPAW = [1011];
-	var SQUARE_rPAW = [1005];
-	var SQUARE_MUSHROOM = [1009];
-	var SQUARE_SCALLOP = [1004];
+	// Line_x6 = [8];
+	// Line_r42 = [23];
+	// Line_x411 = [36];
+	// Line_r51 = [48];
+	// Line_l42 = [61];
+	// Line_l51 = [73];
+	// Line_x33 = [146];
+	// Line_x312 = [159];
+	// Line_x321 = [184];
+	// Line_x222 = [307];
 
-	var KITE_KITE = [1168];
-	var KITE_BARREL = [1157];
-	var KITE_SHIELD = [1156];
-	var KITE_lFIST = [1166];
-	var KITE_rFIST = [1158];
-	var KITE_lPAW = [1161];
-	var KITE_rPAW = [1155];
-	var KITE_MUSHROOM = [1159];
-	var KITE_SCALLOP = [1154];
+	var cspcases = [0, 1, 3, 18, 19, 1004, 1005, 1006, 1007, 1008, 1009, 1011, 1015, 1016, 1018, 1154, 1155, 1156, 1157, 1158, 1159, 1161, 1166, 1168, 424, 425, 426, 427, 428, 429, 431, 436, 95, 218, 341, 482, 528, 632, 1050, 342, 343, 345, 346, 348, 353, 223, 487, 533, 535, 1055, 219, 225, 483, 489, 639, 1051, 1057, 486, 1054, 1062, 6, 21, 34, 46, 59, 71, 144, 157, 182, 305, 7, 22, 35, 47, 60, 72, 145, 158, 183, 306, 8, 23, 36, 48, 61, 73, 146, 159, 184, 307];
 
-	var BARREL_BARREL = [427];
-	var BARREL_SHIELD = [426];
-	var BARREL_lFIST = [436];
-	var BARREL_rFIST = [428];
-	var BARREL_lPAW = [431];
-	var BARREL_rPAW = [425];
-	var BARREL_MUSHROOM = [429];
-	var BARREL_SCALLOP = [424];
-
-	var SHIELD_SHIELD = [343];
-	var SHIELD_lFIST = [353];
-	var SHIELD_rFIST = [345];
-	var SHIELD_lPAW = [348];
-	var SHIELD_rPAW = [342];
-	var SHIELD_MUSHROOM = [346];
-	var SHIELD_SCALLOP = [341];
-
-	var llFIST_lFIST = [1062];
-	var lFIST_rFIST = [1054];
-	var lFIST_lPAW = [1057];
-	var lFIST_rPAW = [1051];
-	var lFIST_MUSHROOM = [1055];
-	var lFIST_SCALLOP = [1050];
-
-	var rFIST_rFIST = [486];
-	var rFIST_lPAW = [489];
-	var rFIST_rPAW = [483];
-	var rFIST_MUSHROOM = [487];
-	var rFIST_SCALLOP = [482];
-
-	var lPAW_lPAW = [639];
-	var lPAW_rPAW = [225];
-	var lPAW_MUSHROOM = [535];
-	var lPAW_SCALLOP = [632];
-
-	var rPAW_rPAW = [219];
-	var rPAW_MUSHROOM = [223];
-	var rPAW_SCALLOP = [218];
-
-	var MUSHROOM_MUSHROOM = [533];
-	var MUSHROOM_SCALLOP = [528];
-
-	var SCALLOP_SCALLOP = [95];
-
-	var scpcases = [x44_STAR, x53_STAR, x62_STAR, x71_STAR, x8_STAR, x222_PAIRED, x222_PERPENDICULAR, x222_PARALLEL, x33_PAIRED, x33_PERPENDICULAR, x33_PARALLEL, x321_PAIRED, x321_PERPENDICULAR, x321_PARALLEL, x312_PAIRED, x312_PERPENDICULAR, x312_PARALLEL, L42_PAIRED, L42_PERPENDICULAR, L42_PARALLEL, R42_PAIRED, R42_PERPENDICULAR, R42_PARALLEL, x411_PAIRED, x411_PERPENDICULAR, x411_PARALLEL, L51_PAIRED, L51_PERPENDICULAR, L51_PARALLEL, R51_PAIRED, R51_PERPENDICULAR, R51_PARALLEL, x6_PAIRED, x6_PERPENDICULAR, x6_PARALLEL, SQUARE_SQUARE, SQUARE_KITE, SQUARE_BARREL, SQUARE_SHIELD, SQUARE_lFIST, SQUARE_rFIST, SQUARE_lPAW, SQUARE_rPAW, SQUARE_MUSHROOM, SQUARE_SCALLOP, KITE_KITE, KITE_BARREL, KITE_SHIELD, KITE_lFIST, KITE_rFIST, KITE_lPAW, KITE_rPAW, KITE_MUSHROOM, KITE_SCALLOP, BARREL_BARREL, BARREL_SHIELD, BARREL_lFIST, BARREL_rFIST, BARREL_lPAW, BARREL_rPAW, BARREL_MUSHROOM, BARREL_SCALLOP, SHIELD_SHIELD, SHIELD_lFIST, SHIELD_rFIST, SHIELD_lPAW, SHIELD_rPAW, SHIELD_MUSHROOM, SHIELD_SCALLOP, llFIST_lFIST, lFIST_rFIST, lFIST_lPAW, lFIST_rPAW, lFIST_MUSHROOM, lFIST_SCALLOP, rFIST_rFIST, rFIST_lPAW, rFIST_rPAW, rFIST_MUSHROOM, rFIST_SCALLOP, lPAW_lPAW, lPAW_rPAW, lPAW_MUSHROOM, lPAW_SCALLOP, rPAW_rPAW, rPAW_MUSHROOM, rPAW_SCALLOP, MUSHROOM_MUSHROOM, MUSHROOM_SCALLOP, SCALLOP_SCALLOP];
-
-	function SCPInit() {
-		SCPInit = $.noop;
+	function CSPInit() {
+		CSPInit = $.noop;
 		var s = new Shape_Shape;
-		for (var scp = 0; scp < scpcases.length; scp++) {
-			var curCases = scpcases[scp];
+		for (var csp = 0; csp < cspcases.length; csp++) {
+			var curCases = [cspcases[csp]];
 			for (var i = 0; i < curCases.length; i++) {
 				var shape = curCases[i];
 				do {
@@ -815,26 +806,27 @@ TODO:
 					curCases.push(shape);
 				}
 			}
+			cspcases[csp] = curCases;
 		}
 	}
 
-	var scpfilter = ['x44-STAR', 'x53-STAR', 'x62-STAR', 'x71-STAR', 'x8-STAR', 'x222-PAIRED', 'x222-PERPENDICULAR', 'x222-PARALLEL', 'x33-PAIRED', 'x33-PERPENDICULAR', 'x33-PARALLEL', 'x321-PAIRED', 'x321-PERPENDICULAR', 'x321-PARALLEL', 'x312-PAIRED', 'x312-PERPENDICULAR', 'x312-PARALLEL', 'L42-PAIRED', 'L42-PERPENDICULAR', 'L42-PARALLEL', 'R42-PAIRED', 'R42-PERPENDICULAR', 'R42-PARALLEL', 'x411-PAIRED', 'x411-PERPENDICULAR', 'x411-PARALLEL', 'L51-PAIRED', 'L51-PERPENDICULAR', 'L51-PARALLEL', 'R51-PAIRED', 'R51-PERPENDICULAR', 'R51-PARALLEL', 'x6-PAIRED', 'x6-PERPENDICULAR', 'x6-PARALLEL', 'SQUARE-SQUARE', 'SQUARE-KITE', 'SQUARE-BARREL', 'SQUARE-SHIELD', 'SQUARE-lFIST', 'SQUARE-rFIST', 'SQUARE-lPAW', 'SQUARE-rPAW', 'SQUARE-MUSHROOM', 'SQUARE-SCALLOP', 'KITE-KITE', 'KITE-BARREL', 'KITE-SHIELD', 'KITE-lFIST', 'KITE-rFIST', 'KITE-lPAW', 'KITE-rPAW', 'KITE-MUSHROOM', 'KITE-SCALLOP', 'BARREL-BARREL', 'BARREL-SHIELD', 'BARREL-lFIST', 'BARREL-rFIST', 'BARREL-lPAW', 'BARREL-rPAW', 'BARREL-MUSHROOM', 'BARREL-SCALLOP', 'SHIELD-SHIELD', 'SHIELD-lFIST', 'SHIELD-rFIST', 'SHIELD-lPAW', 'SHIELD-rPAW', 'SHIELD-MUSHROOM', 'SHIELD-SCALLOP', 'llFIST-lFIST', 'lFIST-rFIST', 'lFIST-lPAW', 'lFIST-rPAW', 'lFIST-MUSHROOM', 'lFIST-SCALLOP', 'rFIST-rFIST', 'rFIST-lPAW', 'rFIST-rPAW', 'rFIST-MUSHROOM', 'rFIST-SCALLOP', 'lPAW-lPAW', 'lPAW-rPAW', 'lPAW-MUSHROOM', 'lPAW-SCALLOP', 'rPAW-rPAW', 'rPAW-MUSHROOM', 'rPAW-SCALLOP', 'MUSHROOM-MUSHROOM', 'MUSHROOM-SCALLOP', 'SCALLOP-SCALLOP'];
-	var scpprobs = [10, 16, 16, 16, 16, 24, 16, 8, 72, 48, 24, 72, 48, 24, 72, 48, 24, 96, 64, 32, 96, 64, 32, 96, 64, 32, 72, 48, 24, 72, 48, 24, 72, 48, 24, 4, 16, 16, 24, 24, 24, 16, 16, 16, 24, 16, 32, 48, 48, 48, 32, 32, 32, 48, 16, 48, 48, 48, 32, 32, 32, 48, 36, 72, 72, 48, 48, 48, 72, 36, 72, 48, 48, 48, 72, 36, 48, 48, 48, 72, 16, 32, 32, 48, 16, 32, 48, 16, 48, 36];
+	var cspfilter = ['Star-x8', 'Star-x71', 'Star-x62', 'Star-x44', 'Star-x53', 'Square-Scallop', 'Square-rPawn', 'Square-Shield', 'Square-Barrel', 'Square-rFist', 'Square-Mushroom', 'Square-lPawn', 'Square-Square', 'Square-lFist', 'Square-Kite', 'Kite-Scallop', 'Kite-rPawn', 'Kite-Shield', 'Kite-Barrel', 'Kite-rFist', 'Kite-Mushroom', 'Kite-lPawn', 'Kite-lFist', 'Kite-Kite', 'Barrel-Scallop', 'Barrel-rPawn', 'Barrel-Shield', 'Barrel-Barrel', 'Barrel-rFist', 'Barrel-Mushroom', 'Barrel-lPawn', 'Barrel-lFist', 'Scallop-Scallop', 'Scallop-rPawn', 'Scallop-Shield', 'Scallop-rFist', 'Scallop-Mushroom', 'Scallop-lPawn', 'Scallop-lFist', 'Shield-rPawn', 'Shield-Shield', 'Shield-rFist', 'Shield-Mushroom', 'Shield-lPawn', 'Shield-lFist', 'Mushroom-rPawn', 'Mushroom-rFist', 'Mushroom-Mushroom', 'Mushroom-lPawn', 'Mushroom-lFist', 'Pawn-rPawn-rPawn', 'Pawn-rPawn-lPawn', 'Pawn-rPawn-rFist', 'Pawn-lPawn-rFist', 'Pawn-lPawn-lPawn', 'Pawn-rPawn-lFist', 'Pawn-lPawn-lFist', 'Fist-rFist-rFist', 'Fist-lFist-rFist', 'Fist-lFist-lFist', 'Pair-x6', 'Pair-r42', 'Pair-x411', 'Pair-r51', 'Pair-l42', 'Pair-l51', 'Pair-x33', 'Pair-x312', 'Pair-x321', 'Pair-x222', 'L-x6', 'L-r42', 'L-x411', 'L-r51', 'L-l42', 'L-l51', 'L-x33', 'L-x312', 'L-x321', 'L-x222', 'Line-x6', 'Line-r42', 'Line-x411', 'Line-r51', 'Line-l42', 'Line-l51', 'Line-x33', 'Line-x312', 'Line-x321', 'Line-x222'];
+	var cspprobs = [16, 16, 16, 10, 16, 24, 16, 24, 16, 24, 16, 16, 4, 24, 16, 48, 32, 48, 32, 48, 32, 32, 48, 16, 48, 32, 48, 16, 48, 32, 32, 48, 36, 48, 72, 72, 48, 48, 72, 48, 36, 72, 48, 48, 72, 32, 48, 16, 32, 48, 16, 32, 48, 48, 16, 48, 48, 36, 72, 36, 72, 96, 96, 72, 96, 72, 72, 72, 72, 24, 48, 64, 64, 48, 64, 48, 48, 48, 48, 16, 24, 32, 32, 24, 32, 24, 24, 24, 24, 8];
 
 	var search = new Search_Search;
 
 	function square1SolverGetRandomScramble(type, length, cases) {
 		Shape_$clinit();
 		Square_$clinit();
-		SCPInit();
+		CSPInit();
 		search.sq1lvcb = type == 'sqrs1';
-		var idx = mathlib.rndEl(scpcases[cases]);
+		var idx = mathlib.rndEl(cspcases[cases]);
 		var scrambleString = Search_solution(search, FullCube_randomCube(idx));
 		return scrambleString;
 	}
 
-	scrMgr.reg('sqrs', square1SolverGetRandomScramble, [scpfilter, scpprobs])
-		('sqrs1', square1SolverGetRandomScramble, [scpfilter, scpprobs]);
+	scrMgr.reg('sqrs', square1SolverGetRandomScramble, [cspfilter, cspprobs])
+		('sqrs1', square1SolverGetRandomScramble, [cspfilter, cspprobs]);
 
 
 	return {

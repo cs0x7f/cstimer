@@ -674,14 +674,29 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (/^scr/.exec(signal)) {
 				return;
 			}
-			fdiv.empty().append(toolDiv.append(nameSelect, dateSelect, scrSelect, ' ',
-				calcSpan.unbind('click').click(updateInfo), '<br>', infoDiv.unbind('click').click(function(e) {
-					infoClick(hugeStats, hugeTimesAt, e);
-				})));
+			fdiv.empty().append(toolDiv);
+			calcSpan.unbind('click').click(updateInfo);
+			infoDiv.unbind('click').click(function(e) {
+				infoClick(hugeStats, hugeTimesAt, e);
+			});
 		}
 
+		var prevSessionData = {};
 		function procSignal(signal, value) {
 			if (value[0] == 'sessionData') {
+				var isModified = false;
+				var curSessionData = JSON.parse(value[1]);
+				$.each(curSessionData, function(idx, val) {
+					if (!prevSessionData[idx] ||
+						val['name'] != prevSessionData[idx]['name'] ||
+						val['scr'] != prevSessionData[idx]['scr']) {
+						isModified = true;
+					}
+				});
+				prevSessionData = JSON.parse(value[1]);
+				if (!isModified) {
+					return;
+				}
 				var sessionData = JSON.parse(value[1]);
 				var nameList = [];
 				var scrList = [];
@@ -703,11 +718,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		$(function() {
+			toolDiv.append(nameSelect, dateSelect, scrSelect, ' ', calcSpan, '<br>', infoDiv);
 			if (typeof tools != "undefined") {
 				tools.regTool('hugestats', TOOLS_HUGESTATS, execFunc);
 			}
 			kernel.regListener('labelstat', 'property', procSignal, /^sessionData$/);
-
 		});
 
 		return {
