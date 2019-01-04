@@ -19,9 +19,9 @@ var PROPERTY_SCRSIZE = 'Taille du mélange : ';
 var PROPERTY_SCRMONO = 'Mélange à espacement fixe';
 var PROPERTY_SCRLIM = 'Limiter la taille de la zone de mélange';
 var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange : ';
-var PROPERTY_SCRALIGN_STR = 'Centrer|Gauche|Droite';
+var PROPERTY_SCRALIGN_STR = 'Centré|Gauche|Droite';
 var EXPORT_DATAEXPORT = 'Importer/Exporter des données';
-var EXPORT_TOFILE = 'Exporters vers';
+var EXPORT_TOFILE = 'Exporter vers';
 var EXPORT_FROMFILE = 'Importer de';
 var EXPORT_TOSERV = 'Exporter vers un serveur';
 var EXPORT_FROMSERV = 'Importer d\'un serveur';
@@ -29,7 +29,7 @@ var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'S\'il vous plaît, rentrez votre compte (seulement des lettres ou des chiffres) : ';
 var EXPORT_INVID = 'Seul sont autorisés les lettres et les chiffres !';
 var EXPORT_ERROR = 'Des erreurs se sont produites...';
-var EXPORT_NODATA = 'Aucune donnée n\'a été trouvé sur votre compte';
+var EXPORT_NODATA = 'Aucune donnée n\'a été trouvée sur votre compte';
 var EXPORT_UPLOADED = 'Envoyé avec succès';
 var BUTTON_SCRAMBLE = 'MELA-<br>NGE';
 var BUTTON_TOOLS = 'OUTILS';
@@ -61,7 +61,7 @@ var PROPERTY_VIEW = 'Le style de l\'interface est :';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Bureau';
 var COLOR_EXPORT = 'Please save the string for import: ';
 var COLOR_IMPORT = 'Please input the string exported: ';
-var COLOR_FAIL = 'Données incorrectes, Importation échoué';
+var COLOR_FAIL = 'Données incorrectes, Import échoué';
 var PROPERTY_FONTCOLOR_STR = 'Noir|Blanc';
 var PROPERTY_COLOR_STR = 'Aléatoire|Style1|Style2|Style3|Noir|Blanc|Style6|Personnalisée|Exporter...|Importer...';
 var PROPERTY_FONT = 'Police du chronomètre : ';
@@ -110,14 +110,14 @@ var scrdata = [
 		['3x3 mbld', "r3ni", 5]
 	]],
 	['Entrer', [
-		['外部', "input", 0]
+		['Externe', "input", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['2x2x2', [
 		["WCA", "222so", 0],
-		['Algorithme optimal', "222o", 0],
+		['État aléatoire optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -336,7 +336,7 @@ var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'Moyenne';
-var STATS_SOLVE = 'Résolution';
+var STATS_SOLVE = 'Résolutions';
 var STATS_TIME = 'Temps';
 var STATS_SESSION = 'Session';
 var STATS_SESSION_NAME = 'Edit session name';
@@ -355,7 +355,7 @@ var PROPERTY_SCR2SS = 'Créer une nouvelle session lors du changement de type de
 var PROPERTY_SS2SCR = 'Restaurer le type de mélange lors d\'un changement de session';
 var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
 var PROPERTY_STATINV = 'Inverser la liste des temps';
-var PROPERTY_STATAL = 'Indiquateurs statistiques : ';
+var PROPERTY_STATAL = 'Indicateurs statistiques : ';
 var PROPERTY_DELMUL = 'Activer la suppression multiple';
 var MODULE_NAMES = {
 	"kernel": 'Global',
