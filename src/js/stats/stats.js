@@ -829,42 +829,47 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			div.empty();
-
 			var data = times_stats.getMinMaxInt();
-
 			if (!data) {
 				return;
 			}
-
 			var max = data[0],
 				min = data[1],
 				diff = data[2];
-
+			max = ~~(max / diff);
+			min = ~~(min / diff);
 			var dis = {};
-
+			var keep = {};
 			var cntmax = 0;
-
+			keep[max + 1] = -1;
 			for (var i = 0; i < times.length; i++) {
 				var value = timeAt(i);
 				if (value != -1) {
 					var cur = ~~(value / diff);
 					dis[cur] = (dis[cur] || 0) + 1;
 					cntmax = Math.max(dis[cur], cntmax);
+					keep[cur] = i;
+				} else {
+					keep[max + 1] = i;
 				}
 			}
-
+			for (var i = max; i > min; i--) {
+				keep[i] = Math.max(keep[i + 1], keep[i] || -1);
+			}
 			var str = [];
+			var cumDis = 0;
 			var pattern = diff >= 1000 ? /[^\.]+(?=\.)/ : /[^\.]+\.[\d]/;
-			var lablen = kpretty(~~(max / diff) * diff).match(pattern)[0].length;
-			for (var i = ~~(min / diff); i <= ~~(max / diff); i++) {
+			var lablen = kpretty(max * diff).match(pattern)[0].length;
+			for (var i = min; i <= max; i++) {
 				var label = kpretty(i * diff).match(pattern)[0];
-				var len = label.length;
-				for (var j = 0; j < lablen - len; j++) {
-					label = "&nbsp;" + label;
-				}
-				str.push(label + "+: " + '<span class="cntbar" style="width: ' + (dis[i] || 0) / cntmax * 10 + 'em;">' + (dis[i] || 0) + "</span>");
+				var label2 = kpretty((i + 1) * diff).match(pattern)[0];
+				dis[i] = dis[i] || 0;
+				cumDis += dis[i];
+				label = mathlib.valuedArray(lablen - label.length, '&nbsp;').join('') + label;
+				label2 = mathlib.valuedArray(lablen - label2.length, '&nbsp;').join('') + label2;
+				str.push('<tr><td>' + label + '+</td><td><span class="cntbar" style="width: ' + dis[i] / cntmax * 5 + 'em;">' + dis[i] + '</span></td><td>&nbsp;&lt;' + label2 + '</td><td><span class="cntbar" style="width: ' + cumDis / times.length * 5 + 'em; white-space: nowrap;">' + (times.length - keep[i + 1] - 1) + '/' + cumDis + '</span></td></tr>');
 			}
-			div.html(str.join('<br>'));
+			div.html('<table style="border:none;">' + str.join('') + '</table>');
 		}
 
 		function execFunc(fdiv, signal) {

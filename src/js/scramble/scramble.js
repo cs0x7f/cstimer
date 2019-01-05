@@ -466,14 +466,6 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.showDialog([scrOptDiv, procDialog, null, procDialog], 'scropt', 'Scramble Options');
 	}
 
-	function getLastScramble() {
-		return [lasttype, lastscramble];
-	}
-
-	function getCurScramble() {
-		return [type, scramble];
-	}
-
 	function parseInput(str) {
 		if (str.match(/^\s*$/)) {
 			return false;
