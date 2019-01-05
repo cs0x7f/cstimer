@@ -1,6 +1,6 @@
 "use strict";
 
-var stackmat = (function() {
+var stackmat = execMain(function() {
 
 	//========== Hardware Part ==========
 	var audio_context;
@@ -280,4 +280,4 @@ var stackmat = (function() {
 			callback = func;
 		}
 	}
-})();
+});

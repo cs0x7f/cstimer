@@ -2,7 +2,7 @@
 
 var DEBUG = false;
 
-var GiikerCube = (function() {
+var GiikerCube = execMain(function() {
 
 	var SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
 	var CHARACTERISTIC_UUID = '0000aadc-0000-1000-8000-00805f9b34fb';
@@ -194,4 +194,4 @@ var GiikerCube = (function() {
 		getBatteryLevel: getBatteryLevel,
 		parseStateTest: parseStateTest
 	}
-})();
+});

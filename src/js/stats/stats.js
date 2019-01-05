@@ -1358,52 +1358,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			var prevSession = sessionIdx;
 			storage.get(idx, function(timesNew) {
-				// var maxTsNew = 0;
-				// var minTsNew = 1e300;
-				// for (var i = 0; i < timesNew.length; i++) {
-				// 	maxTsNew = Math.max(maxTsNew, timesNew[i][3] || 0);
-				// 	minTsNew = Math.min(minTsNew, timesNew[i][3] || 0);
-				// }
-				// var maxTs = 0;
-				// var minTs = 1e300;
-				// for (var i = 0; i < times.length; i++) {
-				// 	maxTs = Math.max(maxTs, times[i][3] || 0);
-				// 	minTs = Math.min(minTs, times[i][3] || 0);
-				// }
-				// if (maxTsNew <= minTs) { // correct
-				// 	Array.prototype.push.apply(timesNew, times);
-				// } else if (maxTs <= minTsNew) { // should exchange
-				// 	Array.prototype.push.apply(times, timesNew);
-				// 	timesNew = times;
-				// } else { // should sort
-				// 	var shouldSort = confirm('Timestamps of two sessions are interleaved, should be sorted after merge?');
-				// 	if (shouldSort) {
-				// 		var newArray = [];
-				// 		for (var i = 0; i < timesNew.length; i++) {
-				// 			newArray.push(i);
-				// 		}
-				// 		for (var i = 0; i < times.length; i++) {
-				// 			newArray.push(~i);
-				// 		}
-				// 		newArray.sort(function(a, b) {
-				// 			var vala = (a < 0 ? times[~a] : timesNew[a])[3] || 0;
-				// 			var valb = (b < 0 ? times[~b] : timesNew[b])[3] || 0;
-				// 			if (vala != valb) {
-				// 				return vala - valb;
-				// 			}
-				// 			if ((a ^ b) < 0) {
-				// 				return b - a;
-				// 			}
-				// 			return (a - b) ^ (a >> 31);
-				// 		});
-				// 		for (var i = 0; i < newArray.length; i++) {
-				// 			newArray[i] = newArray[i] < 0 ? times[~newArray[i]] : timesNew[newArray[i]];
-				// 		}
-				// 		timesNew = newArray;
-				// 	} else {
-				// 		Array.prototype.push.apply(timesNew, times);
-				// 	}
-				// }
 				Array.prototype.push.apply(timesNew, times);
 				storage.set(idx, timesNew, function() {
 					delete sessionData[idx]['stat'];
@@ -1433,28 +1387,29 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<option value="x">' + ops[4] + '</option>' +
 				'<option value="v">' + STATS_EXPORTCSV + '</option>' +
 				'</select>';
+			var uClk = rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>';
+			var dClk = rank == ssSorted.length ? '<td></td>' : '<td class="click" data="d">&#8595;</td>';
+			var scrTd = '<td>' + scramble.getTypeName(ssData['scr']) + '</td>';
+			var ssTd0 = '<td>' + ssStat[0] + '</td>';
+			var ssTd1 = '<td>' + ssStat[1] + '</td>';
+			var dateVal = mathlib.time2str((sessionData[idx]['date'] || [])[1], '%Y-%M-%D');
 			return '<tr class="' + (idx == sessionIdx ? 'selected mhide' : 'mhide') + '">' +
 				'<td class="click" data="s">' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
-				'<td>' + ssStat[0] + '</td>' +
-				'<td>' + ssStat[1] + '</td>' +
-				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
-				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
+				ssTd0 + ssTd1 +
+				'<td>' + dateVal + '</td>' +
+				scrTd +
 				'<td>' + ssData['phases'] + '</td>' +
-				(rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>') +
-				(rank == ssSorted.length ? '<td></td>' : '<td class="click" data="d">&#8595;</td>') +
+				uClk + dClk +
 				'<td class="seltd">' + sel + '</td>' +
 				'</tr>' +
 
 				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow t">' +
 				'<td class="click" data="s" rowspan=2>' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
-				'<td>' + ssStat[0] + '</td>' +
-				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
-				(rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>') +
-				(rank == ssSorted.length ? '<td></td>' : '<td class="click" data="d">&#8595;</td>') +
+				ssTd0 + scrTd + uClk + dClk +
 				'</tr>' +
 				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow b">' +
-				'<td>' + ssStat[1] + '</td>' +
-				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '&nbsp;' + ssData['phases'] + 'P.</td>' +
+				ssTd1 +
+				'<td>' + dateVal + '&nbsp;' + ssData['phases'] + 'P.</td>' +
 				'<td class="seltd" colspan=2>' + sel + '</td>' +
 				'</tr>';
 		}

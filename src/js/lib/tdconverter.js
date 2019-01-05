@@ -1,6 +1,6 @@
 "use strict";
 
-var TimerDataConverter = (function() {
+var TimerDataConverter = execMain(function() {
 
 	function readCSV(data, spliter) {
 		data = data.split(/\r?\n/g);
@@ -198,4 +198,4 @@ var TimerDataConverter = (function() {
 	//return [session1, session2, session3, ...]
 	//session = {'name': name, 'scr': scr, 'phases': phases, 'times': times}
 	return convert;
-})();
+});

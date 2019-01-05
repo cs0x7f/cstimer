@@ -1,6 +1,6 @@
 "use strict";
 
-var TimeStat = (function() {
+var TimeStat = execMain(function() {
 
 	function TimeStat(avgSizes, timesLen, timeAt, timeSort) {
 		this.avgSizes = avgSizes.slice();
@@ -175,4 +175,4 @@ var TimeStat = (function() {
 	}
 
 	return TimeStat;
-})();
+});
