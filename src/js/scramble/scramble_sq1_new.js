@@ -226,9 +226,6 @@ TODO:
 			bottom = 0;
 		for (var i = len - 1; i >= 0; i--) {
 			var val = obj.Search_move[i];
-			if (i == obj.Search_length1 - 2 && obj.sq1lvcb) {
-				s += "//";
-			}
 			//console.log(val);
 			if (val > 0) {
 				val = 12 - val;
@@ -237,10 +234,14 @@ TODO:
 				val = 12 + val;
 				bottom = (val > 6) ? (val - 12) : val;
 			} else {
+				var twst = "/";
+				if (i == obj.Search_length1 - 1) {
+					twst = "`/`";
+				}
 				if (top == 0 && bottom == 0) {
-					s += "/"
+					s += twst;
 				} else {
-					s += " (" + top + "," + bottom + ")/";
+					s += " (" + top + "," + bottom + ")" + twst;
 				}
 				top = bottom = 0;
 			}
@@ -819,14 +820,12 @@ TODO:
 		Shape_$clinit();
 		Square_$clinit();
 		CSPInit();
-		search.sq1lvcb = type == 'sqrs1';
-		var idx = mathlib.rndEl(cspcases[cases]);
+		var idx = mathlib.rndEl(cspcases[scrMgr.fixCase(cases, cspprobs)]);
 		var scrambleString = Search_solution(search, FullCube_randomCube(idx));
 		return scrambleString;
 	}
 
-	scrMgr.reg('sqrs', square1SolverGetRandomScramble, [cspfilter, cspprobs])
-		('sqrs1', square1SolverGetRandomScramble, [cspfilter, cspprobs]);
+	scrMgr.reg('sqrs', square1SolverGetRandomScramble, [cspfilter, cspprobs]);
 
 
 	return {

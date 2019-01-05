@@ -218,7 +218,7 @@
 			for (j = 0; j < x; j++) {
 				ret += (j % 2 == 0 ? "R" : "D") + rndEl(["++", "--"]) + " ";
 			}
-			ret += "U" + (ret.endsWith("-- ") ? "'\n" : "&nbsp;\n");
+			ret += "U" + (ret.endsWith("-- ") ? "'\n" : "~\n");
 		}
 		return ret;
 	}
@@ -231,7 +231,7 @@
 			for (j = 0; j < x / 2; j++) {
 				ret += rndEl(["+", "-"]) + rndEl(["+", "-"]) + " ";
 			}
-			ret += "U" + rndEl(["'\n", "&nbsp;\n"]);
+			ret += "U" + rndEl(["'\n", "~\n"]);
 		}
 		return ret;
 	}

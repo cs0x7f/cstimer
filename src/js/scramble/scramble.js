@@ -103,6 +103,10 @@ var scrMgr = (function(rn, rndEl) {
 		return mathlib.rndProb(ret);
 	}
 
+	function fixCase(cases, probs) {
+		return cases == undefined ? mathlib.rndProb(probs) : cases;
+	}
+
 	return {
 		reg: regScrambler,
 		scramblers: scramblers,
@@ -110,7 +114,8 @@ var scrMgr = (function(rn, rndEl) {
 		probs: probs,
 		mega: mega,
 		formatScramble: formatScramble,
-		rndState: rndState
+		rndState: rndState,
+		fixCase: fixCase
 	}
 })(mathlib.rn, mathlib.rndEl);
 
@@ -174,22 +179,28 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function procLastClick() {
 		isDisplayLast = true;
-		sdiv.html(lastscramble);
+		sdiv.html(scrStd(lastscramble, true));
 		lastClick.removeClass('click').unbind('click');
 		if (lastscramble != undefined) {
-			kernel.pushSignal('scrambleX', [lasttype, lastscramble]);
+			kernel.pushSignal('scrambleX', [lasttype, scrStd(lastscramble)]);
 		}
 	}
 
 	function procNextClick() {
 		if (isDisplayLast) {
 			isDisplayLast = false;
-			sdiv.html(scramble);
+			sdiv.html(scrStd(scramble, true));
 			lastClick.addClass('click').unbind('click').click(procLastClick);
-			kernel.pushSignal('scrambleX', [type, scramble]);
+			kernel.pushSignal('scrambleX', [type, scrStd(scramble)]);
 		} else {
 			genScramble();
 		}
+	}
+
+	function scrStd(scramble, forDisplay) {
+		return scramble
+			.replace(/~/g, forDisplay ? '&nbsp;' : '')
+			.replace(/`([^']*)`/g, forDisplay && kernel.getProp('sq1lvcb', false) ? '<u>$1</u>' : '$1');
 	}
 
 	function doScrambleIt() {
@@ -278,8 +289,8 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function scrambleOK(scrStr) {
 		scramble = (scrStr || scramble).replace(/(\s*)$/, "");
-		sdiv.html(scramble);
-		kernel.pushSignal('scramble', [type, scramble.replace(/&nbsp;/g, ' ')]);
+		sdiv.html(scrStd(scramble, true));
+		kernel.pushSignal('scramble', [type, scrStd(scramble)]);
 	}
 
 	function inputOK() {
@@ -333,18 +344,6 @@ var scramble = execMain(function(rn, rndEl) {
 		var chkBoxList = [];
 		var chkLabelList = [];
 		var modified = false;
-		if (type == 'sqrs') {
-			var sq1lvcbCheck = $('<input type="checkbox">').change(function() {
-				if ($(this)[0].checked) {
-					kernel.setProp('sq1lvcb', true);
-				} else {
-					kernel.setProp('sq1lvcb', false);
-				}
-				genScramble();
-			});
-			sq1lvcbCheck[0].checked = kernel.getProp('sq1lvcb', false);
-			scrFltDiv.append($('<label>').append(sq1lvcbCheck, 'Use /// when leaving cubeshape'));
-		}
 		if (type in filters) {
 			var data = filters[type];
 			var curData = data;
@@ -523,13 +522,13 @@ var scramble = execMain(function(rn, rndEl) {
 				} else if (value[1] == 'r') {
 					div.css('text-align', 'right');
 				}
-			} else if (value[0] == 'sq1lvcb') {
-				alias['sqrs'] = value[1] ? 'sqrs1' : 'sqrs';
 			} else if (value[0] == 'scrFast') {
 				alias['444wca'] = value[1] ? '444m' : '444wca';
 				if (type == '444wca') {
 					genScramble();
 				}
+			} else if (value[0] == 'sq1lvcb') {
+				sdiv.html(scrStd((isDisplayLast ? lastscramble : scramble) || '', true));
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -632,7 +631,7 @@ var scramble = execMain(function(rn, rndEl) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
 		}
 		kernel.getProp('scrType', '333');
-		kernel.getProp('sq1lvcb', false);
+		kernel.regProp('scramble', 'sq1lvcb', 0, 'Use /// when leaving cubeshape', [false]);
 
 		select.change(loadSelect2);
 		select2.change(loadScrOptsAndGen);
