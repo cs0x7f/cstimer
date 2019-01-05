@@ -641,6 +641,16 @@ select {
 	max-width: 7em;
 }
 
+td.seltd {
+	padding: 0;
+	width: 0;
+}
+
+td.seltd > select {
+	width: 100%;
+	min-width: 3em;
+}
+
 input:disabled {
 	cursor: default;
 	border: none;

@@ -1255,17 +1255,20 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function mgrClick(e) {
 			var target = $(e.target);
-			if (!target.is('td, th') || !target.hasClass('click')) {
+			if (!target.is('td, th, select') || !target.hasClass('click') && !target.is('select')) {
 				return;
 			}
 			var row = target.parent();
+			while (!row.is('tr')) {
+				row = row.parent();
+			}
 			var child = row.children();
-			if (child.length < 7) {
+			if (child.length < 5) {
 				child = row.prev().children();
 			}
 			var rank = ~~child.first().html().replace(/-.*$/, "");
 			var idx = ssSorted[rank - 1];
-			switch (target.attr('data')) {
+			switch (target.attr('data') || target.val()) {
 				case 'r':
 					renameSession(idx);
 					break;
@@ -1319,7 +1322,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 						}.bind(undefined, newTimes), 0, newTimes.length);
 					});
 					break;
+				default:
+					return;
 			}
+			kernel.blur();
 			fixSessionSelect();
 			genMgrTable();
 		}
@@ -1418,6 +1424,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 				ssStat[0] = (s[0] - s[1]) + '/' + s[0];
 				ssStat[1] = kpround(s[2]);
 			}
+			var ops = STATS_SSMGR_OPS.split('|');
+			var sel = '<select>' +
+				'<option value="">...</option>' +
+				'<option value="r">' + ops[0] + '</option>' +
+				'<option value="+">' + ops[1] + '</option>' +
+				'<option value="' + (idx == sessionIdx ? ('p">' + ops[2]) : ('m">' + ops[3])) + '</option>' +
+				'<option value="x">' + ops[4] + '</option>' +
+				'<option value="v">' + STATS_EXPORTCSV + '</option>' +
+				'</select>';
 			return '<tr class="' + (idx == sessionIdx ? 'selected mhide' : 'mhide') + '">' +
 				'<td class="click" data="s">' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
 				'<td>' + ssStat[0] + '</td>' +
@@ -1425,30 +1440,22 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
 				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
 				'<td>' + ssData['phases'] + '</td>' +
-				'<td class="click" data="v">&#128190;</td>' +
-				'<td class="click" data="u">&#8593;</td>' +
-				'<td class="click" data="d">&#8595;</td>' +
-				'<td class="click" data="r">&#9997;</td>' +
-				'<td class="click" data="+">+</td>' +
-				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
-				'<td class="click" data="x">X</td>' + '</tr>' +
+				(rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>') +
+				(rank == ssSorted.length ? '<td></td>' : '<td class="click" data="d">&#8595;</td>') +
+				'<td class="seltd">' + sel + '</td>' +
+				'</tr>' +
 
 				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow t">' +
 				'<td class="click" data="s" rowspan=2>' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
 				'<td>' + ssStat[0] + '</td>' +
 				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
-				'<td>' + ssData['phases'] + '</td>' +
-				'<td class="click" data="u">&#8593;</td>' +
-				'<td class="click" data="r">&#9997;</td>' +
-				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
+				(rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>') +
+				(rank == ssSorted.length ? '<td></td>' : '<td class="click" data="d">&#8595;</td>') +
 				'</tr>' +
 				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow b">' +
 				'<td>' + ssStat[1] + '</td>' +
-				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
-				'<td class="click" data="v">&#128190;</td>' +
-				'<td class="click" data="d">&#8595;</td>' +
-				'<td class="click" data="+">+</td>' +
-				'<td class="click" data="x">X</td>' +
+				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '&nbsp;' + ssData['phases'] + 'P.</td>' +
+				'<td class="seltd" colspan=2>' + sel + '</td>' +
 				'</tr>';
 		}
 
@@ -1466,7 +1473,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				ssNames = ssNames.slice(0, 42) + '...';
 			}
 			return '<tr' + (isInGroup ? ' class="selected"' : '') + '>' +
-				'<td class="click" data="e" colspan=12 style="text-align:left;">' +
+				'<td class="click" data="e" colspan=9 style="text-align:left;">' +
 				(isInGroup ? '*' : '') + '[+] ' + group.length + ' session(s): ' + ssNames + '</td></tr>';
 		}
 
@@ -1482,16 +1489,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function genMgrTable() {
 			fixRank();
 			ssmgrTable.empty().append(
-				'<caption>Operations: move up, move down, rename, create, merge/split, delete</caption>' +
 				'<tr class="mhide"><th class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th>' + STATS_AVG +
 				'</th><th>' + STATS_DATE +
 				'</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
-				'</th><th>P.</th><th>csv</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>' +
+				'</th><th>P.</th><th colspan=3>OP</th></tr>' +
 				'<tr class="mshow t"><th rowspan=2 class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
-				'</th><th>P.</th><th colspan=3 rowspan=2>' + STATS_SSMGR_OP + '</th></tr>' +
-				'<tr class="mshow b"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + '</th><th>csv</th></tr>'
+				'</th><th colspan=2 rowspan=2>OP</th></tr>' +
+				'<tr class="mshow b"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + ' & P.</th></tr>'
 			);
 
 			var groups = [];
@@ -1515,7 +1521,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					}
 				}
 			}
-			ssmgrTable.unbind('click').click(mgrClick);
+			ssmgrTable.unbind('click').click(mgrClick).unbind('change').change(mgrClick);
 		}
 
 		function showMgrTable() {
