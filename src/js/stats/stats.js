@@ -1310,6 +1310,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 				case 'gs':
 					byGroup = 'scr';
 					break;
+				case 'v':
+					storage.get(idx, function(newTimes) {
+						exportCSV(new TimeStat([], newTimes.length, function(times, idx) {
+							return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
+						}.bind(undefined, newTimes), dnfsort), function(times, idx) {
+							return times[idx];
+						}.bind(undefined, newTimes), 0, newTimes.length);
+					});
+					break;
 			}
 			fixSessionSelect();
 			genMgrTable();
@@ -1416,6 +1425,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
 				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
 				'<td>' + ssData['phases'] + '</td>' +
+				'<td class="click" data="v">&#128190;</td>' +
 				'<td class="click" data="u">&#8593;</td>' +
 				'<td class="click" data="d">&#8595;</td>' +
 				'<td class="click" data="r">&#9997;</td>' +
@@ -1427,13 +1437,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<td class="click" data="s" rowspan=2>' + rank + '-' + ssData['name'] + (idx == sessionIdx ? '*' : '') + '</td>' +
 				'<td>' + ssStat[0] + '</td>' +
 				'<td>' + scramble.getTypeName(ssData['scr']) + '</td>' +
+				'<td>' + ssData['phases'] + '</td>' +
 				'<td class="click" data="u">&#8593;</td>' +
 				'<td class="click" data="r">&#9997;</td>' +
 				'<td class="click" data=' + (idx == sessionIdx ? '"p">&#8697;' : '"m">&#8676;') + '</td>' +
 				'</tr>' +
 				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow b">' +
 				'<td>' + ssStat[1] + '</td>' +
-				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '&nbsp;' + ssData['phases'] + 'P.</td>' +
+				'<td>' + mathlib.time2str((sessionData[idx]['date'] || [])[1]).split(' ')[0] + '</td>' +
+				'<td class="click" data="v">&#128190;</td>' +
 				'<td class="click" data="d">&#8595;</td>' +
 				'<td class="click" data="+">+</td>' +
 				'<td class="click" data="x">X</td>' +
@@ -1475,11 +1487,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 				STATS_SOLVE + '</th><th>' + STATS_AVG +
 				'</th><th>' + STATS_DATE +
 				'</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
-				'</th><th>P.</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>' +
+				'</th><th>P.</th><th>csv</th><th colspan=6>' + STATS_SSMGR_OP + '</th></tr>' +
 				'<tr class="mshow t"><th rowspan=2 class="click" data=' + (byGroup == 'name' ? '"g">[+]' : '"gn">[-]') + ' ' + STATS_SSMGR_NAME + '</th><th>' +
 				STATS_SOLVE + '</th><th class="click" data=' + (byGroup == 'scr' ? '"g">[+]' : '"gs">[-]') + ' ' + SCRAMBLE_SCRAMBLE +
-				'</th><th colspan=3 rowspan=2>' + STATS_SSMGR_OP + '</th></tr>' +
-				'<tr class="mshow b"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + ' & P.</th></tr>'
+				'</th><th>P.</th><th colspan=3 rowspan=2>' + STATS_SSMGR_OP + '</th></tr>' +
+				'<tr class="mshow b"><th>' + STATS_AVG + '</th><th>' + STATS_DATE + '</th><th>csv</th></tr>'
 			);
 
 			var groups = [];
