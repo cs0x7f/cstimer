@@ -66,6 +66,10 @@ execMain(function() {
 		window.localStorage = {}
 	}
 
+	if (!('properties' in localStorage) && location.protocol != 'https:' && location.hostname != 'localhost') {
+		location.href = 'https:' + location.href.substring(location.protocol.length);
+	}
+
 	if (window.performance && window.performance.now) {
 		$.now = function() {
 			return Math.floor(window.performance.now());
