@@ -200,7 +200,7 @@ var scramble = execMain(function(rn, rndEl) {
 	function scrStd(scramble, forDisplay) {
 		return scramble
 			.replace(/~/g, forDisplay ? '&nbsp;' : '')
-			.replace(/`([^']*)`/g, forDisplay && kernel.getProp('sq1lvcb', false) ? '<u>$1</u>' : '$1');
+			.replace(/`([^']*)`/g, forDisplay && kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 	}
 
 	function doScrambleIt() {
@@ -519,7 +519,7 @@ var scramble = execMain(function(rn, rndEl) {
 				if (type == '444wca') {
 					genScramble();
 				}
-			} else if (value[0] == 'sq1lvcb') {
+			} else if (value[0] == 'scrKeyM') {
 				sdiv.html(scrStd((isDisplayLast ? lastscramble : scramble) || '', true));
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
@@ -607,7 +607,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast)|sq1lvcb$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50]);
@@ -617,13 +617,13 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['', ['', 'z2', "z'", 'z', "x'", 'x'],
 			['', 'z2', "z'", 'z', "x'", 'x']
 		]);
-		kernel.regProp('scramble', 'scrFast', 0, "Using fast scramble for 4x4x4 (non-official)", [false]);
+		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
+		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false]);
 
 		for (var i = 0; i < scrdata.length; i++) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
 		}
 		kernel.getProp('scrType', '333');
-		kernel.regProp('scramble', 'sq1lvcb', 0, 'Use /// when leaving cubeshape', [false]);
 
 		select.change(loadSelect2);
 		select2.change(loadScrOptsAndGen);
@@ -636,7 +636,6 @@ var scramble = execMain(function(rn, rndEl) {
 			kernel.blur();
 			kernel.setProp('scrHide', true);
 		}), ' ', select, ' ', select2, ' ', scrOpt), " <wbr>");
-		// title.append($('<nobr>').append(SCRAMBLE_LENGTH + ': ', scrLen), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
 		div.append(title, sdiv).appendTo('body');
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);

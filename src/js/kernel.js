@@ -149,7 +149,7 @@ var kernel = execMain(function() {
 						}
 						proSet[0].val(getProp(key));
 						proSet[0].change(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
+						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0]));
 					} else if (type == 2) { //range
 						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(getProp(key)).change(procClick);
 						var inc = $('<input type="button" value="+" name="' + key + '">').click(procClick);
@@ -158,7 +158,7 @@ var kernel = execMain(function() {
 							$('<span>').css('white-space', 'nowrap').append(dec, proSet[0], inc)));
 					} else if (type == 3) { //color
 						proSet[0] = $('<input type="color" name="' + key + '">').val(getProp(key)).change(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], proSet[0]));
+						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0]));
 					} else if (type == 4) { //multiple colors
 						var val = getProp(key).match(/#[0-9a-fA-F]{3}/g);
 						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(getProp(key));
@@ -166,9 +166,9 @@ var kernel = execMain(function() {
 						for (var i = 0; i < val.length; i++) {
 							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val(ui.nearColor(val[i], 0, true)).change(procClick));
 						}
-						curDiv[1].append($('<li />').append(proSet[2], proSet[0], colorsInput));
+						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0], colorsInput));
 					} else if (type == 5) { //select using a href
-						var item = $('<li />').append(proSet[2]);
+						var item = $('<li />').append(proSet[2], ': ');
 						var vals = proSet[3][1];
 						var strs = proSet[3][2];
 						for (var i = 0; i < vals.length; i++) {
@@ -654,9 +654,9 @@ var kernel = execMain(function() {
 			regProp('color', 'colmgm', 4, 'Megaminx', ['#fff#d00#060#81f#fc0#00b#ffb#8df#f83#7e0#f9f#999']);
 			regProp('color', 'colsq1', 4, 'SQ1', ['#ff0#f80#0f0#fff#f00#00f']);
 
-			regProp('scramble', 'wndScr', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
-			regProp('stats', 'wndStat', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
-			regProp('tools', 'wndTool', 1, 'Panel display style', ['n', ['n', 'f'], ['Normal', 'Flat']]);
+			regProp('ui', 'wndScr', 1, PROPERTY_WNDSCR, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
+			regProp('ui', 'wndStat', 1, PROPERTY_WNDSTAT, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
+			regProp('ui', 'wndTool', 1, PROPERTY_WNDTOOL, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
 
 			gray = $('#gray');
 

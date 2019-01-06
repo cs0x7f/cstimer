@@ -644,7 +644,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 			var s = [];
 			s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (hugeStats.timesLen - numdnf) + "/" + hugeStats.timesLen) + ', ' + hlstr[9].replace("%v", kpround(sessionmean)) + '</span>\n');
-			s.push('<span>' + 'Totally spent: %d'.replace("%d", kpretty(totalTime)) + '</span>\n');
+			s.push('<span>' + hlstr[12].replace("%d", kpretty(totalTime)) + '</span>\n');
 			s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + kpretty(hugeStats.bestTime) + '</span>');
 			s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + kpretty(hugeStats.worstTime) + "</span>\n");
 			var hasTable = false;
@@ -753,7 +753,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			var s = [];
 			s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats.timesLen - numdnf) + "/" + times_stats.timesLen) + ', ' + hlstr[9].replace("%v", kpround(sessionmean)) + '</span>\n');
-			s.push('<span>' + 'Totally spent: %d'.replace("%d", kpretty(totalTime)) + '</span>\n');
+			s.push('<span>' + hlstr[12].replace("%d", kpretty(totalTime)) + '</span>\n');
 			s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + kpretty(times_stats.bestTime) + '</span>');
 			s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + kpretty(times_stats.worstTime) + "</span>\n");
 			var hasTable = false;
@@ -1481,8 +1481,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function showMgrTable() {
 			genMgrTable();
-			kernel.showDialog([ssmgrDiv, 0, undefined, 0, ['Order by scramble', function() {
-				if (!confirm('Sort all session by scramble?')) {
+			kernel.showDialog([ssmgrDiv, 0, undefined, 0, [STATS_SSMGR_ORDER, function() {
+				if (!confirm(STATS_SSMGR_ODCFM)) {
 					return false;
 				}
 				var ssSorted = [];
