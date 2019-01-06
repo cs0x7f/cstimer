@@ -641,7 +641,7 @@ var kernel = execMain(function() {
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
-			regProp('color', 'col-font', 1, parr[0], ['#000000', ['#000000', '#ffffff'], PROPERTY_FONTCOLOR_STR.split('|')]);
+			regProp('color', 'col-font', 3, parr[0], ['#000000']);
 			regProp('color', 'col-back', 3, parr[1], ['#eeffcc']);
 			regProp('color', 'col-board', 3, parr[2], ['#ffdddd']);
 			regProp('color', 'col-button', 3, parr[3], ['#ffbbbb']);
