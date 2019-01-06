@@ -1,4 +1,4 @@
-<h1>csTimer  version 2018.12.07 - Professional Speedcubing/Training Timer</h1>
+<h1>csTimer  version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
 <p>csTimer is designed for speedsolving cuber. It supports scrambles of many types of puzzles include <b>all the WCA's official puzzle</b>; It integrated with <b>Xcross solver and eoline solver</b>; It supports time statistics, <b>multi-phase timing</b> and several functions supported by other similar software such as: 15s' inspection defined by WCA, etc.</p>
 <p>The timer works well on most browsers, such as: chrome(recommend), firefox, opera, IE7+. And it also works on ipad, iphone and most of the Android platform. </p>

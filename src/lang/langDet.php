@@ -1,4 +1,5 @@
-<?php 
+<?php
+$version = "2019.01.06";
 $req_lang = "en";
 $lang = "en";
 $lang_list = array("en" => "en", "zh" => "cn", "es" => "es", "fr" => "fr", "hu" => "hu", "it" => "it", "ko" => "ko", "nl" => "nl", "vi" => "vi", "pt" => "pt", "da" => "da", "hr" => "hr", "tr" => "tr", "ru" => "ru");
@@ -17,7 +18,7 @@ foreach ($lang_list as $key => $value) {
   }
 }
 
-if ($lang == "cn") { ?>    
+if ($lang == "cn") { ?>
   <meta name="keywords" content="cstimer, 计时器, 魔方计时器, 在线计时器, 网页计时器, 网页魔方计时器">
   <meta name="description" content="csTimer是迄今为止功能最全面、界面最友好、使用最便捷的在线版网页魔方计时器：提供三阶魔方、N阶魔方、各种异形魔方的打乱；提供多种成绩统计功能；可离线保存成绩的魔方计时器；提供符合WCA官方所有打乱的魔方计时器；提供各类训练功能，如cross，F2L，OPLL，盲拧，高阶对棱功能的魔方计时器等。">
   <title> csTimer - 魔方竞速训练专用计时器 </title>

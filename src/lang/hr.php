@@ -1,4 +1,4 @@
-<h1>csTimer  verzija 2018.12.07 - Profesionalna &#353;toperica za brzo slaganje Rubikove kocke</h1>
+<h1>csTimer  verzija <?php echo $version;?> - Profesionalna &#353;toperica za brzo slaganje Rubikove kocke</h1>
 <?php include('lang.php') ?>
 <p>csTimer je dizajniran za brzo slaganje Rubikove kocke. Podr&#382;ava scramble-ove raznih vrsta slagalica i <b>svih WCA slu&#382;benih disciplina</b>; Integrirani su <b>Xcross solver i eoline solver</b>; Podr&#382;ava statistiku vremena, <b>vi&#353;efazno &#353;topanje</b> i ostale funckije podr&#382;ane od strane ostalih sličnih softvera poput: 15s' inspekcije određenih od strane WCA, itd.</p>
 <p>&#353;toperica radi vrlo dobro na ve&#263;ini preglednika, kao &#353;to su: Chrome(preporučljivo), Firefox, Opera, IE7+. Također radi na iPad-u, iPhone-u i na ve&#263;ini Android platformi. </p>
