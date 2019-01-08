@@ -194,7 +194,7 @@ var min2phase = (function() {
 			arr[i] = setVal(arr[i], idx % (n - i), isEdge);
 			idx = ~~(idx / (n - i));
 			for (var j = i + 1; j < n; ++j) {
-				if (arr[j] >= arr[i]) {
+				if (getVal(arr[j], isEdge) >= getVal(arr[i], isEdge)) {
 					arr[j] = setVal(arr[j], getVal(arr[j], isEdge) + 1, isEdge);
 				}
 			}
