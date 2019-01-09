@@ -841,20 +841,20 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var dis = {};
 			var keep = {};
 			var cntmax = 0;
-			keep[max + 1] = -1;
+			keep[max + 1] = 0;
 			for (var i = 0; i < times.length; i++) {
 				var value = timeAt(i);
 				if (value != -1) {
 					var cur = ~~(value / diff);
 					dis[cur] = (dis[cur] || 0) + 1;
 					cntmax = Math.max(dis[cur], cntmax);
-					keep[cur] = i;
+					keep[cur] = i + 1;
 				} else {
-					keep[max + 1] = i;
+					keep[max + 1] = i + 1;
 				}
 			}
 			for (var i = max; i > min; i--) {
-				keep[i] = Math.max(keep[i + 1], keep[i] || -1);
+				keep[i] = Math.max(keep[i + 1], keep[i] || 0);
 			}
 			var str = [];
 			var cumDis = 0;
@@ -867,7 +867,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				cumDis += dis[i];
 				label = mathlib.valuedArray(lablen - label.length, '&nbsp;').join('') + label;
 				label2 = mathlib.valuedArray(lablen - label2.length, '&nbsp;').join('') + label2;
-				str.push('<tr><td>' + label + '+</td><td><span class="cntbar" style="width: ' + dis[i] / cntmax * 5 + 'em;">' + dis[i] + '</span></td><td>&nbsp;&lt;' + label2 + '</td><td><span class="cntbar" style="width: ' + cumDis / times.length * 5 + 'em; white-space: nowrap;">' + (times.length - keep[i + 1] - 1) + '/' + cumDis + '</span></td></tr>');
+				str.push('<tr><td>' + label + '+</td><td><span class="cntbar" style="width: ' + dis[i] / cntmax * 5 + 'em;">' + dis[i] + '</span></td><td>&nbsp;&lt;' + label2 + '</td><td><span class="cntbar" style="width: ' + cumDis / times.length * 5 + 'em; white-space: nowrap;">' + (times.length - keep[i + 1]) + '/' + cumDis + '</span></td></tr>');
 			}
 			div.html('<table style="border:none;">' + str.join('') + '</table>');
 		}
