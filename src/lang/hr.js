@@ -1,4 +1,4 @@
-﻿var OK_LANG = 'OK';
+var OK_LANG = 'OK';
 var CANCEL_LANG = 'Prekini';
 var RESET_LANG = 'Resetiraj';
 var ABOUT_LANG = 'Informacije';
@@ -58,7 +58,7 @@ var TIMER_SOLVE = 'slaganje';
 var PROPERTY_USEMOUSE = 'koristi miš kao štopericu';
 var PROPERTY_TIMEU = 'prikaz štoperice je';
 var PROPERTY_TIMEU_STR = 'normalan|0.1s|sekunde|inspekcija|bez prikaza';
-var PROPERTY_PRETIME = 'vrijeme držanja tipke "space" (sekunda/e)';
+var PROPERTY_PRETIME = 'vrijeme držanja tipke space" (sekunda/e)"';
 var PROPERTY_ENTERING = 'unošenje vremena s/sa';
 var PROPERTY_ENTERING_STR = 'štopericom|utipkavanjem|stackmat štoperica|MoYuTimer|virtualno|Giiker';
 var PROPERTY_COLOR = 'odaberi temu';
@@ -152,7 +152,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['lagani križ', 'easyc', 3]
+		['lagani križ', "easyc", 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],

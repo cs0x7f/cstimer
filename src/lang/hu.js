@@ -94,7 +94,7 @@ var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAHED = 'Auto hardware error detection';
+var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -152,7 +152,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', 'easyc', 3]
+		['easy cross', "easyc", 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],

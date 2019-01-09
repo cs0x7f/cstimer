@@ -1,4 +1,4 @@
-﻿var OK_LANG = '확인';
+var OK_LANG = '확인';
 var CANCEL_LANG = '취소';
 var RESET_LANG = '초기화';
 var ABOUT_LANG = '정보';
@@ -35,7 +35,7 @@ var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = '계정을 입력해주세요 (영문, 숫자만 사용 가능)';
 var EXPORT_INVID = '계정 이름에는 영문과 숫자만 사용할 수 있다구욧!';
 var EXPORT_ERROR = '알 수 없는 오류가 발생했나봐요... ㅠㅠ';
-var EXPORT_NODATA = '데이터를 발견하지 못했어요... (아직 사용된 적이 없는 계정인 것 같네요 ^^;)';
+var EXPORT_NODATA = '데이터를 발견하지 못했어요... (아직 사용된 적이 없는 계정인 것 같네요)';
 var EXPORT_UPLOADED = '올리기 성공';
 var BUTTON_SCRAMBLE = '섞기<br>공식';
 var BUTTON_TOOLS = '도구';
@@ -152,7 +152,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['간단한 십자', 'easyc', 3]
+		['간단한 십자', "easyc", 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],

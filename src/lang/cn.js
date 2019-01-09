@@ -152,7 +152,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['简单十字', 'easyc', 3]
+		['简单十字', "easyc", 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],

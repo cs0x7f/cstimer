@@ -1,4 +1,4 @@
-﻿var OK_LANG = 'OK';
+var OK_LANG = 'OK';
 var CANCEL_LANG = 'Cancelar';
 var RESET_LANG = 'Resetear';
 var ABOUT_LANG = 'Acerca de';
@@ -152,7 +152,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['Cruz sencilla', 'easyc', 3]
+		['Cruz sencilla', "easyc", 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],

@@ -3,7 +3,7 @@ var CANCEL_LANG = 'Fortryd';
 var RESET_LANG = 'Nulstil';
 var ABOUT_LANG = 'Omkring';
 var ZOOM_LANG = 'Zoom';
-var BUTTON_TIME_LIST = 'List tider'
+var BUTTON_TIME_LIST = 'List tider';
 var BUTTON_OPTIONS = 'Indstillinger';
 var BUTTON_EXPORT = 'Upload';
 var BUTTON_DONATE = 'Doner';
@@ -152,7 +152,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', 'easyc', 3]
+		['easy cross', "easyc", 3]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
