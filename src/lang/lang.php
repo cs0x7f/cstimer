@@ -12,5 +12,7 @@
 <a class="click" href="?lang=da">Dansk</a>&nbsp;
 <a class="click" href="?lang=hr">Hrvatski</a>&nbsp;
 <a class="click" href="?lang=tr">Türkçe</a>&nbsp;
-<a class="click" href="?lang=ru">Pусский</a><br>
+<a class="click" href="?lang=ru">Pусский</a>&nbsp;
+<a class="click" href="?lang=de">Deutsch</a>&nbsp;
+<br>
 If you are willing to help translating cstimer into your native language, please go to <a class="click" href="https://crowdin.com/project/cstimer">this page</a> and select your language. If your native language is not on the list, just contact <a class="click" href="mailto:cs0x7f@gmail.com">me</a> and I'll add it.</p>
