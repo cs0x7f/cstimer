@@ -497,7 +497,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function csvField(val) {
-		if (val.indexOf(';') != -1) {
+		val = val.toString();
+		if (val.indexOf(';') != -1 || val.indexOf('\n') != -1) {
 			val = '"' + val.replace(/"/g, '""') + '"';
 		}
 		return val;
@@ -517,7 +518,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var line = [];
 			line.push(i + 1);
 			line.push(pretty(time[0], true));
-			line.push(csvField(time[2] ? time[2] : ""));
+			line.push(time[2] ? time[2] : "");
 			line.push(time[1]);
 			line.push(mathlib.time2str(time[3]));
 			line.push(kpretty(time[0][time[0].length - 1]));
@@ -526,6 +527,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			for (var j = time[0].length - 1; j < curDim; j++) {
 				line.push('');
+			}
+			for (var j = 0; j < line.length; j++) {
+				line[j] = csvField(line[j]);
 			}
 			s.push(line.join(';'));
 		}
