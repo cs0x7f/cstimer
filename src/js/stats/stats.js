@@ -561,6 +561,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	var hlstr = STATS_STRING.split('|');
+	for (var i = 0; i < 13; i++) {
+		hlstr[i] = hlstr[i] || '';
+	}
 
 	var crossSessionStats = (function() {
 
