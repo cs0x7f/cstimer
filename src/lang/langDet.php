@@ -19,8 +19,7 @@ foreach ($lang_list as $key => $value) {
 }
 
 if ($lang == "cn") { ?>
-  <meta name="keywords" content="cstimer, 计时器, 魔方计时器, 在线计时器, 网页计时器, 网页魔方计时器">
-  <meta name="description" content="csTimer是迄今为止功能最全面、界面最友好、使用最便捷的在线版网页魔方计时器：提供三阶魔方、N阶魔方、各种异形魔方的打乱；提供多种成绩统计功能；可离线保存成绩的魔方计时器；提供符合WCA官方所有打乱的魔方计时器；提供各类训练功能，如cross，F2L，OPLL，盲拧，高阶对棱功能的魔方计时器等。">
+  <meta name="keywords" content="计时器, cstimer, 魔方计时器, 在线计时器, 网页计时器">
   <title> csTimer - 魔方竞速训练专用计时器 </title>
 <?php } else if ($lang == "es") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
@@ -34,9 +33,6 @@ if ($lang == "cn") { ?>
 <?php } else if ($lang == "ko") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - 큐브 연습용 초시계 </title>
-<?php } else if ($lang == "nl") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
-  <title> csTimer - Professionele Speedcubing/Training Timer </title>
 <?php } else if ($lang == "vi") { ?>
   <meta name="keywords" content="đồi hồ bấm giờ, cstimer, tính giờ cho rubik, tính giờ trục tuyến, web tính giờ">
   <title> csTimer - Trang tính giờ / huẩn luyện chuyên nghiệp cho rubik's cube solver </title>
@@ -50,9 +46,6 @@ if ($lang == "cn") { ?>
   <meta name="keywords" content="Kronometre, cstimer, rubik küpü kronometresi, internet kronometresi, web kronometresi">
   <title> csTimer - profesyonel Rubik Küpü Çözüm/Antreman Kronometresi </title>
 <?php } else if ($lang == "ru") { ?>
-  <meta name="keywords" content="таймер, кстаймер, таймер кубик рубика, онлайн таймер, время">
-  <title> csTimer - Профессиональный тренировочный таймер для кубика Рубика </title>
-<?php } else if ($lang == "de") { ?>
   <meta name="keywords" content="таймер, кстаймер, таймер кубик рубика, онлайн таймер, время">
   <title> csTimer - Профессиональный тренировочный таймер для кубика Рубика </title>
 <?php } else { ?>

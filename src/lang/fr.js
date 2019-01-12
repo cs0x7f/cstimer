@@ -25,7 +25,7 @@ var PROPERTY_SCRKEYM = 'Indiquer le(s) mouvement(s) clé(s) dans mélange';
 var PROPERTY_WNDSCR = 'Style du panneau de mélange';
 var PROPERTY_WNDSTAT = 'Style du panneau statistique';
 var PROPERTY_WNDTOOL = 'Style du panneau outils';
-var PROPERTY_WND_STR = 'Normal|Flat';
+var PROPERTY_WND_STR = 'Normal|plat';
 var EXPORT_DATAEXPORT = 'Importer/Exporter des données';
 var EXPORT_TOFILE = 'Exporter vers';
 var EXPORT_FROMFILE = 'Importer de';
@@ -81,7 +81,7 @@ var SCRAMBLE_NEXT = 'Prochain';
 var SCRAMBLE_SCRAMBLE = ' Mélange';
 var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
+var PROPERTY_VRCSPEED = 'Vitesse de base du cube virtuel (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
 var PROPERTY_VRCMPS = 'Aucun|CFOP|CF+OP|CFFFFOP|Roux';
 var PROPERTY_GIIKERVRC = 'Montrer le Giiker Cube virtuel';
@@ -143,7 +143,7 @@ var scrdata = [
 		['Arêtes du dernier étage', "ell", 0],
 		['Six dernières arêtes', "lse", 0],
 		['Six dernières arêtes&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
+		['L10P Roux', "cmll", 0],
 		['Croix résolue', "f2l", 0],
 		['Dernier slot + dernier étage', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -210,7 +210,7 @@ var scrdata = [
 	['===AUTRE===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
+	['Taquin', [
 		['Pièces', "15p", 80],
 		['Case vide', "15pm", 80]
 	]],
@@ -272,7 +272,7 @@ var scrdata = [
 	['Autre', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['=== SPÉCIAL ===', [
 		['--', "blank", 0]
 	]],
 	['Subsets 3x3x3', [
@@ -334,13 +334,13 @@ var STATS_DATE = 'Date';
 var STATS_CURROUND = 'Statistiques de la moyenne';
 var STATS_CURSESSION = 'Statistiques de la session en cours';
 var STATS_CURSPLIT = 'Statistiques de la phase %d de la session en cours';
-var STATS_EXPORTCSV = 'Export CSV';
+var STATS_EXPORTCSV = 'Exporter en CSV';
 var STATS_SSMGR_TITLE = 'Gestion des sessions';
 var STATS_SSMGR_NAME = 'Nom';
 var STATS_SSMGR_DETAIL = 'Détails de la session';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
+var STATS_SSMGR_OPS = 'Renommer|Créer|Diviser|Fusionner|Supprimer';
+var STATS_SSMGR_ORDER = 'Classer par mélange';
+var STATS_SSMGR_ODCFM = 'Classer toutes les sessions par type de mélange?';
 var STATS_ALERTMG = 'Déplacer tous les temps de la session [%f] à la fin de la session [%f]?';
 var STATS_PROMPTSPL = 'Nombre de temps à diviser de la session [%s] (en partant de la fin)?';
 var STATS_ALERTSPL = 'Il faut laisser au moins un temps, ou fusionner la session avec une autre';
