@@ -1,18 +1,18 @@
 <p>Language: 
-<a class="click" href="?lang=en">English</a>&nbsp;
+<a class="click" href="?lang=en-us">English</a>&nbsp;
+<a class="click" href="?lang=de-de">Deutsch</a>&nbsp;
+<a class="click" href="?lang=da-dk">Dansk</a>&nbsp;
+<a class="click" href="?lang=es-es">Español</a>&nbsp;
+<a class="click" href="?lang=fr-fr">Français</a>&nbsp;
+<a class="click" href="?lang=hr-hr">Hrvatski</a>&nbsp;
+<a class="click" href="?lang=hu-hu">Magyar</a>&nbsp;
+<a class="click" href="?lang=it-it">Italiano</a>&nbsp;
+<a class="click" href="?lang=ko-kr">한국어</a>&nbsp;
+<a class="click" href="?lang=nl-nl">Nederlands</a>&nbsp;
+<a class="click" href="?lang=pt-pt">Português</a>&nbsp;
+<a class="click" href="?lang=ru-ru">Pусский</a>&nbsp;
+<a class="click" href="?lang=tr-tr">Türkçe</a>&nbsp;
+<a class="click" href="?lang=vi-vn">Tiếng Việt</a>&nbsp;
 <a class="click" href="?lang=zh-cn">简体中文</a>&nbsp;
-<a class="click" href="?lang=es">Español</a>&nbsp;
-<a class="click" href="?lang=fr">Français</a>&nbsp;
-<a class="click" href="?lang=hu">Magyar</a>&nbsp;
-<a class="click" href="?lang=it">Italiano</a>&nbsp;
-<a class="click" href="?lang=ko">한국어</a>&nbsp;
-<a class="click" href="?lang=nl">Nederlands</a>&nbsp;
-<a class="click" href="?lang=vi">Tiếng Việt</a>&nbsp;
-<a class="click" href="?lang=pt">Português</a>&nbsp;
-<a class="click" href="?lang=da">Dansk</a>&nbsp;
-<a class="click" href="?lang=hr">Hrvatski</a>&nbsp;
-<a class="click" href="?lang=tr">Türkçe</a>&nbsp;
-<a class="click" href="?lang=ru">Pусский</a>&nbsp;
-<a class="click" href="?lang=de">Deutsch</a>&nbsp;
 <br>
 If you are willing to help translating cstimer into your native language, please go to <a class="click" href="https://crowdin.com/project/cstimer">this page</a> and select your language. If your native language is not on the list, just contact <a class="click" href="mailto:cs0x7f@gmail.com">me</a> and I'll add it.</p>

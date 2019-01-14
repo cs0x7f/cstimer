@@ -48,53 +48,53 @@ var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Scramble zeichnen';
 var TOOLS_STATS = 'Statistiken';
 var TOOLS_HUGESTATS = 'sitzungsübergreifende Statistiken';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
-var PROPERTY_IMGSIZE = 'Scramble Image Size';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
-var PROPERTY_ENTERING = 'entering in times with';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|Giiker';
-var PROPERTY_COLOR = 'select color theme';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
+var TOOLS_DISTRIBUTION = 'Zeitverteilung';
+var TOOLS_TREND = 'Zeit-Trend';
+var TOOLS_METRONOME = 'Metronom';
+var TOOLS_CFMTIME = 'Zeit bestätigen';
+var PROPERTY_IMGSIZE = 'Scramble-Bild Größe';
+var TIMER_INSPECT = 'Inspektion';
+var TIMER_SOLVE = 'Lösen';
+var PROPERTY_USEMOUSE = 'Maus-Timer verwenden';
+var PROPERTY_TIMEU = 'Timer-Update ist';
+var PROPERTY_TIMEU_STR = 'Update|0.1s|Sekunden|Inspektion|keine';
+var PROPERTY_PRETIME = 'wie lange die Leertaste drücken (Sekunde(n))';
+var PROPERTY_ENTERING = 'Zeiten eintragen mit';
+var PROPERTY_ENTERING_STR = 'Timer|Tippen|Stackmat|MoYuTimer|virtuell|Giiker';
+var PROPERTY_COLOR = 'Farbschema wählen';
+var PROPERTY_COLORS = 'Schriftfarbe|Hintergrundfarbe|Panelfarbe|Knopffarbe|Linkfarbe|Logofarbe|Logo-Hintergrund';
+var PROPERTY_VIEW = 'Stil der Benutzeroberfläche';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
-var COLOR_EXPORT = 'Please save the string for import';
-var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'random|style1|style2|style3|black|white|style6|manual|export...|import...';
-var PROPERTY_FONT = 'select timer\'s font';
-var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var COLOR_EXPORT = 'Bitte den Text für den Import speichern';
+var COLOR_IMPORT = 'Bitte den exportierten Text einfügen';
+var COLOR_FAIL = 'Falsche Daten, Import fehlgeschlagen';
+var PROPERTY_FONTCOLOR_STR = 'schwarz|weiß';
+var PROPERTY_COLOR_STR = 'zufällig|Stil 1|Stil 2|Stil 3|schwarz|weiß|Stil 6|manuell|Export...|Import...';
+var PROPERTY_FONT = 'Timer-Schriftart wählen';
+var PROPERTY_FONT_STR = 'zufällig digital|normal|digital 1|digital 2|digital 3|digital 4|digital 5';
+var PROPERTY_FORMAT = 'Zeitformat';
+var PROPERTY_USEKSC = 'Tastenkombinationen benutzen';
+var PROPERTY_NTOOLS = 'Anzahl der Werkzeuge';
+var PROPERTY_AHIDE = 'Alle Elemente während des Timens verstecken';
+var SCRAMBLE_LAST = 'letzter';
+var SCRAMBLE_NEXT = 'nächster';
+var SCRAMBLE_SCRAMBLE = 'Scramble';
+var SCRAMBLE_LENGTH = 'Länge';
+var SCRAMBLE_INPUT = 'Scramble(s) eingeben';
+var PROPERTY_VRCSPEED = 'VRC Grundgeschwindigkeit (TPS)';
+var PROPERTY_VRCMP = 'Multi-Phase';
+var PROPERTY_VRCMPS = 'Keine|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_GIIKERVRC = 'Virtuellen Giiker Cube zeigen';
+var PROPERTY_GIISOK_DELAY = 'Ende des Scrambles durch Warten anzeigen';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Nie|korrekt gescramblet';
+var PROPERTY_GIISOK_KEY = 'Ende des Scrambles mit Leertaste anzeigen';
+var PROPERTY_GIISOK_MOVE = 'Ende des Scrambles anzeigen mit';
+var PROPERTY_GIISOK_MOVES = 'U4, R4 etc.|(U U\')2, (U\' U)2, ect.|Nie';
+var PROPERTY_GIISBEEP = 'Beep am Ende des Scrambles';
+var PROPERTY_GIIRST = 'Giiker Cube bei Verbindung zurück setzen';
+var PROPERTY_GIIRSTS = 'Immer|Nachfragen|Nie';
+var CONFIRM_GIIRST = 'Giiker Cube als gelöst zurück setzen?';
+var PROPERTY_GIIAED = 'Automatische Hardware-Fehler-Erkennung';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -165,54 +165,54 @@ var scrdata = [
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['5x5x5 Kanten', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['Präfix', "666p", 80],
+		['Suffix', "666s", 80],
+		['6x6x6 Kanten', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['Präfix', "777p", 100],
+		['Suffix', "777s", 100],
+		['7x7x7 Kanten', "7edge", 8]
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
-		['concise', "clkc", 0],
-		['efficient pin order', "clke", 0]
+		['WCA', "clkwca", 0],
+		['Optimal', "clko", 0],
+		['präzise', "clkc", 0],
+		['effiziente Pin-Reihenfolge', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['Karott', "mgmc", 70],
+		['alter Stil', "mgmo", 70]
 	]],
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['optimaler Zufallszustand', "pyro", 0],
+		['Zufalls-Zugfolge', "pyrm", 25]
 	]],
 	['Square-1', [
 		["WCA", "sqrs", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['Flächen-Zug-Metrik', "sq1h", 40],
+		['Zug-Metrik', "sq1t", 20]
 	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
 		['U L R B', "skb", 25]
 	]],
-	['===OTHER===', [
+	['===Andere===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
-		['piece moves', "15p", 80],
-		['blank moves', "15pm", 80]
+	['15-Puzzle', [
+		['Stein-Bewegungen', "15p", 80],
+		['leere Züge', "15pm", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
@@ -228,8 +228,8 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal random state', "gearo", 0],
+		['Zufallszustand', "gearso", 0],
+		['optimaler Zufallszustand', "gearo", 0],
 		['3-gen', "gear", 10]
 	]],
 	['Cmetrick', [
@@ -320,51 +320,51 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['drehe die obere Fläche', 'drehe die untere Fläche'],
+	['drehe die rechte Fläche', 'drehe die linke Fläche'],
+	['drehe die vordere Fläche', 'drehe die hintere Fläche']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
-var STATS_DATE = 'Date';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
+var SCRAMBLE_NOOBSS = 'um 90° im Uhrzeigersinn, |um 90° gegen den Uhrzeigersinn, | um 180°';
+var STATS_CFM_RESET = 'alle zeiten in dieser Sitzung zurück setzen?';
+var STATS_CFM_DELSS = 'Sitzung [%s] löschen?';
+var STATS_CFM_DELMUL = 'Anzahl der zu löschenden Einträge ab aktuellem Index?';
+var STATS_CFM_DELETE = 'diese Zeit löschen?';
+var STATS_COMMENT = 'Kommentar';
+var STATS_DATE = 'Datum';
+var STATS_CURROUND = 'Statistiken der aktuellen Runde';
+var STATS_CURSESSION = 'Statistiken der aktuellen Sitzung';
+var STATS_CURSPLIT = 'Statistiken der Phase %d der aktuellen Sitzung';
+var STATS_EXPORTCSV = 'CSV exportieren';
+var STATS_SSMGR_TITLE = 'Sitzungs-Manager';
 var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
-var STATS_AVG = 'mean';
-var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
-var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
-var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:|solving from %s to %e|Totally spent: %d';
-var STATS_PREC = 'time distribution precision';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var STATS_STATCLR = 'Enable session emptying';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
-var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators';
+var STATS_SSMGR_DETAIL = 'Sitzungs-Details';
+var STATS_SSMGR_OPS = 'Umbenennen|Erstellen|Aufteilen|Vereinigen|Löschen';
+var STATS_SSMGR_ORDER = 'Nach Scramble sortieren';
+var STATS_SSMGR_ODCFM = 'Alle Sitzungen nach Scramble sortieren?';
+var STATS_ALERTMG = 'Alle Zeiten der Sitzung [%f] an das Ende von Sitzung [%t] anfügen?';
+var STATS_PROMPTSPL = 'Nummer des neuesten Zeit-Splits der Sitzung [%s]?';
+var STATS_ALERTSPL = 'Soll geteilt werden, oder mindestens eine Zeit übrig lassen';
+var STATS_AVG = 'Mittelwert';
+var STATS_SOLVE = 'Versuch';
+var STATS_TIME = 'Zeit';
+var STATS_SESSION = 'Sitzung';
+var STATS_SESSION_NAME = 'Sitzungsnamen ändern';
+var STATS_SESSION_NAMEC = 'Name der neuen Sitzung';
+var STATS_STRING = 'bester|aktueller|schlechtester|generiert durch csTimer am %D.%M.%Y|Versuch/Total: %d|Single|Mittelwert von %mk|Durchschnitt von %mk|Durchschnitte: %v{ (σ = %sgm)}|Mittelwert: %v|Zeitenliste:|lösen von %s bis %e|Gesamtzeit: %d';
+var STATS_PREC = 'Genauigkeit des Histograms';
+var STATS_PREC_STR = 'automatisch|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
+var STATS_TYPELEN = 'Liste %d Typ|Liste %d Länge|Durchschnitt|Mittelwert';
+var STATS_STATCLR = 'Leeren von Sitzungen zulassen';
+var STATS_ABSIDX = 'Absoluten Index im Statistik-Report anzeigen';
+var PROPERTY_PRINTSCR = 'Scramble(s) in den Statistiken anzeigen';
+var PROPERTY_PRINTDATE = 'Datum des Solves in den Statistiken anzeigen';
+var PROPERTY_SUMMARY = 'Zusammenfassung vor der Zeiten-Liste anzeigen';
+var PROPERTY_IMRENAME = 'Sitzung direkt nach der Erstellung umbenennen';
+var PROPERTY_SCR2SS = 'neue Sitzung erstellen, wenn Scramble-Typ gewechselt wird';
+var PROPERTY_SS2SCR = 'Scramble-Typ wiederherstellen wenn Sitzung gewechselt wird';
+var PROPERTY_SS2PHASES = 'Multi-Phase Timen wiederherstellen, wenn Sitzung gewechselt wird';
+var PROPERTY_STATINV = 'umgekehrte Zeitliste';
+var PROPERTY_STATAL = 'Statistische Indikatoren';
 var PROPERTY_DELMUL = 'Mehrfach-Löschung aktivieren';
 var MODULE_NAMES = {
 	"kernel": 'global',
@@ -381,9 +381,9 @@ var BGIMAGE_INVALID = 'Ungültige URL';
 var BGIMAGE_OPACITY = 'Deckkraft des Hintergrundbilds';
 var BGIMAGE_IMAGE = 'Hintergrundbild';
 var BGIMAGE_IMAGE_STR = 'keine|manuell|CCT';
-var SHOW_AVG_LABEL = 'Show Avg Label';
-var USE_LOGOHINT = 'Hint messages in logo';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var SHOW_AVG_LABEL = 'Durchnitts-Label anzeigen';
+var USE_LOGOHINT = 'Hinweis-Meldungen im Logo';
+var TOOLS_SCRGEN = 'Scramble-Generator';
+var SCRGEN_NSCR = 'Anzahl der Scrambles';
+var SCRGEN_PRE = 'Präfix';
+var SCRGEN_GEN = 'Scrambles Generieren!';
