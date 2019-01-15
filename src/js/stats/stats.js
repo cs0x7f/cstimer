@@ -1760,9 +1760,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 				resultsHeight();
 			} else if (value[0] == 'statHide') {
 				if (value[1]) {
-						statOptDiv.show();
-				} else {
 						statOptDiv.hide();
+				} else {
+						statOptDiv.show();
 				}
 				updateTitleRow();
 				updateSumTable();
