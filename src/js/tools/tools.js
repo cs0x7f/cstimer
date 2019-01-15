@@ -117,6 +117,8 @@ var tools = execMain(function() {
 						disableFunc(i, signal);
 					}
 				}
+			} else if (value[0] == 'toolHide') {
+				toggleFuncSpan(!value[1]);
 			}
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value;
@@ -135,37 +137,34 @@ var tools = execMain(function() {
 		}
 	}
 
-	function hideFuncSpan() {
+	function toggleFuncSpan(isShow) {
 		for (var i = 0; i < 4; i++) {
-			funcSpan[i].hide();
+			if (isShow) {
+				funcSpan[i].show();
+			} else {
+				funcSpan[i].hide();
+			}
 		}
-		kernel.blur();
-		kernel.setProp('toolHide', true);
 	}
 
 	function showFuncSpan(e) {
 		if ($(e.target).hasClass('click') || $(e.target).is('input, textarea, select')) {
 			return;
 		}
-		for (var i = 0; i < 4; i++) {
-			funcSpan[i].show();
-		}
-		kernel.blur();
 		kernel.setProp('toolHide', false);
 	}
 
 	$(function() {
-		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm))$/);
+		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm)|toolHide)$/);
 		kernel.regListener('tools', 'scramble', procSignal);
 		kernel.regListener('tools', 'scrambleX', procSignal);
 		kernel.regListener('tools', 'button', procSignal, /^tools$/);
 
 		var mainDiv = $('<div id="toolsDiv"/>').appendTo('body');
 		for (var i = 0; i < 4; i++) {
-			var hideButton = $('<input type="button" value="&#8675;">').click(hideFuncSpan);
 			fdivs[i].click(showFuncSpan);
 			funcSelects[i].change(changeSelect);
-			funcSpan[i].append("<br>", hideButton, ' ', TOOLS_SELECTFUNC, funcSelects[i]);
+			funcSpan[i].append("<br>", TOOLS_SELECTFUNC, funcSelects[i]);
 			divs[i].append(fdivs[i], funcSpan[i]).appendTo(mainDiv);
 			if (i == 1) {
 				mainDiv.append('<br>');
@@ -183,9 +182,7 @@ var tools = execMain(function() {
 		funcs = JSON.parse(funcStr);
 		kernel.addWindow('tools', BUTTON_TOOLS, mainDiv, false, true, 6);
 
-		if (kernel.getProp('toolHide', false)) {
-			hideFuncSpan();
-		}
+		kernel.getProp('toolHide', false);
 	});
 
 	/**

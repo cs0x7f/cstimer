@@ -300,8 +300,20 @@ var kernel = execMain(function() {
 			setProp(module, modules[module].button);
 		}
 
+		var hideMap = {
+			'scramble': 'scrHide',
+			'tools': 'toolHide',
+			'stats': 'statHide'
+		};
+
+		function toggleHide() {
+			var data = $(this).attr('data');
+			setProp(data, !getProp(data, false));
+		}
+
 		function addWindow(module, button, div, enable, auto, index) {
 			div.addClass("mywindow");
+			div.append($('<span class="chide click" data="' + hideMap[module] + '">\u25a1</span>').click(toggleHide));
 			enable = getProp(module, enable);
 			leftbar = leftbar || $('#leftbar');
 			leftbar.children('.c' + index).addClass(enable ? "enable" : "").data('module', module).click(windowClick).find('span:first').html(button);

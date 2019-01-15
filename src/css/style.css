@@ -320,6 +320,15 @@ textarea {
 	box-shadow: none;
 }
 
+.mywindow > .chide {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 0 0.5em 0.5em 0;
+	font-size: 0.8rem;
+	font-family: monospace;
+}
+
 #gray {
 	z-index: 50;
 	position: fixed;
@@ -835,8 +844,8 @@ html.m .mhide, html:not(.m) .mshow {
 .m .statc {
 	margin-right: 5px;
 	margin-right: 0.35rem;
-	margin-top: 5px;
-	margin-top: 0.35rem;
+	margin-top: 2px;
+	margin-top: 0.15rem;
 	width: auto;
 	vertical-align: top;
 }

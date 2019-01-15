@@ -521,6 +521,12 @@ var scramble = execMain(function(rn, rndEl) {
 				}
 			} else if (value[0] == 'scrKeyM') {
 				sdiv.html(scrStd((isDisplayLast ? lastscramble : scramble) || '', true));
+			} else if (value[0] == 'scrHide') {
+				if (value[1]) {
+					title.hide();
+				} else {
+					title.show();
+				}
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -607,7 +613,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM)$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50]);
@@ -631,11 +637,7 @@ var scramble = execMain(function(rn, rndEl) {
 		scrOpt.click(showScrOpt);
 		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltDiv);
 
-		title.append($('<nobr>').append($('<input type="button" value="&#8673;">').click(function() {
-			title.hide();
-			kernel.blur();
-			kernel.setProp('scrHide', true);
-		}), ' ', select, ' ', select2, ' ', scrOpt), " <wbr>");
+		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
 		div.append(title, sdiv).appendTo('body');
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
