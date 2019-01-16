@@ -94,7 +94,7 @@ var tools = execMain(function() {
 		fdivs[i] = $('<div />');
 		funcSpan[i] = $('<span />');
 		funcSelects[i] = $('<select />');
-		divs[i] = $('<div />');
+		divs[i] = $('<div />').css('display', 'inline-block');
 	}
 
 	function procSignal(signal, value) {
@@ -160,7 +160,7 @@ var tools = execMain(function() {
 		kernel.regListener('tools', 'scrambleX', procSignal);
 		kernel.regListener('tools', 'button', procSignal, /^tools$/);
 
-		var mainDiv = $('<div id="toolsDiv"/>').appendTo('body');
+		var mainDiv = $('<div id="toolsDiv"/>');
 		for (var i = 0; i < 4; i++) {
 			fdivs[i].click(showFuncSpan);
 			funcSelects[i].change(changeSelect);

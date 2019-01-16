@@ -639,7 +639,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
-		div.append(title, sdiv).appendTo('body');
+		div.append(title, sdiv);
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
 		sdiv.click(function() {

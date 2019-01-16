@@ -1815,12 +1815,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true]);
 		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false]);
 
-		div.appendTo('body').append(
+		div.append(
 			statOptDiv.append(
 				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
 				sessionManager.getSelect(), sessionManager.getButton()),
 			sumtableDiv.append(sumtable),
-			scrollDiv.append(table));
+			$('<div class="stattl">').append(scrollDiv.append(table)));
 		$(window).bind('resize', resultsHeight);
 		table.append(title, avgRow);
 		kernel.addWindow('stats', BUTTON_TIME_LIST, div, true, true, 4);

@@ -171,7 +171,6 @@ textarea {
 }
 
 #leftbar {
-	z-index: 40;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -184,6 +183,7 @@ textarea {
 	width: 13.5rem;
 	height: 190px;
 	height: 13.5rem;
+	visibility: initial;
 }
 
 #leftbar > div {
@@ -293,6 +293,20 @@ textarea {
 	border-style: inset;
 }
 
+#wndctn {
+	z-index: 30;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	visibility: hidden;
+}
+
+#wndctn > div {
+	visibility: initial;
+}
+
 .mywindow {
 	position: absolute;
 	padding: 4px;
@@ -301,11 +315,24 @@ textarea {
 	border-radius: 0.35rem;
 	border: 2px solid;
 	border: 0.15rem solid;
-	display: none;
-	z-index: 30;
+	z-index: auto;
+	visibility: initial;
 }
 
-.mywindow:hover {
+.mywindow::before, #leftbar::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	border-radius: 0.35rem;
+	z-index: -10;
+	margin: 1.5px;
+	margin: -0.1rem;
+}
+
+.mywindow:hover, #leftbar:hover {
 	z-index: 35;
 }
 
@@ -464,31 +491,33 @@ textarea {
 
 #stats {
 	left: 0;
-	top: 192px;
-	top: 13.65rem;
+	top: 190px;
+	top: 13.5rem;
 	bottom: 0;
 	padding: 4px;
 	padding: 0.3rem;
 	text-align: center;
-	overflow: hidden;
 }
 
 #stats table {
 	min-width: 178px;
-	min-width: 12.6rem;
+	min-width: 12.5rem;
 	white-space: nowrap;
 }
 
-.myscroll {
+.stattl {
+	margin-top: 2px;
+	margin-top: 0.15rem;
 	overflow-x: hidden;
+}
+
+.myscroll {
 	overflow-y: auto;
 	text-align: center;
 	padding-right: 21px;
 	padding-right: 1.5rem;
 	margin-right: -21px;
 	margin-right: -1.5rem;
-	margin-top: 2px;
-	margin-top: 0.15rem;
 	width: 100%;
 }
 
@@ -553,8 +582,8 @@ table.sumtable td, table.sumtable th {
 
 #scrambleDiv {
 	right: 0;
-	left: 192px;
-	left: 13.65rem;
+	left: 190px;
+	left: 13.5rem;
 	top: 0;
 }
 
@@ -836,7 +865,7 @@ html.m .mhide, html:not(.m) .mshow {
 	top: auto;
 	max-width: 100%;
 	bottom: 61px;
-	bottom: 12.2vw;
+	bottom: 11.8vw;
 	white-space: nowrap;
 	box-sizing: border-box;
 }
@@ -859,14 +888,14 @@ html.m .mhide, html:not(.m) .mshow {
 	vertical-align: top;
 }
 
-.m .myscroll {
+.m .stattl {
 	display: inline-block;
 	width: auto;
 }
 
 .m #toolsDiv {
 	bottom: 61px;
-	bottom: 12.2vw;
+	bottom: 11.8vw;
 }
 
 .m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {

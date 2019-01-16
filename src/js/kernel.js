@@ -4,6 +4,7 @@ var kernel = execMain(function() {
 	$.ajaxSetup({'cache':true});
 
 	var temp = $('<div />').css('visibility', 'hidden');
+	var wndCtn = $('<div id="wndctn" />');
 
 	/**
 	 * {signal:{ module: [callback(signal, value), value[0]filter], ...}, ...}
@@ -312,6 +313,7 @@ var kernel = execMain(function() {
 		}
 
 		function addWindow(module, button, div, enable, auto, index) {
+			div.appendTo(wndCtn);
 			div.addClass("mywindow");
 			div.append($('<span class="chide" data="' + hideMap[module] + '"></span>').click(toggleHide));
 			enable = getProp(module, enable);
@@ -450,7 +452,7 @@ var kernel = execMain(function() {
 			"#avgstr .click:hover{background-color:?}" + 
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" + 
 			"input:disabled{background:?}" + 
-			".mywindow,.popup,.dialog,#leftbar{box-shadow:0 0 .5em ?}";
+			".mywindow::before,.popup,.dialog,#leftbar::before{box-shadow:0 0 .6em ?}";
 
 		var styles = [
 			"#000#efc#fdd#fbb#00f#ff0#000",
@@ -676,7 +678,7 @@ var kernel = execMain(function() {
 			addButton('donate', BUTTON_DONATE, function() {
 				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE);
 			}, 5);
-			leftbar.appendTo('body').mouseenter(function() {
+			leftbar.appendTo(wndCtn).mouseenter(function() {
 				toggleLeftBar(true);
 			}).mouseleave(function() {
 				toggleLeftBar();
@@ -1214,6 +1216,7 @@ var kernel = execMain(function() {
 		regProp('kernel', 'useMilli', 0, PROPERTY_USEMILLI, [false]);
 		regProp('kernel', 'timeFormat', 1, PROPERTY_FORMAT, ['h', ['h', 'm', 's'], ['hh:mm:ss.XX(X)', 'mm:ss.XX(X)', 'ss.XX(X)']]);
 		temp.appendTo('body');
+		wndCtn.appendTo('body');
 
 		$(document).keydown(function(e) {
 			keyback = true;
