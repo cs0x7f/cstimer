@@ -321,12 +321,21 @@ textarea {
 }
 
 .mywindow > .chide {
+	cursor: pointer;
 	position: absolute;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 0;
+	border-bottom-right-radius: 1rem;
 	top: 0;
 	left: 0;
-	padding: 0 0.5em 0.5em 0;
-	font-size: 0.8rem;
-	font-family: monospace;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.m .mywindow > .chide {
+	width: 2rem;
+	height: 2rem;
+	border-bottom-right-radius: 2rem;
 }
 
 #gray {

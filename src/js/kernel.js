@@ -313,7 +313,7 @@ var kernel = execMain(function() {
 
 		function addWindow(module, button, div, enable, auto, index) {
 			div.addClass("mywindow");
-			div.append($('<span class="chide click" data="' + hideMap[module] + '">\u25a1</span>').click(toggleHide));
+			div.append($('<span class="chide" data="' + hideMap[module] + '"></span>').click(toggleHide));
 			enable = getProp(module, enable);
 			leftbar = leftbar || $('#leftbar');
 			leftbar.children('.c' + index).addClass(enable ? "enable" : "").data('module', module).click(windowClick).find('span:first').html(button);
