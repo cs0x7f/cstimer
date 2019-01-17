@@ -545,6 +545,14 @@ var kernel = execMain(function() {
 
 		var isMobileView = false;
 
+		function updateUIDesign() {
+			if (getProp('uidesign') == 'mt') {
+				$('html').addClass('mtds');
+			} else {
+				$('html').removeClass('mtds');
+			}
+		}
+
 		function fixOrient() {
 			var width = $(window).width();
 			var height = $(window).height();
@@ -554,11 +562,7 @@ var kernel = execMain(function() {
 			} else if (view == 'd') {
 				isMobileView = false;
 			} else {
-				if (width / height < 6/5) {
-					isMobileView = true;
-				} else {
-					isMobileView = false;
-				}
+				isMobileView = width / height < 6/5;
 			}
 			if (isMobileView) {
 				$('html').addClass('m');
@@ -610,6 +614,9 @@ var kernel = execMain(function() {
 				case 'view':
 					fixOrient();
 					break;
+				case 'uidesign':
+					updateUIDesign();
+					break;
 				case 'wndScr':
 					setWndFixed('scramble', value[1] == 'f');
 					break;
@@ -648,10 +655,11 @@ var kernel = execMain(function() {
 		}
 
 		$(function() {
-			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view|wnd(?:Scr|Stat|Tool))/);
+			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view|uidesign|wnd(?:Scr|Stat|Tool))/);
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_FONT_STR.split('|')]);
 			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true]);
+			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt'], PROPERTY_UIDESIGN_STR.split('|')]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');

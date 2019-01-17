@@ -328,8 +328,8 @@ textarea {
 	bottom: 0;
 	border-radius: 0.35rem;
 	z-index: -10;
-	margin: 1.5px;
-	margin: -0.1rem;
+	margin: -2px;
+	margin: -0.15rem;
 }
 
 .mywindow:hover, #leftbar:hover {
@@ -345,6 +345,7 @@ textarea {
 	background-color: transparent;
 	border-color: transparent;
 	box-shadow: none;
+	padding: 0;
 }
 
 .mywindow > .chide {
@@ -460,6 +461,7 @@ textarea {
 	width: 100%;
 	height: 100%;
 	text-align: left;
+	overflow: hidden;
 	border: 1px solid;
 	border: 0.1rem solid;
 	border-radius: 5px;
@@ -471,17 +473,25 @@ textarea {
 	max-height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
+	padding-right: 21px;
+	padding-right: 1.5rem;
+	margin-right: -21px;
+	margin-right: -1.5rem;
+}
+
+.tabValue > *::-webkit-scrollbar {
+	display: none;
 }
 
 .click, .times, .tab {
 	cursor: pointer;
 	border-radius: 0.15em;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #about {
@@ -494,8 +504,6 @@ textarea {
 	top: 190px;
 	top: 13.5rem;
 	bottom: 0;
-	padding: 4px;
-	padding: 0.3rem;
 	text-align: center;
 }
 
@@ -549,6 +557,11 @@ table.sumtable td, table.sumtable th {
 	border: 0.1rem solid;
 	padding: 4px;
 	padding: 0.3rem;
+}
+
+.fixed .table td, .fixed .table th, .fixed .table {
+	padding: 2px;
+	padding: 0.15rem;
 }
 
 .ssmgr {
@@ -924,8 +937,8 @@ html.m .mhide, html:not(.m) .mshow {
 
 #vrckey {
 	table-layout: fixed;
-    border-collapse:collapse;
-    font-family: monospace;
+	border-collapse:collapse;
+	font-family: monospace;
 }
 
 #vrckey tr {
@@ -942,4 +955,45 @@ html.m .mhide, html:not(.m) .mshow {
 	width: 1.5em;
 	text-align: right;
 	font-weight: 900;
+}
+
+.mtds textarea,
+.mtds #leftbar,
+.mtds #leftbar > div,
+.mtds .mywindow,
+.mtds .mywindow:not(.fixed)::before,
+.mtds #leftbar::before,
+.mtds .dialog,
+.mtds .popup,
+.mtds .tab,
+.mtds .tabValue,
+.mtds .click,
+.mtds .tab,
+.mtds select,
+.mtds input[type='button'],
+.mtds input[type='text'] {
+	border-radius: unset;
+	border-color: transparent;
+}
+
+.mtds .tab {
+	position: relative;
+}
+
+.mtds .tab:not(.enable)::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: -10;
+	margin: 2px;
+	margin: -0.1rem;
+	box-shadow: 0 0 0.2em;
+}
+
+.mtds .mywindow > .chide {
+	top: -0.15rem;
+	left: -0.15rem;
 }

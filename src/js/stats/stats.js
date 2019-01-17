@@ -1766,6 +1766,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 				updateTitleRow();
 				updateSumTable();
+			} else if (value[0] == 'wndStat') {
+				resultsHeight();
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
@@ -1797,7 +1799,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	$(function() {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv|Hide)|session(:?Data)?|scrType|phases|view)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv|Hide)|session(:?Data)?|scrType|phases|view|wndStat)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
