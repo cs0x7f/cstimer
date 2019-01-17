@@ -319,7 +319,7 @@ textarea {
 	visibility: initial;
 }
 
-.mywindow::before, #leftbar::before {
+.mywindow:not(.fixed)::before, #leftbar::before {
 	content: "";
 	position: absolute;
 	left: 0;
