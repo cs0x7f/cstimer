@@ -183,7 +183,6 @@ textarea {
 	width: 13.5rem;
 	height: 190px;
 	height: 13.5rem;
-	visibility: initial;
 }
 
 #leftbar > div {
@@ -304,7 +303,7 @@ textarea {
 }
 
 #wndctn > div {
-	visibility: initial;
+	visibility: visible;
 }
 
 .mywindow {
@@ -316,7 +315,6 @@ textarea {
 	border: 2px solid;
 	border: 0.15rem solid;
 	z-index: auto;
-	visibility: initial;
 }
 
 .mywindow:not(.fixed)::before, #leftbar::before {
@@ -884,7 +882,7 @@ html.m .mhide, html:not(.m) .mshow {
 }
 
 .m #stats table {
-	min-width: initial;
+	min-width: 0;
 	white-space: nowrap;
 }
 
