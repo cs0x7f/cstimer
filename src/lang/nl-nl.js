@@ -1,12 +1,12 @@
 var OK_LANG = 'OK';
 var CANCEL_LANG = 'Annuleren';
-var RESET_LANG = 'Reset';
+var RESET_LANG = 'Herstel';
 var ABOUT_LANG = 'Over';
-var ZOOM_LANG = 'Zoom';
+var ZOOM_LANG = 'Inzoomen';
 var BUTTON_TIME_LIST = 'Lijst<br>Tijden';
 var BUTTON_OPTIONS = 'Opties';
-var BUTTON_EXPORT = 'EXPORT';
-var BUTTON_DONATE = 'DONATE';
+var BUTTON_EXPORT = 'Exporteren';
+var BUTTON_DONATE = 'Doneren';
 var PROPERTY_USEINS = 'Gebruik WCA inspectie';
 var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection';
@@ -20,7 +20,7 @@ var PROPERTY_SCRMONO = 'Monospace scramble';
 var PROPERTY_SCRLIM = 'Limiteer de hoogte van scramble vlak';
 var PROPERTY_SCRALIGN = 'Uitlijnen van scramble vlak';
 var PROPERTY_SCRALIGN_STR = 'midden|links|rechts';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
+var PROPERTY_SCRFAST = 'Gebruik snelle scramble voor 4x4x4 (niet-officiëel)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_WNDSCR = 'Scramble panel display style';
 var PROPERTY_WNDSTAT = 'Statistics panel display style';
@@ -50,8 +50,8 @@ var TOOLS_STATS = 'Statistiek';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Verdeling tijden';
 var TOOLS_TREND = 'tijd trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_METRONOME = 'metronoom';
+var TOOLS_CFMTIME = 'Bevestig tijd';
 var PROPERTY_IMGSIZE = 'Tekstgrootte scramble';
 var TIMER_INSPECT = 'Inspectie';
 var TIMER_SOLVE = 'Oplossen';
@@ -92,7 +92,7 @@ var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIIRSTS = 'Altijd|Vraag|Nooit';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
@@ -177,7 +177,7 @@ var scrdata = [
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
+		['voorvoegsel', "777p", 100],
 		['suffix', "777s", 100],
 		['7x7x7 randen', "7edge", 8]
 	]],
