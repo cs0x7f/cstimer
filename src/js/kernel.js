@@ -1243,11 +1243,11 @@ var kernel = execMain(function() {
 		});
 
 		$('#touch')[0].ontouchstart = function(e) {
-			timer.onkeydown(32);
+			timer.onkeydown({which: 32});
 			e.preventDefault && e.preventDefault();
 		}
 		$('#touch')[0].ontouchend = function(e) {
-			timer.onkeyup(32);
+			timer.onkeyup({which: 32});
 			e.preventDefault && e.preventDefault();
 		}
 		$('#touch').bind('touch', function(e){e.preventDefault && e.preventDefault()});
@@ -1258,13 +1258,13 @@ var kernel = execMain(function() {
 		 */
 		$('#touch').mousedown(function(e) {
 			if (e.which == 1 && getProp('useMouse')) { //left button only
-				timer.onkeydown(32);
+				timer.onkeydown({which: 32});
 				e.preventDefault && e.preventDefault();
 			}
 		});
 		$('#touch').mouseup(function(e) {
 			if (e.which == 1 && getProp('useMouse')) {
-				timer.onkeyup(32);
+				timer.onkeyup({which: 32});
 				e.preventDefault && e.preventDefault();
 			}
 		});
