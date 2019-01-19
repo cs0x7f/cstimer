@@ -1242,15 +1242,19 @@ var kernel = execMain(function() {
 			return keyback;
 		});
 
-		$('#touch')[0].ontouchstart = function(e) {
+		$('#touch').bind('touchstart', function(e) {
+			refocus();
 			timer.onkeydown({which: 32});
 			e.preventDefault && e.preventDefault();
-		}
-		$('#touch')[0].ontouchend = function(e) {
+		});
+		$('#touch').bind('touchend', function(e) {
+			refocus();
 			timer.onkeyup({which: 32});
 			e.preventDefault && e.preventDefault();
-		}
-		$('#touch').bind('touch', function(e){e.preventDefault && e.preventDefault()});
+		});
+		$('#touch').bind('touch', function(e){
+			e.preventDefault && e.preventDefault();
+		});
 
 		/**
 		 * ontouch events might not work on microsoft surface pad or laptop,
