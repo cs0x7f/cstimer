@@ -286,15 +286,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function onkeyup(keyCode) {
+		function onkeyup(keyCode, isTrigger) {
 			var now = $.now();
-			if (keyCode == 32) {
+			if (isTrigger) {
 				if (status == 0) {
 					status = -1;
 				} else if (status == -1 || status == -3) {
 					clearPressReady();
 					if (now - lastStop < 500) {
-						lcd.fixDisplay(false, keyCode == 32);
+						lcd.fixDisplay(false, isTrigger);
 						return;
 					}
 				} else if (status == -2) {
@@ -310,13 +310,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					startTime = now;
 				}
 			}
-			lcd.fixDisplay(false, keyCode == 32);
-			if (keyCode == 32) {
+			lcd.fixDisplay(false, isTrigger);
+			if (isTrigger) {
 				kernel.clrKey();
 			}
 		}
 
-		function onkeydown(keyCode) {
+		function onkeydown(keyCode, isTrigger) {
 			var now = $.now();
 			if (now - lastDown < 200) {
 				return;
@@ -344,7 +344,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						status = -1;
 					}
 				}
-			} else if (keyCode == 32) {
+			} else if (isTrigger) {
 				if ((status == (checkUseIns() ? -3 : -1)) && pressreadyId == undefined) {
 					pressreadyId = setTimeout(pressReady, getProp('preTime'));
 				} else if (status == -1 && checkUseIns()) {
@@ -356,8 +356,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.val(0);
 				ui.setAutoShow(true);
 			}
-			lcd.fixDisplay(true, keyCode == 32);
-			if (keyCode == 32) {
+			lcd.fixDisplay(true, isTrigger);
+			if (isTrigger) {
 				kernel.clrKey();
 			}
 		}
@@ -381,9 +381,28 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			lastDown = lastStop = 0;
 		}
 
+		var ctrlStatus = 0x0;
+
+		//type: 0 down, 1 up
+		function detectTrigger(keyCode, type) {
+			var prevStatus = ctrlStatus;
+			if (keyCode > 255) {
+				if (type) {
+					ctrlStatus &= ~(1 << keyCode);
+				} else {
+					ctrlStatus |= (1 << keyCode);
+				}
+			}
+			return keyCode == 32 || prevStatus == 3 || ctrlStatus == 3;
+		}
+
 		return {
-			onkeydown: onkeydown,
-			onkeyup: onkeyup,
+			onkeydown: function(keyCode) {
+				return onkeydown(keyCode, detectTrigger(keyCode, 0));
+			},
+			onkeyup: function(keyCode) {
+				return onkeyup(keyCode, detectTrigger(keyCode, 1));
+			},
 			reset: reset
 		}
 	})();
@@ -1107,10 +1126,27 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	})();
 
-	function onkeydown(keyCode) {
+	function getKeyCode(e) {
+		// left Ctrl: 256
+		// right Ctrl: 257
+
+		var keyCode = e.which;
+		if (keyCode == 17) { // ctrl
+			var origE = e.originalEvent;
+			if (origE.location == 1 || origE.keyLocation == 1) {
+				keyCode = 256;
+			} else if (origE.location == 2 || origE.keyLocation == 2) {
+				keyCode = 257;
+			}
+		}
+		return keyCode;
+	}
+
+	function onkeydown(e) {
 		if (ui.isPop()) {
 			return;
 		}
+		var keyCode = getKeyCode(e);
 		var focusObj = $(document.activeElement);
 		if (focusObj.is('input, textarea, select')) {
 			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer' && keyCode == 13) {
@@ -1137,10 +1173,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
-	function onkeyup(keyCode) {
+	function onkeyup(e) {
 		if (ui.isPop()) {
 			return;
 		}
+		var keyCode = getKeyCode(e);
 		var focusObj = $(document.activeElement);
 		if (focusObj.is('input, textarea, select')) {
 			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer' && keyCode == 13) {

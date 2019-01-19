@@ -1232,14 +1232,13 @@ var kernel = execMain(function() {
 		$(document).keydown(function(e) {
 			keyback = true;
 			pushSignal('keydown', e);
-			timer.onkeydown(e.which);
-			// console.log(keyback);
+			timer.onkeydown(e);
 			return keyback;
 		});
 		$(document).keyup(function(e) {
 			keyback = true;
 			pushSignal('keyup', e);
-			timer.onkeyup(e.which);
+			timer.onkeyup(e);
 			return keyback;
 		});
 
