@@ -443,13 +443,13 @@ var kernel = execMain(function() {
 			"#leftbar{border-color:?}" +
 			"#logo{color:?;border-color:?;background-color:?}" +
 			".mybutton,.tab,.cntbar{border-color:?}" +
-			".mybutton:hover,.tab:hover,.mywindow,.popup,.dialog{background-color:?}" +
+			"html:not(.m) .mybutton:hover,.mybutton:active,html:not(.m) .tab:hover,.tab:active,.mywindow,.popup,.dialog{background-color:?}" +
 			".mybutton.enable,.tab.enable,.cntbar,.selected{background-color:?}" +
 			"#gray{background-color:?}" +
-			".times:hover,.click:hover,textarea{background-color:?}" +
+			"html:not(.m) .times:hover,html:not(.m) .click:hover,.times:active,.click:active,textarea{background-color:?}" +
 			".click{color:?}" +
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue{border-color:?}" +
-			"#avgstr .click:hover{background-color:?}" + 
+			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" + 
 			"input:disabled{background:?}" + 
 			".mywindow::before,.popup,.dialog,#leftbar::before{box-shadow:0 0 .6em ?}";
@@ -823,6 +823,9 @@ var kernel = execMain(function() {
 		}
 
 		function loadData(data) {
+			if (!confirm(IMPORT_FINAL_CONFIRM)) {
+				return;
+			}
 			if ('properties' in data) {
 				var wcaData = localStorage['wcaData'] || '{}';
 				var gglData = localStorage['gglData'] || '{}';

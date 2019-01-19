@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Chỉ được viết chữ cái hoặc con số!';
 var EXPORT_ERROR = 'Có lỗi xảy ra...';
 var EXPORT_NODATA = 'không tìm thấy thông tin từ mã của bạn';
 var EXPORT_UPLOADED = 'thu thập thành công';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'Công cụ';
 var IMAGE_UNAVAILABLE = 'Không khả dụng cho loại scramble này';

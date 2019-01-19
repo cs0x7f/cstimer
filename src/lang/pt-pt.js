@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Apenas alfabeto ou números são permitidos!';
 var EXPORT_ERROR = 'Alguns erros ocorreram...';
 var EXPORT_NODATA = 'Sem dados encontrados para sua conta';
 var EXPORT_UPLOADED = 'Enviado com sucesso';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'EMBARA-<br>LHAMENTO';
 var BUTTON_TOOLS = 'FERRA-<br>MENTAS';
 var IMAGE_UNAVAILABLE = 'Indisponível para esse tipo de embaralhamento!';

@@ -37,6 +37,7 @@ var EXPORT_INVID = '帐号名只能包含字母或数字！';
 var EXPORT_ERROR = '出错了，我也想知道为什么……';
 var EXPORT_NODATA = '此帐号还没有上传数据';
 var EXPORT_UPLOADED = '上传成功';
+var IMPORT_FINAL_CONFIRM = '这将会覆盖所有本地数据！确认导入数据？';
 var BUTTON_SCRAMBLE = '打乱<br>公式';
 var BUTTON_TOOLS = '工具';
 var IMAGE_UNAVAILABLE = '不支持此打乱类型';

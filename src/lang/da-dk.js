@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Kun alfabetiks eller nummere er tilladt!';
 var EXPORT_ERROR = 'Nogle fejl opstod...';
 var EXPORT_NODATA = 'Ingen data fundet på din konto';
 var EXPORT_UPLOADED = 'Upload fuldført';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'Blanding';
 var BUTTON_TOOLS = 'Værktøj';
 var IMAGE_UNAVAILABLE = 'Utilgængelig for denne blandings type';

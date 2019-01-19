@@ -37,6 +37,7 @@ var EXPORT_INVID = 'sadece harf veya numara kullanılabilir';
 var EXPORT_ERROR = 'Bir hata oluştu...';
 var EXPORT_NODATA = 'Hesabınız için veri bulunamadı';
 var EXPORT_UPLOADED = 'Yükleme başarılı';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'karış-<br>tırma';
 var BUTTON_TOOLS = 'Yardımcılar';
 var IMAGE_UNAVAILABLE = 'Bu karıştırma türü ile uyumlu değil';

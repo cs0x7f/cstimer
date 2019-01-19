@@ -37,6 +37,7 @@ var EXPORT_INVID = '계정 이름에는 영문과 숫자만 사용할 수 있다
 var EXPORT_ERROR = '알 수 없는 오류가 발생했나봐요... ㅠㅠ';
 var EXPORT_NODATA = '데이터를 발견하지 못했어요... (아직 사용된 적이 없는 계정인 것 같네요)';
 var EXPORT_UPLOADED = '올리기 성공';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = '섞기<br>공식';
 var BUTTON_TOOLS = '도구';
 var IMAGE_UNAVAILABLE = '해당 유형은 섞기 그림이 지원되지 않습니다.';

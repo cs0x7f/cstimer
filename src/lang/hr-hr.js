@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Dozvoljena su samo slova ili brojevi!';
 var EXPORT_ERROR = 'Dogodile su se neke greške...';
 var EXPORT_NODATA = 'Nema pronađenih podataka za navedeni korisnički račun';
 var EXPORT_UPLOADED = 'Uspješno preneseno';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'ALATI';
 var IMAGE_UNAVAILABLE = 'Nedostupno za ovaj tip scramble-a';

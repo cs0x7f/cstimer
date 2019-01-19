@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Alleen letters en cijfers zijn toegestaan!';
 var EXPORT_ERROR = 'Er zijn fouten opgetreden...';
 var EXPORT_NODATA = 'Geen gegevens gevonden in je account';
 var EXPORT_UPLOADED = 'Succesvol geupload';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'Hulpmi-<br>ddelen';
 var IMAGE_UNAVAILABLE = 'Niet beschikbaar voor dit type scramble';

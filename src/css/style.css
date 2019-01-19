@@ -139,8 +139,6 @@ textarea {
 
 #touch {
 	z-index: 10;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
@@ -240,11 +238,11 @@ textarea {
 	vertical-align: middle;
 }
 
-#leftbar div > div > span, #leftbar div > div:hover > span.icon {
+#leftbar div > div > span, html:not(.m) #leftbar div > div:hover > span.icon {
 	display: none;
 }
 
-#leftbar div > div:hover > span, #leftbar div > div > span.icon, #leftbar > #logo > div > span {
+html:not(.m) #leftbar div > div:hover > span, #leftbar div > div > span.icon, #leftbar > #logo > div > span {
 	display: table-cell;
 }
 
@@ -330,7 +328,7 @@ textarea {
 	margin: -0.15rem;
 }
 
-.mywindow:hover, #leftbar:hover {
+html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	z-index: 35;
 }
 
@@ -484,6 +482,9 @@ textarea {
 .click, .times, .tab {
 	cursor: pointer;
 	border-radius: 0.15em;
+}
+
+.click, .times, .tab, .table, .mybutton, .tabValue, .expOauth, .title, #touch, #lcd {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -965,7 +966,7 @@ html.m .mhide, html:not(.m) .mshow {
 .mtds .popup,
 .mtds .tab,
 .mtds .tabValue,
-.mtds .click,
+.mtds .click:not(td):not(th),
 .mtds .tab,
 .mtds select,
 .mtds input[type='button'],

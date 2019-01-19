@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Only alphabet or number is allowed!';
 var EXPORT_ERROR = 'Some errors occurred...';
 var EXPORT_NODATA = 'No data found for your account';
 var EXPORT_UPLOADED = 'Uploaded successfully';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'KEVE-<br>RÉS';
 var BUTTON_TOOLS = 'ESZ-<br>KÖZÖK';
 var IMAGE_UNAVAILABLE = 'Nem elérhető ebben a keverési típusban';

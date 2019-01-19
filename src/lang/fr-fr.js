@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Chiffres ou lettres seulement!';
 var EXPORT_ERROR = 'Des erreurs se sont produites...';
 var EXPORT_NODATA = 'Aucune donnée n\'a été trouvée sur votre compte';
 var EXPORT_UPLOADED = 'Envoyé avec succès';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'MELA-<br>NGE';
 var BUTTON_TOOLS = 'OUTILS';
 var IMAGE_UNAVAILABLE = 'Non disponible pour ce type de mélange';

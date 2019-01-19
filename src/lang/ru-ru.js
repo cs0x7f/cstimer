@@ -37,6 +37,7 @@ var EXPORT_INVID = 'Разрешены только алфавит и числа
 var EXPORT_ERROR = 'Произошли некоторые ошибки...';
 var EXPORT_NODATA = 'Не найдено данных твоего аккаунта';
 var EXPORT_UPLOADED = 'Загружено успешно';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'СКРА-<br>МБЛ';
 var BUTTON_TOOLS = 'ИНСТРУ-<br>МЕНТЫ';
 var IMAGE_UNAVAILABLE = 'Невозможно для этого типа скрамбла';
