@@ -870,6 +870,9 @@ var kernel = execMain(function() {
 				return;
 			}
 			var compExpString = LZString.compressToEncodedURIComponent(expString);
+			var target = $(e.target);
+			var rawText = target.html();
+			target.html('...');
 			$.post('https://cstimer.net/userdata.php', {
 				'id': id,
 				'data': compExpString
@@ -879,7 +882,10 @@ var kernel = execMain(function() {
 				} else {
 					alert(EXPORT_ERROR);
 				}
-			}, 'json');
+				target.html(rawText);
+			}, 'json').always(function() {
+				target.html(rawText);
+			});
 		}
 
 		function downloadData(e) {
@@ -887,19 +893,30 @@ var kernel = execMain(function() {
 			if (!id) {
 				return;
 			}
+			var target = $(e.target);
+			var rawText = target.html();
+			target.html('...');
 			$.post('https://cstimer.net/userdata.php', {
 				'id': id
 			}, function(val) {
+				target.html('......');
 				var retcode = val['retcode'];
 				if (retcode == 0) {
-					loadData(JSON.parse(LZString.decompressFromEncodedURIComponent(val['data'])));
+					try {
+						loadData(JSON.parse(LZString.decompressFromEncodedURIComponent(val['data'])));
+					} catch(err) {
+						alert(EXPORT_ERROR);
+					}
 				} else if (retcode == 404) {
 					alert(EXPORT_NODATA);
 				} else {
 					alert(EXPORT_ERROR);
 				}
+				target.html(rawText);
 			}, 'json').error(function() {
 				alert(EXPORT_ERROR);
+			}).always(function() {
+				target.html(rawText);
 			});
 		}
 
