@@ -528,6 +528,20 @@ var mathlib = (function() {
 		return ~~(date.getTime() / 1000);
 	}
 
+	function obj2str(val) {
+		if (typeof val == 'string') {
+			return val;
+		}
+		return JSON.stringify(val);
+	}
+
+	function str2obj(val) {
+		if (typeof val != 'string') {
+			return val
+		}
+		return JSON.parse(val);
+	}
+
 	function valuedArray(len, val) {
 		var ret = [];
 		for (var i = 0; i < len; i++) {
@@ -559,6 +573,8 @@ var mathlib = (function() {
 		rndProb: rndProb,
 		time2str: time2str,
 		str2time: str2time,
+		obj2str: obj2str,
+		str2obj: str2obj,
 		valuedArray: valuedArray,
 		Solver: Solver
 	}

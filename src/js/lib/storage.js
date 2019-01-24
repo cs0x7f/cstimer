@@ -146,15 +146,12 @@ var storage = execMain(function() {
 					}
 				}
 			}, function() {
-				for (var key in exportObj) {
-					exportObj[key] = JSON.stringify(exportObj[key]);
-				}
 				callback && callback(exportObj);
 			});
 		} else {
 			for (var i = 1; i <= ~~kernel.getProp('sessionN'); i++) {
 				if (localStorage['session' + i] != undefined) {
-					exportObj['session' + i] = localStorage['session' + i];
+					exportObj['session' + i] = mathlib.str2obj(localStorage['session' + i]);
 				}
 			}
 			requestAnimFrame(function() {
@@ -169,11 +166,7 @@ var storage = execMain(function() {
 			getTrans("readwrite", function(objectStore) {
 				objectStore.clear();
 				for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
-					var timeStr = obj['session' + sessionIdx];
-					var times = [];
-					if (timeStr != undefined && timeStr != '') {
-						times = JSON.parse(timeStr);
-					}
+					var times = mathlib.str2obj(obj['session' + sessionIdx] || []);
 					for (var i = 0; i < (Math.ceil(times.length / 100) || 1); i++) {
 						objectStore.put(times.slice(i * 100, (i + 1) * 100), getID(sessionIdx, i));
 					}
@@ -181,7 +174,7 @@ var storage = execMain(function() {
 			}, callback, curDB);
 		} else {
 			for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
-				localStorage['session' + sessionIdx] = obj['session' + sessionIdx];
+				localStorage['session' + sessionIdx] = obj2str(obj['session' + sessionIdx]);
 			}
 		}
 	}

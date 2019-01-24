@@ -832,7 +832,7 @@ var kernel = execMain(function() {
 				localStorage.clear();
 				localStorage['wcaData'] = wcaData;
 				localStorage['gglData'] = gglData;
-				localStorage['properties'] = data['properties'];
+				localStorage['properties'] = mathlib.obj2str(data['properties']);
 				property.load();
 			}
 			storage.importAll(data, function() {
@@ -985,7 +985,7 @@ var kernel = execMain(function() {
 
 		function showExportDiv() {
 			storage.exportAll(function(exportObj) {
-				exportObj['properties'] = localStorage['properties'];
+				exportObj['properties'] = mathlib.str2obj(localStorage['properties']);
 				expString = JSON.stringify(exportObj);
 
 				if (window.Blob) {
