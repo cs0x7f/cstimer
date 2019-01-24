@@ -1012,7 +1012,35 @@ var kernel = execMain(function() {
 					outFile.attr('href', URL.createObjectURL(blob));
 					outFile.attr('download', 'cstimer_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.txt');
 				}
-				kernel.showDialog([exportDiv, 0, undefined, 0], 'export', EXPORT_DATAEXPORT);
+				kernel.showDialog([exportDiv, 0, undefined, 0, ['Export/Import only Options', function() {
+					var data = JSON.parse(localStorage['properties']);
+					var expOpt = {};
+					for (var key in data) {
+						if (!key.startsWith('session')) {
+							expOpt[key] = data[key];
+						}
+					}
+					var compOpt = LZString.compressToEncodedURIComponent(JSON.stringify(expOpt));
+					var ret = prompt('Save this code, or type saved code to import', compOpt);
+					if (!ret || ret == compOpt) {
+						return false;
+					}
+					try {
+						ret = JSON.parse(LZString.decompressFromEncodedURIComponent(ret));
+					} catch (e) {
+						return false;
+					}
+					var data = JSON.parse(localStorage['properties']);
+					for (var key in data) {
+						if (key.startsWith('session')) {
+							ret[key] = data[key];
+						}
+					}
+					localStorage['properties'] = mathlib.obj2str(ret);
+					location.reload();
+					return false;
+
+				}]], 'export', EXPORT_DATAEXPORT);
 			});
 		}
 
