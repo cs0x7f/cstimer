@@ -33,7 +33,7 @@ var TimerDataConverter = execMain(function() {
 		data = JSON.parse(data);
 		var sessionData = {};
 		try {
-			sessionData = JSON.parse(JSON.parse(data['properties'])['sessionData']);
+			sessionData = mathlib.str2obj(mathlib.str2obj(data['properties'])['sessionData']);
 		} catch (e) {}
 
 		var ret = [];
@@ -45,7 +45,7 @@ var TimerDataConverter = execMain(function() {
 			var curSession = {};
 			var times = [];
 			try {
-				times = JSON.parse(data[key]);
+				times = mathlib.str2obj(data[key]);
 			} catch (e) {}
 			// ensure valid times, and do not import empty sessions
 			if (!$.isArray(times) || times.length == 0) {
