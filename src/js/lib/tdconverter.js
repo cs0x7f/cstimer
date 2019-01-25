@@ -79,6 +79,44 @@ var TimerDataConverter = execMain(function() {
 		return ret;
 	}];
 
+	Timers['csTimerCSV'] = [/^No\.;Time;Comment;Scramble;Date;P\.1/i, function(data) {
+		data = readCSV(data, ';');
+		var times = [];
+		var n_phases = data[0].length - 5;
+		var timeRE = /^(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?$/;
+		for (var i = 1; i < data.length; i++) {
+			var line = data[i];
+			var time = []; // use multi-phase time instead of that recorded in 'Time'
+			var m = timeRE.exec(line[1]); // detect penalty only
+			if (!m) { //invalid
+				console.log('Invalid data detected');
+				continue;
+			} else if (m[1]) {
+				time[0] = -1;
+			} else if (m[5]) {
+				time[0] = 2000;
+			} else {
+				time[0] = 0;
+			}
+			while (line[line.length - 1] == '') {
+				line.pop();
+			}
+			for (var j = 5; j < line.length; j++) {
+				m = timeRE.exec(line[j]);
+				var val = Math.round(3600000 * ~~(m[2]) + 60000 * ~~(m[3]) + 1000 * parseFloat(m[4]));
+				time[line.length - j] = (time[line.length - j + 1] || 0) + val;
+			}
+			var time = [time, line[3], line[2], mathlib.str2time(line[4])];
+			times.push(time);
+		}
+		return [{
+			'name': 'import',
+			'phases': n_phases,
+			'scr': '333',
+			'times': times
+		}];
+	}];
+
 	Timers['ZYXTimer'] = [/^Session: /i, function(data) {
 
 	}];
@@ -189,7 +227,9 @@ var TimerDataConverter = execMain(function() {
 				try {
 					ret = Timers[timer][1](data);
 					break;
-				} catch (e) {}
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		}
 		return ret;
