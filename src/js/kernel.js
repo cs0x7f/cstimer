@@ -463,9 +463,13 @@ var kernel = execMain(function() {
 			".click{color:?}" +
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
-			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" + 
-			"input:disabled{background:?}" + 
-			".mywindow::before,.popup,.dialog,#leftbar::before{box-shadow:0 0 .6em ?}";
+			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
+			"input:disabled{background:?}" +
+			".mywindow::before,.popup,.dialog,#leftbar::before";
+		csstmp = [
+			csstmp + "{box-shadow:0 0 .6em ?}",
+			csstmp + "{box-shadow:none}"
+		];
 
 		var styles = [
 			"#000#efc#fdd#fbb#00f#ff0#000",
@@ -509,7 +513,7 @@ var kernel = execMain(function() {
 		}
 
 		function releaseColor() {
-			var cssval = csstmp;
+			var cssval = getProp('uidesign') == 'ns' ? csstmp[1] : csstmp[0];
 			var sgn = nearColor(cur_color[0]) == '#000' ? -1: 1;
 			for (var i=0; i<col_map.length; i++) {
 				cssval = cssval.replace('?', nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn));
@@ -625,6 +629,7 @@ var kernel = execMain(function() {
 					break;
 				case 'uidesign':
 					updateUIDesign();
+					releaseColor();
 					break;
 				case 'wndScr':
 					setWndFixed('scramble', value[1] == 'f');
@@ -668,7 +673,7 @@ var kernel = execMain(function() {
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_FONT_STR.split('|')]);
 			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true]);
-			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt'], PROPERTY_UIDESIGN_STR.split('|')]);
+			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt', 'ns'], PROPERTY_UIDESIGN_STR.split('|')]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
@@ -1400,7 +1405,7 @@ var kernel = execMain(function() {
 		reprop: property.reload,
 		parseScramble: parseScramble,
 		blur: refocus,
-		ui: ui, 
+		ui: ui,
 		pround: prettyRound,
 		round: round
 	};
