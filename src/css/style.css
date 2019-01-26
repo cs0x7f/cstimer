@@ -508,7 +508,7 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 
 #stats table {
 	min-width: 178px;
-	min-width: 12.5rem;
+	min-width: 12.6rem;
 	white-space: nowrap;
 }
 
