@@ -91,5 +91,6 @@ if ($lang == "en-us") { ?>
   <script type="text/javascript">
 var LANG_SET = '|en-us|ca-es|da-dk|de-de|es-es|fr-fr|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ru-ru|tr-tr|vi-vn|zh-cn';
 var LANG_STR = 'English|Català|Dansk|Deutsch|Español|Français|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Pусский|Türkçe|Tiếng Việt|简体中文';
+var LANG_CUR = '<?php echo $lang; ?>';
 <?php include('lang/'.$lang.'.js');?>
   </script>

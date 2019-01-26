@@ -261,8 +261,21 @@ var kernel = execMain(function() {
 	var regProp = property.reg;
 
 	$(function() {
-		regProp('kernel', 'lang', 5, 'Language: ',
-			['en', LANG_SET.replace(/\|/g, '|?lang=').split('|').slice(1), LANG_STR.split('|')]);
+		var curLang = LANG_CUR || 'en-us';
+		regProp('kernel', 'lang', 1, 'Language', [curLang, (LANG_SET + '|h').split('|').slice(1), (LANG_STR + '|help translation').split('|')]);
+		setProp('lang', curLang);
+		regListener('kernel', 'property', function(signal, value) {
+			if (value[1] == curLang || value[2] != "modify") {
+				return;
+			} else if (value[1] == 'h') {
+				if (confirm('Press OK to redirect to crowdin for translating cstimer')) {
+					window.location.href = 'https://crowdin.com/project/cstimer';
+				}
+			} else {
+				window.location.href = '?lang=' + value[1];
+			}
+			setProp('lang', curLang);
+		}, /^lang$/);
 	})
 
 	var ui = (function() {
@@ -577,15 +590,14 @@ var kernel = execMain(function() {
 				case 'color':
 					if (value[1] == 'u') {//user defined
 						return;
-					} else if (value[1] == 'e') {
-						prompt(COLOR_EXPORT, exportColor());
-						property.set('color', 'u');
 					} else if (value[1] == 'i') {
-						var val = prompt(COLOR_IMPORT, '');
-						if (val !== null) {
-							if (!importColor(val)) {
-								alert(COLOR_FAIL);
-							}
+						var val = exportColor();
+						var ret = prompt(EXPORT_CODEPROMPT, compOpt);
+						if (!ret || ret == val) {
+							return false;
+						}
+						if (!importColor(ret)) {
+							alert(COLOR_FAIL);
 						}
 						property.set('color', 'u');
 					} else {
@@ -1012,7 +1024,7 @@ var kernel = execMain(function() {
 					outFile.attr('href', URL.createObjectURL(blob));
 					outFile.attr('download', 'cstimer_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.txt');
 				}
-				kernel.showDialog([exportDiv, 0, undefined, 0, ['Export/Import only Options', function() {
+				kernel.showDialog([exportDiv, 0, undefined, 0, [EXPORT_ONLYOPT, function() {
 					var data = JSON.parse(localStorage['properties']);
 					var expOpt = {};
 					for (var key in data) {
@@ -1021,7 +1033,7 @@ var kernel = execMain(function() {
 						}
 					}
 					var compOpt = LZString.compressToEncodedURIComponent(JSON.stringify(expOpt));
-					var ret = prompt('Save this code, or type saved code to import', compOpt);
+					var ret = prompt(EXPORT_CODEPROMPT, compOpt);
 					if (!ret || ret == compOpt) {
 						return false;
 					}
@@ -1050,7 +1062,7 @@ var kernel = execMain(function() {
 			inServWCA.unbind('click').removeClass('click');
 			outServWCA.unbind('click').removeClass('click');
 			if (!wcaData['access_token']) {
-				wcaDataTd.html('Login Using WCA Account');
+				wcaDataTd.html(EXPORT_LOGINWCA);
 				wcaDataTr.click(function() {
 					location.href = wcaLoginUrl;
 				}).addClass('click');
@@ -1058,7 +1070,7 @@ var kernel = execMain(function() {
 				var me = wcaData['wca_me'];
 				wcaDataTd.html('WCAID: ' + me['wca_id'] + '<br>' + 'Name: ' + me['name']);
 				wcaDataTr.click(function() {
-					if (confirm('Confirm to log out?')) {
+					if (confirm(EXPORT_LOGOUTCFM)) {
 						logoutFromWCA();
 					}
 				}).addClass('click');
@@ -1073,7 +1085,7 @@ var kernel = execMain(function() {
 			inServGGL.unbind('click').removeClass('click').html(EXPORT_FROMSERV + ' (Google)');
 			outServGGL.unbind('click').removeClass('click').html(EXPORT_TOSERV + ' (Google)');
 			if (!gglData['access_token']) {
-				gglDataTd.html('Login Using Google Account');
+				gglDataTd.html(EXPORT_LOGINGGL);
 				gglDataTr.click(function() {
 					location.href = gglLoginUrl;
 				}).addClass('click');
@@ -1081,7 +1093,7 @@ var kernel = execMain(function() {
 				var me = gglData['ggl_me'];
 				gglDataTd.html('Name: ' + me['displayName'] + '<br>' + 'Email: ' + me['emailAddress']);
 				gglDataTr.click(function() {
-					if (confirm('Confirm to log out?')) {
+					if (confirm(EXPORT_LOGOUTCFM)) {
 						logoutFromGGL();
 					}
 				}).addClass('click');
@@ -1149,7 +1161,7 @@ var kernel = execMain(function() {
 
 			if ($.urlParam('code')) { //WCA oauth
 				var code = $.urlParam('code');
-				wcaDataTd.html('Authorized<br>Fetching Data...');
+				wcaDataTd.html(EXPORT_LOGINAUTHED);
 				$.post('oauthwca.php', {
 					'code': $.urlParam('code')
 				}, function(val) {
@@ -1172,7 +1184,7 @@ var kernel = execMain(function() {
 
 			if ($.hashParam('access_token')) { //Google oauth
 				var access_token = $.hashParam('access_token');
-				gglDataTd.html('Authorized<br>Fetching Data...');
+				gglDataTd.html(EXPORT_LOGINAUTHED);
 				$.get('https://www.googleapis.com/drive/v3/about', {
 					'fields': 'user',
 					'access_token': access_token

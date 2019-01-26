@@ -1094,12 +1094,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.setProp('session', sessionIdx);
 			load();
 			var curSessionData = sessionData[sessionIdx];
-			if (kernel.getProp('ss2scr')) {
-				kernel.setProp('scrType', curSessionData['scr']);
-			}
-			if (kernel.getProp('ss2phases')) {
-				kernel.setProp('phases', curSessionData['phases']);
-			}
+			kernel.setProp('scrType', curSessionData['scr']);
+			kernel.setProp('phases', curSessionData['phases']);
 			fixSessionSelect();
 		}
 
@@ -1809,10 +1805,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false]);
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false]);
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);
-		// kernel.regProp('stats', 'ss2scr', 0, PROPERTY_SS2SCR, [true]);
-		// kernel.regProp('stats', 'ss2phases', 0, PROPERTY_SS2PHASES, [true]);
-		kernel.setProp('ss2scr', true);
-		kernel.setProp('ss2phases', true);
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true]);
 		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false]);
