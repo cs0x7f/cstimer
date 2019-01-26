@@ -55,55 +55,55 @@ var TOOLS_GIIKER = 'Cub Giiker';
 var TOOLS_IMAGE = 'Dibuixar barreja';
 var TOOLS_STATS = 'Estadístiques';
 var TOOLS_HUGESTATS = 'Estadístiques absolutes';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
-var PROPERTY_IMGSIZE = 'Scramble Image Size';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
-var PROPERTY_ENTERING = 'entering in times with';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|Giiker';
-var PROPERTY_COLOR = 'select color theme';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
-var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
+var TOOLS_DISTRIBUTION = 'Distribució de temps';
+var TOOLS_TREND = 'Tendència de temps';
+var TOOLS_METRONOME = 'Metrònom';
+var TOOLS_CFMTIME = 'Confirmar temps';
+var PROPERTY_IMGSIZE = 'Mida de l\'imatge de barreja';
+var TIMER_INSPECT = 'Inspecciona';
+var TIMER_SOLVE = 'Resol';
+var PROPERTY_USEMOUSE = 'Utilitzar el ratolí com a cronòmetre';
+var PROPERTY_TIMEU = 'Actualització de temporitzador';
+var PROPERTY_TIMEU_STR = 'Continu|0,1s|Segons|Inspecció|Res';
+var PROPERTY_PRETIME = 'Temps d\'espera de l\'espai(Segon(s))';
+var PROPERTY_ENTERING = 'Entrar temps amb';
+var PROPERTY_ENTERING_STR = 'Cronòmetre|Manual|StackMat|Cronòmetre MoYu|Virtual|Giiker';
+var PROPERTY_COLOR = 'Seleciona tema de color';
+var PROPERTY_COLORS = 'Color de la font|Color de fons|Color de taulers|Color dels botons|Color dels enllaços|Color del logo|Color de fons del logo';
+var PROPERTY_VIEW = 'Estil de la IU';
+var PROPERTY_VIEW_STR = 'Automàtic|Mòbil|Escriptori';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design';
-var COLOR_EXPORT = 'Please save the string for import';
-var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'random|style1|style2|style3|black|white|style6|manual|export...|import...';
-var PROPERTY_FONT = 'select timer\'s font';
-var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var COLOR_EXPORT = 'Si us plau guardeu el fil per importar';
+var COLOR_IMPORT = 'Si us plau entreu el fil exportat';
+var COLOR_FAIL = 'Dades incorrectes, importació fallada';
+var PROPERTY_FONTCOLOR_STR = 'Negre|Blanc';
+var PROPERTY_COLOR_STR = 'Aleatori|Estil 1|Estil 2|Estil 3|Negre|Blanc|Estil 6|Manual|Importar/Exportar...';
+var PROPERTY_FONT = 'Seleccionar font del cronòmetre';
+var PROPERTY_FONT_STR = 'Digital aleatori|Normal|Digital 1|Digital 2|Digital 3|Digital 4|Digital 5';
+var PROPERTY_FORMAT = 'Format de temps';
+var PROPERTY_USEKSC = 'Fer servir dreceres del teclat';
+var PROPERTY_NTOOLS = 'Nombre d\'eines';
+var PROPERTY_AHIDE = 'Amagar tots els elements en el cronometratge';
+var SCRAMBLE_LAST = 'Anterior';
+var SCRAMBLE_NEXT = 'Següent';
+var SCRAMBLE_SCRAMBLE = 'Barreja';
+var SCRAMBLE_LENGTH = 'Llargada';
+var SCRAMBLE_INPUT = 'Importar barreja';
+var PROPERTY_VRCSPEED = 'Velocitat base VRC (tps)';
+var PROPERTY_VRCMP = 'Multi-fase';
+var PROPERTY_VRCMPS = 'Cap|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_GIIKERVRC = 'Mostrar cub Giiker virtual';
+var PROPERTY_GIISOK_DELAY = 'Marcar com a barrejat si passen';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Mai|Barrejat correctament';
+var PROPERTY_GIISOK_KEY = 'Marcar barrejat amb espai';
+var PROPERTY_GIISOK_MOVE = 'Marcar barrejat fent';
+var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U\' U)2, etc|Res';
+var PROPERTY_GIISBEEP = 'Emet so quan es marqui barrejat';
+var PROPERTY_GIIRST = 'Reiniciar cub Giiker quan es connecti';
+var PROPERTY_GIIRSTS = 'Sempre|Preguntar|Mai';
+var CONFIRM_GIIRST = 'Reiniciar cub Giiker com a solucionat?';
+var PROPERTY_GIIAED = 'Detecció automàtica d\'errors físics';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -168,62 +168,62 @@ var scrdata = [
 		['random move', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['4x4x4 Arestes', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['5x5x5 Arestes', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['Prefix', "666p", 80],
+		['Sufix', "666s", 80],
+		['6x6x6 Arestes', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['Prefix', "777p", 100],
+		['Sufix', "777s", 100],
+		['7x7x7 Arestes', "7edge", 8]
 	]],
-	['Clock', [
+	['Rellotge', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
-		['concise', "clkc", 0],
-		['efficient pin order', "clke", 0]
+		['WCA', "clkwca", 0],
+		['Òptim', "clko", 0],
+		['Concís', "clkc", 0],
+		['Ordre eficient de clavilles', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['Estil antic', "mgmo", 70]
 	]],
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['Estil aleatori òptim', "pyro", 0],
+		['Moviments aleatoris', "pyrm", 25]
 	]],
 	['Square-1', [
 		["WCA", "sqrs", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['Mètrica de gir de cara', "sq1h", 40],
+		['Mètrica de gir', "sq1t", 20]
 	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
 		['U L R B', "skb", 25]
 	]],
-	['===OTHER===', [
+	['===Altres===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
-		['piece moves', "15p", 80],
-		['blank moves', "15pm", 80]
+	['Puzzle de 15 peces', [
+		['Moviments de peça', "15p", 80],
+		['Moviments de l\'espai en blanc', "15pm", 80]
 	]],
-	['LxMxN', [
+	['LxAxF', [
 		['1x3x3 (Floppy Cube)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],
 		['2x3x3 (Domino)', "233", 25],
@@ -275,13 +275,13 @@ var scrdata = [
 	['Super Square-1', [
 		['twist metric', "ssq1t", 20]
 	]],
-	['UFO', [
-		['Jaap style', "ufo", 25]
+	['OVNI', [
+		['Estil Jaap', "ufo", 25]
 	]],
-	['Other', [
+	['Altres', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['===Especials===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [

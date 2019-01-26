@@ -590,13 +590,10 @@ var kernel = execMain(function() {
 				case 'color':
 					if (value[1] == 'u') {//user defined
 						return;
-					} else if (value[1] == 'i') {
+					} else if (value[1] == 'i' || value[1] == 'e') {
 						var val = exportColor();
-						var ret = prompt(EXPORT_CODEPROMPT, compOpt);
-						if (!ret || ret == val) {
-							return false;
-						}
-						if (!importColor(ret)) {
+						var ret = prompt(EXPORT_CODEPROMPT, val);
+						if (ret && ret != val && !importColor(ret)) {
 							alert(COLOR_FAIL);
 						}
 						property.set('color', 'u');
@@ -673,7 +670,7 @@ var kernel = execMain(function() {
 			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true]);
 			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt'], PROPERTY_UIDESIGN_STR.split('|')]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
-			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e', 'i'], PROPERTY_COLOR_STR.split('|')]);
+			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
 			regProp('color', 'col-font', 3, parr[0], ['#000000']);
 			regProp('color', 'col-back', 3, parr[1], ['#eeffcc']);
