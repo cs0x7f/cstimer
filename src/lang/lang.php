@@ -1,5 +1,6 @@
 <p>Language: 
 <a class="click" href="?lang=en-us">English</a>&nbsp;
+<a class="click" href="?lang=ca-es">Català</a>&nbsp;
 <a class="click" href="?lang=da-dk">Dansk</a>&nbsp;
 <a class="click" href="?lang=de-de">Deutsch</a>&nbsp;
 <a class="click" href="?lang=es-es">Español</a>&nbsp;
@@ -7,8 +8,10 @@
 <a class="click" href="?lang=hr-hr">Hrvatski</a>&nbsp;
 <a class="click" href="?lang=hu-hu">Magyar</a>&nbsp;
 <a class="click" href="?lang=it-it">Italiano</a>&nbsp;
+<a class="click" href="?lang=ja-jp">日本語</a>&nbsp;
 <a class="click" href="?lang=ko-kr">한국어</a>&nbsp;
 <a class="click" href="?lang=nl-nl">Nederlands</a>&nbsp;
+<a class="click" href="?lang=pl-pl">Polski</a>&nbsp;
 <a class="click" href="?lang=pt-pt">Português</a>&nbsp;
 <a class="click" href="?lang=ru-ru">Pусский</a>&nbsp;
 <a class="click" href="?lang=tr-tr">Türkçe</a>&nbsp;
