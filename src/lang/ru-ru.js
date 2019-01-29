@@ -32,15 +32,15 @@ var EXPORT_FROMFILE = 'Загрузить из';
 var EXPORT_TOSERV = 'Сохранить на сервер';
 var EXPORT_FROMSERV = 'Загрузить из сервера';
 var EXPORT_FROMOTHER = 'Import session(s) from other timers';
-var EXPORT_USERID = 'Пожалуйста введите свой аккаунт (только алфавит или числа)';
-var EXPORT_INVID = 'Разрешены только алфавит и числа!';
+var EXPORT_USERID = 'Пожалуйста введите свой аккаунт (только алфавит или цифры)';
+var EXPORT_INVID = 'Разрешены только алфавит и цифры!';
 var EXPORT_ERROR = 'Произошли некоторые ошибки...';
-var EXPORT_NODATA = 'Не найдено данных твоего аккаунта';
+var EXPORT_NODATA = 'Не найдено данных вашего аккаунта';
 var EXPORT_UPLOADED = 'Загружено успешно';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
+var EXPORT_LOGINGGL = 'Войти используя аккаунт Google';
+var EXPORT_LOGINWCA = 'Войти используя аккаунт WCA';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
@@ -57,9 +57,9 @@ var TOOLS_STATS = 'Статистика';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'распределение времени';
 var TOOLS_TREND = 'тенденция времени';
-var TOOLS_METRONOME = 'metronome';
+var TOOLS_METRONOME = 'метроном';
 var TOOLS_CFMTIME = 'Confirm time';
-var PROPERTY_IMGSIZE = 'Изображение Картинки Скрамбла';
+var PROPERTY_IMGSIZE = 'Размер изображения скрамбла';
 var TIMER_INSPECT = 'рассмотр';
 var TIMER_SOLVE = 'сборка';
 var PROPERTY_USEMOUSE = 'использовать таймер мышкой';
@@ -71,12 +71,12 @@ var PROPERTY_ENTERING_STR = 'таймер|писать|stackmat|MoYuTimer|вир
 var PROPERTY_COLOR = 'выбрать цветовую тему';
 var PROPERTY_COLORS = 'цвет шрифта|цвет фона|цвет стола|цвет кнопок|цвет ссылки|цвет Лого|фоновый цвет Лого';
 var PROPERTY_VIEW = 'Стиль интерфейса';
-var PROPERTY_VIEW_STR = 'Авто|Мобильный|Рабочий стол';
+var PROPERTY_VIEW_STR = 'Авто|Мобильный|ПК';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
 var COLOR_EXPORT = 'Пожалуйста сохраните строку для загрузки';
 var COLOR_IMPORT = 'Пожалуйста загрузите сохраненную строку';
-var COLOR_FAIL = 'Неправильные данные, Загрузка неудалась';
+var COLOR_FAIL = 'Неправильные данные, Загрузка не удалась';
 var PROPERTY_FONTCOLOR_STR = 'черный|белый';
 var PROPERTY_COLOR_STR = 'случайно|стиль1|стиль2|стиль3|черный|белый|стиль6|мануал|загрузить/сохранить...';
 var PROPERTY_FONT = 'выберите шрифт таймера';
@@ -88,12 +88,12 @@ var PROPERTY_AHIDE = 'Спрятать Все Элементы Когда Иде
 var SCRAMBLE_LAST = 'последний';
 var SCRAMBLE_NEXT = 'следующий';
 var SCRAMBLE_SCRAMBLE = ' скрамбл';
-var SCRAMBLE_LENGTH = 'длинна';
+var SCRAMBLE_LENGTH = 'длина';
 var SCRAMBLE_INPUT = 'Вставить Скрамбл(ы)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
 var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
+var PROPERTY_GIIKERVRC = 'Показать виртуальный Giiker Cube';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
@@ -224,7 +224,7 @@ var scrdata = [
 		['пустое движение', "15pm", 80]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
+		['1x3x3 (Флоппи Куб)', "133", 0],
 		['2x2x3 (Башня Куб)', "223", 0],
 		['2x3x3 (Домино)', "233", 25],
 		['3x3x4', "334", 40],
@@ -269,7 +269,7 @@ var scrdata = [
 	['Square-2', [
 		[' ', "sq2", 20]
 	]],
-	['Super Floppy', [
+	['Супер Флоппи', [
 		[' ', "sfl", 25]
 	]],
 	['Супер Скваер', [
@@ -357,7 +357,7 @@ var STATS_AVG = 'среднее';
 var STATS_SOLVE = 'сборка';
 var STATS_TIME = 'время';
 var STATS_SESSION = 'Сессия';
-var STATS_SESSION_NAME = 'Edit session name';
+var STATS_SESSION_NAME = 'Редактировать название сессии';
 var STATS_SESSION_NAMEC = 'Name of the new session';
 var STATS_STRING = 'лучшее|текущее|худшее|Сгенерираванно csTimer\'ом на %Y-%M-%D|сборок/всего: %d|один|средний %mk|срд of %mk|Средний: %v{ (σ = %sgm)}|Средний: %v|Time List:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'точное распределение времени';
@@ -385,9 +385,9 @@ var MODULE_NAMES = {
 	"tools": 'инструменты',
 	"vrc": 'virtual&<br>Giiker'
 };
-var BGIMAGE_URL = 'пожалуйста вставьте изображение\'я url';
+var BGIMAGE_URL = 'пожалуйста вставьте url изображения';
 var BGIMAGE_INVALID = 'неверный url';
-var BGIMAGE_OPACITY = 'помутнение фонового изображения';
+var BGIMAGE_OPACITY = 'прозрачность фонового изображения';
 var BGIMAGE_IMAGE = 'фоновое изображение';
 var BGIMAGE_IMAGE_STR = 'нет|мануал|CCT';
 var SHOW_AVG_LABEL = 'Показывать Таблицу Avg';
