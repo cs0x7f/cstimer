@@ -819,13 +819,21 @@ TODO:
 	function square1SolverGetRandomScramble(type, length, cases) {
 		Shape_$clinit();
 		Square_$clinit();
+		var scrambleString = Search_solution(search, FullCube_randomCube());
+		return scrambleString;
+	}
+
+	function square1CubeShapeParityScramble(type, length, cases) {
+		Shape_$clinit();
+		Square_$clinit();
 		CSPInit();
 		var idx = mathlib.rndEl(cspcases[scrMgr.fixCase(cases, cspprobs)]);
 		var scrambleString = Search_solution(search, FullCube_randomCube(idx));
 		return scrambleString;
 	}
 
-	scrMgr.reg('sqrs', square1SolverGetRandomScramble, [cspfilter, cspprobs]);
+	scrMgr.reg('sqrs', square1SolverGetRandomScramble);
+	scrMgr.reg('sqrcsp', square1CubeShapeParityScramble, [cspfilter, cspprobs]);
 
 
 	return {

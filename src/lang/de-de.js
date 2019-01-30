@@ -131,15 +131,6 @@ var scrdata = [
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
-	['2x2x2', [
-		["WCA", "222so", 0],
-		['optimaler Zufallszustand', "222o", 0],
-		['3-gen', "2223", 25],
-		['EG', "222eg", 0],
-		['EG0', "222eg0", 0],
-		['EG1', "222eg1", 0],
-		['EG2', "222eg2", 0]
-	]],
 	['3x3x3', [
 		["WCA", "333", 0],
 		['alter Stil', "333o", 25],
@@ -162,6 +153,15 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['einfaches Kreuz', "easyc", 3]
+	]],
+	['2x2x2', [
+		["WCA", "222so", 0],
+		['optimaler Zufallszustand', "222o", 0],
+		['3-gen', "2223", 25],
+		['EG', "222eg", 0],
+		['EG0', "222eg0", 0],
+		['EG1', "222eg1", 0],
+		['EG2', "222eg2", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -207,14 +207,15 @@ var scrdata = [
 		['optimaler Zufallszustand', "pyro", 0],
 		['Zufalls-Zugfolge', "pyrm", 25]
 	]],
-	['Square-1', [
-		["WCA", "sqrs", 0],
-		['Flächen-Zug-Metrik', "sq1h", 40],
-		['Zug-Metrik', "sq1t", 20]
-	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
 		['U L R B', "skb", 25]
+	]],
+	['Square-1', [
+		["WCA", "sqrs", 0],
+		["CSP", "sqrcsp", 0],
+		['Flächen-Zug-Metrik', "sq1h", 40],
+		['Zug-Metrik', "sq1t", 20]
 	]],
 	['===Andere===', [
 		['--', "blank", 0]
