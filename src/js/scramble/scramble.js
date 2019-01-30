@@ -214,13 +214,13 @@ var scramble = execMain(function(rn, rndEl) {
 
 	var cacheTid = 0;
 
-	function genCachedScramble(args, detailType) {
+	function genCachedScramble(args, detailType, isPredict) {
 		if (csTimerWorker && csTimerWorker.getScramble) {
 			cacheTid = cacheTid || csTimerWorker.getScramble(args, function(detailType, scramble) {
 				console.log(detailType + ' cached by csTimerWorker');
 				saveCachedScramble(detailType, scramble)
 			}.bind(undefined, detailType));
-		} else {
+		} else if (!isPredict) {
 			cacheTid = cacheTid || setTimeout(function(detailType, args) {
 				var scrambler = scramblers[args[0]];
 				saveCachedScramble(detailType, scrambler.apply(scrambler, args));
@@ -249,7 +249,7 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 		for (var i = 0; i < forceCached.length; i++) {
 			if (!(forceCached[i] in cachedScr)) {
-				setTimeout(genCachedScramble.bind(undefined, JSON.parse(forceCached[i]), forceCached[i]), 2500 + rn(5000));
+				setTimeout(genCachedScramble.bind(undefined, JSON.parse(forceCached[i]), forceCached[i], true), 2500 + rn(5000));
 			}
 		}
 	});
