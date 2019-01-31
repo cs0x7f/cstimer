@@ -79,7 +79,7 @@
 		var d = [],
 			a, b, c;
 		do {
-			c = mathlib.rn(5760) & 0xfff9;
+			c = mathlib.rn(5760);
 			b = mathlib.rn(32);
 		} while (b + c == 0)
 		for (a = 0; a < 99; a++) {
