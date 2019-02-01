@@ -2,6 +2,8 @@
 
 var TimerDataConverter = execMain(function() {
 
+	var timeRE = /^(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?$/;
+
 	function readCSV(data, spliter) {
 		data = data.split(/\r?\n/g);
 		for (var i = 0; i < data.length; i++) {
@@ -83,7 +85,6 @@ var TimerDataConverter = execMain(function() {
 		data = readCSV(data, ';');
 		var times = [];
 		var n_phases = data[0].length - 5;
-		var timeRE = /^(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?$/;
 		for (var i = 1; i < data.length; i++) {
 			var line = data[i];
 			var time = []; // use multi-phase time instead of that recorded in 'Time'
@@ -216,7 +217,63 @@ var TimerDataConverter = execMain(function() {
 	}];
 
 	Timers['PrismaTimer'] = [/^[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\n/i, function(data) {
+	}];
 
+	Timers['mateus.cubetimer'] = [/^"Category";"Time \(MM:SS\.SSS\)";"Scrambler";"Date";"Penalty \+2 \(yes or no\)";"DNF \(yes or no\)";"Section"\n/i, function(data) {
+		data = readCSV(data, ';');
+		var ScrambleMap = {
+			'3x3x3': '333',
+			'2x2x2': '222so',
+			'4x4x4': '444wca',
+			'5x5x5': '555wca',
+			'Pyraminx': 'pyrso',
+			'Skewb': 'skbso',
+			'Megaminx': 'mgmp',
+			'Square-1': 'sqrs',
+			'Rubik\'s Clock': 'clkwca',
+			'6x6x6': '666wca',
+			'7x7x7': '777wca',
+			'3x3x3 Blindfolded': '333ni',
+			'4x4x4 Blindfolded': '444bld',
+			'5x5x5 Blindfolded': '555bld',
+			'3x3x3 One-Handed': '333oh',
+			'3x3x3 Multi-Blindfolded': 'r3ni',
+			'3x3x3 With Feet': '333ft',
+			'3x3x3 Fewest Moves': '333fm'
+		};
+		var name2idx = {};
+		var ret = [];
+		for (var i = 1; i < data.length; i++) {
+			var line = data[i];
+			if (line.length < 7) {
+				continue;
+			}
+			var name = line[0] + '-' + line[6];
+			var m = timeRE.exec(line[1]); // detect penalty only
+			if (!m) { //invalid
+				console.log('Invalid data detected');
+				continue;
+			}
+			var val = Math.round(3600000 * ~~(m[2]) + 60000 * ~~(m[3]) + 1000 * parseFloat(m[4]));
+			var scramble = line[2];
+			var penalty = 0;
+			if (line[5] == 'yes') {
+				penalty = -1;
+			} else if (line[4] == 'yes') {
+				penalty = 2000;
+			}
+			if (!(name in name2idx)) {
+				name2idx[name] = ret.length;
+				ret.push({
+					'name': name,
+					'phases': 1,
+					'scr': ScrambleMap[line[0]] || '333',
+					'times': []
+				});
+			}
+			ret[name2idx[name]]['times'].push([[penalty, val], scramble, '', mathlib.str2time(line[3] + ':00')]);
+		}
+		return ret;
 	}];
 
 	function convert(data) {
