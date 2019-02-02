@@ -692,6 +692,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					faceColors: col2std(kernel.getProp('colmgm'), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]),
 					scale: 0.9
 				});
+			} else if (currentScrambleSize == 14) {
+				twistyScene.initializeTwisty({
+					type: "pyr",
+					faceColors: col2std(kernel.getProp('colpyr'), [3, 1, 2, 0]),
+					scale: 0.9
+				});
 			} else if (currentScrambleSize == 1) {
 				twistyScene.initializeTwisty({
 					type: "sq1",
@@ -791,7 +797,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var currentScramble;
 		var currentScrambleType;
 		var currentScrambleSize;
-		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm'];
+		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr'];
 		var isReseted = false;
 
 		function procSignal(signal, value) {
