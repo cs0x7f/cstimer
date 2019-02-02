@@ -1359,7 +1359,7 @@ var kernel = execMain(function() {
 		}
 
 		var removeItems = [];
-		for (var i = 1; i <= ~~getProp('sessionN'); i++) {
+		for (var i = 1; i <= ~~getProp('sessionN', 15); i++) {
 			validKeys.push('session' + i);
 		}
 		for (var i = 0; i<localStorage.length; i++) {
@@ -1373,7 +1373,7 @@ var kernel = execMain(function() {
 		}
 	}
 
-	cleanLocalStorage();
+	$(cleanLocalStorage);
 
 	function round(val) {
 		if (val <= 0) {
