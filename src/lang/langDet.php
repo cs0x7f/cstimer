@@ -28,7 +28,7 @@ if ($req_lang == "cn") {
   $req_lang = "zh-cn";
 }
 
-$lang = prefered_language(array("en-us", "ca-es", "da-dk", "de-de", "es-es", "fr-fr", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ru-ru", "tr-tr", "vi-vn", "zh-cn"), $req_lang);
+$lang = prefered_language(array("en-us", "ca-es", "da-dk", "de-de", "es-es", "fi-fi", "fr-fr", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ru-ru", "tr-tr", "vi-vn", "zh-cn"), $req_lang);
 
 if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
@@ -45,6 +45,9 @@ if ($lang == "en-us") { ?>
 <?php } else if ($lang == "es-es") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Cronómetro profesional de speedcubing y entrenamiento </title>
+<?php } else if ($lang == "fi-fi") { ?>
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "fr-fr") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
@@ -89,8 +92,8 @@ if ($lang == "en-us") { ?>
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
   <script type="text/javascript">
-var LANG_SET = '|en-us|ca-es|da-dk|de-de|es-es|fr-fr|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ru-ru|tr-tr|vi-vn|zh-cn';
-var LANG_STR = 'English|Català|Dansk|Deutsch|Español|Français|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Pусский|Türkçe|Tiếng Việt|简体中文';
+var LANG_SET = '|en-us|ca-es|da-dk|de-de|es-es|fi-fi|fr-fr|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ru-ru|tr-tr|vi-vn|zh-cn';
+var LANG_STR = 'English|Català|Dansk|Deutsch|Español|Suomi|Français|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Pусский|Türkçe|Tiếng Việt|简体中文';
 var LANG_CUR = '<?php echo $lang; ?>';
 <?php include('lang/'.$lang.'.js');?>
   </script>

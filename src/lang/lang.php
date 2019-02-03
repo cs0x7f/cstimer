@@ -4,6 +4,7 @@
 <a class="click" href="?lang=da-dk">Dansk</a>&nbsp;
 <a class="click" href="?lang=de-de">Deutsch</a>&nbsp;
 <a class="click" href="?lang=es-es">Español</a>&nbsp;
+<a class="click" href="?lang=fi-fi">Suomi</a>&nbsp;
 <a class="click" href="?lang=fr-fr">Français</a>&nbsp;
 <a class="click" href="?lang=hr-hr">Hrvatski</a>&nbsp;
 <a class="click" href="?lang=hu-hu">Magyar</a>&nbsp;
