@@ -8,7 +8,7 @@ var BUTTON_OPTIONS = 'OPCIJE';
 var BUTTON_EXPORT = 'IZVEZI';
 var BUTTON_DONATE = 'DONIRAJ';
 var PROPERTY_USEINS = 'koristi WCA inspekciju';
-var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
+var PROPERTY_USEINS_STR = 'Uvijek|Osim BLD-a|Nikad';
 var PROPERTY_VOICEINS = 'glasovno upozorenje za WCA inspekciju';
 var PROPERTY_VOICEINS_STR = 'bez glasa|muški glas|ženski glas';
 var PROPERTY_PHASES = 'višefazno';
@@ -20,7 +20,7 @@ var PROPERTY_SCRMONO = 'mono-razmaknut scramble';
 var PROPERTY_SCRLIM = 'Ograniči visinu okvira za scramble';
 var PROPERTY_SCRALIGN = 'Poravnanje okvira za scramble';
 var PROPERTY_SCRALIGN_STR = 'centrirano|lijevo|desno';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
+var PROPERTY_SCRFAST = 'Korištenje brzog rastavljanja za 4x4x4 (nije sluzbeno)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_WNDSCR = 'Scramble panel display style';
 var PROPERTY_WNDSTAT = 'Statistics panel display style';
@@ -51,14 +51,14 @@ var TOOLS_SELECTFUNC = 'Funkcija';
 var TOOLS_CROSS = 'složi križ';
 var TOOLS_EOLINE = 'složi EOLine';
 var TOOLS_ROUX1 = 'složi Roux S1';
-var TOOLS_GIIKER = 'Giiker Cube';
+var TOOLS_GIIKER = 'Giiker Kocka';
 var TOOLS_IMAGE = 'prikaži scramble';
 var TOOLS_STATS = 'Statistika';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'distribucija vremena';
 var TOOLS_TREND = 'trend vremena';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_METRONOME = 'metronom';
+var TOOLS_CFMTIME = 'Potvrdi vrijeme';
 var PROPERTY_IMGSIZE = 'Veličina prikaza scramble-a';
 var TIMER_INSPECT = 'inspekcija';
 var TIMER_SOLVE = 'slaganje';
@@ -116,7 +116,7 @@ var scrdata = [
 		['3x3 najmanje poteza', "333fm", 0],
 		['3x3 ojednoručno', "333oh", 0],
 		['3x3 s nogama', "333ft", 0],
-		['clock', "clkwca", 0],
+		['sat', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['skewb', "skbso", 0],
