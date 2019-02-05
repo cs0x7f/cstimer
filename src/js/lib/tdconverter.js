@@ -6,11 +6,12 @@ var TimerDataConverter = execMain(function() {
 
 	function readCSV(data, spliter) {
 		data = data.split(/\r?\n/g);
+		var ret = [];
+		var line = [];
+		var curValue = [];
+		var cntQuote = 0;
 		for (var i = 0; i < data.length; i++) {
 			var rawLine = data[i].split(spliter);
-			var line = [];
-			var curValue = [];
-			var cntQuote = 0;
 			for (var j = 0; j < rawLine.length; j++) {
 				curValue.push(rawLine[j]);
 				cntQuote += (rawLine[j].match(/"/g) || []).length;
@@ -23,9 +24,14 @@ var TimerDataConverter = execMain(function() {
 					curValue = [];
 				}
 			}
-			data[i] = line;
+			if (cntQuote % 2 == 0) {
+				ret.push(line);
+				line = [];
+				curValue = [];
+				cntQuote = 0;
+			}
 		}
-		return data;
+		return ret;
 	}
 
 	// {'name': [regex, converter]}
@@ -216,8 +222,7 @@ var TimerDataConverter = execMain(function() {
 		return ret;
 	}];
 
-	Timers['PrismaTimer'] = [/^[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\n/i, function(data) {
-	}];
+	Timers['PrismaTimer'] = [/^[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\n/i, function(data) {}];
 
 	Timers['mateus.cubetimer'] = [/^"Category";"Time \(MM:SS\.SSS\)";"Scrambler";"Date";"Penalty \+2 \(yes or no\)";"DNF \(yes or no\)";"Section"\n/i, function(data) {
 		data = readCSV(data, ';');
@@ -271,7 +276,9 @@ var TimerDataConverter = execMain(function() {
 					'times': []
 				});
 			}
-			ret[name2idx[name]]['times'].push([[penalty, val], scramble, '', mathlib.str2time(line[3] + ':00')]);
+			ret[name2idx[name]]['times'].push([
+				[penalty, val], scramble, '', mathlib.str2time(line[3] + ':00')
+			]);
 		}
 		return ret;
 	}];
