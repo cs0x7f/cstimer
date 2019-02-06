@@ -39,6 +39,7 @@ var EXPORT_NODATA = 'Не найдено данных вашего аккаун�
 var EXPORT_UPLOADED = 'Загружено успешно';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
+var EXPORT_ACCOUNT = 'Export Accounts';
 var EXPORT_LOGINGGL = 'Войти используя аккаунт Google';
 var EXPORT_LOGINWCA = 'Войти используя аккаунт WCA';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';

@@ -39,6 +39,7 @@ var EXPORT_NODATA = 'Hesabınız için veri bulunamadı';
 var EXPORT_UPLOADED = 'Yükleme başarılı';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
+var EXPORT_ACCOUNT = 'Export Accounts';
 var EXPORT_LOGINGGL = 'Login Using Google Account';
 var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';

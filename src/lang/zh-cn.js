@@ -39,6 +39,7 @@ var EXPORT_NODATA = '此帐号还没有上传数据';
 var EXPORT_UPLOADED = '上传成功';
 var EXPORT_CODEPROMPT = '请保存该码，或粘贴其他码以导入设置';
 var EXPORT_ONLYOPT = '仅导入导出设置';
+var EXPORT_ACCOUNT = '导出帐号';
 var EXPORT_LOGINGGL = '使用Google帐号登录';
 var EXPORT_LOGINWCA = '使用WCA帐号登录';
 var EXPORT_LOGOUTCFM = '确认注销登录？';

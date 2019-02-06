@@ -39,6 +39,7 @@ var EXPORT_NODATA = 'Für deinen Account wurden keine Daten gefunden.';
 var EXPORT_UPLOADED = 'Erfolgreich hochgeladen';
 var EXPORT_CODEPROMPT = 'Speichere diesen Code, oder schreibe einen gespeicherten Code um zu importieren';
 var EXPORT_ONLYOPT = 'nur Export/Import Optionen';
+var EXPORT_ACCOUNT = 'Export Accounts';
 var EXPORT_LOGINGGL = 'Mit Google-Konto einloggen';
 var EXPORT_LOGINWCA = 'Mit WCA-Konto einloggen';
 var EXPORT_LOGOUTCFM = 'Bestätige Abmeldung?';

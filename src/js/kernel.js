@@ -192,7 +192,7 @@ var kernel = execMain(function() {
 				resetPropertyes();
 				generateDiv();
 				return false;
-			}]], 'option', BUTTON_OPTIONS.replace('-<br>', ''));
+			}], [BUTTON_EXPORT.replace('<br', ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace('-<br>', ''));
 			return;
 		}
 
@@ -456,7 +456,7 @@ var kernel = execMain(function() {
 			"#leftbar{border-color:?}" +
 			"#logo{color:?;border-color:?;background-color:?}" +
 			".mybutton,.tab,.cntbar{border-color:?}" +
-			"html:not(.m) .mybutton:hover,.mybutton:active,html:not(.m) .tab:hover,.tab:active,.mywindow,.popup,.dialog{background-color:?}" +
+			"html:not(.m) .mybutton:hover,.mybutton:active,.tab:active,.mywindow,.popup,.dialog{background-color:?}" +
 			".mybutton.enable,.tab.enable,.cntbar,.selected{background-color:?}" +
 			"#gray{background-color:?}" +
 			"html:not(.m) .times:hover,html:not(.m) .click:hover,.times:active,.click:active,textarea{background-color:?}" +
@@ -843,9 +843,11 @@ var kernel = execMain(function() {
 			if ('properties' in data) {
 				var wcaData = localStorage['wcaData'] || '{}';
 				var gglData = localStorage['gglData'] || '{}';
+				var locData = localStorage['locData'] || '';
 				localStorage.clear();
 				localStorage['wcaData'] = wcaData;
 				localStorage['gglData'] = gglData;
+				localStorage['locData'] = locData;
 				localStorage['properties'] = mathlib.obj2str(data['properties']);
 				property.load();
 			}
@@ -866,10 +868,11 @@ var kernel = execMain(function() {
 			if (e.target === outServWCA[0] || e.target === inServWCA[0]) {
 				id = JSON.parse(localStorage['wcaData'] || '{}')['cstimer_token'];
 			} else {
-				id = prompt(EXPORT_USERID);
+				id = prompt(EXPORT_USERID, localStorage['locData'] || '');
 				if (id == null) {
 					return;
 				}
+				localStorage['locData'] = id;
 			}
 			if (!id || !/^[A-Za-z0-9]+$/.exec(id)) {
 				alert(EXPORT_INVID);
@@ -1026,36 +1029,68 @@ var kernel = execMain(function() {
 					outFile.attr('href', URL.createObjectURL(blob));
 					outFile.attr('download', 'cstimer_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.txt');
 				}
-				kernel.showDialog([exportDiv, 0, undefined, 0, [EXPORT_ONLYOPT, function() {
-					var data = JSON.parse(localStorage['properties']);
-					var expOpt = {};
-					for (var key in data) {
-						if (!key.startsWith('session')) {
-							expOpt[key] = data[key];
-						}
-					}
-					var compOpt = LZString.compressToEncodedURIComponent(JSON.stringify(expOpt));
-					var ret = prompt(EXPORT_CODEPROMPT, compOpt);
-					if (!ret || ret == compOpt) {
-						return false;
-					}
-					try {
-						ret = JSON.parse(LZString.decompressFromEncodedURIComponent(ret));
-					} catch (e) {
-						return false;
-					}
-					var data = JSON.parse(localStorage['properties']);
-					for (var key in data) {
-						if (key.startsWith('session')) {
-							ret[key] = data[key];
-						}
-					}
-					localStorage['properties'] = mathlib.obj2str(ret);
-					location.reload();
-					return false;
-
-				}]], 'export', EXPORT_DATAEXPORT);
+				kernel.showDialog([exportDiv, 0, undefined, 0, [EXPORT_ACCOUNT, exportAccounts]], 'export', EXPORT_DATAEXPORT);
 			});
+		}
+
+		function exportByPrompt(expOpt) {
+			var compOpt = LZString.compressToEncodedURIComponent(JSON.stringify(expOpt));
+			var ret = prompt(EXPORT_CODEPROMPT, compOpt);
+			if (!ret || ret == compOpt) {
+				return;
+			}
+			try {
+				ret = JSON.parse(LZString.decompressFromEncodedURIComponent(ret));
+			} catch (e) {
+				return;
+			}
+			return ret;
+		}
+
+		function exportProperties() {
+			var data = JSON.parse(localStorage['properties']);
+			var expOpt = {};
+			for (var key in data) {
+				if (!key.startsWith('session')) {
+					expOpt[key] = data[key];
+				}
+			}
+			var newOpt = exportByPrompt(expOpt);
+			if (!newOpt) {
+				return false;
+			}
+			var data = JSON.parse(localStorage['properties']);
+			for (var key in data) {
+				if (key.startsWith('session')) {
+					newOpt[key] = data[key];
+				}
+			}
+			localStorage['properties'] = mathlib.obj2str(newOpt);
+			location.reload();
+			return false;
+		}
+
+		function exportAccounts() {
+			var expOpt = {
+				'wcaData': localStorage['wcaData'],
+				'gglData': localStorage['gglData'],
+				'locData': localStorage['locData']
+			}
+			var newOpt = exportByPrompt(expOpt);
+			if (!newOpt) {
+				return false;
+			}
+			if (newOpt['wcaData']) {
+				localStorage['wcaData'] = newOpt['wcaData'];
+			}
+			if (newOpt['gglData']) {
+				localStorage['gglData'] = newOpt['gglData'];
+			}
+			if (newOpt['locData']) {
+				localStorage['locData'] = newOpt['locData'];
+			}
+			location.reload();
+			return false;
 		}
 
 		function updateUserInfoFromWCA() {
@@ -1214,7 +1249,11 @@ var kernel = execMain(function() {
 			} else {
 				updateUserInfoFromGGL();
 			}
-		})
+		});
+
+		return {
+			exportProperties: exportProperties
+		}
 	})();
 
 	function pretty(time, small) {
@@ -1347,7 +1386,7 @@ var kernel = execMain(function() {
 	});
 
 	function cleanLocalStorage() {
-		var validKeys = ['properties', 'cachedScr', 'wcaData', 'gglData'];
+		var validKeys = ['properties', 'cachedScr', 'wcaData', 'gglData', 'locData'];
 
 		for (var i = 0; i < validKeys.length; i++) {
 			try {
