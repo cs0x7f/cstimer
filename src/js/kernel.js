@@ -1029,7 +1029,7 @@ var kernel = execMain(function() {
 					outFile.attr('href', URL.createObjectURL(blob));
 					outFile.attr('download', 'cstimer_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.txt');
 				}
-				kernel.showDialog([exportDiv, 0, undefined, 0, [EXPORT_ACCOUNT, exportAccounts]], 'export', EXPORT_DATAEXPORT);
+				kernel.showDialog([exportDiv, 0, undefined, 0, [EXPORT_ONLYOPT, exportProperties], [EXPORT_ACCOUNT, exportAccounts]], 'export', EXPORT_DATAEXPORT);
 			});
 		}
 
