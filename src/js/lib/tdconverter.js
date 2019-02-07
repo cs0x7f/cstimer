@@ -4,8 +4,15 @@ var TimerDataConverter = execMain(function() {
 
 	var timeRE = /^(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?$/;
 
+	function stdStr(val) {
+		try {
+			return decodeURIComponent(escape(val));
+		} catch (e) {}
+		return val;
+	}
+
 	function readCSV(data, spliter) {
-		data = data.split(/\r?\n/g);
+		data = stdStr(data).split(/\r?\n/g);
 		var ret = [];
 		var line = [];
 		var curValue = [];
@@ -38,7 +45,7 @@ var TimerDataConverter = execMain(function() {
 	var Timers = {}
 
 	Timers['csTimer'] = [/^{"session1"/i, function(data) {
-		data = JSON.parse(data);
+		data = JSON.parse(stdStr(data));
 		var sessionData = {};
 		try {
 			sessionData = mathlib.str2obj(mathlib.str2obj(data['properties'])['sessionData']);
@@ -171,7 +178,7 @@ var TimerDataConverter = execMain(function() {
 	}];
 
 	Timers['BlockKeeper'] = [/^{"puzzles":\[{"name":/i, function(data) {
-		data = JSON.parse(data)["puzzles"];
+		data = JSON.parse(stdStr(data))["puzzles"];
 		var ScrambleMap = {
 			'3x3x3': '333',
 			'2x2x2': '222so',
@@ -225,7 +232,7 @@ var TimerDataConverter = execMain(function() {
 	Timers['PrismaTimer'] = [/^[^\t\n]*(\t[^\t\n]*){4}\n/i, function(data) {}];
 
 	Timers['DCTimer.raw'] = [/^\d+[\r\n]+[^\t\n]*(\t[^\t\n]*){11}[\r\n]+/i, function(data) {
-		data = data.split(/[\r\n]+/);
+		data = stdStr(data).split(/[\r\n]+/);
 		var name2idx = {};
 		var curSession = 0;
 		var ret = [];
@@ -272,10 +279,7 @@ var TimerDataConverter = execMain(function() {
 			}
 		};
 		SQLFile.loadPage(uint8arr, tables['sessiontb'][0], function(value) {
-			try {
-				value[1] = decodeURIComponent(escape(value[1]));
-			} catch (e) {}
-			checkExistSidx(value[0], value[1]);
+			checkExistSidx(value[0], stdStr(value[1]));
 		});
 		for (var tname in tables) {
 			var m = /^result(\d+|tb)$/.exec(tname);
@@ -286,7 +290,7 @@ var TimerDataConverter = execMain(function() {
 			SQLFile.loadPage(uint8arr, tables[tname][0], function(value) {
 				checkExistSidx(sidx);
 				ret[sidx2idx[sidx]]['times'].push([
-					[value[3] == '1' ? (value[2] == '1' ? 2000 : 0) : -1, ~~value[1]], value[4] || '', value[6] || '', mathlib.str2time(value[5])
+					[value[3] == '1' ? (value[2] == '1' ? 2000 : 0) : -1, ~~value[1]], stdStr(value[4]) || '', stdStr(value[6]) || '', mathlib.str2time(value[5])
 				])
 			});
 		}
@@ -294,7 +298,7 @@ var TimerDataConverter = execMain(function() {
 			var sidx = value[1];
 			checkExistSidx(sidx);
 			ret[sidx2idx[sidx]]['times'].push([
-				[value[4] == '1' ? (value[3] == '1' ? 2000 : 0) : -1, ~~value[2]], value[5] || '', value[7] || '', mathlib.str2time(value[6])
+				[value[4] == '1' ? (value[3] == '1' ? 2000 : 0) : -1, ~~value[2]], stdStr(value[5]) || '', stdStr(value[7]) || '', mathlib.str2time(value[6])
 			])
 		});
 		return ret;
