@@ -51,6 +51,7 @@
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>
+  <script type="text/javascript" src="js/tools/stackmatutil.js"></script>
   <script type="text/javascript" src="js/giiker.js"></script>
   <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>

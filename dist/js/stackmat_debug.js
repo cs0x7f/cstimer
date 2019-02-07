@@ -89,6 +89,10 @@ var stackmat = (function() {
 	var dbg = false;
 
 	var dataBlob;
+	var distortionStat;
+	setInterval(function() {
+		console.log(distortionStat);
+	}, 1000);
 
 	function procSignal(signal, curGain) {
 		// signal = Math.max(Math.min(signal, 1), -1);
@@ -111,7 +115,11 @@ var stackmat = (function() {
 		}
 
 		lenVoltageKeep++;
-
+		if (last_bit_length < 10) {
+			distortionStat = (distortionStat || 0.001) * 0.99 + Math.pow(signal - (lastSgn ? 1 : -1), 2) * 0.01;
+		} else if (last_bit_length > 100) {
+			distortionStat = 1;
+		}
 
 		dbgOut.push(Math.round(signal * 1000) / 1000);
 		dbgOut2.push(Math.round(curGain * 1000) / 1000);

@@ -50,6 +50,7 @@ tools/metronome.js \
 shortcut.js \
 help.js \
 stackmat.js \
+tools/stackmatutil.js \
 giiker.js \
 worker.js)
 

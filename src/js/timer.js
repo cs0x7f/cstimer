@@ -591,10 +591,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			setEnable: function(input) { //s: stackmat, m: moyu
 				enable = input == 's' || input == 'm';
 				if (enable) {
-					stackmat.setCallBack(stackmatCallback);
-					stackmat.init(input);
+					stackmatutil.setCallBack(stackmatCallback);
+					stackmatutil.init(input);
 				} else {
-					stackmat.stop();
+					stackmatutil.stop();
 				}
 			},
 			onkeyup: onkeyup,

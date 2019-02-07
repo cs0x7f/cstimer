@@ -91,6 +91,7 @@ var stackmat = execMain(function() {
 	var THRESHOLD_SCHM = 0.2;
 	var THRESHOLD_EDGE = 0.7;
 	var lenVoltageKeep = 0;
+	var distortionStat = 0;
 
 	function procSignal(signal) {
 		// signal = Math.max(Math.min(signal, 1), -1);
@@ -112,6 +113,13 @@ var stackmat = execMain(function() {
 			lenVoltageKeep -= sample_rate;
 		}
 		lenVoltageKeep++;
+
+		//note: signal power has already been normalized. So distortionStat will tends to zero ideally.
+		if (last_bit_length < 10) {
+			distortionStat = (distortionStat || 0.0001) * 0.99 + Math.pow(signal - (lastSgn ? 1 : -1), 2) * 0.01;
+		} else if (last_bit_length > 100) {
+			distortionStat = 1;
+		}
 	}
 
 
@@ -212,6 +220,9 @@ var stackmat = execMain(function() {
 		var new_state = {}
 		new_state.time_milli = time_milli;
 		new_state.on = true;
+		if (!kernel.getProp('stkHead')) {
+			head = 'S';
+		}
 		new_state.greenLight = head == 'A';
 		new_state.leftHand = head == 'L' || head == 'A' || head == 'C';
 		new_state.rightHand = head == 'R' || head == 'A' || head == 'C';
@@ -219,6 +230,7 @@ var stackmat = execMain(function() {
 			(head == ' ' || new_state.time_milli > stackmat_state.time_milli);
 		new_state.signalHeader = head;
 		new_state.unknownRunning = !stackmat_state.on;
+		new_state.noise = Math.min(1, distortionStat) || 0;
 
 		stackmat_state = new_state;
 
@@ -268,7 +280,8 @@ var stackmat = execMain(function() {
 		rightHand: false,
 		running: false,
 		unknownRunning: true,
-		signalHeader: 'I'
+		signalHeader: 'I',
+		noise: 1
 	};
 
 	var callback = $.noop;
