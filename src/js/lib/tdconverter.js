@@ -222,7 +222,44 @@ var TimerDataConverter = execMain(function() {
 		return ret;
 	}];
 
-	Timers['PrismaTimer'] = [/^[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\t[^\t\n]*\n/i, function(data) {}];
+	Timers['PrismaTimer'] = [/^[^\t\n]*(\t[^\t\n]*){4}\n/i, function(data) {}];
+
+	Timers['DCTimer.raw'] = [/^\d+[\r\n]+[^\t\n]*(\t[^\t\n]*){11}[\r\n]+/i, function(data) {
+		data = data.split(/[\r\n]+/);
+		var name2idx = {};
+		var curSession = 0;
+		var ret = [];
+		for (var i = 0; i < data.length; i++) {
+			if (/^\d+$/.exec(data[i])) {
+				curSession = ~~(data[i]);
+				name2idx[curSession] = ret.length;
+				ret.push({
+					'name': curSession,
+					'phases': 1,
+					'scr': '333',
+					'times': []
+				});
+				continue;
+			}
+			var line = data[i].split('\t');
+			if (line.length < 6) {
+				continue;
+			}
+			ret[name2idx[curSession]]['times'].push([
+				[line[2] == '1' ? (line[1] == '1' ? 2000 : 0) : -1, ~~line[0]], line[3], line[5], mathlib.str2time(line[4])
+			]);
+		}
+		return ret;
+	}];
+
+	Timers['DCTimer.sqlite'] = [/^SQLite format 3\0/i, function(data) {
+		// console.log(data);
+		// var uint8arr = new Uint8Array(data.length);
+		// for (var i = 0; i < data.length; i++) {
+		// 	uint8arr[i] = data.charCodeAt(i);
+		// }
+		// SQLFile.read(uint8arr);
+	}];
 
 	Timers['mateus.cubetimer'] = [/^"Category";"Time \(MM:SS\.SSS\)";"Scrambler";"Date";"Penalty \+2 \(yes or no\)";"DNF \(yes or no\)";"Section"\n/i, function(data) {
 		data = readCSV(data, ';');

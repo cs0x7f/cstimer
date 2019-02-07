@@ -859,7 +859,7 @@ var kernel = execMain(function() {
 		function importFile(reader) {
 			if (this.files.length) {
 				var f = this.files[0];
-				reader.readAsText(f);
+				reader.readAsBinaryString(f);
 			}
 		}
 
