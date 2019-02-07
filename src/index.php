@@ -13,6 +13,7 @@
   <script type="text/javascript" src="js/lib/utillib.js"></script>
   <script type="text/javascript" src="js/lib/mathlib.js"></script>
   <script type="text/javascript" src="js/lib/sbtree.js"></script>
+  <script type="text/javascript" src="js/lib/sqlfile.js"></script>
   <script type="text/javascript" src="js/lib/tdconverter.js"></script>
   <script type="text/javascript" src="js/lib/lzstring.js"></script>
   <script type="text/javascript" src="js/lib/min2phase.js"></script>

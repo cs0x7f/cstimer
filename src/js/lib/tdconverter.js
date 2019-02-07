@@ -253,12 +253,51 @@ var TimerDataConverter = execMain(function() {
 	}];
 
 	Timers['DCTimer.sqlite'] = [/^SQLite format 3\0/i, function(data) {
-		// console.log(data);
-		// var uint8arr = new Uint8Array(data.length);
-		// for (var i = 0; i < data.length; i++) {
-		// 	uint8arr[i] = data.charCodeAt(i);
-		// }
-		// SQLFile.read(uint8arr);
+		var uint8arr = new Uint8Array(data.length);
+		for (var i = 0; i < data.length; i++) {
+			uint8arr[i] = data.charCodeAt(i);
+		}
+		var tables = SQLFile.loadTableList(uint8arr);
+		var sidx2idx = {};
+		var ret = [];
+		var checkExistSidx = function(sidx, name) {
+			if (!(sidx in sidx2idx)) {
+				sidx2idx[sidx] = ret.length;
+				ret.push({
+					'name': (name || (sidx + 1)),
+					'phases': 1,
+					'scr': '333',
+					'times': []
+				});
+			}
+		};
+		SQLFile.loadPage(uint8arr, tables['sessiontb'][0], function(value) {
+			try {
+				value[1] = decodeURIComponent(escape(value[1]));
+			} catch (e) {}
+			checkExistSidx(value[0], value[1]);
+		});
+		for (var tname in tables) {
+			var m = /^result(\d+|tb)$/.exec(tname);
+			if (!m) {
+				continue;
+			}
+			var sidx = (m[1] == 'tb' ? 1 : ~~m[1]) - 1;
+			SQLFile.loadPage(uint8arr, tables[tname][0], function(value) {
+				checkExistSidx(sidx);
+				ret[sidx2idx[sidx]]['times'].push([
+					[value[3] == '1' ? (value[2] == '1' ? 2000 : 0) : -1, ~~value[1]], value[4] || '', value[6] || '', mathlib.str2time(value[5])
+				])
+			});
+		}
+		SQLFile.loadPage(uint8arr, tables['resultstb'][0], function(value) {
+			var sidx = value[1];
+			checkExistSidx(sidx);
+			ret[sidx2idx[sidx]]['times'].push([
+				[value[4] == '1' ? (value[3] == '1' ? 2000 : 0) : -1, ~~value[2]], value[5] || '', value[7] || '', mathlib.str2time(value[6])
+			])
+		});
+		return ret;
 	}];
 
 	Timers['mateus.cubetimer'] = [/^"Category";"Time \(MM:SS\.SSS\)";"Scrambler";"Date";"Penalty \+2 \(yes or no\)";"DNF \(yes or no\)";"Section"\n/i, function(data) {

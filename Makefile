@@ -12,6 +12,7 @@ timerSrc = $(addprefix $(src)/js/, \
 lib/utillib.js \
 lib/mathlib.js \
 lib/sbtree.js \
+lib/sqlfile.js \
 lib/tdconverter.js \
 lib/lzstring.js \
 lib/min2phase.js \
