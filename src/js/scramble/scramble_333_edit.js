@@ -356,8 +356,66 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x7654ffff, 0x0000ffff);
 	}
 
-	function getLSLLScramble() {
-		return getAnyScramble(0xba9f7654ffff, 0x000f0000ffff, 0x765fffff, 0x000fffff);
+	var f2l_map = [
+		0x2000, // Easy-01
+		0x1011, // Easy-02
+		0x2012, // Easy-03
+		0x1003, // Easy-04
+		0x2003, // RE-05
+		0x1012, // RE-06
+		0x2002, // RE-07
+		0x1013, // RE-08
+		0x2013, // REFC-09
+		0x1002, // REFC-10
+		0x2010, // REFC-11
+		0x1001, // REFC-12
+		0x2011, // REFC-13
+		0x1000, // REFC-14
+		0x2001, // SPGO-15
+		0x1010, // SPGO-16
+		0x0000, // SPGO-17
+		0x0011, // SPGO-18
+		0x0003, // PMS-19
+		0x0012, // PMS-20
+		0x0002, // PMS-21
+		0x0013, // PMS-22
+		0x0001, // Weird-23
+		0x0010, // Weird-24
+		0x0400, // CPEU-25
+		0x0411, // CPEU-26
+		0x1400, // CPEU-27
+		0x2411, // CPEU-28
+		0x1411, // CPEU-29
+		0x2400, // CPEU-30
+		0x0018, // EPCU-31
+		0x0008, // EPCU-32
+		0x2008, // EPCU-33
+		0x1008, // EPCU-34
+		0x2018, // EPCU-35
+		0x1018, // EPCU-36
+		0x0418, // ECP-37
+		0x1408, // ECP-38
+		0x2408, // ECP-39
+		0x1418, // ECP-40
+		0x2418, // ECP-41
+		0x0408	// Solved-42
+	];
+
+	var f2lprobs = [
+		4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1
+	];
+
+	var f2lfilter = [
+		'Easy-01', 'Easy-02', 'Easy-03', 'Easy-04', 'RE-05', 'RE-06', 'RE-07', 'RE-08', 'REFC-09', 'REFC-10', 'REFC-11', 'REFC-12', 'REFC-13', 'REFC-14', 'SPGO-15', 'SPGO-16', 'SPGO-17', 'SPGO-18', 'PMS-19', 'PMS-20', 'PMS-21', 'PMS-22', 'Weird-23', 'Weird-24', 'CPEU-25', 'CPEU-26', 'CPEU-27', 'CPEU-28', 'CPEU-29', 'CPEU-30', 'EPCU-31', 'EPCU-32', 'EPCU-33', 'EPCU-34', 'EPCU-35', 'EPCU-36', 'ECP-37', 'ECP-38', 'ECP-39', 'ECP-40', 'ECP-41', 'Solved-42'
+	];
+
+	function getLSLLScramble(type, length, cases) {
+		var caze = f2l_map[scrMgr.fixCase(cases, f2lprobs)];
+		var ep = Math.pow(16, caze & 0xf);
+		var eo = 0xf ^ (caze >> 4 & 1);
+		var cp = Math.pow(16, caze >> 8 & 0xf);
+		var co = 0xf ^ (caze >> 12 & 3);
+		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000f0000ffff - eo * ep, 0x765fffff - 0xb * cp, 0x000fffff - co * cp);
 	}
 
 	function getF2LScramble() {
@@ -599,7 +657,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('edges', getEdgeScramble)
 		('corners', getCornerScramble)
 		('ll', getLLScramble)
-		('lsll2', getLSLLScramble)
+		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs])
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [zbfilter, zbprobs])
 		('zzll', getZZLLScramble)
