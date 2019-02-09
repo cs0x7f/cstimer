@@ -116,7 +116,7 @@ var stackmat = execMain(function() {
 
 		//note: signal power has already been normalized. So distortionStat will tends to zero ideally.
 		if (last_bit_length < 10) {
-			distortionStat = (distortionStat || 0.0001) * 0.99 + Math.pow(signal - (lastSgn ? 1 : -1), 2) * 0.01;
+			distortionStat = Math.max(0.0001, distortionStat + (Math.pow(signal - (lastSgn ? 1 : -1), 2) - distortionStat) * agc_factor);
 		} else if (last_bit_length > 100) {
 			distortionStat = 1;
 		}
