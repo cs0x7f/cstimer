@@ -153,8 +153,8 @@ var kernel = execMain(function() {
 						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0]));
 					} else if (type == 2) { //range
 						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(getProp(key)).change(procClick);
-						var inc = $('<input type="button" value="+" name="' + key + '">').click(procClick);
-						var dec = $('<input type="button" value="-" name="' + key + '">').click(procClick);
+						var inc = $('<input type="button" style="width: 1.5em;" value="+" name="' + key + '">').click(procClick);
+						var dec = $('<input type="button" style="width: 1.5em;" value="-" name="' + key + '">').click(procClick);
 						curDiv[1].append($('<li />').append(proSet[2], '(' + proSet[3][1] + '~' + proSet[3][2] + ')',
 							$('<span>').css('white-space', 'nowrap').append(dec, proSet[0], inc)));
 					} else if (type == 3) { //color
@@ -477,7 +477,9 @@ var kernel = execMain(function() {
 			"#fff#600#668#408#ccf#0ff#000",
 			"#fff#000#555#888#aaa#000#aaa",
 			"#000#fff#ccc#ddd#555#fff#888",
-			"#fff#227#9c3#563#580#dad#000"
+			"#fff#227#9c3#563#580#dad#000",
+			"#9aa#023#034#b80#28d#678#034",
+			"#678#ffe#eed#ffe#28d#678#eed"
 		];
 
 
@@ -602,7 +604,7 @@ var kernel = execMain(function() {
 						}
 						property.set('color', 'u');
 					} else {
-						useColorTemplate(styles[value[1] == 'r' ? ~~(Math.random() * 6) : (value[1] - 1)]);
+						useColorTemplate(styles[value[1] == 'r' ? ~~(Math.random() * styles.length) : (value[1] - 1)]);
 					}
 					break;
 				case 'font':
@@ -675,7 +677,7 @@ var kernel = execMain(function() {
 			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true]);
 			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt', 'ns'], PROPERTY_UIDESIGN_STR.split('|')]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
-			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['r', '1', '2', '3', '4', '5', '6', 'u', 'e'], PROPERTY_COLOR_STR.split('|')]);
+			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['u', 'e', 'r', '1', '2', '3', '4', '5', '6', '7', '8'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
 			regProp('color', 'col-font', 3, parr[0], ['#000000']);
 			regProp('color', 'col-back', 3, parr[1], ['#eeffcc']);
@@ -742,7 +744,7 @@ var kernel = execMain(function() {
 
 	var bgImage = (function() {
 		var src = "";
-		var images = ["http://fmn.rrimg.com/fmn063/xiaozhan/20120815/0025/x_large_FX3O_12190000160a1261.jpg"];
+		var images = ["https://i.imgur.com/X7Xi7D1.png", "http://i.imgur.com/K4zbMsu.png", "https://i.imgur.com/Fsh6MaM.png"];
 		var img;
 		var lastidx = 0;
 		var urlre = /^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
@@ -786,7 +788,7 @@ var kernel = execMain(function() {
 			img = $('#bgImage');
 			regListener('bgImage', 'property', procSignal, /^bgImg[OS]$/);
 			regProp('ui', 'bgImgO', 2, BGIMAGE_OPACITY, [25, 0, 100]);
-			regProp('ui', 'bgImgS', 1, BGIMAGE_IMAGE, ['n', ['n', 'u', 0], BGIMAGE_IMAGE_STR.split('|')]);
+			regProp('ui', 'bgImgS', 1, BGIMAGE_IMAGE, ['n', ['n', 'u', 0, 1, 2], BGIMAGE_IMAGE_STR.split('|').slice(0, -1).concat(1, 2, 3)]);
 		});
 	})();
 

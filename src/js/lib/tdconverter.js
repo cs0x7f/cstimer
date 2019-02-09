@@ -290,7 +290,7 @@ var TimerDataConverter = execMain(function() {
 			SQLFile.loadPage(uint8arr, tables[tname][0], function(value) {
 				checkExistSidx(sidx);
 				ret[sidx2idx[sidx]]['times'].push([
-					[value[3] == '1' ? (value[2] == '1' ? 2000 : 0) : -1, ~~value[1]], stdStr(value[4]) || '', stdStr(value[6]) || '', mathlib.str2time(value[5])
+					[value[3] == '1' ? (value[2] == '1' ? 2000 : 0) : -1, ~~value[1]], stdStr(value[4] || ''), stdStr(value[6] || ''), mathlib.str2time(value[5])
 				])
 			});
 		}
@@ -298,7 +298,7 @@ var TimerDataConverter = execMain(function() {
 			var sidx = value[1];
 			checkExistSidx(sidx);
 			ret[sidx2idx[sidx]]['times'].push([
-				[value[4] == '1' ? (value[3] == '1' ? 2000 : 0) : -1, ~~value[2]], stdStr(value[5]) || '', stdStr(value[7]) || '', mathlib.str2time(value[6])
+				[value[4] == '1' ? (value[3] == '1' ? 2000 : 0) : -1, ~~value[2]], stdStr(value[5] || ''), stdStr(value[7] || ''), mathlib.str2time(value[6])
 			])
 		});
 		return ret;
