@@ -38,12 +38,12 @@ var EXPORT_ERROR = 'S\'han produït alguns uns errors...';
 var EXPORT_NODATA = 'No s\'ha trobat dades per el teu compte';
 var EXPORT_UPLOADED = 'S\'ha pujat correctament';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_ONLYOPT = 'Exportar/Importar només opcions';
+var EXPORT_ACCOUNT = 'Exportar comptes';
+var EXPORT_LOGINGGL = 'Entrar amb compte de Google';
+var EXPORT_LOGINWCA = 'Entrar amb compte de WCA';
+var EXPORT_LOGOUTCFM = 'Confirmar desconnexió?';
+var EXPORT_LOGINAUTHED = 'Autoritzat<br>s\'estan obtenint dades...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'Barre-<br>ja';
 var BUTTON_TOOLS = 'Eines';
@@ -113,20 +113,20 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
-		['3x3 ft', "333ft", 0],
-		['clock', "clkwca", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
-		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['3x3 A cegues', "333ni", 0],
+		['3x3 Moviments Mínims', "333fm", 0],
+		['3x3 Una mà', "333oh", 0],
+		['3x3 Peus', "333ft", 0],
+		['Rellotge', "clkwca", 0],
+		['Megaminx', "mgmp", -70],
+		['Pyraminx', "pyrso", -10],
+		['Skewb', "skbso", 0],
+		['Sq1', "sqrs", 0],
+		['4x4 A cegues', "444bld", -40],
+		['5x5 A cegues', "555bld", -60],
+		['3x3 A cegues multi', "r3ni", 5]
 	]],
-	['Input', [
+	['Per Entrada', [
 		['Extern', "input", 0]
 	]],
 	['===WCA===', [
@@ -134,30 +134,30 @@ var scrdata = [
 	]],
 	['3x3x3', [
 		["WCA", "333", 0],
-		['old style', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
-		['last layer', "ll", 0],
-		['zb last layer', "zbll", 0],
-		['corners of last layer', "cll", 0],
-		['edges of last layer', "ell", 0],
-		['last six edges', "lse", 0],
-		['last six edges&ltM,U&gt', "lsemu", 0],
+		['Estil antic', "333o", 25],
+		['3x3x3 per a novicis', "333noob", 25],
+		['Només arestes', "edges", 0],
+		['Només cantonades', "corners", 0],
+		['Última capa', "ll", 0],
+		['Última capa ZB', "zbll", 0],
+		['Cantonades de la última capa', "cll", 0],
+		['Arestes de la última capa', "ell", 0],
+		['Últimes sis arestes', "lse", 0],
+		['Últimes sis arestes&ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
-		['cross solved', "f2l", 0],
-		['last slot + last layer', "lsll2", 0],
+		['Creu resolta', "f2l", 0],
+		['Últim espai + Última capa', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
 		['ZZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
-		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3]
+		['Línia EO', "eoline", 0],
+		['Creu fàcil', "easyc", 3]
 	]],
 	['2x2x2', [
 		["WCA", "222so", 0],
-		['optimal random state', "222o", 0],
+		['Estat aleatori òptim', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -166,7 +166,7 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['Moviments aleatoris', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['4x4x4 Arestes', "4edge", 8],
@@ -281,37 +281,40 @@ var scrdata = [
 		['Estil Jaap', "ufo", 25]
 	]],
 	['Altres', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+		['FTO (Octaedre amb cares rotatòries)', "fto", 25]
 	]],
 	['===Especials===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3 subsets', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
-		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
-		['3-generator R,r,U', "RrU", 25],
-		['half turns only', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+	['3x3x3 Subtipus', [
+		['2-gen R,U', "2gen", 25],
+		['2-gen L,U', "2genl", 25],
+		['Generador Roux M,U', "roux", 25],
+		['3-gen F,R,U', "3gen_F", 25],
+		['3-gen R,U,L', "3gen_L", 25],
+		['3-gen R,r,U', "RrU", 25],
+		['Només mitjes voltes', "half", 25],
+		['Últim espai+Última capa (Antic)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
-		['Bicube', "bic", 30],
+	['Cub embenat', [
+		['Bicub', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
-	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
+	['Megaminx subtipus ', [
+		['2-gen R,U', "minx2g", 30],
+		['Últim espai + Última capa', "mlsll", 20]
 	]],
 	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
-		['234 relay', "r234", 0],
-		['2345 relay', "r2345", 0],
-		['23456 relay', "r23456", 0],
-		['234567 relay', "r234567", 0]
+		['Molts 3x3x3s', "r3", 5],
+		['Relay 234
+', "r234", 0],
+		['Relay 2345', "r2345", 0],
+		['Relay 23456
+', "r23456", 0],
+		['Relay 234567
+', "r234567", 0]
 	]],
-	['===JOKES===', [
+	['===Bromes===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -331,30 +334,30 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['Giri la cara superior', 'Giri la cara inferior'],
+	['Giri la cara dreta', 'Giri la cara esquerra'],
+	['Giri la cara frontal', 'Giri la cara posterior']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
-var STATS_DATE = 'Date';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var SCRAMBLE_NOOBSS = 'En sentit horari 90 graus,| En sentit anti-horari 90 graus| 180 graus';
+var STATS_CFM_RESET = 'Reiniciar tots els els temps en aquesta sessió?';
+var STATS_CFM_DELSS = 'Eliminar sessió [%s]?';
+var STATS_CFM_DELMUL = 'El nombre de valors eliminats de l\'índex actual?';
+var STATS_CFM_DELETE = 'Eliminar aquest temps?';
+var STATS_COMMENT = 'Comentar';
+var STATS_DATE = 'Data';
+var STATS_CURROUND = 'Estadístiques de la ronda actual';
+var STATS_CURSESSION = 'Estadístiques de la sessió actual';
+var STATS_CURSPLIT = 'Fase %d d\'estadístiques de la sessió actual';
+var STATS_EXPORTCSV = 'Exporta en format CSV';
+var STATS_SSMGR_TITLE = 'Gestor de sessions';
+var STATS_SSMGR_NAME = 'Nom';
+var STATS_SSMGR_DETAIL = 'Detalls de sessió';
+var STATS_SSMGR_OPS = 'Renombrar|Crear|Dividir|Combinar|Eliminar';
+var STATS_SSMGR_ORDER = 'Ordenar per barreja';
+var STATS_SSMGR_ODCFM = 'Ordenar totes les sessions per barreja?';
+var STATS_ALERTMG = 'Combinar tots els temps de la sessió [%f] al final de la sessió [%t]?';
+var STATS_PROMPTSPL = 'Nombre de temps dividits de la sessió [%s]?';
+var STATS_ALERTSPL = 'Cal dividir o deixar com a mínim 1 vegada';
 var STATS_AVG = 'mean';
 var STATS_SOLVE = 'solve';
 var STATS_TIME = 'time';
