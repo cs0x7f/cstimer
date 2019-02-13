@@ -14,6 +14,7 @@
 <a class="click" href="?lang=nl-nl">Nederlands</a>&nbsp;
 <a class="click" href="?lang=pl-pl">Polski</a>&nbsp;
 <a class="click" href="?lang=pt-pt">Português</a>&nbsp;
+<a class="click" href="?lang=ro-ro">Română</a>&nbsp;
 <a class="click" href="?lang=ru-ru">Pусский</a>&nbsp;
 <a class="click" href="?lang=tr-tr">Türkçe</a>&nbsp;
 <a class="click" href="?lang=vi-vn">Tiếng Việt</a>&nbsp;
