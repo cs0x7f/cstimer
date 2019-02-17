@@ -744,7 +744,7 @@ var kernel = execMain(function() {
 
 	var bgImage = (function() {
 		var src = "";
-		var images = ["https://i.imgur.com/X7Xi7D1.png", "http://i.imgur.com/K4zbMsu.png", "https://i.imgur.com/Fsh6MaM.png"];
+		var images = ["https://i.imgur.com/X7Xi7D1.png", "https://i.imgur.com/K4zbMsu.png", "https://i.imgur.com/Fsh6MaM.png"];
 		var img;
 		var lastidx = 0;
 		var urlre = /^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
