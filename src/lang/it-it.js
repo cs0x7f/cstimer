@@ -5,12 +5,12 @@ var ABOUT_LANG = 'About';
 var ZOOM_LANG = 'Zoom';
 var BUTTON_TIME_LIST = 'LISTA<br>TEMPI';
 var BUTTON_OPTIONS = 'OPZIONI';
-var BUTTON_EXPORT = 'EXPORT';
-var BUTTON_DONATE = 'DONATE';
+var BUTTON_EXPORT = 'ESPORTA';
+var BUTTON_DONATE = 'DONA';
 var PROPERTY_USEINS = 'Usa ispezione (WCA)';
-var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
-var PROPERTY_VOICEINS = 'voice alert of WCA inspection';
-var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
+var PROPERTY_USEINS_STR = 'Sempre|Escludi BLD|Mai';
+var PROPERTY_VOICEINS = 'avviso vocale dell\'ispezione WCA';
+var PROPERTY_VOICEINS_STR = 'nessuna|voce maschile|voce femminile';
 var PROPERTY_PHASES = 'Multi-fase';
 var PROPERTY_TIMERSIZE = 'Dimensione cronometro';
 var PROPERTY_USEMILLI = 'Usa millisecondi';
@@ -19,29 +19,29 @@ var PROPERTY_SCRSIZE = 'Lunghezza scramble';
 var PROPERTY_SCRMONO = 'Scramble con singolo spazio';
 var PROPERTY_SCRLIM = 'Limita l\'altezza dell\'area di scramble';
 var PROPERTY_SCRALIGN = 'Alignment of scramble area';
-var PROPERTY_SCRALIGN_STR = 'center|left|right';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
+var PROPERTY_SCRALIGN_STR = 'centro|sinistra|destra';
+var PROPERTY_SCRFAST = 'Usa scramble veloce per il 4x4x4 (non ufficiale)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_WNDSCR = 'Scramble panel display style';
 var PROPERTY_WNDSTAT = 'Statistics panel display style';
 var PROPERTY_WNDTOOL = 'Tools panel display style';
 var PROPERTY_WND_STR = 'Normal|Flat';
 var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
-var EXPORT_USERID = 'Please input your account (only alphabet or number)';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
+var EXPORT_TOFILE = 'Esporta su file';
+var EXPORT_FROMFILE = 'Importa da file';
+var EXPORT_TOSERV = 'Esporta su server';
+var EXPORT_FROMSERV = 'Importa da server';
+var EXPORT_FROMOTHER = 'Importa sessione(i) da altri timer';
+var EXPORT_USERID = 'Per favore inserisci il tuo account (solo caratteri dell\'alfabeto o numeri)';
+var EXPORT_INVID = 'Solo caratteri dell\'alfabeto o numeri sono ammessi!';
+var EXPORT_ERROR = 'Si sono verificati degli errori...';
 var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var EXPORT_UPLOADED = 'Caricato con successo';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Export Accounts';
 var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
+var EXPORT_LOGINWCA = 'Accedi tramite account WCA';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
@@ -52,18 +52,18 @@ var TOOLS_SELECTFUNC = 'Funzione';
 var TOOLS_CROSS = 'Risoluzione croce';
 var TOOLS_EOLINE = 'Risoluzione EOLine';
 var TOOLS_ROUX1 = 'Risoluzione Roux S1';
-var TOOLS_GIIKER = 'Giiker Cube';
+var TOOLS_GIIKER = 'Cubo Giiker';
 var TOOLS_IMAGE = 'Disegna scramble';
 var TOOLS_STATS = 'Statistiche';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Distribuzione temporale';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_TREND = 'trend dei tempi';
+var TOOLS_METRONOME = 'metronomo';
+var TOOLS_CFMTIME = 'Conferma tempo';
 var PROPERTY_IMGSIZE = 'Dimensione della visualizzazione dello scramble';
 var TIMER_INSPECT = 'Ispezione	';
 var TIMER_SOLVE = 'Risoluzione';
-var PROPERTY_USEMOUSE = 'use mouse timer';
+var PROPERTY_USEMOUSE = 'usa il mouse per cronometrare';
 var PROPERTY_TIMEU = 'L\'aggiornamento del cronometro e\'';
 var PROPERTY_TIMEU_STR = 'Aggiorna|0.1s|secondi|inspezione|none';
 var PROPERTY_PRETIME = 'Tempo di attesa dopo la pressione del tasto spazio (secondo(i))';
@@ -71,13 +71,13 @@ var PROPERTY_ENTERING = 'Inizia a cronometrare in';
 var PROPERTY_ENTERING_STR = 'cronometro|digita|stackmat|MoYuTimer|virtuale|Giiker';
 var PROPERTY_COLOR = 'Seleziona tema colori';
 var PROPERTY_COLORS = 'colore del testo|coloro dello sfondo|board color|colore bottoni|colore links|colore del Logo|colore di sfondo del Logo';
-var PROPERTY_VIEW = 'UI style is';
+var PROPERTY_VIEW = 'Lo stile dell\'interfaccia è';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
+var PROPERTY_UIDESIGN = 'Il design dell\'interfaccia è';
+var PROPERTY_UIDESIGN_STR = 'Normale|Material design|Normale senza ombre';
 var COLOR_EXPORT = 'Please save the string for import';
 var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
+var COLOR_FAIL = 'Dati incorretti, importazione fallita';
 var PROPERTY_FONTCOLOR_STR = 'nero|bianco';
 var PROPERTY_COLOR_STR = 'manuale|import/export...|casuale|stile1|stile2|stile3|nero|bianco|stile6|solarized dark|solarized light';
 var PROPERTY_FONT = 'Seleziona il carattere del cronometro';
@@ -85,16 +85,16 @@ var PROPERTY_FONT_STR = 'digitale casuale|normale|digitale1|digitale2|digitale3|
 var PROPERTY_FORMAT = 'Formato tempo';
 var PROPERTY_USEKSC = 'Usa abbreviazioni da tastiea';
 var PROPERTY_NTOOLS = 'Numero di strumenti';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
+var PROPERTY_AHIDE = 'Nascondi tutti gli elementi quando mi cronometro';
 var SCRAMBLE_LAST = 'Ultimo';
 var SCRAMBLE_NEXT = 'Prossimo';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'Lunghezza';
 var SCRAMBLE_INPUT = 'Inserisci Scramble';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
+var PROPERTY_VRCMP = 'multi-fase';
+var PROPERTY_VRCMPS = 'Nessuno|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_GIIKERVRC = 'Mostra cubo Giiker virtuale';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
@@ -134,18 +134,18 @@ var scrdata = [
 	]],
 	['3x3x3', [
 		["WCA", "333", 0],
-		['old style', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['vecchio stile', "333o", 25],
+		['3x3x3 per nabbi', "333noob", 25],
+		['solo spigoli', "edges", 0],
+		['solo angoli', "corners", 0],
 		['last layer', "ll", 0],
 		['zb last layer', "zbll", 0],
-		['corners of last layer', "cll", 0],
-		['edges of last layer', "ell", 0],
+		['angoli del last layer', "cll", 0],
+		['spigoli del last layer', "ell", 0],
 		['last six edges', "lse", 0],
 		['last six edges&ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
-		['cross solved', "f2l", 0],
+		['croce risolta', "f2l", 0],
 		['last slot + last layer', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
@@ -153,11 +153,11 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3]
+		['croce facile', "easyc", 3]
 	]],
 	['2x2x2', [
 		["WCA", "222so", 0],
-		['optimal random state', "222o", 0],
+		['stato casuale ottimale', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -166,22 +166,22 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['mossa casuale', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['spigoli 4x4x4', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['spigoli 5x5x5', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
+		['prefisso', "666p", 80],
+		['suffisso', "666s", 80],
 		['6x6x6 edges', "6edge", 8]
 	]],
 	['7x7x7', [
@@ -283,7 +283,7 @@ var scrdata = [
 	['Other', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['===SPECIALI===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
@@ -337,30 +337,30 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' ruota orario 90 gradi,| ruota antiorario 90 gradi,| ruota 180 gradi,';
 var STATS_CFM_RESET = 'Azzera tutti i tempi in questa sessione?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
+var STATS_CFM_DELSS = 'eliminare la sessione [%s]?';
+var STATS_CFM_DELMUL = 'Quanti tempi eliminare a partire dall\'indice corrente?';
 var STATS_CFM_DELETE = 'Camcella questo tempo?';
 var STATS_COMMENT = 'Commento';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Data';
 var STATS_CURROUND = 'Statistiche del Turno Corrente';
 var STATS_CURSESSION = 'Statistiche della Sessione Corrente';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
+var STATS_EXPORTCSV = 'Esporta CSV';
+var STATS_SSMGR_TITLE = 'Gestore Sessioni';
+var STATS_SSMGR_NAME = 'Nome';
+var STATS_SSMGR_DETAIL = 'Dettagli sessione';
+var STATS_SSMGR_OPS = 'Rinomina|Crea|Dividi|Unisci|Elimina';
 var STATS_SSMGR_ORDER = 'Order by scramble';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
+var STATS_ALERTMG = 'Unire tutti i tempi nella sessione [%f] alla fine della sessione [%t]?';
+var STATS_PROMPTSPL = 'Numero degli ultimi tempi da separare dalla sessione [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'media';
 var STATS_SOLVE = 'risoluzione';
 var STATS_TIME = 'tempo';
 var STATS_SESSION = 'Sessione';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAME = 'Rinomina sessione';
+var STATS_SESSION_NAMEC = 'Nome della nuova sessione';
 var STATS_STRING = 'migliore|corrente|peggiore|Generato Da csTimer il %Y-%M-%D|risoluzioni/totale: %d|singolo|media di %mk|avg su %mk|Avg   : %v{ (σ = %sgm)}|Media : %v|Lista Tempi:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'Precisione distribuzione temporale';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
@@ -370,13 +370,13 @@ var STATS_ABSIDX = 'Show absolute index in statistics report';
 var PROPERTY_PRINTSCR = 'Stampa scramble(s) con le statistiche';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
+var PROPERTY_IMRENAME = 'rinomina la sessione subito dopo la creazione';
+var PROPERTY_SCR2SS = 'crea una nuova sessione quando si cambia tipo di scramble';
+var PROPERTY_SS2SCR = 'ripristina il tipo di scramble quando si cambia la sessione';
 var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
+var PROPERTY_STATINV = 'Lista tempi invertita';
+var PROPERTY_STATAL = 'Indicatori statistici';
+var PROPERTY_DELMUL = 'Abilita eliminazione multipla';
 var MODULE_NAMES = {
 	"kernel": 'globale',
 	"ui": 'schermo',

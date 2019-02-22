@@ -28,7 +28,7 @@ if ($req_lang == "cn") {
   $req_lang = "zh-cn";
 }
 
-$lang = prefered_language(array("en-us", "ca-es", "da-dk", "de-de", "es-es", "fi-fi", "fr-fr", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "tr-tr", "vi-vn", "zh-cn"), $req_lang);
+$lang = prefered_language(array("en-us", "ca-es", "da-dk", "de-de", "es-es", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sk-sk", "tr-tr", "vi-vn", "zh-cn"), $req_lang);
 
 if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
@@ -49,6 +49,9 @@ if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "fr-fr") { ?>
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
+<?php } else if ($lang == "he-il") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "hr-hr") { ?>
@@ -81,6 +84,9 @@ if ($lang == "en-us") { ?>
 <?php } else if ($lang == "ru-ru") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Профессиональный тренировочный таймер для кубика Рубика </title>
+<?php } else if ($lang == "sk-sk") { ?>
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "tr-tr") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - profesyonel Rubik Küpü Çözüm/Antreman Kronometresi </title>
@@ -95,8 +101,8 @@ if ($lang == "en-us") { ?>
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
   <script type="text/javascript">
-var LANG_SET = '|en-us|ca-es|da-dk|de-de|es-es|fi-fi|fr-fr|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|tr-tr|vi-vn|zh-cn';
-var LANG_STR = 'English|Català|Dansk|Deutsch|Español|Suomi|Français|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|Türkçe|Tiếng Việt|简体中文';
+var LANG_SET = '|en-us|ca-es|da-dk|de-de|es-es|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|sk-sk|tr-tr|vi-vn|zh-cn';
+var LANG_STR = 'English|Català|Dansk|Deutsch|Español|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|Slovenčina|Türkçe|Tiếng Việt|简体中文';
 var LANG_CUR = '<?php echo $lang; ?>';
 <?php include('lang/'.$lang.'.js');?>
   </script>

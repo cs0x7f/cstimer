@@ -457,7 +457,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				data = times_stats.runAvgMean(start, nsolves, 0, 0)[0];
 			} else {
 				data = times_stats.runAvgMean(start, nsolves)[0];
-				trimList = times_stats.getTrimList(start, nsolves, Math.ceil(nsolves / 20), data[2], data[3]);
+				trimList = times_stats.getTrimList(start, nsolves, data[2], data[3]);
 			}
 		}
 
@@ -1752,6 +1752,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
 				crossSessionStats.updateStatal(avgSizes);
 				updateUtil();
+                        } else if (value[0] == 'trim') {
+				times_stats.reset(times.length);
+				crossSessionStats.updateStatal(avgSizes);
+				updateUtil();
 			} else if (value[0] == 'view') {
 				resultsHeight();
 			} else if (value[0] == 'statHide') {
@@ -1795,11 +1799,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 	$(function() {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv|Hide)|session(:?Data)?|scrType|phases|view|wndStat)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv|Hide)|session(:?Data)?|scrType|phases|trim|view|wndStat)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
 
+		kernel.regProp('stats', 'trim', 1, 'Trimmed Average', ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', 'Median']]);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true]);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true]);
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false]);

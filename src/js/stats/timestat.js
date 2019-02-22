@@ -9,6 +9,17 @@ var TimeStat = execMain(function() {
 		this.reset(timesLen);
 	}
 
+        function getNTrim(n) {
+		var ntrim = kernel.getProp('trim', 'p5');
+		if (ntrim[0] == 'p') {
+			return Math.ceil(n / 100 * ntrim.slice(1));
+		} else if (ntrim == 'm') {
+			return Math.max(0, (n - 1) >> 1);
+		} else {
+			return ~~ntrim;
+		}
+        }
+
 	TimeStat.prototype.reset = function(timesLen) {
 		this.timesLen = timesLen;
 		this.shouldRecalc = true;
@@ -70,7 +81,7 @@ var TimeStat = execMain(function() {
 			if (this.timesLen < size) {
 				break;
 			}
-			var trim = this.avgSizes[j] < 0 ? 0 : Math.ceil(size / 20);
+			var trim = this.avgSizes[j] < 0 ? 0 : getNTrim(size);
 			var neff = size - 2 * trim;
 			var rbt = this.treesAvg[j] || sbtree.tree(this.timeSort);
 			if (this.timesLen == size) {
@@ -126,7 +137,7 @@ var TimeStat = execMain(function() {
 	TimeStat.prototype.runAvgMean = function(start, length, size, trim) {
 		size = size || length;
 		if (trim === undefined) {
-			trim = Math.ceil(size / 20);
+			trim = getNTrim(size);
 		}
 		if (start < 0 || start + length > this.timesLen) {
 			return;
@@ -154,9 +165,10 @@ var TimeStat = execMain(function() {
 		return ret;
 	}
 
-	TimeStat.prototype.getTrimList = function(start, nsolves, trim, thresL, thresR) {
+	TimeStat.prototype.getTrimList = function(start, nsolves, thresL, thresR) {
 		var trimlList = [];
 		var trimrList = [];
+		var trim = getNTrim(nsolves);
 		for (var i = 0; i < nsolves; i++) {
 			var t = this.timeAt(start + i);
 			var cmpl = this.timeSort(t, thresL);
