@@ -1,6 +1,7 @@
 <p>Language: 
 <a class="click" href="?lang=en-us">English</a>&nbsp;
 <a class="click" href="?lang=ca-es">Català</a>&nbsp;
+<a class="click" href="?lang=cs-cz">Čeština</a>&nbsp;
 <a class="click" href="?lang=da-dk">Dansk</a>&nbsp;
 <a class="click" href="?lang=de-de">Deutsch</a>&nbsp;
 <a class="click" href="?lang=es-es">Español</a>&nbsp;
