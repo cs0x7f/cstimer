@@ -59,12 +59,12 @@ var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'time distribution';
 var TOOLS_TREND = 'time trend';
 var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_CFMTIME = 'Potvrďte čas';
 var PROPERTY_IMGSIZE = 'Scramble Image Size';
 var TIMER_INSPECT = 'inspect';
 var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is';
+var PROPERTY_USEMOUSE = 'použít časovač pomocí myši';
+var PROPERTY_TIMEU = 'aktualizace timeru je';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
 var PROPERTY_ENTERING = 'entering in times with';
@@ -83,13 +83,13 @@ var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|bl
 var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
+var PROPERTY_USEKSC = 'použít klávesové zkratky';
+var PROPERTY_NTOOLS = 'počet nástrojů';
+var PROPERTY_AHIDE = 'Skrýt všechny prvky při časování';
+var SCRAMBLE_LAST = 'poslední';
+var SCRAMBLE_NEXT = 'další';
 var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
+var SCRAMBLE_LENGTH = 'délka';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
@@ -102,7 +102,7 @@ var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIIRSTS = 'Vždy|rychle|nikdy';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
@@ -189,12 +189,12 @@ var scrdata = [
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['7x7x7 hrany', "7edge", 8]
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['optimální', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
@@ -205,8 +205,8 @@ var scrdata = [
 	]],
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['optimální náhodný stav', "pyro", 0],
+		['náhodné tahy', "pyrm", 25]
 	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
@@ -218,7 +218,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['=== OSTATNÍ ===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -240,7 +240,7 @@ var scrdata = [
 	]],
 	['Gear Cube', [
 		['random state', "gearso", 0],
-		['optimal random state', "gearo", 0],
+		['optimální náhodný stav', "gearo", 0],
 		['3-gen', "gear", 10]
 	]],
 	['Cmetrick', [
@@ -286,7 +286,7 @@ var scrdata = [
 	['===SPECIAL===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3 subsets', [
+	['3 x 3 x 3 podskupiny', [
 		['2-generator R,U', "2gen", 25],
 		['2-generator L,U', "2genl", 25],
 		['Roux-generator M,U', "roux", 25],
@@ -347,7 +347,7 @@ var STATS_CURSESSION = 'Current Session Statistics';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
+var STATS_SSMGR_NAME = 'Jméno';
 var STATS_SSMGR_DETAIL = 'Session Details';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
 var STATS_SSMGR_ORDER = 'Order by scramble';
@@ -355,9 +355,9 @@ var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
 var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
-var STATS_AVG = 'mean';
-var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
+var STATS_AVG = 'průměr';
+var STATS_SOLVE = 'vyřešit';
+var STATS_TIME = 'čas';
 var STATS_SESSION = 'Session';
 var STATS_SESSION_NAME = 'Edit session name';
 var STATS_SESSION_NAMEC = 'Name of the new session';

@@ -1,110 +1,110 @@
-var OK_LANG = 'はい';
-var CANCEL_LANG = 'いいえ';
+var OK_LANG = 'OK';
+var CANCEL_LANG = 'キャンセル';
 var RESET_LANG = 'リセット';
-var ABOUT_LANG = 'について';
+var ABOUT_LANG = '概要';
 var ZOOM_LANG = '拡大';
-var BUTTON_TIME_LIST = 'リスト<br>回';
+var BUTTON_TIME_LIST = 'タイム<br>一覧';
 var BUTTON_OPTIONS = 'オプション';
 var BUTTON_EXPORT = 'エクスポート';
 var BUTTON_DONATE = '寄付';
-var PROPERTY_USEINS = 'WCA 検査を使用しま。';
-var PROPERTY_USEINS_STR = '常に|除いて BLD|決して';
-var PROPERTY_VOICEINS = 'WCA 検査の音声警告';
-var PROPERTY_VOICEINS_STR = '何れも|男性の声|女性の声';
-var PROPERTY_PHASES = '多相';
+var PROPERTY_USEINS = 'WCA インスペクションの使用';
+var PROPERTY_USEINS_STR = '常に利用する|BLD以外で利用|利用しない';
+var PROPERTY_VOICEINS = 'WCA インスペクションの音声警告';
+var PROPERTY_VOICEINS_STR = '利用しない|男性の声|女性の声';
+var PROPERTY_PHASES = 'マルチフェイズ';
 var PROPERTY_TIMERSIZE = 'タイマー サイズ';
 var PROPERTY_USEMILLI = 'ミリ秒を使用';
 var PROPERTY_SMALLADP = '小数点の後の小さいフォントを使用します。';
 var PROPERTY_SCRSIZE = 'スクランブルサイズ';
 var PROPERTY_SCRMONO = '等幅スクランブル';
-var PROPERTY_SCRLIM = 'Limit the height of scramble area';
-var PROPERTY_SCRALIGN = 'Alignment of scramble area';
-var PROPERTY_SCRALIGN_STR = 'center|left|right';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
-var PROPERTY_WNDSCR = 'Scramble panel display style';
-var PROPERTY_WNDSTAT = 'Statistics panel display style';
-var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
-var EXPORT_USERID = 'Please input your account (only alphabet or number)';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
-var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
-var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
-var TOOLS_SELECTFUNC = 'Function';
-var TOOLS_CROSS = 'solve cross';
-var TOOLS_EOLINE = 'solve EOLine';
-var TOOLS_ROUX1 = 'solve Roux S1';
-var TOOLS_GIIKER = 'Giiker Cube';
-var TOOLS_IMAGE = 'draw scramble';
-var TOOLS_STATS = 'Statistics';
-var TOOLS_HUGESTATS = 'cross-session stats';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
-var PROPERTY_IMGSIZE = 'Scramble Image Size';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
-var PROPERTY_ENTERING = 'entering in times with';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|Giiker';
-var PROPERTY_COLOR = 'select color theme';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
-var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
-var COLOR_EXPORT = 'Please save the string for import';
-var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
-var PROPERTY_FONT = 'select timer\'s font';
-var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_SCRLIM = 'スクランブル領域の高さ制限';
+var PROPERTY_SCRALIGN = 'スクランブルエリアの左右配置';
+var PROPERTY_SCRALIGN_STR = '中央|左|右';
+var PROPERTY_SCRFAST = '4x4x4の高速スクランブルを利用する(非公式)';
+var PROPERTY_SCRKEYM = 'スクランブルの主要な動きにラベルをつける';
+var PROPERTY_WNDSCR = 'スクランブルパネルの表示スタイル';
+var PROPERTY_WNDSTAT = '統計パネルの表示スタイル';
+var PROPERTY_WNDTOOL = 'ツールパネルの表示スタイル';
+var PROPERTY_WND_STR = '通常|フラット';
+var EXPORT_DATAEXPORT = 'データのインポート/エクスポート';
+var EXPORT_TOFILE = 'ファイルにエクスポート';
+var EXPORT_FROMFILE = 'ファイルからインポート';
+var EXPORT_TOSERV = 'サーバーにエクスポート';
+var EXPORT_FROMSERV = 'サーバーからインポート';
+var EXPORT_FROMOTHER = '他のタイマーからセッションをインポート';
+var EXPORT_USERID = 'あなたのアカウントを入力してください(英数字のみ)';
+var EXPORT_INVID = '入力は英数字のみです！';
+var EXPORT_ERROR = 'エラーが発生しました。';
+var EXPORT_NODATA = 'あなたのアカウントにはデータがありません。';
+var EXPORT_UPLOADED = 'アップロードに成功しました。';
+var EXPORT_CODEPROMPT = 'このコードを保存するか、保存したインポートコードを入力してください。';
+var EXPORT_ONLYOPT = 'オプションのみエクスポート/インポート';
+var EXPORT_ACCOUNT = 'アカウントのエクスポート';
+var EXPORT_LOGINGGL = 'Googleアカウントでログイン';
+var EXPORT_LOGINWCA = 'WCAアカウントでログイン';
+var EXPORT_LOGOUTCFM = 'ログアウトしてもよいですか？';
+var EXPORT_LOGINAUTHED = '認可されました。<br>データ取得中...';
+var IMPORT_FINAL_CONFIRM = 'すべてのローカルデータが上書きされます！本当にデータをインポートしますか？';
+var BUTTON_SCRAMBLE = 'スクラ-<br>ンブル';
+var BUTTON_TOOLS = 'ツール';
+var IMAGE_UNAVAILABLE = 'このスクランブルタイプでは利用できません';
+var TOOLS_SELECTFUNC = '機能';
+var TOOLS_CROSS = 'クロスソルブ';
+var TOOLS_EOLINE = 'EOLineソルブ';
+var TOOLS_ROUX1 = 'Roux S1 ソルブ';
+var TOOLS_GIIKER = 'Giiker キューブ';
+var TOOLS_IMAGE = 'スクランブルの描画';
+var TOOLS_STATS = '統計情報';
+var TOOLS_HUGESTATS = 'クロスセッションの統計情報';
+var TOOLS_DISTRIBUTION = 'タイム分布';
+var TOOLS_TREND = 'タイムトレンド';
+var TOOLS_METRONOME = 'メトロノーム';
+var TOOLS_CFMTIME = '時間の確認';
+var PROPERTY_IMGSIZE = 'スクランブルのイメージサイズ';
+var TIMER_INSPECT = 'インスペクション';
+var TIMER_SOLVE = 'ソルブ';
+var PROPERTY_USEMOUSE = 'マウスタイマーの使用';
+var PROPERTY_TIMEU = 'タイマー更新間隔';
+var PROPERTY_TIMEU_STR = '随時|0.1s|秒|インスペクション|なし';
+var PROPERTY_PRETIME = 'スペースキーを押し続ける時間(秒)';
+var PROPERTY_ENTERING = 'タイム入力方法';
+var PROPERTY_ENTERING_STR = 'タイマー|タイピング|スタックマット|MoyuTimer|バーチャル|Giiker';
+var PROPERTY_COLOR = 'カラーテーマの選択';
+var PROPERTY_COLORS = '文字|背景|ボード|ボタン|リンク|ロゴ|ロゴ背景';
+var PROPERTY_VIEW = 'UIスタイル';
+var PROPERTY_VIEW_STR = '自動|モバイル|デスクトップ';
+var PROPERTY_UIDESIGN = 'UIデザイン';
+var PROPERTY_UIDESIGN_STR = '通常|マテリアルデザイン|通常（影なし）';
+var COLOR_EXPORT = 'インポート用にこの文字列を保存してください。';
+var COLOR_IMPORT = 'エクスポートされた文字列を入力してください。';
+var COLOR_FAIL = '不正データです。インポートに失敗しました。';
+var PROPERTY_FONTCOLOR_STR = '黒|白';
+var PROPERTY_COLOR_STR = '手動|インポート/エクスポート|ランダム|スタイル1|スタイル2|スタイル2|黒|白|スタイル6|ソラリゼーション ダーク|ソラリゼーション ライト';
+var PROPERTY_FONT = 'タイマーフォントの選択';
+var PROPERTY_FONT_STR = 'ランダムデジタル|通常|デジタル1|デジタル2|デジタル3|デジタル4|デジタル5';
+var PROPERTY_FORMAT = '時間形式';
+var PROPERTY_USEKSC = 'キーボードショートカットを有効にする';
+var PROPERTY_NTOOLS = 'ツール表示数';
+var PROPERTY_AHIDE = '記録中はすべての要素を非表示にする';
+var SCRAMBLE_LAST = '前';
+var SCRAMBLE_NEXT = '後';
+var SCRAMBLE_SCRAMBLE = 'スクランブル';
+var SCRAMBLE_LENGTH = '長さ';
+var SCRAMBLE_INPUT = 'スクランブルの入力';
+var PROPERTY_VRCSPEED = 'VRCの基本速度(tps)';
+var PROPERTY_VRCMP = 'マルチフェイズ';
+var PROPERTY_VRCMPS = 'なし|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_GIIKERVRC = '仮想Giikerキューブの表示';
+var PROPERTY_GIISOK_DELAY = '時間経過でスクランブル状態とみなす';
+var PROPERTY_GIISOK_DELAYS = '2秒|3秒|4秒|5秒|行わない|正しくスクランブルされた時';
+var PROPERTY_GIISOK_KEY = 'スペースバーでスクランブルとみなす';
+var PROPERTY_GIISOK_MOVE = 'スクランブルとみなす条件';
+var PROPERTY_GIISOK_MOVES = 'U4, R4, など|(U U\')2, (U\' U)2, など|行わない';
+var PROPERTY_GIISBEEP = 'スクランブルされたときにビープ音を鳴らす';
+var PROPERTY_GIIRST = '接続時にGiikerキューブをリセットする';
+var PROPERTY_GIIRSTS = '常に|プロンプトを表示|行わない';
+var CONFIRM_GIIRST = 'Giikerキューブをソルブ状態にリセットしますか？';
+var PROPERTY_GIIAED = 'ハードウェアエラーの自動検知';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -113,21 +113,21 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
-		['3x3 ft', "333ft", 0],
-		['clock', "clkwca", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
-		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['3x3目隠し', "333ni", 0],
+		['3x3足', "333fm", 0],
+		['3x3片手', "333oh", 0],
+		['3x3足', "333ft", 0],
+		['クロック', "clkwca", 0],
+		['メガミンクス', "mgmp", -70],
+		['ピラミンクス', "pyrso", -10],
+		['スキューブ', "skbso", 0],
+		['スクエア１', "sqrs", 0],
+		['4x4目隠し', "444bld", -40],
+		['5x5目隠し', "555bld", -60],
+		['3x3複数目隠し', "r3ni", 5]
 	]],
-	['Input', [
-		['Extern', "input", 0]
+	['入力', [
+		['外部', "input", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
@@ -136,8 +136,8 @@ var scrdata = [
 		["WCA", "333", 0],
 		['old style', "333o", 25],
 		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['エッジのみ', "edges", 0],
+		['コーナーのみ', "corners", 0],
 		['last layer', "ll", 0],
 		['zb last layer', "zbll", 0],
 		['corners of last layer', "cll", 0],
@@ -191,34 +191,34 @@ var scrdata = [
 		['suffix', "777s", 100],
 		['7x7x7 edges', "7edge", 8]
 	]],
-	['Clock', [
+	['クロック', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
-	['Megaminx', [
+	['メガミンクス', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
 		['old style', "mgmo", 70]
 	]],
-	['Pyraminx', [
+	['ピラミンクス', [
 		["WCA", "pyrso", 10],
 		['optimal random state', "pyro", 0],
 		['random moves', "pyrm", 25]
 	]],
-	['Skewb', [
+	['スキューブ', [
 		["WCA", "skbso", 0],
 		['U L R B', "skb", 25]
 	]],
-	['Square-1', [
+	['スクエア１', [
 		["WCA", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===その他===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -249,7 +249,7 @@ var scrdata = [
 	['Cmetrick Mini', [
 		[' ', "cm2", 25]
 	]],
-	['Gigaminx', [
+	['ギガミンクス', [
 		['Pochmann', "giga", 300]
 	]],
 	['Helicopter Cube', [
@@ -336,65 +336,65 @@ var SCRAMBLE_NOOBST = [
 	['turn the front face', 'turn the back face']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
-var STATS_DATE = 'Date';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
-var STATS_AVG = 'mean';
-var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
-var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
-var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:|solving from %s to %e|Totally spent: %d';
-var STATS_PREC = 'time distribution precision';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var STATS_STATCLR = 'Enable session emptying';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
-var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
+var STATS_CFM_RESET = 'このセッションの全タイムをリセットしますか？';
+var STATS_CFM_DELSS = 'セッション [%s] を削除しますか？';
+var STATS_CFM_DELMUL = '現在のインデックスから削除する値の個数は？';
+var STATS_CFM_DELETE = 'このタイムを削除しますか？';
+var STATS_COMMENT = 'コメント';
+var STATS_DATE = '日時';
+var STATS_CURROUND = '現在のラウンドの統計情報';
+var STATS_CURSESSION = '現在のセッションの統計情報';
+var STATS_CURSPLIT = '現在のセッションのフェイズ %d の統計情報';
+var STATS_EXPORTCSV = 'CSVでエクスポート';
+var STATS_SSMGR_TITLE = 'セッションマネージャー';
+var STATS_SSMGR_NAME = '名前';
+var STATS_SSMGR_DETAIL = 'セッション詳細';
+var STATS_SSMGR_OPS = '名前変更|作成|分割|マージ|削除';
+var STATS_SSMGR_ORDER = 'スクランブル順に並べる';
+var STATS_SSMGR_ODCFM = 'すべてのセッションをスクランブル順に並べますか？';
+var STATS_ALERTMG = 'セッション [%f] のすべてのタイムをセッション [%t] の最後にマージしますか？';
+var STATS_PROMPTSPL = 'セッション [%s] から分割する最新のタイム数';
+var STATS_ALERTSPL = '少なくとも１つのタイムを残すか、分割する必要があります';
+var STATS_AVG = '平均';
+var STATS_SOLVE = 'ソルブ';
+var STATS_TIME = 'タイム';
+var STATS_SESSION = 'セッション';
+var STATS_SESSION_NAME = 'セッション名の編集';
+var STATS_SESSION_NAMEC = '新しいセッションの名前';
+var STATS_STRING = 'ベスト|現在|ワースト|csTimerによって %Y-%M-%D に生成|ソルブ数/合計: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|タイム一覧:|%s から %e までのソルブ|総経過時間: %d';
+var STATS_PREC = 'タイム分布の精度';
+var STATS_PREC_STR = '自動|0.1秒|0.2秒|0.5秒|1秒|2秒|5秒|10秒|20秒|50秒|100秒';
+var STATS_TYPELEN = 'リスト %d の種類|リスト %d の長さ|average|mean';
+var STATS_STATCLR = 'セッションを空にすることを許可';
+var STATS_ABSIDX = '統計報告に絶対指数を表示';
+var PROPERTY_PRINTSCR = '統計情報にスクランブルを表示';
+var PROPERTY_PRINTDATE = '統計情報にソルブ日時を表示';
+var PROPERTY_SUMMARY = 'タイム一覧の前にサマリーを表示';
+var PROPERTY_IMRENAME = 'セッション作成後すぐに名前を変更する';
+var PROPERTY_SCR2SS = 'スクランブルのタイプを変更したとき新しいセッションを作成';
+var PROPERTY_SS2SCR = 'セッションを切り替えたときスクランブルを元に戻す';
+var PROPERTY_SS2PHASES = 'セッションを切り替えたときマルチフェイズの記録を元に戻す';
+var PROPERTY_STATINV = '逆順のタイム一覧';
+var PROPERTY_STATAL = '統計指標';
+var PROPERTY_DELMUL = '複数削除を有効にする';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'display',
-	"color": 'color',
-	"timer": 'timer',
-	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools',
-	"vrc": 'virtual&<br>Giiker'
+	"kernel": 'グローバル',
+	"ui": '表示',
+	"color": '色',
+	"timer": 'タイマー',
+	"scramble": 'スクランブル',
+	"stats": '統計情報',
+	"tools": 'ツール',
+	"vrc": '仮想・<br>Giiker'
 };
-var BGIMAGE_URL = 'please input image\'s url';
-var BGIMAGE_INVALID = 'invalid url';
-var BGIMAGE_OPACITY = 'background image opacity';
-var BGIMAGE_IMAGE = 'background image';
-var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
-var SHOW_AVG_LABEL = 'Show Avg Label';
-var USE_LOGOHINT = 'Hint messages in logo';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var BGIMAGE_URL = '画像のURLを入力してください。';
+var BGIMAGE_INVALID = '無効なURL';
+var BGIMAGE_OPACITY = '背景画像の透過度';
+var BGIMAGE_IMAGE = '背景画像';
+var BGIMAGE_IMAGE_STR = 'なし|マニュアル|CCT';
+var SHOW_AVG_LABEL = 'アベレージのラベルを表示';
+var USE_LOGOHINT = 'ロゴにメッセージヒントを表示';
+var TOOLS_SCRGEN = 'スクランブルジェネレーター';
+var SCRGEN_NSCR = 'スクランブル数';
+var SCRGEN_PRE = 'プレフィクス';
+var SCRGEN_GEN = 'スクランブル生成！';

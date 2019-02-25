@@ -67,7 +67,7 @@ if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Cronometro Professionale per Speedcubing/Allenamento </title>
 <?php } else if ($lang == "ja-jp") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <meta name="keywords" content="タイマー, cstimer, ルービックキューブタイマー, オンラインタイマー, webタイマー">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "ko-kr") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">

@@ -8,7 +8,7 @@ var BUTTON_OPTIONS = 'НАСТ-<br>РОЙКИ';
 var BUTTON_EXPORT = 'ЗАГРУ-<br>ЗИТЬ';
 var BUTTON_DONATE = 'ПОЖЕРТ-<br>ВОВАТЬ';
 var PROPERTY_USEINS = 'использовать WCA рассмотор';
-var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
+var PROPERTY_USEINS_STR = 'Всегда|Кроме блд|Никогда';
 var PROPERTY_VOICEINS = 'голосовое предупреждение WCA рассмотра';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
 var PROPERTY_PHASES = 'мульти-фаза';
@@ -20,18 +20,18 @@ var PROPERTY_SCRMONO = 'моноширнный скрамбл';
 var PROPERTY_SCRLIM = 'Ограничить высоту зоны скрамбла';
 var PROPERTY_SCRALIGN = 'Выравнивание зоны скрамбла';
 var PROPERTY_SCRALIGN_STR = 'центр|лево|право';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
-var PROPERTY_WNDSCR = 'Scramble panel display style';
-var PROPERTY_WNDSTAT = 'Statistics panel display style';
-var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
+var PROPERTY_SCRFAST = 'Использовать быстрый скрамбл для 4х4х4(неофициально)';
+var PROPERTY_SCRKEYM = 'Главный(ые) ход(ы) в скрамбле';
+var PROPERTY_WNDSCR = 'Стиль панели со скрамблом';
+var PROPERTY_WNDSTAT = 'Стиль панели статистики';
+var PROPERTY_WNDTOOL = 'Стиль отображения панели инструментов';
+var PROPERTY_WND_STR = 'Нормальный|плоский';
 var EXPORT_DATAEXPORT = 'Сохранить/Загрузить';
 var EXPORT_TOFILE = 'Сохранить в';
 var EXPORT_FROMFILE = 'Загрузить из';
 var EXPORT_TOSERV = 'Сохранить на сервер';
 var EXPORT_FROMSERV = 'Загрузить из сервера';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
+var EXPORT_FROMOTHER = 'Импорт сессии(й) из других таймеров';
 var EXPORT_USERID = 'Пожалуйста введите свой аккаунт (только алфавит или цифры)';
 var EXPORT_INVID = 'Разрешены только алфавит и цифры!';
 var EXPORT_ERROR = 'Произошли некоторые ошибки...';
@@ -55,11 +55,11 @@ var TOOLS_ROUX1 = 'собрать Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'нарисовать скрамбл';
 var TOOLS_STATS = 'Статистика';
-var TOOLS_HUGESTATS = 'cross-session stats';
+var TOOLS_HUGESTATS = 'межсессионная статистика';
 var TOOLS_DISTRIBUTION = 'распределение времени';
 var TOOLS_TREND = 'тенденция времени';
 var TOOLS_METRONOME = 'метроном';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_CFMTIME = 'Подтвердить время';
 var PROPERTY_IMGSIZE = 'Размер изображения скрамбла';
 var TIMER_INSPECT = 'рассмотр';
 var TIMER_SOLVE = 'сборка';
@@ -91,40 +91,40 @@ var SCRAMBLE_NEXT = 'следующий';
 var SCRAMBLE_SCRAMBLE = ' скрамбл';
 var SCRAMBLE_LENGTH = 'длина';
 var SCRAMBLE_INPUT = 'Вставить Скрамбл(ы)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_VRCSPEED = 'Стандартная скорость вращение виртуального куба(вращений в секунду)';
+var PROPERTY_VRCMP = 'мульти-фаза';
+var PROPERTY_VRCMPS = 'Ничего|CFOP|CF+OP|CFFFFOP|Roux';
 var PROPERTY_GIIKERVRC = 'Показать виртуальный Giiker Cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
+var PROPERTY_GIISOK_DELAY = 'Отметить заскрамбленным если';
+var PROPERTY_GIISOK_DELAYS = '2с|3с|4с|5с|никогда|правильно заскрамблен';
+var PROPERTY_GIISOK_KEY = 'Отметить заскрамбленным с помощью пробела';
+var PROPERTY_GIISOK_MOVE = 'Отметить заскрамбленным, делая';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_GIIRST = 'Сбросить Giiker куб при подключении';
+var PROPERTY_GIIRSTS = 'Всегда|оперативно|никогда';
+var CONFIRM_GIIRST = 'Сбросить Giiker куб как собранный?';
+var PROPERTY_GIIAED = 'Автоопределение аппаратной ошибки';
 var scrdata = [
 	['WCA', [
-		['3x3x3', "333", 0],
+		['3х3х3', "333", 0],
 		['2x2x2', "222so", 0],
 		['4x4x4', "444wca", -40],
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
-		['3x3 ft', "333ft", 0],
+		['3x3 вслепую', "333ni", 0],
+		['3х3 кх', "333fm", 0],
+		['3х3 одной рукой', "333oh", 0],
+		['3х3 ногами', "333ft", 0],
 		['клок', "clkwca", 0],
 		['мегаминкс', "mgmp", -70],
 		['пирамидка', "pyrso", -10],
 		['скьюб', "skbso", 0],
 		['скв', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['4х4 вслепую', "444bld", -40],
+		['5х5 вслепую', "555bld", -60],
+		['несколько 3х3 вслепую', "r3ni", 5]
 	]],
 	['Загрузить', [
 		['Внешний', "input", 0]
@@ -132,7 +132,7 @@ var scrdata = [
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3', [
+	['3х3х3', [
 		["WCA", "333", 0],
 		['старый стиль', "333o", 25],
 		['3x3x3 для нубов', "333noob", 25],
@@ -155,18 +155,18 @@ var scrdata = [
 		['EOLine', "eoline", 0],
 		['легкий крест', "easyc", 3]
 	]],
-	['2x2x2', [
+	['2х2х2', [
 		["WCA", "222so", 0],
 		['оптимальная случайная позиция', "222o", 0],
 		['3-поколен', "2223", 25],
 		['EG', "222eg", 0],
-		['EG0', "222eg0", 0],
+		['ЕГ0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['случайное движение', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['4x4x4 ребра', "4edge", 8],
@@ -195,7 +195,7 @@ var scrdata = [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['оптимально', "clko", 0],
-		['concise', "clkc", 0],
+		['сжатие', "clkc", 0],
 		['эффективный порядок контактов', "clke", 0]
 	]],
 	['Мегаминкс', [
@@ -229,16 +229,16 @@ var scrdata = [
 		['1x3x3 (Флоппи Куб)', "133", 0],
 		['2x2x3 (Башня Куб)', "223", 0],
 		['2x3x3 (Домино)', "233", 25],
-		['3x3x4', "334", 40],
-		['3x3x5', "335", 25],
+		['3 x 3 x 4', "334", 40],
+		['3 x 3 x 5', "335", 25],
 		['3x3x6', "336", 40],
-		['3x3x7', "337", 40],
-		['8x8x8', "888", 120],
-		['9x9x9', "999", 120],
-		['10x10x10', "101010", 120],
-		['11x11x11', "111111", 120]
+		['3 x 3 x 7', "337", 40],
+		['8 x 8 x 8', "888", 120],
+		['9 x 9 x 9', "999", 120],
+		['10 x 10 x 10', "101010", 120],
+		['11 x 11 x 11', "111111", 120]
 	]],
-	['Gear Cube', [
+	['Шестеренчатый куб', [
 		['случайная позиция', "gearso", 0],
 		['оптимальная случайная позиция', "gearo", 0],
 		['3-поколен', "gear", 10]
@@ -252,11 +252,11 @@ var scrdata = [
 	['Гигаминкс', [
 		['Pochmann', "giga", 300]
 	]],
-	['Helicopter Cube', [
+	['Вертолетный куб', [
 		[' ', "heli", 40]
 	]],
-	['Redi Cube', [
-		['MoYu', "redim", 8],
+	['Реди куб', [
+		['Moyu', "redim", 8],
 		['old', "redi", 20]
 	]],
 	['Pyraminx Crystal', [
