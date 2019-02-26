@@ -309,7 +309,11 @@ var scrdata = [
 		['234 maraton', "r234", 0],
 		['2345 maraton', "r2345", 0],
 		['23456 maraton', "r23456", 0],
-		['234567 maraton', "r234567", 0]
+		['234567 maraton', "r234567", 0],
+		['234 maraton(wca)', "r234w", 0],
+		['2345 maraton(wca)', "r2345w", 0],
+		['23456 maraton(wca)', "r23456w", 0],
+		['234567 maraton(wca)', "r234567w", 0]
 	]],
 	['===JOKES===', [
 		['--', "blank", 0]

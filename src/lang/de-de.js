@@ -309,7 +309,11 @@ var scrdata = [
 		['234 Staffel', "r234", 0],
 		['2345 Staffel', "r2345", 0],
 		['23456 Staffel', "r23456", 0],
-		['234567 Staffel', "r234567", 0]
+		['234567 Staffel', "r234567", 0],
+		['234 Staffel(wca)', "r234w", 0],
+		['2345 Staffel(wca)', "r2345w", 0],
+		['23456 Staffel(wca)', "r23456w", 0],
+		['234567 Staffel(wca)', "r234567w", 0]
 	]],
 	['===Witze===', [
 		['--', "blank", 0]
