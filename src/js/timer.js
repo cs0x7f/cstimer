@@ -1270,6 +1270,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		onkeydown: onkeydown,
 		onkeyup: onkeyup,
 		showAvgDiv: avgDiv.showAvgDiv,
-		refocus: refocus
+		refocus: refocus,
+		getCurTime: function() {
+			return status > 0 ? $.now() - startTime : 0;
+		}
 	};
 }, [kernel.regListener, kernel.regProp, kernel.getProp, kernel.pretty, kernel.ui, kernel.pushSignal]);

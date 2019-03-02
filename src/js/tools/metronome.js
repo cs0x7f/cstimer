@@ -4,11 +4,15 @@ var metronome = execMain(function() {
 
 	var context;
 
-	var button = $('<span />').addClass('click').html('Start!');
-	var bpmInput = $('<input type="range" value="60" min="10" max="360" />');
-	var volInput = $('<input type="range" value="30" min="0" max="100" />');
-	var bgmOutput = $('<span />').addClass('click').html(' 60');
+	var button = $('<span style="display:inline-block; text-align:center; width:100%;"/>').addClass('click');
+	var bpmInput = $('<input type="range" value="60" min="10" max="360" style="width:7em;" />');
+	var volInput = $('<input type="range" value="30" min="0" max="100" style="width:7em;" />');
+	var bgmOutput = $('<span />').html(' 60');
+	var volOutput = $('<span />').html(' 30');
 	var vol;
+
+	var beepInput = $('<input type="text" style="width:7em;" />');
+	var beepButton = $('<input type="checkbox" />');
 
 	var isEnable = false;
 
@@ -22,21 +26,32 @@ var metronome = execMain(function() {
 			isEnable = false;
 			return;
 		}
-		fdiv.empty().append("BPM: ", bpmInput, bgmOutput, '<br />', 'Vol: ', volInput, '<br />', button);
+		fdiv.empty().append("BPM: ", bpmInput, bgmOutput, '<br />')
+			.append('Vol: ', volInput, volOutput, '<br />', button, '<br />')
+			.append('<br />', $('<label>').append(beepButton, '<span class="click"> Beep at</span>'), '<br />', beepInput);
 
 		bpmInput.unbind().on("input", function() {
 			bgmOutput.html(format(bpmInput.val()));
 			playAudio();
 		});
 		volInput.unbind().on("input", function() {
+			volOutput.html(format(volInput.val()));
 			vol.gain.value = volInput.val() / 100.0;
 		});
-		button.html('Start!');
+		button.html(isEnable ? 'Stop!' : 'Start!');
 		button.unbind().click(function() {
-			button.html(isEnable ? 'Start!' : 'Stop!');
 			isEnable = !isEnable;
+			button.html(isEnable ? 'Stop!' : 'Start!');
 			playAudio();
 		});
+
+		initBeep();
+	}
+
+	function initBeep() {
+		beepButton.unbind('change').change(beepChange).prop('checked', kernel.getProp('beepEn', false));
+		beepInput.unbind('change').change(beepChange).val(kernel.getProp('beepAt', '5,10,15,20'));
+		beepChange();
 	}
 
 	var playId = null;
@@ -56,13 +71,67 @@ var metronome = execMain(function() {
 		}
 	}
 
-	function playTick() {
+	function playTick(freq) {
 		var osc = context.createOscillator();
 		osc.type = 'sine';
-		osc.frequency.value = 440;
+		osc.frequency.value = freq || 440;
 		osc.connect(vol);
 		osc.start(context.currentTime);
 		osc.stop(context.currentTime + 0.1);
+	}
+
+	var beepId = null;
+	var beepTimes = [];
+	var beepIdx = 0;
+
+	function beepChange() {
+		if (!beepButton.prop('checked')) {
+			stopBeep();
+		} else {
+			startBeep(beepInput.val());
+		}
+		kernel.setProp('beepEn', beepButton.prop('checked'))
+		kernel.blur();
+	}
+
+	function startBeep(times) {
+		stopBeep();
+		times = times.split(',');
+		var target = [];
+		for (var i = 0; i < times.length; i++) {
+			times[i] = ~~(times[i].trim() * 1000) / 1000.0;
+		}
+		times = times.filter(Number);
+		times.sort(function(a, b) {
+			return a - b
+		});
+		beepTimes = times;
+		beepInput.val(times.join(','));
+		kernel.setProp('beepAt', times.join(','));
+		beepId = setInterval(beepLoop, 100);
+	}
+
+	function stopBeep() {
+		if (beepId != null) {
+			clearInterval(beepId);
+			beepId = null;
+		}
+	}
+
+	function beepLoop() {
+		var curTime = ~~timer.getCurTime() / 1000.0;
+		if (curTime == 0) {
+			beepIdx = 0;
+			return;
+		}
+		var doBeep = false;
+		while (beepIdx < beepTimes.length && curTime > beepTimes[beepIdx] - 0.05) {
+			++beepIdx;
+			doBeep = true;
+		}
+		if (doBeep) {
+			playTick(550);
+		}
 	}
 
 	$(function() {
@@ -74,6 +143,7 @@ var metronome = execMain(function() {
 			vol.connect(context.destination);
 			tools.regTool('mtrnm', TOOLS_METRONOME, execFunc);
 		}
+		initBeep();
 	});
 
 	return {
