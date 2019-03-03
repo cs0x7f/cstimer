@@ -9,7 +9,7 @@ var TimeStat = execMain(function() {
 		this.reset(timesLen);
 	}
 
-        function getNTrim(n) {
+	function getNTrim(n) {
 		var ntrim = kernel.getProp('trim', 'p5');
 		if (ntrim[0] == 'p') {
 			return Math.ceil(n / 100 * ntrim.slice(1));
@@ -18,7 +18,7 @@ var TimeStat = execMain(function() {
 		} else {
 			return ~~ntrim;
 		}
-        }
+	}
 
 	TimeStat.prototype.reset = function(timesLen) {
 		this.timesLen = timesLen;

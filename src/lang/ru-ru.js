@@ -259,6 +259,9 @@ var scrdata = [
 		['Moyu', "redim", 8],
 		['old', "redi", 20]
 	]],
+	['Master Pyraminx', [
+		[' ', "mpyr", 42]
+	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
 		['старый стиль', "prco", 70]

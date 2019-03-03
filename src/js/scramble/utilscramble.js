@@ -342,6 +342,21 @@
 		return ret.join(' x ');
 	}
 
+	function addPyrTips(scramble, moveLen) {
+		var cnt = 0;
+		var rnd = [];
+		for (var i = 0; i < 4; i++) {
+			rnd[i] = rn(3);
+			if (rnd[i] > 0) {
+				rnd[i] = "ulrb".charAt(i) + ["! ", "' "][rnd[i] - 1];
+				cnt++;
+			} else {
+				rnd[i] = "";
+			}
+		}
+		return scramble.substr(0, scramble.length - moveLen * cnt) + " " + rnd.join("");
+	}
+
 	function utilscramble(type, len) {
 		var ret = "";
 		switch (type) {
@@ -387,17 +402,12 @@
 					["R"],
 					["B"]
 				], ["!", "'"], len);
-				var cnt = 0;
-				var rnd = [];
-				for (var i = 0; i < 4; i++) {
-					rnd[i] = rn(3);
-					if (rnd[i] > 0) cnt++;
-				}
-				ret = ret.substr(0, ret.length - 3 * cnt);
-				ret = ["", "b ", "b' "][rnd[0]] + ["", "l ", "l' "][rnd[1]] + ["", "u ", "u' "][rnd[2]] + ["", "r ", "r' "][rnd[3]] + ret;
-				return ret.replace(/!/g, "");
+				return addPyrTips(ret, 3).replace(/!/g, "");
 			case "prcp": // Pyraminx Crystal (Pochmann)
 				return pochscramble(10, Math.ceil(len / 10));
+			case "mpyr": // Master Pyraminx
+				ret = adjScramble(["U!", "L!", "R!", "B!", "Uw", "Lw", "Rw", "Bw"], [0xe0, 0xd0, 0xb0, 0x70, 0xee, 0xdd, 0xbb, 0x77], len, ["!", "'"]);
+				return addPyrTips(ret, 4).replace(/!/g, "");
 			case "r3": // multiple 3x3x3 relay
 				for (var i = 0; i < len; i++) {
 					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333}";
@@ -447,6 +457,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

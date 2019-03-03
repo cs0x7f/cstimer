@@ -259,6 +259,9 @@ var scrdata = [
 		['모위(MoYu)', "redim", 8],
 		['구 방식', "redi", 20]
 	]],
+	['Master Pyraminx', [
+		[' ', "mpyr", 42]
+	]],
 	['피라밍크스 크리스털', [
 		['포흐만(Pochmann)', "prcp", 70],
 		['구 방식', "prco", 70]
