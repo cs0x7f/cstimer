@@ -147,11 +147,13 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function genScramble() {
 		kernel.blur();
-		isDisplayLast = false;
 		sdiv.html('Scrambling...');
-		lasttype = type;
 		typeExIn = (!type || type == 'input') ? typeExIn : type;
-		lastscramble = scramble;
+		if (!isDisplayLast) {
+			lasttype = type;
+			lastscramble = scramble;
+		}
+		isDisplayLast = false;
 		if (lastscramble) {
 			lastClick.addClass('click').unbind('click').click(procLastClick);
 		}

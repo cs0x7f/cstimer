@@ -1711,7 +1711,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function procSignal(signal, value) {
 		if (signal == 'time') {
 			push(value);
-		} else if (signal == 'scramble') {
+		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value[1];
 		} else if (signal == 'property') {
 			if (/^(:?useMilli|timeFormat|stat[12][tl]|statinv)$/.exec(value[0])) {
@@ -1799,6 +1799,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	$(function() {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
+		kernel.regListener('stats', 'scrambleX', procSignal);
 		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv|Hide)|session(:?Data)?|scrType|phases|trim|view|wndStat)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);

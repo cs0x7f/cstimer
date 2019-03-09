@@ -87,7 +87,7 @@ var PROPERTY_USEKSC = 'キーボードショートカットを有効にする';
 var PROPERTY_NTOOLS = 'ツール表示数';
 var PROPERTY_AHIDE = '記録中はすべての要素を非表示にする';
 var SCRAMBLE_LAST = '前';
-var SCRAMBLE_NEXT = '後';
+var SCRAMBLE_NEXT = '次';
 var SCRAMBLE_SCRAMBLE = 'スクランブル';
 var SCRAMBLE_LENGTH = '長さ';
 var SCRAMBLE_INPUT = 'スクランブルの入力';
@@ -114,7 +114,7 @@ var scrdata = [
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
 		['3x3目隠し', "333ni", 0],
-		['3x3足', "333fm", 0],
+		['3x3最少手数', "333fm", 0],
 		['3x3片手', "333oh", 0],
 		['3x3足', "333ft", 0],
 		['クロック', "clkwca", 0],
