@@ -15,7 +15,7 @@ var PROPERTY_PHASES = 'multi-phase';
 var PROPERTY_TIMERSIZE = 'rozmiar timera';
 var PROPERTY_USEMILLI = 'użyj milisekund';
 var PROPERTY_SMALLADP = 'use small font after decimal point';
-var PROPERTY_SCRSIZE = 'scramble size';
+var PROPERTY_SCRSIZE = 'wielkość scramble\'a';
 var PROPERTY_SCRMONO = 'monospaced scramble';
 var PROPERTY_SCRLIM = 'Limit the height of scramble area';
 var PROPERTY_SCRALIGN = 'Alignment of scramble area';
@@ -27,26 +27,26 @@ var PROPERTY_WNDSTAT = 'Statistics panel display style';
 var PROPERTY_WNDTOOL = 'Tools panel display style';
 var PROPERTY_WND_STR = 'Normal|Flat';
 var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
+var EXPORT_TOFILE = 'Eksportuj do pliku';
+var EXPORT_FROMFILE = 'Importuj z pliku';
+var EXPORT_TOSERV = 'Eksportuj do serwera';
+var EXPORT_FROMSERV = 'Importuj ze serwera';
 var EXPORT_FROMOTHER = 'Import session(s) from other timers';
 var EXPORT_USERID = 'Please input your account (only alphabet or number)';
 var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
+var EXPORT_ERROR = 'Wystąpił błąd...';
+var EXPORT_NODATA = 'Na twoim koncie nie ma danych';
 var EXPORT_UPLOADED = 'Uploaded successfully';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
+var EXPORT_ACCOUNT = 'Eksportuj konto';
+var EXPORT_LOGINGGL = 'Zaloguj się przy użyciu konta Google';
+var EXPORT_LOGINWCA = 'Zaloguj się przy użyciu konta WCA';
+var EXPORT_LOGOUTCFM = 'Czy na pewno chcesz się wylogować?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
+var BUTTON_TOOLS = 'NARZĘDZIA';
 var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
 var TOOLS_SELECTFUNC = 'Function';
 var TOOLS_CROSS = 'solve cross';
@@ -54,7 +54,7 @@ var TOOLS_EOLINE = 'solve EOLine';
 var TOOLS_ROUX1 = 'solve Roux S1';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'draw scramble';
-var TOOLS_STATS = 'Statistics';
+var TOOLS_STATS = 'Statystyki';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'time distribution';
 var TOOLS_TREND = 'time trend';
@@ -69,7 +69,7 @@ var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
 var PROPERTY_ENTERING = 'entering in times with';
 var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|Giiker';
-var PROPERTY_COLOR = 'select color theme';
+var PROPERTY_COLOR = 'wybierz kolor motywu';
 var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
 var PROPERTY_VIEW = 'UI style is';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
@@ -78,18 +78,18 @@ var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
 var COLOR_EXPORT = 'Please save the string for import';
 var COLOR_IMPORT = 'Please input the string exported';
 var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
+var PROPERTY_FONTCOLOR_STR = 'czarny|biały';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
 var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
+var PROPERTY_FORMAT = 'format czasu';
+var PROPERTY_USEKSC = 'użyj skrótu klawiszowego';
+var PROPERTY_NTOOLS = 'liczba narzędzi';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
+var SCRAMBLE_LAST = 'ostatni';
+var SCRAMBLE_NEXT = 'następny';
 var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
+var SCRAMBLE_LENGTH = 'długość';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
@@ -135,10 +135,10 @@ var scrdata = [
 	['3x3x3', [
 		["WCA", "333", 0],
 		['old style', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
-		['last layer', "ll", 0],
+		['3x3x3 dla noobów', "333noob", 25],
+		['tylko krawędzie', "edges", 0],
+		['tylko narożniki', "corners", 0],
+		['ostatnia warstwa', "ll", 0],
 		['zb last layer', "zbll", 0],
 		['corners of last layer', "cll", 0],
 		['edges of last layer', "ell", 0],
@@ -218,7 +218,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===INNE===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -318,7 +318,7 @@ var scrdata = [
 		['23456 relay(wca)', "r23456w", 0],
 		['234567 relay(wca)', "r234567w", 0]
 	]],
-	['===JOKES===', [
+	['===ŻARTY===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -343,10 +343,10 @@ var SCRAMBLE_NOOBST = [
 	['turn the front face', 'turn the back face']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_RESET = 'usunąć wszystkie czasy w tej sesji?';
+var STATS_CFM_DELSS = 'usunąć sesję?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
+var STATS_CFM_DELETE = 'usunąć ten czas?';
 var STATS_COMMENT = 'Comment';
 var STATS_DATE = 'Date';
 var STATS_CURROUND = 'Current Round Statistics';
@@ -354,8 +354,8 @@ var STATS_CURSESSION = 'Current Session Statistics';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
+var STATS_SSMGR_NAME = 'Nazwa';
+var STATS_SSMGR_DETAIL = 'Szczegóły sesji';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
 var STATS_SSMGR_ORDER = 'Order by scramble';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
@@ -385,23 +385,23 @@ var PROPERTY_STATINV = 'Inverse time list';
 var PROPERTY_STATAL = 'Statistical indicators';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'display',
-	"color": 'color',
+	"kernel": 'globalnie',
+	"ui": 'wyświetlanie',
+	"color": 'kolor',
 	"timer": 'timer',
 	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools',
+	"stats": 'statystyki',
+	"tools": 'narzędzia',
 	"vrc": 'virtual&<br>Giiker'
 };
-var BGIMAGE_URL = 'please input image\'s url';
-var BGIMAGE_INVALID = 'invalid url';
+var BGIMAGE_URL = 'podaj url obrazka';
+var BGIMAGE_INVALID = 'niepoprawny url';
 var BGIMAGE_OPACITY = 'background image opacity';
-var BGIMAGE_IMAGE = 'background image';
-var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
-var SHOW_AVG_LABEL = 'Show Avg Label';
+var BGIMAGE_IMAGE = 'tło';
+var BGIMAGE_IMAGE_STR = 'brak|manualnie|CCT';
+var SHOW_AVG_LABEL = 'Wyświetl etykietę średniego czasu';
 var USE_LOGOHINT = 'Hint messages in logo';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var TOOLS_SCRGEN = 'GeneratorScrambli';
+var SCRGEN_NSCR = 'Liczba scramblów';
+var SCRGEN_PRE = 'prefiks';
+var SCRGEN_GEN = 'Generuj algorytmy mieszające!';

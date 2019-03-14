@@ -77,7 +77,7 @@ if ($lang == "en-us") { ?>
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "pl-pl") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
-  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
+  <title> csTimer - Profesjonalny Timer do Speedsolvingu/Treningu </title>
 <?php } else if ($lang == "pt-pt") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
