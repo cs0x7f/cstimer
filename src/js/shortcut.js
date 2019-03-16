@@ -34,15 +34,26 @@ var shortcuts= execMain(function(){
 		51: [['stats', 'DNF'], 'ctrl']//3	
 	}
 
+	var ctrlAltMap = {
+		84: [['input', 't']], //t
+		73: [['input', 'i']], //i
+		83: [['input', 's']], //s
+		77: [['input', 'm']], //m
+		86: [['input', 'v']], //v
+		71: [['input', 'g']] //g
+	}
+
 	function onkeydown(signal, e) {
 		if (!kernel.getProp('useKSC')) {
 			return;
 		}
 		var action;
-		if (e.altKey) {
-			action = altMap[e.which]
+		if (e.altKey && e.ctrlKey) {
+			action = ctrlAltMap[e.which];
+		} else if (e.altKey) {
+			action = altMap[e.which];
 		} else if (e.ctrlKey) {
-			action = ctrlMap[e.which]
+			action = ctrlMap[e.which];
 		}
 		if (action != undefined) {
 			if (action[1] == undefined) {
