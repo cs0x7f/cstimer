@@ -63,6 +63,7 @@ var shortcuts= execMain(function(){
 			}
 			kernel.clrKey();
 		}
+		kernel.blur();
 	}
 	
 	$(function() {
