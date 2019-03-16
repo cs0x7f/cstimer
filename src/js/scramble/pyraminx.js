@@ -54,7 +54,7 @@
 			for (g = 0; g < 4; g++) {
 				i = mathlib.rn(3);
 				if (i < 2) {
-					k += "lrbu".charAt(g) + [" ", "' "][i] + " ";
+					k += "lrbu".charAt(g) + [" ", "' "][i];
 					len++;
 				}
 			}
