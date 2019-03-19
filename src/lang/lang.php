@@ -19,6 +19,7 @@
 <a class="click" href="?lang=ro-ro">Română</a>&nbsp;
 <a class="click" href="?lang=ru-ru">Pусский</a>&nbsp;
 <a class="click" href="?lang=sk-sk">Slovenčina</a>&nbsp;
+<a class="click" href="?lang=sv-se">Svenska</a>&nbsp;
 <a class="click" href="?lang=tr-tr">Türkçe</a>&nbsp;
 <a class="click" href="?lang=vi-vn">Tiếng Việt</a>&nbsp;
 <a class="click" href="?lang=zh-cn">简体中文</a>&nbsp;
