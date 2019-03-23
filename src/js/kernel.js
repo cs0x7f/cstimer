@@ -52,6 +52,8 @@ var kernel = execMain(function() {
 		var subDivs = {};
 		var isDivOut = true;
 
+		var optTable = $('<table>');
+
 		function resetPropertyes() {
 			for (var key in defaultProps) {
 				var newVal = defaultProps[key];
@@ -65,21 +67,43 @@ var kernel = execMain(function() {
 		var table = $('<table class="options" />');
 		var left = $('<td />');
 		var right = $('<td />').addClass('tabValue');
-		table.append($('<tr />').append(left, right));
+		table.append($('<tr />').append(left, right.append(optTable)));
 
 		var selectedTab = 0;
+		var prevScrollTop = 0;
 
 		function tabClick() {
 			var module = $(this).data('module');
+			switchLeftModule(module);
+			scrollToModule(module);
+		}
+
+		function switchLeftModule(module) {
 			if (!subDivs[module][0].hasClass('enable')) {
 				for (var m in subDivs) {
 					subDivs[m][0].removeClass('enable');
 				}
 				subDivs[module][0].addClass('enable');
 				selectedTab = module;
-				right.children().appendTo(temp);
-				right.html(subDivs[module][1]);
 			}
+		}
+
+		function scrollToModule(module) {
+			setTimeout(function() {
+				optTable.scrollTop(module ? optTable.scrollTop() + subDivs[module][1].position().top - 3 : prevScrollTop);
+			}, 0);
+		}
+
+		function onOptScroll() {
+			prevScrollTop = optTable.scrollTop();
+			var curModule = 'kernel';
+			for (var m in subDivs) {
+				if (subDivs[m][1].position().top > 50) {
+					continue;
+				}
+				curModule = m;
+			}
+			switchLeftModule(curModule);
 		}
 
 		function procClick(e) {
@@ -123,24 +147,47 @@ var kernel = execMain(function() {
 			}
 		}
 
+		var moduleIcon = {
+			"kernel": '\ue8ce',
+			"ui": '\ue60d',
+			"color": '\ueae9',
+			"timer": '\ue6b6',
+			"scramble": '\ue900',
+			"stats": '\ue9bb',
+			"tools": '\ue993',
+			"vrc": '\ue69d'
+		};
+
 		function generateDiv() {
 			subDivs = {};
 			left.empty();
-			right.empty();
+			optTable.empty();
+			optTable.unbind('scroll').scroll(onOptScroll);
 			for (var module in MODULE_NAMES) {
 				if (selectedTab === 0) {
 					selectedTab = module;
 				}
-				var curDiv = subDivs[module] = [$('<div />'), $('<ul />')];
-				curDiv[0].html(MODULE_NAMES[module]).addClass('tab').data('module', module).click(tabClick).appendTo(left);
+				var curDiv = subDivs[module] = [$('<div>'), $('<tr>')];
+				curDiv[0].html('<span class="icon" style="font-size:1em;">' + moduleIcon[module] + '</span><span>' + MODULE_NAMES[module] + '</span>').addClass('tab').data('module', module).click(tabClick).appendTo(left);
+				curDiv[1].append(
+					$('<th>').html('<span class="icon" style="font-size:1em;font-weight:normal;">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/<br>-?/g, '')),
+					$('<th>').html('<span class="icon" style="font-size:1em;font-weight:normal;">\ue9bb</span>')
+				);
+				optTable.append(curDiv[1]);
 
 				for (var key in proSets[module]) {
 					var proSet = proSets[module][key];
 					var curVal = getProp(key);
 					var type = proSet[1];
+
+					var srChecked = getProp('sr_' + key);
+					var srTd = $('<td style="text-align:center;">').append($(
+						'<input type="checkbox" ' + ((proSet[4] & 1) == 0 ? 'disabled ' : '') + 'name="sr_' + key + '"' + (srChecked ? ' checked' : '') + '>').click(procClick))
+					var valTd = $('<td style="padding-left:0.3em;">');
+
 					if (type == 0) { //checkbox
 						proSet[0] = $('<input type="checkbox" name="' + key + '">').prop('checked', curVal).click(procClick);
-						curDiv[1].append($('<li />').append($('<label>').append(proSet[0], proSet[2])));
+						valTd.append($('<label>').append(proSet[0], proSet[2]));
 					} else if (type == 1) { //select
 						proSet[0] = $('<select name="' + key + '">');
 						var vals = proSet[3][1];
@@ -148,37 +195,39 @@ var kernel = execMain(function() {
 						for (var i = 0; i < vals.length; i++) {
 							proSet[0].append($('<option />').val(vals[i]).html(strs[i]));
 						}
-						proSet[0].val(getProp(key));
+						proSet[0].val(curVal);
 						proSet[0].change(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0]));
+						valTd.append(proSet[2], ': ', proSet[0]);
 					} else if (type == 2) { //range
-						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(getProp(key)).change(procClick);
+						proSet[0] = $('<input type="text" maxlength="4" name="' + key + '">').val(curVal).change(procClick);
 						var inc = $('<input type="button" style="width: 1.5em;" value="+" name="' + key + '">').click(procClick);
 						var dec = $('<input type="button" style="width: 1.5em;" value="-" name="' + key + '">').click(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], '(' + proSet[3][1] + '~' + proSet[3][2] + ')',
-							$('<span>').css('white-space', 'nowrap').append(dec, proSet[0], inc)));
+						valTd.append(proSet[2] + '(' + proSet[3][1] + '~' + proSet[3][2] + ')', $('<span>').css('white-space', 'nowrap').append(dec, proSet[0], inc));
 					} else if (type == 3) { //color
-						proSet[0] = $('<input type="color" name="' + key + '">').val(getProp(key)).change(procClick);
-						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0]));
+						proSet[0] = $('<input type="color" name="' + key + '">').val(curVal).change(procClick);
+						valTd.append(proSet[2], ': ', proSet[0]);
 					} else if (type == 4) { //multiple colors
-						var val = getProp(key).match(/#[0-9a-fA-F]{3}/g);
-						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(getProp(key));
+						var val = curVal.match(/#[0-9a-fA-F]{3}/g);
+						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(curVal);
 						var colorsInput = [];
 						for (var i = 0; i < val.length; i++) {
 							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val(ui.nearColor(val[i], 0, true)).change(procClick));
 						}
-						curDiv[1].append($('<li />').append(proSet[2], ': ', proSet[0], colorsInput));
-					} else if (type == 5) { //select using a href
-						var item = $('<li />').append(proSet[2], ': ');
-						var vals = proSet[3][1];
-						var strs = proSet[3][2];
-						for (var i = 0; i < vals.length; i++) {
-							item.append('<a class="click" href="' + vals[i] + '">' + strs[i] + '</a> ');
+						valTd.append(proSet[2], ': ', proSet[0], colorsInput);
+					} else if (type == 5) { //internal
+						if ($.urlParam('debug')) {
+							proSet[0] = $('<input type="text" name="' + key + '" readonly>').val(curVal);
+							valTd.append(key, ': ', proSet[0]);
+						} else {
+							valTd = null;
 						}
-						curDiv[1].append(item);
+					}
+					if (valTd) {
+						optTable.append($('<tr>').append(valTd, srTd));
 					}
 				}
 			}
+			optTable.append($('<tr style="height: 10em;">'));
 			subDivs[selectedTab][0].click();
 		}
 
@@ -187,6 +236,7 @@ var kernel = execMain(function() {
 				generateDiv();
 				isDivOut = false;
 			}
+			scrollToModule();
 
 			ui.showDialog([table, $.noop, undefined, $.noop, [RESET_LANG, function(){
 				resetPropertyes();
@@ -207,7 +257,7 @@ var kernel = execMain(function() {
 			return (key in properties) ? properties[key] : defaultProps[key];
 		}
 
-		function setProp(key, value) {
+		function setProp(key, value, signalType) {
 			for (var module in proSets) {
 				if (key in proSets[module] && proSets[module][key][0] !== undefined && proSets[module][key][0].val() != value) {
 					proSets[module][key][0].val(value);
@@ -216,18 +266,43 @@ var kernel = execMain(function() {
 			}
 			if (getProp(key) !== value) {
 				properties[key] = value;
-				pushSignal('property', [key, getProp(key), 'modify']);
+				pushSignal('property', [key, getProp(key), signalType || 'modify']);
 			}
 		}
 
-		function regProp(module, key, type, discribe, values) {
+		function regProp(module, key, type, discribe, values, sessionRelated) {
 			isDivOut = true;
 			if (proSets[module] == undefined) {
 				proSets[module] = {};
 			}
-			proSets[module][key] = [undefined, type, discribe, values];
+			proSets[module][key] = [undefined, type, discribe, values, sessionRelated];
 			defaultProps[key] = values[0];
+			defaultProps['sr_' + key] = (sessionRelated & 2) == 2;
 			pushSignal('property', [key, getProp(key), 'set']);
+		}
+
+		function getSProps() {
+			var ret = {};
+			for (var key in properties) {
+				if (key.startsWith('sr_') || !getProp('sr_' + key, false)) {
+					continue;
+				}
+				ret[key] = getProp(key);
+			}
+			return ret;
+		}
+
+		function setSProps(val) {
+			for (var key in defaultProps) {
+				if (key.startsWith('sr_') || !getProp('sr_' + key, false)) {
+					continue;
+				}
+				if (key in val) {
+					setProp(key, val[key], 'session');
+				} else {
+					setProp(key, defaultProps[key], 'session');
+				}
+			}
 		}
 
 		function save() {
@@ -251,6 +326,8 @@ var kernel = execMain(function() {
 			get : getProp,
 			set : setProp,
 			reg : regProp,
+			getSProps: getSProps,
+			setSProps: setSProps,
 			load : load,
 			reload: generateDiv
 		}
@@ -1433,6 +1510,8 @@ var kernel = execMain(function() {
 		getProp: getProp,
 		setProp: setProp,
 		regProp: regProp,
+		getSProps: property.getSProps,
+		setSProps: property.setSProps,
 		regListener: regListener,
 		addWindow: ui.addWindow,
 		addButton: ui.addButton,

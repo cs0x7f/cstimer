@@ -631,7 +631,7 @@ var scramble = execMain(function(rn, rndEl) {
 		for (var i = 0; i < scrdata.length; i++) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
 		}
-		kernel.getProp('scrType', '333');
+		kernel.regProp('scramble', 'scrType', 5, 'Scramble Type', ['333']);
 
 		select.change(loadSelect2);
 		select2.change(loadScrOptsAndGen);

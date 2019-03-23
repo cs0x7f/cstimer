@@ -897,7 +897,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 						updateDistribution();
 					}
 				}, /^disPrec$/);
-				kernel.regProp('tools', 'disPrec', 1, STATS_PREC, ['a', ['a', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], STATS_PREC_STR.split('|')]);
+				kernel.regProp('tools', 'disPrec', 1, STATS_PREC, ['a', ['a', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], STATS_PREC_STR.split('|')], 1);
 				tools.regTool('distribution', TOOLS_DISTRIBUTION, execFunc);
 			}
 		});
@@ -1094,8 +1094,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.setProp('session', sessionIdx);
 			load();
 			var curSessionData = sessionData[sessionIdx];
-			kernel.setProp('scrType', curSessionData['scr']);
-			kernel.setProp('phases', curSessionData['phases']);
+			var sessionOpts = curSessionData['opt'] || {};
+			kernel.setSProps(sessionOpts);
+			kernel.setProp('scrType', curSessionData['scr'], 'session');
+			kernel.setProp('phases', curSessionData['phases'], 'session');
 			fixSessionSelect();
 		}
 
@@ -1105,6 +1107,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					'name': (JSON.parse(kernel.getProp('sessionName') || '{}'))[i] || i,
 					'scr': (JSON.parse(kernel.getProp('sessionScr') || '{}'))[i] || '333',
 					'phases': 1,
+					'opt': {}
 				};
 				sessionData[i]['rank'] = sessionData[i]['rank'] || i;
 			}
@@ -1154,6 +1157,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					'name': prevData['name'] || newName,
 					'scr': prevData['scr'] || curScrType,
 					'phases': prevData['phases'] || 1,
+					'opt': JSON.parse(JSON.stringify(prevData['opt'])),
 					'rank': rank + 0.5
 				};
 			} else {
@@ -1161,6 +1165,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					'name': newName,
 					'scr': curScrType,
 					'phases': 1,
+					'opt': kernel.getSProps(),
 					'rank': rank + 0.5
 				};
 			}
@@ -1509,6 +1514,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function procSignal(signal, value) {
 			if (signal == 'property') {
+				if (value[2] != 'set' && value[2] != 'session' && !value[0].startsWith('session')) {
+					sessionData[sessionIdx]['opt'] = kernel.getSProps();
+					kernel.setProp('sessionData', JSON.stringify(sessionData));
+				}
 				if (value[0] == 'session' && ~~value[1] != sessionIdx) {
 					loadSession(value[1]);
 				} else if (value[0] == 'sessionData') {
@@ -1556,6 +1565,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					'name': sessionDetail['name'] || sessionIdx,
 					'scr': sessionDetail['scr'] || '333',
 					'phases': sessionDetail['phases'] || 1,
+					'opt': kernel.getSProps(),
 					'rank': sessionIdxMax
 				};
 				kernel.setProp('sessionN', sessionIdxMax);
@@ -1575,7 +1585,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		$(function() {
-			kernel.regListener('ssmgr', 'property', procSignal, /^(:?session(:?Data)?|scrType|phases|statclr)$/);
+			kernel.regListener('ssmgr', 'property', procSignal);
 			kernel.regListener('ssmgr', 'ctrl', procSignal, /^stats$/);
 
 			sessionIdxMax = kernel.getProp('sessionN', 15);
