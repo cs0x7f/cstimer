@@ -119,6 +119,13 @@ var tools = execMain(function() {
 				}
 			} else if (value[0] == 'toolHide') {
 				toggleFuncSpan(!value[1]);
+			} else if (value[0] == 'toolsfunc' && value[2] == 'session') {
+				var newfuncs = JSON.parse(value[1]);
+				funcs = [];
+				for (var i = 0; i < 4; i++) {
+					funcSelects[i].val(newfuncs[i]);
+				}
+				changeSelect();
 			}
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value;
@@ -174,6 +181,7 @@ var tools = execMain(function() {
 		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50]);
 		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4]);
 		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
+		kernel.regProp('tools', 'toolsfunc', 5, TOOLS_SELECTFUNC, [defaultFunc], 1);
 		var funcStr = kernel.getProp('toolsfunc', defaultFunc);
 		if (funcStr.indexOf('[') == -1) {
 			funcStr = defaultFunc.replace('image', funcStr);
@@ -181,8 +189,7 @@ var tools = execMain(function() {
 		}
 		funcs = JSON.parse(funcStr);
 		kernel.addWindow('tools', BUTTON_TOOLS, mainDiv, false, true, 6);
-
-		kernel.getProp('toolHide', false);
+		kernel.regProp('ui', 'toolHide', ~0, 'Hide Tools Selector', [false]);
 	});
 
 	/**

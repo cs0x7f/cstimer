@@ -631,7 +631,7 @@ var scramble = execMain(function(rn, rndEl) {
 		for (var i = 0; i < scrdata.length; i++) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
 		}
-		kernel.regProp('scramble', 'scrType', 5, 'Scramble Type', ['333']);
+		kernel.regProp('scramble', 'scrType', ~5, 'Scramble Type', ['333']);
 
 		select.change(loadSelect2);
 		select2.change(loadScrOptsAndGen);
@@ -649,9 +649,7 @@ var scramble = execMain(function(rn, rndEl) {
 			kernel.blur();
 			kernel.setProp('scrHide', false);
 		});
-		if (kernel.getProp('scrHide', false)) {
-			title.hide();
-		}
+		kernel.regProp('ui', 'scrHide', ~0, 'Hide Scramble Selector', [false]);
 	});
 
 	return {

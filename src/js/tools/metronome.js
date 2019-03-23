@@ -49,8 +49,8 @@ var metronome = execMain(function() {
 	}
 
 	function initBeep() {
-		beepButton.unbind('change').change(beepChange).prop('checked', kernel.getProp('beepEn', false));
-		beepInput.unbind('change').change(beepChange).val(kernel.getProp('beepAt', '5,10,15,20'));
+		beepButton.unbind('change').change(beepChange).prop('checked', kernel.getProp('beepEn'));
+		beepInput.unbind('change').change(beepChange).val(kernel.getProp('beepAt'));
 		beepChange();
 	}
 
@@ -135,6 +135,8 @@ var metronome = execMain(function() {
 	}
 
 	$(function() {
+		kernel.regProp('tools', 'beepEn', ~5, 'Beep Enable', [false]);
+		kernel.regProp('tools', 'beepAt', ~5, 'Beep At', ['5,10,15,20']);
 		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 		if (AudioContext !== undefined) {
 			context = new AudioContext();

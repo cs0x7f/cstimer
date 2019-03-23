@@ -181,9 +181,19 @@ var kernel = execMain(function() {
 					var type = proSet[1];
 
 					var srChecked = getProp('sr_' + key);
-					var srTd = $('<td style="text-align:center;">').append($(
-						'<input type="checkbox" ' + ((proSet[4] & 1) == 0 ? 'disabled ' : '') + 'name="sr_' + key + '"' + (srChecked ? ' checked' : '') + '>').click(procClick))
+					var srTd = $('<td style="text-align:center;">');
+					if (proSet[4] & 1) {
+						srTd.append($('<input type="checkbox" name="sr_' + key + '"' + (srChecked ? ' checked' : '') + '>').click(procClick));
+					}
 					var valTd = $('<td style="padding-left:0.3em;">');
+
+					if (type < 0) {
+						if ($.urlParam('debug')) {
+							type = ~type;
+						} else {
+							continue;
+						}
+					}
 
 					if (type == 0) { //checkbox
 						proSet[0] = $('<input type="checkbox" name="' + key + '">').prop('checked', curVal).click(procClick);
@@ -215,16 +225,10 @@ var kernel = execMain(function() {
 						}
 						valTd.append(proSet[2], ': ', proSet[0], colorsInput);
 					} else if (type == 5) { //internal
-						if ($.urlParam('debug')) {
-							proSet[0] = $('<input type="text" name="' + key + '" readonly>').val(curVal);
-							valTd.append(key, ': ', proSet[0]);
-						} else {
-							valTd = null;
-						}
+						proSet[0] = $('<input type="text" name="' + key + '" readonly>').val(curVal);
+						valTd.append(proSet[2] + ' (' + key + '): ', proSet[0]);
 					}
-					if (valTd) {
-						optTable.append($('<tr>').append(valTd, srTd));
-					}
+					optTable.append($('<tr>').append(valTd, srTd));
 				}
 			}
 			optTable.append($('<tr style="height: 10em;">'));

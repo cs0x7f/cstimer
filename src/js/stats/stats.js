@@ -1587,12 +1587,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 		$(function() {
 			kernel.regListener('ssmgr', 'property', procSignal);
 			kernel.regListener('ssmgr', 'ctrl', procSignal, /^stats$/);
+			kernel.regProp('stats', 'sessionN', ~5, 'Number of Sessions', [15]);
+			kernel.regProp('stats', 'sessionData', ~5, 'Session Data', ['{}']);
+			kernel.regProp('stats', 'session', ~5, 'Current Session Index', [1]);
 
-			sessionIdxMax = kernel.getProp('sessionN', 15);
-			sessionData = JSON.parse(kernel.getProp('sessionData', '{}'));
+			sessionIdxMax = kernel.getProp('sessionN');
+			sessionData = JSON.parse(kernel.getProp('sessionData'));
 			fixSessionSelect();
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
-			kernel.getProp('session', 1);
 		});
 
 		return {
@@ -1762,7 +1764,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
 				crossSessionStats.updateStatal(avgSizes);
 				updateUtil();
-                        } else if (value[0] == 'trim') {
+			} else if (value[0] == 'trim') {
 				times_stats.reset(times.length);
 				crossSessionStats.updateStatal(avgSizes);
 				updateUtil();
@@ -1842,15 +1844,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 		});
 
 		var stattl = STATS_TYPELEN.split('|');
-		kernel.regProp('stats', 'stat1t', 1, stattl[0].replace('%d', 1), [0, [0, 1], stattl.slice(2)]);
-		kernel.regProp('stats', 'stat1l', 2, stattl[1].replace('%d', 1), [5, 3, 1000]);
-		kernel.regProp('stats', 'stat2t', 1, stattl[0].replace('%d', 2), [0, [0, 1], stattl.slice(2)]);
-		kernel.regProp('stats', 'stat2l', 2, stattl[1].replace('%d', 2), [12, 3, 1000]);
+		kernel.regProp('stats', 'stat1t', 1, stattl[0].replace('%d', 1), [0, [0, 1], stattl.slice(2)], 1);
+		kernel.regProp('stats', 'stat1l', 2, stattl[1].replace('%d', 1), [5, 3, 1000], 1);
+		kernel.regProp('stats', 'stat2t', 1, stattl[0].replace('%d', 2), [0, [0, 1], stattl.slice(2)], 1);
+		kernel.regProp('stats', 'stat2l', 2, stattl[1].replace('%d', 2), [12, 3, 1000], 1);
 		kernel.regProp('stats', 'statal', 1, PROPERTY_STATAL, ['mo3 ao5 ao12 ao100', ['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'u'],
 			['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'Custom']
-		]);
+		], 1);
 		kernel.regProp('stats', 'delmul', 0, PROPERTY_DELMUL, [true]);
-		kernel.getProp('statHide', false);
+		kernel.regProp('ui', 'statHide', ~0, 'Hide Session Title', [false]);
 	});
 
 	return {
