@@ -52,7 +52,8 @@ var kernel = execMain(function() {
 		var subDivs = {};
 		var isDivOut = true;
 
-		var optTable = $('<table>');
+		var scrollDiv = $('<div>');
+		var optTable = $('<table class="opttable">');
 
 		function resetPropertyes() {
 			for (var key in defaultProps) {
@@ -67,7 +68,7 @@ var kernel = execMain(function() {
 		var table = $('<table class="options" />');
 		var left = $('<td />');
 		var right = $('<td />').addClass('tabValue');
-		table.append($('<tr />').append(left, right.append(optTable)));
+		table.append($('<tr />').append(left, right.append(scrollDiv.append(optTable))));
 
 		var selectedTab = 0;
 		var prevScrollTop = 0;
@@ -90,12 +91,12 @@ var kernel = execMain(function() {
 
 		function scrollToModule(module) {
 			setTimeout(function() {
-				optTable.scrollTop(module ? optTable.scrollTop() + subDivs[module][1].position().top - 3 : prevScrollTop);
+				scrollDiv.scrollTop(module ? scrollDiv.scrollTop() + subDivs[module][1].position().top - 3 : prevScrollTop);
 			}, 0);
 		}
 
 		function onOptScroll() {
-			prevScrollTop = optTable.scrollTop();
+			prevScrollTop = scrollDiv.scrollTop();
 			var curModule = 'kernel';
 			for (var m in subDivs) {
 				if (subDivs[m][1].position().top > 50) {
@@ -162,7 +163,7 @@ var kernel = execMain(function() {
 			subDivs = {};
 			left.empty();
 			optTable.empty();
-			optTable.unbind('scroll').scroll(onOptScroll);
+			scrollDiv.unbind('scroll').scroll(onOptScroll);
 			for (var module in MODULE_NAMES) {
 				if (selectedTab === 0) {
 					selectedTab = module;
@@ -170,8 +171,8 @@ var kernel = execMain(function() {
 				var curDiv = subDivs[module] = [$('<div>'), $('<tr>')];
 				curDiv[0].html('<span class="icon" style="font-size:1em;">' + moduleIcon[module] + '</span><span>' + MODULE_NAMES[module] + '</span>').addClass('tab').data('module', module).click(tabClick).appendTo(left);
 				curDiv[1].append(
-					$('<th>').html('<span class="icon" style="font-size:1em;font-weight:normal;">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/<br>-?/g, '')),
-					$('<th>').html('<span class="icon" style="font-size:1em;font-weight:normal;">\ue9bb</span>')
+					$('<th>').html('<span class="icon">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/<br>-?/g, '')),
+					$('<th>').html('<span class="icon">\ue9bb</span>')
 				);
 				optTable.append(curDiv[1]);
 
@@ -181,11 +182,11 @@ var kernel = execMain(function() {
 					var type = proSet[1];
 
 					var srChecked = getProp('sr_' + key);
-					var srTd = $('<td style="text-align:center;">');
+					var srTd = $('<td>');
 					if (proSet[4] & 1) {
 						srTd.append($('<input type="checkbox" name="sr_' + key + '"' + (srChecked ? ' checked' : '') + '>').click(procClick));
 					}
-					var valTd = $('<td style="padding-left:0.3em;">');
+					var valTd = $('<td>');
 
 					if (type < 0) {
 						if ($.urlParam('debug')) {

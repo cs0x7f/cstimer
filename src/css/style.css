@@ -432,7 +432,7 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	height: 100%;
 }
 
-.options th {
+.options th:first-child {
 	padding: 1em;
 }
 
@@ -551,6 +551,20 @@ table.sumtable {
 
 table.sumtable td, table.sumtable th {
 	border-style: none;
+}
+
+table.opttable {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table.opttable th .icon {
+	font-weight: normal;
+	font-size: 1em;
+}
+
+table.opttable td {
+	padding: 0 0.1em 0 0.3em;
 }
 
 .table {
