@@ -226,8 +226,14 @@ var kernel = execMain(function() {
 						}
 						valTd.append(proSet[2], ': ', proSet[0], colorsInput);
 					} else if (type == 5) { //internal
-						proSet[0] = $('<input type="text" name="' + key + '" readonly>').val(curVal);
-						valTd.append(proSet[2] + ' (' + key + '): ', proSet[0]);
+						if ($.urlParam('debug')) {
+							proSet[0] = $('<input type="text" name="' + key + '" readonly>').val(curVal);
+							valTd.append(proSet[2] + ' (' + key + '): ', proSet[0]);
+						} else {
+							proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(curVal);
+							valTd.append(proSet[2], proSet[0]);
+						}
+
 					}
 					optTable.append($('<tr>').append(valTd, srTd));
 				}

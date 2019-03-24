@@ -62,8 +62,8 @@ var shortcuts= execMain(function(){
 				kernel.pushSignal(action[1], action[0]);
 			}
 			kernel.clrKey();
+			kernel.blur();
 		}
-		kernel.blur();
 	}
 	
 	$(function() {
