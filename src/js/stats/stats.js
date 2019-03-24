@@ -1711,6 +1711,19 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 	}
 
+	function updateStatalU(statal) {
+		var avgSizesNew = avgSizesStd(statal);
+		if (!avgSizesNew) {
+			kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
+			kernel.reprop();
+			return;
+		}
+		avgSizes = avgSizesNew;
+		times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
+		crossSessionStats.updateStatal(avgSizes);
+		updateUtil();
+	}
+
 	var curScramble = "";
 
 	var stat1, stat2, len1, len2;
@@ -1754,16 +1767,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 						statal = kernel.getProp('statalu');
 					}
 				}
-				var avgSizesNew = avgSizesStd(statal);
-				if (!avgSizesNew) {
-					kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
-					kernel.reprop();
-					return;
-				}
-				avgSizes = avgSizesNew;
-				times_stats = new TimeStat(avgSizes, times.length, timeAt, dnfsort);
-				crossSessionStats.updateStatal(avgSizes);
-				updateUtil();
+				updateStatalU(statal);
+			} else if (value[0] == 'statalu') {
+				updateStatalU(value[1]);
 			} else if (value[0] == 'trim') {
 				times_stats.reset(times.length);
 				crossSessionStats.updateStatal(avgSizes);
@@ -1812,7 +1818,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|al|inv|Hide)|session(:?Data)?|scrType|phases|trim|view|wndStat)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|alu?|inv|Hide)|session(:?Data)?|scrType|phases|trim|view|wndStat)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);

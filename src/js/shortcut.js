@@ -22,8 +22,8 @@ var shortcuts= execMain(function(){
 		37: [['scramble', 'last'], 'ctrl'],//left
 		39: [['scramble', 'next'], 'ctrl'],//right
 
-		38: [['stats', '+'], 'ctrl'],//up
-		40: [['stats', '-'], 'ctrl'],//down
+		38: [['stats', '-'], 'ctrl'],//up
+		40: [['stats', '+'], 'ctrl'],//down
 		68: [['stats', 'clr'], 'ctrl'],//d
 		90: [['stats', 'undo'], 'ctrl']//z
 	}
