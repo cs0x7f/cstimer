@@ -121,7 +121,6 @@ var tools = execMain(function() {
 				toggleFuncSpan(!value[1]);
 			} else if (value[0] == 'toolsfunc' && value[2] == 'session') {
 				var newfuncs = JSON.parse(value[1]);
-				funcs = [];
 				for (var i = 0; i < 4; i++) {
 					funcSelects[i].val(newfuncs[i]);
 				}
