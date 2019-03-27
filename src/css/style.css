@@ -567,6 +567,19 @@ table.opttable td {
 	padding: 0 0.1em 0 0.3em;
 }
 
+table.opttable .sr {
+	width: 0;
+	padding-left: 0.5em;
+	white-space: nowrap;
+	text-align: right;
+	font-weight: normal;
+}
+
+.opttable td.sr {
+	border-left: 1px dashed;
+	border-left: 0.1rem dashed;
+}
+
 .table {
 	border-collapse: collapse;
 	text-align: center;
