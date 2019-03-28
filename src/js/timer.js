@@ -871,8 +871,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var div = $('<div />');
 		var totPhases = 1;
 		var currentFacelet = mathlib.SOLVED_FACELET;
-		var moveCnt;
-		var lastAxes = 0;
+
+		var rawMoves = [];
 
 		var giikerVRC = (function() {
 			var twistyScene;
@@ -992,11 +992,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (enableVRC) {
 				giikerVRC.setState(facelet, prevMoves, false);
 			}
-			var curAxis = "URFDLB".indexOf(prevMoves[0][0]);
-			if ((lastAxes & (0x20 >> curAxis)) == 0) {
-				lastAxes = lastAxes & (0x124 >> curAxis) | (0x20 >> curAxis);
-				moveCnt++;
-			}
 			clearReadyTid();
 			if (status == -1) {
 				if (facelet != mathlib.SOLVED_FACELET) {
@@ -1039,6 +1034,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				ui.setAutoShow(false);
 			}
 			if (status >= 1) {
+				rawMoves[status] = (rawMoves[status] || "") + prevMoves[0]
+
 				var curProgress = cubeutil.getProgress(facelet, kernel.getProp('vrcMP', 'n'));
 				if (curProgress < status) {
 					for (var i = status; i > curProgress; i--) {
@@ -1048,6 +1045,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				status = Math.min(curProgress, status) || 1;
 				lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 				if (facelet == mathlib.SOLVED_FACELET) {
+					var prettyMoves = giikerutil.getPrettyMoves(rawMoves.reverse());
+					rawMoves.reverse();
+					var solve = prettyMoves.join("");
+					var moveCnt = giikerutil.getMoveCount(solve);
+
+					giikerutil.setLastSolve(solve);
+
 					status = -1;
 					curTime[1] = now - startTime;
 					ui.setAutoShow(true);
@@ -1073,7 +1077,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				status = -2;
 				startTime = now;
-				moveCnt = 0;
+				rawMoves = [];
 				lcd.fixDisplay(true, true);
 				if (checkUseIns()) {
 					lcd.setRunning(true, enableVRC);

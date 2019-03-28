@@ -5,6 +5,7 @@ var giikerutil = execMain(function(CubieCube) {
 	var connectClick = $('<span></span>');
 	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
 	var algCubingClick = $('<a target="_blank">0 move(s)</a>').addClass('click');
+	var lastSolveClick = $('<a target="_blank"></a>').addClass('click');
 	var canvas = $('<canvas>');
 	var connectedStr = 'Connected | ??%';
 	var drawState = (function() {
@@ -59,7 +60,10 @@ var giikerutil = execMain(function(CubieCube) {
 			connectClick.html('Connect').addClass('click').click(init);
 		}
 		fdiv.empty().append('Giiker: ', connectClick, '<br>')
-			.append(resetClick.unbind('click').click(markSolved), '<br>', 'Reconstruction: ', algCubingClick, '<br>', canvas);
+			.append(resetClick.unbind('click').click(markSolved), '<br>')
+			.append('Reconstruction: ', algCubingClick, '<br>')
+			.append(lastSolveClick, '<br>')
+			.append(canvas);
 		drawState();
 	}
 
@@ -178,12 +182,114 @@ var giikerutil = execMain(function(CubieCube) {
 		currentState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', currentRawState);
 		movesAfterSolved = [];
+		rawMoves = "";
 		scrambleLength = 0;
 		drawState();
 		callback(currentState, ['U '], lastTimestamp);
 	}
 
 	var movesAfterSolved = [];
+	var rawMoves = "";
+
+	var rotation = {
+		x: {
+			"R": "R", "L": "L",
+
+			"U": "B", "D": "F",
+
+			"F": "U", "B": "D"
+		},
+		y: {
+			"R": "F", "L": "B",
+
+			"U": "U", "D": "D",
+
+			"F": "L", "B": "R"
+		},
+		z: {
+			"R": "D", "L": "U",
+
+			"U": "R", "D": "L",
+
+			"F": "F", "B": "B"
+		},
+		id: {
+			"R": "R", "L": "L",
+
+			"U": "U", "D": "D",
+
+			"F": "F", "B": "B"
+		}
+	};
+
+	function rotate(rot, rot2) {
+		var result = {};
+		for(var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			result[key] = rot2[rot[key]];
+		}
+		return result;
+	}
+
+	var keys = ["R", "L", "U", "D", "F", "B"];
+
+	function getPrettyMoves(rawAlgs) {
+		var rot = $.extend({}, rotation.id);
+		return rawAlgs.map(function (rawMoves) {
+			var result = "";
+			for (var i = 0; i < rawMoves.length; i += 2) {
+				var move1 = rot[rawMoves[i]];
+				var dir1 = rawMoves[i + 1];
+
+				if (i + 3 < rawMoves.length) {
+					var move2 = rot[rawMoves[i + 2]];
+					var dir2 = rawMoves[i + 3];
+
+					var seq = move1 + dir1 + move2 + dir2;
+					if (seq === "L R'" || seq === "R'L ") {
+						i += 2;
+						result += "M'";
+						rot = rotate(rot, rotation.x);
+					} else if (seq === "L'R " || seq === "R L'") {
+						i += 2;
+						result += "M ";
+						rot = rotateBar(rot, rotation.x);
+					} else if (seq === "D U'" || seq === "U'D ") {
+						i += 2;
+						result += "E'";
+						rot = rotate(rot, rotation.y);
+					} else if (seq === "D'U " || seq === "U D'") {
+						i += 2;
+						result += "E ";
+						rot = rotateBar(rot, rotation.y);
+					} else if (seq === "B F'" || seq === "F'B ") {
+						i += 2;
+						result += "S ";
+						rot = rotate(rot, rotation.z);
+					} else if (seq === "B'F " || seq === "F B'") {
+						i += 2;
+						result += "S'";
+						rot = rotateBar(rot, rotation.z);
+					} else {
+						result += move1 + dir1;
+					}
+				} else {
+					result += move1 + dir1;
+				}
+
+			}
+			// double moves
+			return result.replace(/(([A-Z])[' ])\1/g, "$22");
+		});
+	}
+
+	function rotateBar(rot, rot2) {
+		return rotate(rotate(rotate(rot, rot2), rot2), rot2);
+	}
+
+	function getMoveCount(prettyMoves) {
+		return prettyMoves.length / 2
+	}
 
 	function giikerCallback(facelet, prevMoves) {
 		var lastTimestamp = $.now();
@@ -193,24 +299,36 @@ var giikerutil = execMain(function(CubieCube) {
 		CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
 		CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
+
 		movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
-		if (movesAfterSolved.length > 10) {
-			var moveStr = $.map(movesAfterSolved, function(val) {
-				return "URFDLB"[~~(val / 3)] + " 2'"[val % 3];
-			})
-			algCubingClick.attr('href',
-				'https://alg.cubing.net/?alg=' + moveStr.slice(scrambleLength).join('_') +
-				'&setup=' + moveStr.slice(0, scrambleLength).join('_'));
-			algCubingClick.html(movesAfterSolved.length + ' move(s)');
+
+		rawMoves += prevMoves[0];
+		var prettyAlg = getPrettyMoves([rawMoves.substring(0, scrambleLength),rawMoves.substring(scrambleLength)]);
+		var moveCount = getMoveCount(prettyAlg.join(""));
+		if (moveCount > 5) {
+			updateAlgClick(algCubingClick, moveCount + ' move(s)', prettyAlg[0], prettyAlg[1])
 		}
 		if (currentState == mathlib.SOLVED_FACELET) {
 			movesAfterSolved = [];
+			rawMoves = "";
 			scrambleLength = 0;
 		}
 		drawState();
 		batId == 0 && updateBattery();
 		giikerErrorDetect();
 		callback(currentState, prevMoves, lastTimestamp);
+	}
+
+	function updateAlgClick(click, text, setup, alg) {
+		click.attr('href',
+			'https://alg.cubing.net/?alg=' + alg
+			+ '&setup=' + setup
+		);
+		click.html(text);
+	}
+
+	function setLastSolve(solve) {
+		updateAlgClick(lastSolveClick, "Last solve", curScramble, solve)
 	}
 
 	function init() {
@@ -258,7 +376,7 @@ var giikerutil = execMain(function(CubieCube) {
 	var scrambleLength = 0;
 
 	function markScrambled() {
-		scrambleLength = movesAfterSolved.length;
+		scrambleLength = rawMoves.length;
 	}
 
 	$(function() {
@@ -274,6 +392,9 @@ var giikerutil = execMain(function(CubieCube) {
 		markSolved: markSolved,
 		checkScramble: checkScramble,
 		markScrambled: markScrambled,
-		init: init
+		init: init,
+		getPrettyMoves: getPrettyMoves,
+		getMoveCount: getMoveCount,
+		setLastSolve: setLastSolve,
 	}
 }, [mathlib.CubieCube]);
