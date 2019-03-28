@@ -296,7 +296,7 @@ var kernel = execMain(function() {
 		function getSProps() {
 			var ret = {};
 			for (var key in properties) {
-				if (key.startsWith('sr_') || !getProp('sr_' + key, false)) {
+				if (key.indexOf('sr_') == 0 || !getProp('sr_' + key, false)) {
 					continue;
 				}
 				ret[key] = getProp(key);
@@ -306,7 +306,7 @@ var kernel = execMain(function() {
 
 		function setSProps(val) {
 			for (var key in defaultProps) {
-				if (key.startsWith('sr_') || !getProp('sr_' + key, false)) {
+				if (key.indexOf('sr_') == 0 || !getProp('sr_' + key, false)) {
 					continue;
 				}
 				if (key in val) {
