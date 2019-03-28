@@ -172,7 +172,8 @@ var kernel = execMain(function() {
 				curDiv[0].html('<span class="icon" style="font-size:1em;">' + moduleIcon[module] + '</span><span>' + MODULE_NAMES[module] + '</span>').addClass('tab').data('module', module).click(tabClick).appendTo(left);
 				curDiv[1].append(
 					$('<th>').html('<span class="icon">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/<br>-?/g, '')),
-					$('<th>').html('<span class="icon">\ue9bb</span>')
+					$('<th class="sr">').html('With session'),
+					$('<th class="sr">').html('<span class="icon">\ue9bb</span>')
 				);
 				optTable.append(curDiv[1]);
 
@@ -182,11 +183,11 @@ var kernel = execMain(function() {
 					var type = proSet[1];
 
 					var srChecked = getProp('sr_' + key);
-					var srTd = $('<td>');
+					var srTd = $('<td class="sr">');
 					if (proSet[4] & 1) {
 						srTd.append($('<input type="checkbox" name="sr_' + key + '"' + (srChecked ? ' checked' : '') + '>').click(procClick));
 					}
-					var valTd = $('<td>');
+					var valTd = $('<td colspan=2>');
 
 					if (type < 0) {
 						if ($.urlParam('debug')) {
@@ -295,7 +296,7 @@ var kernel = execMain(function() {
 		function getSProps() {
 			var ret = {};
 			for (var key in properties) {
-				if (key.startsWith('sr_') || !getProp('sr_' + key, false)) {
+				if (key.indexOf('sr_') == 0 || !getProp('sr_' + key, false)) {
 					continue;
 				}
 				ret[key] = getProp(key);
@@ -305,7 +306,7 @@ var kernel = execMain(function() {
 
 		function setSProps(val) {
 			for (var key in defaultProps) {
-				if (key.startsWith('sr_') || !getProp('sr_' + key, false)) {
+				if (key.indexOf('sr_') == 0 || !getProp('sr_' + key, false)) {
 					continue;
 				}
 				if (key in val) {
@@ -549,7 +550,7 @@ var kernel = execMain(function() {
 			"#gray{background-color:?}" +
 			"html:not(.m) .times:hover,html:not(.m) .click:hover,.times:active,.click:active,textarea{background-color:?}" +
 			".click{color:?}" +
-			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue{border-color:?}" +
+			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
 			"input:disabled{background:?}" +
