@@ -9,6 +9,8 @@ var cubeutil = (function() {
 	var f2l4Mask = "----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB";
 	var f2lMask = "----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
 	var ollMask = "UUUUUUUUU---RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
+	var eollMask = "-U-UUU-U----RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
+	var cpllMask = "UUUUUUUUUr-rRRRRRRf-fFFFFFFDDDDDDDDDl-lLLLLLLb-bBBBBBB";
 	var roux1Mask = "---------------------F--F--D--D--D-----LLLLLL-----B--B";
 	var roux2Mask = "------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B";
 	var roux3Mask = "U-U---U-UR-RRRRRRRF-FF-FF-FD-DD-DD-DL-LLLLLLLB-BB-BB-B";
@@ -32,10 +34,32 @@ var cubeutil = (function() {
 			if (mask[i] == '-') {
 				continue;
 			}
-			if (facelet[i] in colorMap && colorMap[facelet[i]] != mask[i]) {
+			if (mask[i] in colorMap && colorMap[mask[i]] != facelet[i]) {
 				return 1;
 			}
-			colorMap[facelet[i]] = mask[i];
+			colorMap[mask[i]] = facelet[i];
+		}
+		return 0;
+	}
+
+	//return 9: nothing, 8: cross solved, 4~7: nth f2l solved, 2~3 c/e oll solved, 1 cpll solved, 0: solved
+	function getCF4O2P2Progress(facelet) {
+		if (solvedProgress(facelet, crossMask)) {
+			return 9;
+		} else if (solvedProgress(facelet, f2lMask)) {
+			return 4 +
+				solvedProgress(facelet, f2l1Mask) +
+				solvedProgress(facelet, f2l2Mask) +
+				solvedProgress(facelet, f2l3Mask) +
+				solvedProgress(facelet, f2l4Mask);
+		} else if (solvedProgress(facelet, eollMask)) {
+			return 4;
+		} else if (solvedProgress(facelet, ollMask)) {
+			return 3;
+		} else if (solvedProgress(facelet, cpllMask)) {
+			return 2;
+		} else if (solvedProgress(facelet)) {
+			return 1;
 		}
 		return 0;
 	}
@@ -44,14 +68,12 @@ var cubeutil = (function() {
 	function getCF4OPProgress(facelet) {
 		if (solvedProgress(facelet, crossMask)) {
 			return 7;
-		}
-		var numF2L = 0;
-		numF2L += solvedProgress(facelet, f2l1Mask);
-		numF2L += solvedProgress(facelet, f2l2Mask);
-		numF2L += solvedProgress(facelet, f2l3Mask);
-		numF2L += solvedProgress(facelet, f2l4Mask);
-		if (numF2L > 0) {
-			return 2 + numF2L;
+		} else if (solvedProgress(facelet, f2lMask)) {
+			return 2 +
+				solvedProgress(facelet, f2l1Mask) +
+				solvedProgress(facelet, f2l2Mask) +
+				solvedProgress(facelet, f2l3Mask) +
+				solvedProgress(facelet, f2l4Mask);
 		} else if (solvedProgress(facelet, ollMask)) {
 			return 2;
 		} else if (solvedProgress(facelet)) {
@@ -132,6 +154,8 @@ var cubeutil = (function() {
 					return getProgressNAxis(facelet, getCF4OPProgress, 6);
 				case 'roux':
 					return getProgressNAxis(facelet, getRouxProgress, 24);
+				case 'cf4o2p2':
+					return getProgressNAxis(facelet, getCF4O2P2Progress, 6);
 				case 'n':
 					return getProgressNAxis(facelet, solvedProgress, 1);
 			}
