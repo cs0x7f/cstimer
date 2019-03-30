@@ -190,7 +190,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			cfmIdxRow = target.parent();
 			genDiv();
 			cfmDiv.css('font-size', '1.2em');
-			kernel.showDialog([cfmDiv, hideToTools, undefined, hideToTools], 'cfm', 'Times No.' + (idx + 1));
+			kernel.showDialog([cfmDiv, hideToTools, undefined, hideToTools], 'cfm', 'Solves No.' + (idx + 1));
 		}
 
 		function setPenalty(value, idx, idxRow) {
@@ -566,19 +566,19 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	var crossSessionStats = (function() {
-
+		var langStr = STATS_XSESSION_DATE.split('|');
 		var toolDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em')
 		var infoDiv = $('<div />');
 		var nameSelect = $('<select>');
 		var dateSelect = $('<select>').append(
-			$('<option>').val(-1).html('any date'),
-			$('<option>').val(1).html('past 24 hours'),
-			$('<option>').val(7).html('past 7 days'),
-			$('<option>').val(30).html('past 30 days'),
-			$('<option>').val(365).html('past 365 days')
+			$('<option>').val(-1).html(langStr[0]),
+			$('<option>').val(1).html(langStr[1]),
+			$('<option>').val(7).html(langStr[2]),
+			$('<option>').val(30).html(langStr[3]),
+			$('<option>').val(365).html(langStr[4])
 		).val(-1);
 		var scrSelect = $('<select>');
-		var calcSpan = $('<span class="click">Calc</span>');
+		var calcSpan = $('<span class="click">' + STATS_XSESSION_CALC + '</span>');
 		var hugeStats = new TimeStat([], 0, hugeTimeAt, dnfsort);
 		var hugeTimes = [];
 
@@ -707,8 +707,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				var sessionData = JSON.parse(value[1]);
 				var nameList = [];
 				var scrList = [];
-				nameSelect.empty().append($('<option />').val('*').html('any name'));
-				scrSelect.empty().append($('<option />').val('*').html('any scramble'));
+				nameSelect.empty().append($('<option />').val('*').html(STATS_XSESSION_NAME));
+				scrSelect.empty().append($('<option />').val('*').html(STATS_XSESSION_SCR));
 				$.each(sessionData, function(idx, val) {
 					var curLabel = val['name'];
 					if ($.inArray(curLabel, nameList) == -1) {
@@ -1823,7 +1823,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
 
-		kernel.regProp('stats', 'trim', 1, 'Trimmed Average', ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', 'Median']]);
+		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]]);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true]);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true]);
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false]);
@@ -1854,7 +1854,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'stat1l', 2, stattl[1].replace('%d', 1), [5, 3, 1000], 1);
 		kernel.regProp('stats', 'stat2t', 1, stattl[0].replace('%d', 2), [0, [0, 1], stattl.slice(2)], 1);
 		kernel.regProp('stats', 'stat2l', 2, stattl[1].replace('%d', 2), [12, 3, 1000], 1);
-		kernel.regProp('stats', 'statalu', 5, 'Custom Statistics Indicator', ['mo3 ao5 ao12 ao100'], 1);
+		kernel.regProp('stats', 'statalu', 5, PROPERTY_STATALU, ['mo3 ao5 ao12 ao100'], 1);
 		kernel.regProp('stats', 'statal', 1, PROPERTY_STATAL, ['mo3 ao5 ao12 ao100', ['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'u'],
 			['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'Custom']
 		], 1);

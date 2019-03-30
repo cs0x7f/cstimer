@@ -7,6 +7,7 @@ var BUTTON_TIME_LIST = 'LISTE<br>TEMPS';
 var BUTTON_OPTIONS = 'Options';
 var BUTTON_EXPORT = 'Exporter';
 var BUTTON_DONATE = 'Faire une donation';
+var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
 var PROPERTY_USEINS_STR = 'Toujours|Sauf BLD|Jamais';
 var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA';
@@ -39,10 +40,10 @@ var EXPORT_NODATA = 'Aucune donnée n\'a été trouvée sur votre compte';
 var EXPORT_UPLOADED = 'Envoyé avec succès';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
+var EXPORT_ACCOUNT = 'Exporter les comptes';
+var EXPORT_LOGINGGL = 'S\'enregistrer en utilisant un compte Google';
+var EXPORT_LOGINWCA = 'S\'enregistrer en utilisant un compte WCA';
+var EXPORT_LOGOUTCFM = 'Confirmez-vous la déconnexion?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'MELA-<br>NGE';
@@ -257,7 +258,7 @@ var scrdata = [
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['vieux', "redi", 20]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -374,6 +375,10 @@ var STATS_PREC_STR = 'Auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'Type de la liste %d|Longueur de la liste %d|moyenne élaguée|moyenne';
 var STATS_STATCLR = 'Autoriser la suppression de tous les temps d\'une session';
 var STATS_ABSIDX = 'Montrer les indices absolus dans les reports statistiques';
+var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
+var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_SCR = 'any scramble';
+var STATS_XSESSION_CALC = 'Calc';
 var PROPERTY_PRINTSCR = 'Montrer les mélanges dans les statistiques';
 var PROPERTY_PRINTDATE = 'Montrer la date des résolutions dans les statistiques';
 var PROPERTY_SUMMARY = 'Montrer le résumé avant la liste de temps';
@@ -383,7 +388,12 @@ var PROPERTY_SS2SCR = 'Restaurer le type de mélange lors d\'un changement de se
 var PROPERTY_SS2PHASES = 'Restaurer le chnonométrage multi-phase lors d\'un changement de session';
 var PROPERTY_STATINV = 'Inverser la liste des temps';
 var PROPERTY_STATAL = 'Indicateurs statistiques';
+var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_DELMUL = 'Activer la suppression multiple';
+var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_TRIM = 'Number of solves trimmed at each side';
+var PROPERTY_TRIM_MED = 'Median';
+var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var MODULE_NAMES = {
 	"kernel": 'Global',
 	"ui": 'Affichage',

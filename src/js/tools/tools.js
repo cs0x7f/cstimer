@@ -180,7 +180,7 @@ var tools = execMain(function() {
 		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50]);
 		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4]);
 		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
-		kernel.regProp('tools', 'toolsfunc', 5, 'Selected Functions', [defaultFunc], 1);
+		kernel.regProp('tools', 'toolsfunc', 5, PROPERTY_TOOLSFUNC, [defaultFunc], 1);
 		var funcStr = kernel.getProp('toolsfunc', defaultFunc);
 		if (funcStr.indexOf('[') == -1) {
 			funcStr = defaultFunc.replace('image', funcStr);

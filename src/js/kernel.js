@@ -172,7 +172,7 @@ var kernel = execMain(function() {
 				curDiv[0].html('<span class="icon" style="font-size:1em;">' + moduleIcon[module] + '</span><span>' + MODULE_NAMES[module] + '</span>').addClass('tab').data('module', module).click(tabClick).appendTo(left);
 				curDiv[1].append(
 					$('<th>').html('<span class="icon">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/<br>-?/g, '')),
-					$('<th class="sr">').html('With session'),
+					$('<th class="sr">').html(PROPERTY_SR),
 					$('<th class="sr">').html('<span class="icon">\ue9bb</span>')
 				);
 				optTable.append(curDiv[1]);
