@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'استفاده از زمان بازدید WCA';
 var PROPERTY_USEINS_STR = 'همیشه|به جز با چشمان بسته|هرگز';
 var PROPERTY_VOICEINS = 'هشدار صوتی زمان بازدید WCA';
 var PROPERTY_VOICEINS_STR = 'هیچ کدام|صدای مرد|صدای زن';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'multi-phase';
 var PROPERTY_TIMERSIZE = 'timer size';
 var PROPERTY_USEMILLI = 'use milliseconds';

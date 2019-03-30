@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'koristi WCA inspekciju';
 var PROPERTY_USEINS_STR = 'Uvijek|Osim BLD-a|Nikad';
 var PROPERTY_VOICEINS = 'glasovno upozorenje za WCA inspekciju';
 var PROPERTY_VOICEINS_STR = 'bez glasa|muški glas|ženski glas';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'višefazno';
 var PROPERTY_TIMERSIZE = 'veličina štoperice';
 var PROPERTY_USEMILLI = 'koristi milisekunde';

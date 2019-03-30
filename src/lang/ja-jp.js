@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'WCA インスペクションの使用';
 var PROPERTY_USEINS_STR = '常に利用する|BLD以外で利用|利用しない';
 var PROPERTY_VOICEINS = 'WCA インスペクションの音声警告';
 var PROPERTY_VOICEINS_STR = '利用しない|男性の声|女性の声';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'マルチフェイズ';
 var PROPERTY_TIMERSIZE = 'タイマー サイズ';
 var PROPERTY_USEMILLI = 'ミリ秒を使用';

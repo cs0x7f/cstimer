@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'utilizaţi inspectie WCA';
 var PROPERTY_USEINS_STR = 'Întotdeauna|cu excepţia BLD|niciodată';
 var PROPERTY_VOICEINS = 'alerta vocala de la inspectie WCA';
 var PROPERTY_VOICEINS_STR = 'Niciuna|voce masculina|voce feminina';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'mai multe faze';
 var PROPERTY_TIMERSIZE = 'marimea timer-urui';
 var PROPERTY_USEMILLI = 'utilizeaza milisecunde';

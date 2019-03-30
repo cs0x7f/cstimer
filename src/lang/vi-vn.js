@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'dử dụng thời gian chuẩn bị của WCA';
 var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'Giọng nói cho thời gian chuẩn bị của WCA';
 var PROPERTY_VOICEINS_STR = 'Vô giới tính :)) |Nam giới|Nữ giới';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'nhiều đợt';
 var PROPERTY_TIMERSIZE = 'kích cớ của timer';
 var PROPERTY_USEMILLI = 'sử dụng 0.001s';

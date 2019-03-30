@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'użyj inspekcji WCA';
 var PROPERTY_USEINS_STR = 'Zawsze|Oprócz BLD|Nigdy';
 var PROPERTY_VOICEINS = 'ostrzeżenie głosowe inspekcji WCA';
 var PROPERTY_VOICEINS_STR = 'brak|męski głos|żeński głos';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'multi-phase';
 var PROPERTY_TIMERSIZE = 'rozmiar timera';
 var PROPERTY_USEMILLI = 'użyj milisekund';

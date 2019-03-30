@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
 var PROPERTY_USEINS_STR = 'Toujours|Sauf BLD|Jamais';
 var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA';
 var PROPERTY_VOICEINS_STR = 'Aucune|Voix masculine|Voix féminine';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'Multi-phase';
 var PROPERTY_TIMERSIZE = 'Taille du chronomètre';
 var PROPERTY_USEMILLI = 'Utiliser les millisecondes';

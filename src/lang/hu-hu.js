@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'WCA memorizációs ideje';
 var PROPERTY_USEINS_STR = 'Mindig|Vakot kivéve|Soha';
 var PROPERTY_VOICEINS = 'WCA megnézési figyelmeztetés hangja';
 var PROPERTY_VOICEINS_STR = 'nincs|férfi hang|női hang';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'több fázis';
 var PROPERTY_TIMERSIZE = 'időmérő mérete';
 var PROPERTY_USEMILLI = 'milliszekundum használata';

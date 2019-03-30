@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'WCA-Inspektion benutzen';
 var PROPERTY_USEINS_STR = 'Immer|Ausgenommen blind|Nie';
 var PROPERTY_VOICEINS = 'Sprachansage für WCA-Inspektion';
 var PROPERTY_VOICEINS_STR = 'keine|männliche Stimme|weibliche Stimme';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'Multi-Phase';
 var PROPERTY_TIMERSIZE = 'Timer-Größe';
 var PROPERTY_USEMILLI = 'Millisekunden benutzen';

@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'השתמש בסקירת WCA';
 var PROPERTY_USEINS_STR = 'תמיד|מלבד BLD|אף פעם';
 var PROPERTY_VOICEINS = 'התראה קולית של סקירת WCA';
 var PROPERTY_VOICEINS_STR = 'ללא|קול זכר|קול נקבה';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'רב-שלבי';
 var PROPERTY_TIMERSIZE = 'גודל טיימר';
 var PROPERTY_USEMILLI = 'השתמש באלפיות שנייה';

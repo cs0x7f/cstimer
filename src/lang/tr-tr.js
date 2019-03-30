@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'WCA inecelemesi kullan';
 var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'WCA incelemesi ses uyarısı';
 var PROPERTY_VOICEINS_STR = 'hiçbiri|erkek sesi|kadın sesi';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'çok zamanlı';
 var PROPERTY_TIMERSIZE = 'kronometre boyutu';
 var PROPERTY_USEMILLI = 'milisaniye kullan';

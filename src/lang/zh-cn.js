@@ -12,6 +12,7 @@ var PROPERTY_USEINS = '使用WCA观察';
 var PROPERTY_USEINS_STR = '总是|盲拧除外|从不';
 var PROPERTY_VOICEINS = 'WCA观察语音提示';
 var PROPERTY_VOICEINS_STR = '无|男声|女声';
+var PROPERTY_VOICEVOL = '语音音量';
 var PROPERTY_PHASES = '多阶段测速';
 var PROPERTY_TIMERSIZE = '计时器大小';
 var PROPERTY_USEMILLI = '显示到0.001秒';

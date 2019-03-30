@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'Gebruik WCA inspectie';
 var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection';
 var PROPERTY_VOICEINS_STR = 'geen|mannelijke stem|vrouwlijke stem';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'Meerfasig';
 var PROPERTY_TIMERSIZE = 'Grootte timer';
 var PROPERTY_USEMILLI = 'Gebruik milliseconden';

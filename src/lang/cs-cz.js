@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'použít WCA inspekci';
 var PROPERTY_USEINS_STR = 'Vždy|Vždy, BLD ne|Nikdy';
 var PROPERTY_VOICEINS = 'hlasové upozornění při WCA inspekci';
 var PROPERTY_VOICEINS_STR = 'žádný|mužský hlas|ženský hlas';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'multi-fáze';
 var PROPERTY_TIMERSIZE = 'velikost timeru';
 var PROPERTY_USEMILLI = 'použít milisekundy';

@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'Inspecions WCA';
 var PROPERTY_USEINS_STR = 'Sempre|Menys BLD|Mai';
 var PROPERTY_VOICEINS = 'Alerta d\'inspecció WCA';
 var PROPERTY_VOICEINS_STR = 'Mai|Veu masculina|Veu femenina';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'Multiples fases';
 var PROPERTY_TIMERSIZE = 'Mida del cronòmetre';
 var PROPERTY_USEMILLI = 'Milisegons';

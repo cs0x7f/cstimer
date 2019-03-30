@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'använd WCA inspektion';
 var PROPERTY_USEINS_STR = 'Alltid|förutom BLD|aldrig';
 var PROPERTY_VOICEINS = 'röstvarning av WCA inspekton';
 var PROPERTY_VOICEINS_STR = 'ingen|manlig röst|kvinnlig röst';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'flera faser';
 var PROPERTY_TIMERSIZE = 'timerstorlek';
 var PROPERTY_USEMILLI = 'använd millisekunder';

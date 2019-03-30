@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'Käytä WCA tarkastusta';
 var PROPERTY_USEINS_STR = 'Aina|Paitsi BLD|Ei koskaan';
 var PROPERTY_VOICEINS = 'WCA tarkastuksen äänimerkki';
 var PROPERTY_VOICEINS_STR = 'Ei mitään|miesääni|naisääni';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'Monivaiheinen';
 var PROPERTY_TIMERSIZE = 'Ajastimen koko';
 var PROPERTY_USEMILLI = 'Käytä millisekunteja';

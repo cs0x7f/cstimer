@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'использовать WCA рассмотор';
 var PROPERTY_USEINS_STR = 'Всегда|Кроме блд|Никогда';
 var PROPERTY_VOICEINS = 'голосовое предупреждение WCA рассмотра';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'мульти-фаза';
 var PROPERTY_TIMERSIZE = 'размер таймера';
 var PROPERTY_USEMILLI = 'использовать милисекунды';

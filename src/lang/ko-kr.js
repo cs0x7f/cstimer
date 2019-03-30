@@ -12,6 +12,7 @@ var PROPERTY_USEINS = 'WCA 미리보기 사용';
 var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
 var PROPERTY_VOICEINS = 'WCA 미리보기 음성 알림';
 var PROPERTY_VOICEINS_STR = '없음|남성|여성';
+var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = '다단계 측정';
 var PROPERTY_TIMERSIZE = '초시계 크기';
 var PROPERTY_USEMILLI = '0.001초 단위 사용';
