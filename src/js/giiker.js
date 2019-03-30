@@ -149,7 +149,7 @@ var GiikerCube = execMain(function() {
 		var facelet = cc.toFaceCube(cFacelet, eFacelet);
 		var prevMoves = [];
 		for (var i = 0; i < 4; i++) {
-			prevMoves.push("BDLURF" [moves[i * 2] - 1] + " 2'" [moves[i * 2 + 1] - 1]);
+			prevMoves.push("BDLURF" [moves[i * 2] - 1] + " 2'" [(moves[i * 2 + 1] - 1) % 7]);
 		}
 		if (DEBUG) {
 			console.log("Current State: ", facelet);

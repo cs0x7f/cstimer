@@ -52,6 +52,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		'cf4op': 7
 	}
 
+	var phaseNames = {
+		'n': [],
+		'cfop': ['cross', 'F2L', 'OLL', 'PLL'],
+		'fp': ['F2L', 'LL'],
+		'roux': ['1st block', '2nd block', 'CMLL', 'L6E'],
+		'cf4op': ['cross', '1st F2L', '2nd F2L', '3rd F2L', '4th F2L', 'OLL', 'PLL']
+	}
+
 	function checkUseIns() {
 		var ret = getProp('useIns');
 		if (ret === true || ret == 'a') {
@@ -1034,7 +1042,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				ui.setAutoShow(false);
 			}
 			if (status >= 1) {
-				rawMoves[status] = (rawMoves[status] || "") + prevMoves[0]
+				rawMoves[status - 1] = (rawMoves[status - 1] || "") + prevMoves[0]
 
 				var curProgress = cubeutil.getProgress(facelet, kernel.getProp('vrcMP', 'n'));
 				if (curProgress < status) {
@@ -1046,10 +1054,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 				if (facelet == mathlib.SOLVED_FACELET) {
 					var prettyMoves = giikerutil.getPrettyMoves(rawMoves.reverse());
-					rawMoves.reverse();
-					var solve = prettyMoves.join("");
-					var moveCnt = giikerutil.getMoveCount(solve);
-
+					var solve = "";
+					var stepName = phaseNames[kernel.getProp('vrcMP', 'n')];
+					for (var i = 0; i < prettyMoves.length; i++) {
+						solve += prettyMoves[i] + (stepName[i] ? " //" + stepName[i] + "%0A" : "")
+					}
+					var moveCnt = giikerutil.getMoveCount(prettyMoves.join(""));
 					giikerutil.setLastSolve(solve);
 
 					status = -1;

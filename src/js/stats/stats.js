@@ -1157,7 +1157,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					'name': prevData['name'] || newName,
 					'scr': prevData['scr'] || curScrType,
 					'phases': prevData['phases'] || 1,
-					'opt': JSON.parse(JSON.stringify(prevData['opt'])),
+					'opt': JSON.parse(JSON.stringify(prevData['opt'] || {})),
 					'rank': rank + 0.5
 				};
 			} else {
