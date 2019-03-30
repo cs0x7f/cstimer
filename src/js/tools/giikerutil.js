@@ -61,8 +61,8 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		fdiv.empty().append('Giiker: ', connectClick, '<br>')
 			.append(resetClick.unbind('click').click(markSolved), '<br>')
-			.append('Reconstruction: ', algCubingClick, '<br>')
-			.append(lastSolveClick, '<br>')
+			.append('Raw Data: ', algCubingClick, '<br>')
+			.append('Last Solve: ', lastSolveClick, '<br>')
 			.append(canvas);
 		drawState();
 	}
@@ -263,8 +263,17 @@ var giikerutil = execMain(function(CubieCube) {
 
 		var moveCount = movesAfterSolved.length;
 		if (moveCount > 5) {
-			var prettyAlg = getPrettyMoves([movesAfterSolved.slice(0, scrambleLength), movesAfterSolved.slice(scrambleLength)]);
-			updateAlgClick(algCubingClick, moveCount + ' move(s)', prettyAlg[0], prettyAlg[1])
+			var scrambleStr = "";
+			for (var i = 0; i < scrambleLength; i++) {
+				var move = movesAfterSolved[i];
+				scrambleStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3); // + "/*" + movesTimestamp[i] + "*/";
+			}
+			var solveStr = "";
+			for (var i = scrambleLength; i < movesAfterSolved.length; i++) {
+				var move = movesAfterSolved[i];
+				solveStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3) + "/*" + movesTimestamp[i] + "*/";
+			}
+			updateAlgClick(algCubingClick, moveCount + ' move(s)', scrambleStr, solveStr)
 		}
 		if (currentState == mathlib.SOLVED_FACELET) {
 			movesAfterSolved = [];
@@ -286,7 +295,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function setLastSolve(solve) {
-		updateAlgClick(lastSolveClick, "Last solve", curScramble, solve)
+		updateAlgClick(lastSolveClick, "Ready", curScramble, solve)
 	}
 
 	function init() {
