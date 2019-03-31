@@ -49,7 +49,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		'cfop': 4,
 		'fp': 2,
 		'roux': 4,
-		'cf4op': 7
+		'cf4op': 7,
+		'cf4o2p2': 9
 	}
 
 	function checkUseIns() {
@@ -1239,7 +1240,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC)$/);
 		regProp('vrc', 'vrcSpeed', 1, PROPERTY_VRCSPEED, [100, [0, 50, 100, 200, 500, 1000], '\u221E|20|10|5|2|1'.split('|')]);
-		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'roux'], PROPERTY_VRCMPS.split('|')]);
+		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')]);
 		regProp('vrc', 'giiVRC', 0, PROPERTY_GIIKERVRC, [true]);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')]);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true]);

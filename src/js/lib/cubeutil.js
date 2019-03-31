@@ -2,16 +2,21 @@
 
 var cubeutil = (function() {
 
-	var crossMask = "----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-";
-	var f2l1Mask = "----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-";
-	var f2l2Mask = "----U--------R--R----FF-FF-DD-DDD-D-----LL-LL----B--B-";
-	var f2l3Mask = "----U--------RR-RR----F--F--D-DDD-DD----L--L----BB-BB-";
-	var f2l4Mask = "----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB";
-	var f2lMask = "----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
-	var ollMask = "UUUUUUUUU---RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
-	var roux1Mask = "---------------------F--F--D--D--D-----LLLLLL-----B--B";
-	var roux2Mask = "------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B";
-	var roux3Mask = "U-U---U-UR-RRRRRRRF-FF-FF-FD-DD-DD-DL-LLLLLLLB-BB-BB-B";
+	var crossMask = "----U----"+"----R--R-"+"----F--F-"+"-D-DDD-D-"+"----L--L-"+"----B--B-";
+	var f2l1Mask =  "----U----"+"---RR-RR-"+"----FF-FF"+"-DDDDD-D-"+"----L--L-"+"----B--B-";
+	var f2l2Mask =  "----U----"+"----R--R-"+"---FF-FF-"+"DD-DDD-D-"+"----LL-LL"+"----B--B-";
+	var f2l3Mask =  "----U----"+"----RR-RR"+"----F--F-"+"-D-DDD-DD"+"----L--L-"+"---BB-BB-";
+	var f2l4Mask =  "----U----"+"----R--R-"+"----F--F-"+"-D-DDDDD-"+"---LL-LL-"+"----BB-BB";
+	var f2lMask =   "----U----"+"---RRRRRR"+"---FFFFFF"+"DDDDDDDDD"+"---LLLLLL"+"---BBBBBB";
+	var oll1Mask =  "-U-UUU-U-"+"---RRRRRR"+"---FFFFFF"+"DDDDDDDDD"+"---LLLLLL"+"---BBBBBB";
+	var ollMask =   "UUUUUUUUU"+"---RRRRRR"+"---FFFFFF"+"DDDDDDDDD"+"---LLLLLL"+"---BBBBBB";
+	var pll1Mask =  "UUUUUUUUU"+"R-RRRRRRR"+"F-FFFFFFF"+"DDDDDDDDD"+"L-LLLLLLL"+"B-BBBBBBB";
+	var pll2Mask =  "UUUUUUUUU"+"F-FRRRRRR"+"L-LFFFFFF"+"DDDDDDDDD"+"B-BLLLLLL"+"R-RBBBBBB";
+	var pll3Mask =  "UUUUUUUUU"+"L-LRRRRRR"+"B-BFFFFFF"+"DDDDDDDDD"+"R-RLLLLLL"+"F-FBBBBBB";
+	var pll4Mask =  "UUUUUUUUU"+"B-BRRRRRR"+"R-RFFFFFF"+"DDDDDDDDD"+"F-FLLLLLL"+"L-LBBBBBB";
+	var roux1Mask = "---------"+"---------"+"---F--F--"+"D--D--D--"+"---LLLLLL"+"-----B--B";
+	var roux2Mask = "---------"+"---RRRRRR"+"---F-FF-F"+"D-DD-DD-D"+"---LLLLLL"+"---B-BB-B";
+	var roux3Mask = "U-U---U-U"+"R-RRRRRRR"+"F-FF-FF-F"+"D-DD-DD-D"+"L-LLLLLLL"+"B-BB-BB-B";
 
 	var cubeRotY = [2, 5, 8, 1, 4, 7, 0, 3, 6, 18, 19, 20, 21, 22, 23, 24, 25, 26, 36, 37, 38, 39, 40, 41, 42, 43, 44, 33, 30, 27, 34, 31, 28, 35, 32, 29, 45, 46, 47, 48, 49, 50, 51, 52, 53, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 	var cubeRotX = [53, 52, 51, 50, 49, 48, 47, 46, 45, 11, 14, 17, 10, 13, 16, 9, 12, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24, 25, 26, 42, 39, 36, 43, 40, 37, 44, 41, 38, 35, 34, 33, 32, 31, 30, 29, 28, 27];
@@ -53,6 +58,34 @@ var cubeutil = (function() {
 		if (numF2L > 0) {
 			return 2 + numF2L;
 		} else if (solvedProgress(facelet, ollMask)) {
+			return 2;
+		} else if (solvedProgress(facelet)) {
+			return 1;
+		}
+		return 0;
+	}
+
+	//return 9: nothing, 8: cross solved, 7~4: nth f2l solved, 3 edges oriented, 2 oll solved, 1 corners solved, 0: solved
+	function getCF4O2P2Progress(facelet) {
+		if (solvedProgress(facelet, crossMask)) {
+			return 9;
+		}
+		var numF2L = 0;
+		numF2L += solvedProgress(facelet, f2l1Mask);
+		numF2L += solvedProgress(facelet, f2l2Mask);
+		numF2L += solvedProgress(facelet, f2l3Mask);
+		numF2L += solvedProgress(facelet, f2l4Mask);
+		if (numF2L > 0) {
+			return 4 + numF2L;
+		} else if (solvedProgress(facelet, oll1Mask)) {
+			return 4;
+		} else if (solvedProgress(facelet, ollMask)) {
+			return 3;
+		} else if (solvedProgress(facelet, pll1Mask)
+			&& solvedProgress(facelet, pll2Mask)
+			&& solvedProgress(facelet, pll3Mask)
+			&& solvedProgress(facelet, pll4Mask)
+		) {
 			return 2;
 		} else if (solvedProgress(facelet)) {
 			return 1;
@@ -119,9 +152,6 @@ var cubeutil = (function() {
 		getCFOPProgress: function(facelet) {
 			return getProgressNAxis(facelet, getCFOPProgress, 6);
 		},
-		getCF4OPProgress: function(facelet) {
-			return getProgressNAxis(facelet, getCF4OPProgress, 6);
-		},
 		getProgress: function(facelet, progress) {
 			switch (progress) {
 				case 'cfop':
@@ -130,6 +160,8 @@ var cubeutil = (function() {
 					return getProgressNAxis(facelet, getFPProgress, 6);
 				case 'cf4op':
 					return getProgressNAxis(facelet, getCF4OPProgress, 6);
+				case 'cf4o2p2':
+					return getProgressNAxis(facelet, getCF4O2P2Progress, 6);
 				case 'roux':
 					return getProgressNAxis(facelet, getRouxProgress, 24);
 				case 'n':
