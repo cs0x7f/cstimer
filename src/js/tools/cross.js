@@ -326,7 +326,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			for (var face = 0; face < 6; face++) {
 				var span = $('<span />');
 				var clk = $('<span />').html('ec').addClass('click').click(ecClick);
-				span.append(faceStr[face] + "(", clk, "): " + rotIdx[face] + " " + solutions[face].join("&nbsp;") + '<br>')
+				span.append(faceStr[face] + "(", clk, "): " + rotIdx[face], tools.getSolutionSpan(solutions[face]), '<br>');
 				fdiv.append(span);
 			}
 		}
@@ -335,7 +335,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			var span = $(this).parent();
 			var face = "DULRFB".indexOf(span.html()[0]);
 			var sol = solve_xcross(curScramble, face);
-			span.html(faceStr[face] + "(ec): " + rotIdx[face] + " " + sol.join("&nbsp;") + '<br>');
+			span.empty().append(faceStr[face] + "(ec): " + rotIdx[face], tools.getSolutionSpan(sol), '<br>');
 		}
 
 		function execFunc(fdiv) {

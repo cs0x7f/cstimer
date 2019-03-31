@@ -53,7 +53,7 @@ execMain(function(CubieCube) {
 	var faceStr = ["LU", "LD", "FU", "FD"];
 	var moveIdx = ["DRBULF", "URFDLB", "DBLUFR", "UBRDFL"];
 	// var moveIdx = ["FRUBLD", "RBULFD", "FLDBRU", "LBDRFU", "FDRBUL", "DBRUFL", "FULBDR", "UBLDFR", "URBDLF", "RDBLUF", "DRFULB", "RUFLDB"];
-	var rotIdx = ["", "", "y ", "y "];
+	var rotIdx = ["&nbsp;&nbsp;", "&nbsp;&nbsp;", "y&nbsp;", "y&nbsp;"];
 
 	function solveRoux1Ori(scramble, solvOri) {
 		var corn = [SOLVED_CORN];
@@ -97,8 +97,10 @@ execMain(function(CubieCube) {
 			if (face % 2 == 0) {
 				ori = (ori + 2) % 4;
 			}
-			sol = ["", "x' ", "x2 ", "x "][ori] + solv.toStr(sol, "URFDLB", " 2'");
-			fdiv.append(faceStr[face] + ": " + rotIdx[face] + sol + '<br>');
+			for (var i = 0; i < sol.length; i++) {
+				sol[i] = "URFDLB".charAt(sol[i][0]) + " 2'".charAt(sol[i][1]);
+			}
+			fdiv.append(faceStr[face] + ": " + rotIdx[face] + ["&nbsp;&nbsp;&nbsp;", "x'&nbsp;", "x2&nbsp;", "x&nbsp;&nbsp;"][ori], tools.getSolutionSpan(sol), '<br>');
 		}
 	}
 
