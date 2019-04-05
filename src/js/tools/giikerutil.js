@@ -191,64 +191,6 @@ var giikerutil = execMain(function(CubieCube) {
 	var movesAfterSolved = [];
 	var movesTimestamp = [];
 
-	var centerRot = [
-		[0, 2, 4, 3, 5, 1], // y'
-		[5, 1, 0, 2, 4, 3], // x'
-		[4, 0, 2, 1, 3, 5] // z
-	];
-
-	function getPrettyMoves(rawAlgs, stepName) {
-		// console.log(rawAlgs);
-		var center = [0, 1, 2, 3, 4, 5];
-		return $.map(rawAlgs, function(moveSeq, seqIdx) {
-			if ('string' == typeof moveSeq) {
-				var arr = [];
-				for (var i = 0; i < moveSeq.length; i += 2) {
-					arr.push("URFDLB".indexOf(moveSeq[i]) * 3 + " 2'".indexOf(moveSeq[i + 1]));
-				}
-				moveSeq = arr;
-			}
-			if (true) {
-				var searchObj = new min2phase.Search();
-				searchObj.moveSol = [];
-				for (var i = 0; i < moveSeq.length; i++) {
-					searchObj.appendSolMove(moveSeq[i]);
-				}
-				moveSeq = searchObj.moveSol;
-			}
-			var ret = "";
-			for (var i = 0; i < moveSeq.length; i++) {
-				var axis = center.indexOf(~~(moveSeq[i] / 3));
-				var pow = moveSeq[i] % 3;
-				if (false || i == moveSeq.length - 1) {
-					ret += "URFDLB".charAt(axis) + " 2'".charAt(pow);
-					continue;
-				}
-				var axis2 = center.indexOf(~~(moveSeq[i + 1] / 3));
-				if (axis % 3 == axis2 % 3 && pow + moveSeq[i + 1] % 3 == 2) {
-					var axisM = axis % 3;
-					var powM = (pow - 1) * [1, 1, -1, -1, -1, 1][axis] + 1;
-					ret += "EMS".charAt(axisM) + " 2'".charAt(powM);
-					for (var p = 0; p < powM + 1; p++) {
-						var center_ = [];
-						for (var c = 0; c < 6; c++) {
-							center_[c] = center[centerRot[axisM][c]];
-						}
-						center = center_;
-					}
-					i++;
-					continue;
-				}
-				ret += "URFDLB".charAt(axis) + " 2'".charAt(pow);
-			}
-			return ret;
-		});
-	}
-
-	function getMoveCount(prettyMoves) {
-		return prettyMoves.length / 2
-	}
-
 	function giikerCallback(facelet, prevMoves) {
 		var lastTimestamp = $.now();
 		connectClick.html(connectedStr).removeClass('click').unbind('click');
@@ -259,10 +201,10 @@ var giikerutil = execMain(function(CubieCube) {
 		currentState = currentCubie.toFaceCube();
 
 		movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
-		movesTimestamp.push(timer.getCurTime());
+		movesTimestamp.push(timer.getCurTime(lastTimestamp));
 
 		var moveCount = movesAfterSolved.length;
-		if (moveCount > 5) {
+		if (moveCount > 20) {
 			var scrambleStr = "";
 			for (var i = 0; i < scrambleLength; i++) {
 				var move = movesAfterSolved[i];
@@ -360,8 +302,6 @@ var giikerutil = execMain(function(CubieCube) {
 		checkScramble: checkScramble,
 		markScrambled: markScrambled,
 		init: init,
-		getPrettyMoves: getPrettyMoves,
-		getMoveCount: getMoveCount,
-		setLastSolve: setLastSolve,
+		setLastSolve: setLastSolve
 	}
 }, [mathlib.CubieCube]);

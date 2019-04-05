@@ -137,13 +137,76 @@ var cubeutil = (function() {
 		return minRet;
 	}
 
+	var centerRot = [
+		[0, 2, 4, 3, 5, 1], // y'
+		[5, 1, 0, 2, 4, 3], // x'
+		[4, 0, 2, 1, 3, 5] // z
+	];
+
+	function moveSeq2str(moveSeq) {
+		return $.map(moveSeq, function(val) {
+			return val[0].trim() + '@' + val[1];
+		}).join(' ');
+	}
+
+	//rawMoveSeqs: [moveseq, moveseq, ..., moveseq]
+	//moveseq: [[move, timestamp], [move, timestamp], ..., [move, timestamp]]
+	//move: string [URFDLB][ 2']
+	//return: [[movestr, length], [movestr, length], ..., [movestr, length]]
+	function getPrettyMoves(rawMoveSeqs) {
+		// console.log(rawAlgs);
+		var center = [0, 1, 2, 3, 4, 5];
+
+		return $.map(rawMoveSeqs, function(moveSeq, seqIdx) {
+			var ret = [];
+
+			function pushSol(axis, pow) {
+				if (ret.length == 0 || ~~(ret[ret.length - 1] / 3) != axis) {
+					ret.push(axis * 3 + pow);
+					return;
+				}
+				pow = (pow + ret[ret.length - 1] % 3 + 1) % 4;
+				if (pow == 3) {
+					ret.pop();
+				} else {
+					ret[ret.length - 1] = axis * 3 + pow;
+				}
+			}
+
+			for (var i = 0; i < moveSeq.length; i++) {
+				var axis = center.indexOf("URFDLB".indexOf(moveSeq[i][0][0]));
+				var pow = " 2'".indexOf(moveSeq[i][0][1]) % 3;
+				if (false || i == moveSeq.length - 1 || moveSeq[i + 1][1] - moveSeq[i][1] > 100) {
+					pushSol(axis, pow);
+					continue;
+				}
+				var axis2 = center.indexOf("URFDLB".indexOf(moveSeq[i + 1][0][0]));
+				var pow2 = " 2'".indexOf(moveSeq[i + 1][0][1]) % 3;
+				if (axis != axis2 && axis % 3 == axis2 % 3 && pow + pow2 == 2) {
+					var axisM = axis % 3;
+					var powM = (pow - 1) * [1, 1, -1, -1, -1, 1][axis] + 1;
+					pushSol(axisM + 6, powM)
+					for (var p = 0; p < powM + 1; p++) {
+						var center_ = [];
+						for (var c = 0; c < 6; c++) {
+							center_[c] = center[centerRot[axisM][c]];
+						}
+						center = center_;
+					}
+					i++;
+					continue;
+				}
+				pushSol(axis, pow);
+			}
+			return [
+				[$.map(ret, function(val) {
+					return "URFDLBEMS".charAt(~~(val / 3)) + " 2'".charAt(val % 3);
+				}).join(""), ret.length]
+			];
+		});
+	}
+
 	return {
-		getCFOPProgress: function(facelet) {
-			return getProgressNAxis(facelet, getCFOPProgress, 6);
-		},
-		getCF4OPProgress: function(facelet) {
-			return getProgressNAxis(facelet, getCF4OPProgress, 6);
-		},
 		getProgress: function(facelet, progress) {
 			switch (progress) {
 				case 'cfop':
@@ -159,7 +222,9 @@ var cubeutil = (function() {
 				case 'n':
 					return getProgressNAxis(facelet, solvedProgress, 1);
 			}
-		}
+		},
+		getPrettyMoves: getPrettyMoves,
+		moveSeq2str: moveSeq2str
 	}
 
 })();

@@ -1035,6 +1035,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				startTime = now;
 				status = nPhases[getProp('vrcMP', 'n')];
+				rawMoves = [];
+				for (var i = 0; i < status; i++) {
+					rawMoves[i] = [];
+				}
 				totPhases = status;
 				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 				lcd.fixDisplay(false, true);
@@ -1042,7 +1046,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				ui.setAutoShow(false);
 			}
 			if (status >= 1) {
-				rawMoves[status - 1] = (rawMoves[status - 1] || "") + prevMoves[0]
+				rawMoves[status - 1].push([prevMoves[0], now - startTime]);
 
 				var curProgress = cubeutil.getProgress(facelet, kernel.getProp('vrcMP', 'n'));
 				if (curProgress < status) {
@@ -1053,15 +1057,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				status = Math.min(curProgress, status) || 1;
 				lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 				if (facelet == mathlib.SOLVED_FACELET) {
-					var prettyMoves = giikerutil.getPrettyMoves(rawMoves.reverse());
+					rawMoves.reverse();
+					var prettyMoves = cubeutil.getPrettyMoves(rawMoves);
 					var solve = "";
 					var stepName = phaseNames[kernel.getProp('vrcMP', 'n')];
+					var moveCnt = 0;
 					for (var i = 0; i < prettyMoves.length; i++) {
-						solve += prettyMoves[i] + (stepName[i] ? " //" + stepName[i] + "%0A" : "")
+						moveCnt += prettyMoves[i][1];
+						solve += prettyMoves[i][0] + (stepName[i] ? " //" + stepName[i] + " " + prettyMoves[i][1] + " move(s)%0A" : "")
 					}
-					var moveCnt = giikerutil.getMoveCount(prettyMoves.join(""));
 					giikerutil.setLastSolve(solve);
-
 					status = -1;
 					curTime[1] = now - startTime;
 					ui.setAutoShow(true);
@@ -1071,8 +1076,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(curTime[1], enableVRC);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append('<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
+
 					if (curTime[1] != 0) {
-						pushSignal('time', curTime);
+						var ext = [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')];
+						ext[prettyMoves.length] = prettyMoves[0][1];
+						for (var i = 1; i < prettyMoves.length; i++) {
+							ext[prettyMoves.length - i] = ext[prettyMoves.length - i + 1] + prettyMoves[i][1];
+						}
+						pushSignal('time', ["", 0, curTime, 0, ext]);
 					}
 				}
 			}
@@ -1087,7 +1098,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				status = -2;
 				startTime = now;
-				rawMoves = [];
 				lcd.fixDisplay(true, true);
 				if (checkUseIns()) {
 					lcd.setRunning(true, enableVRC);
@@ -1285,8 +1295,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		onkeyup: onkeyup,
 		showAvgDiv: avgDiv.showAvgDiv,
 		refocus: refocus,
-		getCurTime: function() {
-			return status > 0 ? $.now() - startTime : 0;
+		getCurTime: function(now) {
+			return status > 0 ? (now || $.now()) - startTime : 0;
 		}
 	};
 }, [kernel.regListener, kernel.regProp, kernel.getProp, kernel.pretty, kernel.ui, kernel.pushSignal]);

@@ -1,6 +1,7 @@
 "use strict";
 
 var stats = execMain(function(kpretty, round, kpround) {
+	//[[penalty, phaseN end time, phaseN-1 end time, ..., phase1 end time], scramble, comment, timestamp of start, extention]
 	var times = [];
 	var div = $('<div id="stats" />');
 	var stext = $('<textarea rows="10" readonly />');
@@ -23,7 +24,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	function push(time) {
 		if (typeof time[0] == "string") {
-			times.push([time[2], time[1] || curScramble, time[0], time[3] || Math.round((new Date().getTime() - time[2][1]) / 1000)])
+			var val = [time[2], time[1] || curScramble, time[0], time[3] || Math.round((new Date().getTime() - time[2][1]) / 1000)];
+			if (time[4]) {
+				val.push(time[4]);
+			}
+			times.push(val);
 			time = time[2];
 		} else {
 			times.push([time, curScramble, "", Math.round((new Date().getTime() - time[1]) / 1000)]);
@@ -116,6 +121,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var cfmDelR = $('<input type="button" data="d">').val("X");
 		var cfmScrR = $('<input type="text" readonly>').css('width', '8em');
 		var cfmDate = $('<input type="text" readonly>').css('width', '8em');
+		var cfmExt = $('<input type="text" readonly>').css('width', '8em');
 
 		var cfmIdx = 0;
 		var cfmIdxRow;
@@ -174,12 +180,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 				.append('<br>', $('<table style="display:inline-block;">').append(
 					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
 					$('<tr>').append('<td>' + SCRAMBLE_SCRAMBLE + '</td>', $('<td>').append(cfmScrR)),
-					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate))
+					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
+					$('<tr>').append('<td>' + '???' + '</td>', $('<td>').append(cfmExt))
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
 			cfmScrR.val(time[1]);
 			cfmDate.val(mathlib.time2str(time[3]))
 			cfmTxtR.val(time[2]).unbind('change').change(procTxt);
+			cfmExt.val(time[4] ? JSON.stringify(time[4]) : "");
 		}
 
 		function proc(idx, target) {
@@ -1820,11 +1828,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 				} else {
 						statOptDiv.show();
 				}
-				updateTitleRow();
-				updateSumTable();
 			} else if (value[0] == 'statsrc') {
 				times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt(), dnfsort);
-				updateSumTable();
+				updateUtil();
 			} else if (value[0] == 'wndStat') {
 				resultsHeight();
 			}
