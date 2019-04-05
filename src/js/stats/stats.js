@@ -398,17 +398,18 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.setProp('statsrc', $(e.target).val());
 		});
 		statSrcSelect.append($('<option>').val('t').html('time'));
-		var validOpt = ['s'];
+		var validOpt = ['t'];
 		if (curDim != 1) {
 			for (var i = 0; i < curDim; i++) {
 				statSrcSelect.append($('<option>').val('p' + (i + 1)).html('P.' + (i + 1)));
 				validOpt.push('p' + (i + 1));
 			}
 		}
-		var statSrc = kernel.getProp('statsrc', 's');
+		var statSrc = kernel.getProp('statsrc', 't');
 		if (validOpt.indexOf(statSrc) == -1) {
 			statSrcSelect.append($('<option>').val('n').html('select'));
 			statSrcSelect.val('n');
+			validOpt.push('n');
 		} else {
 			statSrcSelect.val(statSrc);
 		}
@@ -433,7 +434,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 		// s = s.join("");
 		sumtable.empty().append($('<tr>').append('<th></th><th>' + hlstr[1] + '</th><th>' + hlstr[0] + '</th>'),
-			$('<tr>').append($('<th>').append(statSrcSelect), shead.join("")), s.join(""));
+			$('<tr>').append(validOpt.length == 1 ? '<th>time</th>' : $('<th>').append(statSrcSelect), shead.join("")), s.join(""));
 		resultsHeight();
 	}
 

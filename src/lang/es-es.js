@@ -1,12 +1,12 @@
-var OK_LANG = 'ACEPTARD';
+var OK_LANG = 'Aceptar';
 var CANCEL_LANG = 'Cancelar';
 var RESET_LANG = 'Resetear';
 var ABOUT_LANG = 'Acerca de';
 var ZOOM_LANG = 'Distancia de visión';
 var BUTTON_TIME_LIST = 'LISTA DE<br>TIEMPOS';
 var BUTTON_OPTIONS = 'OPCIO-<br>NES';
-var BUTTON_EXPORT = 'Exportar';
-var BUTTON_DONATE = 'Exportar';
+var BUTTON_EXPORT = 'EXPORTAR';
+var BUTTON_DONATE = 'DONAR';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'Usar inspección de WCA';
 var PROPERTY_USEINS_STR = 'Siempre | Exceptuar BLD | Nunca';
@@ -106,7 +106,7 @@ var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
 var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_GIIAED = 'Detección de errores de hardware automática';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],

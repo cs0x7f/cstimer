@@ -28,7 +28,7 @@ if ($req_lang == "cn") {
   $req_lang = "zh-cn";
 }
 
-$lang = prefered_language(array("en-us", "ca-es", "cs-cz", "da-dk", "de-de", "es-es", "fa-ir", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sv-se", "tr-tr", "uk-ua", "vi-vn", "zh-cn"), $req_lang);
+$lang = prefered_language(array("en-us", "ca-es", "cs-cz", "da-dk", "de-de", "es-es", "fa-ir", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sr-sp", "sv-se", "tr-tr", "uk-ua", "vi-vn", "zh-cn"), $req_lang);
 
 if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
@@ -90,6 +90,9 @@ if ($lang == "en-us") { ?>
 <?php } else if ($lang == "ru-ru") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Профессиональный тренировочный таймер для кубика Рубика </title>
+<?php } else if ($lang == "sr-sp") { ?>
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "sv-se") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionell Rubiks kub speedsolving/tränings timer </title>
@@ -110,8 +113,8 @@ if ($lang == "en-us") { ?>
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
   <script type="text/javascript">
-var LANG_SET = '|en-us|ca-es|cs-cz|da-dk|de-de|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|sv-se|tr-tr|uk-ua|vi-vn|zh-cn';
-var LANG_STR = 'English|Català|Čeština|Dansk|Deutsch|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|Svenska|Türkçe|Українська|Tiếng Việt|简体中文';
+var LANG_SET = '|en-us|ca-es|cs-cz|da-dk|de-de|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|sr-sp|sv-se|tr-tr|uk-ua|vi-vn|zh-cn';
+var LANG_STR = 'English|Català|Čeština|Dansk|Deutsch|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|English|Svenska|Türkçe|Українська|Tiếng Việt|简体中文';
 var LANG_CUR = '<?php echo $lang; ?>';
 <?php include('lang/'.$lang.'.js');?>
   </script>
