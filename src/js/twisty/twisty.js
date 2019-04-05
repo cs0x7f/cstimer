@@ -227,6 +227,7 @@ window.twistyjs = (function() {
 			render();
 		}
 
+		//callback(move, step), step: 0 move added, 1 move animation started, 2 move animation finished
 		var moveListeners = [];
 		this.addMoveListener = function(listener) {
 			moveListeners.push(listener);
@@ -237,15 +238,21 @@ window.twistyjs = (function() {
 			delete moveListeners[index];
 		};
 
+		function fireMoveAdded(move) {
+			for (var i = 0; i < moveListeners.length; i++) {
+				moveListeners[i](move, 0);
+			}
+		}
+
 		function fireMoveStarted(move) {
 			for (var i = 0; i < moveListeners.length; i++) {
-				moveListeners[i](move, true);
+				moveListeners[i](move, 1);
 			}
 		}
 
 		function fireMoveEnded(move) {
 			for (var i = 0; i < moveListeners.length; i++) {
-				moveListeners[i](move, false);
+				moveListeners[i](move, 2);
 			}
 		}
 
@@ -257,6 +264,7 @@ window.twistyjs = (function() {
 		}
 
 		this.addMoves = function(moves) {
+			$.map(moves, fireMoveAdded);
 			if (!kernel.getProp('vrcSpeed', 100)) {
 				this.applyMoves(moves);
 				return;

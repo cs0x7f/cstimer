@@ -404,35 +404,19 @@
 			return {
 				73: [0, 6, 0, 5], //I R
 				75: [0, -6, 0, 5], //K R'
-				// 87: [iS, oS, "B", 1], //W B
-				// 79: [iS, oS, "B", -1], //O B'
 				83: [2, 1, 1, 5], //S D
 				76: [2, -1, 1, 5], //L D'
-				// 68: [iS, oSl, "L", 1], //D L
-				// 69: [iS, oSl, "L", -1], //E L'
 				74: [1, 1, 1, 5], //J U
 				70: [1, -1, 1, 5], //F U'
-				// 72: [iS, oS, "F", 1], //H F
-				// 71: [iS, oS, "F", -1], //G F'
 				186: [1, 6, -5, 5], //; y
 				59: [1, 6, -5, 5], //y (TODO - why is this needed for firefox?)
 				65: [1, -6, -5, 5], //A y'
-				// 85: [iS, oSr + 1, "R", 1], //U r
-				// 82: [iS, oSl + 1, "L", -1], //R l'
-				// 77: [iS, oSr + 1, "R", -1], //M r'
-				// 86: [iS, oSl + 1, "L", 1], //V l
 				84: [0, 6, -5, 5], //T x
 				89: [0, 6, -5, 5], //Y x
 				78: [0, -6, -5, 5], //N x'
 				66: [0, -6, -5, 5], //B x'
-				// 190: [2, 2, "R", 1], //. M'
-				// 88: [2, 2, "L", -1], //X M'
 				80: [3, -6, -5, 5], //P z
 				81: [3, 6, -5, 5] //Q z'
-				// 90: [iS, iS + 1, "D", 1], //Z d
-				// 67: [iS, iS + 1, "U", -1], //C u'
-				// 188: [iS, iS + 1, "U", 1], //, u
-				// 191: [iS, iS + 1, "D", -1] /// d'
 			}
 		}
 
@@ -520,6 +504,10 @@
 			return counter;
 		}
 
+		function move2str(move) {
+
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -533,9 +521,8 @@
 			isParallelMove: isParallelMove,
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
-			moveCnt: moveCnt
+			moveCnt: moveCnt,
+			move2str: move2str
 		};
-
 	}
-
 })();

@@ -256,53 +256,50 @@
 			return newMoves;
 		}
 
-		var iS = 1;
-		var oS = 1;
-
 		var oSl = 1;
 		var oSr = 1;
 
 		var iSi = cubeOptions.dimension;
 
-		function generateCubeKeyMapping(iS, oS, oSl, oSr, iSi) {
+		function generateCubeKeyMapping(oSl, oSr, iSi) {
 			return {
-				73: [iS, oSr, "R", 1], //I R
-				75: [iS, oSr, "R", -1], //K R'
-				87: [iS, oS, "B", 1], //W B
-				79: [iS, oS, "B", -1], //O B'
-				83: [iS, oS, "D", 1], //S D
-				76: [iS, oS, "D", -1], //L D'
-				68: [iS, oSl, "L", 1], //D L
-				69: [iS, oSl, "L", -1], //E L'
-				74: [iS, oS, "U", 1], //J U
-				70: [iS, oS, "U", -1], //F U'
-				72: [iS, oS, "F", 1], //H F
-				71: [iS, oS, "F", -1], //G F'
-				186: [iS, iSi, "U", 1], //; y
-				59: [iS, iSi, "U", 1], //y (TODO - why is this needed for firefox?)
-				65: [iS, iSi, "U", -1], //A y'
-				85: [iS, oSr + 1, "R", 1], //U r
-				82: [iS, oSl + 1, "L", -1], //R l'
-				77: [iS, oSr + 1, "R", -1], //M r'
-				86: [iS, oSl + 1, "L", 1], //V l
-				84: [iS, iSi, "L", -1], //T x
-				89: [iS, iSi, "R", 1], //Y x
-				78: [iS, iSi, "R", -1], //N x'
-				66: [iS, iSi, "L", 1], //B x'
+				73: [1, oSr, "R", 1], //I R
+				75: [1, oSr, "R", -1], //K R'
+				87: [1, 1, "B", 1], //W B
+				79: [1, 1, "B", -1], //O B'
+				83: [1, 1, "D", 1], //S D
+				76: [1, 1, "D", -1], //L D'
+				68: [1, oSl, "L", 1], //D L
+				69: [1, oSl, "L", -1], //E L'
+				74: [1, 1, "U", 1], //J U
+				70: [1, 1, "U", -1], //F U'
+				72: [1, 1, "F", 1], //H F
+				71: [1, 1, "F", -1], //G F'
+				186: [1, iSi, "U", 1], //; y
+				59: [1, iSi, "U", 1], //y (TODO - why is this needed for firefox?)
+				65: [1, iSi, "U", -1], //A y'
+				85: [1, oSr + 1, "R", 1], //U r
+				82: [1, oSl + 1, "L", -1], //R l'
+				77: [1, oSr + 1, "R", -1], //M r'
+				86: [1, oSl + 1, "L", 1], //V l
+				84: [1, iSi, "L", -1], //T x
+				89: [1, iSi, "R", 1], //Y x
+				78: [1, iSi, "R", -1], //N x'
+				66: [1, iSi, "L", 1], //B x'
 				190: [2, 2, "R", 1], //. M'
 				88: [2, 2, "L", -1], //X M'
 				53: [2, 2, "R", -1], //5 M
 				54: [2, 2, "L", 1], //6 M
-				80: [iS, iSi, "F", 1], //P z
-				81: [iS, iSi, "F", -1], //Q z'
-				90: [iS, iS + 1, "D", 1], //Z d
-				67: [iS, iS + 1, "U", -1], //C u'
-				188: [iS, iS + 1, "U", 1], //, u
-				191: [iS, iS + 1, "D", -1] /// d'
+				80: [1, iSi, "F", 1], //P z
+				81: [1, iSi, "F", -1], //Q z'
+				90: [1, 2, "D", 1], //Z d
+				67: [1, 2, "U", -1], //C u'
+				188: [1, 2, "U", 1], //, u
+				191: [1, 2, "D", -1] /// d'
 			}
 		}
 
-		var cubeKeyMapping = generateCubeKeyMapping(iS, oS, oSl, oSr, iSi);
+		var cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
 
 		function keydownCallback(twisty, e) {
 			if (e.altKey || e.ctrlKey) {
@@ -321,7 +318,7 @@
 				} else if (keyCode == 32) {
 					oSl = oSr = 1;
 				}
-				cubeKeyMapping = generateCubeKeyMapping(iS, oS, oSl, oSr, iSi);
+				cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
 			}
 			if (keyCode in cubeKeyMapping) {
 				twistyScene.addMoves([cubeKeyMapping[keyCode]]);
@@ -438,6 +435,20 @@
 			return counter;
 		}
 
+		function move2str(move) {
+			var axis = move[2];
+			var nlayer = move[1];
+			var pow = (move[3] + 3) % 4;
+			if (nlayer == iSi) {
+				return "yxz".charAt("URFDLB".indexOf(move[2]) % 3) +
+					" 2'".charAt("URF".indexOf(move[2]) == -1 ? (2 - pow) : pow);
+			} else if (move[0] == 2) { //M or M'
+				return 'M' + " 2'".charAt(move[2] == 'R' ? (2 - pow) : pow);
+			} else {
+				return (nlayer > 2 ? nlayer : '') + axis + (nlayer >= 2 ? 'w' : '') + " 2'".charAt(pow);
+			}
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -452,7 +463,8 @@
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
 			getFacelet: getFacelet,
-			moveCnt: moveCnt
+			moveCnt: moveCnt,
+			move2str: move2str
 		};
 	}
 })();

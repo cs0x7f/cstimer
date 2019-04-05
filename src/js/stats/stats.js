@@ -175,13 +175,22 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			var time = timesAt(cfmIdx);
+			var reviewElem = '';
+			if (time[4]) {
+				reviewElem = $('<a target="_blank">Review</a>').addClass('click');
+				reviewElem.attr('href',
+					'https://alg.cubing.net/?alg=' + (time[4][0] || '').replace(/@(\d+)/g, '/*$1*/') +
+					'&setup=' + (time[1] || '')
+				);
+				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
+			}
 			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')
 				.append('<span class="click" data="p">OK</span> | <span class="click" data="p">+2</span> | <span class="click" data="p">DNF</span>', ' | ', cfmDelR)
 				.append('<br>', $('<table style="display:inline-block;">').append(
 					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
 					$('<tr>').append('<td>' + SCRAMBLE_SCRAMBLE + '</td>', $('<td>').append(cfmScrR)),
 					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
-					$('<tr>').append('<td>' + '???' + '</td>', $('<td>').append(cfmExt))
+					reviewElem
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
 			cfmScrR.val(time[1]);

@@ -417,6 +417,10 @@
 			return counter;
 		}
 
+		function move2str(move) {
+
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,

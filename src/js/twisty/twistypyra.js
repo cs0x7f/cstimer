@@ -339,6 +339,10 @@
 			return counter;
 		}
 
+		function move2str(move) {
+
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -352,7 +356,8 @@
 			isParallelMove: isParallelMove,
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
-			moveCnt: moveCnt
+			moveCnt: moveCnt,
+			move2str: move2str
 		};
 	}
 })();

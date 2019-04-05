@@ -15,6 +15,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 	var curTime = []; //[inspection time, phaseN, phaseN-1, ...]
 	var startTime;
 
+	var rawMoves = [];
+
 	function reset() {
 		var type = getProp('input');
 		status = -1;
@@ -631,10 +633,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var lastMove = "";
 		var totPhases = 1;
 
-		function moveListener(move, started) {
+		function moveListener(move, mstep) {
+			if (mstep == 1) {
+				return;
+			}
 			var now = $.now();
 			if (status == -3 || status == -2) {
 				if (twisty.isInspectionLegalMove(twisty, move)) {
+					if (mstep == 0) {
+						rawMoves[0].push([twisty.move2str(move), 0]);
+					}
 					return;
 				} else {
 					if (checkUseIns()) {
@@ -645,21 +653,33 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					startTime = now;
 					moveCnt = 0;
 					status = currentScrambleSize == 3 && currentScrambleType != "r3" ? nPhases[getProp('vrcMP', 'n')] : 1;
+					var inspectionMoves = rawMoves[0];
+					rawMoves = [];
+					for (var i = 0; i < status; i++) {
+						rawMoves[i] = [];
+					}
+					rawMoves[status] = inspectionMoves;
 					totPhases = status;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					lcd.setRunning(true, true);
 					ui.setAutoShow(false);
 				}
-			} else if (status >= 1) {
-				var curProgress = twisty.isSolved(twisty, getProp('vrcMP', 'n'));
-				if (curProgress < status) {
-					for (var i = status; i > curProgress; i--) {
-						curTime[i] = now - startTime;
-					}
+			}
+			if (status >= 1) {
+				if (mstep == 0) {
+					rawMoves[status - 1].push([twisty.move2str(move), now - startTime]);
 				}
-				status = Math.min(curProgress, status) || 1;
-				lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
-				if (curProgress == 0 && !started) {
+				if (mstep == 2) {
+					var curProgress = twisty.isSolved(twisty, getProp('vrcMP', 'n'));
+					if (curProgress < status) {
+						for (var i = status; i > curProgress; i--) {
+							curTime[i] = now - startTime;
+						}
+					}
+					status = Math.min(curProgress, status) || 1;
+					lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
+				}
+				if (curProgress == 0 && mstep == 2) {
 					moveCnt += twisty.moveCnt();
 					if (currentScrambleType.match(/^r\d+$/) && currentScramble.length != 0) {
 						if (currentScrambleType != "r3") {
@@ -677,8 +697,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append(
 						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
-					// lcd.append("<br>" + moveCnt + "moves");
-					pushSignal('time', curTime);
+					rawMoves.reverse();
+					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
 				}
 			}
 		}
@@ -746,6 +766,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 			twistyScene.applyMoves(scramble);
 			twisty.moveCnt(true);
+			rawMoves = [
+				[]
+			];
 		}
 
 		function onkeydown(keyCode) {
@@ -879,8 +902,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var div = $('<div />');
 		var totPhases = 1;
 		var currentFacelet = mathlib.SOLVED_FACELET;
-
-		var rawMoves = [];
 
 		var giikerVRC = (function() {
 			var twistyScene;

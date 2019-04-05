@@ -317,22 +317,12 @@
 				186: [mY, 3, -5, 5], //; y
 				59: [mY, 3, -5, 5], //y (TODO - why is this needed for firefox?)
 				65: [mY, -3, -5, 5], //A y'
-				// 85: [iS, oSr + 1, "R", 1], //U r
-				// 82: [iS, oSl + 1, "L", -1], //R l'
-				// 77: [iS, oSr + 1, "R", -1], //M r'
-				// 86: [iS, oSl + 1, "L", 1], //V l
 				84: [mX, 3, -5, 5], //T x
 				89: [mX, 3, -5, 5], //Y x
 				78: [mX, -3, -5, 5], //N x'
 				66: [mX, -3, -5, 5], //B x'
-				// 190: [2, 2, "R", 1], //. M'
-				// 88: [2, 2, "L", -1], //X M'
 				80: [mZ, -3, -5, 5], //P z
 				81: [mZ, 3, -5, 5] //Q z'
-				// 90: [iS, iS + 1, "D", 1], //Z d
-				// 67: [iS, iS + 1, "U", -1], //C u'
-				// 188: [iS, iS + 1, "U", 1], //, u
-				// 191: [iS, iS + 1, "D", -1] /// d'
 			}
 		}
 
@@ -409,6 +399,10 @@
 			return counter;
 		}
 
+		function move2str(move) {
+
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -422,7 +416,8 @@
 			isParallelMove: isParallelMove,
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
-			moveCnt: moveCnt
+			moveCnt: moveCnt,
+			move2str: move2str
 		};
 	}
 })();
