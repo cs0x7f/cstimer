@@ -61,7 +61,7 @@
 		}
 		return idx;
 	}
-	var k = [1, 1, 1, 3, 12, 60, 360];
+
 	var cornerpermmv = [
 		[6, 5, 10, 1],
 		[9, 7, 4, 2],

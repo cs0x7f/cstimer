@@ -12,7 +12,7 @@ var kernel = execMain(function() {
 	var listeners = {};
 
 	function pushSignal(signal, value) {
-		// console.log(signal, value);
+		DEBUG && console.log('[signal]', signal, value);
 		if (listeners[signal] != undefined) {
 			for (var module in listeners[signal]) {
 				//TODO if module is enabled or disabled

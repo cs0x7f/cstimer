@@ -70,7 +70,7 @@ var stackmat = execMain(function() {
 		node["onaudioprocess"] = function(e) {
 			// console.log(+new Date);
 			var input = e["inputBuffer"]["getChannelData"](0);
-			var output = e["outputBuffer"]["getChannelData"](0);
+			// var output = e["outputBuffer"]["getChannelData"](0);
 			//AGC
 			for (var i = 0; i < input.length; i++) {
 				var power = input[i] * input[i];
@@ -175,6 +175,7 @@ var stackmat = execMain(function() {
 		if (byteBuffer.length != 9 && byteBuffer.length != 10) {
 			return;
 		}
+		DEBUG && console.log('[stackmat]', byteBuffer);
 		var re_head = /[ SILRCA]/;
 		var re_number = /\d/;
 		var head = byteBuffer[0];
@@ -214,7 +215,7 @@ var stackmat = execMain(function() {
 	function pushNewState(head, time_milli) {
 		var suc_time = $.now();
 		if (suc_time - last_suc_time > 200) {
-			console.log(suc_time - last_suc_time);
+			DEBUG && console.log('[stackmat] signal miss ', suc_time - last_suc_time);
 		}
 		last_suc_time = suc_time;
 		var new_state = {}

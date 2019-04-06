@@ -112,10 +112,10 @@ var giikerutil = execMain(function(CubieCube) {
 				}
 				var gen = scramble_333.genFacelet(currentCubie.toFaceCube());
 				if (gen.length / 3 < 10) {
-					console.log('Possible error, gen=' + gen.replace(/ /g, '') + ', ignore');
+					DEBUG && console.log('[giiker]', 'Possible error, gen=' + gen.replace(/ /g, '') + ', ignore');
 					return;
 				}
-				console.log('Almost error, gen=' + gen.replace(/ /g, '') + ', mark solved');
+				DEBUG && console.log('[giiker]', 'Almost error, gen=' + gen.replace(/ /g, '') + ', mark solved');
 				markSolved();
 			}, 1000);
 		}
@@ -127,7 +127,6 @@ var giikerutil = execMain(function(CubieCube) {
 		if (moves.length % 2 == 1) {
 			return 99;
 		}
-		var timespend = [];
 		var stateToEnd = [];
 		stateToEnd[moves.length] = new CubieCube();
 		for (var i = moves.length - 1; i >= 0; i--) {

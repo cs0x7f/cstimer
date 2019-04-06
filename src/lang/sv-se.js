@@ -7,12 +7,12 @@ var BUTTON_TIME_LIST = 'LISTA<br>TIDER';
 var BUTTON_OPTIONS = 'ALTERNATIV';
 var BUTTON_EXPORT = 'EXPORTERA';
 var BUTTON_DONATE = 'DONERA';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Med session';
 var PROPERTY_USEINS = 'använd WCA inspektion';
 var PROPERTY_USEINS_STR = 'Alltid|förutom BLD|aldrig';
 var PROPERTY_VOICEINS = 'röstvarning av WCA inspekton';
 var PROPERTY_VOICEINS_STR = 'ingen|manlig röst|kvinnlig röst';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Röstvolym';
 var PROPERTY_PHASES = 'flera faser';
 var PROPERTY_TIMERSIZE = 'timerstorlek';
 var PROPERTY_USEMILLI = 'använd millisekunder';
@@ -23,7 +23,7 @@ var PROPERTY_SCRLIM = 'Begränsa höjden av blandningsområdet';
 var PROPERTY_SCRALIGN = 'Anpassning av blandningsområdet';
 var PROPERTY_SCRALIGN_STR = 'center|vänster|höger';
 var PROPERTY_SCRFAST = 'Använd snabb blandning för 4x4x4 (ej officiell)';
-var PROPERTY_SCRKEYM = 'Etikettnyckeln flyttas i blandning';
+var PROPERTY_SCRKEYM = 'Markeringsnyckeln flyttas i blandning';
 var PROPERTY_WNDSCR = 'Blandningspanel display stil';
 var PROPERTY_WNDSTAT = 'Statistikspanel display stil';
 var PROPERTY_WNDTOOL = 'Verktygspanel display stil';
@@ -90,12 +90,12 @@ var PROPERTY_NTOOLS = 'antal verktyg';
 var PROPERTY_AHIDE = 'Göm alla element när timern tar tid';
 var SCRAMBLE_LAST = 'senaste';
 var SCRAMBLE_NEXT = 'nästa';
-var SCRAMBLE_SCRAMBLE = ' blanda';
+var SCRAMBLE_SCRAMBLE = ' blandning';
 var SCRAMBLE_LENGTH = 'längd';
 var SCRAMBLE_INPUT = 'Skriv in Blandning(ar)';
 var PROPERTY_VRCSPEED = 'VRC bashastighet (tps)';
 var PROPERTY_VRCMP = 'flera faser';
-var PROPERTY_VRCMPS = 'Ingen|CFOP|CF+OP|CFFFFOP|Roux';
+var PROPERTY_VRCMPS = 'Ingen|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Visa virtuell Giiker cube';
 var PROPERTY_GIISOK_DELAY = 'Markera blandad om stannat på blandat i antal sekunder';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Aldrig|Korrekt blandat';
@@ -147,7 +147,7 @@ var scrdata = [
 		['sista sex kanterna', "lse", 0],
 		['sista sex kanterna&ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
-		['korsetöst', "f2l", 0],
+		['korset löst', "f2l", 0],
 		['sista f2l paret + sista lagret', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
@@ -365,7 +365,7 @@ var STATS_ALERTMG = 'Sammanfoga alla tider i sessionen [%f] till slutet av sessi
 var STATS_PROMPTSPL = 'Antal senaste tider delade från sessionen [%s]?';
 var STATS_ALERTSPL = 'Borde delas eller lämnas 1 gång';
 var STATS_AVG = 'mean';
-var STATS_SOLVE = 'lös';
+var STATS_SOLVE = 'lösning';
 var STATS_TIME = 'tid';
 var STATS_SESSION = 'Session';
 var STATS_SESSION_NAME = 'Redigera sessionsnamn';
@@ -374,12 +374,12 @@ var STATS_STRING = 'bästa|nuvarande|sämsta|Genererad av csTimer %Y-%M-%D|lösn
 var STATS_PREC = 'tidsfördelningsprecision';
 var STATS_PREC_STR = 'automatisk|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'lista %d typ|lista %d längd|average|mean';
-var STATS_STATCLR = 'Aktivera tämning av sessionen';
+var STATS_STATCLR = 'Aktivera tömning av sessionen';
 var STATS_ABSIDX = 'Visa absolut index i statistikrapporten';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_DATE = 'vilket datum som helst|senaste 24 timmarna|senaste 7 dagarna|senaste 30 dagarna|senaste 365 dagarna';
+var STATS_XSESSION_NAME = 'vilket namn som helst';
+var STATS_XSESSION_SCR = 'vilken blandning som helst';
+var STATS_XSESSION_CALC = 'Kalkyl';
 var PROPERTY_PRINTSCR = 'skriv ut blandning(ar) i statistik';
 var PROPERTY_PRINTDATE = 'skriv ut lösningens datum i statistik';
 var PROPERTY_SUMMARY = 'visa sammanfattning före tidslistan';
@@ -389,12 +389,12 @@ var PROPERTY_SS2SCR = 'återställ blandningstyp när session byts';
 var PROPERTY_SS2PHASES = 'återställ flerfastidtagning vid växling av session';
 var PROPERTY_STATINV = 'Omvänd tidslista';
 var PROPERTY_STATAL = 'Statistiska indikatorer';
-var PROPERTY_STATALU = 'Customized statistical indicator';
+var PROPERTY_STATALU = 'Anpassad statistiskindikator';
 var PROPERTY_DELMUL = 'Aktivera flera raderingar';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
+var PROPERTY_TOOLSFUNC = 'Valda Funktioner';
+var PROPERTY_TRIM = 'Antal lösningar trimmade på varje sida';
 var PROPERTY_TRIM_MED = 'Median';
-var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
+var PROPERTY_STKHEAD = 'Använd Stackmatstatusinformation';
 var MODULE_NAMES = {
 	"kernel": 'global',
 	"ui": 'visa',
@@ -410,7 +410,7 @@ var BGIMAGE_INVALID = 'ogiltig webbsida';
 var BGIMAGE_OPACITY = 'bakgrundsbildens opacitet';
 var BGIMAGE_IMAGE = 'bakgrundsbild';
 var BGIMAGE_IMAGE_STR = 'ingen|manuell|CCT';
-var SHOW_AVG_LABEL = 'Visa avergage etikett';
+var SHOW_AVG_LABEL = 'Visa avergage markering';
 var USE_LOGOHINT = 'Tipsmeddelanden i logotypen';
 var TOOLS_SCRGEN = 'Blandningsgenerator';
 var SCRGEN_NSCR = 'Antal blandningar';

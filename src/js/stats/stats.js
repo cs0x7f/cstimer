@@ -7,7 +7,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 	var stext = $('<textarea rows="10" readonly />');
 	var scrollDiv = $('<div class="myscroll" />');
 	var statOptDiv = $('<div>');
-	var hideOptButton = $('<input type="button" value="&#8675;">');
 
 	var table = $('<table />').click(procClick).addClass("table");
 	var title = $('<tr />');
@@ -21,6 +20,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 	var sumtableDiv = $('<div class="statc" />');
 
 	var MAX_ITEMS = 50;
+
+	var isInit = true;
 
 	function push(time) {
 		if (typeof time[0] == "string") {
@@ -402,6 +403,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function updateSumTable() {
+		if (isInit) {
+			return;
+		}
 		if (!kernel.getProp('statsum')) {
 			sumtable.empty();
 			sumtableDiv.hide();
@@ -456,6 +460,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function updateUtil() {
+		if (isInit) {
+			return;
+		}
 		updateSumTable();
 		assistant.update();
 		distribution.update();
@@ -464,8 +471,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	var avgSizes = [-3, 5, 12, 50, 100, 1000];
-	var times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt(), dnfsort);
-	var times_stats_list = new TimeStat([], times.length, timeAt, dnfsort);
+	var times_stats_table = new TimeStat(avgSizes, 0, timeAt, dnfsort);
+	var times_stats_list = new TimeStat([], 0, timeAt, dnfsort);
 
 	function getTableTimeAt() {
 		var statSrc = kernel.getProp('statsrc', 't');
@@ -720,10 +727,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			infoDiv.html(s.replace(/\n/g, '<br>'));
 		}
 
-		var isEnable = false;
-
 		function execFunc(fdiv, signal) {
-			if (!(isEnable = (fdiv != undefined))) {
+			if (!fdiv) {
 				return;
 			}
 			if (/^scr/.exec(signal)) {
@@ -876,8 +881,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var div = $('<div />');
 
 		var isEnable = false;
-
-		var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
 
 		function updateDistribution() {
 			if (!isEnable) {
@@ -1288,6 +1291,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function sessionLoaded(sessionIdx, timesNew) {
+			isInit = false;
 			times = timesNew;
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
@@ -1475,7 +1479,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function getMgrRowAtGroup(group) {
-			var ssData = sessionData[ssSorted[group[0]]];
 			var isInGroup = false;
 			var ssNames = [];
 			for (var i = 0; i < group.length; i++) {
@@ -1783,7 +1786,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 	var stat1, stat2, len1, len2;
 
 	var curScrType = '333';
-	var curPhases = 1;
 
 	var roundMilli = 1;
 

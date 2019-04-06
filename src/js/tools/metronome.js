@@ -97,7 +97,6 @@ var metronome = execMain(function() {
 	function startBeep(times) {
 		stopBeep();
 		times = times.split(',');
-		var target = [];
 		for (var i = 0; i < times.length; i++) {
 			times[i] = ~~(times[i].trim() * 1000) / 1000.0;
 		}

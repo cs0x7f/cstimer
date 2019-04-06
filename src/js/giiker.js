@@ -1,7 +1,5 @@
 "use strict";
 
-var DEBUG = false;
-
 var GiikerCube = execMain(function() {
 
 	var SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
@@ -49,10 +47,6 @@ var GiikerCube = execMain(function() {
 			_characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
 			return _characteristic.startNotifications();
 		});
-	}
-
-	function updateBatteryLevel(event) {
-		console.log(event.target.value.getUint8(1));
 	}
 
 	function getBatteryLevel() {
@@ -119,7 +113,7 @@ var GiikerCube = execMain(function() {
 				giikerState.push("0123456789abcdef" [~~(value.getUint8(i) / 16)]);
 				giikerState.push("0123456789abcdef" [value.getUint8(i) % 16]);
 			}
-			console.log("Raw Data: ", giikerState.join(""));
+			console.log('[giiker]', "Raw Data: ", giikerState.join(""));
 		}
 
 		var giikerState = [];
@@ -152,9 +146,9 @@ var GiikerCube = execMain(function() {
 			prevMoves.push("BDLURF" [moves[i * 2] - 1] + " 2'" [(moves[i * 2 + 1] - 1) % 7]);
 		}
 		if (DEBUG) {
-			console.log("Current State: ", facelet);
-			console.log("A Valid Generator: ", scramble_333.genFacelet(facelet));
-			console.log("Previous Moves: ", prevMoves.reverse().join(" "));
+			console.log('[giiker]', "Current State: ", facelet);
+			console.log('[giiker]', "A Valid Generator: ", scramble_333.genFacelet(facelet));
+			console.log('[giiker]', "Previous Moves: ", prevMoves.reverse().join(" "));
 			prevMoves.reverse();
 		}
 		callback(facelet, prevMoves);

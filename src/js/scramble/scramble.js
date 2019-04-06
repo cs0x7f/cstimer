@@ -49,7 +49,7 @@ var scrMgr = (function(rn, rndEl) {
 	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN]]
 	 */
 	function regScrambler(type, callback, filter_and_probs) {
-		// console.log(type);
+		DEBUG && console.log('[regscr]', type);
 		if ($.isArray(type)) {
 			for (var i = 0; i < type.length; i++) {
 				scramblers[type[i]] = callback;
@@ -219,7 +219,7 @@ var scramble = execMain(function(rn, rndEl) {
 	function genCachedScramble(args, detailType, isPredict) {
 		if (csTimerWorker && csTimerWorker.getScramble) {
 			cacheTid = cacheTid || csTimerWorker.getScramble(args, function(detailType, scramble) {
-				console.log(detailType + ' cached by csTimerWorker');
+				DEBUG && console.log('[scrcache]', detailType + ' cached by csTimerWorker');
 				saveCachedScramble(detailType, scramble)
 			}.bind(undefined, detailType));
 		} else if (!isPredict) {
@@ -355,7 +355,6 @@ var scramble = execMain(function(rn, rndEl) {
 			// console.log(scrFlt, curData);
 			scrFltDiv.append('<br>', scrFltSelAll, scrFltSelNon, '<br><br>');
 			var dataGroup = {};
-			var dataGroupCnt = {};
 			for (var i = 0; i < data.length; i++) {
 				var spl = data[i].indexOf('-');
 				if (spl == -1) {

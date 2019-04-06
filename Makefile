@@ -8,6 +8,7 @@ externTwisty = --externs $(dest)/js/twisty.js
 externLang = --externs $(src)/lang/en-us.js
 compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3 --charset UTF-8
 advanced = -O ADVANCED
+debugoff = --define='DEBUGM=false' --define='DEBUGWK=false'
 timerSrc = $(addprefix $(src)/js/, \
 lib/utillib.js \
 lib/mathlib.js \
@@ -90,7 +91,7 @@ local: all
 
 $(cstimer): $(twisty) $(timerSrc)
 	@echo $@
-	@$(compile) $(externJQ) $(externTwisty) $(externLang) $(timerSrc) --js_output_file $(cstimer)
+	@$(compile) $(debugoff) $(externJQ) $(externTwisty) $(externLang) $(timerSrc) --js_output_file $(cstimer)
 
 $(twisty): $(twistySrc)
 	@echo $@

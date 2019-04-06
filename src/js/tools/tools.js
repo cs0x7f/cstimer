@@ -198,6 +198,7 @@ var tools = execMain(function() {
 	var toolBox = {};
 
 	function regTool(name, str, execFunc) {
+		DEBUG && console.log('[regtool]', name, str);
 		toolBox[name] = execFunc;
 		for (var i = 0; i < 4; i++) {
 			funcSelects[i].append($('<option />').val(name).html(str)).val(funcs[i]);

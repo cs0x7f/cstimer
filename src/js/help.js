@@ -1,6 +1,6 @@
 "use strict";
 
-var help = execMain(function(){
+var help = execMain(function() {
 
 	var docs = {};
 
@@ -41,13 +41,13 @@ var help = execMain(function(){
 	function generateDocs() {
 		docs[ABOUT_LANG] = $('<div />');
 		var elems = $('#about').children();
-		for (var i=0; i<elems.length; i++) {
+		for (var i = 0; i < elems.length; i++) {
 			var elem = elems.eq(i);
-			if (elems.eq(i).is('ul')) {
-				var type = elems.eq(i-1).appendTo(kernel.temp).html();
-				docs[type] = elems.eq(i).appendTo(kernel.temp);
-			} else if (i >= 1 && !elems.eq(i-1).is('h2, ul')) {
-				elems.eq(i-1).appendTo(docs[ABOUT_LANG]);
+			if (elem.is('ul')) {
+				var type = elems.eq(i - 1).appendTo(kernel.temp).html();
+				docs[type] = elem.appendTo(kernel.temp);
+			} else if (i >= 1 && !elems.eq(i - 1).is('h2, ul')) {
+				elems.eq(i - 1).appendTo(docs[ABOUT_LANG]);
 			}
 		}
 	}

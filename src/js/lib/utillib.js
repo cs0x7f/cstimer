@@ -108,7 +108,14 @@ execMain(function() {
 			}, false);
 		});
 	}
+
 });
+
+/** @define {boolean} */
+var DEBUGM = true;
+/** @define {boolean} */
+var DEBUGWK = false;
+var DEBUG = isInWorker ? DEBUGWK : (DEBUGM && !!$.urlParam('debug'));
 
 if (!Array.prototype.indexOf) {
 	Array.prototype.indexOf = function(item) {

@@ -77,7 +77,6 @@ execMain(function(CubieCube) {
 			mathlib.circle(solvOri, 0, 2, 3, 5);
 		}
 		var sol = null;
-		var solStr = "";
 		for (var maxl = 1; maxl < 12; maxl++) {
 			for (var s = 0; s < 4; s++) {
 				sol = solv.search([corn[s], edge[s]], maxl == 1 ? 0 : maxl, maxl);

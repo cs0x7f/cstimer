@@ -6,11 +6,8 @@ var logohint = execMain(function() {
 	var curMsg;
 	var logo;
 	var logocc;
-	var curPosition = 0;
 
 	var isMouseIn = false;
-	var startTime;
-	var targetIdent = 0;
 	var enabled = false;
 
 	function msgFinished() {
@@ -49,10 +46,7 @@ var logohint = execMain(function() {
 
 	function checkAnimation() {
 		var animation = false,
-			animationstring = 'animation',
-			keyframeprefix = '',
 			domPrefixes = 'Webkit Moz O ms Khtml'.split(' '),
-			pfx = '',
 			elem = document.createElement('div');
 		if (elem.style.animationName !== undefined) {
 			return true;
@@ -60,9 +54,6 @@ var logohint = execMain(function() {
 		if (animation === false) {
 			for (var i = 0; i < domPrefixes.length; i++) {
 				if (elem.style[domPrefixes[i] + 'AnimationName'] !== undefined) {
-					pfx = domPrefixes[i];
-					animationstring = pfx + 'Animation';
-					keyframeprefix = '-' + pfx.toLowerCase() + '-';
 					return true;
 				}
 			}

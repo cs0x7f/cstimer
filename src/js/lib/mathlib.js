@@ -1,8 +1,6 @@
 "use strict";
 
 var mathlib = (function() {
-	var DEBUG = false;
-
 	var Cnk = [],
 		fact = [1];
 	for (var i = 0; i < 32; ++i) {
@@ -392,9 +390,7 @@ var mathlib = (function() {
 			if (done == 0) {
 				break;
 			}
-			if (DEBUG) {
-				console.log(done);
-			}
+			DEBUG && console.log('[prun]', done);
 		}
 	}
 
