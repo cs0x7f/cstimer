@@ -1,7 +1,7 @@
 "use strict";
 
 var stats = execMain(function(kpretty, round, kpround) {
-	//[[penalty, phaseN end time, phaseN-1 end time, ..., phase1 end time], scramble, comment, timestamp of start, extention]
+	//[[penalty, phaseN end time, phaseN-1 end time, ..., phase1 end time], scramble, comment, timestamp of start, extension]
 	var times = [];
 	var div = $('<div id="stats" />');
 	var stext = $('<textarea rows="10" readonly />');

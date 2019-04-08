@@ -28,7 +28,7 @@ if ($req_lang == "cn") {
   $req_lang = "zh-cn";
 }
 
-$lang = prefered_language(array("en-us", "ca-es", "cs-cz", "da-dk", "de-de", "es-es", "fa-ir", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sr-sp", "sv-se", "tr-tr", "uk-ua", "vi-vn", "zh-cn"), $req_lang);
+$lang = prefered_language(array("en-us", "ca-es", "cs-cz", "da-dk", "de-de", "es-es", "fa-ir", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sr-sp", "sv-se", "tr-tr", "uk-ua", "vi-vn", "zh-cn", "zh-tw"), $req_lang);
 
 if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
@@ -108,13 +108,16 @@ if ($lang == "en-us") { ?>
 <?php } else if ($lang == "zh-cn") { ?>
   <meta name="keywords" content="计时器, cstimer, 魔方计时器, 在线计时器, 网页计时器">
   <title> csTimer - 魔方竞速训练专用计时器 </title>
+<?php } else if ($lang == "zh-tw") { ?>
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
   <script type="text/javascript">
-var LANG_SET = '|en-us|ca-es|cs-cz|da-dk|de-de|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|sr-sp|sv-se|tr-tr|uk-ua|vi-vn|zh-cn';
-var LANG_STR = 'English|Català|Čeština|Dansk|Deutsch|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|English|Svenska|Türkçe|Українська|Tiếng Việt|简体中文';
+var LANG_SET = '|en-us|ca-es|cs-cz|da-dk|de-de|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|sr-sp|sv-se|tr-tr|uk-ua|vi-vn|zh-cn|zh-tw';
+var LANG_STR = 'English|Català|Čeština|Dansk|Deutsch|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|English|Svenska|Türkçe|Українська|Tiếng Việt|简体中文|繁體中文';
 var LANG_CUR = '<?php echo $lang; ?>';
 <?php include('lang/'.$lang.'.js');?>
   </script>
