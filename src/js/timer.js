@@ -400,7 +400,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var ctrlStatus = 0x0;
 
 		//type: 0 down, 1 up
-		function detectTrigger(keyCode, type) {
+		function detectTrigger(keyCode, type, e) {
 			var prevStatus = ctrlStatus;
 			if (keyCode > 255) {
 				if (type) {
@@ -408,16 +408,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				} else {
 					ctrlStatus |= (1 << keyCode);
 				}
+			} else if (!e.ctrlKey) {
+				ctrlStatus = 0;
 			}
-			return keyCode == 32 || prevStatus == 3 || ctrlStatus == 3;
+			return keyCode == 32 || (prevStatus == 3 && keyCode > 255) || ctrlStatus == 3;
 		}
 
 		return {
-			onkeydown: function(keyCode) {
-				return onkeydown(keyCode, detectTrigger(keyCode, 0));
+			onkeydown: function(keyCode, e) {
+				return onkeydown(keyCode, detectTrigger(keyCode, 0, e));
 			},
-			onkeyup: function(keyCode) {
-				return onkeyup(keyCode, detectTrigger(keyCode, 1));
+			onkeyup: function(keyCode, e) {
+				return onkeyup(keyCode, detectTrigger(keyCode, 1, e));
 			},
 			reset: reset
 		}
@@ -1214,17 +1216,17 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 		switch (getProp('input')) {
 			case 't':
-				keyboardTimer.onkeydown(keyCode);
+				keyboardTimer.onkeydown(keyCode, e);
 				break;
 			case 's':
-				stackmatTimer.onkeydown(keyCode);
+				stackmatTimer.onkeydown(keyCode, e);
 			case 'i':
 				break;
 			case 'v':
-				virtual333.onkeydown(keyCode);
+				virtual333.onkeydown(keyCode, e);
 				break;
 			case 'g':
-				giikerTimer.onkeydown(keyCode);
+				giikerTimer.onkeydown(keyCode, e);
 				break;
 		}
 	}
@@ -1245,10 +1247,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 		switch (getProp('input')) {
 			case 't':
-				keyboardTimer.onkeyup(keyCode);
+				keyboardTimer.onkeyup(keyCode, e);
 				break;
 			case 's':
-				stackmatTimer.onkeyup(keyCode);
+				stackmatTimer.onkeyup(keyCode, e);
 				break;
 		}
 	}
