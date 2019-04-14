@@ -7,12 +7,12 @@ var BUTTON_TIME_LIST = '列出<br>時間';
 var BUTTON_OPTIONS = '設定';
 var BUTTON_EXPORT = '匯出';
 var BUTTON_DONATE = '資助<br>我們';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = '跟隨階段';
 var PROPERTY_USEINS = '使用WCA觀察';
 var PROPERTY_USEINS_STR = '永遠|除了盲解|永不';
 var PROPERTY_VOICEINS = 'WCA觀察人聲提醒';
 var PROPERTY_VOICEINS_STR = '無|男聲|女聲';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = '語音音量';
 var PROPERTY_PHASES = '多階段計時';
 var PROPERTY_TIMERSIZE = '計時器大小';
 var PROPERTY_USEMILLI = '精確到毫秒';
@@ -23,7 +23,7 @@ var PROPERTY_SCRLIM = '限制打亂區高度';
 var PROPERTY_SCRALIGN = '打亂對齊';
 var PROPERTY_SCRALIGN_STR = '置中|靠左|靠右';
 var PROPERTY_SCRFAST = '4x4x4使用快速打亂(非官方)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_SCRKEYM = '打亂中標記關鍵步驟';
 var PROPERTY_WNDSCR = '打亂面板顯示樣式';
 var PROPERTY_WNDSTAT = '統計面板顯示樣式';
 var PROPERTY_WNDTOOL = '工具面板顯示樣式';
@@ -39,14 +39,14 @@ var EXPORT_INVID = '只能輸入英文字母與數字！';
 var EXPORT_ERROR = '似乎出了點問題...';
 var EXPORT_NODATA = '你的帳號中沒有任何資料';
 var EXPORT_UPLOADED = '更新成功';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
+var EXPORT_CODEPROMPT = '複製這組代碼，或鍵入代碼以導入';
+var EXPORT_ONLYOPT = '僅匯入/匯出設定';
+var EXPORT_ACCOUNT = '匯出帳戶';
+var EXPORT_LOGINGGL = '使用Google帳號登入';
+var EXPORT_LOGINWCA = '使用WCA帳戶登入';
+var EXPORT_LOGOUTCFM = '確定要登出?';
+var EXPORT_LOGINAUTHED = '授權完成<br>正在取得數據...';
+var IMPORT_FINAL_CONFIRM = '這將會覆蓋本機數據! 確定要匯入嗎?';
 var BUTTON_SCRAMBLE = '打亂';
 var BUTTON_TOOLS = '工具';
 var IMAGE_UNAVAILABLE = '不是用於這個打亂形式';
@@ -58,55 +58,55 @@ var TOOLS_GIIKER = '計客魔方';
 var TOOLS_IMAGE = '劃出打亂圖形';
 var TOOLS_STATS = '統計';
 var TOOLS_HUGESTATS = '十字部分統計';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
-var PROPERTY_IMGSIZE = 'Scramble Image Size';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
-var PROPERTY_ENTERING = 'entering in times with';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|Giiker';
-var PROPERTY_COLOR = 'select color theme';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
-var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
-var COLOR_EXPORT = 'Please save the string for import';
-var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
-var PROPERTY_FONT = 'select timer\'s font';
-var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var TOOLS_DISTRIBUTION = '分階段計時';
+var TOOLS_TREND = '時間趨勢';
+var TOOLS_METRONOME = '節拍器';
+var TOOLS_CFMTIME = '確認時間';
+var PROPERTY_IMGSIZE = '打亂圖示大小';
+var TIMER_INSPECT = '觀察中';
+var TIMER_SOLVE = '還原中';
+var PROPERTY_USEMOUSE = '使用滑鼠計時';
+var PROPERTY_TIMEU = '時間更新頻率';
+var PROPERTY_TIMEU_STR = '更新|每0.1秒|每秒|僅觀察|無';
+var PROPERTY_PRETIME = '按壓空白鍵時間(秒)';
+var PROPERTY_ENTERING = '輸入時間使用';
+var PROPERTY_ENTERING_STR = '計時器|鍵入|SS計時器|魔域計時器|虛擬方塊|計客魔方';
+var PROPERTY_COLOR = '選擇色彩樣式';
+var PROPERTY_COLORS = '字體顏色|背景顏色|面板顏色|按鈕顏色|超連結連色|圖標顏色|圖標背景顏色';
+var PROPERTY_VIEW = 'UI 介面';
+var PROPERTY_VIEW_STR = '自動|攜帶式裝置|電腦';
+var PROPERTY_UIDESIGN = 'UI設計者';
+var PROPERTY_UIDESIGN_STR = '一般|材質設計|無陰影';
+var COLOR_EXPORT = '請複製本字串以利匯入';
+var COLOR_IMPORT = '請輸入匯出的字串';
+var COLOR_FAIL = '資料不正確，匯入失敗';
+var PROPERTY_FONTCOLOR_STR = '黑|白';
+var PROPERTY_COLOR_STR = '手動|匯入/匯出|隨機|主題1|主題2|主題3|黑色|白色|主題6|未來風暗色|未來風亮色';
+var PROPERTY_FONT = '計時器字體';
+var PROPERTY_FONT_STR = '隨機顯示器字體|普通|顯示器1|顯示器2|顯示器3|顯示器4|顯示器5';
+var PROPERTY_FORMAT = '時間格式';
+var PROPERTY_USEKSC = '使用快捷鍵';
+var PROPERTY_NTOOLS = '工具數量';
+var PROPERTY_AHIDE = '計時期間隱藏所有物件';
+var SCRAMBLE_LAST = '上一個打亂';
+var SCRAMBLE_NEXT = '下一個打亂';
+var SCRAMBLE_SCRAMBLE = ' 打亂';
+var SCRAMBLE_LENGTH = '長度';
+var SCRAMBLE_INPUT = '輸入打亂';
+var PROPERTY_VRCSPEED = 'VRC基準速度(轉/秒)';
+var PROPERTY_VRCMP = '分項計時';
+var PROPERTY_VRCMPS = '關閉|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|橋式';
+var PROPERTY_GIIKERVRC = '顯示虛擬計客魔方';
+var PROPERTY_GIISOK_DELAY = '停滯時當作已打亂';
+var PROPERTY_GIISOK_DELAYS = '2秒|3秒|4秒|5秒|永不|直到準確打亂';
+var PROPERTY_GIISOK_KEY = '按下空白鍵標記打亂完成';
+var PROPERTY_GIISOK_MOVE = '以特殊動作標記打亂';
+var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|永不';
+var PROPERTY_GIISBEEP = '打亂完成時發出聲音';
+var PROPERTY_GIIRST = '連接時重置計客魔方';
+var PROPERTY_GIIRSTS = '永遠|提示|永不';
+var CONFIRM_GIIRST = '是否將計客重置為已還原？';
+var PROPERTY_GIIAED = '自動硬體錯誤偵測';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -171,66 +171,66 @@ var scrdata = [
 		['隨機步驟', "444m", 40],
 		['SiGN', "444", 40],
 		['永駿', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['4x4x4邊塊', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['5x5x5邊塊', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['前綴式標記', "666p", 80],
+		['後綴式標記', "666s", 80],
+		['6x6x6邊塊', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['前綴式標記', "777p", 100],
+		['後綴式標記', "777s", 100],
+		['7x7x7邊塊', "7edge", 8]
 	]],
-	['Clock', [
+	['魔錶', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
-		['concise', "clkc", 0],
-		['efficient pin order', "clke", 0]
+		['最佳化', "clko", 0],
+		['簡潔', "clkc", 0],
+		['pin腳順序效率最佳化', "clke", 0]
 	]],
-	['Megaminx', [
+	['十二面體', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['去除RD', "mgmc", 70],
+		['舊版', "mgmo", 70]
 	]],
-	['Pyraminx', [
+	['金字塔', [
 		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['最佳化隨機狀態', "pyro", 0],
+		['隨機步驟', "pyrm", 25]
 	]],
-	['Skewb', [
+	['斜轉', [
 		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
+		['使用U L R B', "skb", 25]
 	]],
-	['Square-1', [
+	['sq-1', [
 		["WCA", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['面轉演算法', "sq1h", 40],
+		['扭轉演算法', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===其他===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
-		['piece moves', "15p", 80],
-		['blank moves', "15pm", 80]
+	['四階滑軌拼圖', [
+		['片移動', "15p", 80],
+		['空白移動', "15pm", 80]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
-		['2x3x3 (Domino)', "233", 25],
+		['1x3x3', "133", 0],
+		['2x2x3 (塔形方塊)', "223", 0],
+		['2x3x3 (骨牌形方塊)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
 		['3x3x6', "336", 40],
@@ -240,21 +240,21 @@ var scrdata = [
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120]
 	]],
-	['Gear Cube', [
+	['齒輪魔方', [
 		['隨機狀態', "gearso", 0],
 		['最佳化隨機狀態', "gearo", 0],
 		['僅使用RUF', "gear", 10]
 	]],
-	['Cmetrick', [
+	['Cmetric', [
 		[' ', "cm3", 25]
 	]],
-	['Cmetrick Mini', [
+	['小型Cmetric', [
 		[' ', "cm2", 25]
 	]],
-	['Gigaminx', [
+	['四階十二面體', [
 		['Pochmann', "giga", 300]
 	]],
-	['Helicopter Cube', [
+	['直升機方塊', [
 		[' ', "heli", 40]
 	]],
 	['Redi Cube', [
@@ -264,7 +264,7 @@ var scrdata = [
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
-	['Pyraminx Crystal', [
+	['水晶金字塔', [
 		['Pochmann', "prcp", 70],
 		['舊版', "prco", 70]
 	]],
@@ -276,17 +276,17 @@ var scrdata = [
 	['sq-2', [
 		[' ', "sq2", 20]
 	]],
-	['Super Floppy', [
+	['超級軟碟方塊', [
 		[' ', "sfl", 25]
 	]],
 	['超級sq-1', [
-		['twist metric', "ssq1t", 20]
+		['扭轉演算法', "ssq1t", 20]
 	]],
-	['UFO', [
-		['Jaap style', "ufo", 25]
+	['飛碟方塊', [
+		['Jaap打亂法', "ufo", 25]
 	]],
 	['其他', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+		['面轉正八面體', "fto", 25]
 	]],
 	['===特殊===', [
 		['--', "blank", 0]
@@ -301,7 +301,7 @@ var scrdata = [
 		['僅使用90度', "half", 25],
 		['最後一個F2L+頂層(舊版)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
+	['綁帶方塊', [
 		['Bicube', "bic", 30],
 		['sq-1 /, (1,0)', "bsq", 25]
 	]],
@@ -340,34 +340,34 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['轉動頂面', '轉動底面'],
+	['轉動右面', '轉動左面'],
+	['轉動前面', '轉動後面']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
-var STATS_DATE = 'Date';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
-var STATS_AVG = 'mean';
-var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
-var STATS_SESSION = 'Session';
+var SCRAMBLE_NOOBSS = ' 順時針轉九十度,| 逆時針轉九十度,| 一百八十度,';
+var STATS_CFM_RESET = '是否重置階段中的所有時間?';
+var STATS_CFM_DELSS = '刪除階段 [%s]?';
+var STATS_CFM_DELMUL = '從本索引值刪除幾個成績?';
+var STATS_CFM_DELETE = '是否刪除這個時間?';
+var STATS_COMMENT = '附註';
+var STATS_DATE = '日期';
+var STATS_CURROUND = '本輪統計資料';
+var STATS_CURSESSION = '本階段統計資料';
+var STATS_CURSPLIT = '當前階段的第 %d區塊';
+var STATS_EXPORTCSV = '匯出至CSV';
+var STATS_SSMGR_TITLE = '管理階段';
+var STATS_SSMGR_NAME = '名稱';
+var STATS_SSMGR_DETAIL = '階段詳細資訊';
+var STATS_SSMGR_OPS = '重新命名|創建|拆分|合併|刪除';
+var STATS_SSMGR_ORDER = '以打亂排序';
+var STATS_SSMGR_ODCFM = '是否將所有階段以打亂排序?';
+var STATS_ALERTMG = '將 [%f] 階段中的所有時間移至 [%t] 階段?';
+var STATS_PROMPTSPL = '從階段 [%s] 分離最近幾個時間?';
+var STATS_ALERTSPL = '拆開或至少留下一組時間?';
+var STATS_AVG = '平均';
+var STATS_SOLVE = '還原';
+var STATS_TIME = '時間';
+var STATS_SESSION = '階段';
 var STATS_SESSION_NAME = '編輯階段名稱';
 var STATS_SESSION_NAMEC = '新階段名稱';
 var STATS_STRING = '最佳|本次|最差|於%Y-%M-%D使用csTimer計時|完成/總計: %d|最佳單次|%mk 次平均|%mk 次去頭尾平均|去頭尾平均:%v{(標準差=%sgm)}|平均:%v|時間列表:|從%s到%e|總共耗時:%d';
@@ -376,10 +376,10 @@ var STATS_PREC_STR = '自動|0.1秒|0.2秒|0.5秒|1秒|2秒|5秒|10秒|20秒|50�
 var STATS_TYPELEN = '清單%d類型|清單%d長度|去頭尾平均|平均';
 var STATS_STATCLR = '允許階段空白';
 var STATS_ABSIDX = '統計報告中顯示絕對索引';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_DATE = '任何日期|最近24小時|最近一周|最近一月|最近一年';
+var STATS_XSESSION_NAME = '任何名稱';
+var STATS_XSESSION_SCR = '任何打亂';
+var STATS_XSESSION_CALC = '計算';
 var PROPERTY_PRINTSCR = '在統計列表中顯示打亂';
 var PROPERTY_PRINTDATE = '在統計列表中顯示日期';
 var PROPERTY_SUMMARY = '在時間清單錢顯示摘要';
@@ -389,12 +389,12 @@ var PROPERTY_SS2SCR = '更換階段時恢復打亂模式';
 var PROPERTY_SS2PHASES = '更換階段時恢復多次計時';
 var PROPERTY_STATINV = '顛倒時間清單';
 var PROPERTY_STATAL = '統計指標';
-var PROPERTY_STATALU = 'Customized statistical indicator';
+var PROPERTY_STATALU = '自訂統計指標';
 var PROPERTY_DELMUL = '允許同時刪除多個成績';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
-var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
+var PROPERTY_TOOLSFUNC = '選擇的功能';
+var PROPERTY_TRIM = '刪減數據中的資料數';
+var PROPERTY_TRIM_MED = '中位數';
+var PROPERTY_STKHEAD = '使用stackmat狀態資訊';
 var MODULE_NAMES = {
 	"kernel": '全域',
 	"ui": '顯示',
@@ -414,5 +414,5 @@ var SHOW_AVG_LABEL = '顯示「平均」標籤';
 var USE_LOGOHINT = '圖標中的提示訊息';
 var TOOLS_SCRGEN = '打亂製造器';
 var SCRGEN_NSCR = '打亂總數';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var SCRGEN_PRE = '前綴';
+var SCRGEN_GEN = '生成打亂!';

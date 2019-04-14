@@ -37,8 +37,8 @@ if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "cs-cz") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
-  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
+  <meta name="keywords" content="časovač, csčasovač, časovač pro rubikovu kostku, online časovač, web časovač">
+  <title> csČasovač - Pofesionální Speedsolving/Training Časovač pro Rubikovu Kostku </title>
 <?php } else if ($lang == "da-dk") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionel Rubik's Cube Speedsolving/Trænings Timer </title>
@@ -109,8 +109,8 @@ if ($lang == "en-us") { ?>
   <meta name="keywords" content="计时器, cstimer, 魔方计时器, 在线计时器, 网页计时器">
   <title> csTimer - 魔方竞速训练专用计时器 </title>
 <?php } else if ($lang == "zh-tw") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
-  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
+  <meta name="keywords" content="計時器, cstimer, 魔術方塊計時器, 線上計時器">
+  <title> csTimer - 專業的魔術方塊速解計時器 </title>
 <?php } else { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>

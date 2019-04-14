@@ -1,4 +1,4 @@
-var OK_LANG = 'OK';
+var OK_LANG = 'Ok';
 var CANCEL_LANG = 'Annulla';
 var RESET_LANG = 'Azzera';
 var ABOUT_LANG = 'About';
@@ -12,7 +12,7 @@ var PROPERTY_USEINS = 'Usa ispezione (WCA)';
 var PROPERTY_USEINS_STR = 'Sempre|Escludi BLD|Mai';
 var PROPERTY_VOICEINS = 'avviso vocale dell\'ispezione WCA';
 var PROPERTY_VOICEINS_STR = 'nessuna|voce maschile|voce femminile';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Volume della Voce';
 var PROPERTY_PHASES = 'Multi-fase';
 var PROPERTY_TIMERSIZE = 'Dimensione cronometro';
 var PROPERTY_USEMILLI = 'Usa millisecondi';
@@ -27,8 +27,8 @@ var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_WNDSCR = 'Scramble panel display style';
 var PROPERTY_WNDSTAT = 'Statistics panel display style';
 var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
+var PROPERTY_WND_STR = 'Normale|Piano';
+var EXPORT_DATAEXPORT = 'Importa/Esporta Dati';
 var EXPORT_TOFILE = 'Esporta su file';
 var EXPORT_FROMFILE = 'Importa da file';
 var EXPORT_TOSERV = 'Esporta su server';
@@ -40,8 +40,8 @@ var EXPORT_ERROR = 'Si sono verificati degli errori...';
 var EXPORT_NODATA = 'No data found for your account';
 var EXPORT_UPLOADED = 'Caricato con successo';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
+var EXPORT_ONLYOPT = 'Esporta/Importa solo opzioni';
+var EXPORT_ACCOUNT = 'Esporta account';
 var EXPORT_LOGINGGL = 'Login Using Google Account';
 var EXPORT_LOGINWCA = 'Accedi tramite account WCA';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
@@ -98,10 +98,10 @@ var PROPERTY_VRCMP = 'multi-fase';
 var PROPERTY_VRCMPS = 'Nessuno|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Mostra cubo Giiker virtuale';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Mai|Mischiato corretamente';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
+var PROPERTY_GIISOK_MOVES = 'U4,R4,etc|(U U\')2, (U\' U)2, etc|Mai';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
@@ -184,31 +184,31 @@ var scrdata = [
 		['SiGN', "666si", 80],
 		['prefisso', "666p", 80],
 		['suffisso', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['6x6x6 bordi', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['prefisso', "777p", 100],
+		['suffisso', "777s", 100],
+		['7x7x7 bordi', "7edge", 8]
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
-		['concise', "clkc", 0],
+		['Wca', "clkwca", 0],
+		['ottimale', "clko", 0],
+		['conciso', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['Carota', "mgmc", 70],
+		['vecchio stile', "mgmo", 70]
 	]],
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['stato casuale ottimale', "pyro", 0],
+		['mosse casuali', "pyrm", 25]
 	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
@@ -220,7 +220,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===ALTRO===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -228,9 +228,9 @@ var scrdata = [
 		['blank moves', "15pm", 80]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
+		['1x3x3 (Cubo Floppy)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],
-		['2x3x3 (Domino)', "233", 25],
+		['2x2x3 (Domino)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
 		['3x3x6', "336", 40],
@@ -241,8 +241,8 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal random state', "gearo", 0],
+		['stato casuale', "gearso", 0],
+		['stato casuale ottimale', "gearo", 0],
 		['3-gen', "gear", 10]
 	]],
 	['Cmetrick', [
@@ -259,19 +259,19 @@ var scrdata = [
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['vecchio', "redi", 20]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['vecchio stile', "prco", 70]
 	]],
-	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+	['Cubo Siamese', [
+		['Blocco 1x1x3', "sia113", 25],
+		['Blocco 1x2x3', "sia123", 25],
+		['Blocco 2x2x2', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -283,21 +283,21 @@ var scrdata = [
 		['twist metric', "ssq1t", 20]
 	]],
 	['UFO', [
-		['Jaap style', "ufo", 25]
+		['Stile Jaap', "ufo", 25]
 	]],
-	['Other', [
+	['Altro', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
 	['===SPECIALI===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
-		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
-		['3-generator R,r,U', "RrU", 25],
+		['2-generatore R,U', "2gen", 25],
+		['2-generatore L,U', "2genl", 25],
+		['Roux-generatore M,U', "roux", 25],
+		['3-generatore F,R,U', "3gen_F", 25],
+		['3-generatore R,U,L', "3gen_L", 25],
+		['3-generatore R,r,U', "RrU", 25],
 		['half turns only', "half", 25],
 		['last slot + last layer (old)', "lsll", 15]
 	]],
@@ -306,11 +306,11 @@ var scrdata = [
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
 	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
+		['2-generatore R,U', "minx2g", 30],
 		['last slot + last layer', "mlsll", 20]
 	]],
-	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
+	['Relay', [
+		['tanti 3x3x3', "r3", 5],
 		['234 relay', "r234", 0],
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
@@ -359,7 +359,7 @@ var STATS_SSMGR_TITLE = 'Gestore Sessioni';
 var STATS_SSMGR_NAME = 'Nome';
 var STATS_SSMGR_DETAIL = 'Dettagli sessione';
 var STATS_SSMGR_OPS = 'Rinomina|Crea|Dividi|Unisci|Elimina';
-var STATS_SSMGR_ORDER = 'Order by scramble';
+var STATS_SSMGR_ORDER = 'Ordina per scramble';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
 var STATS_ALERTMG = 'Unire tutti i tempi nella sessione [%f] alla fine della sessione [%t]?';
 var STATS_PROMPTSPL = 'Numero degli ultimi tempi da separare dalla sessione [%s]?';
@@ -377,8 +377,8 @@ var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
 var STATS_XSESSION_DATE = 'qualsiasi data|ultime 24 ore|ultimi 7 giorni|ultimi 30 giorni|ultimi 365 giorni';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
+var STATS_XSESSION_NAME = 'qualsiasi nome';
+var STATS_XSESSION_SCR = 'qualsiasi scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var PROPERTY_PRINTSCR = 'Stampa scramble(s) con le statistiche';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
@@ -391,10 +391,10 @@ var PROPERTY_STATINV = 'Lista tempi invertita';
 var PROPERTY_STATAL = 'Indicatori statistici';
 var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_DELMUL = 'Abilita eliminazione multipla';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_TOOLSFUNC = 'Funzione selezionata';
 var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
-var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
+var PROPERTY_TRIM_MED = 'Mediana';
+var PROPERTY_STKHEAD = 'Usa informationi sullo stato dello Stackmat';
 var MODULE_NAMES = {
 	"kernel": 'globale',
 	"ui": 'schermo',
