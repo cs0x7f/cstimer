@@ -450,6 +450,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					if (time == 0) {
 						continue;
 					}
+					if (m[2] == '' && m[3] == '' && /^\d+$/.exec(m[4])) {
+						time = ~~(time / (kernel.getProp('intUN') || 1));
+					}
 					if (m[1] == "DNF") {
 						ins = -1;
 					} else if (m[5] == "+" && time > 2000) {
@@ -1296,6 +1299,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')]);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100]);
 		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')], 1);
+		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [1, [1, 100, 1000], PROPERTY_INTUNIT_STR.split('|')], 1);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')]);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')]);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10]);
