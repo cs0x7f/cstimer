@@ -71,7 +71,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateBattery() {
 		if (GiikerCube.isConnected()) {
-			GiikerCube.getBatteryLevel().then(function(value) {
+			GiikerCube.getCube().getBatteryLevel().then(function(value) {
 				connectedStr = 'Connected | ' + value + '%';
 				connectClick.html(connectedStr);
 			});
@@ -190,8 +190,8 @@ var giikerutil = execMain(function(CubieCube) {
 	var movesAfterSolved = [];
 	var movesTimestamp = [];
 
-	function giikerCallback(facelet, prevMoves) {
-		var lastTimestamp = $.now();
+	function giikerCallback(facelet, prevMoves, lastTimestamp) {
+		lastTimestamp = lastTimestamp || $.now();
 		connectClick.html(connectedStr).removeClass('click').unbind('click');
 		currentRawState = facelet;
 		currentRawCubie.fromFacelet(currentRawState);
