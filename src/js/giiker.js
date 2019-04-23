@@ -186,15 +186,40 @@ var GiikerCube = execMain(function() {
 			}).then(loopRead);
 		}
 
-		var timeOffs;
 		var prevMoves;
-		var prevFacelet;
 		var prevCubie = new mathlib.CubieCube();
 		var curCubie = new mathlib.CubieCube();
+		var latestFacelet;
 		var timestamp;
-		var prevTimestamp;
+		var prevTimestamp = 0;
 		var moveCnt = -1;
 		var prevMoveCnt = -1;
+		var movesFromLastCheck = 1000;
+
+		function checkState() {
+			if (movesFromLastCheck < 50) {
+				return new Promise(function(resolve) {
+					resolve(false);
+				});
+			}
+			return _characteristic_f2.readValue().then(function(value) {
+				var state = [];
+				for (var i = 0; i < value.byteLength - 2; i += 3) {
+					var face = value.getUint8(i ^ 1) << 16 | value.getUint8(i + 1 ^ 1) << 8 | value.getUint8(i + 2 ^ 1);
+					for (var j = 21; j >= 0; j -= 3) {
+						state.push("URFDLB".charAt([face >> j & 0x7]));
+						if (j == 12) {
+							state.push("URFDLB".charAt(i / 3));
+						}
+					}
+				}
+				latestFacelet = state.join("");
+				movesFromLastCheck = 0;
+				return new Promise(function(resolve) {
+					resolve(true);
+				});
+			});
+		}
 
 		function loopRead() {
 			if (!_device) {
@@ -203,73 +228,71 @@ var GiikerCube = execMain(function() {
 			return _characteristic_f5.readValue().then(function(value) {
 				timestamp = $.now();
 				moveCnt = value.getUint8(12);
-				if (moveCnt != prevMoveCnt) {
-					prevMoves = [];
-					for (var i = 0; i < 6; i++) {
-						var m = value.getUint8(13 + i);
-						prevMoves.push("URFDLB".charAt(~~(m / 3)) + " 2'".charAt(m % 3));
-					}
-					prevMoves.reverse();
-				}
-				return _characteristic_f6.readValue();
-			}).then(function(value) {
 				if (moveCnt == prevMoveCnt) {
 					return;
 				}
-				timeOffs = [];
-				for (var i = 0; i < 9; i++) {
-					timeOffs.push(value.getUint8(i * 2 + 1) | value.getUint8(i * 2 + 2) << 8);
+				prevMoves = [];
+				for (var i = 0; i < 6; i++) {
+					var m = value.getUint8(13 + i);
+					prevMoves.unshift("URFDLB".charAt(~~(m / 3)) + " 2'".charAt(m % 3));
 				}
-				timeOffs.reverse();
-				return _characteristic_f2.readValue().then(function(value) {
-					parseState(value);
-				});
-			}).then(loopRead);
-		}
+				var f6val;
+				return _characteristic_f6.readValue().then(function(value) {
+					f6val = value;
+					return checkState();
+				}).then(function(isUpdated) {
+					if (isUpdated && prevMoveCnt == -1) {
+						callback(latestFacelet, prevMoves, timestamp);
+						prevCubie.fromFacelet(latestFacelet);
+						prevMoveCnt = moveCnt;
+						if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+							var rst = kernel.getProp('giiRST');
+							if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+								giikerutil.markSolved();
+							}
+						}
+						return;
+					}
 
-		function parseState(value) {
-			var state = [];
-			for (var i = 0; i < value.byteLength - 2; i += 3) {
-				var face = value.getUint8(i ^ 1) << 16 | value.getUint8(i + 1 ^ 1) << 8 | value.getUint8(i + 2 ^ 1);
-				for (var j = 21; j >= 0; j -= 3) {
-					state.push("URFDLB".charAt([face >> j & 0x7]));
-					if (j == 12) {
-						state.push("URFDLB".charAt(i / 3));
+					var timeOffs = [];
+					for (var i = 0; i < 9; i++) {
+						timeOffs.unshift(f6val.getUint8(i * 2 + 1) | f6val.getUint8(i * 2 + 2) << 8);
 					}
-				}
-			}
-			var facelet = state.join("");
-			if (prevMoveCnt == -1) { //initialization
-				callback(facelet, prevMoves, timestamp);
-				if (facelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
-					var rst = kernel.getProp('giiRST');
-					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
-						giikerutil.markSolved();
+
+					var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
+					prevMoveCnt = moveCnt;
+					movesFromLastCheck += moveDiff;
+					if (moveDiff > 6) {
+						movesFromLastCheck = 50;
+						moveDiff = 6;
 					}
-				}
-			} else {
-				//TODO: error detection, timestamp correction
-				var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
-				var callbackCache = [];
-				var _timestamp = timestamp;
-				curCubie.fromFacelet(facelet);
-				for (var i = 0; i < moveDiff; i++) {
-					callbackCache.push([curCubie.toFaceCube(), prevMoves.slice(i), _timestamp]);
-					_timestamp -= timeOffs[i];
-					var invm = "URFDLB".indexOf(prevMoves[i][0]) + "'2 ".indexOf(prevMoves[i][1]);
-					mathlib.CubieCube.EdgeMult(curCubie, mathlib.CubieCube.moveCube[invm], prevCubie);
-					mathlib.CubieCube.CornMult(curCubie, mathlib.CubieCube.moveCube[invm], prevCubie);
-					var tmp = curCubie;
-					curCubie = prevCubie;
-					prevCubie = tmp;
-				}
-				callbackCache.reverse();
-				for (var i = 0; i < moveDiff; i++) {
-					callback.apply(this, callbackCache[i]);
-				}
-			}
-			prevTimestamp = timestamp;
-			prevMoveCnt = moveCnt;
+					var _timestamp = prevTimestamp;
+					for (var i = moveDiff - 1; i >= 0; i--) {
+						_timestamp += timeOffs[i];
+					}
+					if (Math.abs(_timestamp - timestamp) > 2000) {
+						console.log('[gancube]', 'time adjust', timestamp - _timestamp, '@', timestamp);
+						prevTimestamp += timestamp - _timestamp;
+					}
+
+					for (var i = moveDiff - 1; i >= 0; i--) {
+						var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + " 2'".indexOf(prevMoves[i][1]);
+						mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+						mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+						prevTimestamp += timeOffs[i];
+						callback(curCubie.toFaceCube(), prevMoves.slice(i), prevTimestamp);
+						var tmp = curCubie;
+						curCubie = prevCubie;
+						prevCubie = tmp;
+					}
+					if (isUpdated && prevCubie.toFaceCube() != latestFacelet) {
+						console.log('[gancube]', 'Cube state check error');
+						console.log('[gancube]', 'calc', prevCubie.toFaceCube());
+						console.log('[gancube]', 'read', latestFacelet);
+						prevCubie.fromFacelet(latestFacelet);
+					}
+				});
+			}).then(loopRead);;
 		}
 
 		function getBatteryLevel() {
