@@ -256,7 +256,8 @@ var GiikerCube = execMain(function() {
 
 					var timeOffs = [];
 					for (var i = 0; i < 9; i++) {
-						timeOffs.unshift(f6val.getUint8(i * 2 + 1) | f6val.getUint8(i * 2 + 2) << 8);
+						var off = f6val.getUint8(i * 2 + 1) | f6val.getUint8(i * 2 + 2) << 8;
+						timeOffs.unshift(~~(off / 0.95));
 					}
 
 					var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
