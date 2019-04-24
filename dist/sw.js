@@ -7,6 +7,8 @@ var urlsToCache = [
 	'css/style.css'
 ];
 
+var langUrlRe = /^(.*(\/|timer.php))\?lang=.*$/;
+
 self.addEventListener('install', function(event) {
 	event.waitUntil(
 		caches.open(CACHE_NAME)
@@ -23,7 +25,14 @@ self.addEventListener('fetch', function(event) {
 			if (response) {
 				return response;
 			}
-			return fetch(event.request);
+			return fetch(event.request).then(function(response) {
+				if (langUrlRe.exec(event.request.url)) {
+					caches.open(CACHE_NAME).then(function(cache) {
+						cache.put(langUrlRe.exec(event.request.url)[1], response);
+					});
+				}
+				return response.clone();
+			});
 		})
 	);
 });
@@ -42,4 +51,4 @@ self.addEventListener('activate', function(event) {
 	);
 });
 
-var CACHE_NAME = "cstimer_cache_07edaa74b299b18fddefddcfd86953b8";
+var CACHE_NAME = "cstimer_cache_9fa69f40fd99c8254a102270ca9dab3e";

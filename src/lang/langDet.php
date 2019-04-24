@@ -19,8 +19,10 @@ function prefered_language($available_languages, $req_lang) {
   return 'en-us';
 }
 
-if(isset($_REQUEST["lang"]) && !empty($_REQUEST["lang"])) {
+if (isset($_REQUEST["lang"]) && !empty($_REQUEST["lang"])) {
   $req_lang = $_REQUEST['lang'];
+} else if (isset($_COOKIE["lang"]) && !empty($_COOKIE["lang"])) {
+  $req_lang = $_COOKIE['lang'];
 } else {
   $req_lang = "auto";
 }

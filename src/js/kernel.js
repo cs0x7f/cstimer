@@ -365,7 +365,17 @@ var kernel = execMain(function() {
 			}
 			setProp('lang', curLang);
 		}, /^lang$/);
-	})
+                if ($.urlParam('lang')) {
+                        var langParam = "lang=" + $.urlParam('lang');
+                        document.cookie = langParam + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+                        var curLoc = location.href.replace(langParam, '').replace(/\?$/, '');
+                        if (history && history.pushState) {
+                                history.pushState(undefined, undefined, curLoc);
+                        } else {
+                                location.href = curLoc;
+                        }
+                }
+	});
 
 	var ui = (function() {
 
