@@ -467,6 +467,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		assistant.update();
 		distribution.update();
 		trend.update();
+		periodStats.update();
 		genAvgSignal(times.length - 1);
 	}
 
@@ -1668,6 +1669,151 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 	})();
+
+
+	var periodStats = (function() {
+
+		var dateSelect = $('<select>').append(
+			$('<option>').val(1).html('1 day'),
+			$('<option>').val(7).html('7 days'),
+			$('<option>').val(30).html('30 days'),
+			$('<option>').val(365).html('365 days')
+		).val(1);
+
+		var sodSelect = $('<select>');
+		for (var i = 0; i < 24; i++) {
+			var hh = ('0' + i).slice(-2) + ':00';
+			sodSelect.append($('<option>').val(hh).html(hh));
+		}
+
+		var offset = +new Date('2012-02-21 00:00:00') / 1000 % 86400;
+		var statResult = [];
+		var period = 1;
+		var curPeriod = ~~((+new Date / 1000 - offset) / 86400 / period);
+		var curPeriod0 = curPeriod;
+		var n_col = 3;
+		var nextTd = $('<td class="click">').html('&gt;');
+		var prevTd = $('<td class="click">').html('&lt;');
+		var incTd = $('<td class="click">').html('+');
+		var decTd = $('<td class="click">').html('-');
+		var emptyTd = $('<td colspan=1>');
+
+		function genPeriodStat() {
+			var loadproc = Promise.resolve();
+			var stats = [];
+			var sessionN = ~~kernel.getProp('sessionN');
+			for (var i = 0; i < sessionN; i++) {
+				var idx = sessionManager.rank2idx(i + 1);
+				loadproc = loadproc.then((function(idx) {
+					return new Promise(function(resolve) {
+						storage.get(idx, function(newTimes) {
+							stats[idx] = {}
+							for (var i = 0; i < newTimes.length; i++) {
+								if (!newTimes[i][3]) {
+									continue;
+								}
+								var periodIdx = ~~((newTimes[i][3] - offset) / 86400 / period);
+								stats[idx][periodIdx] = stats[idx][periodIdx] || [0, 0];
+								stats[idx][periodIdx][0] += 1;
+								stats[idx][periodIdx][1] += newTimes[i][0][0] != -1;
+							}
+							resolve();
+						});
+					});
+				}).bind(undefined, idx));
+			}
+			return loadproc.then(function() {
+				statResult = stats;
+			});
+		}
+
+		function procClick(e) {
+			var val = $(e.target).html();
+			if (val == '&gt;') {
+				curPeriod--;
+			} else if (val == '&lt;') {
+				curPeriod = Math.min(curPeriod + 1, curPeriod0);
+			} else if (val == '+') {
+				n_col++;
+			} else if (val == '-') {
+				n_col = Math.max(1, n_col - 1);
+			}
+			genDiv();
+		}
+
+		function selectPeriod() {
+			period = dateSelect.val();
+			curPeriod = ~~((+new Date / 1000 - offset) / 86400 / period);
+			curPeriod0 = curPeriod;
+			update();
+		}
+
+		function setSOD() {
+			var sod = +new Date('2012-02-21 ' + sodSelect.val() + ':00');
+			offset = sod / 1000 % 86400;
+			update();
+		}
+
+		function genDiv() {
+			var table = $('<table class="table">');
+			toolDiv.empty().append(
+				'Period', dateSelect.unbind('change').change(selectPeriod),
+				' Start of day', sodSelect.unbind('change').change(setSOD),
+				'<br>', table);
+			var sessionData = JSON.parse(kernel.getProp('sessionData'));
+			var sessionN = ~~kernel.getProp('sessionN');
+
+			var tr0 = $('<tr>').append(prevTd.unbind('click').click(procClick), nextTd.unbind('click').click(procClick));
+			var tr1 = $('<tr>').append(incTd.unbind('click').click(procClick), decTd.unbind('click').click(procClick));
+			for (var i = 0; i < n_col; i++) {
+				tr0.append($('<td rowspan=2>').html(mathlib.time2str((curPeriod - i) * period * 86400 + offset).replace(' ', '<br>')));
+			}
+			table.append(tr0, tr1);
+			for (var i = 0; i < sessionN; i++) {
+				var idx = sessionManager.rank2idx(i + 1);
+				if (Object.keys(statResult[idx]).length == 0) {
+					continue;
+				}
+				var tr = $('<tr>').append($('<td colspan=2>').html(sessionData[idx]['name']));
+				for (var j = 0; j < n_col; j++) {
+					var data = statResult[idx][curPeriod - j];
+					tr.append($('<td>').html(data ? (data[1] + '/' + data[0]) : '-'));
+				}
+				table.append(tr);
+			}
+		}
+
+		var enabled = false;
+
+		function execFunc(fdiv, signal) {
+			enabled = !!fdiv;
+			if (!fdiv || /^scr/.exec(signal)) {
+				return;
+			}
+			fdiv.empty().append(toolDiv);
+			update();
+		}
+
+		function update() {
+			if (enabled) {
+				genPeriodStat().then(genDiv);
+			}
+		}
+
+		var toolDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em');
+
+		$(function() {
+			if (typeof tools != "undefined") {
+				tools.regTool('dlystat', 'Daily Statistics', execFunc);
+			}
+			kernel.regListener('dlystat', 'property', genDiv, /^sessionData$/);
+		});
+
+		return {
+			update: update
+		}
+	})();
+
 
 	function clearText() {
 		stext.val('');
