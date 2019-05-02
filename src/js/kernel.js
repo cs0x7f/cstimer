@@ -365,16 +365,11 @@ var kernel = execMain(function() {
 			}
 			setProp('lang', curLang);
 		}, /^lang$/);
-                if ($.urlParam('lang')) {
-                        var langParam = "lang=" + $.urlParam('lang');
-                        document.cookie = langParam + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-                        var curLoc = location.href.replace(langParam, '').replace(/\?$/, '');
-                        if (history && history.pushState) {
-                                history.pushState(undefined, undefined, curLoc);
-                        } else {
-                                location.href = curLoc;
-                        }
-                }
+		if ($.urlParam('lang')) {
+			var langParam = "lang=" + $.urlParam('lang');
+			document.cookie = langParam + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+			$.clearUrl('lang');
+		}
 	});
 
 	var ui = (function() {
@@ -761,11 +756,7 @@ var kernel = execMain(function() {
 		function hashChange() {
 			if (importColor(window.location.hash)) {
 				property.set('color', 'u');
-				if (history && history.replaceState) {
-					history.replaceState(undefined, undefined, window.location.pathname + window.location.search);
-				} else {
-					window.location.hash = '';
-				}
+				$.clearHash();
 			}
 		}
 
@@ -1181,14 +1172,10 @@ var kernel = execMain(function() {
 			if (!newOpt) {
 				return false;
 			}
-			if (newOpt['wcaData']) {
-				localStorage['wcaData'] = newOpt['wcaData'];
-			}
-			if (newOpt['gglData']) {
-				localStorage['gglData'] = newOpt['gglData'];
-			}
-			if (newOpt['locData']) {
-				localStorage['locData'] = newOpt['locData'];
+			for (var key in expOpt) {
+				if (newOpt[key]) {
+					localStorage[key] = newOpt[key];
+				}
 			}
 			location.reload();
 			return false;
@@ -1250,25 +1237,6 @@ var kernel = execMain(function() {
 			updateUserInfoFromGGL();
 		}
 
-		function cleanupWCACode(code) {
-			var curLoc = location.href.replace('code=' + code, '').replace(/\?$/, '');
-			if (history && history.pushState) {
-				history.pushState(undefined, undefined, curLoc);
-			} else {
-				location.href = curLoc;
-			}
-			updateUserInfoFromWCA();
-		}
-
-		function cleanupGGLHash() {
-			if (history && history.replaceState) {
-				history.replaceState(undefined, undefined, window.location.pathname + window.location.search);
-			} else {
-				window.location.hash = '';
-			}
-			updateUserInfoFromGGL();
-		}
-
 		$(function() {
 			ui.addButton('export', BUTTON_EXPORT, showExportDiv, 2);
 			exportDiv.append('<br>',
@@ -1298,7 +1266,6 @@ var kernel = execMain(function() {
 			}
 
 			if ($.urlParam('code')) { //WCA oauth
-				var code = $.urlParam('code');
 				wcaDataTd.html(EXPORT_LOGINAUTHED);
 				$.post('oauthwca.php', {
 					'code': $.urlParam('code')
@@ -1313,7 +1280,8 @@ var kernel = execMain(function() {
 					alert(EXPORT_ERROR);
 					logoutFromWCA();
 				}).always(function() {
-					cleanupWCACode(code);
+					updateUserInfoFromWCA();
+					$.clearUrl('code');
 				});
 				showExportDiv();
 			} else {
@@ -1344,7 +1312,8 @@ var kernel = execMain(function() {
 					}
 					logoutFromGGL();
 				}).always(function() {
-					cleanupGGLHash(code);
+					updateUserInfoFromGGL();
+					$.clearHash();
 				});
 				showExportDiv();
 			} else {
@@ -1552,4 +1521,3 @@ var kernel = execMain(function() {
 		round: round
 	};
 });
- 

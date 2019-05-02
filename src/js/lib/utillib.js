@@ -94,6 +94,30 @@ execMain(function() {
 		}
 	}
 
+	$.clearUrl = function(name) {
+		var results = new RegExp('[\?&](' + name + '=[^&#]*&?)').exec(window.location.href);
+		var result = name ?
+			location.href.replace(results[1], '').replace(/\?$/, '') :
+			location.pathname;
+		if (history && history.replaceState) {
+			history.replaceState(undefined, undefined, result);
+		} else {
+			location.href = result;
+		}
+	}
+
+	$.clearHash = function(name) {
+		var results = new RegExp('[#&](' + name + '=[^&#]*&?)').exec(window.location.href);
+		var result = name ?
+			location.href.replace(results[1], '').replace(/#$/, '') :
+			location.pathname + location.search;
+		if (history && history.replaceState) {
+			history.replaceState(undefined, undefined, result);
+		} else {
+			location.href = result;
+		}
+	}
+
 	if ('serviceWorker' in navigator) {
 		$(function() {
 			navigator.serviceWorker.register('sw.js');
