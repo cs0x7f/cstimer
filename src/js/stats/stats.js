@@ -1771,7 +1771,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			table.append(tr0, tr1);
 			for (var i = 0; i < sessionN; i++) {
 				var idx = sessionManager.rank2idx(i + 1);
-				if (Object.keys(statResult[idx]).length == 0) {
+				if (Object.keys(statResult[idx] || {}).length == 0) {
 					continue;
 				}
 				var tr = $('<tr>').append($('<td colspan=2>').html(sessionData[idx]['name']));
@@ -1800,7 +1800,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 		}
 
-		var toolDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em');
+		var toolDiv = $('<div />').css('text-align', 'center').css({
+			'font-size': '0.7em',
+			'max-height': '20em',
+			'overflow-y': 'auto'
+		});
 
 		$(function() {
 			if (typeof tools != "undefined") {
