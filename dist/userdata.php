@@ -29,7 +29,7 @@
 			echo '{"retcode":500}';
 		}
 	} else {//GET
-		error_log("[" . date("Y-m-d H:i:sO") . "] GET " . $_POST['id'] . strlen($_POST['data']) . "\n", 3, CSTIMER_USERDATA_LOGFILE);
+		error_log("[" . date("Y-m-d H:i:sO") . "] GET " . $_POST['id'] . "\n", 3, CSTIMER_USERDATA_LOGFILE);
 		$ret = $redis->get(CSTIMER_PREFIX . $_POST['id']);
 		if ($ret === false) {
 			echo '{"retcode":404}';
