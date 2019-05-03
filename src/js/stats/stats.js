@@ -1674,29 +1674,68 @@ var stats = execMain(function(kpretty, round, kpround) {
 	var periodStats = (function() {
 
 		var dateSelect = $('<select>').append(
-			$('<option>').val(1).html('1 day'),
-			$('<option>').val(7).html('7 days'),
-			$('<option>').val(30).html('30 days'),
-			$('<option>').val(365).html('365 days')
-		).val(1);
+			$('<option>').val('d').html('day'),
+			$('<option>').val('w').html('week'),
+			$('<option>').val('m').html('month'),
+			$('<option>').val('y').html('year')
+		).val('d');
 
 		var sodSelect = $('<select>');
 		for (var i = 0; i < 24; i++) {
 			var hh = ('0' + i).slice(-2) + ':00';
-			sodSelect.append($('<option>').val(hh).html(hh));
+			sodSelect.append($('<option>').val(i).html(hh));
 		}
 
-		var offset = +new Date('2012-02-21 00:00:00') / 1000 % 86400;
+		var sowSelect = $('<select>').append(
+			$('<option>').val(3).html('Sun'),
+			$('<option>').val(4).html('Mon'),
+			$('<option>').val(5).html('Tue'),
+			$('<option>').val(6).html('Wed'),
+			$('<option>').val(0).html('Thu'),
+			$('<option>').val(1).html('Fri'),
+			$('<option>').val(2).html('Sat'),
+		).val(3);
+
 		var statResult = [];
-		var period = 1;
-		var curPeriod = ~~((+new Date / 1000 - offset) / 86400 / period);
-		var curPeriod0 = curPeriod;
+		var offset;
+		var period;
+		var curPidx;
+		var idxPrev = 0;
 		var n_col = 3;
+
 		var nextTd = $('<td class="click">').html('&gt;');
 		var prevTd = $('<td class="click">').html('&lt;');
 		var incTd = $('<td class="click">').html('+');
 		var decTd = $('<td class="click">').html('-');
 		var emptyTd = $('<td colspan=1>');
+
+		function getPidx(timestamp) {
+			timestamp -= offset;
+			var date = new Date(timestamp * 1000);
+			switch (period) {
+				case 'd':
+					return ~~(timestamp / 86400);
+				case 'w':
+					return ~~((timestamp / 86400 - sowSelect.val()) / 7);
+				case 'm':
+					return date.getFullYear() * 12 + date.getMonth();
+				case 'y':
+					return date.getFullYear();
+			}
+		}
+
+		function pidx2str(pidx) {
+			switch (period) {
+				case 'd':
+					return mathlib.time2str(pidx * 86400 + offset, '%Y-%M-%D');
+				case 'w':
+					return mathlib.time2str((pidx * 7 + ~~sowSelect.val()) * 86400 + offset, 'Start@ %Y-%M-%D');
+				case 'm':
+					return ~~(pidx / 12) + "-" + ("0" + (pidx % 12 + 1)).slice(-2);
+				case 'y':
+					return "" + pidx;
+			}
+		}
 
 		function genPeriodStat() {
 			var loadproc = Promise.resolve();
@@ -1712,7 +1751,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 								if (!newTimes[i][3]) {
 									continue;
 								}
-								var periodIdx = ~~((newTimes[i][3] - offset) / 86400 / period);
+								var periodIdx = getPidx(newTimes[i][3]);
 								stats[idx][periodIdx] = stats[idx][periodIdx] || [0, 0];
 								stats[idx][periodIdx][0] += 1;
 								stats[idx][periodIdx][1] += newTimes[i][0][0] != -1;
@@ -1730,9 +1769,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function procClick(e) {
 			var val = $(e.target).html();
 			if (val == '&gt;') {
-				curPeriod--;
+				idxPrev--;
 			} else if (val == '&lt;') {
-				curPeriod = Math.min(curPeriod + 1, curPeriod0);
+				idxPrev = Math.min(idxPrev + 1, 0);
 			} else if (val == '+') {
 				n_col++;
 			} else if (val == '-') {
@@ -1741,24 +1780,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 			genDiv();
 		}
 
-		function selectPeriod() {
-			period = dateSelect.val();
-			curPeriod = ~~((+new Date / 1000 - offset) / 86400 / period);
-			curPeriod0 = curPeriod;
-			update();
-		}
-
-		function setSOD() {
-			var sod = +new Date('2012-02-21 ' + sodSelect.val() + ':00');
-			offset = sod / 1000 % 86400;
-			update();
-		}
-
 		function genDiv() {
 			var table = $('<table class="table">');
 			toolDiv.empty().append(
-				'Period', dateSelect.unbind('change').change(selectPeriod),
-				' Start of day', sodSelect.unbind('change').change(setSOD),
+				'Period', dateSelect.unbind('change').change(update),
+				' Start of day', sodSelect.unbind('change').change(update),
+				' week', sowSelect.unbind('change').change(update),
 				'<br>', table);
 			var sessionData = JSON.parse(kernel.getProp('sessionData'));
 			var sessionN = ~~kernel.getProp('sessionN');
@@ -1766,7 +1793,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var tr0 = $('<tr>').append(prevTd.unbind('click').click(procClick), nextTd.unbind('click').click(procClick));
 			var tr1 = $('<tr>').append(incTd.unbind('click').click(procClick), decTd.unbind('click').click(procClick));
 			for (var i = 0; i < n_col; i++) {
-				tr0.append($('<td rowspan=2>').html(mathlib.time2str((curPeriod - i) * period * 86400 + offset).replace(' ', '<br>')));
+				tr0.append($('<td rowspan=2>').html(pidx2str(curPidx - i + idxPrev).replace(' ', '<br>')));
 			}
 			table.append(tr0, tr1);
 			for (var i = 0; i < sessionN; i++) {
@@ -1776,7 +1803,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 				var tr = $('<tr>').append($('<td colspan=2>').html(sessionData[idx]['name']));
 				for (var j = 0; j < n_col; j++) {
-					var data = statResult[idx][curPeriod - j];
+					var data = statResult[idx][curPidx - j + idxPrev];
 					tr.append($('<td>').html(data ? (data[1] + '/' + data[0]) : '-'));
 				}
 				table.append(tr);
@@ -1796,6 +1823,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function update() {
 			if (enabled) {
+				period = dateSelect.val();
+				offset = sodSelect.val() * 3600 + (new Date().getTimezoneOffset() * 60);
+				curPidx = getPidx(+new Date / 1000);
 				genPeriodStat().then(genDiv);
 			}
 		}
