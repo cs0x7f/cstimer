@@ -1,15 +1,15 @@
-var OK_LANG = 'OK';
+var OK_LANG = 'Ok';
 var CANCEL_LANG = 'Cancelar';
 var RESET_LANG = 'Reiniciar';
 var ABOUT_LANG = 'Sobre';
-var ZOOM_LANG = 'Zoom';
+var ZOOM_LANG = 'Ampliar';
 var BUTTON_TIME_LIST = 'LISTAR<br>TEMPOS';
 var BUTTON_OPTIONS = 'OPÇÕES';
 var BUTTON_EXPORT = 'EXPORTAR';
 var BUTTON_DONATE = 'DOAR';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'usar inspeção da WCA';
-var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
+var PROPERTY_USEINS_STR = 'Sempre|Exceto BLD|Nunca';
 var PROPERTY_VOICEINS = 'aviso de voz da inspeção da WCA';
 var PROPERTY_VOICEINS_STR = 'nenhuma|voz masculina|voz feminina';
 var PROPERTY_VOICEVOL = 'Voice volume';
@@ -22,18 +22,18 @@ var PROPERTY_SCRMONO = 'embaralhamento com espaços';
 var PROPERTY_SCRLIM = 'Limitar a altura da área de embaralhamento';
 var PROPERTY_SCRALIGN = 'Alinhamento da área do embaralhamento';
 var PROPERTY_SCRALIGN_STR = 'centro|esquerda|direita';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
+var PROPERTY_SCRFAST = 'Usando embaralhamento rápido para 4x4x4 (não-oficial)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
-var PROPERTY_WNDSCR = 'Scramble panel display style';
-var PROPERTY_WNDSTAT = 'Statistics panel display style';
-var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
+var PROPERTY_WNDSCR = 'Estilo do painel de exibição do embaralhamento';
+var PROPERTY_WNDSTAT = 'Estilo do painel de estatísticas';
+var PROPERTY_WNDTOOL = 'Estilo do painel de ferramentas';
+var PROPERTY_WND_STR = 'Normal|Reduzido';
 var EXPORT_DATAEXPORT = 'Dados Importar/Exportar';
 var EXPORT_TOFILE = 'Exportar como arquivo';
 var EXPORT_FROMFILE = 'Importar arquivo';
 var EXPORT_TOSERV = 'Exportar para o servidor';
 var EXPORT_FROMSERV = 'Importar do servidor';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
+var EXPORT_FROMOTHER = 'Importar sessão(ões) de outros timers';
 var EXPORT_USERID = 'Por favor coloque sua conta (apenas alfabeto ou números)';
 var EXPORT_INVID = 'Apenas alfabeto ou números são permitidos!';
 var EXPORT_ERROR = 'Alguns erros ocorreram...';
@@ -57,11 +57,11 @@ var TOOLS_ROUX1 = 'resolver o Roux S1';
 var TOOLS_GIIKER = 'cubo Giiker';
 var TOOLS_IMAGE = 'desenhar o embaralhamento';
 var TOOLS_STATS = 'Estatíticas';
-var TOOLS_HUGESTATS = 'cross-session stats';
+var TOOLS_HUGESTATS = 'estatísticas de sessão cruzada';
 var TOOLS_DISTRIBUTION = 'Distribuição dos tempos';
 var TOOLS_TREND = 'Gráfico dos tempos';
 var TOOLS_METRONOME = 'Metrônomo';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_CFMTIME = 'Confirmar tempo';
 var PROPERTY_IMGSIZE = 'Tamanho da imagem do embaralhamento';
 var TIMER_INSPECT = 'inspecionando...';
 var TIMER_SOLVE = 'resolvendo!';
@@ -79,8 +79,8 @@ var PROPERTY_VIEW = 'formato do site';
 var PROPERTY_VIEW_STR = 'Automático|Mobile|Desktop';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
-var COLOR_EXPORT = 'Please save the string for import';
-var COLOR_IMPORT = 'Please input the string exported';
+var COLOR_EXPORT = 'Por favor, salve a String para importar';
+var COLOR_IMPORT = 'Por favor, insira a String que foi exportada';
 var COLOR_FAIL = 'Informação Incorreta. A importação falhou! :(';
 var PROPERTY_FONTCOLOR_STR = 'preto|branco';
 var PROPERTY_COLOR_STR = 'manual|importar/exportar...|aleatório|estilo 1|estilo 2|estilo 3|preto|branco|estilo 6|solarized dark|solarized light';
@@ -107,7 +107,7 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Nunca';
 var PROPERTY_GIISBEEP = 'Apitar quando estiver embaralhado';
 var PROPERTY_GIIRST = 'Resetar cubo Giiker quando conectado';
 var PROPERTY_GIIRSTS = 'Sempre|Perguntar|Nunca';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
+var CONFIRM_GIIRST = 'Reiniciar cubo Giiker assim que for resolvido?';
 var PROPERTY_GIIAED = 'Detecção de erro de hardware automática';
 var scrdata = [
 	['WCA', [
@@ -117,20 +117,20 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
-		['3x3 ft', "333ft", 0],
-		['clock', "clkwca", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
-		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['3x3x3 BLD', "333ni", 0],
+		['3x3x3 FM', "333fm", 0],
+		['3x3x3 OH', "333oh", 0],
+		['3x3x3 com os pés', "333ft", 0],
+		['Clock', "clkwca", 0],
+		['Megaminx', "mgmp", -70],
+		['Pyraminx', "pyrso", -10],
+		['Skewb', "skbso", 0],
+		['Square-1', "sqrs", 0],
+		['4x4x4 BLD', "444bld", -40],
+		['5x5x5 BLD', "555bld", -60],
+		['3x3x3 multi BLD', "r3ni", 5]
 	]],
-	['Input', [
+	['Entrada', [
 		['??', "input", 0]
 	]],
 	['===WCA===', [
@@ -138,10 +138,10 @@ var scrdata = [
 	]],
 	['3x3x3', [
 		["WCA", "333", 0],
-		['old style', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['Estilo antigo', "333o", 25],
+		['3x3x3 para novatos', "333noob", 25],
+		['Apenas meios', "edges", 0],
+		['Apenas cantos', "corners", 0],
 		['last layer', "ll", 0],
 		['zb last layer', "zbll", 0],
 		['corners of last layer', "cll", 0],
@@ -161,10 +161,10 @@ var scrdata = [
 	]],
 	['2x2x2', [
 		["WCA", "222so", 0],
-		['optimal random state', "222o", 0],
+		['Random State otimizado', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
-		['EG0', "222eg0", 0],
+		['EG-0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0]
 	]],
@@ -209,8 +209,8 @@ var scrdata = [
 	]],
 	['Pyraminx', [
 		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		['Random State otimizado', "pyro", 0],
+		['Movimentos Aleatórios', "pyrm", 25]
 	]],
 	['Skewb', [
 		["WCA", "skbso", 0],
@@ -219,13 +219,13 @@ var scrdata = [
 	['Square-1', [
 		["WCA", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['Métrica por Giros de Face', "sq1h", 40],
+		['Métrica por Giros de barra', "sq1t", 20]
 	]],
 	['===OUTRO===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
+	['15-puzzle (sliding)', [
 		['piece moves', "15p", 80],
 		['blank moves', "15pm", 80]
 	]],
@@ -290,7 +290,7 @@ var scrdata = [
 	['Other', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['===ESPECIAIS===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
@@ -322,7 +322,7 @@ var scrdata = [
 		['23456 relay(wca)', "r23456w", 0],
 		['234567 relay(wca)', "r234567w", 0]
 	]],
-	['===JOKES===', [
+	['===ZUEIRAS===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -348,12 +348,12 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' 90 graus no sentido horário,| 90 graus no sentido anti-horário,|  180 graus,';
 var STATS_CFM_RESET = 'apagar todos os tempos desta sessão??????';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_DELSS = 'Deletar a sessão [%s]????';
 var STATS_CFM_DELMUL = 'Deletar quantas solves a partir do índice atual?';
 var STATS_CFM_DELETE = 'deletar este tempo?';
 var STATS_COMMENT = 'Comentário';
-var STATS_DATE = 'Date';
-var STATS_CURROUND = 'Current Round Statistics';
+var STATS_DATE = 'Data';
+var STATS_CURROUND = 'Estatísticas do round atual';
 var STATS_CURSESSION = 'Estatísticas atuais da sessão';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
