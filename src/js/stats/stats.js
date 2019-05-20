@@ -1781,6 +1781,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function genDiv() {
+			if (!enabled) {
+				return;
+			}
 			var table = $('<table class="table">');
 			toolDiv.empty().append(
 				'Period', dateSelect.unbind('change').change(update),
