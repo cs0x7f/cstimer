@@ -246,6 +246,8 @@ var giikerutil = execMain(function(CubieCube) {
 		GiikerCube.setCallBack(giikerCallback);
 		if (!GiikerCube.isConnected()) {
 			return GiikerCube.init();
+		} else {
+			return Promise.resolve();
 		}
 	}
 

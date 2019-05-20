@@ -315,7 +315,7 @@ var GiikerCube = execMain(function() {
 
 		if (!window.navigator || !window.navigator.bluetooth) {
 			alert("Bluetooth API is not available. Ensure https access, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled");
-			return;
+			return Promise.resolve();
 		}
 
 		return window.navigator.bluetooth.requestDevice({
@@ -333,6 +333,8 @@ var GiikerCube = execMain(function() {
 			} else if (device.name.startsWith('GAN')) {
 				cube = GanCube;
 				return GanCube.init(device);
+			} else {
+				return Promise.resolve();
 			}
 		});
 	}
