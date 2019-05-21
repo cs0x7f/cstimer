@@ -1,5 +1,5 @@
 <?php
-$version = "2019.01.06";
+$version = "2019.05.21";
 
 function prefered_language($available_languages, $req_lang) {
   if ($req_lang == "auto" && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -118,6 +118,7 @@ if ($lang == "en-us") { ?>
   <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } ?>
   <script type="text/javascript">
+var CSTIMER_VERSION = '<?php echo $version; ?>';
 var LANG_SET = '|en-us|ca-es|cs-cz|da-dk|de-de|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|pl-pl|pt-pt|ro-ro|ru-ru|sr-sp|sv-se|tr-tr|uk-ua|vi-vn|zh-cn|zh-tw';
 var LANG_STR = 'English|Català|Čeština|Dansk|Deutsch|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Polski|Português|Română|Pусский|English|Svenska|Türkçe|Українська|Tiếng Việt|简体中文|繁體中文';
 var LANG_CUR = '<?php echo $lang; ?>';
