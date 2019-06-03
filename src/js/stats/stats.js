@@ -1578,7 +1578,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 					loadSession(value[1]);
 				} else if (value[0] == 'sessionData') {
 					sessionData = JSON.parse(value[1]);
-					fixSessionSelect();
+					if (value[2] != 'set') {
+						fixSessionSelect();
+					}
+				} else if (value[0] == 'sessionN') {
+					sessionIdxMax = value[1];
 				} else if (value[0] == 'scrType' || value[0] == 'phases') {
 					if (value[0] == 'scrType') {
 						curScrType = value[1];
