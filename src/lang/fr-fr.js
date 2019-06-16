@@ -45,7 +45,7 @@ var EXPORT_ACCOUNT = 'Exporter les comptes';
 var EXPORT_LOGINGGL = 'S\'enregistrer en utilisant un compte Google';
 var EXPORT_LOGINWCA = 'S\'enregistrer en utilisant un compte WCA';
 var EXPORT_LOGOUTCFM = 'Confirmez-vous la déconnexion?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_LOGINAUTHED = 'Autorisé<br>Récupération des données...';
 var IMPORT_FINAL_CONFIRM = 'Ceci va engendrer une perte des donnés locale ! Confirmer l\'import des données ?';
 var BUTTON_SCRAMBLE = 'MELA-<br>NGE';
 var BUTTON_TOOLS = 'OUTILS';
@@ -285,7 +285,7 @@ var scrdata = [
 		['twist metric', "ssq1t", 20]
 	]],
 	['UFO', [
-		['Jaap style', "ufo", 25]
+		['Style Jaap', "ufo", 25]
 	]],
 	['Autre', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]

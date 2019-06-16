@@ -11,6 +11,7 @@ advanced = -O ADVANCED
 debugoff = --define='DEBUGM=false' --define='DEBUGWK=false'
 timerSrc = $(addprefix $(src)/js/, \
 lib/utillib.js \
+lib/sha256.js \
 lib/mathlib.js \
 lib/sbtree.js \
 lib/sqlfile.js \

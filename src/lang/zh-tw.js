@@ -7,7 +7,7 @@ var BUTTON_TIME_LIST = '列出<br>時間';
 var BUTTON_OPTIONS = '設定';
 var BUTTON_EXPORT = '匯出';
 var BUTTON_DONATE = '資助<br>我們';
-var PROPERTY_SR = '跟隨階段';
+var PROPERTY_SR = '隨階段調整';
 var PROPERTY_USEINS = '使用WCA觀察';
 var PROPERTY_USEINS_STR = '永遠|除了盲解|永不';
 var PROPERTY_VOICEINS = 'WCA觀察人聲提醒';
@@ -70,14 +70,14 @@ var PROPERTY_TIMEU = '時間更新頻率';
 var PROPERTY_TIMEU_STR = '更新|每0.1秒|每秒|僅觀察|無';
 var PROPERTY_PRETIME = '按壓空白鍵時間(秒)';
 var PROPERTY_ENTERING = '輸入時間使用';
-var PROPERTY_ENTERING_STR = '計時器|鍵入|SS計時器|魔域計時器|虛擬方塊|計客魔方';
+var PROPERTY_ENTERING_STR = '空白鍵|鍵入|SS計時器|魔域計時器|虛擬方塊|計客魔方';
 var PROPERTY_INTUNIT = '輸入整數時的單位';
 var PROPERTY_INTUNIT_STR = '秒|0.01秒|0.001秒';
 var PROPERTY_COLOR = '選擇色彩樣式';
 var PROPERTY_COLORS = '字體顏色|背景顏色|面板顏色|按鈕顏色|超連結連色|圖標顏色|圖標背景顏色';
 var PROPERTY_VIEW = 'UI 介面';
 var PROPERTY_VIEW_STR = '自動|攜帶式裝置|電腦';
-var PROPERTY_UIDESIGN = 'UI設計者';
+var PROPERTY_UIDESIGN = 'UI設計';
 var PROPERTY_UIDESIGN_STR = '一般|材質設計|無陰影';
 var COLOR_EXPORT = '請複製本字串以利匯入';
 var COLOR_IMPORT = '請輸入匯出的字串';
@@ -293,7 +293,7 @@ var scrdata = [
 	['===特殊===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3子步驟', [
+	['3x3x3子群', [
 		['僅使用RU', "2gen", 25],
 		['僅使用LU', "2genl", 25],
 		['橋式MU', "roux", 25],
@@ -307,7 +307,7 @@ var scrdata = [
 		['Bicube', "bic", 30],
 		['sq-1 /, (1,0)', "bsq", 25]
 	]],
-	['五魔方子步驟', [
+	['五魔方子群', [
 		['僅使用RU', "minx2g", 30],
 		['最後一個F2L+頂層', "mlsll", 20]
 	]],
@@ -346,7 +346,7 @@ var SCRAMBLE_NOOBST = [
 	['轉動右面', '轉動左面'],
 	['轉動前面', '轉動後面']
 ];
-var SCRAMBLE_NOOBSS = ' 順時針轉九十度,| 逆時針轉九十度,| 一百八十度,';
+var SCRAMBLE_NOOBSS = ' 順時針九十度,| 逆時針九十度,| 一百八十度,';
 var STATS_CFM_RESET = '是否重置階段中的所有時間?';
 var STATS_CFM_DELSS = '刪除階段 [%s]?';
 var STATS_CFM_DELMUL = '從本索引值刪除幾個成績?';

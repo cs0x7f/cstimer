@@ -2,8 +2,10 @@
 
 importScripts(
 	'lib/utillib.js',
+	'lib/sha256.js',
 	'lib/mathlib.js',
 	'lib/sbtree.js',
+	'lib/sqlfile.js',
 	'lib/tdconverter.js',
 	'lib/lzstring.js',
 	'lib/min2phase.js',
@@ -41,6 +43,7 @@ importScripts(
 	'shortcut.js',
 	'help.js',
 	'stackmat.js',
+	'tools/stackmatutil.js',
 	'giiker.js',
 	'worker.js'
 );

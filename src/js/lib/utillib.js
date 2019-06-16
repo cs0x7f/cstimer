@@ -36,8 +36,13 @@ execMain(function() {
 		if (error == undefined) {
 			error = {};
 		}
+		var fingerprint = '';
+		try {
+			fingerprint = $.fingerprint();
+		} catch (e) {}
 		$.get('bugReport', {
 			'version': CSTIMER_VERSION,
+			'fp': fingerprint,
 			'msg': msg,
 			'url': url,
 			'line': line,
@@ -119,6 +124,32 @@ execMain(function() {
 		}
 	}
 
+	$.fingerprint = function() {
+		var fp_screen = window.screen && [Math.max(screen.height, screen.width), Math.min(screen.height, screen.width), screen.colorDepth].join("x");
+		var fp_tzoffset = new Date().getTimezoneOffset();
+		var fp_plugins = $.map(navigator.plugins, function(p) {
+			return [
+				p.name,
+				p.description,
+				$.map(p, function(mt) {
+					return [mt.type, mt.suffixes].join("~");
+				}).sort().join(",")
+			].join("::");
+		}).sort().join(";");
+		var rawFP = [
+			navigator.userAgent,
+			navigator.language,
+			!!window.sessionStorage,
+			!!window.localStorage,
+			!!window.indexedDB,
+			navigator.doNotTrack,
+			fp_screen,
+			fp_tzoffset,
+			fp_plugins
+		].join("###");
+		return $.sha256(rawFP);
+	};
+
 	if ('serviceWorker' in navigator) {
 		$(function() {
 			navigator.serviceWorker.register('sw.js');
@@ -133,7 +164,6 @@ execMain(function() {
 			}, false);
 		});
 	}
-
 });
 
 /** @define {boolean} */

@@ -933,10 +933,12 @@ var kernel = execMain(function() {
 				return;
 			}
 			if ('properties' in data) {
+				var devData = localStorage['devData'] || '{}';
 				var wcaData = localStorage['wcaData'] || '{}';
 				var gglData = localStorage['gglData'] || '{}';
 				var locData = localStorage['locData'] || '';
 				localStorage.clear();
+				localStorage['devData'] = devData;
 				localStorage['wcaData'] = wcaData;
 				localStorage['gglData'] = gglData;
 				localStorage['locData'] = locData;
@@ -1456,7 +1458,7 @@ var kernel = execMain(function() {
 	});
 
 	function cleanLocalStorage() {
-		var validKeys = ['properties', 'cachedScr', 'wcaData', 'gglData', 'locData'];
+		var validKeys = ['properties', 'cachedScr', 'devData', 'wcaData', 'gglData', 'locData'];
 
 		for (var i = 0; i < validKeys.length; i++) {
 			try {
