@@ -505,7 +505,17 @@
 		}
 
 		function move2str(move) {
-
+			var axis = move[0];
+			var pow = move[1];
+			var nlayer = move[2] - move[1];
+			if (nlayer == 4) {
+				var num = pow;
+				return axis == 1 ? "(" + num + ",0)" : "(0," + num + ")";
+			} else if (nlayer == 5) {
+				return pow == 6 ? "/" : "/'"
+			} else if (nlayer == 10) {
+				return "y" + (pow == 6 ? "" : "'") + "2";
+			}
 		}
 
 		return {

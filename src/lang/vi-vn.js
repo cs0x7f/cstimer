@@ -1,4 +1,4 @@
-var OK_LANG = 'OK';
+var OK_LANG = 'Đồng Ý';
 var CANCEL_LANG = 'Hủy';
 var RESET_LANG = 'Thiết lập lại';
 var ABOUT_LANG = 'Thông tin';

@@ -340,7 +340,16 @@
 		}
 
 		function move2str(move) {
-
+			var axis = move[0];
+			var pow = move[1] == -1 ? "'" : "";
+			var nlayer = move[3] - move[2];
+			if (nlayer == 6) { // rotation
+				return "[" + "urlb".charAt(axis) + pow + "]";
+			} else if (nlayer == 2) { // small corner
+				return "urlb".charAt(axis) + pow;
+			} else {
+				return "URLB".charAt(axis) + pow;
+			}
 		}
 
 		return {

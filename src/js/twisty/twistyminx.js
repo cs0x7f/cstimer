@@ -418,7 +418,16 @@
 		}
 
 		function move2str(move) {
-
+			var axis = move[0];
+			var pow = move[1];
+			var nlayer = move[3] - move[2];
+			if (nlayer == 6) {
+				return "[" + "ufr??l??????".charAt(axis) + (pow > 0 ? "" : "'") + "]";
+			} else if (nlayer == 4) {
+				return "D?L??R??????".charAt(axis) + (pow > 0 ? "-" : "+");
+			} else if (nlayer == 2) {
+				return "UFR??L??????".charAt(axis) + (pow > 0 ? "" : "'");
+			}
 		}
 
 		return {
@@ -434,7 +443,8 @@
 			isParallelMove: isParallelMove,
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
-			moveCnt: moveCnt
+			moveCnt: moveCnt,
+			move2str: move2str
 		};
 	}
 })();

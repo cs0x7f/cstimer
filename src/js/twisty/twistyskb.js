@@ -400,7 +400,10 @@
 		}
 
 		function move2str(move) {
-
+			var axis = move[0];
+			var pow = move[1];
+			var nlayer = move[3] - move[2];
+			return "U??BxyzRLFD".charAt(axis) + (pow > 0 ? "" : "'");
 		}
 
 		return {
