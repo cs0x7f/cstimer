@@ -507,7 +507,7 @@
 		function move2str(move) {
 			var axis = move[0];
 			var pow = move[1];
-			var nlayer = move[2] - move[1];
+			var nlayer = move[3] - move[2];
 			if (nlayer == 4) {
 				var num = pow;
 				return axis == 1 ? "(" + num + ",0)" : "(0," + num + ")";
