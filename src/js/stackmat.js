@@ -7,8 +7,31 @@ var stackmat = execMain(function() {
 	var audio_stream, source, node;
 	var sample_rate;
 	var bitAnalyzer;
+	var curTimer;
 
-	function init(timer) {
+	function updateInputDevices() {
+		var devices = [];
+		var retobj = new Promise(function(resolve, reject) {
+			resolve(devices);
+		});
+		if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+			return retobj;
+		}
+
+		return navigator.mediaDevices.enumerateDevices().then(function(deviceInfos) {
+			for (var i = 0; i < deviceInfos.length; i++) {
+				var deviceInfo = deviceInfos[i];
+				if (deviceInfo.kind === 'audioinput') {
+					devices.push([deviceInfo.deviceId, deviceInfo.label || 'microphone ' + (devices.length + 1)]);
+				}
+			}
+			return retobj;
+		});
+	}
+
+	function init(timer, deviceId) {
+		curTimer = timer;
+
 		if (navigator.mediaDevices === undefined) {
 			navigator.mediaDevices = {};
 		}
@@ -29,24 +52,35 @@ var stackmat = execMain(function() {
 
 		audio_context = new AudioContext();
 
-		sample_rate = audio_context["sampleRate"] / 1200;
-		bitAnalyzer = appendBit;
-		if (timer == 'm') {
+		if (curTimer == 'm') {
 			sample_rate = audio_context["sampleRate"] / 8000;
 			bitAnalyzer = appendBitMoyu;
+		} else {
+			sample_rate = audio_context["sampleRate"] / 1200;
+			bitAnalyzer = appendBit;
 		}
 		agc_factor = 0.001 / sample_rate;
 		lastVal.length = Math.ceil(sample_rate / 6);
 		bitBuffer = [];
 		byteBuffer = [];
 
+		var selectObj = {
+			"echoCancellation": false,
+			"noiseSuppression": false
+		};
+
+		if (deviceId) {
+			selectObj["deviceId"] = {
+				"exact": deviceId
+			};
+		}
+
 		if (audio_stream == undefined) {
-			navigator.mediaDevices.getUserMedia({
-				"audio": {
-					"echoCancellation": false,
-					"noiseSuppression": false
-				}
+			return navigator.mediaDevices.getUserMedia({
+				"audio": selectObj
 			}).then(success, $.noop);
+		} else {
+			return Promise.resolve();
 		}
 	}
 
@@ -150,10 +184,14 @@ var stackmat = execMain(function() {
 
 			if (last_bit_length > 100 && stackmat_state.on) {
 				stackmat_state.on = false;
+				stackmat_state.noise = Math.min(1, distortionStat) || 0;
+				stackmat_state.power = last_power;
 				callback(stackmat_state);
 				// console.log('off');
 			} else if (last_bit_length > 700) {
 				last_bit_length = 100;
+				stackmat_state.noise = Math.min(1, distortionStat) || 0;
+				stackmat_state.power = last_power;
 				callback(stackmat_state);
 			}
 		} else if (bitBuffer.length == 10) {
@@ -232,6 +270,7 @@ var stackmat = execMain(function() {
 		new_state.signalHeader = head;
 		new_state.unknownRunning = !stackmat_state.on;
 		new_state.noise = Math.min(1, distortionStat) || 0;
+		new_state.power = last_power;
 
 		stackmat_state = new_state;
 
@@ -265,9 +304,13 @@ var stackmat = execMain(function() {
 			byteBuffer = [];
 			if (last_bit_length > 1000 && stackmat_state.on) {
 				stackmat_state.on = false;
+				stackmat_state.noise = Math.min(1, distortionStat) || 0;
+				stackmat_state.power = last_power;
 				callback(stackmat_state);
 			} else if (last_bit_length > 4000) {
 				last_bit_length = 1000;
+				stackmat_state.noise = Math.min(1, distortionStat) || 0;
+				stackmat_state.power = last_power;
 				callback(stackmat_state);
 			}
 		}
@@ -282,7 +325,8 @@ var stackmat = execMain(function() {
 		running: false,
 		unknownRunning: true,
 		signalHeader: 'I',
-		noise: 1
+		noise: 1,
+		power: 1
 	};
 
 	var callback = $.noop;
@@ -290,6 +334,7 @@ var stackmat = execMain(function() {
 	return {
 		init: init,
 		stop: stop,
+		updateInputDevices: updateInputDevices,
 		setCallBack: function(func) {
 			callback = func;
 		}

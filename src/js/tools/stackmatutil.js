@@ -3,6 +3,7 @@
 var stackmatutil = execMain(function(CubieCube) {
 
 	var statusSpan = $('<span>').html('status:  unknown');
+	var deviceSelect = $('<select style="font-size: 1rem;">');
 	var isShown = false;
 
 	function updateStatus(value) {
@@ -12,6 +13,7 @@ var stackmatutil = execMain(function(CubieCube) {
 		var status = '';
 		status += 'status:  ' + (value.on ? 'on' : 'off') + '<br>';
 		status += 'noise:   ' + ~~(value.noise * 100) + '%<br>';
+		status += 'power:   ' + ~~(value.power * 100) + '%<br>';
 		status += 'header:  ' + (value.signalHeader) + '<br>';
 		status += 'pad:     ' + (value.leftHand ? 'L' : ' ') + (value.rightHand ? 'R' : ' ') + '<br>';
 		status += 'running: ' + (value.running ? 'yes' : 'no');
@@ -24,16 +26,34 @@ var stackmatutil = execMain(function(CubieCube) {
 			return;
 		}
 		isShown = true;
-		fdiv.empty().append(statusSpan);
+		fdiv.empty().append(statusSpan, '<br>', 'Device:&nbsp;&nbsp;', deviceSelect);
+	}
+
+	function updateDevices() {
+		stackmat.updateInputDevices().then(function(devices) {
+			deviceSelect.empty();
+			for (var i = 0; i < devices.length; i++) {
+				deviceSelect.append($('<option>').val(devices[i][0]).text(devices[i][1]));
+			}
+			deviceSelect.unbind('change').change(function() {
+				stackmat.stop();
+				alert(deviceSelect.val());
+				stackmat.init(undefined, deviceSelect.val());
+				kernel.blur();
+			});
+		});
 	}
 
 	$(function() {
 		tools.regTool('stackmatutil', 'stackmat', execFunc);
 		kernel.regProp('timer', 'stkHead', 0, PROPERTY_STKHEAD, [true]);
+		updateDevices();
 	});
 
 	return {
-		init: stackmat.init,
+		init: function(timer) {
+			return stackmat.init(timer).then(updateDevices);
+		},
 		stop: stackmat.stop,
 		setCallBack: function(func) {
 			stackmat.setCallBack(function(value) {
