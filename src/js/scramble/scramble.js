@@ -617,20 +617,20 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
-		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50]);
-		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true]);
-		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [true]);
-		kernel.regProp('scramble', 'scrAlign', 1, PROPERTY_SCRALIGN, ['c', ['c', 'l', 'r'], PROPERTY_SCRALIGN_STR.split('|')]);
+		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50], 1);
+		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true], 1);
+		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [true], 1);
+		kernel.regProp('scramble', 'scrAlign', 1, PROPERTY_SCRALIGN, ['c', ['c', 'l', 'r'], PROPERTY_SCRALIGN_STR.split('|')], 1);
 		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['', ['', 'z2', "z'", 'z', "x'", 'x'],
 			['', 'z2', "z'", 'z', "x'", 'x']
-		]);
+		], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
-		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false]);
+		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
 
 		for (var i = 0; i < scrdata.length; i++) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
 		}
-		kernel.regProp('scramble', 'scrType', ~5, 'Scramble Type', ['333']);
+		kernel.regProp('scramble', 'scrType', ~5, 'Scramble Type', ['333'], 3);
 
 		select.change(loadSelect2);
 		select2.change(loadScrOptsAndGen);

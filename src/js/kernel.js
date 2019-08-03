@@ -1394,8 +1394,8 @@ var kernel = execMain(function() {
 	var keyback = true;
 
 	$(function() {
-		regProp('kernel', 'useMilli', 0, PROPERTY_USEMILLI, [false]);
-		regProp('kernel', 'timeFormat', 1, PROPERTY_FORMAT, ['h', ['h', 'm', 's'], ['hh:mm:ss.XX(X)', 'mm:ss.XX(X)', 'ss.XX(X)']]);
+		regProp('kernel', 'useMilli', 0, PROPERTY_USEMILLI, [false], 1);
+		regProp('kernel', 'timeFormat', 1, PROPERTY_FORMAT, ['h', ['h', 'm', 's'], ['hh:mm:ss.XX(X)', 'mm:ss.XX(X)', 'ss.XX(X)']], 1);
 		temp.appendTo('body');
 		wndCtn.appendTo('body');
 

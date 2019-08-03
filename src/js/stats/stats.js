@@ -659,12 +659,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 				if (selectedName != '*' && sessionData[idx]['name'] != selectedName) {
 					continue;
 				}
-				if (selectedScr != '*' && sessionData[idx]['scr'] != selectedScr) {
+				if (selectedScr != '*' && (sessionData[idx]['opt']['scrType'] || '333') != selectedScr) {
 					continue;
 				}
 				loadproc = loadproc.then((function(idx) {
 					return new Promise(function(resolve) {
-						storage.get(idx, function(newTimes) {
+						storage.get(idx).then(function(newTimes) {
 							for (var i = 0; i < newTimes.length; i++) {
 								if ((newTimes[i][3] || 0) < dateThreshold) {
 									continue;
@@ -744,13 +744,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		var prevSessionData = {};
 		function procSignal(signal, value) {
-			if (value[0] == 'sessionData') {
+			if (value[0] == 'sessionData' && !isInit) {
 				var isModified = false;
 				var curSessionData = JSON.parse(value[1]);
 				$.each(curSessionData, function(idx, val) {
 					if (!prevSessionData[idx] ||
 						val['name'] != prevSessionData[idx]['name'] ||
-						val['scr'] != prevSessionData[idx]['scr']) {
+						val['opt']['scrType'] != prevSessionData[idx]['opt']['scrType']) {
 						isModified = true;
 					}
 				});
@@ -769,7 +769,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 						nameList.push(curLabel);
 						nameSelect.append($('<option />').val(curLabel).html(curLabel));
 					}
-					var curScr = val['scr'];
+					var curScr = val['opt']['scrType'] || '333';
 					if ($.inArray(curScr, scrList) == -1) {
 						scrList.push(curScr);
 						scrSelect.append($('<option />').val(curScr).html(scramble.getTypeName(curScr)));
@@ -1144,23 +1144,27 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function loadSession(ssidx) {
 			sessionIdx = ssidx;
 			kernel.setProp('session', sessionIdx);
-			load();
 			var curSessionData = sessionData[sessionIdx];
 			var sessionOpts = curSessionData['opt'] || {};
 			kernel.setSProps(sessionOpts);
-			kernel.setProp('scrType', curSessionData['scr'], 'session');
-			kernel.setProp('phases', curSessionData['phases'], 'session');
 			fixSessionSelect();
+			return load();
 		}
 
 		function fixSessionData() {
 			for (var i = 1; i <= sessionIdxMax; i++) {
-				sessionData[i] = sessionData[i] || {
-					'name': (JSON.parse(kernel.getProp('sessionName') || '{}'))[i] || i,
-					'scr': (JSON.parse(kernel.getProp('sessionScr') || '{}'))[i] || '333',
-					'phases': 1,
+				if (typeof sessionData[i] != 'object') {
+					sessionData[i] = {};
+				}
+				var defaultKV = {
+					'name': i,
 					'opt': {}
 				};
+				for (var key in defaultKV) {
+					if (sessionData[i][key] === undefined) {
+						sessionData[i][key] = defaultKV[key];
+					}
+				}
 				sessionData[i]['rank'] = sessionData[i]['rank'] || i;
 			}
 			fixRank();
@@ -1207,16 +1211,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (copy === undefined || copy) {
 				sessionData[sessionIdx] = {
 					'name': prevData['name'] || newName,
-					'scr': prevData['scr'] || curScrType,
-					'phases': prevData['phases'] || 1,
 					'opt': JSON.parse(JSON.stringify(prevData['opt'] || {})),
 					'rank': rank + 0.5
 				};
 			} else {
 				sessionData[sessionIdx] = {
 					'name': newName,
-					'scr': curScrType,
-					'phases': 1,
 					'opt': kernel.getSProps(),
 					'rank': rank + 0.5
 				};
@@ -1307,14 +1307,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function load() {
-			storage.get(sessionIdx, sessionLoaded.bind(undefined, sessionIdx));
+			return storage.get(sessionIdx).then(sessionLoaded.bind(undefined, sessionIdx));
 		}
 
 		function save(startIdx) {
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats_list.getAllStats());
 			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times[times.length - 1] || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
-			storage.set(sessionIdx, times, undefined, startIdx);
+			return storage.set(sessionIdx, times, startIdx);
 		}
 
 		function mgrClick(e) {
@@ -1378,7 +1378,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					byGroup = 'scr';
 					break;
 				case 'v':
-					storage.get(idx, function(newTimes) {
+					storage.get(idx).then(function(newTimes) {
 						exportCSV(new TimeStat([], newTimes.length, function(times, idx) {
 							return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
 						}.bind(undefined, newTimes), dnfsort), function(times, idx) {
@@ -1407,7 +1407,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var curSessionIdx = sessionIdx;
 			var targetTimes = times.slice(-n_split);
 			initNewSession();
-			storage.set(sessionIdx, targetTimes, function() {
+			storage.set(sessionIdx, targetTimes).then(function() {
 				sessionIdx = curSessionIdx;
 				times = times.slice(0, -n_split);
 				times_stats_table.reset();
@@ -1422,16 +1422,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			var prevSession = sessionIdx;
-			storage.get(idx, function(timesNew) {
+			storage.get(idx).then(function(timesNew) {
 				Array.prototype.push.apply(timesNew, times);
-				storage.set(idx, timesNew, function() {
-					delete sessionData[idx]['stat'];
-					sessionData[sessionIdx]['date'] = [(timesNew[0] || [])[3], (timesNew[timesNew.length - 1] || [])[3]];
-					kernel.setProp('sessionData', JSON.stringify(sessionData));
-					loadSession(idx);
-					doSessionDeletion(prevSession);
-				});
-			})
+				return storage.set(idx, timesNew);
+			}).then(function(timesNew) {
+				delete sessionData[idx]['stat'];
+				sessionData[sessionIdx]['date'] = [(timesNew[0] || [])[3], (timesNew[timesNew.length - 1] || [])[3]];
+				kernel.setProp('sessionData', JSON.stringify(sessionData));
+				loadSession(idx);
+				doSessionDeletion(prevSession);
+			});
 		}
 
 		function getMgrRowAtRank(rank) {
@@ -1454,7 +1454,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'</select>';
 			var uClk = rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>';
 			var dClk = rank == ssSorted.length ? '<td></td>' : '<td class="click" data="d">&#8595;</td>';
-			var scrTd = '<td>' + scramble.getTypeName(ssData['scr']) + '</td>';
+			var scrTd = '<td>' + scramble.getTypeName(ssData['opt']['scrType'] || '333') + '</td>';
 			var ssTd0 = '<td>' + ssStat[0] + '</td>';
 			var ssTd1 = '<td>' + ssStat[1] + '</td>';
 			var dateVal = mathlib.time2str((sessionData[idx]['date'] || [])[1], '%Y-%M-%D');
@@ -1463,7 +1463,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				ssTd0 + ssTd1 +
 				'<td>' + dateVal + '</td>' +
 				scrTd +
-				'<td>' + ssData['phases'] + '</td>' +
+				'<td>' + (ssData['opt']['phases'] || 1) + '</td>' +
 				uClk + dClk +
 				'<td class="seltd">' + sel + '</td>' +
 				'</tr>' +
@@ -1474,7 +1474,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'</tr>' +
 				'<tr class="' + (idx == sessionIdx ? 'selected ' : '') + 'mshow b">' +
 				ssTd1 +
-				'<td>' + dateVal + '&nbsp;' + ssData['phases'] + 'P.</td>' +
+				'<td>' + dateVal + '&nbsp;' + (ssData['opt']['phases'] || 1) + 'P.</td>' +
 				'<td class="seltd" colspan=2>' + sel + '</td>' +
 				'</tr>';
 		}
@@ -1485,7 +1485,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			for (var i = 0; i < group.length; i++) {
 				var idx = ssSorted[group[i]];
 				isInGroup = isInGroup || sessionIdx == idx;
-				ssNames.push(sessionData[idx]['name'] + '(' + scramble.getTypeName(sessionData[idx]['scr']) + ')');
+				ssNames.push(sessionData[idx]['name'] + '(' + scramble.getTypeName(sessionData[idx]['opt']['scrType'] || '333') + ')');
 			}
 			ssNames = ssNames.join(', ');
 			if (ssNames.length > 45) {
@@ -1554,8 +1554,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 					ssSorted.push(i);
 				}
 				ssSorted.sort(function(a, b) {
-					var idxa = scramble.getTypeIdx(sessionData[a]['scr']);
-					var idxb = scramble.getTypeIdx(sessionData[b]['scr']);
+					var idxa = scramble.getTypeIdx(sessionData[a]['opt']['scrType'] || '333');
+					var idxb = scramble.getTypeIdx(sessionData[b]['opt']['scrType'] || '333');
 					return idxa == idxb ? (sessionData[a]['rank'] - sessionData[b]['rank']) : (idxa - idxb);
 				});
 				for (var i = 0; i < ssSorted.length; i++) {
@@ -1583,18 +1583,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 					}
 				} else if (value[0] == 'sessionN') {
 					sessionIdxMax = value[1];
-				} else if (value[0] == 'scrType' || value[0] == 'phases') {
-					if (value[0] == 'scrType') {
-						curScrType = value[1];
-						if (sessionData[sessionIdx]['scr'] != value[1] && kernel.getProp('scr2ss')) {
-							createSession(undefined, false);
-						} else {
-							sessionData[sessionIdx]['scr'] = value[1];
-						}
-					} else if (value[0] == 'phases') {
-						sessionData[sessionIdx]['phases'] = value[1];
+				} else if (value[0] == 'scrType') {
+					curScrType = value[1];
+					if (value[2] == 'modify' && kernel.getProp('scr2ss')) {
+						createSession(undefined, false);
 					}
-					kernel.setProp('sessionData', JSON.stringify(sessionData));
 				} else if (value[0] == 'statclr') {
 					if (value[1]) {
 						funcButton.val('X').unbind('click').click(clearSession);
@@ -1618,14 +1611,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			var currentSessionIdx = sessionIdx;
 			for (var i = 0; i < data.length; i++) {
-				//session = {'name': name, 'scr': scr, 'phases': phases, 'times': times}
+				//session = {'name': name, 'opt': {key: value}, 'times': times}
 				var sessionDetail = data[i];
+				var opt = kernel.getSProps();
+				for (var key in sessionDetail['opt']) {
+					opt[key] = sessionDetail['opt'][key];
+				}
 				sessionIdx  = ++sessionIdxMax;
 				sessionData[sessionIdx] = {
 					'name': sessionDetail['name'] || sessionIdx,
-					'scr': sessionDetail['scr'] || '333',
-					'phases': sessionDetail['phases'] || 1,
-					'opt': kernel.getSProps(),
+					'opt': opt,
 					'rank': sessionIdxMax
 				};
 				kernel.setProp('sessionN', sessionIdxMax);
@@ -1650,12 +1645,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.regListener('ssmgr', 'ctrl', procSignal, /^stats$/);
 			kernel.regProp('stats', 'sessionN', ~5, 'Number of Sessions', [15]);
 			kernel.regProp('stats', 'sessionData', ~5, 'Session Data', ['{}']);
-			kernel.regProp('stats', 'session', ~5, 'Current Session Index', [1]);
-
 			sessionIdxMax = kernel.getProp('sessionN');
 			sessionData = JSON.parse(kernel.getProp('sessionData'));
 			fixSessionSelect();
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
+
+			kernel.regProp('stats', 'session', ~5, 'Current Session Index', [1]);
 		});
 
 		return {
@@ -1749,7 +1744,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				var idx = sessionManager.rank2idx(i + 1);
 				loadproc = loadproc.then((function(idx) {
 					return new Promise(function(resolve) {
-						storage.get(idx, function(newTimes) {
+						storage.get(idx).then(function(newTimes) {
 							stats[idx] = {}
 							for (var i = 0; i < newTimes.length; i++) {
 								if (!newTimes[i][3]) {
@@ -2068,15 +2063,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
 
-		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]]);
-		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true]);
-		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true]);
-		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false]);
-		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false]);
+		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]], 1);
+		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true], 1);
+		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true], 1);
+		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false], 1);
+		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false], 1);
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);
-		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false]);
-		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true]);
-		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false]);
+		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false], 1);
+		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true], 1);
+		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false], 1);
 
 		div.append(
 			statOptDiv.append(

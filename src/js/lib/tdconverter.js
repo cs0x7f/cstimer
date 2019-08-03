@@ -79,11 +79,14 @@ var TimerDataConverter = execMain(function() {
 			if (~~m[1] in sessionData) {
 				var curData = sessionData[~~m[1]];
 				curSession['name'] = curData['name'] || m[1];
-				curSession['scr'] = curData['scr'];
-				curSession['phases'] = curData['phases'];
+				curSession['opt'] = curData['opt'] || {
+					'scrType': curData['scr'] || '333',
+					'phases': curData['phases'] || 1
+				};
 				curSession['rank'] = curData['rank'];
 			} else {
 				curSession['name'] = m[1];
+				curSession['opt'] = {};
 				curSession['rank'] = ret.length + 1;
 			}
 			ret.push(curSession);
@@ -125,8 +128,9 @@ var TimerDataConverter = execMain(function() {
 		}
 		return [{
 			'name': 'import',
-			'phases': n_phases,
-			'scr': '333',
+			'opt': {
+				'phases': n_phases
+			},
 			'times': times
 		}];
 	}];
@@ -162,13 +166,14 @@ var TimerDataConverter = execMain(function() {
 				'0': 0,
 				'1': 2000,
 				'2': -1
-			}[line[5]], Math.round(line[2])];
+			} [line[5]], Math.round(line[2])];
 			if (!(name in name2idx)) {
 				name2idx[name] = ret.length;
 				ret.push({
 					'name': name,
-					'phases': 1,
-					'scr': ScrambleMap[line[0]] || '333',
+					'opt': {
+						'scrType': ScrambleMap[line[0]] || '333'
+					},
 					'times': []
 				});
 			}
@@ -209,7 +214,7 @@ var TimerDataConverter = execMain(function() {
 						'OK': 0,
 						'+2': 2000,
 						'DNF': -1
-					}[val['result']], Math.round(val['time'] * 1000)];
+					} [val['result']], Math.round(val['time'] * 1000)];
 					Array.prototype.push.apply(time, $.map(val['split'].reverse(), function(value) {
 						return Math.round(value * 1000);
 					}));
@@ -220,8 +225,10 @@ var TimerDataConverter = execMain(function() {
 				}
 				ret.push({
 					'name': (puzzleName + '-' + sessionName),
-					'phases': puzzleSplit,
-					'scr': ScrambleMap[puzzleScr] || '333',
+					'opt': {
+						'phases': puzzleSplit,
+						'scrType': ScrambleMap[puzzleScr] || '333'
+					},
 					'times': timeList
 				})
 			});
@@ -242,8 +249,7 @@ var TimerDataConverter = execMain(function() {
 				name2idx[curSession] = ret.length;
 				ret.push({
 					'name': curSession,
-					'phases': 1,
-					'scr': '333',
+					'opt': {},
 					'times': []
 				});
 				continue;
@@ -272,8 +278,7 @@ var TimerDataConverter = execMain(function() {
 				sidx2idx[sidx] = ret.length;
 				ret.push({
 					'name': (name || (sidx + 1)),
-					'phases': 1,
-					'scr': '333',
+					'opt': {},
 					'times': []
 				});
 			}
@@ -351,8 +356,9 @@ var TimerDataConverter = execMain(function() {
 				name2idx[name] = ret.length;
 				ret.push({
 					'name': name,
-					'phases': 1,
-					'scr': ScrambleMap[line[0]] || '333',
+					'opt': {
+						'scrType': ScrambleMap[line[0]] || '333',
+					},
 					'times': []
 				});
 			}
@@ -380,6 +386,6 @@ var TimerDataConverter = execMain(function() {
 	}
 
 	//return [session1, session2, session3, ...]
-	//session = {'name': name, 'scr': scr, 'phases': phases, 'times': times}
+	//session = {'name': name, 'opt': {key: value}, 'times': times}
 	return convert;
 });

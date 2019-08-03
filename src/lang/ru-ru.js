@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'ПОЖЕРТ-<br>ВОВАТЬ';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'использовать WCA инспекцию';
 var PROPERTY_USEINS_STR = 'Всегда|Кроме блд|Никогда';
-var PROPERTY_VOICEINS = 'голос предупреждений при инспекции';
+var PROPERTY_VOICEINS = 'голосовое предупреждение при инспекции';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
 var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'число этапов';
@@ -18,7 +18,7 @@ var PROPERTY_TIMERSIZE = 'размер таймера';
 var PROPERTY_USEMILLI = 'использовать миллисекунды';
 var PROPERTY_SMALLADP = 'использовать маленький шрифт после десятичной точки';
 var PROPERTY_SCRSIZE = 'размер скрамбла';
-var PROPERTY_SCRMONO = 'моноширнный скрамбл';
+var PROPERTY_SCRMONO = 'моноширинный скрамбл';
 var PROPERTY_SCRLIM = 'Ограничить высоту зоны скрамбла';
 var PROPERTY_SCRALIGN = 'Выравнивание зоны скрамбла';
 var PROPERTY_SCRALIGN_STR = 'центр|лево|право';
@@ -39,14 +39,14 @@ var EXPORT_INVID = 'Разрешены только алфавит и цифры
 var EXPORT_ERROR = 'Произошли некоторые ошибки...';
 var EXPORT_NODATA = 'Не найдено данных вашего аккаунта';
 var EXPORT_UPLOADED = 'Загружено успешно';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
+var EXPORT_CODEPROMPT = 'Сохрани этот код, или напиши сохранённый код для импорта';
+var EXPORT_ONLYOPT = 'Настройки только для экспорта/импорта';
+var EXPORT_ACCOUNT = 'Экспорт аккаунтов';
 var EXPORT_LOGINGGL = 'Войти используя аккаунт Google';
 var EXPORT_LOGINWCA = 'Войти используя аккаунт WCA';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
+var EXPORT_LOGOUTCFM = 'Подтвердить для выхода?';
+var EXPORT_LOGINAUTHED = 'Авторизовано<br>Получение данных...';
+var IMPORT_FINAL_CONFIRM = 'Это перезапишет все локальные данные! Подтвердить для импорта данных?';
 var BUTTON_SCRAMBLE = 'СКРА-<br>МБЛ';
 var BUTTON_TOOLS = 'ИНСТРУ-<br>МЕНТЫ';
 var IMAGE_UNAVAILABLE = 'Невозможно для этого типа скрамбла';
@@ -77,8 +77,8 @@ var PROPERTY_COLOR = 'выбрать цветовую тему';
 var PROPERTY_COLORS = 'цвет шрифта|цвет фона|цвет стола|цвет кнопок|цвет ссылки|цвет Лого|фоновый цвет Лого';
 var PROPERTY_VIEW = 'Стиль интерфейса';
 var PROPERTY_VIEW_STR = 'Авто|Мобильный|ПК';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
+var PROPERTY_UIDESIGN = 'Дизайн интерфейса';
+var PROPERTY_UIDESIGN_STR = 'Обычный|Материал|Обычный без теней';
 var COLOR_EXPORT = 'Пожалуйста сохраните строку для загрузки';
 var COLOR_IMPORT = 'Пожалуйста загрузите сохраненную строку';
 var COLOR_FAIL = 'Неправильные данные, Загрузка не удалась';
@@ -104,7 +104,7 @@ var PROPERTY_GIISOK_DELAYS = '2с|3с|4с|5с|никогда|правильно 
 var PROPERTY_GIISOK_KEY = 'Отметить заскрамбленным с помощью пробела';
 var PROPERTY_GIISOK_MOVE = 'Отметить заскрамбленным, делая';
 var PROPERTY_GIISOK_MOVES = 'U4, R4 и т.д.|(U U\')2, (U\' U)2 и т.д.|Никогда';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
+var PROPERTY_GIISBEEP = 'Бикать, когда помечено заскрамбленным';
 var PROPERTY_GIIRST = 'Сбросить Giiker куб при подключении';
 var PROPERTY_GIIRSTS = 'Всегда|оперативно|никогда';
 var CONFIRM_GIIRST = 'Сбросить Giiker куб как собранный?';
@@ -261,12 +261,12 @@ var scrdata = [
 	]],
 	['Реди куб', [
 		['Moyu', "redim", 8],
-		['old', "redi", 20]
+		['старый', "redi", 20]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
-	['Pyraminx Crystal', [
+	['Кристалл Пираминкса', [
 		['Pochmann', "prcp", 70],
 		['старый стиль', "prco", 70]
 	]],
@@ -275,7 +275,7 @@ var scrdata = [
 		['1x2x3 блок', "sia123", 25],
 		['2x2x2 блок', "sia222", 25]
 	]],
-	['Square-2', [
+	['Скваер-2', [
 		[' ', "sq2", 20]
 	]],
 	['Супер Флоппи', [
@@ -285,7 +285,7 @@ var scrdata = [
 		['метрическое вращение', "ssq1t", 20]
 	]],
 	['НЛО', [
-		['Jaap style', "ufo", 25]
+		['Стиль Jaap', "ufo", 25]
 	]],
 	['Другое', [
 		['ОВГ (Октаэдр вращения граней)', "fto", 25]
@@ -293,7 +293,7 @@ var scrdata = [
 	['===СПЕЦИАЛЬНОЕ===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3 subsets', [
+	['Подразделы 3x3x3', [
 		['2-генератор R,U', "2gen", 25],
 		['2-генератор L,U', "2genl", 25],
 		['Roux-генератор M,U', "roux", 25],
@@ -303,8 +303,8 @@ var scrdata = [
 		['только половины движений', "half", 25],
 		['последний слот + последний слой (старый)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
-		['Bicube', "bic", 30],
+	['Куб с бандажем', [
+		['Бикьюб', "bic", 30],
 		['Скваер /,(1,0)', "bsq", 25]
 	]],
 	['Мегаминкс subsets', [
@@ -348,39 +348,39 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' по часовой стрелке на 90 градусов,| против часовой стрелки на 90 градусов,| на 180 градусов,';
 var STATS_CFM_RESET = 'перезагрузить все время в этой сессии?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_DELSS = 'удалить сессию[%s]?';
 var STATS_CFM_DELMUL = 'Количество Удаленных Величин В Текущем Индексе?';
 var STATS_CFM_DELETE = 'удалить это время?';
 var STATS_COMMENT = 'Комментарий';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Дата';
 var STATS_CURROUND = 'Статистика Текущего Раунда';
 var STATS_CURSESSION = 'Статистика Текущей Сессии';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
+var STATS_CURSPLIT = 'Фаза %d текущей статистики сеанса';
 var STATS_EXPORTCSV = 'Экспортировать в CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
+var STATS_SSMGR_TITLE = 'Менеджер сессий';
+var STATS_SSMGR_NAME = 'Название';
+var STATS_SSMGR_DETAIL = 'Подробности сессии';
+var STATS_SSMGR_OPS = 'Переименовать|Создать|Разделить|Объединить|Удалить';
+var STATS_SSMGR_ORDER = 'Сортировать по скрамблу';
+var STATS_SSMGR_ODCFM = 'Сортировать все сессии по скрамблу?';
+var STATS_ALERTMG = 'Объединить все времена в сеансе [%f] до конца сеанса [%t]?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_ALERTSPL = 'Разделить или оставить хотя-бы одно время';
 var STATS_AVG = 'среднее';
 var STATS_SOLVE = 'сборка';
 var STATS_TIME = 'время';
 var STATS_SESSION = 'Сессия';
 var STATS_SESSION_NAME = 'Редактировать название сессии';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAMEC = 'Имя новой сессии';
 var STATS_STRING = 'лучшее|текущее|худшее|Сгенерираванно csTimer\'ом на %Y-%M-%D|сборок/всего: %d|один|средний %mk|срд of %mk|Средний: %v{ (σ = %sgm)}|Средний: %v|Time List:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'точное распределение времени';
 var STATS_PREC_STR = 'авто|0.1с|0.2с|0.5с|1с|2с|5с|10с|20с|50с|100с';
 var STATS_TYPELEN = 'список %d тип|список %d ширина|средний|средний';
-var STATS_STATCLR = 'Enable session emptying';
+var STATS_STATCLR = 'Включить удаление сессии';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
+var STATS_XSESSION_DATE = 'любое время|за последние 24 часа|за последнюю неделю|за последний месяц|за последний год';
+var STATS_XSESSION_NAME = 'любое название';
+var STATS_XSESSION_SCR = 'любой скрамбл';
 var STATS_XSESSION_CALC = 'Calc';
 var PROPERTY_PRINTSCR = 'печатать скрамблы в статистику';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'скрамбл',
 	"stats": 'статистика',
 	"tools": 'инструменты',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'виртуальное и<br>Giiker'
 };
 var BGIMAGE_URL = 'пожалуйста вставьте url изображения';
 var BGIMAGE_INVALID = 'неверный url';
@@ -413,8 +413,8 @@ var BGIMAGE_OPACITY = 'прозрачность фонового изображ�
 var BGIMAGE_IMAGE = 'фоновое изображение';
 var BGIMAGE_IMAGE_STR = 'нет|мануал|CCT';
 var SHOW_AVG_LABEL = 'Показывать Таблицу Avg';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'Подсказки в логотипе';
 var TOOLS_SCRGEN = 'ГенераторСкрамблов';
 var SCRGEN_NSCR = 'Количество скрамблов';
-var SCRGEN_PRE = 'prefix';
+var SCRGEN_PRE = 'префикс';
 var SCRGEN_GEN = 'Генерировать скрамблы!';

@@ -83,7 +83,7 @@ var logohint = execMain(function() {
 			kernel.showDialog([about, 0, undefined, 0], 'logo', title);
 		});
 		about.hide();
-		kernel.regProp('kernel', 'useLogo', 0, USE_LOGOHINT, [true]);
+		kernel.regProp('kernel', 'useLogo', 0, USE_LOGOHINT, [true], 1);
 
 
 		enabled = checkAnimation();
