@@ -114,7 +114,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					's': pret.split(".")[0],
 					'n': TIMER_SOLVE,
 					'i': TIMER_SOLVE
-				}[getProp('timeU')] + curAppend);
+				} [getProp('timeU')] + curAppend);
 			}
 
 			if (status == -3 || status == -2) { //inspection alert
@@ -639,6 +639,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var moveCnt = 0;
 		var totPhases = 1;
 
+		//mstep: 0 move start, 1 move doing, 2 move finish
 		function moveListener(move, mstep) {
 			if (mstep == 1) {
 				return;
@@ -683,7 +684,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						}
 					}
 					status = Math.min(curProgress, status) || 1;
-					lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
+					if (totPhases > 1) {
+						lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
+					}
 				}
 				if (curProgress == 0 && mstep == 2) {
 					moveCnt += twisty.moveCnt();
@@ -1046,7 +1049,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						var movere = {
 							'x4': /^([URFDLB][ '])\1\1\1$/,
 							'xi2': /^([URFDLB])( \1'\1 \1'|'\1 \1'\1 )$/
-						}[moveStart];
+						} [moveStart];
 						if (movere.exec(prevMoves.join(''))) {
 							moveReadyTid = setTimeout(function() {
 								markScrambled(now);
