@@ -374,7 +374,7 @@ var scramble = execMain(function(rn, rndEl) {
 				chkLabelList.push($('<label>').append(chkBox, data[i]));
 			}
 
-			function cntSel(g) {
+			var cntSel = function(g) {
 				var cnt = 0;
 				$.each(dataGroup[g], function(idx, val) {
 					cnt += chkBoxList[val][0].checked ? 1 : 0;
