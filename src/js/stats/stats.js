@@ -1167,6 +1167,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 						sessionData[i][key] = defaultKV[key];
 					}
 				}
+				if (sessionData[i]['scr']) {
+					sessionData[i]['opt']['scrType'] = sessionData[i]['scr'];
+					delete sessionData[i]['scr'];
+				}
+				if (sessionData[i]['phases']) {
+					sessionData[i]['opt']['phases'] = sessionData[i]['phases'];
+					delete sessionData[i]['phases'];
+				}
 				sessionData[i]['rank'] = sessionData[i]['rank'] || i;
 			}
 			fixRank();
