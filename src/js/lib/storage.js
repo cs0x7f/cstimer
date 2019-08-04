@@ -133,52 +133,55 @@ var storage = execMain(function() {
 		}
 	}
 
-	function exportAll(callback) {
-		var exportObj = {};
-		if (indexedDB) {
-			getTrans("readonly", function(objectStore) {
-				objectStore.openCursor().onsuccess = function(event) {
-					var cursor = event.target.result;
-					if (cursor) {
-						var m = keyre.exec(cursor.key);
-						var sessionIdx = ~~m[1];
-						exportObj['session' + sessionIdx] = exportObj['session' + sessionIdx] || [];
-						Array.prototype.push.apply(exportObj['session' + sessionIdx], cursor.value);
-						cursor["continue"]();
+	function exportAll() {
+		return new Promise(function(resolve, reject) {
+			var exportObj = {};
+			if (indexedDB) {
+				getTrans("readonly", function(objectStore) {
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							var m = keyre.exec(cursor.key);
+							var sessionIdx = ~~m[1];
+							exportObj['session' + sessionIdx] = exportObj['session' + sessionIdx] || [];
+							Array.prototype.push.apply(exportObj['session' + sessionIdx], cursor.value);
+							cursor["continue"]();
+						}
+					}
+				}, function() {
+					resolve(exportObj);
+				});
+			} else {
+				for (var i = 1; i <= ~~kernel.getProp('sessionN'); i++) {
+					if (localStorage['session' + i] != undefined) {
+						exportObj['session' + i] = mathlib.str2obj(localStorage['session' + i]);
 					}
 				}
-			}, function() {
-				callback && callback(exportObj);
-			});
-		} else {
-			for (var i = 1; i <= ~~kernel.getProp('sessionN'); i++) {
-				if (localStorage['session' + i] != undefined) {
-					exportObj['session' + i] = mathlib.str2obj(localStorage['session' + i]);
-				}
+				resolve(exportObj);
 			}
-			requestAnimFrame(function() {
-				callback && callback(exportObj);
-			});
-		}
+		});
 	}
 
 	//assume properties have already been imported, e.g. kernel.getProp('sessionN') is available
-	function importAll(obj, callback, curDB) {
-		if (indexedDB) {
-			getTrans("readwrite", function(objectStore) {
-				objectStore.clear();
-				for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
-					var times = mathlib.str2obj(obj['session' + sessionIdx] || []);
-					for (var i = 0; i < (Math.ceil(times.length / 100) || 1); i++) {
-						objectStore.put(times.slice(i * 100, (i + 1) * 100), getID(sessionIdx, i));
+	function importAll(obj, curDB) {
+		return new Promise(function(resolve, reject) {
+			if (indexedDB) {
+				getTrans("readwrite", function(objectStore) {
+					objectStore.clear();
+					for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
+						var times = mathlib.str2obj(obj['session' + sessionIdx] || []);
+						for (var i = 0; i < (Math.ceil(times.length / 100) || 1); i++) {
+							objectStore.put(times.slice(i * 100, (i + 1) * 100), getID(sessionIdx, i));
+						}
 					}
+				}, resolve, curDB);
+			} else {
+				for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
+					localStorage['session' + sessionIdx] = obj2str(obj['session' + sessionIdx]);
 				}
-			}, callback, curDB);
-		} else {
-			for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
-				localStorage['session' + sessionIdx] = obj2str(obj['session' + sessionIdx]);
+				resolve();
 			}
-		}
+		});
 	}
 
 	return {

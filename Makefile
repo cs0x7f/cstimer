@@ -22,6 +22,7 @@ lib/cubeutil.js \
 lib/mersennetwister.js \
 lib/json.min.js \
 kernel.js \
+export.js \
 logohint.js \
 timer.js \
 scramble/scramble.js \
