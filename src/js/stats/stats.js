@@ -1144,9 +1144,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function loadSession(ssidx) {
 			sessionIdx = ssidx;
 			kernel.setProp('session', sessionIdx);
-			var curSessionData = sessionData[sessionIdx];
-			var sessionOpts = curSessionData['opt'] || {};
-			kernel.setSProps(sessionOpts);
+			sessionData[sessionIdx] = sessionData[sessionIdx] || {
+				'name': sessionIdx,
+				'opt': {}
+			};
+			kernel.setSProps(sessionData[sessionIdx]['opt'] || {});
 			fixSessionSelect();
 			return load();
 		}
@@ -1297,6 +1299,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
 			updateTable(false);
+			sessionData[sessionIdx] = sessionData[sessionIdx] || {
+				'name': sessionIdx,
+				'opt': {}
+			};
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats_list.getAllStats());
 			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times[times.length - 1] || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
