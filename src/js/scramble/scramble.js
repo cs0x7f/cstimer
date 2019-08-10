@@ -200,7 +200,7 @@ var scramble = execMain(function(rn, rndEl) {
 	}
 
 	function scrStd(scramble, forDisplay) {
-		return scramble
+		return (scramble || '')
 			.replace(/~/g, forDisplay ? '&nbsp;' : '')
 			.replace(/`([^']*)`/g, forDisplay && kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 	}

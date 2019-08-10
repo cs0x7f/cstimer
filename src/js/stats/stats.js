@@ -1706,7 +1706,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			$('<option>').val(6).html('Wed'),
 			$('<option>').val(0).html('Thu'),
 			$('<option>').val(1).html('Fri'),
-			$('<option>').val(2).html('Sat'),
+			$('<option>').val(2).html('Sat')
 		).val(3);
 
 		var statResult = [];
