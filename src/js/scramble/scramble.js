@@ -5,7 +5,7 @@ var scrMgr = (function(rn, rndEl) {
 	function mega(turns, suffixes, length) {
 		turns = turns || [[""]];
 		suffixes = suffixes || [""];
-		length = length || len;
+		length = length || 0;
 		var donemoves = 0;
 		var lastaxis = -1;
 		var s = [];
