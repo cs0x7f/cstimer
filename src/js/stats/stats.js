@@ -750,7 +750,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				$.each(curSessionData, function(idx, val) {
 					if (!prevSessionData[idx] ||
 						val['name'] != prevSessionData[idx]['name'] ||
-						val['opt']['scrType'] != prevSessionData[idx]['opt']['scrType']) {
+						(val['opt'] || {})['scrType'] != (prevSessionData[idx]['opt'] || {})['scrType']) {
 						isModified = true;
 					}
 				});
@@ -769,7 +769,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 						nameList.push(curLabel);
 						nameSelect.append($('<option />').val(curLabel).html(curLabel));
 					}
-					var curScr = val['opt']['scrType'] || '333';
+					var curScr = (val['opt'] || {})['scrType'] || '333';
 					if ($.inArray(curScr, scrList) == -1) {
 						scrList.push(curScr);
 						scrSelect.append($('<option />').val(curScr).html(scramble.getTypeName(curScr)));
