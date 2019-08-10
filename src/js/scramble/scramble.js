@@ -143,12 +143,11 @@ var scramble = execMain(function(rn, rndEl) {
 
 	var scrFlt = "";
 	var inputText = $('<textarea />');
-	var inputScramble = [];
 
 	function genScramble() {
 		kernel.blur();
 		sdiv.html('Scrambling...');
-		typeExIn = (!type || type == 'input') ? typeExIn : type;
+		typeExIn = (!type || type == 'input' || type.startsWith('remote')) ? typeExIn : type;
 		if (!isDisplayLast) {
 			lasttype = type;
 			lastscramble = scramble;
@@ -162,9 +161,6 @@ var scramble = execMain(function(rn, rndEl) {
 		len = ~~scrLen.val();
 		if (lasttype != type) {
 			kernel.setProp('scrType', type);
-		}
-		if (type != 'input') {
-			inputScramble = [];
 		}
 		scramble = "";
 		requestAnimFrame(doScrambleIt);
@@ -181,28 +177,37 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function procLastClick() {
 		isDisplayLast = true;
-		sdiv.html(scrStd(lastscramble, true));
+		sdiv.html(scrStd(lasttype, lastscramble, true));
 		lastClick.removeClass('click').unbind('click');
 		if (lastscramble != undefined) {
-			kernel.pushSignal('scrambleX', [lasttype, scrStd(lastscramble)]);
+			kernel.pushSignal('scrambleX', scrStd(lasttype, lastscramble));
 		}
 	}
 
 	function procNextClick() {
 		if (isDisplayLast) {
 			isDisplayLast = false;
-			sdiv.html(scrStd(scramble, true));
+			sdiv.html(scrStd(type, scramble, true));
 			lastClick.addClass('click').unbind('click').click(procLastClick);
-			kernel.pushSignal('scrambleX', [type, scrStd(scramble)]);
+			kernel.pushSignal('scrambleX', scrStd(type, scramble));
 		} else {
 			genScramble();
 		}
 	}
 
-	function scrStd(scramble, forDisplay) {
-		return (scramble || '')
-			.replace(/~/g, forDisplay ? '&nbsp;' : '')
-			.replace(/`([^']*)`/g, forDisplay && kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
+	function scrStd(type, scramble, forDisplay) {
+		scramble = scramble || '';
+		var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(scramble);
+		if (m) {
+			type = m[1];
+			scramble = m[2];
+		}
+		if (forDisplay) {
+			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
+				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
+		} else {
+			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^']*)`/g, '$1')];
+		}
 	}
 
 	function doScrambleIt() {
@@ -260,6 +265,20 @@ var scramble = execMain(function(rn, rndEl) {
 		scramble = "";
 		var realType = alias[type] || type;
 
+		if (realType == 'input') {
+			scramble = inputScrambleGen.next();
+			return;
+		} else {
+			inputScrambleGen.clear();
+		}
+
+		if (realType.startsWith('remote')) {
+			scramble = remoteScrambleGen.next(realType);
+			return;
+		} else {
+			remoteScrambleGen.clear();
+		}
+
 		if (realType in scramblers) {
 			var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
 			var detailType = JSON.stringify([realType, len, scrFlt[1]]);
@@ -274,38 +293,113 @@ var scramble = execMain(function(rn, rndEl) {
 			return;
 		}
 
-		switch (realType) {
-		case "input":
-			if (inputScramble.length == 0) {
-				inputText.val("");
-				kernel.showDialog([inputText, inputOK, inputCancel], 'input', SCRAMBLE_INPUT);
-				return;
-			} else {
-				scramble = inputScramble.shift();
-			}
-			break;
-		default: //scrambler not ready, wait
-			requestAnimFrame(doScrambleIt);
-		}
+		requestAnimFrame(doScrambleIt);
 	}
 
 	function scrambleOK(scrStr) {
 		scramble = (scrStr || scramble).replace(/(\s*)$/, "");
-		sdiv.html(scrStd(scramble, true));
-		kernel.pushSignal('scramble', [type, scrStd(scramble)]);
+		sdiv.html(scrStd(type, scramble, true));
+		kernel.pushSignal('scramble', scrStd(type, scramble));
 	}
 
-	function inputOK() {
-		if (!parseInput(inputText.val())) {
-			kernel.setProp('scrType', typeExIn);
-		} else {
-			doScrambleIt();
+	var remoteScrambleGen = (function() {
+		var remoteScramble = [];
+		var remoteURL = 'https://cstimer.net/testRemoteScramble.php';
+
+		function next() {
+			var ret = null;
+			while (!ret && remoteScramble.length != 0) {
+				ret = remoteScramble.shift();
+			}
+			if (ret) {
+				return ret;
+			}
+			$.getJSON(remoteURL, function(ret) {
+				if (!parseInput(ret)) {
+					remoteFail();
+				} else {
+					doScrambleIt();
+				}
+			}).error(remoteFail);
+			return "";
 		}
-	}
 
-	function inputCancel() {
-		kernel.setProp('scrType', typeExIn);
-	}
+		function remoteFail() {
+			logohint.push('Scramble Error');
+			kernel.setProp('scrType', typeExIn);
+		}
+
+		function clear() {
+			remoteScramble = [];
+		}
+
+		function parseInput(ret) {
+			if (!$.isArray(ret)) {
+				return false;
+			}
+			remoteScramble = ret;
+			return remoteScramble.length != 0;
+		}
+
+		return {
+			next: next,
+			clear: clear
+		};
+	})();
+
+	var inputScrambleGen = (function() {
+
+		var inputScramble = [];
+
+		function next() {
+			var ret = null;
+			while (!ret && inputScramble.length != 0) {
+				ret = inputScramble.shift();
+			}
+			if (ret) {
+				return ret;
+			}
+			inputText.val("");
+			kernel.showDialog([inputText, inputOK, inputCancel], 'input', SCRAMBLE_INPUT);
+			return "";
+		}
+
+		function clear() {
+			inputScramble = [];
+		}
+
+		function inputOK() {
+			if (!parseInput(inputText.val())) {
+				kernel.setProp('scrType', typeExIn);
+			} else {
+				doScrambleIt();
+			}
+		}
+
+		function inputCancel() {
+			kernel.setProp('scrType', typeExIn);
+		}
+
+		function parseInput(str) {
+			if (str.match(/^\s*$/)) {
+				return false;
+			}
+			inputScramble = [];
+			var inputs = str.split('\n');
+			for (var i = 0; i < inputs.length; i++) {
+				var s = inputs[i];
+				if (s.match(/^\s*$/) == null) {
+					inputScramble.push(s.replace(/^\d+[\.\),]\s*/, ''));
+				}
+			}
+			return inputScramble.length != 0;
+		}
+
+		return {
+			next: next,
+			clear: clear
+		};
+	})();
 
 	function loadSelect2(idx) {
 		if (!$.isNumeric(idx)) {
@@ -467,21 +561,6 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.showDialog([scrOptDiv, procDialog, null, procDialog], 'scropt', 'Scramble Options');
 	}
 
-	function parseInput(str) {
-		if (str.match(/^\s*$/)) {
-			return false;
-		}
-		inputScramble = [];
-		var inputs = str.split('\n');
-		for (var i = 0; i < inputs.length; i++) {
-			var s = inputs[i];
-			if (s.match(/^\s*$/) == null) {
-				inputScramble.push(s.replace(/^\d+[\.\),]\s*/, ''));
-			}
-		}
-		return inputScramble.length != 0;
-	}
-
 	var isEn = false;
 
 	function procSignal(signal, value) {
@@ -521,7 +600,7 @@ var scramble = execMain(function(rn, rndEl) {
 					genScramble();
 				}
 			} else if (value[0] == 'scrKeyM') {
-				sdiv.html(scrStd((isDisplayLast ? lastscramble : scramble) || '', true));
+				sdiv.html(isDisplayLast ? scrStd(lasttype, lastscramble || '', true) : scrStd(type, scramble || '', true));
 			} else if (value[0] == 'scrHide') {
 				if (value[1]) {
 					title.hide();
@@ -543,38 +622,38 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 	}
 
-	function loadType(type) {
+	function procOnType(type, func) {
 		for (var i = 0; i < scrdata.length; i++) {
 			for (var j = 0; j < scrdata[i][1].length; j++) {
 				if (scrdata[i][1][j][1] == type) {
-					select[0].selectedIndex = i;
-					loadSelect2(j);
+					func(i, j);
 					return;
 				}
 			}
 		}
 	}
 
+	function loadType(type) {
+		procOnType(type, function(i, j) {
+			select[0].selectedIndex = i;
+			loadSelect2(j);
+		});
+	}
+
 	function getTypeName(type) {
-		for (var i = 0; i < scrdata.length; i++) {
-			for (var j = 0; j < scrdata[i][1].length; j++) {
-				if (scrdata[i][1][j][1] == type) {
-					return scrdata[i][0] + '>' + scrdata[i][1][j][0];
-				}
-			}
-		}
-		return "";
+		var name = '';
+		procOnType(type, function(i, j) {
+			name = scrdata[i][0] + '>' + scrdata[i][1][j][0];
+		});
+		return name;
 	}
 
 	function getTypeIdx(type) {
-		for (var i = 0; i < scrdata.length; i++) {
-			for (var j = 0; j < scrdata[i][1].length; j++) {
-				if (scrdata[i][1][j][1] == type) {
-					return i * 100 + j;
-				}
-			}
-		}
-		return 1e300;
+		var idx = 1e300;
+		procOnType(type, function(i, j) {
+			idx = i * 100 + j;
+		});
+		return idx;
 	}
 
 	var scrambleGenerator = (function() {

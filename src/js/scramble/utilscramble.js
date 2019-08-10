@@ -218,7 +218,7 @@
 			for (j = 0; j < x; j++) {
 				ret += (j % 2 == 0 ? "R" : "D") + rndEl(["++", "--"]) + " ";
 			}
-			ret += "U" + (ret.endsWith("-- ") ? "'\n" : "~\n");
+			ret += "U" + (ret.endsWith("-- ") ? "'\\n" : "~\\n");
 		}
 		return ret;
 	}
@@ -231,7 +231,7 @@
 			for (j = 0; j < x / 2; j++) {
 				ret += rndEl(["+", "-"]) + rndEl(["+", "-"]) + " ";
 			}
-			ret += "U" + rndEl(["'\n", "~\n"]);
+			ret += "U" + rndEl(["'\\n", "~\\n"]);
 		}
 		return ret;
 	}
@@ -244,7 +244,7 @@
 			for (j = 0; j < 10; j++) {
 				ret += (j % 2 == 0 ? ("Rr".charAt(rn(2))) : ("Dd".charAt(rn(2)))) + rndEl(["+ ", "++", "- ", "--"]) + " ";
 			}
-			ret += "y" + rndEl(minxsuff) + "\n";
+			ret += "y" + rndEl(minxsuff) + "\\n";
 		}
 		return ret;
 	}
@@ -372,7 +372,7 @@
 				}
 				return ret.replace('?', rndEl(["", " UR"])).replace('?', rndEl(["", " DR"])).replace('?', rndEl(["", " DL"])).replace('?', rndEl(["", " UL"]));
 			case "clk": // Clock (Jaap order)
-				return "UU" + c("u") + "dU" + c("u") + "dd" + c("u") + "Ud" + c("u") + "dU" + c("u") + "Ud" + c("u") + "UU" + c("u") + "UU" + c("u") + "UU" + c("u") + "dd" + c3() + c2() + "\ndd" + c("d") + "dU" + c("d") + "UU" + c("d") + "Ud" + c("d") + "UU" + c3() + "UU" + c3() + "Ud" + c3() + "dU" + c3() + "UU" + c3() + "dd" + c("d") + c2();
+				return "UU" + c("u") + "dU" + c("u") + "dd" + c("u") + "Ud" + c("u") + "dU" + c("u") + "Ud" + c("u") + "UU" + c("u") + "UU" + c("u") + "UU" + c("u") + "dd" + c3() + c2() + "\\ndd" + c("d") + "dU" + c("d") + "UU" + c("d") + "Ud" + c("d") + "UU" + c3() + "UU" + c3() + "Ud" + c3() + "dU" + c3() + "UU" + c3() + "dd" + c("d") + c2();
 			case "clkc": // Clock (concise)
 				ret = "";
 				for (var i = 0; i < 4; i++) ret += "(" + (rn(12) - 5) + ", " + (rn(12) - 5) + ") / ";
@@ -380,7 +380,7 @@
 				for (var i = 0; i < 4; i++) ret += rndEl(["d", "U"]);
 				return ret;
 			case "clke": // Clock (efficient order)
-				return "UU" + c("u") + "dU" + c("u") + "dU" + c("u") + "UU" + c("u") + "UU" + c("u") + "UU" + c("u") + "Ud" + c("u") + "Ud" + c("u") + "dd" + c("u") + "dd" + c3() + c2() + "\nUU" + c3() + "UU" + c3() + "dU" + c("d") + "dU" + c3() + "dd" + c("d") + "Ud" + c3() + "Ud" + c("d") + "UU" + c3() + "UU" + c("d") + "dd" + c("d") + c2();
+				return "UU" + c("u") + "dU" + c("u") + "dU" + c("u") + "UU" + c("u") + "UU" + c("u") + "UU" + c("u") + "Ud" + c("u") + "Ud" + c("u") + "dd" + c("u") + "dd" + c3() + c2() + "\\nUU" + c3() + "UU" + c3() + "dU" + c("d") + "dU" + c3() + "dd" + c("d") + "Ud" + c3() + "Ud" + c("d") + "UU" + c3() + "UU" + c("d") + "dd" + c("d") + c2();
 			case "giga": // Gigaminx
 				return gigascramble(len);
 			case "mgmo": // Megaminx (old style)
@@ -410,12 +410,12 @@
 				return addPyrTips(ret, 4).replace(/!/g, "");
 			case "r3": // multiple 3x3x3 relay
 				for (var i = 0; i < len; i++) {
-					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333}";
+					ret += (i == 0 ? "" : "\\n") + (i + 1) + ") ${333}";
 				}
 				return scrMgr.formatScramble(ret);
 			case "r3ni": // multiple 3x3x3 bld
 				for (var i = 0; i < len; i++) {
-					ret += (i == 0 ? "" : "\n") + (i + 1) + ") ${333ni}";
+					ret += (i == 0 ? "" : "\\n") + (i + 1) + ") ${333ni}";
 				}
 				return scrMgr.formatScramble(ret);
 			case "sq1h": // Square-1 (turn metric)
