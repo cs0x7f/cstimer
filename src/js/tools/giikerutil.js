@@ -107,7 +107,7 @@ var giikerutil = execMain(function(CubieCube) {
 				// 	return;
 				// }
 				var facelet = currentCubie.toFaceCube();
-				if (cubeutil.getCFOPProgress(facelet) <= 2) { // all unsolved pieces is on same face
+				if (cubeutil.getProgress(facelet, 'cfop') <= 2) { // all unsolved pieces is on same face
 					return;
 				}
 				var gen = scramble_333.genFacelet(currentCubie.toFaceCube());

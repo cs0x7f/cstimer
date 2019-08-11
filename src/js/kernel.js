@@ -886,18 +886,18 @@ var kernel = execMain(function() {
 		// console.log(time);
 		if (time < 0) {return 'DNF';}
 		var useMilli = getProp('useMilli');
-		time = ~~(time / (useMilli ? 1 : 10));
+		time = Math.floor(time / (useMilli ? 1 : 10));
 		var bits = time % (useMilli ? 1000 : 100);
-		time = ~~(time / (useMilli ? 1000 : 100));
+		time = Math.floor(time / (useMilli ? 1000 : 100));
 		var format = getProp('timeFormat');
 		var secs, mins=0, hours=0;
 		if (format == 'h') {
 			secs = time % 60;
-			mins = ~~(time/60) % 60;
-			hours = ~~(time/3600);
+			mins = Math.floor(time/60) % 60;
+			hours = Math.floor(time/3600);
 		} else if (format == 'm') {
 			secs = time % 60;
-			mins = ~~(time/60);
+			mins = Math.floor(time/60);
 		} else {
 			secs = time;
 		}

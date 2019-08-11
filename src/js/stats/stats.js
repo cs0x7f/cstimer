@@ -728,13 +728,48 @@ var stats = execMain(function(kpretty, round, kpround) {
 			infoDiv.html(s.replace(/\n/g, '<br>'));
 		}
 
+		function updateSelector() {
+			var isModified = false;
+			var curSessionData = JSON.parse(kernel.getProp('sessionData'));
+			$.each(curSessionData, function(idx, val) {
+				if (!prevSessionData[idx] ||
+					val['name'] != prevSessionData[idx]['name'] ||
+					(val['opt'] || {})['scrType'] != (prevSessionData[idx]['opt'] || {})['scrType']) {
+					isModified = true;
+				}
+			});
+			prevSessionData = curSessionData;
+			if (!isModified) {
+				return;
+			}
+			var nameList = [];
+			var scrList = [];
+			nameSelect.empty().append($('<option />').val('*').html(STATS_XSESSION_NAME));
+			scrSelect.empty().append($('<option />').val('*').html(STATS_XSESSION_SCR));
+			$.each(curSessionData, function(idx, val) {
+				var curLabel = val['name'];
+				if ($.inArray(curLabel, nameList) == -1) {
+					nameList.push(curLabel);
+					nameSelect.append($('<option />').val(curLabel).html(curLabel));
+				}
+				var curScr = (val['opt'] || {})['scrType'] || '333';
+				if ($.inArray(curScr, scrList) == -1) {
+					scrList.push(curScr);
+					scrSelect.append($('<option />').val(curScr).html(scramble.getTypeName(curScr)));
+				}
+			});
+		}
+		var myfdiv = null;
+
 		function execFunc(fdiv, signal) {
+			myfdiv = fdiv;
 			if (!fdiv) {
 				return;
 			}
 			if (/^scr/.exec(signal)) {
 				return;
 			}
+			updateSelector();
 			fdiv.empty().append(toolDiv);
 			calcSpan.unbind('click').click(updateInfo);
 			infoDiv.unbind('click').click(function(e) {
@@ -744,37 +779,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		var prevSessionData = {};
 		function procSignal(signal, value) {
-			if (value[0] == 'sessionData' && !isInit) {
-				var isModified = false;
-				var curSessionData = JSON.parse(value[1]);
-				$.each(curSessionData, function(idx, val) {
-					if (!prevSessionData[idx] ||
-						val['name'] != prevSessionData[idx]['name'] ||
-						(val['opt'] || {})['scrType'] != (prevSessionData[idx]['opt'] || {})['scrType']) {
-						isModified = true;
-					}
-				});
-				prevSessionData = JSON.parse(value[1]);
-				if (!isModified) {
-					return;
-				}
-				var sessionData = JSON.parse(value[1]);
-				var nameList = [];
-				var scrList = [];
-				nameSelect.empty().append($('<option />').val('*').html(STATS_XSESSION_NAME));
-				scrSelect.empty().append($('<option />').val('*').html(STATS_XSESSION_SCR));
-				$.each(sessionData, function(idx, val) {
-					var curLabel = val['name'];
-					if ($.inArray(curLabel, nameList) == -1) {
-						nameList.push(curLabel);
-						nameSelect.append($('<option />').val(curLabel).html(curLabel));
-					}
-					var curScr = (val['opt'] || {})['scrType'] || '333';
-					if ($.inArray(curScr, scrList) == -1) {
-						scrList.push(curScr);
-						scrSelect.append($('<option />').val(curScr).html(scramble.getTypeName(curScr)));
-					}
-				});
+			if (value[0] == 'sessionData' && myfdiv) {
+				updateSelector();
 			}
 		}
 

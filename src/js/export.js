@@ -50,7 +50,14 @@ var exportFunc = execMain(function() {
 	}
 
 	function importData() {
-		loadData(JSON.parse(this.result));
+		var dataobj = null;
+		try {
+			dataobj = JSON.parse(this.result);
+		} catch (e) {
+			logohint.push('Invalid Data');
+			return;
+		}
+		loadData(dataobj);
 	}
 
 	function loadData(data) {
