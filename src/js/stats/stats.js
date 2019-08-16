@@ -1969,6 +1969,23 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 	}
 
+	function checkStatalU(force) {
+		var curValue = kernel.getProp('statalu');
+		if (!force && /^\s*([am]o\d+[\s,;]*)+\s*$/.exec(curValue)) {
+			return;
+		}
+		var input = prompt('Statistics Details', curValue || 'mo3 ao5 ao12 ao100');
+		if (/^\s*([am]o\d+[\s,;]*)+\s*$/.exec(input) && avgSizesStd(input)) {
+			kernel.setProp('statalu', input);
+		} else {
+			if (input != null) {
+				alert('INVALID VALUES!');
+			}
+			kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
+			kernel.reprop();
+		}
+	}
+
 	function updateStatalU(statal) {
 		var avgSizesNew = avgSizesStd(statal);
 		if (!avgSizesNew) {
@@ -2009,23 +2026,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 			} else if (value[0] == 'statal') {
 				var statal = value[1];
 				if (statal == 'u') {
-					if (value[2] == 'modify') {
-						var input = prompt('Statistics Details', kernel.getProp('statalu') || 'mo3 ao5 ao12 ao100');
-						if (/^\s*([am]o\d+[\s,;]*)+\s*$/.exec(input)) {
-							kernel.setProp('statalu', input);
-							statal = input;
-						} else {
-							if (input != null) {
-								alert('INVALID VALUES!');
-							}
-							kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
-							kernel.reprop();
-						}
-					} else {
-						statal = kernel.getProp('statalu');
-					}
+					checkStatalU(value[2] == 'modify');
 				}
-				updateStatalU(statal);
+				statal = kernel.getProp('statal');
+				updateStatalU(statal == 'u' ? kernel.getProp('statalu') : statal);
 			} else if (value[0] == 'statalu') {
 				updateStatalU(value[1]);
 			} else if (value[0] == 'trim') {
@@ -2046,6 +2050,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				updateUtil();
 			} else if (value[0] == 'wndStat') {
 				resultsHeight();
+			} else if (value[0] == 'sr_statal') {
+				kernel.setProp('sr_statalu', value[1]);
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
@@ -2078,7 +2084,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|alu?|inv|Hide|src)|session(:?Data)?|scrType|phases|trim|view|wndStat)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|alu?|inv|Hide|src)|session(:?Data)?|scrType|phases|trim|view|wndStat|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
@@ -2120,6 +2126,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 		], 1);
 		kernel.regProp('stats', 'delmul', 0, PROPERTY_DELMUL, [true]);
 		kernel.regProp('ui', 'statHide', ~0, 'Hide Session Title', [false]);
+
+		kernel.setProp('sr_statalu', kernel.getProp('sr_statal'));
 	});
 
 	return {

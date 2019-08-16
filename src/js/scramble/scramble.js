@@ -429,7 +429,7 @@ var scramble = execMain(function(rn, rndEl) {
 		scrOpt[0].disabled = scrLen[0].disabled && !(curType in filters);
 		if (scrFlt[0] != curType) {
 			scrFlt = [curType, filters[curType] && mathlib.valuedArray(filters[curType].length, 1)];
-			kernel.setProp('scrFlt', JSON.stringify(scrFlt));
+			kernel.setProp('scrFlt', JSON.stringify(scrFlt), 'session');
 		}
 		// console.log(scrFlt);
 		genScramble();
