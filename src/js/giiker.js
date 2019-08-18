@@ -71,14 +71,32 @@ var GiikerCube = execMain(function() {
 			[50, 39]
 		];
 
+		function toHexVal(value) {
+			var raw = [];
+			for (var i = 0; i < 20; i++) {
+				raw.push(value.getUint8(i));
+			}
+			if (raw[18] == 0xa7) { // decrypt
+				var key = [176, 81, 104, 224, 86, 137, 237, 119, 38, 26, 193, 161, 210, 126, 150, 81, 93, 13, 236, 249, 89, 235, 88, 24, 113, 81, 214, 131, 130, 199, 2, 169, 39, 165, 171, 41]
+				var k1 = raw[19] >> 4 & 0xf;
+				var k2 = raw[19] & 0xf;
+				for (var i = 0; i < 18; i++) {
+					raw[i] += key[i + k1] + key[i + k2];
+				}
+				raw = raw.slice(0, 18);
+			}
+			var valhex = [];
+			for (var i = 0; i < raw.length; i++) {
+				valhex.push(raw[i] >> 4 & 0xf);
+				valhex.push(raw[i] & 0xf);
+			}
+			return valhex;
+		}
+
 		function parseState(value) {
 			var timestamp = $.now();
 
-			var valhex = [];
-			for (var i = 0; i < 20; i++) {
-				valhex.push(~~(value.getUint8(i) / 16));
-				valhex.push(value.getUint8(i) % 16);
-			}
+			var valhex = toHexVal(value);
 			var eo = [];
 			for (var i = 0; i < 3; i++) {
 				for (var mask = 8; mask != 0; mask >>= 1) {
@@ -97,14 +115,13 @@ var GiikerCube = execMain(function() {
 
 			var moves = valhex.slice(32, 40);
 			var prevMoves = [];
-			for (var i = 0; i < 4; i++) {
-				prevMoves.push("BDLURF" [moves[i * 2] - 1] + " 2'" [(moves[i * 2 + 1] - 1) % 7]);
+			for (var i = 0; i < moves.length; i += 2) {
+				prevMoves.push("BDLURF".charAt(moves[i] - 1) + " 2'".charAt((moves[i + 1] - 1) % 7));
 			}
 			if (DEBUG) {
-				var valhex = [];
-				for (var i = 0; i < 20; i++) {
-					valhex.push("0123456789abcdef" [~~(value.getUint8(i) / 16)]);
-					valhex.push("0123456789abcdef" [value.getUint8(i) % 16]);
+				var hexstr = [];
+				for (var i = 0; i < 40; i++) {
+					hexstr.push("0123456789abcdef".charAt(valhex[i]));
 				}
 				console.log('[giiker]', "Raw Data: ", valhex.join(""));
 				console.log('[giiker]', "Current State: ", facelet);
