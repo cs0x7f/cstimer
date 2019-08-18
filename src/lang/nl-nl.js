@@ -105,9 +105,9 @@ var PROPERTY_GIISOK_KEY = 'Markeer gescrabbeld met spatie balk';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
+var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
 var PROPERTY_GIIRSTS = 'Altijd|Vraag|Nooit';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
+var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'scramble',
 	"stats": 'Statistiek',
 	"tools": 'Hulpmiddelen',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'Voer URL in';
 var BGIMAGE_INVALID = 'Ongeldige URL';

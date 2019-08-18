@@ -105,9 +105,9 @@ var PROPERTY_GIISOK_KEY = 'Indicar fin del scramble con la barra espaciadora';
 var PROPERTY_GIISOK_MOVE = 'Indicar fin del scramble haciendo';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc | (U U\')2, (U\' U)2, etc. | Nunca';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
+var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
+var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
 var PROPERTY_GIIAED = 'Detección de errores de hardware automática';
 var scrdata = [
 	['WCA', [
@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'Mezclas',
 	"stats": 'Estadísticas',
 	"tools": 'Herramientas',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'Por favor, introduce la url de la imagen';
 var BGIMAGE_INVALID = 'Url inválida';

@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'keverés',
 	"stats": 'statisztikák',
 	"tools": 'eszközök',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'Kérlek másold be a kép URL-jét.';
 var BGIMAGE_INVALID = 'érvénytelen URL';

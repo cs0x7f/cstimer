@@ -98,16 +98,16 @@ var SCRAMBLE_INPUT = 'Unesi scramble/ove)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
 var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
+var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
+var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
+var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'scramble',
 	"stats": 'statistika',
 	"tools": 'alati',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'unesi url slike';
 var BGIMAGE_INVALID = 'nevažeći url';

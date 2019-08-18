@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'scramble',
 	"stats": 'statistiche',
 	"tools": 'strumenti',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'Inserire url dell\'immagine';
 var BGIMAGE_INVALID = 'URL non valida';

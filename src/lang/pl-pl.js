@@ -54,7 +54,7 @@ var TOOLS_SELECTFUNC = 'Function';
 var TOOLS_CROSS = 'solve cross';
 var TOOLS_EOLINE = 'solve EOLine';
 var TOOLS_ROUX1 = 'solve Roux S1';
-var TOOLS_GIIKER = 'Giiker Cube';
+var TOOLS_GIIKER = 'Bluetooth Cube';
 var TOOLS_IMAGE = 'draw scramble';
 var TOOLS_STATS = 'Statystyki';
 var TOOLS_HUGESTATS = 'cross-session stats';
@@ -70,7 +70,7 @@ var PROPERTY_TIMEU = 'timer update is';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
 var PROPERTY_ENTERING = 'entering in times with';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|Giiker';
+var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|bluetooth';
 var PROPERTY_INTUNIT = 'Unit when entering an integer';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
 var PROPERTY_COLOR = 'wybierz kolor motywu';
@@ -98,16 +98,16 @@ var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
 var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual Giiker cube';
+var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset Giiker cube when connect';
+var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
 var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset Giiker cube as solved?';
+var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'scramble',
 	"stats": 'statystyki',
 	"tools": 'narzędzia',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'podaj url obrazka';
 var BGIMAGE_INVALID = 'niepoprawny url';

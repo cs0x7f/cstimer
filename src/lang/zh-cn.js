@@ -54,7 +54,7 @@ var TOOLS_SELECTFUNC = '选择功能';
 var TOOLS_CROSS = '十字求解';
 var TOOLS_EOLINE = 'EOLine求解';
 var TOOLS_ROUX1 = '桥式S1求解';
-var TOOLS_GIIKER = '计客魔方';
+var TOOLS_GIIKER = '蓝牙魔方';
 var TOOLS_IMAGE = '打乱图案';
 var TOOLS_STATS = '统计数据';
 var TOOLS_HUGESTATS = '跨分组统计';
@@ -70,7 +70,7 @@ var PROPERTY_TIMEU = '计时器更新方式';
 var PROPERTY_TIMEU_STR = '实时|0.1秒|到秒|仅观察|隐藏';
 var PROPERTY_PRETIME = '开始前按住空格时间（秒）';
 var PROPERTY_ENTERING = '产生成绩通过';
-var PROPERTY_ENTERING_STR = '计时器|手动输入|stackmat|MoYuTimer|虚拟魔方|计客魔方';
+var PROPERTY_ENTERING_STR = '计时器|手动输入|stackmat|MoYuTimer|虚拟魔方|蓝牙魔方';
 var PROPERTY_INTUNIT = '输入整数时的单位';
 var PROPERTY_INTUNIT_STR = '秒|百分秒|毫秒';
 var PROPERTY_COLOR = '选择颜色主题';
@@ -98,16 +98,16 @@ var SCRAMBLE_INPUT = '输入打乱公式';
 var PROPERTY_VRCSPEED = 'VRC基础速度 (tps)';
 var PROPERTY_VRCMP = '多阶段测速';
 var PROPERTY_VRCMPS = '无|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|桥式';
-var PROPERTY_GIIKERVRC = '显示虚拟计客魔方';
+var PROPERTY_GIIKERVRC = '显示虚拟蓝牙魔方';
 var PROPERTY_GIISOK_DELAY = '保持几秒后标记已打乱';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|从不|正确打乱';
 var PROPERTY_GIISOK_KEY = '使用空格标记已打乱';
 var PROPERTY_GIISOK_MOVE = '使用转动标记已打乱';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, 等|(U U\')2, (U\' U)2, 等|从不';
 var PROPERTY_GIISBEEP = '标记已打乱时发出嘀声';
-var PROPERTY_GIIRST = '连接时重置计客魔方';
+var PROPERTY_GIIRST = '连接时重置蓝牙魔方';
 var PROPERTY_GIIRSTS = '总是|询问|从不';
-var CONFIRM_GIIRST = '重置计客魔方为已还原？';
+var CONFIRM_GIIRST = '重置蓝牙魔方为已还原？';
 var PROPERTY_GIIAED = '自动硬件错误检测';
 var scrdata = [
 	['WCA', [
@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": '打乱',
 	"stats": '统计',
 	"tools": '工具',
-	"vrc": '虚拟&<br>计客魔方'
+	"vrc": '虚拟&<br>蓝牙魔方'
 };
 var BGIMAGE_URL = '请输入图片地址(url)';
 var BGIMAGE_INVALID = '无效地址';

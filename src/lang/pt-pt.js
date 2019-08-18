@@ -405,7 +405,7 @@ var MODULE_NAMES = {
 	"scramble": 'Embaralhamento',
 	"stats": 'Estatísticas',
 	"tools": 'Ferramentas',
-	"vrc": 'virtual&<br>Giiker'
+	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'por favor, insira o url da imagem';
 var BGIMAGE_INVALID = 'url inválido!';
