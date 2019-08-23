@@ -131,7 +131,9 @@ var scrdata = [
 		['3x3 višestruko naslijepo', "r3ni", 5]
 	]],
 	['Input', [
-		['Eksterno', "input", 0]
+		['Eksterno', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]

@@ -167,7 +167,7 @@ var scramble = execMain(function(rn, rndEl) {
 	}
 
 
-	var type, lasttype, typeExIn = '333o';
+	var type, lasttype, typeExIn = '333';
 	var len = 0;
 
 	var scramble, lastscramble;
@@ -306,7 +306,7 @@ var scramble = execMain(function(rn, rndEl) {
 		var remoteScramble = [];
 		var remoteURL = 'https://cstimer.net/testRemoteScramble.php';
 
-		function next() {
+		function next(type) {
 			var ret = null;
 			while (!ret && remoteScramble.length != 0) {
 				ret = remoteScramble.shift();
@@ -314,18 +314,29 @@ var scramble = execMain(function(rn, rndEl) {
 			if (ret) {
 				return ret;
 			}
-			$.getJSON(remoteURL, function(ret) {
+			if (type == 'remoteComp') {
+				if (!onlinecomp) {
+					remoteFail();
+				}
+				var ret = onlinecomp.getScrambles();
 				if (!parseInput(ret)) {
 					remoteFail();
 				} else {
-					doScrambleIt();
+					requestAnimFrame(doScrambleIt);
 				}
-			}).error(remoteFail);
+			} else if (type == 'remoteURL') {
+				$.getJSON(remoteURL, function(ret) {
+					if (!parseInput(ret)) {
+						remoteFail();
+					} else {
+						requestAnimFrame(doScrambleIt);
+					}
+				}).error(remoteFail);
+			}
 			return "";
 		}
 
 		function remoteFail() {
-			logohint.push('Scramble Error');
 			kernel.setProp('scrType', typeExIn);
 		}
 

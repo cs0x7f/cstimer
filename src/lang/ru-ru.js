@@ -131,7 +131,9 @@ var scrdata = [
 		['несколько 3х3 вслепую', "r3ni", 5]
 	]],
 	['Загрузить', [
-		['Внешний', "input", 0]
+		['Внешний', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]

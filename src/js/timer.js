@@ -1261,7 +1261,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
-	var resetCondition = "input|phases|scrType|preScr|useMilli|smallADP|giiVRC".split('|');
+	var resetCondition = "input|phases|preScr|useMilli|smallADP|giiVRC".split('|');
 
 	$(function() {
 		container = $('#container');

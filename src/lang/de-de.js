@@ -131,7 +131,9 @@ var scrdata = [
 		['3x3 Multiblind', "r3ni", 5]
 	]],
 	['Eingabe', [
-		['Extern', "input", 0]
+		['Extern', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]

@@ -131,7 +131,9 @@ var scrdata = [
 		['三阶多盲', "r3ni", 5]
 	]],
 	['输入', [
-		['手动输入', "input", 0]
+		['手动输入', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]

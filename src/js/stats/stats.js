@@ -54,6 +54,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 		}
 		updateUtil();
+		kernel.pushSignal('timestd', times[times.length - 1]);
 	}
 
 	function delIdx(index) {
@@ -2131,6 +2132,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	});
 
 	return {
-		importSessions: sessionManager.importSessions
+		importSessions: sessionManager.importSessions,
+		pretty: pretty
 	}
 }, [kernel.pretty, kernel.round, kernel.pround]);

@@ -131,7 +131,9 @@ var scrdata = [
 		['3x3x3 multi BLD', "r3ni", 5]
 	]],
 	['Entrada', [
-		['??', "input", 0]
+		['??', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]

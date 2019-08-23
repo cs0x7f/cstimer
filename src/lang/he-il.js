@@ -131,7 +131,9 @@ var scrdata = [
 		['3×3 מ-בליינד', "r3ni", 5]
 	]],
 	['קלט', [
-		['חיצוני', "input", 0]
+		['חיצוני', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]

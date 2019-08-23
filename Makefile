@@ -50,6 +50,7 @@ tools/roux1.js \
 tools/giikerutil.js \
 tools/insertionfinder.js \
 tools/metronome.js \
+tools/onlinecomp.js \
 shortcut.js \
 help.js \
 stackmat.js \

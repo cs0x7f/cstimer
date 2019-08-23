@@ -131,7 +131,9 @@ var scrdata = [
 		['3x3 복수 눈가리기', "r3ni", 5]
 	]],
 	['입력', [
-		['직접 입력', "input", 0]
+		['직접 입력', "input", 0],
+		['Online Competition', "remoteComp", 0],
+		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
