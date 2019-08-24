@@ -181,8 +181,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (time[4]) {
 				reviewElem = $('<a target="_blank">Review</a>').addClass('click');
 				reviewElem.attr('href',
-					'https://alg.cubing.net/?alg=' + (time[4][0] || '').replace(/@(\d+)/g, '/*$1*/') +
-					'&setup=' + (time[1] || '')
+					'https://alg.cubing.net/?alg=' + encodeURIComponent((time[4][0] || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) +
+					'&setup=' + encodeURIComponent(time[1] || '')
 				);
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}

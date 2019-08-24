@@ -481,7 +481,7 @@
 				return "yxz".charAt("URFDLB".indexOf(move[2]) % 3) +
 					" 2'".charAt("URF".indexOf(move[2]) == -1 ? (2 - pow) : pow);
 			} else if (move[0] == 2) { //M or M'
-				return 'M' + " 2'".charAt(move[2] == 'R' ? (2 - pow) : pow);
+				return '2-2' + move[2] + 'w' + " 2'".charAt(pow);
 			} else {
 				return (nlayer > 2 ? nlayer : '') + axis + (nlayer >= 2 ? 'w' : '') + " 2'".charAt(pow);
 			}
