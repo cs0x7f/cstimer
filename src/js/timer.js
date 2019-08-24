@@ -446,12 +446,22 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			for (var i = 0; i < arr.length; i++) {
 				var m = reg.exec(arr[i]);
 				if (m != null && m[4] != "") {
-					time = Math.round(3600000 * ~~(m[2]) + 60000 * ~~(m[3]) + 1000 * parseFloat(m[4]));
+					time = Math.round(3600000 * Math.floor(m[2]) + 60000 * Math.floor(m[3]) + 1000 * parseFloat(m[4]));
 					if (time == 0) {
 						continue;
 					}
 					if (m[2] == '' && m[3] == '' && /^\d+$/.exec(m[4])) {
-						time = ~~(time / (kernel.getProp('intUN') || 1));
+						var intUN = kernel.getProp('intUN') || 20100;
+						var modUN = intUN % 10000;
+						time = Math.floor(time / modUN);
+						var hh = Math.floor(time / 10000000);
+						var mi = Math.floor(time / 100000) % 100;
+						var ss = time % 100000;
+						if (intUN > 20000) {
+							time = (60 * hh + mi) * 60000 + ss;
+						} else if (intUN > 10000) {
+							time = (100 * hh + mi) * 60000 + ss;
+						}
 					}
 					if (m[1] == "DNF") {
 						ins = -1;
@@ -471,7 +481,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 								timeRemain = 1e8;
 								break;
 							}
-							timeRemain -= Math.round(3600000 * ~~(mt[1]) + 60000 * ~~(mt[2]) + 1000 * parseFloat(mt[3]));
+							timeRemain -= Math.round(3600000 * Math.floor(mt[1]) + 60000 * Math.floor(mt[2]) + 1000 * parseFloat(mt[3]));
 							timeSplit[j] = Math.max(0, timeRemain);
 						}
 						if (Math.abs(timeRemain) > 10 * timeSplit.length) {
@@ -1303,7 +1313,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
 		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')], 1);
-		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [1, [1, 100, 1000], PROPERTY_INTUNIT_STR.split('|')], 1);
+		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [20100, [1, 100, 1000, 10001, 10100, 11000, 20001, 20100, 21000], 'X|X.XX|X.XXX|X:XX|X:XX.XX|X:XX.XXX|X:XX:XX|X:XX:XX.XX|X:XX:XX.XXX'.split('|')], 1);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10], 3);
