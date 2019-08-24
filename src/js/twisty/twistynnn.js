@@ -151,7 +151,39 @@
 			}
 		}
 
+		var handMarks = [];
 
+		function updateHandMarks(handMarks, dimension, oSl, oSr) {
+			for (var i = 0; i < handMarks.length; i++) {
+				var sticker = handMarks[i];
+				var offset = (i + 1 & 2) ? oSl : oSr;
+				var su = (i & 1) ? 1 : -1;
+				var sv = (i & 2) ? 1 : -1;
+				var hsq2 = Math.sqrt(2) / 2;
+				sticker.matrix.copy(new THREE.Matrix4().multiply(axify(
+					new THREE.Vector3(1 * sv, 0, 0),
+					new THREE.Vector3(0, hsq2 * sv, -hsq2 * sv),
+					new THREE.Vector3(0, hsq2, hsq2)), new THREE.Matrix4().setTranslation(
+					su * (dimension - 2 * offset), dimension * (hsq2 * 2 + 0.05), 0
+				)));
+				sticker.update();
+			}
+		}
+
+		if (cubeOptions.dimension > 5) {
+			var markwidth = cubeOptions.dimension / 15;
+			for (var i = 0; i < 4; i++) {
+				var sticker = new THREE.Object3D();
+				var stickerInterior = new THREE.Mesh(new THREE.Ploy(
+					[[0, 0], [markwidth / 2, markwidth], [-markwidth / 2, markwidth]]
+				), [(i + 1 & 2) ? materials[4] : materials[1], borderMaterial]);
+				stickerInterior.doubleSided = cubeOptions.doubleSided;
+				sticker.addChild(stickerInterior);
+				sticker.matrixAutoUpdate = false;
+				handMarks.push(sticker);
+				cubeObject.addChild(sticker);
+			}
+		}
 
 		var actualScale = cubeOptions.scale * 0.5 / cubeOptions.dimension;
 		cubeObject.scale = new THREE.Vector3(actualScale, actualScale, actualScale);
@@ -288,8 +320,8 @@
 				66: [1, iSi, "L", 1], //B x'
 				190: [2, 2, "R", 1], //. M'
 				88: [2, 2, "L", -1], //X M'
-				53: [2, 2, "R", -1], //5 M
-				54: [2, 2, "L", 1], //6 M
+				53: [2, 2, "L", 1], //5 M
+				54: [2, 2, "R", -1], //6 M
 				80: [1, iSi, "F", 1], //P z
 				81: [1, iSi, "F", -1], //Q z'
 				90: [1, 2, "D", 1], //Z d
@@ -301,11 +333,14 @@
 
 		var cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
 
+		updateHandMarks(handMarks, iSi, oSl, oSr);
+
 		function keydownCallback(twisty, e) {
 			if (e.altKey || e.ctrlKey) {
 				return;
 			}
 			var keyCode = e.keyCode;
+			var ret = false;
 			if (keyCode == 51 || keyCode == 52 || keyCode == 55 || keyCode == 56 || keyCode == 32) {
 				if (keyCode == 51) {
 					oSl = Math.max(1, oSl - 1);
@@ -319,10 +354,13 @@
 					oSl = oSr = 1;
 				}
 				cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
+				updateHandMarks(twisty.handMarks, iSi, oSl, oSr);
+				ret = true;
 			}
 			if (keyCode in cubeKeyMapping) {
 				twistyScene.addMoves([cubeKeyMapping[keyCode]]);
 			}
+			return ret;
 		}
 
 		//return 0 if solved
@@ -454,6 +492,7 @@
 			options: cubeOptions,
 			_3d: cubeObject,
 			cubePieces: cubePieces,
+			handMarks: handMarks,
 			animateMoveCallback: animateMoveCallback,
 			advanceMoveCallback: advanceMoveCallback,
 			keydownCallback: keydownCallback,

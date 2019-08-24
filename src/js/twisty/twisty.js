@@ -141,8 +141,7 @@ window.twistyjs = (function() {
 
 		this.keydown = function(e) {
 			var keyCode = e.keyCode;
-			//log(keyCode);
-			twisty.keydownCallback(twisty, e);
+			var ret = twisty.keydownCallback(twisty, e);
 
 			switch (keyCode) {
 				case 37:
@@ -153,6 +152,8 @@ window.twistyjs = (function() {
 					moveCameraDelta(-Math.TAU / 48);
 					e.preventDefault && e.preventDefault();
 					break;
+				default:
+					ret && render();
 			}
 		};
 
