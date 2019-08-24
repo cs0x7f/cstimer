@@ -523,7 +523,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	var stackmatTimer = (function() {
 		var enable = false;
-		var lastRun = false;
+		var lastState = {};
 		var inspectionTime;
 
 		function stackmatCallback(state) {
@@ -537,6 +537,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.setRunning(false);
 				lcd.color('');
 				ui.setAutoShow(true);
+				lastState = state;
 				return;
 			}
 			var curTime = state.time_milli;
@@ -557,12 +558,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.val(curTime);
 				ui.setAutoShow(true);
 			}
-			if (lastRun && !state.running && state.time_milli != 0) {
+			if (lastState.running && !state.running && state.time_milli != 0) {
 				inspectionTime = checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				pushSignal('time', [inspectionTime, ~~curTime]);
 			}
-			lastRun = state.running;
 			timerDisplay(state);
+			lastState = state;
 		}
 
 		function timerDisplay(state) {
@@ -594,7 +595,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function onkeydown(keyCode) {
 			var now = $.now();
 
-			if (keyCode == 32 && status == -1 && checkUseIns()) {
+			if (keyCode == 32 && status == -1 && checkUseIns() && lastState.on && lastState.time_milli == 0) {
 				status = -4;
 				startTime = now;
 				lcd.fixDisplay(true, true);

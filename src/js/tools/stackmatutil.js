@@ -13,7 +13,7 @@ var stackmatutil = execMain(function(CubieCube) {
 		var status = '';
 		status += 'status:  ' + (value.on ? 'on' : 'off') + '<br>';
 		status += 'noise:   ' + ~~(value.noise * 100) + '%<br>';
-		status += 'power:   ' + ~~(value.power * 100) + '%<br>';
+		status += 'power:   ' + (~~(Math.log10(value.power) * 100) / 10) + 'dB<br>';
 		status += 'header:  ' + (value.signalHeader) + '<br>';
 		status += 'pad:     ' + (value.leftHand ? 'L' : ' ') + (value.rightHand ? 'R' : ' ') + '<br>';
 		status += 'running: ' + (value.running ? 'yes' : 'no');
@@ -37,7 +37,7 @@ var stackmatutil = execMain(function(CubieCube) {
 			}
 			deviceSelect.unbind('change').change(function() {
 				stackmat.stop();
-				alert(deviceSelect.val());
+				console.log('select device ', deviceSelect.val());
 				stackmat.init(undefined, deviceSelect.val());
 				kernel.blur();
 			});
