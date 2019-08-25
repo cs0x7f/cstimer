@@ -110,7 +110,7 @@ var exportFunc = execMain(function() {
 			if (id == null) {
 				return;
 			}
-			localStorage['locData'] = JSON.stringify({ id: id });
+			localStorage['locData'] = JSON.stringify({ id: id, compid: getDataId('locData', 'compid') });
 		}
 		if (!isValidId(id)) {
 			alert(EXPORT_INVID);
@@ -401,7 +401,7 @@ var exportFunc = execMain(function() {
 					kernel.setProp('atexpa', 'n');
 					return;
 				}
-				localStorage['locData'] = JSON.stringify({ id: id });
+				localStorage['locData'] = JSON.stringify({ id: id, compid: getDataId('locData', 'compid') });
 			}
 		} else if (value[1] == 'wca') {
 			var id = getDataId('wcaData', 'cstimer_token');
@@ -560,6 +560,8 @@ var exportFunc = execMain(function() {
 	});
 
 	return {
-		exportProperties: exportProperties
+		exportProperties: exportProperties,
+		isValidId: isValidId,
+		getDataId: getDataId
 	}
 });

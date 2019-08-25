@@ -743,6 +743,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	return {
 		getTypeName: getTypeName,
-		getTypeIdx: getTypeIdx
+		getTypeIdx: getTypeIdx,
+		scrStd: scrStd
 	}
 }, [mathlib.rn, mathlib.rndEl]);

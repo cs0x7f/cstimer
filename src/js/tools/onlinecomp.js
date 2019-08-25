@@ -30,7 +30,7 @@ var onlinecomp = execMain(function() {
 			curPath = curPath + '|' + pathSelect[i].val();
 		}
 		updatePathSelect(curPath, level + 1);
-		kernel.blur();
+		resetProgress();
 	}
 
 	function getSelect(curPath, level) {
@@ -54,7 +54,6 @@ var onlinecomp = execMain(function() {
 	}
 
 	function updateCompList() {
-		kernel.blur();
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'list'
 		}, function(value) {
@@ -69,13 +68,13 @@ var onlinecomp = execMain(function() {
 				}
 			}
 			updatePathSelect('', 0);
-			clearProgress();
+			resetProgress();
 		}).error(function() {
 			logohint.push('Network Error');
 		});
 	}
 
-	function fetchScramble() {
+	function getCompPath() {
 		var curPath = '';
 		for (var i = 0; i < pathSelect.length; i++) {
 			curPath += '|' + pathSelect[i].val();
@@ -87,10 +86,15 @@ var onlinecomp = execMain(function() {
 		var comp = curPath.slice(1).split('|', 1)[0];
 		var path = curPath.slice(comp.length + 2);
 		comp = compDict[comp];
+		return [comp, path];
+	}
+
+	function fetchScramble() {
+		var comppath = getCompPath();
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'scramble',
-			'comp': comp,
-			'path': path
+			'comp': comppath[0],
+			'path': comppath[1]
 		}, function(value) {
 			var scrambles = JSON.parse(value)['data'];
 			if (!scrambles) {
@@ -123,6 +127,12 @@ var onlinecomp = execMain(function() {
 		isInit = true;
 	}
 
+	function resetProgress() {
+		compScrambles = [];
+		compTypes = [];
+		clearProgress();
+	}
+
 	function clearProgress() {
 		solves = [];
 		submitted = false;
@@ -138,43 +148,109 @@ var onlinecomp = execMain(function() {
 		compMainButton.show().unbind('click');
 		viewResultButton.show().unbind('click').click(viewResult);
 		if (compTypes.length == 0) {
-			compMainButton.val('Start!').click(fetchScramble);
+			compMainButton.removeAttr('disabled').val('Start!').click(fetchScramble);
 		} else {
 			compMainButton.val('Submit!').click(submitSolves);
-			if (solves.length == compTypes.length) {
+			if (solves.length == compTypes.length && !submitted) {
 				compMainButton.removeAttr('disabled');
 			} else {
 				compMainButton.attr('disabled', true);
 			}
 		}
+		kernel.blur();
 	}
 
 	function submitSolves() {
-		console.log('submit solves', solves);
+		if (submitted) {
+			return;
+		}
+		var uid = exportFunc.getDataId('locData', 'compid');
+		uid = prompt('Submit As: ', uid);
+		if (!exportFunc.isValidId(uid)) {
+			alert(EXPORT_INVID);
+			return;
+		}
+		localStorage['locData'] = JSON.stringify({ id: exportFunc.getDataId('locData', 'id'), compid: uid });
+		var comppath = getCompPath();
+		// console.log('submit solves', solves);
+		$.post('https://cstimer.net/comp.php', {
+			'action': 'submit',
+			'comp': comppath[0],
+			'path': comppath[1],
+			'uid': uid,
+			'value': JSON.stringify(solves)
+		}, function(value) {
+			if (value == '{"retcode":0}') {
+				submitted = true;
+				logohint.push('Submitted');
+			} else {
+				logohint.push('Network Error');
+			}
+		}).error(function() {
+			logohint.push('Network Error');
+		});
 	}
 
 	function viewResult() {
-		if (solves.length == 0 || submitted || !confirm('Abort competition and show results?')) {
+		if (solves.length != 0 && !submitted && !confirm('Abort competition and show results?')) {
 			return;
 		}
-		console.log('view result');
+		// console.log('view result');
+		var comppath = getCompPath();
+		$.post('https://cstimer.net/comp.php', {
+			'action': 'result',
+			'comp': comppath[0],
+			'path': comppath[1],
+		}, function(value) {
+			var myid = $.sha256('cstimer_public_salt_' + exportFunc.getDataId('locData', 'compid'));
+			value = JSON.parse(value)['data'];
+			var ret = ['<table class="table"><tr><th>User</th><th>Results</th></tr>'];
+			for (var i = 0; i < value.length; i++) {
+				var uid = value[i]['uid'];
+				var solves = JSON.parse(value[i]['value']);
+				ret.push('<tr>');
+				ret.push(uid == myid ? '<th>Me</th><td>' : '<td>Anonym</td><td>');
+				for (var j = 0; j < solves.length; j++) {
+					ret.push(stats.pretty(solves[j][0]) + ' ');
+				}
+				ret.push('</td>');
+				ret.push('</tr>');
+			}
+			ret.push('</table>');
+			compProgressDiv.empty().html(ret.join(''));
+			// console.log('result', value);
+		}).error(function() {
+			logohint.push('Network Error');
+		});
 	}
 
 	var solves = [];
 	var submitted = false;
 
 	function procSignal(signal, value) {
-		solves.push(value);
+		value = JSON.parse(JSON.stringify(value));
+		var curScr = value[1];
+		value[1] = '';
+		value[2] = '';
+		for (var i = solves.length; i < compScrambles.length; i++) {
+			var targetScr = scramble.scrStd('', compScrambles[i])[1];
+			if (targetScr != curScr) {
+				value[0] = [-1, 1];
+				solves.push(value);
+			} else {
+				solves.push(value);
+				break;
+			}
+		}
 		updateProgress();
 	}
-
 
 	var compScrambles = [];
 	var compTypes = [];
 
 	function getScrambles() {
 		if (solves.length == 0) {
-			return compScrambles;
+			return compScrambles.slice();
 		} else {
 			return [];
 		}
