@@ -132,7 +132,7 @@ var scrdata = [
 	]],
 	['输入', [
 		['手动输入', "input", 0],
-		['Online Competition', "remoteComp", 0],
+		['Competition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

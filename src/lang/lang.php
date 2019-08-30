@@ -4,6 +4,7 @@
 <a class="click" href="?lang=cs-cz">Čeština</a>&nbsp;
 <a class="click" href="?lang=da-dk">Dansk</a>&nbsp;
 <a class="click" href="?lang=de-de">Deutsch</a>&nbsp;
+<a class="click" href="?lang=el-gr">Ελληνικά</a>&nbsp;
 <a class="click" href="?lang=es-es">Español</a>&nbsp;
 <a class="click" href="?lang=fa-ir">فارسی</a>&nbsp;
 <a class="click" href="?lang=fi-fi">Suomi</a>&nbsp;
@@ -15,6 +16,7 @@
 <a class="click" href="?lang=ja-jp">日本語</a>&nbsp;
 <a class="click" href="?lang=ko-kr">한국어</a>&nbsp;
 <a class="click" href="?lang=nl-nl">Nederlands</a>&nbsp;
+<a class="click" href="?lang=no-no">Norsk</a>&nbsp;
 <a class="click" href="?lang=pl-pl">Polski</a>&nbsp;
 <a class="click" href="?lang=pt-pt">Português</a>&nbsp;
 <a class="click" href="?lang=ro-ro">Română</a>&nbsp;
