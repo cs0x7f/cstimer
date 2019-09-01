@@ -5,7 +5,7 @@ var TimeStat = execMain(function() {
 	function TimeStat(avgSizes, timesLen, timeAt, timeSort) {
 		this.avgSizes = avgSizes.slice();
 		this.timeAt = timeAt;
-		this.timeSort = timeSort;
+		this.timeSort = timeSort || TimeStat.dnfsort;
 		this.reset(timesLen);
 	}
 
@@ -18,6 +18,13 @@ var TimeStat = execMain(function() {
 		} else {
 			return ~~ntrim;
 		}
+	}
+
+	TimeStat.dnfsort = function(a, b) {
+		if (a == b) return 0;
+		if (a < 0) return 1;
+		if (b < 0) return -1;
+		return a - b;
 	}
 
 	TimeStat.prototype.reset = function(timesLen) {

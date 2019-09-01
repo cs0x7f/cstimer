@@ -116,6 +116,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 		return "=" + ret.join("+");
 	}
 
+	function getReviewUrl(time) {
+		return 'https://alg.cubing.net/?alg=' + encodeURIComponent((time[4][0] || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) +
+			'&setup=' + encodeURIComponent(time[1] || '')
+	}
+
 	var floatCfm = (function() {
 		var cfmDiv = $('<div style="text-align:center; font-family: initial;">');
 		var cfmTime = $('<span style="font-size:2.5em;"/>');
@@ -180,10 +185,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var reviewElem = '';
 			if (time[4]) {
 				reviewElem = $('<a target="_blank">Review</a>').addClass('click');
-				reviewElem.attr('href',
-					'https://alg.cubing.net/?alg=' + encodeURIComponent((time[4][0] || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) +
-					'&setup=' + encodeURIComponent(time[1] || '')
-				);
+				reviewElem.attr('href', getReviewUrl(time));
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}
 			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')
@@ -317,7 +319,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var idx = ~~target.attr('data');
 		var stats = times_stats_table;
 		if (idx != 0) {
-			stats = new TimeStat(avgSizes, times.length, timeAtDim.bind(undefined, idx), dnfsort);
+			stats = new TimeStat(avgSizes, times.length, timeAtDim.bind(undefined, idx));
 		}
 		getStats(stats, timesAt, idx == 0 ? 0 : STATS_CURSPLIT.replace('%d', idx));
 	}
@@ -473,8 +475,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	var avgSizes = [-3, 5, 12, 50, 100, 1000];
-	var times_stats_table = new TimeStat(avgSizes, 0, timeAt, dnfsort);
-	var times_stats_list = new TimeStat([], 0, timeAt, dnfsort);
+	var times_stats_table = new TimeStat(avgSizes, 0, timeAt);
+	var times_stats_list = new TimeStat([], 0, timeAt);
 
 	function getTableTimeAt() {
 		var statSrc = kernel.getProp('statsrc', 't');
@@ -636,7 +638,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		).val(-1);
 		var scrSelect = $('<select>');
 		var calcSpan = $('<span class="click">' + STATS_XSESSION_CALC + '</span>');
-		var hugeStats = new TimeStat([], 0, hugeTimeAt, dnfsort);
+		var hugeStats = new TimeStat([], 0, hugeTimeAt);
 		var hugeTimes = [];
 
 		function hugeTimeAt(idx) {
@@ -796,7 +798,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		return {
 			update: $.noop,
 			updateStatal: function(avgSizes) {
-				hugeStats = new TimeStat(avgSizes, 0, hugeTimeAt, dnfsort);
+				hugeStats = new TimeStat(avgSizes, 0, hugeTimeAt);
 			}
 		}
 
@@ -1402,7 +1404,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					storage.get(idx).then(function(newTimes) {
 						exportCSV(new TimeStat([], newTimes.length, function(times, idx) {
 							return (times[idx][0][0] == -1) ? -1 : (~~((times[idx][0][0] + times[idx][0][1]) / roundMilli)) * roundMilli;
-						}.bind(undefined, newTimes), dnfsort), function(times, idx) {
+						}.bind(undefined, newTimes)), function(times, idx) {
 							return times[idx];
 						}.bind(undefined, newTimes), 0, newTimes.length);
 					});
@@ -1926,13 +1928,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		stext[0].select();
 	}
 
-	function dnfsort(a, b) {
-		if (a == b) return 0;
-		if (a < 0) return 1;
-		if (b < 0) return -1;
-		return a - b;
-	}
-
 	function trim(number, nDigits) {
 		if (!number || number == Number.POSITIVE_INFINITY || number == Number.NEGATIVE_INFINITY) number = 0;
 		var power = Math.pow(10, nDigits);
@@ -1995,8 +1990,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			return;
 		}
 		avgSizes = avgSizesNew;
-		times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt(), dnfsort);
-		times_stats_list = new TimeStat([], times.length, timeAt, dnfsort);
+		times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
+		times_stats_list = new TimeStat([], times.length, timeAt);
 		crossSessionStats.updateStatal(avgSizes);
 		updateUtil();
 	}
@@ -2047,7 +2042,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 						statOptDiv.show();
 				}
 			} else if (value[0] == 'statsrc') {
-				times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt(), dnfsort);
+				times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
 				updateUtil();
 			} else if (value[0] == 'wndStat') {
 				resultsHeight();
@@ -2133,6 +2128,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	return {
 		importSessions: sessionManager.importSessions,
+		getReviewUrl: getReviewUrl,
 		pretty: pretty
 	}
 }, [kernel.pretty, kernel.round, kernel.pround]);

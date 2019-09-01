@@ -4,7 +4,7 @@ var onlinecomp = execMain(function() {
 	var refreshButton = $('<input type="button" value="Get Competition List">').click(updateCompList);
 	var compSelectDiv = $('<div>');
 	var compSelect = $('<select>');
-	var compProgressDiv = $('<div>');
+	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
 	var compMainButton = $('<input type="button">');
 	var viewResultButton = $('<input type="button" value="View Result">');
 	var pathSelect = [];
@@ -203,15 +203,43 @@ var onlinecomp = execMain(function() {
 			'path': comppath[1],
 		}, function(value) {
 			var myid = $.sha256('cstimer_public_salt_' + exportFunc.getDataId('locData', 'compid'));
-			value = JSON.parse(value)['data'];
-			var ret = ['<table class="table"><tr><th>User</th><th>Results</th></tr>'];
+			value = $.map(JSON.parse(value)['data'], function(val) {
+				var solves = JSON.parse(val['value']);
+				if (solves.length != 5) { //invalid data
+					return;
+				}
+				var timestat = new TimeStat([5], solves.length, function(idx) {
+					return solves[idx][0][0] == -1 ? -1 : (solves[idx][0][0] + solves[idx][0][1]);
+				});
+				timestat.getAllStats();
+				return {
+					'uid': val['uid'],
+					'value': solves,
+					'ao5': timestat.lastAvg[0][0],
+					'bo5': timestat.bestTime
+				};
+			});
+			value.sort(function(a, b) {
+				return TimeStat.dnfsort(a['ao5'], b['ao5']) * 10 + TimeStat.dnfsort(a['bo5'], b['bo5']);
+			})
+
+			var ret = ['<table class="table" style="font-size: 0.8em;"><tr><th></th><th>User</th><th>ao5</th><th>bo5</th><th>Results</th></tr>'];
 			for (var i = 0; i < value.length; i++) {
 				var uid = value[i]['uid'];
-				var solves = JSON.parse(value[i]['value']);
-				ret.push('<tr>');
+				var solves = value[i]['value'];
+				var ao5 = value[i]['ao5'];
+				var bo5 = value[i]['bo5'];
+				ret.push('<tr><td>' + (i + 1) + '</td>');
 				ret.push(uid == myid ? '<th>Me</th><td>' : '<td>Anonym</td><td>');
+				ret.push(kernel.pretty(ao5) + '</td><td>' + kernel.pretty(bo5) + '</td><td>');
 				for (var j = 0; j < solves.length; j++) {
-					ret.push(stats.pretty(solves[j][0]) + ' ');
+					if (solves[j].length > 4) { // from vrc or bluetooth
+						solves[j][1] = scramble.scrStd('', compScrambles[j] || '')[1];
+						ret.push('<a target="_blank" class="click" href="' + stats.getReviewUrl(solves[j]) + '">' + stats.pretty(solves[j][0]) + '</a> ');
+					} else {
+						ret.push(stats.pretty(solves[j][0]) + ' ');
+					}
+					// console.log(solves);
 				}
 				ret.push('</td>');
 				ret.push('</tr>');
