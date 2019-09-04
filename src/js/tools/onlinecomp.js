@@ -220,8 +220,9 @@ var onlinecomp = execMain(function() {
 				};
 			});
 			value.sort(function(a, b) {
-				return TimeStat.dnfsort(a['ao5'], b['ao5']) * 10 + TimeStat.dnfsort(a['bo5'], b['bo5']);
-			})
+				var cmp1 = TimeStat.dnfsort(a['ao5'], b['ao5']);
+				return cmp1 == 0 ? TimeStat.dnfsort(a['bo5'], b['bo5']) : cmp1;
+			});
 
 			var ret = ['<table class="table" style="font-size: 0.8em;"><tr><th></th><th>User</th><th>ao5</th><th>bo5</th><th>Results</th></tr>'];
 			for (var i = 0; i < value.length; i++) {
