@@ -473,7 +473,7 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 
 .tabValue > * {
 	display: block;
-	max-height: 100%;
+	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
 	padding-right: 21px;
