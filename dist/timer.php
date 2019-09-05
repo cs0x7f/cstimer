@@ -43,7 +43,6 @@
 </div>
 <table id="timer" border="0"><tbody>
 <tr><td id="container">
-<div id="touch"></div>
 <div id="lcd"></div>
 <div id="avgstr"></div>
 </td></tr>

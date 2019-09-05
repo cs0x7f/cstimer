@@ -27,7 +27,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.reset(type == 'v' || type == 'g' && getProp('giiVRC'));
 		keyboardTimer.reset();
 		inputTimer.setEnable(type == 'i');
-		type == 'i' ? $('#touch').hide() : $('#touch').show();
 		ui.setAutoShow(true);
 	}
 

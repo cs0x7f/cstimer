@@ -966,31 +966,47 @@ var kernel = execMain(function() {
 			return keyback;
 		});
 
-		$('#touch').bind('touchstart', function(e) {
+		$('#container').bind('touchstart', function(e) {
+			if ($(e.target).is('.click')) {
+				return;
+			}
 			refocus();
 			timer.onkeydown({which: 32});
 			e.preventDefault && e.preventDefault();
 		});
-		$('#touch').bind('touchend', function(e) {
+		$('#container').bind('touchend', function(e) {
+			if ($(e.target).is('.click')) {
+				return;
+			}
 			refocus();
 			timer.onkeyup({which: 32});
 			e.preventDefault && e.preventDefault();
 		});
-		$('#touch').bind('touch', function(e){
+		$('#container').bind('touch', function(e){
+			if ($(e.target).is('.click')) {
+				return;
+			}
 			e.preventDefault && e.preventDefault();
 		});
+		$('#touch').remove();
 
 		/**
 		 * ontouch events might not work on microsoft surface pad or laptop,
 		 * so we add the mouse timer function to support such devices.
 		 */
-		$('#touch').mousedown(function(e) {
+		$('#container').mousedown(function(e) {
+			if ($(e.target).is('.click')) {
+				return;
+			}
 			if (e.which == 1 && getProp('useMouse')) { //left button only
 				timer.onkeydown({which: 32});
 				e.preventDefault && e.preventDefault();
 			}
 		});
-		$('#touch').mouseup(function(e) {
+		$('#container').mouseup(function(e) {
+			if ($(e.target).is('.click')) {
+				return;
+			}
 			if (e.which == 1 && getProp('useMouse')) {
 				timer.onkeyup({which: 32});
 				e.preventDefault && e.preventDefault();
