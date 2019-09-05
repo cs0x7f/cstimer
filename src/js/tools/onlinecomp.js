@@ -164,13 +164,16 @@ var onlinecomp = execMain(function() {
 		if (submitted) {
 			return;
 		}
-		var uid = exportFunc.getDataId('locData', 'compid');
-		uid = prompt('Submit As: ', uid);
-		if (!exportFunc.isValidId(uid)) {
-			alert(EXPORT_INVID);
-			return;
+
+		var uid = exportFunc.getDataId('wcaData', 'cstimer_token');
+		if (!uid || !confirm('Submit As Your WCA Account?')) {
+			uid = prompt('Submit As: ', exportFunc.getDataId('locData', 'compid'));
+			if (!exportFunc.isValidId(uid)) {
+				alert(EXPORT_INVID);
+				return;
+			}
+			localStorage['locData'] = JSON.stringify({ id: exportFunc.getDataId('locData', 'id'), compid: uid });
 		}
-		localStorage['locData'] = JSON.stringify({ id: exportFunc.getDataId('locData', 'id'), compid: uid });
 		var comppath = getCompPath();
 		// console.log('submit solves', solves);
 		$.post('https://cstimer.net/comp.php', {
@@ -202,7 +205,13 @@ var onlinecomp = execMain(function() {
 			'comp': comppath[0],
 			'path': comppath[1],
 		}, function(value) {
+			if (JSON.parse(value)['retcode'] !== 0) {
+				logohint.push('Server Error');
+				return;
+			}
 			var myid = $.sha256('cstimer_public_salt_' + exportFunc.getDataId('locData', 'compid'));
+			var mywcaid = (exportFunc.getDataId('wcaData', 'wca_me') || {})['wca_id'];
+			var curScrambles = JSON.parse(value)['scramble'];
 			value = $.map(JSON.parse(value)['data'], function(val) {
 				var solves = JSON.parse(val['value']);
 				if (solves.length != 5) { //invalid data
@@ -214,6 +223,7 @@ var onlinecomp = execMain(function() {
 				timestat.getAllStats();
 				return {
 					'uid': val['uid'],
+					'wca_id': val['wca_id'],
 					'value': solves,
 					'ao5': timestat.lastAvg[0][0],
 					'bo5': timestat.bestTime
@@ -230,12 +240,22 @@ var onlinecomp = execMain(function() {
 				var solves = value[i]['value'];
 				var ao5 = value[i]['ao5'];
 				var bo5 = value[i]['bo5'];
+				var wcaid = value[i]['wca_id'];
 				ret.push('<tr><td>' + (i + 1) + '</td>');
-				ret.push(uid == myid ? '<th>Me</th><td>' : '<td>Anonym</td><td>');
+				if (wcaid !== undefined) {
+					if (!wcaid) {
+						uid = 'WCA Account';
+					} else {
+						uid = '<a target="_blank" href="https://www.worldcubeassociation.org/persons/' + wcaid + '">' + wcaid + '</a>';
+					}
+					ret.push(wcaid == mywcaid ? '<th>Me:' + uid + '</th><td>' : '<td>' + uid + '</td><td>');
+				} else {
+					ret.push(uid == myid ? '<th>Me</th><td>' : '<td>Anonym</td><td>');
+				}
 				ret.push(kernel.pretty(ao5) + '</td><td>' + kernel.pretty(bo5) + '</td><td>');
 				for (var j = 0; j < solves.length; j++) {
 					if (solves[j].length > 4) { // from vrc or bluetooth
-						solves[j][1] = scramble.scrStd('', compScrambles[j] || '')[1];
+						solves[j][1] = scramble.scrStd('', curScrambles[j] || '')[1];
 						ret.push('<a target="_blank" class="click" href="' + stats.getReviewUrl(solves[j]) + '">' + stats.pretty(solves[j][0]) + '</a> ');
 					} else {
 						ret.push(stats.pretty(solves[j][0]) + ' ');
