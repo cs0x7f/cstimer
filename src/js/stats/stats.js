@@ -225,6 +225,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (idx == cfmIdx) {
 				genDiv();
 			}
+			kernel.pushSignal('timepnt', timesAt(idx));
 		}
 
 		function setCfm(value) {

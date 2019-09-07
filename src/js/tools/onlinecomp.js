@@ -3,7 +3,6 @@
 var onlinecomp = execMain(function() {
 	var refreshButton = $('<input type="button" value="Get Competition List">').click(updateCompList);
 	var compSelectDiv = $('<div>');
-	var compSelect = $('<select>');
 	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
 	var compMainButton = $('<input type="button">');
 	var viewResultButton = $('<input type="button" value="View Result">');
@@ -31,6 +30,9 @@ var onlinecomp = execMain(function() {
 		}
 		updatePathSelect(curPath, level + 1);
 		resetProgress();
+		if (curPath == '|' + 'update competition list...') {
+			updateCompList();
+		}
 	}
 
 	function getSelect(curPath, level) {
@@ -40,7 +42,7 @@ var onlinecomp = execMain(function() {
 		var values = [];
 		curPath = curPath + '|';
 		var curPathLen = curPath.length;
-		var ret = $('<select>').change(selectChange);
+		var ret = $('<select style="max-width: unset;">');
 		for (var i = 0; i < pathList.length; i++) {
 			if (pathList[i].startsWith(curPath)) {
 				var curValue = pathList[i].slice(curPathLen).split('|', 1)[0];
@@ -50,10 +52,11 @@ var onlinecomp = execMain(function() {
 				}
 			}
 		}
-		return values.length == 0 ? null : ret;
+		return values.length == 0 ? null : ret.change(selectChange);;
 	}
 
 	function updateCompList() {
+		refreshButton.val('...');
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'list'
 		}, function(value) {
@@ -67,10 +70,14 @@ var onlinecomp = execMain(function() {
 					pathList.push('|' + compFullName + '|' + paths[j]);
 				}
 			}
+			pathList.push('|update competition list...');
+			compDict['update competition list...'] = 'update';
 			updatePathSelect('', 0);
 			resetProgress();
+			refreshButton.hide();
 		}).error(function() {
 			logohint.push('Network Error');
+			refreshButton.val('Get Competition List');
 		});
 	}
 
@@ -96,11 +103,12 @@ var onlinecomp = execMain(function() {
 			'comp': comppath[0],
 			'path': comppath[1]
 		}, function(value) {
-			var scrambles = JSON.parse(value)['data'];
-			if (!scrambles) {
-				logohint.push('Network Error');
+			value = JSON.parse(value);
+			if (value['retcode'] != 0 || !value['data']) {
+				logohint.push(value['reason'] || 'Server Error');
 				return;
 			}
+			var scrambles = value['data'];
 			compScrambles = scrambles;
 			compTypes = $.map(scrambles, function(val) {
 				var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(val);
@@ -120,10 +128,9 @@ var onlinecomp = execMain(function() {
 			isInit = !!fdiv;
 			return;
 		}
-		fdiv.empty().append(refreshButton, compSelectDiv, compProgressDiv, compMainButton, viewResultButton);
-		compMainButton.hide();
-		viewResultButton.hide();
+		fdiv.empty().append($('<div style="font-size: 0.75em;">').append(refreshButton, compSelectDiv, compProgressDiv, compMainButton, viewResultButton));
 		updatePathSelect('', 0);
+		resetProgress();
 		isInit = true;
 	}
 
@@ -140,22 +147,32 @@ var onlinecomp = execMain(function() {
 	}
 
 	function updateProgress() {
-		compProgressDiv.empty();
-		for (var i = 0; i < compTypes.length; i++) {
-			var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(compTypes[i]);
-			compProgressDiv.append((i + 1) + '. ' + (solves[i] ? stats.pretty(solves[i][0]) : compTypes[i]), '<br>');
-		}
-		compMainButton.show().unbind('click');
-		viewResultButton.show().unbind('click').click(viewResult);
-		if (compTypes.length == 0) {
-			compMainButton.removeAttr('disabled').val('Start!').click(fetchScramble);
+		compMainButton.unbind('click');
+		viewResultButton.unbind('click');
+		if (pathSelect.length < 2) {
+			compMainButton.attr('disabled', true).val('Start!');
+			viewResultButton.attr('disabled', true);
 		} else {
-			compMainButton.val('Submit!').click(submitSolves);
-			if (solves.length == compTypes.length && !submitted) {
-				compMainButton.removeAttr('disabled');
+			compProgressDiv.empty();
+			if (compTypes.length == 0) {
+				if (!pathSelect[0].val().startsWith('*') && !pathSelect[0].val().startsWith('+')) {
+					compMainButton.removeAttr('disabled').val('Start!').click(fetchScramble);
+				} else {
+					compMainButton.attr('disabled', true).val('Start!');
+				}
 			} else {
-				compMainButton.attr('disabled', true);
+				for (var i = 0; i < compTypes.length; i++) {
+					var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(compTypes[i]);
+					compProgressDiv.append((i + 1) + '. ' + (solves[i] ? stats.pretty(solves[i][0]) : compTypes[i]), '<br>');
+				}
+				if (solves.length == compTypes.length && !submitted) {
+					compMainButton.removeAttr('disabled');
+					compMainButton.val('Submit!').click(submitSolves);
+				} else {
+					compMainButton.attr('disabled', true);
+				}
 			}
+			viewResultButton.removeAttr('disabled').click(viewResult);
 		}
 		kernel.blur();
 	}
@@ -166,7 +183,7 @@ var onlinecomp = execMain(function() {
 		}
 
 		var uid = exportFunc.getDataId('wcaData', 'cstimer_token');
-		if (!uid || !confirm('Submit As Your WCA Account?')) {
+		if (!uid || !confirm('Submit As Your WCA Account? (Relogin if not recognized after submitting)')) {
 			uid = prompt('Submit As: ', exportFunc.getDataId('locData', 'compid'));
 			if (!exportFunc.isValidId(uid)) {
 				alert(EXPORT_INVID);
@@ -175,7 +192,6 @@ var onlinecomp = execMain(function() {
 			localStorage['locData'] = JSON.stringify({ id: exportFunc.getDataId('locData', 'id'), compid: uid });
 		}
 		var comppath = getCompPath();
-		// console.log('submit solves', solves);
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'submit',
 			'comp': comppath[0],
@@ -198,7 +214,7 @@ var onlinecomp = execMain(function() {
 		if (solves.length != 0 && !submitted && !confirm('Abort competition and show results?')) {
 			return;
 		}
-		// console.log('view result');
+		resetProgress();
 		var comppath = getCompPath();
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'result',
@@ -234,7 +250,7 @@ var onlinecomp = execMain(function() {
 				return cmp1 == 0 ? TimeStat.dnfsort(a['bo5'], b['bo5']) : cmp1;
 			});
 
-			var ret = ['<table class="table" style="font-size: 0.8em;"><tr><th></th><th>User</th><th>ao5</th><th>bo5</th><th>Results</th></tr>'];
+			var ret = ['<table class="table"><tr><th></th><th>User</th><th>ao5</th><th>bo5</th><th>Results</th></tr>'];
 			for (var i = 0; i < value.length; i++) {
 				var uid = value[i]['uid'];
 				var solves = value[i]['value'];
@@ -260,14 +276,12 @@ var onlinecomp = execMain(function() {
 					} else {
 						ret.push(stats.pretty(solves[j][0]) + ' ');
 					}
-					// console.log(solves);
 				}
 				ret.push('</td>');
 				ret.push('</tr>');
 			}
 			ret.push('</table>');
 			compProgressDiv.empty().html(ret.join(''));
-			// console.log('result', value);
 		}).error(function() {
 			logohint.push('Network Error');
 		});
@@ -281,14 +295,24 @@ var onlinecomp = execMain(function() {
 		var curScr = value[1];
 		value[1] = '';
 		value[2] = '';
-		for (var i = solves.length; i < compScrambles.length; i++) {
-			var targetScr = scramble.scrStd('', compScrambles[i])[1];
-			if (targetScr != curScr) {
-				value[0] = [-1, 1];
-				solves.push(value);
-			} else {
-				solves.push(value);
-				break;
+		if (signal == 'timestd') {
+			for (var i = solves.length; i < compScrambles.length; i++) {
+				var targetScr = scramble.scrStd('', compScrambles[i])[1];
+				if (targetScr != curScr) {
+					value[0] = [-1, 1];
+					solves.push(value);
+				} else {
+					solves.push(value);
+					break;
+				}
+			}
+		} else if (signal == 'timepnt') {
+			for (var i = 0; i < solves.length; i++) {
+				var targetScr = scramble.scrStd('', compScrambles[i])[1];
+				if (targetScr == curScr) {
+					solves[i] = value;
+					break;
+				}
 			}
 		}
 		updateProgress();
@@ -308,6 +332,7 @@ var onlinecomp = execMain(function() {
 	$(function() {
 		tools.regTool('onlinecomp', 'Online Competition', execFunc);
 		kernel.regListener('onlinecomp', 'timestd', procSignal);
+		kernel.regListener('onlinecomp', 'timepnt', procSignal);
 	});
 
 	return {
