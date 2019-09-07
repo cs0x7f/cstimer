@@ -291,6 +291,9 @@ var onlinecomp = execMain(function() {
 	var submitted = false;
 
 	function procSignal(signal, value) {
+		if (!isInit) {
+			return;
+		}
 		value = JSON.parse(JSON.stringify(value));
 		var curScr = value[1];
 		value[1] = '';
