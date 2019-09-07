@@ -62,6 +62,17 @@ var TOOLS_DISTRIBUTION = '时间分布';
 var TOOLS_TREND = '时间趋势';
 var TOOLS_METRONOME = '节拍器';
 var TOOLS_CFMTIME = '确认成绩';
+var OLCOMP_UPDATELIST = '更新比赛列表';
+var OLCOMP_VIEWRESULT = '查看结果';
+var OLCOMP_START = '开始！';
+var OLCOMP_SUBMIT = '提交！';
+var OLCOMP_SUBMITAS = '提交ID：';
+var OLCOMP_WCANOTICE = '以WCA帐号提交？（如果提交后未识别，重新登录即可）';
+var OLCOMP_OLCOMP = '线上比赛';
+var OLCOMP_ANONYM = '匿名';
+var OLCOMP_ME = '我';
+var OLCOMP_WCAACCOUNT = 'WCA帐号';
+var OLCOMP_ABORT = '中止比赛并显示结果？';
 var PROPERTY_IMGSIZE = '打乱图案大小';
 var TIMER_INSPECT = '观察';
 var TIMER_SOLVE = '还原';
@@ -132,7 +143,7 @@ var scrdata = [
 	]],
 	['输入', [
 		['手动输入', "input", 0],
-		['Competition', "remoteComp", 0],
+		['比赛', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

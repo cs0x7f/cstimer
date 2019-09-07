@@ -1,11 +1,11 @@
 "use strict";
 
 var onlinecomp = execMain(function() {
-	var refreshButton = $('<input type="button" value="Get Competition List">').click(updateCompList);
+	var refreshButton = $('<input type="button">').val(OLCOMP_UPDATELIST).click(updateCompList);
 	var compSelectDiv = $('<div>');
 	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
 	var compMainButton = $('<input type="button">');
-	var viewResultButton = $('<input type="button" value="View Result">');
+	var viewResultButton = $('<input type="button">').val(OLCOMP_VIEWRESULT);
 	var pathSelect = [];
 	var pathList = [];
 	var compDict = {};
@@ -30,7 +30,7 @@ var onlinecomp = execMain(function() {
 		}
 		updatePathSelect(curPath, level + 1);
 		resetProgress();
-		if (curPath == '|' + 'update competition list...') {
+		if (curPath == '|' + OLCOMP_UPDATELIST + '...') {
 			updateCompList();
 		}
 	}
@@ -70,14 +70,14 @@ var onlinecomp = execMain(function() {
 					pathList.push('|' + compFullName + '|' + paths[j]);
 				}
 			}
-			pathList.push('|update competition list...');
-			compDict['update competition list...'] = 'update';
+			pathList.push('|' + OLCOMP_UPDATELIST + '...');
+			compDict[OLCOMP_UPDATELIST + '...'] = 'update';
 			updatePathSelect('', 0);
 			resetProgress();
 			refreshButton.hide();
 		}).error(function() {
 			logohint.push('Network Error');
-			refreshButton.val('Get Competition List');
+			refreshButton.val(OLCOMP_UPDATELIST);
 		});
 	}
 
@@ -114,7 +114,7 @@ var onlinecomp = execMain(function() {
 				var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(val);
 				return m ? scramble.getTypeName(m[1]) : '???';
 			});
-			clearProgress();
+			resetProgress(true);
 			kernel.setProp('scrType', 'remoteComp');
 		}).error(function() {
 			logohint.push('Network Error');
@@ -134,15 +134,15 @@ var onlinecomp = execMain(function() {
 		isInit = true;
 	}
 
-	function resetProgress() {
-		compScrambles = [];
-		compTypes = [];
-		clearProgress();
-	}
-
-	function clearProgress() {
+	function resetProgress(keepScr, keepSubmit) {
 		solves = [];
-		submitted = false;
+		if (!keepScr) {
+			compScrambles = [];
+			compTypes = [];
+		}
+		if (!keepSubmit) {
+			submitted = false;
+		}
 		updateProgress();
 	}
 
@@ -150,15 +150,17 @@ var onlinecomp = execMain(function() {
 		compMainButton.unbind('click');
 		viewResultButton.unbind('click');
 		if (pathSelect.length < 2) {
-			compMainButton.attr('disabled', true).val('Start!');
+			compMainButton.attr('disabled', true).val(OLCOMP_START);
 			viewResultButton.attr('disabled', true);
 		} else {
 			compProgressDiv.empty();
 			if (compTypes.length == 0) {
-				if (!pathSelect[0].val().startsWith('*') && !pathSelect[0].val().startsWith('+')) {
-					compMainButton.removeAttr('disabled').val('Start!').click(fetchScramble);
+				if (!pathSelect[0].val().startsWith('*') && !pathSelect[0].val().startsWith('+') && !submitted) {
+					compMainButton.removeAttr('disabled').val(OLCOMP_START).click(fetchScramble);
+				} else if (submitted) {
+					compMainButton.attr('disabled', true).val(OLCOMP_SUBMIT);
 				} else {
-					compMainButton.attr('disabled', true).val('Start!');
+					compMainButton.attr('disabled', true).val(OLCOMP_START);
 				}
 			} else {
 				for (var i = 0; i < compTypes.length; i++) {
@@ -167,7 +169,7 @@ var onlinecomp = execMain(function() {
 				}
 				if (solves.length == compTypes.length && !submitted) {
 					compMainButton.removeAttr('disabled');
-					compMainButton.val('Submit!').click(submitSolves);
+					compMainButton.val(OLCOMP_SUBMIT).click(submitSolves);
 				} else {
 					compMainButton.attr('disabled', true);
 				}
@@ -183,9 +185,11 @@ var onlinecomp = execMain(function() {
 		}
 
 		var uid = exportFunc.getDataId('wcaData', 'cstimer_token');
-		if (!uid || !confirm('Submit As Your WCA Account? (Relogin if not recognized after submitting)')) {
-			uid = prompt('Submit As: ', exportFunc.getDataId('locData', 'compid'));
-			if (!exportFunc.isValidId(uid)) {
+		if (!uid || !confirm(OLCOMP_WCANOTICE)) {
+			uid = prompt(OLCOMP_SUBMITAS, exportFunc.getDataId('locData', 'compid'));
+			if (uid == null) {
+				return;
+			} else if (!exportFunc.isValidId(uid)) {
 				alert(EXPORT_INVID);
 				return;
 			}
@@ -205,16 +209,17 @@ var onlinecomp = execMain(function() {
 			} else {
 				logohint.push('Network Error');
 			}
+			updateProgress();
 		}).error(function() {
 			logohint.push('Network Error');
 		});
 	}
 
 	function viewResult() {
-		if (solves.length != 0 && !submitted && !confirm('Abort competition and show results?')) {
+		if (solves.length != 0 && !submitted && !confirm(OLCOMP_ABORT)) {
 			return;
 		}
-		resetProgress();
+		resetProgress(false, true);
 		var comppath = getCompPath();
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'result',
@@ -260,13 +265,13 @@ var onlinecomp = execMain(function() {
 				ret.push('<tr><td>' + (i + 1) + '</td>');
 				if (wcaid !== undefined) {
 					if (!wcaid) {
-						uid = 'WCA Account';
+						uid = OLCOMP_WCAACCOUNT;
 					} else {
 						uid = '<a target="_blank" href="https://www.worldcubeassociation.org/persons/' + wcaid + '">' + wcaid + '</a>';
 					}
-					ret.push(wcaid == mywcaid ? '<th>Me:' + uid + '</th><td>' : '<td>' + uid + '</td><td>');
+					ret.push(wcaid == mywcaid ? '<th>' + OLCOMP_ME + ':' + uid + '</th><td>' : '<td>' + uid + '</td><td>');
 				} else {
-					ret.push(uid == myid ? '<th>Me</th><td>' : '<td>Anonym</td><td>');
+					ret.push(uid == myid ? '<th>' + OLCOMP_ME + '</th><td>' : '<td>' + OLCOMP_ANONYM + '</td><td>');
 				}
 				ret.push(kernel.pretty(ao5) + '</td><td>' + kernel.pretty(bo5) + '</td><td>');
 				for (var j = 0; j < solves.length; j++) {
@@ -333,7 +338,7 @@ var onlinecomp = execMain(function() {
 	}
 
 	$(function() {
-		tools.regTool('onlinecomp', 'Online Competition', execFunc);
+		tools.regTool('onlinecomp', OLCOMP_OLCOMP, execFunc);
 		kernel.regListener('onlinecomp', 'timestd', procSignal);
 		kernel.regListener('onlinecomp', 'timepnt', procSignal);
 	});
