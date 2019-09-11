@@ -72,9 +72,9 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateBattery() {
 		if (GiikerCube.isConnected()) {
-			GiikerCube.getCube().getBatteryLevel().then(function(value, hardware) {
-				batValue = value;
-				connectedStr = hardware + ': Connected | ' + (batValue || '??') + '%';
+			GiikerCube.getCube().getBatteryLevel().then(function(value) {
+				batValue = value[0];
+				connectedStr = value[1] + ': Connected | ' + (batValue || '??') + '%';
 				connectClick.html(connectedStr);
 			});
 			batId = setTimeout(updateBattery, 60000);

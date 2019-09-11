@@ -138,7 +138,7 @@ var GiikerCube = execMain(function() {
 			var _read;
 			var _resolve;
 			var listener = function(event) {
-				_resolve(event.target.value.getUint8(1), 'Giiker');
+				_resolve([event.target.value.getUint8(1), 'Giiker']);
 				_read.removeEventListener('characteristicvaluechanged', listener);
 				_read.stopNotifications();
 			};
@@ -316,7 +316,7 @@ var GiikerCube = execMain(function() {
 		function getBatteryLevel() {
 			return _characteristic_f7.readValue().then(function(value) {
 				return new Promise(function(resolve) {
-					resolve(value.getUint8(7), 'Gan 356i');
+					resolve([value.getUint8(7), 'Gan 356i']);
 				});
 			});
 		}
