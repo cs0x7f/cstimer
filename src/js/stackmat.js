@@ -265,7 +265,7 @@ var stackmat = execMain(function() {
 		}
 		var is_time_inc = unit == stackmat_state.unit ?
 				new_state.time_milli > stackmat_state.time_milli :
-				Math.floor(new_state.time_milli / 10) > Math.floor(stackmat_state.time_milli);
+				Math.floor(new_state.time_milli / 10) > Math.floor(stackmat_state.time_milli / 10);
 		new_state.greenLight = head == 'A';
 		new_state.leftHand = head == 'L' || head == 'A' || head == 'C';
 		new_state.rightHand = head == 'R' || head == 'A' || head == 'C';
