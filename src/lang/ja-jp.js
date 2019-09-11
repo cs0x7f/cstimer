@@ -62,17 +62,17 @@ var TOOLS_DISTRIBUTION = 'タイム分布';
 var TOOLS_TREND = 'タイムトレンド';
 var TOOLS_METRONOME = 'メトロノーム';
 var TOOLS_CFMTIME = 'タイム確認';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
+var OLCOMP_UPDATELIST = '大会リストの更新';
+var OLCOMP_VIEWRESULT = '結果表示';
+var OLCOMP_START = 'スタート!';
+var OLCOMP_SUBMIT = '送信!';
+var OLCOMP_SUBMITAS = 'ユーザー名を指定して送信: ';
+var OLCOMP_WCANOTICE = 'WCAアカウントとして送信 (動作しない場合は再ログインしてください)';
+var OLCOMP_OLCOMP = 'オンライン大会';
+var OLCOMP_ANONYM = '匿名';
+var OLCOMP_ME = '自分';
+var OLCOMP_WCAACCOUNT = 'WCAアカウント';
+var OLCOMP_ABORT = '大会を中止して結果を表示しますか？';
 var PROPERTY_IMGSIZE = 'スクランブルのイメージサイズ';
 var TIMER_INSPECT = 'インスペクション';
 var TIMER_SOLVE = 'ソルブ';
@@ -143,7 +143,7 @@ var scrdata = [
 	]],
 	['入力', [
 		['外部', "input", 0],
-		['Competition', "remoteComp", 0],
+		['大会', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

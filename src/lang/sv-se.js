@@ -21,7 +21,7 @@ var PROPERTY_SCRSIZE = 'blandningsstorlek';
 var PROPERTY_SCRMONO = 'fastbredd blandning';
 var PROPERTY_SCRLIM = 'Begränsa höjden av blandningsområdet';
 var PROPERTY_SCRALIGN = 'Anpassning av blandningsområdet';
-var PROPERTY_SCRALIGN_STR = 'center|vänster|höger';
+var PROPERTY_SCRALIGN_STR = 'Mitten|Vänster|Höger';
 var PROPERTY_SCRFAST = 'Använd snabb blandning för 4x4x4 (ej officiell)';
 var PROPERTY_SCRKEYM = 'Markeringsnyckeln flyttas i blandning';
 var PROPERTY_WNDSCR = 'Blandningspanel display stil';
@@ -62,17 +62,17 @@ var TOOLS_DISTRIBUTION = 'tidsfördelning';
 var TOOLS_TREND = 'tidsutveckling';
 var TOOLS_METRONOME = 'metronom';
 var TOOLS_CFMTIME = 'Bekräfta tid';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_START = 'Start!';
+var OLCOMP_UPDATELIST = 'Uppdatera tävlingslista';
+var OLCOMP_VIEWRESULT = 'Visa resultat';
+var OLCOMP_START = 'Starta!';
 var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
+var OLCOMP_SUBMITAS = 'Lämna in som: ';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
+var OLCOMP_OLCOMP = 'Onlinetävling';
 var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
+var OLCOMP_ME = 'Jag';
+var OLCOMP_WCAACCOUNT = 'WCA Konto';
+var OLCOMP_ABORT = 'Avbryt tävlingen och visa resultat?';
 var PROPERTY_IMGSIZE = 'Blandningsbildstorlek';
 var TIMER_INSPECT = 'inspektera';
 var TIMER_SOLVE = 'lös';
@@ -83,7 +83,7 @@ var PROPERTY_PRETIME = 'tid för att hålla mellanslagstangenten nere(sekund(er)
 var PROPERTY_ENTERING = 'ange tider med';
 var PROPERTY_ENTERING_STR = 'timer|skriv|stackmat|MoYu timer|virtuell|Giiker';
 var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT_STR = 'sekund|centisekund|millisekund';
 var PROPERTY_COLOR = 'välj färgtema';
 var PROPERTY_COLORS = 'teckensnitt färg|bakgrunden färg|styrelsen färg|knappen färg|länk färg|Logo färg|logotyp bakgrund färg';
 var PROPERTY_VIEW = 'UI stil är';
@@ -134,8 +134,8 @@ var scrdata = [
 		['3x3 ft', "333ft", 0],
 		['clock', "clkwca", 0],
 		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
+		['Pyraminx', "pyrso", -10],
+		['Skewb', "skbso", 0],
 		['sq1', "sqrs", 0],
 		['4x4 bld', "444bld", -40],
 		['5x5 bld', "555bld", -60],
@@ -143,7 +143,7 @@ var scrdata = [
 	]],
 	['Mata in', [
 		['Extern', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Tävling', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

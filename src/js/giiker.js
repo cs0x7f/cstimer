@@ -129,7 +129,7 @@ var GiikerCube = execMain(function() {
 				console.log('[giiker]', "Previous Moves: ", prevMoves.reverse().join(" "));
 				prevMoves.reverse();
 			}
-			callback(facelet, prevMoves, timestamp);
+			callback(facelet, prevMoves, timestamp, 'Giiker');
 			return [facelet, prevMoves];
 		}
 
@@ -138,7 +138,7 @@ var GiikerCube = execMain(function() {
 			var _read;
 			var _resolve;
 			var listener = function(event) {
-				_resolve(event.target.value.getUint8(1));
+				_resolve(event.target.value.getUint8(1), 'Giiker');
 				_read.removeEventListener('characteristicvaluechanged', listener);
 				_read.stopNotifications();
 			};
@@ -259,7 +259,7 @@ var GiikerCube = execMain(function() {
 					return checkState();
 				}).then(function(isUpdated) {
 					if (isUpdated && prevMoveCnt == -1) {
-						callback(latestFacelet, prevMoves, timestamp);
+						callback(latestFacelet, prevMoves, timestamp, 'Gan 356i');
 						prevCubie.fromFacelet(latestFacelet);
 						prevMoveCnt = moveCnt;
 						if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
@@ -298,7 +298,7 @@ var GiikerCube = execMain(function() {
 						mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 						mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 						prevTimestamp += timeOffs[i];
-						callback(curCubie.toFaceCube(), prevMoves.slice(i), prevTimestamp);
+						callback(curCubie.toFaceCube(), prevMoves.slice(i), prevTimestamp, 'Gan 356i');
 						var tmp = curCubie;
 						curCubie = prevCubie;
 						prevCubie = tmp;
@@ -316,7 +316,7 @@ var GiikerCube = execMain(function() {
 		function getBatteryLevel() {
 			return _characteristic_f7.readValue().then(function(value) {
 				return new Promise(function(resolve) {
-					resolve(value.getUint8(7));
+					resolve(value.getUint8(7), 'Gan 356i');
 				});
 			});
 		}

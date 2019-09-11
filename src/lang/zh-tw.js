@@ -3,7 +3,7 @@ var CANCEL_LANG = '取消';
 var RESET_LANG = '重設';
 var ABOUT_LANG = '關於';
 var ZOOM_LANG = '縮放';
-var BUTTON_TIME_LIST = '列出<br>時間';
+var BUTTON_TIME_LIST = '成績<br>列表';
 var BUTTON_OPTIONS = '設定';
 var BUTTON_EXPORT = '匯出';
 var BUTTON_DONATE = '資助<br>我們';
@@ -18,10 +18,10 @@ var PROPERTY_TIMERSIZE = '計時器大小';
 var PROPERTY_USEMILLI = '精確到毫秒';
 var PROPERTY_SMALLADP = '小數點後使用小型字體';
 var PROPERTY_SCRSIZE = '打亂字體大小';
-var PROPERTY_SCRMONO = '打亂步驟間空格';
+var PROPERTY_SCRMONO = '等寬字體打亂';
 var PROPERTY_SCRLIM = '限制打亂區高度';
 var PROPERTY_SCRALIGN = '打亂對齊';
-var PROPERTY_SCRALIGN_STR = '置中|靠左|靠右';
+var PROPERTY_SCRALIGN_STR = '居中|左對齊|右對齊';
 var PROPERTY_SCRFAST = '4x4x4使用快速打亂(非官方)';
 var PROPERTY_SCRKEYM = '打亂中標記關鍵步驟';
 var PROPERTY_WNDSCR = '打亂面板顯示樣式';
@@ -62,17 +62,17 @@ var TOOLS_DISTRIBUTION = '分階段計時';
 var TOOLS_TREND = '時間趨勢';
 var TOOLS_METRONOME = '節拍器';
 var TOOLS_CFMTIME = '確認時間';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
+var OLCOMP_UPDATELIST = '更新比賽列表';
+var OLCOMP_VIEWRESULT = '查看結果';
+var OLCOMP_START = '開始！';
+var OLCOMP_SUBMIT = '提交！';
+var OLCOMP_SUBMITAS = '提交ID：';
+var OLCOMP_WCANOTICE = '以WCA帳號提交？（如果提交後未識別，重新登錄即可）';
+var OLCOMP_OLCOMP = '線上比賽';
+var OLCOMP_ANONYM = '匿名';
+var OLCOMP_ME = '我';
+var OLCOMP_WCAACCOUNT = 'WCA帳號';
+var OLCOMP_ABORT = '中止比賽並顯示結果？';
 var PROPERTY_IMGSIZE = '打亂圖示大小';
 var TIMER_INSPECT = '觀察中';
 var TIMER_SOLVE = '還原中';
@@ -143,7 +143,7 @@ var scrdata = [
 	]],
 	['輸入', [
 		['外部', "input", 0],
-		['Competition', "remoteComp", 0],
+		['比賽', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

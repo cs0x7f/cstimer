@@ -57,9 +57,9 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		connectClick.html(connectedStr).removeClass('click').unbind('click');
 		if (!GiikerCube.isConnected()) {
-			connectClick.html('Connect').addClass('click').click(init);
+			connectClick.html('Bluetooth: Connect').addClass('click').click(init);
 		}
-		fdiv.empty().append('Giiker: ', connectClick, '<br>')
+		fdiv.empty().append(connectClick, '<br>')
 			.append(resetClick.unbind('click').click(markSolved), '<br>')
 			.append('Raw Data: ', algCubingClick, '<br>')
 			.append('Last Solve: ', lastSolveClick, '<br>')
@@ -68,11 +68,13 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	var batId = 0;
+	var batValue = 0;
 
 	function updateBattery() {
 		if (GiikerCube.isConnected()) {
-			GiikerCube.getCube().getBatteryLevel().then(function(value) {
-				connectedStr = 'Connected | ' + value + '%';
+			GiikerCube.getCube().getBatteryLevel().then(function(value, hardware) {
+				batValue = value;
+				connectedStr = hardware + ': Connected | ' + (batValue || '??') + '%';
 				connectClick.html(connectedStr);
 			});
 			batId = setTimeout(updateBattery, 60000);
@@ -190,8 +192,9 @@ var giikerutil = execMain(function(CubieCube) {
 	var movesAfterSolved = [];
 	var movesTimestamp = [];
 
-	function giikerCallback(facelet, prevMoves, lastTimestamp) {
+	function giikerCallback(facelet, prevMoves, lastTimestamp, hardware) {
 		lastTimestamp = lastTimestamp || $.now();
+		connectedStr = hardware + ': Connected | ' + (batValue || '??') + '%';
 		connectClick.html(connectedStr).removeClass('click').unbind('click');
 		currentRawState = facelet;
 		currentRawCubie.fromFacelet(currentRawState);

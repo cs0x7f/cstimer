@@ -245,12 +245,12 @@ var stackmat = execMain(function() {
 			}
 			time_milli = ~~byteBuffer[1] * 60000 + ~~(byteBuffer[2] + byteBuffer[3]) * 1000 + ~~(byteBuffer[4] + byteBuffer[5] + byteBuffer[6]);
 		}
-		pushNewState(head, time_milli);
+		pushNewState(head, time_milli, byteBuffer.length == 9 ? 10 : 1);
 	}
 
 	var last_suc_time = 0;
 
-	function pushNewState(head, time_milli) {
+	function pushNewState(head, time_milli, unit) {
 		var suc_time = $.now();
 		if (suc_time - last_suc_time > 200) {
 			DEBUG && console.log('[stackmat] signal miss ', suc_time - last_suc_time);
@@ -258,15 +258,19 @@ var stackmat = execMain(function() {
 		last_suc_time = suc_time;
 		var new_state = {}
 		new_state.time_milli = time_milli;
+		new_state.unit = unit;
 		new_state.on = true;
 		if (!kernel.getProp('stkHead')) {
 			head = 'S';
 		}
+		var is_time_inc = unit == stackmat_state.unit ?
+				new_state.time_milli > stackmat_state.time_milli :
+				Math.floor(new_state.time_milli / 10) > Math.floor(stackmat_state.time_milli);
 		new_state.greenLight = head == 'A';
 		new_state.leftHand = head == 'L' || head == 'A' || head == 'C';
 		new_state.rightHand = head == 'R' || head == 'A' || head == 'C';
 		new_state.running = (head != 'S' || stackmat_state.signalHeader == 'S') &&
-			(head == ' ' || new_state.time_milli > stackmat_state.time_milli);
+			(head == ' ' || is_time_inc);
 		new_state.signalHeader = head;
 		new_state.unknownRunning = !stackmat_state.on;
 		new_state.noise = Math.min(1, distortionStat) || 0;
@@ -289,7 +293,7 @@ var stackmat = execMain(function() {
 					}
 				}
 				bitBuffer = [];
-				pushNewState('S', time_milli);
+				pushNewState('S', time_milli, 1);
 			}
 		}
 		if (bit != last_bit) {
@@ -318,6 +322,7 @@ var stackmat = execMain(function() {
 
 	var stackmat_state = {
 		time_milli: 0,
+		unit: 10,
 		on: false,
 		greenLight: false,
 		leftHand: false,

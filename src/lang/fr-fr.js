@@ -71,7 +71,7 @@ var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized a
 var OLCOMP_OLCOMP = 'Online Competition';
 var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_WCAACCOUNT = 'Compte WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange';
 var TIMER_INSPECT = 'Inspection';
@@ -101,8 +101,8 @@ var PROPERTY_FORMAT = 'Format du temps';
 var PROPERTY_USEKSC = 'Utiliser les raccourcis clavier';
 var PROPERTY_NTOOLS = 'Nombre d\'outils';
 var PROPERTY_AHIDE = 'Cacher tous les éléments lors du chronométrage';
-var SCRAMBLE_LAST = 'Dernier';
-var SCRAMBLE_NEXT = 'Prochain';
+var SCRAMBLE_LAST = 'dernier';
+var SCRAMBLE_NEXT = 'prochain';
 var SCRAMBLE_SCRAMBLE = ' Mélange';
 var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
@@ -110,12 +110,12 @@ var PROPERTY_VRCSPEED = 'Vitesse de base du cube virtuel (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
 var PROPERTY_VRCMPS = 'Aucun|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Montrer le Giiker Cube virtuel';
-var PROPERTY_GIISOK_DELAY = 'Considérer comme mélangé si immobile pendant';
+var PROPERTY_GIISOK_DELAY = 'Considérer le cube comme mélangé si immobile pendant';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Jamais|Mélangé correctement';
-var PROPERTY_GIISOK_KEY = 'Marquer le cube comme mélangé avec la barre d\'espace';
-var PROPERTY_GIISOK_MOVE = 'Marquer le cube comme mélangé en faisant';
+var PROPERTY_GIISOK_KEY = 'Considérer le cube comme mélangé avec la barre d\'espace';
+var PROPERTY_GIISOK_MOVE = 'Considérer le cube comme mélangé en faisant';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Jamais';
-var PROPERTY_GIISBEEP = 'Bip quand le cube est marqué comme mélangé';
+var PROPERTY_GIISBEEP = 'Bip quand le cube est considéré comme mélangé';
 var PROPERTY_GIIRST = 'Remettre le Giiker Cube à zéro quand il se connecte';
 var PROPERTY_GIIRSTS = 'Toujours|Demande|Jamais';
 var CONFIRM_GIIRST = 'Remettre le Giiker Cube à zéro (état résolu)?';
@@ -415,10 +415,10 @@ var MODULE_NAMES = {
 	"ui": 'Affichage',
 	"color": 'Couleur',
 	"timer": 'Chronomètre',
-	"scramble": 'Mélange',
+	"scramble": 'mélange',
 	"stats": 'Statistiques',
 	"tools": 'Outils',
-	"vrc": 'virtuel&<br>Giiker'
+	"vrc": 'virtuel et<br>bluetooth'
 };
 var BGIMAGE_URL = 'Entrez l\'adresse URL de l\'image';
 var BGIMAGE_INVALID = 'Adresse invalide';
