@@ -104,13 +104,14 @@ var exportFunc = execMain(function() {
 	function getId(e) {
 		var id = null;
 		if (e.target === outServWCA[0] || e.target === inServWCA[0]) {
-			id = JSON.parse(localStorage['wcaData'] || '{}')['cstimer_token'];
+			id = getDataId('wcaData', 'cstimer_token');
 		} else {
 			id = prompt(EXPORT_USERID, getDataId('locData', 'id'));
 			if (id == null) {
 				return;
 			}
 			localStorage['locData'] = JSON.stringify({ id: id, compid: getDataId('locData', 'compid') });
+			kernel.pushSignal('export', ['account', 'locData']);
 		}
 		if (!isValidId(id)) {
 			alert(EXPORT_INVID);
@@ -185,12 +186,12 @@ var exportFunc = execMain(function() {
 	}
 
 	function downloadDataGGL() {
-		var gglData = JSON.parse(localStorage['gglData'] || '{}');
-		if (!gglData['access_token']) {
+		var gglToken = getDataId('gglData', 'access_token');
+		if (!gglToken) {
 			return;
 		}
 		inServGGL.html('Check File List...');
-		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27&access_token=' + gglData['access_token'], {
+		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27&access_token=' + gglToken, {
 			'type': 'GET'
 		}).success(function(data, status, xhr) {
 			var files = data['files'];
@@ -201,7 +202,7 @@ var exportFunc = execMain(function() {
 			}
 			inServGGL.html('Import Data...');
 			var fileId = files[0]['id'];
-			$.get('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&access_token=' + gglData['access_token']).success(function(data) {
+			$.get('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&access_token=' + gglToken).success(function(data) {
 				try {
 					data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
 				} catch (e) {
@@ -217,7 +218,7 @@ var exportFunc = execMain(function() {
 
 			// removeRedundantGoogleFiles
 			for (var i = 10; i < files.length; i++) {
-				$.ajax('https://www.googleapis.com/drive/v3/files/' + files[i]['id'] + '?access_token=' + gglData['access_token'], {
+				$.ajax('https://www.googleapis.com/drive/v3/files/' + files[i]['id'] + '?access_token=' + gglToken, {
 					'type': 'DELETE'
 				});
 			}
@@ -228,12 +229,12 @@ var exportFunc = execMain(function() {
 	}
 
 	function uploadDataGGL() {
-		var gglData = JSON.parse(localStorage['gglData'] || '{}');
-		if (!gglData['access_token']) {
+		var gglToken = getDataId('gglData', 'access_token');
+		if (!gglToken) {
 			return;
 		}
 		outServGGL.html('Create File...');
-		$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&access_token=' + gglData['access_token'], {
+		$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&access_token=' + gglToken, {
 			'type': 'POST',
 			'contentType': 'application/json',
 			'data': JSON.stringify({
@@ -327,6 +328,7 @@ var exportFunc = execMain(function() {
 		for (var key in expOpt) {
 			if (newOpt[key]) {
 				localStorage[key] = newOpt[key];
+				kernel.pushSignal('export', ['account', key]);
 			}
 		}
 		location.reload();
@@ -346,11 +348,7 @@ var exportFunc = execMain(function() {
 		} else {
 			var me = wcaData['wca_me'];
 			wcaDataTd.html('WCAID: ' + me['wca_id'] + '<br>' + 'Name: ' + me['name']);
-			wcaDataTr.click(function() {
-				if (confirm(EXPORT_LOGOUTCFM)) {
-					logoutFromWCA();
-				}
-			}).addClass('click');
+			wcaDataTr.click(logoutFromWCA.bind(undefined, true)).addClass('click');
 			inServWCA.addClass('click').click(downloadData);
 			outServWCA.addClass('click').click(uploadDataClk);
 		}
@@ -369,46 +367,56 @@ var exportFunc = execMain(function() {
 		} else {
 			var me = gglData['ggl_me'];
 			gglDataTd.html('Name: ' + me['displayName'] + '<br>' + 'Email: ' + me['emailAddress']);
-			gglDataTr.click(function() {
-				if (confirm(EXPORT_LOGOUTCFM)) {
-					logoutFromGGL();
-				}
-			}).addClass('click');
+			gglDataTr.click(logoutFromGGL.bind(undefined, true)).addClass('click');
 			inServGGL.addClass('click').click(downloadDataGGL);
 			outServGGL.addClass('click').click(uploadDataGGL);
 		}
 	}
 
-	function logoutFromWCA() {
+	function logoutFromWCA(cfm) {
+		if (cfm && !confirm(EXPORT_LOGOUTCFM)) {
+			return;
+		}
 		delete localStorage['wcaData'];
-		updateUserInfoFromWCA();
+		kernel.pushSignal('export', ['account', 'wcaData']);
 	}
 
-	function logoutFromGGL() {
+	function logoutFromGGL(cfm) {
+		if (cfm && !confirm(EXPORT_LOGOUTCFM)) {
+			return;
+		}
 		delete localStorage['gglData'];
-		updateUserInfoFromGGL();
+		kernel.pushSignal('export', ['account', 'gglData']);
 	}
 
 	function procSignal(signal, value) {
-		if (value[1] == 'id') {
-			var id = getDataId('locData', 'id');
-			if (!isValidId(id) || value[2] == 'modify') {
-				id = prompt(EXPORT_USERID, id);
-				if (!isValidId(id)) {
-					if (id != null) {
-						alert(EXPORT_INVID);
+		if (signal == 'atexpa') {
+			if (value[1] == 'id') {
+				var id = getDataId('locData', 'id');
+				if (!isValidId(id) || value[2] == 'modify') {
+					id = prompt(EXPORT_USERID, id);
+					if (!isValidId(id)) {
+						if (id != null) {
+							alert(EXPORT_INVID);
+						}
+						kernel.setProp('atexpa', 'n');
+						return;
 					}
+					localStorage['locData'] = JSON.stringify({ id: id, compid: getDataId('locData', 'compid') });
+					kernel.pushSignal('export', ['account', 'locData']);
+				}
+			} else if (value[1] == 'wca') {
+				if (!isValidId(getDataId('wcaData', 'cstimer_token'))) {
+					alert('Please Login with WCA Account in Export Panel First');
 					kernel.setProp('atexpa', 'n');
 					return;
 				}
-				localStorage['locData'] = JSON.stringify({ id: id, compid: getDataId('locData', 'compid') });
 			}
-		} else if (value[1] == 'wca') {
-			var id = getDataId('wcaData', 'cstimer_token');
-			if (!isValidId(id)) {
-				alert('Please Login with WCA Account in Export Panel First');
-				kernel.setProp('atexpa', 'n');
-				return;
+		} else if (signal == 'export') {
+			if (value[1] == 'wcaData') {
+				updateUserInfoFromWCA();
+			} else if (value[1] == 'gglData') {
+				updateUserInfoFromGGL();
 			}
 		}
 	}
@@ -473,6 +481,7 @@ var exportFunc = execMain(function() {
 	$(function() {
 		kernel.regListener('export', 'time', newTimePushed);
 		kernel.regListener('export', 'property', procSignal, /^atexpa$/);
+		kernel.regListener('export', 'export', procSignal, /^account$/);
 		kernel.regProp('kernel', 'atexpa', 1, 'Auto Export (per 100 solves)', ['n', ['n', 'f', 'id', 'wca'], ['Never', 'To File', 'With csTimer ID', 'With WCA Account']]);
 		kernel.regProp('kernel', 'atexpi', ~1, 'Auto Export Interval (Solves)', [100, [50, 100, 200, 500], ['50', '100', '200', '500']]);
 
@@ -510,6 +519,7 @@ var exportFunc = execMain(function() {
 			}, function(val) {
 				if ('access_token' in val) {
 					localStorage['wcaData'] = JSON.stringify(val);
+					kernel.pushSignal('export', ['account', 'wcaData']);
 				} else {
 					alert(EXPORT_ERROR);
 					logoutFromWCA();
@@ -538,6 +548,7 @@ var exportFunc = execMain(function() {
 						'access_token': access_token,
 						'ggl_me': val['user']
 					});
+					kernel.pushSignal('export', ['account', 'gglData']);
 				} else {
 					alert(EXPORT_ERROR);
 					logoutFromGGL();
@@ -562,6 +573,8 @@ var exportFunc = execMain(function() {
 	return {
 		exportProperties: exportProperties,
 		isValidId: isValidId,
-		getDataId: getDataId
+		getDataId: getDataId,
+		logoutFromWCA: logoutFromWCA,
+		wcaLoginUrl: wcaLoginUrl
 	}
 });

@@ -1,6 +1,9 @@
 "use strict";
 
 var onlinecomp = execMain(function() {
+	var accountDiv = $('<div>');
+	var wcaSpan = $('<span class="click">');
+	var uidSpan = $('<span class="click">');
 	var refreshButton = $('<input type="button">').val(OLCOMP_UPDATELIST).click(updateCompList);
 	var compSelectDiv = $('<div>');
 	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
@@ -121,6 +124,49 @@ var onlinecomp = execMain(function() {
 		});
 	}
 
+	function setCompId() {
+		var compid = prompt(OLCOMP_SUBMITAS, exportFunc.getDataId('locData', 'compid'));
+		if (compid == null) {
+			return false;
+		} else if (!exportFunc.isValidId(compid)) {
+			alert(EXPORT_INVID);
+			return false;
+		}
+		localStorage['locData'] = JSON.stringify({ id: exportFunc.getDataId('locData', 'id'), compid: compid });
+		updateAccountDiv();
+		return compid;
+	}
+
+	function updateAccountDiv() {
+		accountDiv.empty().append('ID: ');
+		wcaSpan.empty();
+		uidSpan.empty();
+
+		var wcauid = exportFunc.getDataId('wcaData', 'cstimer_token');
+		console.log(wcauid);
+		if (wcauid) {
+			var wcaid = exportFunc.getDataId('wcaData', 'wca_me')['wca_id'];
+			wcaSpan.append(wcaid ? wcaid : 'WCA Account', ' (WCA)').click(function() {
+				exportFunc.logoutFromWCA(true);
+				updateAccountDiv();
+			});
+			accountDiv.append(wcaSpan);
+			return;
+		} else {
+			wcaSpan.append(EXPORT_LOGINWCA);
+			wcaSpan.click(function() {
+				location.href = exportFunc.wcaLoginUrl;
+			});
+		}
+		var compid = exportFunc.getDataId('locData', 'compid');
+		if (compid) {
+			uidSpan.append(compid + ' (' + OLCOMP_ANONYM + ')');
+		} else {
+			uidSpan.append('N/A (' + OLCOMP_ANONYM + ')');
+		}
+		accountDiv.append(uidSpan.unbind('click').click(setCompId), ' | ', wcaSpan);
+	}
+
 	var isInit = false;
 
 	function execFunc(fdiv, e) {
@@ -128,8 +174,9 @@ var onlinecomp = execMain(function() {
 			isInit = !!fdiv;
 			return;
 		}
-		fdiv.empty().append($('<div style="font-size: 0.75em;">').append(refreshButton, compSelectDiv, compProgressDiv, compMainButton, viewResultButton));
+		fdiv.empty().append($('<div style="font-size: 0.75em;">').append(accountDiv, refreshButton, compSelectDiv, compProgressDiv, compMainButton, viewResultButton));
 		updatePathSelect('', 0);
+		updateAccountDiv();
 		resetProgress();
 		isInit = true;
 	}
@@ -183,17 +230,9 @@ var onlinecomp = execMain(function() {
 		if (submitted) {
 			return;
 		}
-
-		var uid = exportFunc.getDataId('wcaData', 'cstimer_token');
-		if (!uid || !confirm(OLCOMP_WCANOTICE)) {
-			uid = prompt(OLCOMP_SUBMITAS, exportFunc.getDataId('locData', 'compid'));
-			if (uid == null) {
-				return;
-			} else if (!exportFunc.isValidId(uid)) {
-				alert(EXPORT_INVID);
-				return;
-			}
-			localStorage['locData'] = JSON.stringify({ id: exportFunc.getDataId('locData', 'id'), compid: uid });
+		var uid = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
+		if (!uid) {
+			return
 		}
 		var comppath = getCompPath();
 		$.post('https://cstimer.net/comp.php', {
@@ -299,6 +338,10 @@ var onlinecomp = execMain(function() {
 		if (!isInit) {
 			return;
 		}
+		if (signal == 'export') {
+			updateAccountDiv();
+			return;
+		}
 		value = JSON.parse(JSON.stringify(value));
 		var curScr = value[1];
 		value[1] = '';
@@ -341,6 +384,7 @@ var onlinecomp = execMain(function() {
 		tools.regTool('onlinecomp', OLCOMP_OLCOMP, execFunc);
 		kernel.regListener('onlinecomp', 'timestd', procSignal);
 		kernel.regListener('onlinecomp', 'timepnt', procSignal);
+		kernel.regListener('export', 'export', procSignal, /^account$/);
 	});
 
 	return {
