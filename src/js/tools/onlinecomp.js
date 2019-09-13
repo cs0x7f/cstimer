@@ -143,10 +143,9 @@ var onlinecomp = execMain(function() {
 		uidSpan.empty();
 
 		var wcauid = exportFunc.getDataId('wcaData', 'cstimer_token');
-		console.log(wcauid);
 		if (wcauid) {
 			var wcaid = exportFunc.getDataId('wcaData', 'wca_me')['wca_id'];
-			wcaSpan.append(wcaid ? wcaid : 'WCA Account', ' (WCA)').click(function() {
+			wcaSpan.append(wcaid || 'WCA Account', ' (WCA)').click(function() {
 				exportFunc.logoutFromWCA(true);
 				updateAccountDiv();
 			});
@@ -384,7 +383,7 @@ var onlinecomp = execMain(function() {
 		tools.regTool('onlinecomp', OLCOMP_OLCOMP, execFunc);
 		kernel.regListener('onlinecomp', 'timestd', procSignal);
 		kernel.regListener('onlinecomp', 'timepnt', procSignal);
-		kernel.regListener('export', 'export', procSignal, /^account$/);
+		kernel.regListener('onlinecomp', 'export', procSignal, /^account$/);
 	});
 
 	return {
