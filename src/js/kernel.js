@@ -1013,6 +1013,10 @@ var kernel = execMain(function() {
 			}
 		});
 
+		try {
+			document.cookie = "fp=" + $.fingerprint() + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+		} catch (e) {}
+
 		// var externJS = $.urlParam('extjs');
 		// if (externJS) {
 		// 	externJS = JSON.parse(decodeURIComponent(externJS));
