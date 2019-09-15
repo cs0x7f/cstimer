@@ -73,6 +73,7 @@ var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Me';
 var OLCOMP_WCAACCOUNT = 'WCA Account';
 var OLCOMP_ABORT = 'Abort competition and show results?';
+var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = '섞기 그림 크기';
 var TIMER_INSPECT = '준비';
 var TIMER_SOLVE = '시작';

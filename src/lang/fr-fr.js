@@ -73,6 +73,7 @@ var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Me';
 var OLCOMP_WCAACCOUNT = 'Compte WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
+var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange';
 var TIMER_INSPECT = 'Inspection';
 var TIMER_SOLVE = 'Résolution';

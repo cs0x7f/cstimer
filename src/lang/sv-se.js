@@ -73,6 +73,7 @@ var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Jag';
 var OLCOMP_WCAACCOUNT = 'WCA Konto';
 var OLCOMP_ABORT = 'Avbryt tävlingen och visa resultat?';
+var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Blandningsbildstorlek';
 var TIMER_INSPECT = 'inspektera';
 var TIMER_SOLVE = 'lös';

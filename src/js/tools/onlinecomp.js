@@ -9,6 +9,7 @@ var onlinecomp = execMain(function() {
 	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
 	var compMainButton = $('<input type="button">');
 	var viewResultButton = $('<input type="button">').val(OLCOMP_VIEWRESULT);
+	var anonymInput = $('<input type="checkbox">');
 	var pathSelect = [];
 	var pathList = [];
 	var compDict = {};
@@ -173,7 +174,10 @@ var onlinecomp = execMain(function() {
 			isInit = !!fdiv;
 			return;
 		}
-		fdiv.empty().append($('<div style="font-size: 0.75em;">').append(accountDiv, refreshButton, compSelectDiv, compProgressDiv, compMainButton, viewResultButton));
+		fdiv.empty().append($('<div style="font-size: 0.75em;">')
+			.append(accountDiv, refreshButton, compSelectDiv)
+			.append(compProgressDiv)
+			.append(compMainButton, ' ', viewResultButton, ' ', $('<label>').append(anonymInput, OLCOMP_WITHANONYM)));
 		updatePathSelect('', 0);
 		updateAccountDiv();
 		resetProgress();
@@ -259,10 +263,12 @@ var onlinecomp = execMain(function() {
 		}
 		resetProgress(false, true);
 		var comppath = getCompPath();
+		var showAnonym = anonymInput.prop('checked') ? 1 : 0;
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'result',
 			'comp': comppath[0],
 			'path': comppath[1],
+			'anonym': showAnonym
 		}, function(value) {
 			if (JSON.parse(value)['retcode'] !== 0) {
 				logohint.push('Server Error');

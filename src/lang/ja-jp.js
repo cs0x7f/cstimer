@@ -73,6 +73,7 @@ var OLCOMP_ANONYM = '匿名';
 var OLCOMP_ME = '自分';
 var OLCOMP_WCAACCOUNT = 'WCAアカウント';
 var OLCOMP_ABORT = '大会を中止して結果を表示しますか？';
+var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'スクランブルのイメージサイズ';
 var TIMER_INSPECT = 'インスペクション';
 var TIMER_SOLVE = 'ソルブ';

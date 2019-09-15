@@ -73,6 +73,7 @@ var OLCOMP_ANONYM = '匿名';
 var OLCOMP_ME = '我';
 var OLCOMP_WCAACCOUNT = 'WCA帐号';
 var OLCOMP_ABORT = '中止比赛并显示结果？';
+var OLCOMP_WITHANONYM = '含匿名';
 var PROPERTY_IMGSIZE = '打乱图案大小';
 var TIMER_INSPECT = '观察';
 var TIMER_SOLVE = '还原';

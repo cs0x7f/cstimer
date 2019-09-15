@@ -73,6 +73,7 @@ var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Me';
 var OLCOMP_WCAACCOUNT = 'WCA Account';
 var OLCOMP_ABORT = 'Abort competition and show results?';
+var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Tamanho da imagem do embaralhamento';
 var TIMER_INSPECT = 'inspecionando...';
 var TIMER_SOLVE = 'resolvendo!';
