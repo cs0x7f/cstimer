@@ -174,7 +174,7 @@ var onlinecomp = execMain(function() {
 			isInit = !!fdiv;
 			return;
 		}
-		fdiv.empty().append($('<div style="font-size: 0.75em;">')
+		fdiv.empty().append($('<div style="font-size: 0.75em; text-align: center;">')
 			.append(accountDiv, refreshButton, compSelectDiv)
 			.append(compProgressDiv)
 			.append(compMainButton, ' ', viewResultButton, ' ', $('<label>').append(anonymInput, OLCOMP_WITHANONYM)));
