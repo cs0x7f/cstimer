@@ -1,18 +1,25 @@
 (function(circle) {
-	function l(a, c) {
-		var ax = a % 12;
-		a = ~~(a / 12);
-		var e = [];
-		mathlib.set8Perm(e, a << 1, 6);
-		1 == mathlib.getNParity(a << 1, 6) && circle(e, 4, 5);
-		0 == c && circle(e, 0, 3, 1);
-		2 == c && circle(e, 1, 5, 2);
-		1 == c && circle(e, 0, 2, 4);
-		3 == c && circle(e, 3, 4, 5);
-		return (mathlib.get8Perm(e, 6) >> 1) * 12 + cornerpermmv[ax][c];
+	function ctcpMove(idx, m) {
+		var cornPerm = cornPermMove[idx % 12][m];
+		idx = ~~(idx / 12) << 1;
+		var center = [];
+		mathlib.set8Perm(center, idx, 6);
+		if (mathlib.getNParity(idx, 6) == 1) {
+			circle(center, 4, 5);
+		}
+		if (m == 0) {
+			circle(center, 0, 3, 1);
+		} else if (m == 1) {
+			circle(center, 0, 2, 4);
+		} else if (m == 2) {
+			circle(center, 1, 5, 2);
+		} else if (m == 3) {
+			circle(center, 3, 4, 5);
+		}
+		return (mathlib.get8Perm(center, 6) >> 1) * 12 + cornPerm;
 	}
 
-	function i(idx, move) {
+	function twstMove(idx, move) {
 		var fixedtwst = [];
 		var twst = [];
 		for (var i = 0; i < 4; i++) {
@@ -62,7 +69,7 @@
 		return idx;
 	}
 
-	var cornerpermmv = [
+	var cornPermMove = [
 		[6, 5, 10, 1],
 		[9, 7, 4, 2],
 		[3, 11, 8, 0],
@@ -78,11 +85,21 @@
 	];
 
 	var solv = new mathlib.Solver(4, 2, [
-		[0, l, 4320],
-		[0, i, 2187]
+		[0, ctcpMove, 4320],
+		[0, twstMove, 2187]
 	]);
 
-	function getSolution(sol) {
+	var solvivy = new mathlib.Solver(4, 2, [
+		[0, function(idx, m) {
+			return ~~(ctcpMove(idx * 12, m) / 12);
+		}, 360],
+		[0, function(idx, m) {
+			return twstMove(idx, m) % 81;
+		}, 81]
+	]);
+
+
+	function sol2str(sol) {
 		var ret = [];
 		var move2str = ["L", "R", "B", "U"]; //RLDB (in jaap's notation) rotated by z2
 		for (var i = 0; i < sol.length; i++) {
@@ -101,13 +118,24 @@
 
 	function getScramble(type) {
 		var perm, twst, lim = 6,
-			l = type == 'skbso' ? 8 : 0;
+			maxl = type == 'skbso' ? 8 : 0;
 		do {
 			perm = mathlib.rn(4320);
 			twst = mathlib.rn(2187);
 		} while (perm == 0 && twst == 0 || ori[perm % 12] != (twst + ~~(twst / 3) + ~~(twst / 9) + ~~(twst / 27)) % 3 || solv.search([perm, twst], 0, lim) != null);
-		var sol = solv.search([perm, twst], l).reverse();
-		return getSolution(sol);
+		return sol2str(solv.search([perm, twst], maxl).reverse());
 	}
-	scrMgr.reg(['skbo', 'skbso'], getScramble);
+
+	function getScrambleIvy(type) {
+		var perm, twst, lim = 1,
+			maxl = type == 'ivyso' ? 6 : 0;
+		do {
+			perm = mathlib.rn(360);
+			twst = mathlib.rn(81);
+		} while (perm == 0 && twst == 0 || solvivy.search([perm, twst], 0, lim) != null);
+		return solvivy.toStr(solvivy.search([perm, twst], maxl).reverse(), "RLDB", "' ");
+	}
+
+	scrMgr.reg(['skbo', 'skbso'], getScramble)(['ivyo', 'ivyso'], getScrambleIvy);
+
 })(mathlib.circle);

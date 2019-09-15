@@ -150,8 +150,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["WCA", "333", 0],
-		['舊版', "333o", 25],
+		["random state (WCA)", "333", 0],
+		['random move', "333o", 25],
 		['笨蛋專用', "333noob", 25],
 		['僅打亂邊塊', "edges", 0],
 		['僅打亂角塊', "corners", 0],
@@ -173,8 +173,8 @@ var scrdata = [
 		['簡單的十字', "easyc", 3]
 	]],
 	['2x2x2', [
-		["WCA", "222so", 0],
-		['最佳化隨機狀態', "222o", 0],
+		["random state (WCA)", "222so", 0],
+		['optimal', "222o", 0],
 		['僅使用RUF', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -211,7 +211,7 @@ var scrdata = [
 	['魔錶', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['最佳化', "clko", 0],
+		['optimal', "clko", 0],
 		['簡潔', "clkc", 0],
 		['pin腳順序效率最佳化', "clke", 0]
 	]],
@@ -221,16 +221,17 @@ var scrdata = [
 		['舊版', "mgmo", 70]
 	]],
 	['金字塔', [
-		["WCA", "pyrso", 10],
-		['最佳化隨機狀態', "pyro", 0],
-		['隨機步驟', "pyrm", 25]
+		["random state (WCA)", "pyrso", 10],
+		['optimal', "pyro", 0],
+		['random move', "pyrm", 25]
 	]],
 	['斜轉', [
-		["WCA", "skbso", 0],
-		['使用U L R B', "skb", 25]
+		["random state (WCA)", "skbso", 0],
+		['optimal', "skbo", 0],
+		['random move', "skb", 25]
 	]],
 	['sq-1', [
-		["WCA", "sqrs", 0],
+		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['面轉演算法', "sq1h", 40],
 		['扭轉演算法', "sq1t", 20]
@@ -256,9 +257,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['齒輪魔方', [
-		['隨機狀態', "gearso", 0],
-		['最佳化隨機狀態', "gearo", 0],
-		['僅使用RUF', "gear", 10]
+		['random state', "gearso", 0],
+		['optimal', "gearo", 0],
+		['random move', "gear", 10]
 	]],
 	['Cmetric', [
 		[' ', "cm3", 25]
@@ -275,6 +276,11 @@ var scrdata = [
 	['Redi Cube', [
 		['魔域', "redim", 8],
 		['舊版', "redi", 20]
+	]],
+	['Ivy cube', [
+		['random state', "ivyso", 0],
+		['optimal', "ivyo", 0],
+		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -330,10 +336,10 @@ var scrdata = [
 		['2345連解', "r2345", 0],
 		['23456連解', "r23456", 0],
 		['234567連解', "r234567", 0],
-		['234連解(wca)', "r234w", 0],
-		['2345連解(wca)', "r2345w", 0],
-		['23456連解(wca)', "r23456w", 0],
-		['234567連解(wca)', "r234567w", 0]
+		['234連解 (WCA)', "r234w", 0],
+		['2345連解 (WCA)', "r2345w", 0],
+		['23456連解 (WCA)', "r23456w", 0],
+		['234567連解 (WCA)', "r234567w", 0]
 	]],
 	['===搞笑===', [
 		['--', "blank", 0]

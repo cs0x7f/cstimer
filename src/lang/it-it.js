@@ -150,8 +150,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["WCA", "333", 0],
-		['vecchio stile', "333o", 25],
+		["random state (WCA)", "333", 0],
+		['random move', "333o", 25],
 		['3x3x3 per nabbi', "333noob", 25],
 		['solo spigoli', "edges", 0],
 		['solo angoli', "corners", 0],
@@ -173,8 +173,8 @@ var scrdata = [
 		['croce facile', "easyc", 3]
 	]],
 	['2x2x2', [
-		["WCA", "222so", 0],
-		['stato casuale ottimale', "222o", 0],
+		["random state (WCA)", "222so", 0],
+		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -211,7 +211,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['Wca', "clkwca", 0],
-		['ottimale', "clko", 0],
+		['optimal', "clko", 0],
 		['conciso', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
@@ -221,16 +221,17 @@ var scrdata = [
 		['vecchio stile', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["WCA", "pyrso", 10],
-		['stato casuale ottimale', "pyro", 0],
-		['mosse casuali', "pyrm", 25]
+		["random state (WCA)", "pyrso", 10],
+		['optimal', "pyro", 0],
+		['random move', "pyrm", 25]
 	]],
 	['Skewb', [
-		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
+		["random state (WCA)", "skbso", 0],
+		['optimal', "skbo", 0],
+		['random move', "skb", 25]
 	]],
 	['Square-1', [
-		["WCA", "sqrs", 0],
+		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -256,9 +257,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['stato casuale', "gearso", 0],
-		['stato casuale ottimale', "gearo", 0],
-		['3-gen', "gear", 10]
+		['random state', "gearso", 0],
+		['optimal', "gearo", 0],
+		['random move', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -275,6 +276,11 @@ var scrdata = [
 	['Redi Cube', [
 		['MoYu', "redim", 8],
 		['vecchio', "redi", 20]
+	]],
+	['Ivy cube', [
+		['random state', "ivyso", 0],
+		['optimal', "ivyo", 0],
+		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -330,10 +336,10 @@ var scrdata = [
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
 		['234567 relay', "r234567", 0],
-		['234 relay(wca)', "r234w", 0],
-		['2345 relay(wca)', "r2345w", 0],
-		['23456 relay(wca)', "r23456w", 0],
-		['234567 relay(wca)', "r234567w", 0]
+		['234 relay (WCA)', "r234w", 0],
+		['2345 relay (WCA)', "r2345w", 0],
+		['23456 relay (WCA)', "r23456w", 0],
+		['234567 relay (WCA)', "r234567w", 0]
 	]],
 	['===JOKES===', [
 		['--', "blank", 0]

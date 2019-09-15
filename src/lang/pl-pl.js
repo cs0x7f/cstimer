@@ -150,8 +150,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["WCA", "333", 0],
-		['old style', "333o", 25],
+		["random state (WCA)", "333", 0],
+		['random move', "333o", 25],
 		['3x3x3 dla noobów', "333noob", 25],
 		['tylko krawędzie', "edges", 0],
 		['tylko narożniki', "corners", 0],
@@ -173,8 +173,8 @@ var scrdata = [
 		['easy cross', "easyc", 3]
 	]],
 	['2x2x2', [
-		["WCA", "222so", 0],
-		['optimal random state', "222o", 0],
+		["random state (WCA)", "222so", 0],
+		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -221,16 +221,17 @@ var scrdata = [
 		['old style', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["WCA", "pyrso", 10],
-		['optimal random state', "pyro", 0],
-		['random moves', "pyrm", 25]
+		["random state (WCA)", "pyrso", 10],
+		['optimal', "pyro", 0],
+		['random move', "pyrm", 25]
 	]],
 	['Skewb', [
-		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
+		["random state (WCA)", "skbso", 0],
+		['optimal', "skbo", 0],
+		['random move', "skb", 25]
 	]],
 	['Square-1', [
-		["WCA", "sqrs", 0],
+		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -257,8 +258,8 @@ var scrdata = [
 	]],
 	['Gear Cube', [
 		['random state', "gearso", 0],
-		['optimal random state', "gearo", 0],
-		['3-gen', "gear", 10]
+		['optimal', "gearo", 0],
+		['random move', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -275,6 +276,11 @@ var scrdata = [
 	['Redi Cube', [
 		['MoYu', "redim", 8],
 		['old', "redi", 20]
+	]],
+	['Ivy cube', [
+		['random state', "ivyso", 0],
+		['optimal', "ivyo", 0],
+		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -330,10 +336,10 @@ var scrdata = [
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
 		['234567 relay', "r234567", 0],
-		['234 relay(wca)', "r234w", 0],
-		['2345 relay(wca)', "r2345w", 0],
-		['23456 relay(wca)', "r23456w", 0],
-		['234567 relay(wca)', "r234567w", 0]
+		['234 relay (WCA)', "r234w", 0],
+		['2345 relay (WCA)', "r2345w", 0],
+		['23456 relay (WCA)', "r23456w", 0],
+		['234567 relay (WCA)', "r234567w", 0]
 	]],
 	['===ŻARTY===', [
 		['--', "blank", 0]

@@ -44,6 +44,7 @@
 		"lsll": [[[["R U R'","R U2 R'","R U' R'"]],[["F' U F","F' U2 F","F' U' F"]],[["U","U2","U'"]]]], // 3x3x3 last slot + last layer (old)
 		"prco": [[["F","B"],["U","D"],["L","DBR"],["R","DBL"],["BL","DR"],["BR","DL"]],minxsuff], // Pyraminx Crystal (old style)
 		"skb": [[["R"],["L"],["B"],["U"]],["","'"]], // Skewb
+		"ivy": [[["R"],["L"],["D"],["B"]],["","'"]], // Ivy
 		"112": [[["R"],["R"]],cubesuff], // 1x1x2
 		"eide": [[["OMG"],["WOW"],["WTF"],[["WOO-HOO","WOO-HOO","MATYAS","YES","YES","YAY","YEEEEEEEEEEEES"]],["HAHA"],["XD"],[":D"],["LOL"]],["","","","!!!"]] // Derrick Eide	
 	}

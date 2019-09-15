@@ -150,8 +150,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["WCA", "333", 0],
-		['alter Stil', "333o", 25],
+		["random state (WCA)", "333", 0],
+		['random move', "333o", 25],
 		['3x3x3 für Anfänger', "333noob", 25],
 		['nur Kanten', "edges", 0],
 		['nur Ecken', "corners", 0],
@@ -173,8 +173,8 @@ var scrdata = [
 		['einfaches Kreuz', "easyc", 3]
 	]],
 	['2x2x2', [
-		["WCA", "222so", 0],
-		['optimaler Zufallszustand', "222o", 0],
+		["random state (WCA)", "222so", 0],
+		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -211,7 +211,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
-		['Optimal', "clko", 0],
+		['optimal', "clko", 0],
 		['präzise', "clkc", 0],
 		['effiziente Pin-Reihenfolge', "clke", 0]
 	]],
@@ -221,16 +221,17 @@ var scrdata = [
 		['alter Stil', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["WCA", "pyrso", 10],
-		['optimaler Zufallszustand', "pyro", 0],
-		['Zufalls-Zugfolge', "pyrm", 25]
+		["random state (WCA)", "pyrso", 10],
+		['optimal', "pyro", 0],
+		['random move', "pyrm", 25]
 	]],
 	['Skewb', [
-		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
+		["random state (WCA)", "skbso", 0],
+		['optimal', "skbo", 0],
+		['random move', "skb", 25]
 	]],
 	['Square-1', [
-		["WCA", "sqrs", 0],
+		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['Flächen-Zug-Metrik', "sq1h", 40],
 		['Zug-Metrik', "sq1t", 20]
@@ -256,9 +257,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['Zufallszustand', "gearso", 0],
-		['optimaler Zufallszustand', "gearo", 0],
-		['3-gen', "gear", 10]
+		['random state', "gearso", 0],
+		['optimal', "gearo", 0],
+		['random move', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -275,6 +276,11 @@ var scrdata = [
 	['c', [
 		['MoYu', "redim", 8],
 		['alt', "redi", 20]
+	]],
+	['Ivy cube', [
+		['random state', "ivyso", 0],
+		['optimal', "ivyo", 0],
+		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -330,10 +336,10 @@ var scrdata = [
 		['2345 Staffel', "r2345", 0],
 		['23456 Staffel', "r23456", 0],
 		['234567 Staffel', "r234567", 0],
-		['234 Staffel(wca)', "r234w", 0],
-		['2345 Staffel(wca)', "r2345w", 0],
-		['23456 Staffel(wca)', "r23456w", 0],
-		['234567 Staffel(wca)', "r234567w", 0]
+		['234 Staffel (WCA)', "r234w", 0],
+		['2345 Staffel (WCA)', "r2345w", 0],
+		['23456 Staffel (WCA)', "r23456w", 0],
+		['234567 Staffel (WCA)', "r234567w", 0]
 	]],
 	['===Witze===', [
 		['--', "blank", 0]

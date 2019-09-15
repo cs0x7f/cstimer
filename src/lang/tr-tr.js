@@ -150,8 +150,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["WCA", "333", 0],
-		['eski stil', "333o", 25],
+		["random state (WCA)", "333", 0],
+		['random move', "333o", 25],
 		['yeniler için 3x3', "333noob", 25],
 		['sadece kenarlar', "edges", 0],
 		['sadece köşeler', "corners", 0],
@@ -173,8 +173,8 @@ var scrdata = [
 		['kolay cross', "easyc", 3]
 	]],
 	['2x2x2', [
-		["WCA", "222so", 0],
-		['optimal random state', "222o", 0],
+		["random state (WCA)", "222so", 0],
+		['optimal', "222o", 0],
 		['3-tür', "2223", 25],
 		['EG', "222eg", 0],
 		['CLL', "222eg0", 0],
@@ -211,7 +211,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['ideal', "clko", 0],
+		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['verimli düğme sırası', "clke", 0]
 	]],
@@ -221,16 +221,17 @@ var scrdata = [
 		['eski stil', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["WCA", "pyrso", 10],
-		['ideal rastgele pozisyon', "pyro", 0],
-		['rastgele hamleler', "pyrm", 25]
+		["random state (WCA)", "pyrso", 10],
+		['optimal', "pyro", 0],
+		['random move', "pyrm", 25]
 	]],
 	['Skewb', [
-		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
+		["random state (WCA)", "skbso", 0],
+		['optimal', "skbo", 0],
+		['random move', "skb", 25]
 	]],
 	['Square-1', [
-		["WCA", "sqrs", 0],
+		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -256,9 +257,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['rastgele', "gearso", 0],
-		['ideal rastgele pozisyon', "gearo", 0],
-		['3-tür', "gear", 10]
+		['random state', "gearso", 0],
+		['optimal', "gearo", 0],
+		['random move', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -275,6 +276,11 @@ var scrdata = [
 	['Redi Cube', [
 		['MoYu', "redim", 8],
 		['old', "redi", 20]
+	]],
+	['Ivy cube', [
+		['random state', "ivyso", 0],
+		['optimal', "ivyo", 0],
+		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -330,10 +336,10 @@ var scrdata = [
 		['2345 ardışık', "r2345", 0],
 		['23456 ardışık', "r23456", 0],
 		['234567 ardışık', "r234567", 0],
-		['234 ardışık(wca)', "r234w", 0],
-		['2345 ardışık(wca)', "r2345w", 0],
-		['23456 ardışık(wca)', "r23456w", 0],
-		['234567 ardışık(wca)', "r234567w", 0]
+		['234 ardışık (WCA)', "r234w", 0],
+		['2345 ardışık (WCA)', "r2345w", 0],
+		['23456 ardışık (WCA)', "r23456w", 0],
+		['234567 ardışık (WCA)', "r234567w", 0]
 	]],
 	['===ESPRİLER===', [
 		['--', "blank", 0]

@@ -150,8 +150,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["WCA", "333", 0],
-		['Antiguo estilo', "333o", 25],
+		["random state (WCA)", "333", 0],
+		['random move', "333o", 25],
 		['Para principiantes', "333noob", 25],
 		['Sólo aristas', "edges", 0],
 		['Sólo esquinas', "corners", 0],
@@ -173,8 +173,8 @@ var scrdata = [
 		['Cruz sencilla', "easyc", 3]
 	]],
 	['2x2x2', [
-		["WCA", "222so", 0],
-		['Aleatorio óptimo', "222o", 0],
+		["random state (WCA)", "222so", 0],
+		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -221,16 +221,17 @@ var scrdata = [
 		['Antiguo estilo', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["WCA", "pyrso", 10],
-		['Aleatorio óptimo', "pyro", 0],
-		['Aleatorio', "pyrm", 25]
+		["random state (WCA)", "pyrso", 10],
+		['optimal', "pyro", 0],
+		['random move', "pyrm", 25]
 	]],
 	['Skewb', [
-		["WCA", "skbso", 0],
-		['U L R B', "skb", 25]
+		["random state (WCA)", "skbso", 0],
+		['optimal', "skbo", 0],
+		['random move', "skb", 25]
 	]],
 	['Square-1', [
-		["WCA", "sqrs", 0],
+		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -256,9 +257,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['Aleatorio', "gearso", 0],
-		['Aleatorio óptimo', "gearo", 0],
-		['3-gen', "gear", 10]
+		['random state', "gearso", 0],
+		['optimal', "gearo", 0],
+		['random move', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -275,6 +276,11 @@ var scrdata = [
 	['Redi Cube', [
 		['MoYu', "redim", 8],
 		['old', "redi", 20]
+	]],
+	['Ivy cube', [
+		['random state', "ivyso", 0],
+		['optimal', "ivyo", 0],
+		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -330,10 +336,10 @@ var scrdata = [
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
 		['234567 relay', "r234567", 0],
-		['234 relay(wca)', "r234w", 0],
-		['2345 relay(wca)', "r2345w", 0],
-		['23456 relay(wca)', "r23456w", 0],
-		['234567 relay(wca)', "r234567w", 0]
+		['234 relay (WCA)', "r234w", 0],
+		['2345 relay (WCA)', "r2345w", 0],
+		['23456 relay (WCA)', "r23456w", 0],
+		['234567 relay (WCA)', "r234567w", 0]
 	]],
 	['===BROMAS===', [
 		['--', "blank", 0]

@@ -451,7 +451,9 @@ var mathlib = (function() {
 		if (maxl == 0) {
 			return true;
 		}
-		for (var move = 0; move < this.N_MOVES; move++) {
+		var offset = state[0] + maxl + lm + 1;
+		for (var move0 = 0; move0 < this.N_MOVES; move0++) {
+			var move = (move0 + offset) % this.N_MOVES;
 			if (move == lm) {
 				continue;
 			}
