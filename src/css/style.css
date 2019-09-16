@@ -500,6 +500,16 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	user-select: none;
 }
 
+#lcd::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
+
 #about {
 	line-height: 1.6em;
 	text-align: left;
