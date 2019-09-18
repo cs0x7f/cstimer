@@ -328,6 +328,117 @@ var GiikerCube = execMain(function() {
 		}
 	})();
 
+	var GoCube = (function() {
+
+		var _server;
+		var _service;
+		var _read;
+		var _write;
+
+		var SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+		var CHARACTERISTIC_WRITE_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+		var CHARACTERISTIC_READ_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+
+		var WRITE_BATTERY = 50;
+		var WRITE_STATE = 51;
+
+		function init(device) {
+			return device.gatt.connect().then(function(server) {
+				_server = server;
+				return server.getPrimaryService(SERVICE_UUID);
+			}).then(function(service) {
+				_service = service;
+				return _service.getCharacteristic(CHARACTERISTIC_WRITE_UUID);
+			}).then(function(characteristic) {
+				_write = characteristic;
+				return _service.getCharacteristic(CHARACTERISTIC_READ_UUID);
+			}).then(function(characteristic) {
+				_read = characteristic;
+				return _read.startNotifications();
+			}).then(function() {
+				return _read.addEventListener('characteristicvaluechanged', onStateChanged);
+			});
+		}
+
+		function onStateChanged(event) {
+			var value = event.target.value;
+			parseData(value);
+		}
+
+		function toHexVal(value) {
+			var valhex = [];
+			for (var i = 0; i < value.byteLength; i++) {
+				valhex.push(value.getUint8(i) >> 4 & 0xf);
+				valhex.push(value.getUint8(i) & 0xf);
+			}
+			return valhex;
+		}
+
+		var curBatteryLevel = -1;
+		var batteryResolveList = [];
+		var moveCntFree = 100;
+		var curFacelet = mathlib.SOLVED_FACELET;
+		var curCubie = new mathlib.CubieCube();
+
+		function parseData(value) {
+			if (value.byteLength < 4) {
+				return;
+			}
+			if (value.getUint8(0) != 0x2a ||
+				value.getUint8(value.byteLength - 2) != 0x0d ||
+				value.getUint8(value.byteLength - 1) != 0x0a) {
+				return;
+			}
+			var msgType = value.getUint8(2);
+			var msgLen = value.byteLength - 4;
+			if (msgType == 1) { // move
+				console.log(toHexVal(value));
+				for (var i = 0; i < msgLen; i += 2) {
+					var axis = "BFUDRL".charAt(value.getUint8(3 + i) >> 1);
+					var power = [1, -1][value.getUint8(3 + i) & 1];
+					//TODO callback
+
+					if (++moveCntFree > 20) {
+						moveCntFree = 0;
+						_write.writeValue(new Uint8Array([WRITE_STATE]).buffer);
+					}
+				}
+			} else if (msgType == 2) { // cube state
+				console.log(toHexVal(value));
+				var facelet = [];
+				for (var i = 0; i < 54; i++) {
+					facelet[i] = "BFUDRL".charAt(value.getUint8(3 + i));
+				}
+				curFacelet = facelet.join('');
+				curCubie.fromFacelet(curFacelet);
+			} else if (msgType == 3) { // quaternion
+			} else if (msgType == 5) { // battery level
+				console.log(toHexVal(value));
+				curBatteryLevel = value.getUint8(3);
+			} else if (msgType == 7) { // offline stats
+				console.log(toHexVal(value));
+			} else if (msgType == 8) { // cube type
+				console.log(toHexVal(value));
+			}
+			while (batteryResolveList.length != 0) {
+				batteryResolveList.shift()(curBatteryLevel);
+			}
+		}
+
+		function getBatteryLevel() {
+			_write.writeValue(new Uint8Array([WRITE_BATTERY]).buffer);
+			return new Promise(function(resolve) {
+				batteryResolveList.push(resolve);
+			});
+		}
+
+		return {
+			init: init,
+			opservs: [SERVICE_UUID],
+			getBatteryLevel: getBatteryLevel
+		}
+	})();
+
 	function init(timer) {
 
 		if (!window.navigator || !window.navigator.bluetooth) {
@@ -337,11 +448,13 @@ var GiikerCube = execMain(function() {
 
 		return window.navigator.bluetooth.requestDevice({
 			filters: [{
-				namePrefix: 'Gi',
+				namePrefix: 'Gi'
 			}, {
-				namePrefix: 'GAN',
+				namePrefix: 'GAN'
+			}, {
+				namePrefix: 'GoCube'
 			}],
-			optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs),
+			optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
 		}).then(function(device) {
 			_device = device;
 			if (device.name.startsWith('Gi')) {
@@ -350,6 +463,9 @@ var GiikerCube = execMain(function() {
 			} else if (device.name.startsWith('GAN')) {
 				cube = GanCube;
 				return GanCube.init(device);
+			} else if (device.name.startsWith('GoCube')) {
+				cube = GoCube;
+				return GoCube.init(device);
 			} else {
 				return Promise.resolve();
 			}

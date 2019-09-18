@@ -47,7 +47,7 @@ tools/image.js \
 tools/cross.js \
 tools/eoline.js \
 tools/roux1.js \
-tools/giikerutil.js \
+tools/bluetoothutil.js \
 tools/insertionfinder.js \
 tools/metronome.js \
 tools/onlinecomp.js \
@@ -55,7 +55,7 @@ shortcut.js \
 help.js \
 stackmat.js \
 tools/stackmatutil.js \
-giiker.js \
+bluetooth.js \
 worker.js)
 
 cache = $(addprefix $(dest)/, \
