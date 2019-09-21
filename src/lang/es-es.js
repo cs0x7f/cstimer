@@ -116,10 +116,10 @@ var PROPERTY_GIISOK_DELAYS = '2s | 3s | 4s | 5s | Nunca | Revuelto correctament'
 var PROPERTY_GIISOK_KEY = 'Indicar fin del scramble con la barra espaciadora';
 var PROPERTY_GIISOK_MOVE = 'Indicar fin del scramble haciendo';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc | (U U\')2, (U\' U)2, etc. | Nunca';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
+var PROPERTY_GIISBEEP = 'Sonar cuando el cubo esté scrambleado';
+var PROPERTY_GIIRST = 'Resetear el cubo Bluetooth cuando se conecte';
+var PROPERTY_GIIRSTS = 'Siempre|Rápido|Nunca';
+var CONFIRM_GIIRST = '¿Marcar cubo Bluetooth como resuelto?';
 var PROPERTY_GIIAED = 'Detección de errores de hardware automática';
 var scrdata = [
 	['WCA', [
@@ -129,18 +129,18 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
+		['3x3x3 BLD', "333ni", 0],
 		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
+		['3x3 OH', "333oh", 0],
 		['3x3 ft', "333ft", 0],
-		['clock', "clkwca", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
-		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['Clock', "clkwca", 0],
+		['Megaminx', "mgmp", -70],
+		['Pyraminx', "pyrso", -10],
+		['Skewb', "skbso", 0],
+		['Sq-1', "sqrs", 0],
+		['4x4 BLD', "444bld", -40],
+		['5x5 BLD', "555bld", -60],
+		['MBLD', "r3ni", 5]
 	]],
 	['Introducir', [
 		['外部', "input", 0],
@@ -198,8 +198,8 @@ var scrdata = [
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
+		['Prefijo', "666p", 80],
+		['Sufijo', "666s", 80],
 		['Aristas de 6x6x6', "6edge", 8]
 	]],
 	['7x7x7', [

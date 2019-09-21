@@ -8,26 +8,28 @@ var GiikerCube = execMain(function() {
 	var GiikerCube = (function() {
 
 		var _server = null;
-		var _characteristic = null;
+		var _chrct = null;
 
-		var SERVICE_UUID = '0000aadb-0000-1000-8000-00805f9b34fb';
-		var CHARACTERISTIC_UUID = '0000aadc-0000-1000-8000-00805f9b34fb';
+		var UUID_SUFFIX = '-0000-1000-8000-00805f9b34fb';
 
-		var SYSTEM_SERVICE_UUID = '0000aaaa-0000-1000-8000-00805f9b34fb';
-		var SYSTEM_READ_UUID = '0000aaab-0000-1000-8000-00805f9b34fb';
-		var SYSTEM_WRITE_UUID = '0000aaac-0000-1000-8000-00805f9b34fb';
+		var SERVICE_UUID_DATA = '0000aadb' + UUID_SUFFIX;
+		var CHRCT_UUID_DATA = '0000aadc' + UUID_SUFFIX;
+
+		var SERVICE_UUID_RW = '0000aaaa' + UUID_SUFFIX;
+		var CHRCT_UUID_READ = '0000aaab' + UUID_SUFFIX;
+		var CHRCT_UUID_WRITE = '0000aaac' + UUID_SUFFIX;
 
 		function init(device) {
 			return device.gatt.connect().then(function(server) {
 				_server = server;
-				return server.getPrimaryService(SERVICE_UUID);
+				return server.getPrimaryService(SERVICE_UUID_DATA);
 			}).then(function(service) {
-				return service.getCharacteristic(CHARACTERISTIC_UUID);
-			}).then(function(characteristic) {
-				_characteristic = characteristic;
-				return _characteristic.startNotifications();
+				return service.getCharacteristic(CHRCT_UUID_DATA);
+			}).then(function(chrct) {
+				_chrct = chrct;
+				return _chrct.startNotifications();
 			}).then(function() {
-				return _characteristic.readValue();
+				return _chrct.readValue();
 			}).then(function(value) {
 				var initState = parseState(value);
 				if (initState[0] != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
@@ -36,7 +38,7 @@ var GiikerCube = execMain(function() {
 						giikerutil.markSolved();
 					}
 				}
-				return _characteristic.addEventListener('characteristicvaluechanged', onStateChanged);
+				return _chrct.addEventListener('characteristicvaluechanged', onStateChanged);
 			});
 		}
 
@@ -142,18 +144,18 @@ var GiikerCube = execMain(function() {
 				_read.removeEventListener('characteristicvaluechanged', listener);
 				_read.stopNotifications();
 			};
-			return _server.getPrimaryService(SYSTEM_SERVICE_UUID).then(function(service) {
+			return _server.getPrimaryService(SERVICE_UUID_RW).then(function(service) {
 				_service = service;
-				return service.getCharacteristic(SYSTEM_READ_UUID);
-			}).then(function(readCharacteristic) {
-				_read = readCharacteristic;
+				return service.getCharacteristic(CHRCT_UUID_READ);
+			}).then(function(chrct) {
+				_read = chrct;
 				return _read.startNotifications();
 			}).then(function() {
 				return _read.addEventListener('characteristicvaluechanged', listener);
 			}).then(function() {
-				return _service.getCharacteristic(SYSTEM_WRITE_UUID);
-			}).then(function(writeCharacteristic) {
-				writeCharacteristic.writeValue(new Uint8Array([0xb5]).buffer);
+				return _service.getCharacteristic(CHRCT_UUID_WRITE);
+			}).then(function(chrct) {
+				chrct.writeValue(new Uint8Array([0xb5]).buffer);
 				return new Promise(function(resolve) {
 					_resolve = resolve;
 				});
@@ -162,7 +164,7 @@ var GiikerCube = execMain(function() {
 
 		return {
 			init: init,
-			opservs: [SERVICE_UUID, SYSTEM_SERVICE_UUID],
+			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_RW],
 			getBatteryLevel: getBatteryLevel
 		}
 	})();
@@ -170,36 +172,109 @@ var GiikerCube = execMain(function() {
 	var GanCube = (function() {
 
 		var _server;
-		var _service;
-		var _characteristic_f2;
-		var _characteristic_f5;
-		var _characteristic_f6;
-		var _characteristic_f7;
+		var _service_data;
+		var _service_meta;
+		var _chrct_f2;
+		var _chrct_f5;
+		var _chrct_f6;
+		var _chrct_f7;
 
-		var SERVICE_UUID = '0000fff0-0000-1000-8000-00805f9b34fb';
-		var CHARACTERISTIC_UUID_F2 = '0000fff2-0000-1000-8000-00805f9b34fb'; // cube state, (54 - 6) facelets, 3 bit per facelet
-		var CHARACTERISTIC_UUID_F5 = '0000fff5-0000-1000-8000-00805f9b34fb'; // gyro state, move counter, pre moves
-		var CHARACTERISTIC_UUID_F6 = '0000fff6-0000-1000-8000-00805f9b34fb'; // move counter, time offsets between premoves
-		var CHARACTERISTIC_UUID_F7 = '0000fff7-0000-1000-8000-00805f9b34fb';
+		var UUID_SUFFIX = '-0000-1000-8000-00805f9b34fb';
+		var SERVICE_UUID_META = '0000180a' + UUID_SUFFIX;
+		var CHRCT_UUID_VERSION = '00002a28' + UUID_SUFFIX;
+		var CHRCT_UUID_HARDWARE = '00002a23' + UUID_SUFFIX;
+		var SERVICE_UUID_DATA = '0000fff0' + UUID_SUFFIX;
+		var CHRCT_UUID_F2 = '0000fff2' + UUID_SUFFIX; // cube state, (54 - 6) facelets, 3 bit per facelet
+		var CHRCT_UUID_F3 = '0000fff3' + UUID_SUFFIX; // prev moves
+		var CHRCT_UUID_F5 = '0000fff5' + UUID_SUFFIX; // gyro state, move counter, pre moves
+		var CHRCT_UUID_F6 = '0000fff6' + UUID_SUFFIX; // move counter, time offsets between premoves
+		var CHRCT_UUID_F7 = '0000fff7' + UUID_SUFFIX;
+
+		var decoder = null;
+
+		var KEYS = [
+			"NoRgnAHANATADDWJYwMxQOxiiEcfYgSK6Hpr4TYCs0IG1OEAbDszALpA",
+			"NoNg7ANATFIQnARmogLBRUCs0oAYN8U5J45EQBmFADg0oJAOSlUQF0g"
+		];
+
+		function getKey(version, value) {
+			var key = KEYS[version >> 8 & 0xff];
+			if (!key) {
+				return;
+			}
+			key = JSON.parse(LZString.decompressFromEncodedURIComponent(key));
+			for (var i = 0; i < 6; i++) {
+				key[i] = (key[i] + value.getUint8(5 - i)) & 0xff;
+			}
+			return key;
+		}
+
+		function decode(value) {
+			var ret = [];
+			for (var i = 0; i < value.byteLength; i++) {
+				ret[i] = value.getUint8(i);
+			}
+			if (decoder == null) {
+				return ret;
+			}
+			if (ret.length > 16) {
+				ret = ret.slice(0, ret.length - 16).concat(
+					decoder.decrypt(ret.slice(ret.length - 16))
+				);
+			}
+			decoder.decrypt(ret);
+			return ret;
+		}
+
+		function checkHardware(server) {
+			return server.getPrimaryService(SERVICE_UUID_META).then(function(service_meta) {
+				_service_meta = service_meta;
+				return service_meta.getCharacteristic(CHRCT_UUID_VERSION);
+			}).then(function(chrct) {
+				return chrct.readValue();
+			}).then(function(value) {
+				var version = value.getUint8(0) << 16 | value.getUint8(1) << 8 | value.getUint8(2);
+				DEBUG && console.log('[gancube] version', JSON.stringify(version));
+				decoder = null;
+				if (version > 0x010007 && (version & 0xfffe00) == 0x010000) {
+					return _service_meta.getCharacteristic(CHRCT_UUID_HARDWARE).then(function(chrct) {
+						return chrct.readValue();
+					}).then(function(value) {
+						var key = getKey(version, value);
+						if (!key) {
+							logohint.push('Not support your Gan cube');
+							return;
+						}
+						DEBUG && console.log('[gancube] key', JSON.stringify(key));
+						decoder = new aes128(key);
+					});
+				} else { //not support
+					logohint.push('Not support your Gan cube');
+				}
+			});
+		}
 
 		function init(device) {
+			DEBUG && console.log('[gancube] get_server');
 			return device.gatt.connect().then(function(server) {
 				_server = server;
-				return server.getPrimaryService(SERVICE_UUID);
-			}).then(function(service) {
-				_service = service;
-				return _service.getCharacteristic(CHARACTERISTIC_UUID_F2);
-			}).then(function(characteristic) {
-				_characteristic_f2 = characteristic;
-				return _service.getCharacteristic(CHARACTERISTIC_UUID_F5);
-			}).then(function(characteristic) {
-				_characteristic_f5 = characteristic;
-				return _service.getCharacteristic(CHARACTERISTIC_UUID_F6);
-			}).then(function(characteristic) {
-				_characteristic_f6 = characteristic;
-				return _service.getCharacteristic(CHARACTERISTIC_UUID_F7);
-			}).then(function(characteristic) {
-				_characteristic_f7 = characteristic;
+				return checkHardware(server);
+			}).then(function() {
+				return _server.getPrimaryService(SERVICE_UUID_DATA);
+			}).then(function(service_data) {
+				_service_data = service_data;
+				return _service_data.getCharacteristic(CHRCT_UUID_F2);
+			}).then(function(chrct) {
+				_chrct_f2 = chrct;
+				return _service_data.getCharacteristic(CHRCT_UUID_F5);
+			}).then(function(chrct) {
+				_chrct_f5 = chrct;
+				return _service_data.getCharacteristic(CHRCT_UUID_F6);
+			}).then(function(chrct) {
+				_chrct_f6 = chrct;
+				return _service_data.getCharacteristic(CHRCT_UUID_F7);
+			}).then(function(chrct) {
+				_chrct_f7 = chrct;
 			}).then(loopRead);
 		}
 
@@ -219,10 +294,11 @@ var GiikerCube = execMain(function() {
 					resolve(false);
 				});
 			}
-			return _characteristic_f2.readValue().then(function(value) {
+			return _chrct_f2.readValue().then(function(value) {
+				value = decode(value);
 				var state = [];
-				for (var i = 0; i < value.byteLength - 2; i += 3) {
-					var face = value.getUint8(i ^ 1) << 16 | value.getUint8(i + 1 ^ 1) << 8 | value.getUint8(i + 2 ^ 1);
+				for (var i = 0; i < value.length - 2; i += 3) {
+					var face = value[i ^ 1] << 16 | value[i + 1 ^ 1] << 8 | value[i + 2 ^ 1];
 					for (var j = 21; j >= 0; j -= 3) {
 						state.push("URFDLB".charAt([face >> j & 0x7]));
 						if (j == 12) {
@@ -242,19 +318,21 @@ var GiikerCube = execMain(function() {
 			if (!_device) {
 				return;
 			}
-			return _characteristic_f5.readValue().then(function(value) {
+			return _chrct_f5.readValue().then(function(value) {
+				value = decode(value);
 				timestamp = $.now();
-				moveCnt = value.getUint8(12);
+				moveCnt = value[12];
 				if (moveCnt == prevMoveCnt) {
 					return;
 				}
 				prevMoves = [];
 				for (var i = 0; i < 6; i++) {
-					var m = value.getUint8(13 + i);
+					var m = value[13 + i];
 					prevMoves.unshift("URFDLB".charAt(~~(m / 3)) + " 2'".charAt(m % 3));
 				}
 				var f6val;
-				return _characteristic_f6.readValue().then(function(value) {
+				return _chrct_f6.readValue().then(function(value) {
+					value = decode(value);
 					f6val = value;
 					return checkState();
 				}).then(function(isUpdated) {
@@ -273,7 +351,7 @@ var GiikerCube = execMain(function() {
 
 					var timeOffs = [];
 					for (var i = 0; i < 9; i++) {
-						var off = f6val.getUint8(i * 2 + 1) | f6val.getUint8(i * 2 + 2) << 8;
+						var off = f6val[i * 2 + 1] | f6val[i * 2 + 2] << 8;
 						timeOffs.unshift(~~(off / 0.95));
 					}
 
@@ -314,16 +392,96 @@ var GiikerCube = execMain(function() {
 		}
 
 		function getBatteryLevel() {
-			return _characteristic_f7.readValue().then(function(value) {
+			return _chrct_f7.readValue().then(function(value) {
+				value = decode(value);
 				return new Promise(function(resolve) {
-					resolve([value.getUint8(7), 'Gan 356i']);
+					resolve([value[7], 'Gan 356i']);
 				});
 			});
 		}
 
+		var aes128 = (function() {
+			var Sbox = [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210, 205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115, 96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224, 50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231, 200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186, 120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112, 62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225, 248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140, 161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22];
+			var SboxI = [];
+			var ShiftTabI = [0, 13, 10, 7, 4, 1, 14, 11, 8, 5, 2, 15, 12, 9, 6, 3];
+			var xtime = [];
+
+			function addRoundKey(state, rkey) {
+				for (var i = 0; i < 16; i++) {
+					state[i] ^= rkey[i];
+				}
+			}
+
+			function shiftSubAdd(state, rkey) {
+				var state0 = state.slice();
+				for (var i = 0; i < 16; i++) {
+					state[i] = SboxI[state0[ShiftTabI[i]]] ^ rkey[i];
+				}
+			}
+
+			function mixColumnsInv(state) {
+				for (var i = 0; i < 16; i += 4) {
+					var s0 = state[i + 0];
+					var s1 = state[i + 1];
+					var s2 = state[i + 2];
+					var s3 = state[i + 3];
+					var h = s0 ^ s1 ^ s2 ^ s3;
+					var xh = xtime[h];
+					var h1 = xtime[xtime[xh ^ s0 ^ s2]] ^ h;
+					var h2 = xtime[xtime[xh ^ s1 ^ s3]] ^ h;
+					state[i + 0] ^= h1 ^ xtime[s0 ^ s1];
+					state[i + 1] ^= h2 ^ xtime[s1 ^ s2];
+					state[i + 2] ^= h1 ^ xtime[s2 ^ s3];
+					state[i + 3] ^= h2 ^ xtime[s3 ^ s0];
+				}
+			}
+
+			function init() {
+				if (xtime.length != 0) {
+					return;
+				}
+				for (var i = 0; i < 256; i++) {
+					SboxI[Sbox[i]] = i;
+				}
+				for (var i = 0; i < 128; i++) {
+					xtime[i] = i << 1;
+					xtime[128 + i] = (i << 1) ^ 0x1b;
+				}
+			}
+
+			function AES128(key) {
+				init();
+				var exKey = key.slice();
+				var Rcon = 1;
+				for (var i = 16; i < 176; i += 4) {
+					var tmp = exKey.slice(i - 4, i);
+					if (i % 16 == 0) {
+						tmp = [Sbox[tmp[1]] ^ Rcon, Sbox[tmp[2]], Sbox[tmp[3]], Sbox[tmp[0]]];
+						Rcon = xtime[Rcon];
+					}
+					for (var j = 0; j < 4; j++) {
+						exKey[i + j] = exKey[i + j - 16] ^ tmp[j];
+					}
+				}
+				this.key = exKey;
+			};
+
+			AES128.prototype.decrypt = function(block) {
+				addRoundKey(block, this.key.slice(160, 176));
+				for (var i = 144; i >= 16; i -= 16) {
+					shiftSubAdd(block, this.key.slice(i, i + 16));
+					mixColumnsInv(block);
+				}
+				shiftSubAdd(block, this.key.slice(0, 16));
+				return block;
+			};
+
+			return AES128;
+		})();
+
 		return {
 			init: init,
-			opservs: [SERVICE_UUID],
+			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META],
 			getBatteryLevel: getBatteryLevel
 		}
 	})();
@@ -335,9 +493,10 @@ var GiikerCube = execMain(function() {
 		var _read;
 		var _write;
 
-		var SERVICE_UUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
-		var CHARACTERISTIC_WRITE_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
-		var CHARACTERISTIC_READ_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+		var UUID_SUFFIX = '-b5a3-f393-e0a9-e50e24dcca9e';
+		var SERVICE_UUID = '6e400001' + UUID_SUFFIX;
+		var CHRCT_UUID_WRITE = '6e400002' + UUID_SUFFIX;
+		var CHRCT_UUID_READ = '6e400003' + UUID_SUFFIX;
 
 		var WRITE_BATTERY = 50;
 		var WRITE_STATE = 51;
@@ -348,12 +507,12 @@ var GiikerCube = execMain(function() {
 				return server.getPrimaryService(SERVICE_UUID);
 			}).then(function(service) {
 				_service = service;
-				return _service.getCharacteristic(CHARACTERISTIC_WRITE_UUID);
-			}).then(function(characteristic) {
-				_write = characteristic;
-				return _service.getCharacteristic(CHARACTERISTIC_READ_UUID);
-			}).then(function(characteristic) {
-				_read = characteristic;
+				return _service.getCharacteristic(CHRCT_UUID_WRITE);
+			}).then(function(chrct) {
+				_write = chrct;
+				return _service.getCharacteristic(CHRCT_UUID_READ);
+			}).then(function(chrct) {
+				_read = chrct;
 				return _read.startNotifications();
 			}).then(function() {
 				return _read.addEventListener('characteristicvaluechanged', onStateChanged);

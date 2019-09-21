@@ -73,7 +73,7 @@ var OLCOMP_ANONYM = '匿名';
 var OLCOMP_ME = '自分';
 var OLCOMP_WCAACCOUNT = 'WCAアカウント';
 var OLCOMP_ABORT = '大会を中止して結果を表示しますか？';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_WITHANONYM = '匿名';
 var PROPERTY_IMGSIZE = 'スクランブルのイメージサイズ';
 var TIMER_INSPECT = 'インスペクション';
 var TIMER_SOLVE = 'ソルブ';
@@ -151,8 +151,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["ランダム状態 (WCA)", "333", 0],
+		['ランダムムーブ', "333o", 25],
 		['3x3x3 for noobs', "333noob", 25],
 		['エッジのみ', "edges", 0],
 		['コーナーのみ', "corners", 0],
@@ -174,8 +174,8 @@ var scrdata = [
 		['easy cross', "easyc", 3]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["ランダム状態 (WCA)", "222so", 0],
+		['最適', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -212,7 +212,7 @@ var scrdata = [
 	['クロック', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['最適', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
@@ -222,17 +222,17 @@ var scrdata = [
 		['old style', "mgmo", 70]
 	]],
 	['ピラミンクス', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		["ランダム状態 (WCA)", "pyrso", 10],
+		['最適', "pyro", 0],
+		['ランダムムーブ', "pyrm", 25]
 	]],
 	['スキューブ', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25]
+		["ランダム状態 (WCA)", "skbso", 0],
+		['最適', "skbo", 0],
+		['ランダムムーブ', "skb", 25]
 	]],
 	['スクエア１', [
-		["random state (WCA)", "sqrs", 0],
+		["ランダム状態 (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -258,9 +258,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['ランダム状態', "gearso", 0],
+		['最適', "gearo", 0],
+		['ランダムムーブ', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -278,10 +278,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['old', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['アイビーキューブ', [
+		['ランダム状態', "ivyso", 0],
+		['最適', "ivyo", 0],
+		['ランダムムーブ', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
