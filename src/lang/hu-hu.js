@@ -1,18 +1,18 @@
 var OK_LANG = 'OK';
 var CANCEL_LANG = 'Mégse';
 var RESET_LANG = 'Visszaállít';
-var ABOUT_LANG = 'RÓLUNK';
+var ABOUT_LANG = 'Rólunk';
 var ZOOM_LANG = 'Nagyítás';
-var BUTTON_TIME_LIST = 'ERED-<br>MÉNYEK';
-var BUTTON_OPTIONS = 'BEÁL-<br>LÍTÁSOK';
+var BUTTON_TIME_LIST = 'IDŐK<br>MUTATÁSA';
+var BUTTON_OPTIONS = 'BEÁLLÍTÁSOK';
 var BUTTON_EXPORT = 'EXPORTÁLÁS';
 var BUTTON_DONATE = 'ADOMÁNYOZÁS';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Időszakkal';
 var PROPERTY_USEINS = 'WCA memorizációs ideje';
 var PROPERTY_USEINS_STR = 'Mindig|Vakot kivéve|Soha';
 var PROPERTY_VOICEINS = 'WCA megnézési figyelmeztetés hangja';
 var PROPERTY_VOICEINS_STR = 'nincs|férfi hang|női hang';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Hang hangereje';
 var PROPERTY_PHASES = 'több fázis';
 var PROPERTY_TIMERSIZE = 'időmérő mérete';
 var PROPERTY_USEMILLI = 'milliszekundum használata';
@@ -23,7 +23,7 @@ var PROPERTY_SCRLIM = 'a keverési terület magassága';
 var PROPERTY_SCRALIGN = 'Keverési terület elhelyezése';
 var PROPERTY_SCRALIGN_STR = 'közép|bal|jobb';
 var PROPERTY_SCRFAST = 'Gyors keverés használata 4x4x4-hez (nem hivatalos)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_SCRKEYM = 'Fő mozdulat(ok) megjelölése a keverésben';
 var PROPERTY_WNDSCR = 'Keverési panel stílusa';
 var PROPERTY_WNDSTAT = 'Statisztikai panel stílusa';
 var PROPERTY_WNDTOOL = 'Eszközök panel stílusa';
@@ -39,14 +39,14 @@ var EXPORT_INVID = 'Csak betűk és számok megengedettek!';
 var EXPORT_ERROR = 'Néhány probléma lépett fel...';
 var EXPORT_NODATA = 'Nem található adat a fiókodon';
 var EXPORT_UPLOADED = 'Sikeresen feltöltve';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
+var EXPORT_CODEPROMPT = 'Mentsd el ezt a kódot, vagy írj be mentett kódot az importáláshoz';
+var EXPORT_ONLYOPT = 'Csak a beállítások exportálása/importálása';
+var EXPORT_ACCOUNT = 'Fiókok exportálása';
+var EXPORT_LOGINGGL = 'Belépés Google Fiókkal';
+var EXPORT_LOGINWCA = 'Belépés WCA Fiókkal';
+var EXPORT_LOGOUTCFM = 'Biztosan kilépsz?';
+var EXPORT_LOGINAUTHED = 'Engedélyezve<br>Adatok letöltése...';
+var IMPORT_FINAL_CONFIRM = 'Ezzel az összes helyi adat felülíródik! Biztosan importálod az adatokat?';
 var BUTTON_SCRAMBLE = 'KEVE-<br>RÉS';
 var BUTTON_TOOLS = 'ESZ-<br>KÖZÖK';
 var IMAGE_UNAVAILABLE = 'Nem elérhető ebben a keverési típusban';
@@ -62,18 +62,18 @@ var TOOLS_DISTRIBUTION = 'idő megoszlása';
 var TOOLS_TREND = 'idő trend';
 var TOOLS_METRONOME = 'metronóm';
 var TOOLS_CFMTIME = 'Idő megerősítése';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
+var OLCOMP_UPDATELIST = 'Verseny lista frissítése';
+var OLCOMP_VIEWRESULT = 'Eredmény megtekintése';
 var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_SUBMIT = 'Beküldés!';
+var OLCOMP_SUBMITAS = 'Beküldés mint: ';
+var OLCOMP_WCANOTICE = 'Beküldés a WCA fiókodként? (Lépj be újra, ha beküldés után nem ismer fel)';
+var OLCOMP_OLCOMP = 'Online verseny';
+var OLCOMP_ANONYM = 'Névtelen';
+var OLCOMP_ME = 'Én';
+var OLCOMP_WCAACCOUNT = 'WCA Fiók';
+var OLCOMP_ABORT = 'Megszakítod a versenyt és megnézed az eredményeket?';
+var OLCOMP_WITHANONYM = 'Névtelennel';
 var PROPERTY_IMGSIZE = 'Keverési kép mérete';
 var TIMER_INSPECT = 'memorizációs idő';
 var TIMER_SOLVE = 'megoldás';
@@ -83,14 +83,14 @@ var PROPERTY_TIMEU_STR = 'frissítés|0.1s|másodpercek|megnézés|nincs';
 var PROPERTY_PRETIME = 'a szóköz lenttartásának az ideje (másodpercben)';
 var PROPERTY_ENTERING = 'eredmény bevitele';
 var PROPERTY_ENTERING_STR = 'időmérővel|gépeléssel|stackmattel|MoYuTimer|virtuálisan|Giiker';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT = 'Mértékegység egész megadásakor';
+var PROPERTY_INTUNIT_STR = 'másodperc|századmásodperc|ezredmásodperc';
 var PROPERTY_COLOR = 'színséma választása';
 var PROPERTY_COLORS = 'betűszín|háttérszín|tábla színe|gomb színe|link színe|logó színe|logó háttérszíne';
 var PROPERTY_VIEW = 'A felület stílusa';
 var PROPERTY_VIEW_STR = 'Automatikus|Mobil|Asztali';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows';
+var PROPERTY_UIDESIGN = 'Az oldal stílusa';
+var PROPERTY_UIDESIGN_STR = 'Normál|Material dizájn|Normál árnyékok nélkül';
 var COLOR_EXPORT = 'Kérlek, mentsd el a szöveget importáláshoz!';
 var COLOR_IMPORT = 'Kérlek, add meg az exportált szöveget!';
 var COLOR_FAIL = 'Helytelen adatok, importálás sikertelen';
@@ -144,15 +144,15 @@ var scrdata = [
 	]],
 	['Bevitel', [
 		['外部', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Verseny', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["véletlen állapot (WCA)", "333", 0],
+		['véletlen mozdulat', "333o", 25],
 		['3x3x3 kezdőknek', "333noob", 25],
 		['csak élek', "edges", 0],
 		['csak sarkok', "corners", 0],
@@ -174,8 +174,8 @@ var scrdata = [
 		['könnyű kereszt', "easyc", 3]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["véletlen állapot (WCA)", "222so", 0],
+		['optimális', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -212,7 +212,7 @@ var scrdata = [
 	['Óra', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['optimális', "clko", 0],
 		['tömör', "clkc", 0],
 		['hatékony pöcök sorrend', "clke", 0]
 	]],
@@ -222,17 +222,17 @@ var scrdata = [
 		['régi stílus', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		["véletlen állapot (WCA)", "pyrso", 10],
+		['optimális', "pyro", 0],
+		['véletlen mozdulat', "pyrm", 25]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25]
+		["véletlen állapot (WCA)", "skbso", 0],
+		['optimális', "skbo", 0],
+		['véletlen mozdulat', "skb", 25]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["véletlen állapot (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['oldal fordítási rendszer', "sq1h", 40],
 		['tekerési rendszer', "sq1t", 20]
@@ -257,10 +257,10 @@ var scrdata = [
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120]
 	]],
-	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+	['Gear kocka', [
+		['véletlen állapot', "gearso", 0],
+		['optimális', "gearo", 0],
+		['véletlen mozdulat', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -271,29 +271,29 @@ var scrdata = [
 	['Gigaminx', [
 		['Pochmann', "giga", 300]
 	]],
-	['Helicopter Cube', [
+	['Helicopter kocka', [
 		[' ', "heli", 40]
 	]],
-	['Redi Cube', [
+	['Redi kocka', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['régi', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['Ivy kocka', [
+		['véletlen állapot', "ivyso", 0],
+		['optimális', "ivyo", 0],
+		['véletlen mozdulat', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['régi stílus', "prco", 70]
 	]],
-	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+	['Sziámi kocka', [
+		['1x1x3-as blokk', "sia113", 25],
+		['1x2x3-as blokk', "sia123", 25],
+		['2x2x2-es blokk', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -302,43 +302,43 @@ var scrdata = [
 		[' ', "sfl", 25]
 	]],
 	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
+		['tekerési rendszer', "ssq1t", 20]
 	]],
 	['UFO', [
-		['Jaap style', "ufo", 25]
+		['Jaap stílus', "ufo", 25]
 	]],
-	['Other', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+	['Egyéb', [
+		['FTO (Oldalain forduló oktaéder)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['===KÜLÖNLEGES===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3 subsets', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
-		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
-		['3-generator R,r,U', "RrU", 25],
-		['half turns only', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+	['3x3x3 alegységek', [
+		['2-gen R,U', "2gen", 25],
+		['2-gen L,U', "2genl", 25],
+		['Roux-gen M,U', "roux", 25],
+		['3-gen F,R,U', "3gen_F", 25],
+		['3-gen R,U,L', "3gen_L", 25],
+		['3-gen R,r,U', "RrU", 25],
+		['csak fél fordulatok', "half", 25],
+		['utolsó pár + utolsó réteg (régi)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
+	['Bandaged kocka', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
-	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
+	['Megaminx alegységek', [
+		['2-gen R,U', "minx2g", 30],
+		['utolsó pár + utolsó réteg', "mlsll", 20]
 	]],
-	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
-		['234 relay', "r234", 0],
-		['2345 relay', "r2345", 0],
+	['Váltók', [
+		['rengeteg 3x3x3-as', "r3", 5],
+		['234 váltó', "r234", 0],
+		['2345 váltó', "r2345", 0],
 		['23456 váltó', "r23456", 0],
 		['234567 váltó', "r234567", 0],
-		['234 relay (WCA)', "r234w", 0],
-		['2345 relay (WCA)', "r2345w", 0],
+		['234 váltó (WCA)', "r234w", 0],
+		['2345 váltó (WCA)', "r2345w", 0],
 		['23456 váltó (WCA)', "r23456w", 0],
 		['234567 váltó (WCA)', "r234567w", 0]
 	]],
@@ -391,41 +391,41 @@ var STATS_SOLVE = 'megoldás';
 var STATS_TIME = 'eredmény';
 var STATS_SESSION = 'Időszak';
 var STATS_SESSION_NAME = 'Időszak átnevezése';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAMEC = 'Az új időszak neve';
 var STATS_STRING = 'legjobb|pillanatnyi|legrosszabb|csTimer által generálva  %év-%hó-%napján|megoldások/összes: %d|egyedüli|mean of %mk|avg of %mk|Átlag: %v{ (σ = %sgm)}|Mean: %v|Idő lista:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'Idő kijelzés pontossága';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
+var STATS_PREC_STR = 'automatikus|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
+var STATS_TYPELEN = '%d típus listázása|%d hossz listázása|átlag|medián';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_DATE = 'bármely időpont|elmúlt 24 óra|elmúlt 7 nap|elmúlt 30 nap|elmúlt 365 nap';
+var STATS_XSESSION_NAME = 'bármely név';
+var STATS_XSESSION_SCR = 'bármely keverés';
+var STATS_XSESSION_CALC = 'Számítás';
 var PROPERTY_PRINTSCR = 'Keverések nyomtatása a statisztikában';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators';
-var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_PRINTDATE = 'megoldási dátum megjelenítése a statisztikákban';
+var PROPERTY_SUMMARY = 'összegzés mutatása az időlista előtt';
+var PROPERTY_IMRENAME = 'a létrehozott időszak azonnali átnevezése';
+var PROPERTY_SCR2SS = 'keverés váltásakor új időszak létrehozása';
+var PROPERTY_SS2SCR = 'időszak váltásakor állítsa vissza a keverés típusát';
+var PROPERTY_SS2PHASES = 'időszak váltásakor állítsa vissza a többfázisú időzítést';
+var PROPERTY_STATINV = 'Időlista megfordítása';
+var PROPERTY_STATAL = 'Statisztikai jelölők';
+var PROPERTY_STATALU = 'Személyre szabott statisztikai jelölők';
+var PROPERTY_DELMUL = 'Több elem törlésének engedélyezése';
+var PROPERTY_TOOLSFUNC = 'Kiválasztott Funkciók';
 var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
-var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
+var PROPERTY_TRIM_MED = 'Medián';
+var PROPERTY_STKHEAD = 'A Stackmat státuszának használata';
 var MODULE_NAMES = {
 	"kernel": 'globális',
 	"ui": 'kijelző',
-	"color": 'color',
+	"color": 'szín',
 	"timer": 'időmérő',
 	"scramble": 'keverés',
 	"stats": 'statisztikák',
 	"tools": 'eszközök',
-	"vrc": 'virtual&<br>bluetooth'
+	"vrc": 'virtuális és<br>bluetooth'
 };
 var BGIMAGE_URL = 'Kérlek másold be a kép URL-jét.';
 var BGIMAGE_INVALID = 'érvénytelen URL';
@@ -433,8 +433,8 @@ var BGIMAGE_OPACITY = 'háttérkép halványsága';
 var BGIMAGE_IMAGE = 'háttérkép';
 var BGIMAGE_IMAGE_STR = 'nincs|kézi|CCT';
 var SHOW_AVG_LABEL = 'Avg Label mutatása';
-var USE_LOGOHINT = 'Hint messages in logo';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var USE_LOGOHINT = 'Tippek a logóban';
+var TOOLS_SCRGEN = 'KeverésGenerátor';
+var SCRGEN_NSCR = 'Keverések száma';
+var SCRGEN_PRE = 'előtag';
+var SCRGEN_GEN = 'Keverések Generálása!';

@@ -21,7 +21,7 @@ var PROPERTY_SCRSIZE = '打亂字體大小';
 var PROPERTY_SCRMONO = '等寬字體打亂';
 var PROPERTY_SCRLIM = '限制打亂區高度';
 var PROPERTY_SCRALIGN = '打亂對齊';
-var PROPERTY_SCRALIGN_STR = '居中|左對齊|右對齊';
+var PROPERTY_SCRALIGN_STR = '置中|靠左|靠右';
 var PROPERTY_SCRFAST = '4x4x4使用快速打亂(非官方)';
 var PROPERTY_SCRKEYM = '打亂中標記關鍵步驟';
 var PROPERTY_WNDSCR = '打亂面板顯示樣式';
@@ -73,7 +73,7 @@ var OLCOMP_ANONYM = '匿名';
 var OLCOMP_ME = '我';
 var OLCOMP_WCAACCOUNT = 'WCA帳號';
 var OLCOMP_ABORT = '中止比賽並顯示結果？';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_WITHANONYM = '包含匿名玩家';
 var PROPERTY_IMGSIZE = '打亂圖示大小';
 var TIMER_INSPECT = '觀察中';
 var TIMER_SOLVE = '還原中';
@@ -151,8 +151,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["隨機狀態 (WCA)", "333", 0],
+		['隨機步驟', "333o", 25],
 		['笨蛋專用', "333noob", 25],
 		['僅打亂邊塊', "edges", 0],
 		['僅打亂角塊', "corners", 0],
@@ -174,8 +174,8 @@ var scrdata = [
 		['簡單的十字', "easyc", 3]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["隨機狀態 (WCA)", "222so", 0],
+		['最佳化', "222o", 0],
 		['僅使用RUF', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
@@ -212,7 +212,7 @@ var scrdata = [
 	['魔錶', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['最佳化', "clko", 0],
 		['簡潔', "clkc", 0],
 		['pin腳順序效率最佳化', "clke", 0]
 	]],
@@ -222,17 +222,17 @@ var scrdata = [
 		['舊版', "mgmo", 70]
 	]],
 	['金字塔', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		["隨機狀態 (WCA)", "pyrso", 10],
+		['最佳化', "pyro", 0],
+		['隨機步驟', "pyrm", 25]
 	]],
 	['斜轉', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25]
+		["隨機狀態 (WCA)", "skbso", 0],
+		['最佳化', "skbo", 0],
+		['隨機步驟', "skb", 25]
 	]],
 	['sq-1', [
-		["random state (WCA)", "sqrs", 0],
+		["隨機狀態 (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['面轉演算法', "sq1h", 40],
 		['扭轉演算法', "sq1t", 20]
@@ -258,9 +258,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['齒輪魔方', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['隨機狀態', "gearso", 0],
+		['最佳化', "gearo", 0],
+		['隨機步驟', "gear", 10]
 	]],
 	['Cmetric', [
 		[' ', "cm3", 25]
@@ -278,10 +278,10 @@ var scrdata = [
 		['魔域', "redim", 8],
 		['舊版', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['楓葉方塊', [
+		['隨機狀態', "ivyso", 0],
+		['最佳化', "ivyo", 0],
+		['隨機步驟', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]

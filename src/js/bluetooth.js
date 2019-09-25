@@ -255,7 +255,6 @@ var GiikerCube = execMain(function() {
 		}
 
 		function init(device) {
-			DEBUG && console.log('[gancube] get_server');
 			return device.gatt.connect().then(function(server) {
 				_server = server;
 				return checkHardware(server);
