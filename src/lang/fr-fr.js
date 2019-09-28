@@ -1,13 +1,13 @@
 var OK_LANG = 'Ok';
 var CANCEL_LANG = 'Annuler';
-var RESET_LANG = 'Défaut';
+var RESET_LANG = 'Réinitialiser';
 var ABOUT_LANG = 'À propos';
 var ZOOM_LANG = 'Zoom';
 var BUTTON_TIME_LIST = 'LISTE<br>TEMPS';
 var BUTTON_OPTIONS = 'Options';
 var BUTTON_EXPORT = 'Exporter';
 var BUTTON_DONATE = 'Faire une donation';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Avec la session';
 var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
 var PROPERTY_USEINS_STR = 'Toujours|Sauf BLD|Jamais';
 var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA';
@@ -21,7 +21,7 @@ var PROPERTY_SCRSIZE = 'Taille du mélange';
 var PROPERTY_SCRMONO = 'Mélange à espacement fixe';
 var PROPERTY_SCRLIM = 'Limiter la taille de la zone de mélange';
 var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange';
-var PROPERTY_SCRALIGN_STR = 'Centré|Gauche|Droite';
+var PROPERTY_SCRALIGN_STR = 'Centre|Gauche|Droite';
 var PROPERTY_SCRFAST = 'Utiliser des mélanges rapides pour 4x4x4 (non officiel)';
 var PROPERTY_SCRKEYM = 'Indiquer le(s) mouvement(s) clé(s) dans mélange';
 var PROPERTY_WNDSCR = 'Style du panneau de mélange';
@@ -62,18 +62,18 @@ var TOOLS_DISTRIBUTION = 'Répartition des temps';
 var TOOLS_TREND = 'Tendance des temps';
 var TOOLS_METRONOME = 'Métronome';
 var TOOLS_CFMTIME = 'Confirmer le temps';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
+var OLCOMP_UPDATELIST = 'Mettre à jour la liste de compétition';
+var OLCOMP_VIEWRESULT = 'Voir le résultat';
 var OLCOMP_START = 'Start!';
 var OLCOMP_SUBMIT = 'Submit!';
 var OLCOMP_SUBMITAS = 'Submit As: ';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
+var OLCOMP_OLCOMP = 'Compétition en ligne';
+var OLCOMP_ANONYM = 'Anonyme';
+var OLCOMP_ME = 'Moi';
 var OLCOMP_WCAACCOUNT = 'Compte WCA';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_ABORT = 'Annuler la compétition et voir les résultats?';
+var OLCOMP_WITHANONYM = 'Avec Anonyme';
 var PROPERTY_IMGSIZE = 'Taille de l\'image du mélange';
 var TIMER_INSPECT = 'Inspection';
 var TIMER_SOLVE = 'Résolution';
@@ -144,15 +144,15 @@ var scrdata = [
 	]],
 	['Entrer', [
 		['Externe', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Compétition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["état aléatoire (WCA)", "333", 0],
+		['mouvements aléatoires', "333o", 25],
 		['3x3x3 pour débutants', "333noob", 25],
 		['Arêtes seulement', "edges", 0],
 		['Coins seulement', "corners", 0],
@@ -174,7 +174,7 @@ var scrdata = [
 		['Croix facile', "easyc", 3]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
+		["état aléatoire (WCA)", "222so", 0],
 		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
@@ -222,17 +222,17 @@ var scrdata = [
 		['Ancien style', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
+		["état aléatoire (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		['mouvements aléatoires', "pyrm", 25]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
+		["état aléatoire (WCA)", "skbso", 0],
 		['optimal', "skbo", 0],
-		['random move', "skb", 25]
+		['mouvements aléatoires', "skb", 25]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["état aléatoire (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -258,9 +258,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
+		['état aléatoire', "gearso", 0],
 		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['mouvements aléatoires', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -279,9 +279,9 @@ var scrdata = [
 		['vieux', "redi", 20]
 	]],
 	['Ivy cube', [
-		['random state', "ivyso", 0],
+		['état aléatoire', "ivyso", 0],
 		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+		['mouvements aléatoires', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -398,8 +398,8 @@ var STATS_PREC_STR = 'Auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'Type de la liste %d|Longueur de la liste %d|moyenne élaguée|moyenne';
 var STATS_STATCLR = 'Autoriser la suppression de tous les temps d\'une session';
 var STATS_ABSIDX = 'Montrer les indices absolus dans les reports statistiques';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_DATE = 'n\'importe quelle date|dernière 24 heures|7 derniers jours|30 derniers jours|365 derniers jours';
+var STATS_XSESSION_NAME = 'n\'importe quel nom';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var PROPERTY_PRINTSCR = 'Montrer les mélanges dans les statistiques';
@@ -411,10 +411,10 @@ var PROPERTY_SS2SCR = 'Restaurer le type de mélange lors d\'un changement de se
 var PROPERTY_SS2PHASES = 'Restaurer le chnonométrage multi-phase lors d\'un changement de session';
 var PROPERTY_STATINV = 'Inverser la liste des temps';
 var PROPERTY_STATAL = 'Indicateurs statistiques';
-var PROPERTY_STATALU = 'Customized statistical indicator';
+var PROPERTY_STATALU = 'Indicateur de statistique personnalisé';
 var PROPERTY_DELMUL = 'Activer la suppression multiple';
 var PROPERTY_TOOLSFUNC = 'Fonctions séléctionnées';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
+var PROPERTY_TRIM = 'Nombre de résolutions coupés de chaque côté';
 var PROPERTY_TRIM_MED = 'Médiane';
 var PROPERTY_STKHEAD = 'Utiliser les informations sur l\'état du stackmat';
 var MODULE_NAMES = {
