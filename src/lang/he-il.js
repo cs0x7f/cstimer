@@ -102,8 +102,8 @@ var PROPERTY_FORMAT = 'time format';
 var PROPERTY_USEKSC = 'use keyboard shortcut';
 var PROPERTY_NTOOLS = 'number of tools';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
+var SCRAMBLE_LAST = 'האחרון';
+var SCRAMBLE_NEXT = 'הבא';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'length';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
@@ -242,7 +242,8 @@ var scrdata = [
 	]],
 	['15 puzzle', [
 		['piece moves', "15p", 80],
-		['blank moves', "15pm", 80]
+		['blank moves', "15pm", 80],
+		['^<>v', "15pat", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],

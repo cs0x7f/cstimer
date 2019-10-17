@@ -242,7 +242,8 @@ var scrdata = [
 	]],
 	['Puzzle de 15 peces', [
 		['Moviments de peça', "15p", 80],
-		['Moviments de l\'espai en blanc', "15pm", 80]
+		['Moviments de l\'espai en blanc', "15pm", 80],
+		['^<>v', "15pat", 80]
 	]],
 	['LxAxF', [
 		['1x3x3 (Floppy Cube)', "133", 0],

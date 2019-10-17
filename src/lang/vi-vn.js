@@ -6,7 +6,7 @@ var ZOOM_LANG = 'Phóng to';
 var BUTTON_TIME_LIST = 'THÀNH<br>TÍCH';
 var BUTTON_OPTIONS = 'Cài đặt';
 var BUTTON_EXPORT = 'Giải phóng';
-var BUTTON_DONATE = 'DONATE';
+var BUTTON_DONATE = 'ỦNG HỘ';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'dử dụng thời gian chuẩn bị của WCA';
 var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
@@ -104,7 +104,7 @@ var PROPERTY_NTOOLS = 'số công cụ';
 var PROPERTY_AHIDE = 'ẩn tất cả khi giải';
 var SCRAMBLE_LAST = 'trước';
 var SCRAMBLE_NEXT = 'sau';
-var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLE = ' tráo';
 var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
@@ -142,7 +142,7 @@ var scrdata = [
 		['5x5 bld', "555bld", -60],
 		['3x3 mbld', "r3ni", 5]
 	]],
-	['Input', [
+	['Nhập', [
 		['外部', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
@@ -242,7 +242,8 @@ var scrdata = [
 	]],
 	['15 puzzle', [
 		['piece moves', "15p", 80],
-		['blank moves', "15pm", 80]
+		['blank moves', "15pm", 80],
+		['^<>v', "15pat", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],

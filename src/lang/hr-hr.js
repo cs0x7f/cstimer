@@ -242,7 +242,8 @@ var scrdata = [
 	]],
 	['15 puzzle', [
 		['micanje dijelova', "15p", 80],
-		['prazni potezi', "15pm", 80]
+		['prazni potezi', "15pm", 80],
+		['^<>v', "15pat", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],

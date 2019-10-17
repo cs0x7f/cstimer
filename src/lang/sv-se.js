@@ -242,7 +242,8 @@ var scrdata = [
 	]],
 	['15 pussel', [
 		['bitrörelser', "15p", 80],
-		['tomma rörelser', "15pm", 80]
+		['tomma rörelser', "15pm", 80],
+		['^<>v', "15pat", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],

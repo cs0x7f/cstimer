@@ -182,7 +182,7 @@
 		return "     "
 	}
 
-	function do15puzzle(mirrored, len) {
+	function do15puzzle(mirrored, len, arrow, tiny) {
 		var moves = (mirrored ? ["U", "L", "R", "D"] : ["D", "R", "L", "U"]);
 		var effect = [
 			[0, -1],
@@ -192,22 +192,34 @@
 		];
 		var x = 0,
 			y = 3,
-			k, done, r, lastr = 5,
-			ret = "";
-		for (k = 0; k < len; k++) {
-			done = false;
-			while (!done) {
+			r, lastr = 5,
+			ret = [];
+		for (var i = 0; i < len; i++) {
+			do {
 				r = rn(4);
-				if (x + effect[r][0] >= 0 && x + effect[r][0] <= 3 && y + effect[r][1] >= 0 && y + effect[r][1] <= 3 && r + lastr != 3) {
-					done = true;
-					x += effect[r][0];
-					y += effect[r][1];
-					ret += moves[r] + " ";
-					lastr = r;
+			} while (x + effect[r][0] < 0 || x + effect[r][0] > 3 || y + effect[r][1] < 0 || y + effect[r][1] > 3 || r + lastr == 3);
+			x += effect[r][0];
+			y += effect[r][1];
+			if (ret.length > 0 && ret[ret.length - 1][0] == r) {
+				ret[ret.length - 1][1]++;
+			} else {
+				ret.push([r, 1]);
+			}
+			lastr = r;
+		}
+		var retstr = '';
+		for (var i = 0; i < ret.length; i++) {
+			var m = mirrored ? ret[i][0] : (3 - ret[i][0]);
+			m = (arrow ? "^<>v" : "ULRD").charAt(m);
+			if (tiny) {
+				retstr += (ret[i][1] == 1 ? '' : ret[i][1]) + m + ' ';
+			} else {
+				for (var j = 0; j < ret[i][1]; j++) {
+					retstr += m + ' ';
 				}
 			}
 		}
-		return ret;
+		return retstr;
 	}
 
 	function pochscramble(x, y) {
@@ -364,6 +376,8 @@
 				return do15puzzle(false, len);
 			case "15pm": // 15 puzzle, mirrored
 				return do15puzzle(true, len);
+			case "15pat": // 15 puzzle
+				return do15puzzle(false, len, true, true);
 			case "clkwca": // Clock (WCA Notation)
 				var clkapp = ["0+", "1+", "2+", "3+", "4+", "5+", "6+", "1-", "2-", "3-", "4-", "5-"];
 				ret = "UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
@@ -457,6 +471,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

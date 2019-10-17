@@ -242,7 +242,8 @@ var scrdata = [
 	]],
 	['15 puzzle', [
 		['parça hamleleri', "15p", 80],
-		['boşluk hamleleri', "15pm", 80]
+		['boşluk hamleleri', "15pm", 80],
+		['^<>v', "15pat", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy küp)', "133", 0],
