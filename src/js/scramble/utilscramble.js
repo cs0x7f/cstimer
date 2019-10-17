@@ -210,7 +210,7 @@
 		var retstr = '';
 		for (var i = 0; i < ret.length; i++) {
 			var m = mirrored ? ret[i][0] : (3 - ret[i][0]);
-			m = (arrow ? "^<>v" : "ULRD").charAt(m);
+			m = (arrow ? "\uFFEA\uFFE9\uFFEB\uFFEC" : "ULRD").charAt(m);
 			if (tiny) {
 				retstr += (ret[i][1] == 1 ? '' : ret[i][1]) + m + ' ';
 			} else {
