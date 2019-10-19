@@ -24,6 +24,8 @@ var PROPERTY_SCRALIGN = 'Alineación del área de scramble';
 var PROPERTY_SCRALIGN_STR = 'Centro | Izquierda | Derecha';
 var PROPERTY_SCRFAST = 'Usar scramble rápido para 4x4x4 (no oficial)';
 var PROPERTY_SCRKEYM = 'Movimiento(s) clave de la etiqueta en el scramble';
+var PROPERTY_SCRCLK = 'Action when clicking scramble';
+var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'Estilo de la visualización del panel del scramble';
 var PROPERTY_WNDSTAT = 'Estilo de visualización del panel de las estadísticas';
 var PROPERTY_WNDTOOL = 'Estilo de la visualización del panel de las herramientas';
@@ -150,14 +152,14 @@ var scrdata = [
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3', [
+	['Cubo de 333', [
 		["random state (WCA)", "333", 0],
 		['random move', "333o", 25],
 		['Para principiantes', "333noob", 25],
 		['Sólo aristas', "edges", 0],
 		['Sólo esquinas', "corners", 0],
 		['Última capa', "ll", 0],
-		['zb last layer', "zbll", 0],
+		['zbll para ultima capa', "zbll", 0],
 		['Esquinas de la última capa', "cll", 0],
 		['Aristas de la última capa', "ell", 0],
 		['Últimas seis aristas', "lse", 0],
@@ -170,7 +172,7 @@ var scrdata = [
 		['ZZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
-		['EOLine', "eoline", 0],
+		['EOLine(EOLínea)', "eoline", 0],
 		['Cruz sencilla', "easyc", 3]
 	]],
 	['2x2x2', [
@@ -182,41 +184,41 @@ var scrdata = [
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0]
 	]],
-	['4x4x4', [
+	['Cubo de 444', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['aleatorio mover', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['Aristas 4x4', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
-	['5x5x5', [
+	['Cubo de 555', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
 		['Aristas de 5x5x5', "5edge", 8]
 	]],
-	['6x6x6', [
+	['Cubo de 666', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
 		['Prefijo', "666p", 80],
 		['Sufijo', "666s", 80],
 		['Aristas de 6x6x6', "6edge", 8]
 	]],
-	['7x7x7', [
+	['Cubo de 777', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
 		['Aristas de 7x7x7', "7edge", 8]
 	]],
-	['Clock', [
+	['Reloj de Rubi', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['optimal', "clko", 0],
-		['concise', "clkc", 0],
-		['efficient pin order', "clke", 0]
+		['conciso', "clkc", 0],
+		['orden de pin eficiente', "clke", 0]
 	]],
-	['Megaminx', [
+	['Magaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
 		['Antiguo estilo', "mgmo", 70]
@@ -234,20 +236,20 @@ var scrdata = [
 	['Square-1', [
 		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['cara vuelta métrica', "sq1h", 40],
+		['giro métrico', "sq1t", 20]
 	]],
 	['===OTROS===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
-		['piece moves', "15p", 80],
-		['blank moves', "15pm", 80],
+		['movimientos de piezas', "15p", 80],
+		['movimientos en blanco', "15pm", 80],
 		['^<>v', "15pat", 80]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
+		['1x3x3 (Cubo Flexible)', "133", 0],
+		['2x2x3 (Cubo Torre)', "223", 0],
 		['2x3x3 (Domino)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],

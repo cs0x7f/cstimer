@@ -195,6 +195,24 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 	}
 
+	function procScrambleClick() {
+		if (!scramble) {
+			return;
+		}
+		var act = kernel.getProp('scrClk', 'n');
+		if (act == 'c') {
+			var textArea = $('<textarea>' + sdiv.html() + '</textarea>').appendTo(document.body);
+			textArea.focus().select();
+			try {
+				var successful = document.execCommand('copy');
+				logohint.push('scramble copied');
+			} catch (err) {}
+			textArea.remove();
+		} else if (act == '+') {
+			procNextClick();
+		}
+	}
+
 	function scrStd(type, scramble, forDisplay) {
 		scramble = scramble || '';
 		var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(scramble);
@@ -716,6 +734,7 @@ var scramble = execMain(function(rn, rndEl) {
 		], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
+		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['n', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);
 
 		for (var i = 0; i < scrdata.length; i++) {
 			select.append('<option>' + scrdata[i][0] + '</option>');
@@ -730,7 +749,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
-		div.append(title, sdiv);
+		div.append(title, sdiv.click(procScrambleClick));
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
 		sdiv.click(function() {

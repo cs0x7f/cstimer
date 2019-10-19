@@ -24,6 +24,8 @@ var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange';
 var PROPERTY_SCRALIGN_STR = 'Centre|Gauche|Droite';
 var PROPERTY_SCRFAST = 'Utiliser des mélanges rapides pour 4x4x4 (non officiel)';
 var PROPERTY_SCRKEYM = 'Indiquer le(s) mouvement(s) clé(s) dans mélange';
+var PROPERTY_SCRCLK = 'Action when clicking scramble';
+var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'Style du panneau de mélange';
 var PROPERTY_WNDSTAT = 'Style du panneau statistique';
 var PROPERTY_WNDTOOL = 'Style du panneau outils';
@@ -64,10 +66,10 @@ var TOOLS_METRONOME = 'Métronome';
 var TOOLS_CFMTIME = 'Confirmer le temps';
 var OLCOMP_UPDATELIST = 'Mettre à jour la liste de compétition';
 var OLCOMP_VIEWRESULT = 'Voir le résultat';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
+var OLCOMP_START = 'Début!';
+var OLCOMP_SUBMIT = 'Soumettre !';
+var OLCOMP_SUBMITAS = 'Soumettre comme:';
+var OLCOMP_WCANOTICE = 'Soumettre en tant que votre compte WCA? (Relogin si non reconnu après la soumission)';
 var OLCOMP_OLCOMP = 'Compétition en ligne';
 var OLCOMP_ANONYM = 'Anonyme';
 var OLCOMP_ME = 'Moi';
@@ -234,8 +236,8 @@ var scrdata = [
 	['Square-1', [
 		["état aléatoire (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['métrique face à face', "sq1h", 40],
+		['torsion métrique', "sq1t", 20]
 	]],
 	['===AUTRE===', [
 		['--', "blank", 0]
@@ -303,7 +305,7 @@ var scrdata = [
 		[' ', "sfl", 25]
 	]],
 	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
+		['torsion métrique', "ssq1t", 20]
 	]],
 	['UFO', [
 		['Style Jaap', "ufo", 25]
@@ -401,7 +403,7 @@ var STATS_STATCLR = 'Autoriser la suppression de tous les temps d\'une session';
 var STATS_ABSIDX = 'Montrer les indices absolus dans les reports statistiques';
 var STATS_XSESSION_DATE = 'n\'importe quelle date|dernière 24 heures|7 derniers jours|30 derniers jours|365 derniers jours';
 var STATS_XSESSION_NAME = 'n\'importe quel nom';
-var STATS_XSESSION_SCR = 'any scramble';
+var STATS_XSESSION_SCR = 'toute difficulté';
 var STATS_XSESSION_CALC = 'Calc';
 var PROPERTY_PRINTSCR = 'Montrer les mélanges dans les statistiques';
 var PROPERTY_PRINTDATE = 'Montrer la date des résolutions dans les statistiques';
