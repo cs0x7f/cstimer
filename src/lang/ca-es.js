@@ -66,6 +66,7 @@ var TOOLS_METRONOME = 'Metrònom';
 var TOOLS_CFMTIME = 'Confirmar temps';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
+var OLCOMP_VIEWMYRESULT = 'My History';
 var OLCOMP_START = 'Start!';
 var OLCOMP_SUBMIT = 'Submit!';
 var OLCOMP_SUBMITAS = 'Submit As: ';

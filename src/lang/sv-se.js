@@ -66,6 +66,7 @@ var TOOLS_METRONOME = 'metronom';
 var TOOLS_CFMTIME = 'Bekräfta tid';
 var OLCOMP_UPDATELIST = 'Uppdatera tävlingslista';
 var OLCOMP_VIEWRESULT = 'Visa resultat';
+var OLCOMP_VIEWMYRESULT = 'My History';
 var OLCOMP_START = 'Starta!';
 var OLCOMP_SUBMIT = 'Submit!';
 var OLCOMP_SUBMITAS = 'Lämna in som: ';

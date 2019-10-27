@@ -66,6 +66,7 @@ var TOOLS_METRONOME = '節拍器';
 var TOOLS_CFMTIME = '確認時間';
 var OLCOMP_UPDATELIST = '更新比賽列表';
 var OLCOMP_VIEWRESULT = '查看結果';
+var OLCOMP_VIEWMYRESULT = 'My History';
 var OLCOMP_START = '開始！';
 var OLCOMP_SUBMIT = '提交！';
 var OLCOMP_SUBMITAS = '提交ID：';

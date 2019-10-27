@@ -9,6 +9,7 @@ var onlinecomp = execMain(function() {
 	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
 	var compMainButton = $('<input type="button">');
 	var viewResultButton = $('<input type="button">').val(OLCOMP_VIEWRESULT);
+	var viewMyResultButton = $('<input type="button">').val(OLCOMP_VIEWMYRESULT);
 	var anonymInput = $('<input type="checkbox">');
 	var pathSelect = [];
 	var pathList = [];
@@ -177,7 +178,8 @@ var onlinecomp = execMain(function() {
 		fdiv.empty().append($('<div style="font-size: 0.75em; text-align: center;">')
 			.append(accountDiv, refreshButton, compSelectDiv)
 			.append(compProgressDiv)
-			.append(compMainButton, ' ', viewResultButton, ' ', $('<label>').append(anonymInput, OLCOMP_WITHANONYM)));
+			.append(compMainButton, ' ', viewResultButton, ' ')
+			.append($('<label>').append(anonymInput, OLCOMP_WITHANONYM), ' ', viewMyResultButton));
 		updatePathSelect('', 0);
 		updateAccountDiv();
 		resetProgress();
@@ -199,6 +201,7 @@ var onlinecomp = execMain(function() {
 	function updateProgress() {
 		compMainButton.unbind('click');
 		viewResultButton.unbind('click');
+		viewMyResultButton.unbind('click').click(viewMyResult);
 		if (pathSelect.length < 2) {
 			compMainButton.attr('disabled', true).val(OLCOMP_START);
 			viewResultButton.attr('disabled', true);
@@ -270,14 +273,19 @@ var onlinecomp = execMain(function() {
 			'path': comppath[1],
 			'anonym': showAnonym
 		}, function(value) {
-			if (JSON.parse(value)['retcode'] !== 0) {
+			try {
+				value = JSON.parse(value);
+			} catch (e) {
+				value = {};
+			}
+			if (value['retcode'] !== 0) {
 				logohint.push('Server Error');
 				return;
 			}
 			var myid = $.sha256('cstimer_public_salt_' + exportFunc.getDataId('locData', 'compid'));
 			var mywcaid = (exportFunc.getDataId('wcaData', 'wca_me') || {})['wca_id'];
-			var curScrambles = JSON.parse(value)['scramble'];
-			value = $.map(JSON.parse(value)['data'], function(val) {
+			var curScrambles = value['scramble'];
+			value = $.map(value['data'], function(val) {
 				var solves = JSON.parse(val['value']);
 				if (solves.length != 5) { //invalid data
 					return;
@@ -321,6 +329,61 @@ var onlinecomp = execMain(function() {
 				for (var j = 0; j < solves.length; j++) {
 					if (solves[j].length > 4) { // from vrc or bluetooth
 						solves[j][1] = scramble.scrStd('', curScrambles[j] || '')[1];
+						ret.push('<a target="_blank" class="click" href="' + stats.getReviewUrl(solves[j]) + '">' + stats.pretty(solves[j][0]) + '</a> ');
+					} else {
+						ret.push(stats.pretty(solves[j][0]) + ' ');
+					}
+				}
+				ret.push('</td>');
+				ret.push('</tr>');
+			}
+			ret.push('</table>');
+			compProgressDiv.empty().html(ret.join(''));
+		}).error(function() {
+			logohint.push('Network Error');
+		});
+	}
+
+	function viewMyResult() {
+		if (solves.length != 0 && !submitted && !confirm(OLCOMP_ABORT)) {
+			return;
+		}
+		resetProgress(false, true);
+		var uid = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
+		if (!uid) {
+			return
+		}
+		$.post('https://cstimer.net/comp.php', {
+			'action': 'myresult',
+			'uid': uid
+		}, function(value) {
+			try {
+				value = JSON.parse(value);
+			} catch (e) {
+				value = {};
+			}
+			if (value['retcode'] !== 0) {
+				logohint.push('Server Error');
+				return;
+			}
+			value = value['data'];
+			var ret = ['<table class="table"><tr><th></th><th>Comp.</th><th>ao5</th><th>bo5</th><th>Results</th></tr>'];
+			for (var i = 0; i < value.length; i++) {
+				var solves = JSON.parse(value[i]['value']);
+				if (solves.length != 5) { //invalid data
+					return;
+				}
+				var timestat = new TimeStat([5], solves.length, function(idx) {
+					return solves[idx][0][0] == -1 ? -1 : (solves[idx][0][0] + solves[idx][0][1]);
+				});
+				timestat.getAllStats();
+				ret.push('<tr><td>' + (i + 1) + '</td>');
+				ret.push('<td>' + value[i]['fullname'] + '|' + value[i]['path'] + '</td>');
+				ret.push('<td>' + kernel.pretty(timestat.lastAvg[0][0]) + '</td>');
+				ret.push('<td>' + kernel.pretty(timestat.bestTime) + '</td><td>');
+				for (var j = 0; j < solves.length; j++) {
+					if (solves[j].length > 4) { // from vrc or bluetooth
+						solves[j][1] = scramble.scrStd('', JSON.parse(value[i]['scramble'])[j] || '')[1];
 						ret.push('<a target="_blank" class="click" href="' + stats.getReviewUrl(solves[j]) + '">' + stats.pretty(solves[j][0]) + '</a> ');
 					} else {
 						ret.push(stats.pretty(solves[j][0]) + ' ');
