@@ -609,7 +609,7 @@ var kernel = execMain(function() {
 		}
 
 		function releaseColor() {
-			var cssval = getProp('uidesign') == 'ns' ? csstmp[1] : csstmp[0];
+			var cssval = getProp('uidesign') == 'ns' || getProp('uidesign') == 'mtns' ? csstmp[1] : csstmp[0];
 			var sgn = nearColor(cur_color[0]) == '#000' ? -1: 1;
 			for (var i=0; i<col_map.length; i++) {
 				cssval = cssval.replace('?', nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn));
@@ -659,7 +659,7 @@ var kernel = execMain(function() {
 		var isMobileView = false;
 
 		function updateUIDesign() {
-			if (getProp('uidesign') == 'mt') {
+			if (getProp('uidesign') == 'mt' || getProp('uidesign') == 'mtns') {
 				$('html').addClass('mtds');
 			} else {
 				$('html').removeClass('mtds');
@@ -765,7 +765,7 @@ var kernel = execMain(function() {
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5', 'Roboto'], PROPERTY_FONT_STR.split('|').concat('Roboto')]);
 			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true]);
-			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt', 'ns'], PROPERTY_UIDESIGN_STR.split('|')]);
+			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt', 'ns', 'mtns'], PROPERTY_UIDESIGN_STR.split('|')]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
 			regProp('color', 'color', 1, PROPERTY_COLOR, ['1', ['u', 'e', 'r', '1', '2', '3', '4', '5', '6', '7', '8'], PROPERTY_COLOR_STR.split('|')]);
 			var parr = PROPERTY_COLORS.split('|');
