@@ -38,20 +38,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 		times_stats_list.pushed();
 		sessionManager.save(times.length - 1);
 		if (time.length - 1 > curDim) {
-			updateTable(true);
+			table_ctrl.updateTable(true);
 		} else {
-			if (kernel.getProp('statinv')) {
-				avgRow.before(getTimeRow(times.length - 1, curDim));
-				scrollDiv.scrollTop(table[0].scrollHeight);
-			} else {
-				title.after(getTimeRow(times.length - 1, curDim));
-				scrollDiv.scrollTop(0);
-			}
-			updateAvgRow(curDim);
-			if (times.length > MAX_ITEMS) {
-				(kernel.getProp('statinv') ? showAllRow.next() : showAllRow.prev()).remove();
-				hideAll();
-			}
+			table_ctrl.appendRow(times.length - 1);
 		}
 		updateUtil();
 		kernel.pushSignal('timestd', times[times.length - 1]);
@@ -74,7 +63,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		times_stats_table.reset(times.length);
 		times_stats_list.reset(times.length);
 		sessionManager.save(index);
-		updateTable(false);
+		table_ctrl.updateTable(false);
 		return true;
 	}
 
@@ -120,6 +109,151 @@ var stats = execMain(function(kpretty, round, kpround) {
 		return 'https://alg.cubing.net/?alg=' + encodeURIComponent((time[4][0] || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) +
 			'&setup=' + encodeURIComponent(time[1] || '')
 	}
+
+	var table_ctrl = (function() {
+
+		var pattern = /.*/;
+		var patstr = '.*';
+		var filterTh = $('<th class="click">').html('&#8981;');
+		var shownIdxs = [];
+		var hheadIdx = 0;
+
+		function filter(idx) {
+			var times = timesAt(idx);
+			return pattern.exec(prettyMPA(times[0])) ||
+				pattern.exec(times[1]) ||
+				pattern.exec(times[2]) ||
+				pattern.exec(mathlib.time2str(times[3]));
+		}
+
+		function updateTable(scroll) {
+			curDim = 1;
+			for (var i = 0; i < times.length; i++) {
+				curDim = Math.max(curDim, timesAt(i)[0].length - 1);
+			}
+			updateTitleRow();
+			shownIdxs = [];
+			hheadIdx = times.length - 1;
+			if (kernel.getProp('statinv')) {
+				table.empty().append(title, showAllRow, avgRow);
+			} else {
+				table.empty().append(avgRow, title, showAllRow);
+			}
+			showMoreRows();
+			if (hheadIdx < 0) {
+				showAllRow.unbind('click').hide();
+			} else {
+				showAllRow.unbind('click').click(table_ctrl.showAll).show();
+			}
+			filterTh.unbind('click').click(changePattern);
+			updateAvgRow(curDim);
+			updateUtil();
+			scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
+		}
+
+		function changePattern() {
+			var newpattern = prompt('Filter Pattern: (23*, 15.1*, comments, scrambles, date)');
+			if (newpattern == null || newpattern == patstr) {
+				return;
+			} else if (!newpattern) {
+				patstr = '.*'
+			} else {
+				patstr = (newpattern + '').replace(/[.\\+*?\[\^\]$(){}=!<>|:\-]/g, '\\$&').replace(/\\\*/g, '.*').replace(/\\\?/g, '.');
+			}
+			pattern = new RegExp(patstr, 'g');
+			updateTable(true);
+		}
+
+		function clearFilter() {
+			if (patstr == '.*') {
+				return;
+			}
+			patstr = '.*';
+			pattern = /.*/;
+			updateTable(true);
+		}
+
+		function updateTitleRow() {
+			title.empty().append(
+				filterTh, '<th>' + STATS_TIME + '</th><th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
+			);
+			if (curDim > 1) {
+				for (var i = 0; i < curDim; i++) {
+					title.append('<th>P.' + (i + 1) + '</th>');
+				}
+			}
+		}
+
+		function updateFrom(idxRow) {
+			var idx = idxRow.attr('data');
+			var endIdx = Math.min(idx + Math.max(len1, len2), times.length);
+			while (idx !== undefined && idx < endIdx && idx >= 0) {
+				getTimeRow(~~idx, curDim, idxRow);
+				idxRow = kernel.getProp('statinv') ? idxRow.next() : idxRow.prev();
+				idx = idxRow.attr('data');
+			}
+			updateAvgRow(curDim);
+		}
+
+		function showMoreRows() {
+			var targetLength = shownIdxs.length + MAX_ITEMS;
+			var rows = [];
+			while (hheadIdx >= 0 && shownIdxs.length < targetLength) {
+				if (filter(hheadIdx)) {
+					rows.push(getTimeRow(hheadIdx, curDim));
+					shownIdxs.push(hheadIdx);
+				}
+				hheadIdx--;
+			}
+			if (kernel.getProp('statinv')) {
+				showAllRow.after(rows.reverse().join(""));
+			} else {
+				showAllRow.before(rows.join(""));
+			}
+		}
+
+		function showAll(e) {
+			showMoreRows();
+			if (hheadIdx < 0) {
+				showAllRow.unbind('click').hide();
+			}
+		}
+
+		function hideAll() {
+			while (shownIdxs.length > MAX_ITEMS) {
+				(kernel.getProp('statinv') ? showAllRow.next() : showAllRow.prev()).remove();
+				hheadIdx = shownIdxs.pop();
+			}
+			if (hheadIdx > 0) {
+				showAllRow.unbind('click').click(showAll).show();
+			}
+		}
+
+		function appendRow(idx) {
+			var row = getTimeRow(idx, curDim);
+			if (kernel.getProp('statinv')) {
+				avgRow.before(row);
+				scrollDiv.scrollTop(table[0].scrollHeight);
+			} else {
+				title.after(row);
+				scrollDiv.scrollTop(0);
+			}
+			shownIdxs.unshift(idx);
+			updateAvgRow(curDim);
+			if (shownIdxs.length > MAX_ITEMS) {
+				table_ctrl.hideAll();
+			}
+			clearFilter();
+		}
+
+		return {
+			appendRow: appendRow,
+			showAll: showAll,
+			hideAll: hideAll,
+			updateTable: updateTable,
+			updateFrom: updateFrom
+		}
+	})();
 
 	var floatCfm = (function() {
 		var cfmDiv = $('<div style="text-align:center; font-family: initial;">');
@@ -219,9 +353,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
 			sessionManager.save(idx);
-			updateFrom(idx, idxRow);
+			table_ctrl.updateFrom(idxRow);
 			updateUtil();
-			getTimeRow(idx, curDim, idxRow);
 			if (idx == cfmIdx) {
 				genDiv();
 			}
@@ -256,43 +389,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 			setCfm: setCfm
 		}
 	})();
-
-	function showAll(e) {
-		var len = (kernel.getProp('statinv') ? avgRow : showAllRow).index() - 2;
-		var end = Math.max(0, times.length - len);
-		var start = Math.max(0, times.length - len - MAX_ITEMS);
-
-		var rows = [];
-		for (var i = start; i < end; i++) {
-			rows.push(getTimeRow(i, curDim));
-		}
-		if (kernel.getProp('statinv')) {
-			showAllRow.after(rows.join(""));
-		} else {
-			showAllRow.before(rows.reverse().join(""));
-		}
-		if (start == 0) {
-			showAllRow.unbind('click').hide();
-		}
-	}
-
-	function hideAll() {
-		var target = kernel.getProp('statinv') ? avgRow : showAllRow;
-		for (var len = target.index() - 2; len > MAX_ITEMS; len--) {
-			(kernel.getProp('statinv') ? showAllRow.next() : showAllRow.prev()).remove();
-		}
-		if (times.length > MAX_ITEMS) {
-			showAllRow.unbind('click').click(showAll).show();
-		}
-	}
-
-	function updateFrom(idx, idxRow) {
-		for (var i = idx + 1; i < idx + Math.max(len1, len2) && i < times.length; i++) {
-			idxRow = kernel.getProp('statinv') ? idxRow.next() : idxRow.prev();
-			getTimeRow(i, curDim, idxRow);
-		}
-		updateAvgRow(curDim);
-	}
 
 	var curDim = 0;
 
@@ -365,7 +461,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 		ret = ret.join("");
 		tr && tr.html(ret);
-		return '<tr>' + ret + '</tr>';
+		return '<tr data="' + i + '">' + ret + '</tr>';
 	}
 
 	function updateAvgRow(dim) {
@@ -379,31 +475,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 				avgRow.append('<th data="' + j + '" class="times">' + kpround(getMean(j)) + '</th>').css('font-size', '');
 			}
 		}
-	}
-
-	function updateTable(scroll) {
-		curDim = 1;
-		for (var i = 0; i < times.length; i++) {
-			curDim = Math.max(curDim, timesAt(i)[0].length - 1);
-		}
-		updateTitleRow();
-		var rows = [];
-		for (var i = Math.max(0, times.length - MAX_ITEMS), len = times.length; i < len; i++) {
-			rows.push(getTimeRow(i, curDim));
-		}
-		if (kernel.getProp('statinv')) {
-			table.empty().append(title, showAllRow, rows.join(""), avgRow);
-		} else {
-			table.empty().append(avgRow, title, rows.reverse().join(""), showAllRow);
-		}
-		if (times.length > MAX_ITEMS) {
-			showAllRow.unbind('click').click(showAll).show();
-		} else {
-			showAllRow.unbind('click').hide();
-		}
-		updateAvgRow(curDim);
-		updateUtil();
-		scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
 	}
 
 	function updateSumTable() {
@@ -1295,7 +1366,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times_stats_table.reset();
 			times_stats_list.reset();
 			save();
-			updateTable(false);
+			table_ctrl.updateTable(false);
 			kernel.blur();
 		}
 
@@ -1316,7 +1387,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times = timesNew;
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
-			updateTable(false);
+			table_ctrl.updateTable(false);
 			sessionData[sessionIdx] = sessionData[sessionIdx] || {
 				'name': sessionIdx,
 				'opt': {}
@@ -1955,17 +2026,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		return avgSizesNew;
 	}
 
-	function updateTitleRow() {
-		title.empty().append(
-			'<th></th><th>' + STATS_TIME + '</th><th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
-		);
-		if (curDim > 1) {
-			for (var i = 0; i < curDim; i++) {
-				title.append('<th>P.' + (i + 1) + '</th>');
-			}
-		}
-	}
-
 	function checkStatalU(force) {
 		var curValue = kernel.getProp('statalu');
 		if (!force && /^\s*([am]o\d+[\s,;]*)+\s*$/.exec(curValue)) {
@@ -2017,7 +2077,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				stat2 = [1, -1][~~kernel.getProp('stat2t')] * kernel.getProp('stat2l');
 				len1 = Math.abs(stat1);
 				len2 = Math.abs(stat2);
-				updateTable(false);
+				table_ctrl.updateTable(false);
 			} else if (value[0] == 'statsum') {
 				updateSumTable();
 			} else if (value[0] == 'statal') {
@@ -2063,7 +2123,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				floatCfm.setCfm(-1);
 			}
 		} else if (signal == 'ashow' && !value) {
-			hideAll();
+			table_ctrl.hideAll();
 		} else if (signal == 'button' && value[0] == 'stats' && value[1]) {
 			setTimeout(resultsHeight, 50);
 		}
