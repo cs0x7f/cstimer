@@ -120,7 +120,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function filter(idx) {
 			var times = timesAt(idx);
-			return pattern.exec(prettyMPA(times[0])) ||
+			return pattern.exec(pretty(times[0], true) + prettyMPA(times[0])) ||
 				pattern.exec(times[1]) ||
 				pattern.exec(times[2]) ||
 				pattern.exec(mathlib.time2str(times[3]));
