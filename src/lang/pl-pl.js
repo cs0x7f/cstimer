@@ -16,10 +16,10 @@ var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'multi-phase';
 var PROPERTY_TIMERSIZE = 'rozmiar timera';
 var PROPERTY_USEMILLI = 'użyj milisekund';
-var PROPERTY_SMALLADP = 'use small font after decimal point';
+var PROPERTY_SMALLADP = 'używaj małej czcionki dla części dziesiętnych';
 var PROPERTY_SCRSIZE = 'wielkość scramble\'a';
 var PROPERTY_SCRMONO = 'monospaced scramble';
-var PROPERTY_SCRLIM = 'Limit the height of scramble area';
+var PROPERTY_SCRLIM = 'Limit wysokości pola ze scramblem';
 var PROPERTY_SCRALIGN = 'Alignment of scramble area';
 var PROPERTY_SCRALIGN_STR = 'center|left|right';
 var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
@@ -29,18 +29,18 @@ var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'Scramble panel display style';
 var PROPERTY_WNDSTAT = 'Statistics panel display style';
 var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
+var PROPERTY_WND_STR = 'Normalny|Przeźroczysty';
+var EXPORT_DATAEXPORT = 'Importuj/Eksportuj zapisane dane';
 var EXPORT_TOFILE = 'Eksportuj do pliku';
 var EXPORT_FROMFILE = 'Importuj z pliku';
 var EXPORT_TOSERV = 'Eksportuj do serwera';
 var EXPORT_FROMSERV = 'Importuj ze serwera';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
+var EXPORT_FROMOTHER = 'Importuj czasy z innego timera';
 var EXPORT_USERID = 'Please input your account (only alphabet or number)';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
+var EXPORT_INVID = 'Dozwolone tylko litery alfabetu i cyfry!';
 var EXPORT_ERROR = 'Wystąpił błąd...';
 var EXPORT_NODATA = 'Na twoim koncie nie ma danych';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var EXPORT_UPLOADED = 'Przesyłanie zakończone powodzeniem';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Eksportuj konto';
@@ -51,7 +51,7 @@ var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'NARZĘDZIA';
-var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
+var IMAGE_UNAVAILABLE = 'Niedostępne dla tego typu scrambla';
 var TOOLS_SELECTFUNC = 'Function';
 var TOOLS_CROSS = 'solve cross';
 var TOOLS_EOLINE = 'solve EOLine';
@@ -78,33 +78,33 @@ var OLCOMP_WCAACCOUNT = 'WCA Account';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Scramble Image Size';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
+var TIMER_INSPECT = 'inspekcja';
+var TIMER_SOLVE = 'układanie';
 var PROPERTY_USEMOUSE = 'use mouse timer';
 var PROPERTY_TIMEU = 'timer update is';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
-var PROPERTY_ENTERING = 'entering in times with';
+var PROPERTY_ENTERING = 'wprowadzanie czasów poprzez';
 var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|bluetooth';
 var PROPERTY_INTUNIT = 'Unit when entering an integer';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
 var PROPERTY_COLOR = 'wybierz kolor motywu';
 var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
+var PROPERTY_VIEW = 'Styl interfejsu';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
 var COLOR_EXPORT = 'Please save the string for import';
 var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
+var COLOR_FAIL = 'Nieprawidłowe dane, import nie powiódł się';
 var PROPERTY_FONTCOLOR_STR = 'czarny|biały';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
-var PROPERTY_FONT = 'select timer\'s font';
+var PROPERTY_FONT = 'wybierz czcionkę timera';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'format czasu';
 var PROPERTY_USEKSC = 'użyj skrótu klawiszowego';
 var PROPERTY_NTOOLS = 'liczba narzędzi';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
+var PROPERTY_AHIDE = 'Ukryj wszystkie elementy podczas układania';
 var SCRAMBLE_LAST = 'ostatni';
 var SCRAMBLE_NEXT = 'następny';
 var SCRAMBLE_SCRAMBLE = ' scramble';
@@ -132,21 +132,21 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
-		['3x3 ft', "333ft", 0],
+		['3x3x3 bez patrzenia', "333ni", 0],
+		['3x3x3 FM', "333fm", 0],
+		['3x3x3 jedną ręką', "333oh", 0],
+		['3x3x3 stopami', "333ft", 0],
 		['clock', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['skewb', "skbso", 0],
-		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['square-1', "sqrs", 0],
+		['4x4x4 bez patrzenia', "444bld", -40],
+		['5x5x5 bez patrzenia', "555bld", -60],
+		['3x3x3 wiele kostek bez patrzenia', "r3ni", 5]
 	]],
-	['Input', [
-		['Extern', "input", 0],
+	['Wprowadź', [
+		['Zewnętrzny', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
@@ -160,43 +160,43 @@ var scrdata = [
 		['tylko krawędzie', "edges", 0],
 		['tylko narożniki', "corners", 0],
 		['ostatnia warstwa', "ll", 0],
-		['zb last layer', "zbll", 0],
-		['corners of last layer', "cll", 0],
-		['edges of last layer', "ell", 0],
-		['last six edges', "lse", 0],
+		['zb ostatnia warstwa', "zbll", 0],
+		['narożniki ostatniej warstwy', "cll", 0],
+		['krawędzie ostatniej warstwy', "ell", 0],
+		['ostatnie sześć krawędzi', "lse", 0],
 		['last six edges&ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
-		['cross solved', "f2l", 0],
-		['last slot + last layer', "lsll2", 0],
+		['krzyż ułożony', "f2l", 0],
+		['ostatni para + ostatnia warstwa', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
 		['ZZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3]
+		['łatwy krzyż', "easyc", 3]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],
 		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
-		['EG0', "222eg0", 0],
-		['EG1', "222eg1", 0],
-		['EG2', "222eg2", 0]
+		['EG-0', "222eg0", 0],
+		['EG-1', "222eg1", 0],
+		['EG-2', "222eg2", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['losowe ruchy', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['4x4x4 krawędzie', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['5x5x5 krawędzie', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
@@ -295,9 +295,9 @@ var scrdata = [
 		['old style', "prco", 70]
 	]],
 	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+		['1x1x3', "sia113", 25],
+		['1x2x3', "sia123", 25],
+		['2x2x2', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -311,29 +311,29 @@ var scrdata = [
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
+	['Inne', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['===SPECIALNE===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
-		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
-		['3-generator R,r,U', "RrU", 25],
-		['half turns only', "half", 25],
+		['tylko ruchy R,U', "2gen", 25],
+		['tylko ruchy L,U', "2genl", 25],
+		['tylko ruchy M,U (Roux)', "roux", 25],
+		['tylko ruchy F,R,U', "3gen_F", 25],
+		['tylko ruchy R,U,L', "3gen_L", 25],
+		['tylko ruchy R,r,U', "RrU", 25],
+		['tylko podwójne ruchy', "half", 25],
 		['last slot + last layer (old)', "lsll", 15]
 	]],
 	['Bandaged Cube', [
 		['Bicube', "bic", 30],
-		['Square-1 /,(1,0)', "bsq", 25]
+		['tylko ruchy /,(1,0) (Square-1)', "bsq", 25]
 	]],
 	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
+		['tylko ruchy R,U', "minx2g", 30],
+		['ostatni para + ostatnia warstwa', "mlsll", 20]
 	]],
 	['Relays', [
 		['lots of 3x3x3s', "r3", 5],
@@ -366,11 +366,11 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['przekręć górną warstwę', 'przekręć dolną warstwę'],
+	['przekręć prawą ściankę', 'przekręć lewą ściankę'],
+	['przekręć przednią ściankę', 'przekręć tylnią ściankę']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
+var SCRAMBLE_NOOBSS = ' w kierunku zgodnym z ruchem wskazówek zegara o 90 stopni,| w kierunku przeciwnym do ruchu wskazówek zegara o 90 stopni,| o 180 stopni';
 var STATS_CFM_RESET = 'usunąć wszystkie czasy w tej sesji?';
 var STATS_CFM_DELSS = 'usunąć sesję?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
@@ -433,11 +433,11 @@ var MODULE_NAMES = {
 };
 var BGIMAGE_URL = 'podaj url obrazka';
 var BGIMAGE_INVALID = 'niepoprawny url';
-var BGIMAGE_OPACITY = 'background image opacity';
+var BGIMAGE_OPACITY = 'przezroczystość obrazu tła';
 var BGIMAGE_IMAGE = 'tło';
 var BGIMAGE_IMAGE_STR = 'brak|manualnie|CCT';
 var SHOW_AVG_LABEL = 'Wyświetl etykietę średniego czasu';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'Wiadomości w logo';
 var TOOLS_SCRGEN = 'GeneratorScrambli';
 var SCRGEN_NSCR = 'Liczba scramblów';
 var SCRGEN_PRE = 'prefiks';
