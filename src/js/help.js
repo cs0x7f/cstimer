@@ -7,8 +7,9 @@ var help = execMain(function() {
 	var table = $('<table class="options" />');
 	var left = $('<td />');
 	var right = $('<td />').addClass('tabValue');
+	var rightDiv = $('<div>');
 
-	table.append($('<tr />').append(left, right));
+	table.append($('<tr />').append(left, right.append(rightDiv)));
 
 	function leftClick() {
 		if ($(this).hasClass('enable')) {
@@ -34,20 +35,33 @@ var help = execMain(function() {
 	}
 
 	function updateRight(val1, val2) {
-		right.html(docs[val1]);
+		setTimeout(function() {
+			rightDiv.scrollTop(rightDiv.scrollTop() + docs[val1].position().top - 3);
+		}, 0);
 		return true;
 	}
 
+	function onOptScroll() {
+		var prevScrollTop = rightDiv.scrollTop();
+		var type = ABOUT_LANG;
+		for (var m in docs) {
+			if (docs[m].position().top > 50) {
+				continue;
+			}
+			type = docs[m].is('h1, h2, h3') ? docs[m].html() : ABOUT_LANG;
+		}
+		updateLeft(type);
+	}
+
 	function generateDocs() {
-		docs[ABOUT_LANG] = $('<div />');
 		var elems = $('#about').children();
 		for (var i = 0; i < elems.length; i++) {
 			var elem = elems.eq(i);
-			if (elem.is('ul')) {
-				var type = elems.eq(i - 1).appendTo(kernel.temp).html();
-				docs[type] = elem.appendTo(kernel.temp);
-			} else if (i >= 1 && !elems.eq(i - 1).is('h2, ul')) {
-				elems.eq(i - 1).appendTo(docs[ABOUT_LANG]);
+			var type = elem.appendTo(rightDiv).html();
+			if (elem.is('h1, h2, h3') && !elems.eq(i + 1).is('h1, h2, h3')) {
+				docs[type] = elem;
+			} else {
+				docs[ABOUT_LANG] = docs[ABOUT_LANG] || elem;
 			}
 		}
 	}
@@ -56,5 +70,7 @@ var help = execMain(function() {
 		generateDocs();
 		updateTable();
 		$('#about').html(table);
+		rightDiv.scrollTop();
+		rightDiv.unbind('scroll').scroll(onOptScroll);
 	});
 });
