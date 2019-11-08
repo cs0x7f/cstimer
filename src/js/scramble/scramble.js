@@ -201,13 +201,10 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 		var act = kernel.getProp('scrClk', 'n');
 		if (act == 'c') {
-			var textArea = $('<textarea>' + sdiv.html() + '</textarea>').appendTo(document.body);
-			textArea.focus().select();
-			try {
-				var successful = document.execCommand('copy');
+			var succ = $.clipboardCopy(sdiv.html());
+			if (succ) {
 				logohint.push('scramble copied');
-			} catch (err) {}
-			textArea.remove();
+			}
 		} else if (act == '+') {
 			procNextClick();
 		}

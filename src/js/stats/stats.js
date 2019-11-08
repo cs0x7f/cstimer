@@ -287,6 +287,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 					cfmIdx = undefined;
 					hideToTools();
 				}
+			} else if (which == 's') {
+				var time = timesAt(cfmIdx);
+				if ($.clipboardCopy(time[1])) {
+					logohint.push('scramble copied');
+				}
+			} else if (which == 'c') {
+				var time = timesAt(cfmIdx);
+				if ($.clipboardCopy(pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "") + "   " + time[1] + "   @" + mathlib.time2str(time[3]))) {
+					logohint.push('solve copied');
+				}
 			}
 		}
 
@@ -323,10 +333,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}
 			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')
-				.append('<span class="click" data="p">OK</span> | <span class="click" data="p">+2</span> | <span class="click" data="p">DNF</span>', ' | ', cfmDelR)
+				.append('<span class="click" data="c"> &#128203; </span>|<span class="click" data="p"> OK </span>|<span class="click" data="p"> +2 </span>|<span class="click" data="p"> DNF </span>| ', cfmDelR)
 				.append('<br>', $('<table style="display:inline-block;">').append(
 					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
-					$('<tr>').append('<td>' + SCRAMBLE_SCRAMBLE + '</td>', $('<td>').append(cfmScrR)),
+					$('<tr>').append('<td><span class="click" data="s">' + SCRAMBLE_SCRAMBLE + '</span></td>', $('<td>').append(cfmScrR)),
 					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
 					reviewElem
 				)).unbind('click').click(procClk);
@@ -404,8 +414,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			return;
 		}
 		switch (row) {
-			case 0: setHighlight(times_stats_table, timesAt, idx, 1, 10, true); break;
-			case 1: floatCfm.proc(idx, target); break;
+			case 0: floatCfm.proc(idx, target); break;
+			case 1: setHighlight(times_stats_table, timesAt, idx, 1, 10, true); break;
 			case 2: setHighlight(times_stats_table, timesAt, idx - len1 + 1, len1, len1 * 10, stat1 < 0); break;
 			case 3: setHighlight(times_stats_table, timesAt, idx - len2 + 1, len2, len2 * 10, stat2 < 0); break;
 		}

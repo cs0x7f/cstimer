@@ -129,6 +129,17 @@ execMain(function() {
 		}
 	}
 
+	$.clipboardCopy = function(value, callback) {
+		var textArea = $('<textarea>' + value + '</textarea>').appendTo(document.body);
+		textArea.focus().select();
+		var succ = false;
+		try {
+			succ = document.execCommand('copy');
+		} catch (err) {}
+		textArea.remove();
+		return succ;
+	}
+
 	$.fingerprint = function() {
 		var fp_screen = window.screen && [Math.max(screen.height, screen.width), Math.min(screen.height, screen.width), screen.colorDepth].join("x");
 		var fp_tzoffset = new Date().getTimezoneOffset();
