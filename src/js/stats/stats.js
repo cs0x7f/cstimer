@@ -280,7 +280,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			if (which == 'p') {
-				var selected = {"OK": 0, "+2": 2000, "DNF": -1}[target.html()];
+				var selected = {" OK ": 0, " +2 ": 2000, " DNF ": -1}[target.html()];
 				setPenalty(selected, cfmIdx, cfmIdxRow);
 			} else if (which == 'd') {
 				if (delIdx(cfmIdx)) {
