@@ -160,11 +160,37 @@ var exportFunc = execMain(function() {
 		}
 		var target = $(e.target);
 		var rawText = target.html();
-		target.html('...');
-		$.post('https://cstimer.net/userdata.php', {
-			'id': id
-		}, function(val) {
-			target.html('......');
+		target.html('Check File List...');
+
+		var onerr = function() {
+			alert(EXPORT_ERROR);
+		};
+
+		var revert = function() {
+			target.html(rawText);
+		};
+
+		var cntCallback = function(val) {
+			var cnt = ~~val['data'];
+			if (cnt == 0) {
+				alert('No Data Found');
+				return revert();
+			}
+			var idx = 1;
+			if (kernel.getProp('expp')) {
+				idx = ~~prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', cnt), '1');
+				if (idx <= 0 || idx > cnt) {
+					return revert();
+				}
+			}
+			target.html('Import Data...');
+			$.post('https://cstimer.net/userdata.php', {
+				'id': id,
+				'offset': idx - 1
+			}, dataCallback, 'json').error(onerr).always(revert);
+		}
+
+		var dataCallback = function(val) {
 			var retcode = val['retcode'];
 			if (retcode == 0) {
 				try {
@@ -177,12 +203,17 @@ var exportFunc = execMain(function() {
 			} else {
 				alert(EXPORT_ERROR);
 			}
-			target.html(rawText);
-		}, 'json').error(function() {
-			alert(EXPORT_ERROR);
-		}).always(function() {
-			target.html(rawText);
-		});
+			revert();
+		}
+
+		if (kernel.getProp('expp')) {
+			$.post('https://cstimer.net/userdata.php', {
+				'id': id,
+				'cnt': 1
+			}, cntCallback, 'json').error(onerr).always(revert);
+		} else {
+			cntCallback({'data':1});
+		}
 	}
 
 	function downloadDataGGL() {
@@ -197,15 +228,14 @@ var exportFunc = execMain(function() {
 			var files = data['files'];
 			if (files.length == 0) {
 				alert('No Data Found');
-				updateUserInfoFromGGL();
-				return;
+				return updateUserInfoFromGGL();
 			}
-			var idx = prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', files.length), '1');
-			if (idx == null || ~~idx > files.length) {
-				updateUserInfoFromGGL();
-				return;
-			} else if (~~idx <= 0) {
-				idx = 1;
+			var idx = 1;
+			if (kernel.getProp('expp')) {
+				idx = ~~prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', files.length), '1');
+				if (idx <= 0 || idx > cnt) {
+					return updateUserInfoFromGGL();
+				}
 			}
 			inServGGL.html('Import Data...');
 			var fileId = files[idx - 1]['id'];
@@ -214,8 +244,7 @@ var exportFunc = execMain(function() {
 					data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
 				} catch (e) {
 					alert('No Valid Data Found');
-					updateUserInfoFromGGL();
-					return;
+					return updateUserInfoFromGGL();
 				}
 				loadData(data);
 			}).error(function() {
@@ -491,6 +520,7 @@ var exportFunc = execMain(function() {
 		kernel.regListener('export', 'export', procSignal, /^account$/);
 		kernel.regProp('kernel', 'atexpa', 1, 'Auto Export (per 100 solves)', ['n', ['n', 'f', 'id', 'wca'], ['Never', 'To File', 'With csTimer ID', 'With WCA Account']]);
 		kernel.regProp('kernel', 'atexpi', ~1, 'Auto Export Interval (Solves)', [100, [50, 100, 200, 500], ['50', '100', '200', '500']]);
+		kernel.regProp('kernel', 'expp', 0, 'Export non-latest data', [false]);
 
 		kernel.addButton('export', BUTTON_EXPORT, showExportDiv, 2);
 		exportDiv.append('<br>',

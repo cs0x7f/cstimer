@@ -9,6 +9,14 @@
 		echo '{"retcode":400,"reason":"invalid uid"}';
 		exit(0);
 	}
+	if (!isset($_POST['offset']) || empty($_POST['offset'])) {
+		$offset = '0';
+	} else if (!preg_match("/^[0-9]+$/", $_POST['offset']) || strlen($_POST['offset']) > 5) {
+		echo '{"retcode":400,"reason":"invalid offset"}';
+		exit(0);
+	} else {
+		$offset = $_POST['offset'];
+	}
 	header("Access-Control-Allow-Origin: *");
 	$uid = $_POST['id'];
 
@@ -24,17 +32,27 @@
 			exit(0);
 		}
 		$data = $_POST['data'];
-		error_log("[" . date("Y-m-d H:i:sO") . "] SET " . $uid . " " . strlen($data) . "\n", 3, CSTIMER_USERDATA_LOGFILE);
+		error_log("[" . date("Y-m-d H:i:sO") . "] SET $uid " . strlen($data) . "\n", 3, CSTIMER_USERDATA_LOGFILE);
 		$data_md5 = md5($data);
-		$sql = 'INSERT INTO `export_data` (`uid`, `value_hash`, `value`) VALUES ("' . $uid . '", "' . $data_md5 . '", "' . $data . '")';
+		$sql = "INSERT INTO `export_data` (`uid`, `value_hash`, `value`) VALUES ('$uid', '$data_md5', '$data')";
 		$ret = $db->query($sql);
 		if ($ret === true) {
 			echo '{"retcode":0}';
 		} else {
 			echo '{"retcode":500,"reason":"db insert error"}';
 		}
+	} else if (isset($_POST['cnt'])) {
+		$sql = "SELECT COUNT(*) AS cnt FROM `export_data` WHERE `uid` = '$uid'";
+		$ret = $db->query($sql);
+		if ($ret === false) {
+			echo '{"retcode":500,"reason":"db select error"}';
+			exit(0);
+		}
+		$ret = $ret->fetch_assoc()['cnt'];
+		error_log("[" . date("Y-m-d H:i:sO") . "] CNT $uid " . $ret . "\n", 3, CSTIMER_USERDATA_LOGFILE);
+		echo '{"retcode":0,"data":"' . $ret . '"}';
 	} else {//GET
-		$sql = 'SELECT `value` FROM `export_data` WHERE `uid` = "' . $uid . '" ORDER BY `upload_time` DESC LIMIT 1;';
+		$sql = "SELECT `value` FROM `export_data` WHERE `uid` = '$uid' ORDER BY `upload_time` DESC LIMIT $offset,1;";
 		$ret = $db->query($sql);
 		if ($ret === false) {
 			echo '{"retcode":500,"reason":"db select error"}';
@@ -45,7 +63,7 @@
 			exit(0);
 		}
 		$ret = $ret->fetch_assoc()['value'];
-		error_log("[" . date("Y-m-d H:i:sO") . "] GET " . $uid . " " . strlen($ret) . "\n", 3, CSTIMER_USERDATA_LOGFILE);
+		error_log("[" . date("Y-m-d H:i:sO") . "] GET $uid " . strlen($ret) . " $offset\n", 3, CSTIMER_USERDATA_LOGFILE);
 		echo '{"retcode":0,"data":"' . $ret . '"}';
 	}
 ?>
