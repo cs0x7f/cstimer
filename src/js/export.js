@@ -200,8 +200,15 @@ var exportFunc = execMain(function() {
 				updateUserInfoFromGGL();
 				return;
 			}
+			var idx = prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', files.length), '1');
+			if (idx == null || ~~idx > files.length) {
+				updateUserInfoFromGGL();
+				return;
+			} else if (~~idx <= 0) {
+				idx = 1;
+			}
 			inServGGL.html('Import Data...');
-			var fileId = files[0]['id'];
+			var fileId = files[idx - 1]['id'];
 			$.get('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&access_token=' + gglToken).success(function(data) {
 				try {
 					data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
