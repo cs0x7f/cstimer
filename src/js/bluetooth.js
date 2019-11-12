@@ -19,7 +19,10 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_READ = '0000aaab' + UUID_SUFFIX;
 		var CHRCT_UUID_WRITE = '0000aaac' + UUID_SUFFIX;
 
+		var deviceName;
+
 		function init(device) {
+			deviceName = device.name.startsWith('Gi') ? 'Giiker' : 'Mi Smart';
 			return device.gatt.connect().then(function(server) {
 				_server = server;
 				return server.getPrimaryService(SERVICE_UUID_DATA);
@@ -131,7 +134,7 @@ var GiikerCube = execMain(function() {
 				console.log('[giiker]', "Previous Moves: ", prevMoves.reverse().join(" "));
 				prevMoves.reverse();
 			}
-			callback(facelet, prevMoves, timestamp, 'Giiker');
+			callback(facelet, prevMoves, timestamp, deviceName);
 			return [facelet, prevMoves];
 		}
 
@@ -140,7 +143,7 @@ var GiikerCube = execMain(function() {
 			var _read;
 			var _resolve;
 			var listener = function(event) {
-				_resolve([event.target.value.getUint8(1), 'Giiker']);
+				_resolve([event.target.value.getUint8(1), deviceName]);
 				_read.removeEventListener('characteristicvaluechanged', listener);
 				_read.stopNotifications();
 			};
@@ -608,14 +611,21 @@ var GiikerCube = execMain(function() {
 			filters: [{
 				namePrefix: 'Gi'
 			}, {
+				namePrefix: 'Mi Smart Magic Cube'
+			}, {
 				namePrefix: 'GAN'
 			}, {
 				namePrefix: 'GoCube'
+			}, {
+				services: ['0000fe95-0000-1000-8000-00805f9b34fb']
+			}, {
+				services: [GiikerCube.opservs[0]]
 			}],
 			optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
 		}).then(function(device) {
+			console.log(device);
 			_device = device;
-			if (device.name.startsWith('Gi')) {
+			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube')) {
 				cube = GiikerCube;
 				return GiikerCube.init(device);
 			} else if (device.name.startsWith('GAN')) {
