@@ -51,6 +51,9 @@ var stackmat = execMain(function() {
 		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 
 		audio_context = new AudioContext();
+		if (audio_context.state == 'suspended') {
+			return Promise.reject();
+		}
 
 		if (curTimer == 'm') {
 			sample_rate = audio_context["sampleRate"] / 8000;
