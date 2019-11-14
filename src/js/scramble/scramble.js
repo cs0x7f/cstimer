@@ -218,8 +218,9 @@ var scramble = execMain(function(rn, rndEl) {
 			scramble = m[2];
 		}
 		if (forDisplay) {
-			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
-				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
+			var fontSize = kernel.getProp('scrASize') ? Math.round(Math.pow(50 / scramble.length, 0.30) * 20) / 20 : 1;
+			return '<div style="font-size:' + fontSize + 'em;">' + scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
+				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1') + '</div>';
 		} else {
 			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^']*)`/g, '$1')];
 		}
@@ -723,8 +724,9 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50], 1);
+		kernel.regProp('scramble', 'scrASize', 0, 'Auto scramble size', [true], 1);
 		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true], 1);
-		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [true], 1);
+		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [false], 1);
 		kernel.regProp('scramble', 'scrAlign', 1, PROPERTY_SCRALIGN, ['c', ['c', 'l', 'r'], PROPERTY_SCRALIGN_STR.split('|')], 1);
 		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['', ['', 'z2', "z'", 'z', "x'", 'x'],
 			['', 'z2', "z'", 'z', "x'", 'x']
