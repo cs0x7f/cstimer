@@ -818,32 +818,38 @@ input[type="color"].mulcolor {
 }
 
 html.m.p70 {
-	font-size: 1.47vw;
-	font-size: calc(0.63vw + 1.12vh);
+	font-size: 1.05vw;
+	font-size: calc(0.45vw + 0.80vh);
 }
+
 html.m.p80 {
-	font-size: 1.68vw;
-	font-size: calc(0.72vw + 1.28vh);
+	font-size: 1.20vw;
+	font-size: calc(0.52vw + 0.92vh);
 }
+
 html.m.p90 {
-	font-size: 1.89vw;
-	font-size: calc(0.81vw + 1.44vh);
+	font-size: 1.35vw;
+	font-size: calc(0.58vw + 1.03vh);
 }
+
 html.m {
-	font-size: 2.10vw;
-	font-size: calc(0.90vw + 1.60vh);
+	font-size: 1.50vw;
+	font-size: calc(0.65vw + 1.15vh);
 }
+
 html.m.p110 {
-	font-size: 2.31vw;
-	font-size: calc(0.99vw + 1.76vh);
+	font-size: 1.65vw;
+	font-size: calc(0.71vw + 1.26vh);
 }
+
 html.m.p125 {
-	font-size: 2.62vw;
-	font-size: calc(1.12vw + 2.00vh);
+	font-size: 1.87vw;
+	font-size: calc(0.81vw + 1.43vh);
 }
+
 html.m.p150 {
-	font-size: 3.15vw;
-	font-size: calc(1.35vw + 2.40vh);
+	font-size: 2.25vw;
+	font-size: calc(0.97vw + 1.72vh);
 }
 
 html.m .mhide, html:not(.m) .mshow {
@@ -952,6 +958,10 @@ html.m .mhide, html:not(.m) .mshow {
 .m #toolsDiv {
 	bottom: 61px;
 	bottom: 11.8vw;
+}
+
+.m #toolsDiv > div > div {
+	font-size: 1em;
 }
 
 .m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {
