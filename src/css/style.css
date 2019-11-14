@@ -629,6 +629,9 @@ table.opttable .sr {
 	white-space: pre-wrap;
 	overflow-x: hidden;
 	overflow-y: auto;
+	max-height: 600px;
+	max-height: 42rem;
+	max-height: 80vh;
 }
 
 #scrambleTxt.limit {
