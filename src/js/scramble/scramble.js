@@ -218,7 +218,7 @@ var scramble = execMain(function(rn, rndEl) {
 			scramble = m[2];
 		}
 		if (forDisplay) {
-			var fontSize = kernel.getProp('scrASize') ? Math.round(Math.pow(50 / scramble.length, 0.30) * 20) / 20 : 1;
+			var fontSize = kernel.getProp('scrASize') ? Math.round(Math.pow(50 / Math.max(scramble.length, 10), 0.30) * 20) / 20 : 1;
 			return '<div style="font-size:' + fontSize + 'em;">' + scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
 				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1') + '</div>';
 		} else {
