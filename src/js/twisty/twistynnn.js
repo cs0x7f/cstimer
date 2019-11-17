@@ -267,6 +267,20 @@
 			}
 		}
 
+		function toggleColorVisible(twisty, visible) {
+			if (twisty.visible == visible) {
+				return;
+			}
+			var state = twisty.cubePieces;
+			for (var faceIndex = 0; faceIndex < numSides; faceIndex++) {
+				var faceStickers = state[faceIndex];
+				for (var stickerIndex = 0, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
+					var sticker = faceStickers[stickerIndex];
+					sticker[1].children[0].materials[0].opacity = visible ? 1 : 0;
+				}
+			}
+		}
+
 		function generateScramble(twisty) {
 			var dim = twisty.options.dimension;
 			var n = 32;
@@ -495,6 +509,7 @@
 			handMarks: handMarks,
 			animateMoveCallback: animateMoveCallback,
 			advanceMoveCallback: advanceMoveCallback,
+			toggleColorVisible: toggleColorVisible,
 			keydownCallback: keydownCallback,
 			isSolved: isSolved,
 			isInspectionLegalMove: isInspectionLegalMove,

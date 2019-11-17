@@ -660,7 +660,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var now = $.now();
 			if (status == -3 || status == -2) {
-				if (twisty.isInspectionLegalMove(twisty, move)) {
+				if (twisty.isInspectionLegalMove(twisty, move) && !/^(333ni|444bld|555bld)$/.exec(currentScrambleType)) {
 					if (mstep == 0) {
 						rawMoves[0].push([twisty.move2str(move), 0]);
 					}
@@ -687,6 +687,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 			}
 			if (status >= 1) {
+				if (/^(333ni|444bld|555bld)$/.exec(currentScrambleType) && !twisty.isInspectionLegalMove(twisty, move)) {
+					twisty.toggleColorVisible(twisty, twisty.isSolved(twisty, getProp('vrcMP', 'n')) == 0);
+				}
 				if (mstep == 0) {
 					rawMoves[status - 1].push([twisty.move2str(move), now - startTime]);
 				}
@@ -816,8 +819,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
 				if (keyCode == 27) { //ESC
 					ui.setAutoShow(true);
-					if (status == 1) {
-						pushSignal('time', [-1, now - startTime]);
+					if (status >= 1) {
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
 					}
 					reset();
 					status = -1;
@@ -863,15 +866,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				currentScrambleType = value[0];
 				currentScramble = value[1];
 				var puzzleType = tools.puzzleType(currentScrambleType);
-				for (var size = types.length - 1; size > 0; size--) {
-					if (types[size] == puzzleType) {
-						if (currentScrambleSize != size) {
-							currentScrambleSize = size
-							isReseted = false;
-							reset();
-						}
-						break;
-					}
+				var size = types.indexOf(puzzleType);
+				if (size != -1 && currentScrambleSize != size) {
+					currentScrambleSize = size
+					isReseted = false;
+					reset();
 				}
 				var m = value[0].match(/^r(\d)\d*$/);
 				if (m) {
