@@ -61,25 +61,46 @@ var exportFunc = execMain(function() {
 	}
 
 	function loadData(data) {
-		if (!confirm(IMPORT_FINAL_CONFIRM)) {
-			return;
-		}
-		if ('properties' in data) {
-			var devData = localStorage['devData'] || '{}';
-			var wcaData = localStorage['wcaData'] || '{}';
-			var gglData = localStorage['gglData'] || '{}';
-			var locData = localStorage['locData'] || '{}';
-			localStorage.clear();
-			localStorage['devData'] = devData;
-			localStorage['wcaData'] = wcaData;
-			localStorage['gglData'] = gglData;
-			localStorage['locData'] = locData;
-			localStorage['properties'] = mathlib.obj2str(data['properties']);
-			kernel.loadProp();
-		}
-		storage.importAll(data).then(function() {
-			location.reload();
-		});
+		var sessionDelta = 0;
+		var solveAdd = 0;
+		var solveRm = 0;
+		storage.exportAll().then(function(exportObj) {
+			for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
+				var times = mathlib.str2obj(exportObj['session' + sessionIdx] || []);
+				var timesNew = mathlib.str2obj(data['session' + sessionIdx] || []);
+				if (times.length != timesNew.length) {
+					sessionDelta++;
+					solveAdd += Math.max(timesNew.length - times.length, 0);
+					solveRm += Math.max(times.length - timesNew.length, 0);
+				}
+			}
+			if (confirm(IMPORT_FINAL_CONFIRM
+					.replace("%d", sessionDelta)
+					.replace("%a", solveAdd)
+					.replace("%r", solveRm)
+				)) {
+				return Promise.resolve();
+			} else {
+				return Promise.reject();
+			}
+		}).then(function() {
+			if ('properties' in data) {
+				var devData = localStorage['devData'] || '{}';
+				var wcaData = localStorage['wcaData'] || '{}';
+				var gglData = localStorage['gglData'] || '{}';
+				var locData = localStorage['locData'] || '{}';
+				localStorage.clear();
+				localStorage['devData'] = devData;
+				localStorage['wcaData'] = wcaData;
+				localStorage['gglData'] = gglData;
+				localStorage['locData'] = locData;
+				localStorage['properties'] = mathlib.obj2str(data['properties']);
+				kernel.loadProp();
+			}
+			storage.importAll(data).then(function() {
+				location.reload();
+			});
+		}, $.noop);
 	}
 
 	function importFile(reader) {

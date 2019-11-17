@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Aurichtung des Scramble-Bereichs';
 var PROPERTY_SCRALIGN_STR = 'mittig|links|rechts';
 var PROPERTY_SCRFAST = 'schnellen Scramble für 4x4x4 verwenden (inoffiziell)';
 var PROPERTY_SCRKEYM = 'Schlüssel-Züge im Scramble hervorheben';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Aktion beim klicken des scrambles';
+var PROPERTY_SCRCLK_STR = 'Nichts|Kopieren|nächster Scramble';
 var PROPERTY_WNDSCR = 'Scramble-Panel Anzeige-Stil';
 var PROPERTY_WNDSTAT = 'Statistik-Panel Anzeige-Stil';
 var PROPERTY_WNDTOOL = 'Werkzeug-Panel Anzeige-Stil';
@@ -64,19 +64,19 @@ var TOOLS_DISTRIBUTION = 'Zeitverteilung';
 var TOOLS_TREND = 'Zeit-Trend';
 var TOOLS_METRONOME = 'Metronom';
 var TOOLS_CFMTIME = 'Zeit bestätigen';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_VIEWMYRESULT = 'My History';
+var OLCOMP_UPDATELIST = 'Wettbewerbsliste aktualisieren';
+var OLCOMP_VIEWRESULT = 'Ergebisse betrachten';
+var OLCOMP_VIEWMYRESULT = 'Verlauf';
 var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
+var OLCOMP_SUBMIT = 'Senden!';
+var OLCOMP_SUBMITAS = 'Absenden als: ';
+var OLCOMP_WCANOTICE = 'Als Ihr WCA-Konto absenden? (Erneut anmelden, wenn es nach dem Absenden nicht erkannt wurde)';
 var OLCOMP_OLCOMP = 'Online Competition';
 var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
+var OLCOMP_ME = 'Ich';
 var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_ABORT = 'Wettbewerb abbrechen und Ergebnisse zeigen?';
+var OLCOMP_WITHANONYM = 'Mit Anonymität';
 var PROPERTY_IMGSIZE = 'Scramble-Bild Größe';
 var TIMER_INSPECT = 'Inspektion';
 var TIMER_SOLVE = 'Lösen';
@@ -154,8 +154,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["zufälliger Status (WCA)", "333", 0],
+		['zufällige Bewegung', "333o", 25],
 		['3x3x3 für Anfänger', "333noob", 25],
 		['nur Kanten', "edges", 0],
 		['nur Ecken', "corners", 0],
@@ -177,7 +177,7 @@ var scrdata = [
 		['einfaches Kreuz', "easyc", 3]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
+		["zufälliger Status (WCA)", "222so", 0],
 		['optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
@@ -225,17 +225,17 @@ var scrdata = [
 		['alter Stil', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
+		["zufälliger Status (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		['zufällige Bewegung', "pyrm", 25]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
+		["zufälliger Status (WCA)", "skbso", 0],
 		['optimal', "skbo", 0],
-		['random move', "skb", 25]
+		['zufällige Bewegung', "skb", 25]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["zufälliger Status (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['Flächen-Zug-Metrik', "sq1h", 40],
 		['Zug-Metrik', "sq1t", 20]
@@ -262,9 +262,9 @@ var scrdata = [
 		['11x11x11', "111111", 120]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
+		['zufälliger Status', "gearso", 0],
 		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['zufällige Bewegung', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -283,9 +283,9 @@ var scrdata = [
 		['alt', "redi", 20]
 	]],
 	['Ivy cube', [
-		['random state', "ivyso", 0],
+		['zufälliger Status', "ivyso", 0],
 		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+		['zufällige Bewegung', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]

@@ -48,7 +48,7 @@ var EXPORT_LOGINGGL = 'Login Using Google Account';
 var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! Confirm to import data?';
+var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'СКРЕ - < див цласс ="нотранслате"> 0 </див> МБЛЕ';
 var BUTTON_TOOLS = 'АЛАТКЕ';
 var IMAGE_UNAVAILABLE = 'Није доступно за ову врсту скрембла';
