@@ -166,6 +166,7 @@ var stackmat = execMain(function() {
 	var idle_val = 0;
 	var last_bit = 0;
 	var last_bit_length = 0;
+	var no_state_length = 0;
 
 	function appendBit(bit) {
 		bitBuffer.push(bit);
@@ -175,6 +176,7 @@ var stackmat = execMain(function() {
 		} else {
 			last_bit_length++;
 		}
+		no_state_length++;
 		if (last_bit_length > 10) { //IDLE
 			idle_val = bit;
 			// console.log(bitBuffer.length);
@@ -191,8 +193,8 @@ var stackmat = execMain(function() {
 				stackmat_state.power = last_power;
 				callback(stackmat_state);
 				// console.log('off');
-			} else if (last_bit_length > 700) {
-				last_bit_length = 100;
+			} else if (no_state_length > 700) {
+				no_state_length = 100;
 				stackmat_state.noise = Math.min(1, distortionStat) || 0;
 				stackmat_state.power = last_power;
 				callback(stackmat_state);
@@ -218,36 +220,24 @@ var stackmat = execMain(function() {
 		}
 		DEBUG && console.log('[stackmat]', byteBuffer);
 		var re_head = /[ SILRCA]/;
-		var re_number = /\d/;
+		var re_number = /[0-9]/;
 		var head = byteBuffer[0];
 		if (!re_head.exec(head)) {
 			return;
 		}
-		var time_milli = 0;
 		var checksum = 64;
-		if (byteBuffer.length == 9) {
-			for (var i = 1; i < 6; i++) {
-				if (!re_number.exec(byteBuffer[i])) {
-					return;
-				}
-				checksum += ~~(byteBuffer[i]);
-			}
-			if (checksum != byteBuffer[6].charCodeAt(0)) {
+		for (var i = 1; i < byteBuffer.length - 3; i++) {
+			if (!re_number.exec(byteBuffer[i])) {
 				return;
 			}
-			time_milli = ~~byteBuffer[1] * 60000 + ~~(byteBuffer[2] + byteBuffer[3]) * 1000 + ~~(byteBuffer[4] + byteBuffer[5]) * 10;
-		} else if (byteBuffer.length == 10) {
-			for (var i = 1; i < 7; i++) {
-				if (!re_number.exec(byteBuffer[i])) {
-					return;
-				}
-				checksum += ~~(byteBuffer[i]);
-			}
-			if (checksum != byteBuffer[7].charCodeAt(0)) {
-				return;
-			}
-			time_milli = ~~byteBuffer[1] * 60000 + ~~(byteBuffer[2] + byteBuffer[3]) * 1000 + ~~(byteBuffer[4] + byteBuffer[5] + byteBuffer[6]);
+			checksum += ~~(byteBuffer[i]);
 		}
+		if (checksum != byteBuffer[byteBuffer.length - 3].charCodeAt(0)) {
+			return;
+		}
+		var time_milli = ~~byteBuffer[1] * 60000 +
+			~~(byteBuffer[2] + byteBuffer[3]) * 1000 +
+			~~(byteBuffer[4] + byteBuffer[5] + (byteBuffer.length == 10 ? byteBuffer[6] : '0'));
 		pushNewState(head, time_milli, byteBuffer.length == 9 ? 10 : 1);
 	}
 
@@ -267,8 +257,8 @@ var stackmat = execMain(function() {
 			head = 'S';
 		}
 		var is_time_inc = unit == stackmat_state.unit ?
-				new_state.time_milli > stackmat_state.time_milli :
-				Math.floor(new_state.time_milli / 10) > Math.floor(stackmat_state.time_milli / 10);
+			new_state.time_milli > stackmat_state.time_milli :
+			Math.floor(new_state.time_milli / 10) > Math.floor(stackmat_state.time_milli / 10);
 		new_state.greenLight = head == 'A';
 		new_state.leftHand = head == 'L' || head == 'A' || head == 'C';
 		new_state.rightHand = head == 'R' || head == 'A' || head == 'C';
@@ -281,6 +271,7 @@ var stackmat = execMain(function() {
 
 		stackmat_state = new_state;
 
+		no_state_length = 0;
 		callback(stackmat_state);
 	}
 
@@ -347,4 +338,38 @@ var stackmat = execMain(function() {
 			callback = func;
 		}
 	}
+});
+
+execMain(function() {
+	if (!window.nativeStackmat) {
+		return;
+	}
+	stackmat = (function() {
+		DEBUG && console.log('Use Native Stackmat');
+		var callbackName = 'stackmat_callback_' + ~~(Math.random() * 10000000);
+		var callback;
+		nativeStackmat.setCallback(callbackName);
+		window[callbackName] = function(obj) {
+			DEBUG && console.log(JSON.stringify(obj));
+			callback && callback(obj);
+		}
+		return {
+			init: function() {
+				nativeStackmat.init();
+				return Promise.resolve();
+			},
+			stop: function() {
+				nativeStackmat.stop();
+				return Promise.resolve();
+			},
+			updateInputDevices: function() {
+				return new Promise(function(resolve, reject) {
+					resolve([[undefined, 'native']]);
+				});
+			},
+			setCallBack: function(func) {
+				callback = func;
+			}
+		}
+	})();
 });
