@@ -551,14 +551,14 @@ var kernel = execMain(function() {
 			"#logo{color:?;border-color:?;background-color:?}" +
 			".mybutton,.tab,.cntbar{border-color:?}" +
 			"html:not(.m) .mybutton:hover,.mybutton:active,.tab:active,.mywindow,.popup,.dialog{background-color:?}" +
-			".mybutton.enable,.tab.enable,.cntbar,.selected{background-color:?}" +
+			".mybutton.enable,.tab.enable,.cntbar,.selected,table.opttable tr th:first-child{background-color:?}" +
 			"#gray{background-color:?}" +
 			"html:not(.m) .times:hover,html:not(.m) .click:hover,.times:active,.click:active,textarea{background-color:?}" +
 			".click{color:?}" +
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
-			"input:disabled,table.opttable tr:nth-child(odd) td{background:?}" +
+			"input:disabled,table.opttable tr:nth-child(odd) td:first-child{background:?}" +
 			".mywindow::before,.popup,.dialog,#leftbar::before";
 		csstmp = [
 			csstmp + "{box-shadow:0 0 .6em ?}",

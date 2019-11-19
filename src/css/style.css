@@ -107,6 +107,10 @@ input.buttonOK {
 	margin: 0 2.5% 0 2.5%;
 }
 
+.m input.buttonOK {
+	font-size: 1.35em;
+}
+
 img {
 	display: none;
 }
@@ -433,7 +437,10 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 }
 
 .options th:first-child {
-	padding: 1em;
+	padding: 0.6em;
+	font-size: 1.2em;
+	text-transform: capitalize;
+	border-radius: 0 1.2em 1.2em 0;
 }
 
 .options .tab > .icon, .m .options .tab > span {
@@ -442,6 +449,10 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 
 .m .options .tab > .icon {
 	display: initial;
+}
+
+.m .dialog {
+	font-size: 1.2em;
 }
 
 .tab {
@@ -574,7 +585,7 @@ table.opttable th .icon {
 }
 
 table.opttable td {
-	padding: 0 0.1em 0 0.3em;
+	padding: 0.2em 0.1em 0.2em 0.3em;
 }
 
 table.opttable .sr {
