@@ -720,6 +720,7 @@ var kernel = execMain(function() {
 				case 'zoom':
 					$('html').attr('class', 'p' + ~~(value[1] * 100));
 					$(window).trigger('resize');
+					updateUIDesign();
 				case 'view':
 					fixOrient();
 					break;
