@@ -558,7 +558,7 @@ var kernel = execMain(function() {
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
-			"input:disabled{background:?}" +
+			"input:disabled,table.opttable tr:nth-child(odd) td{background:?}" +
 			".mywindow::before,.popup,.dialog,#leftbar::before";
 		csstmp = [
 			csstmp + "{box-shadow:0 0 .6em ?}",
