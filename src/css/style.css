@@ -577,6 +577,7 @@ table.sumtable td, table.sumtable th {
 table.opttable {
 	border-collapse: collapse;
 	width: 100%;
+	margin: 0.1em;
 }
 
 table.opttable th .icon {
@@ -665,6 +666,11 @@ table.opttable .sr {
 	font-family: Lucida Console, Monospace;
 	font-size: 1.5em;
 	text-align: left;
+	max-height: 30vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding-right: 2em;
+	margin-right: -2em;
 }
 
 #toolsDiv > div {
@@ -975,7 +981,7 @@ html.m .mhide, html:not(.m) .mshow {
 }
 
 .m #toolsDiv > div > div {
-	font-size: 1em;
+	font-size: 1.2em;
 }
 
 .m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {

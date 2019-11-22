@@ -376,7 +376,6 @@ var GiikerCube = execMain(function() {
 					for (var i = moveDiff - 1; i >= 0; i--) {
 						var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + " 2'".indexOf(prevMoves[i][1]);
 						mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
-						mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 						prevTimestamp += timeOffs[i];
 						callback(curCubie.toFaceCube(), prevMoves.slice(i), prevTimestamp, 'Gan 356i');
 						var tmp = curCubie;
@@ -518,6 +517,8 @@ var GiikerCube = execMain(function() {
 				return _read.startNotifications();
 			}).then(function() {
 				return _read.addEventListener('characteristicvaluechanged', onStateChanged);
+			}).then(function() {
+				return _write.writeValue(new Uint8Array([WRITE_STATE]).buffer);
 			});
 		}
 
@@ -535,13 +536,18 @@ var GiikerCube = execMain(function() {
 			return valhex;
 		}
 
+		var axisPerm = [5, 2, 0, 3, 1, 4];
+		var facePerm = [0, 1, 2, 5, 8, 7, 6, 3];
+		var faceOffset = [0, 0, 6, 2, 0, 0];
 		var curBatteryLevel = -1;
 		var batteryResolveList = [];
 		var moveCntFree = 100;
 		var curFacelet = mathlib.SOLVED_FACELET;
 		var curCubie = new mathlib.CubieCube();
+		var prevCubie = new mathlib.CubieCube();
 
 		function parseData(value) {
+			var timestamp = $.now();
 			if (value.byteLength < 4) {
 				return;
 			}
@@ -551,38 +557,52 @@ var GiikerCube = execMain(function() {
 				return;
 			}
 			var msgType = value.getUint8(2);
-			var msgLen = value.byteLength - 4;
+			var msgLen = value.byteLength - 6;
 			if (msgType == 1) { // move
-				console.log(toHexVal(value));
+				// console.log(toHexVal(value));
 				for (var i = 0; i < msgLen; i += 2) {
-					var axis = "BFUDRL".charAt(value.getUint8(3 + i) >> 1);
-					var power = [1, -1][value.getUint8(3 + i) & 1];
-					//TODO callback
-
+					var axis = axisPerm[value.getUint8(3 + i) >> 1];
+					var power = [0, 2][value.getUint8(3 + i) & 1];
+					var m = axis * 3 + power;
+					console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(power));
+					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					curFacelet = curCubie.toFaceCube();
+					callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(power)], timestamp, 'GoCube');
+					var tmp = curCubie;
+					curCubie = prevCubie;
+					prevCubie = tmp;
 					if (++moveCntFree > 20) {
 						moveCntFree = 0;
 						_write.writeValue(new Uint8Array([WRITE_STATE]).buffer);
 					}
 				}
 			} else if (msgType == 2) { // cube state
-				console.log(toHexVal(value));
 				var facelet = [];
-				for (var i = 0; i < 54; i++) {
-					facelet[i] = "BFUDRL".charAt(value.getUint8(3 + i));
+				for (var a = 0; a < 6; a++) {
+					var axis = axisPerm[a] * 9;
+					var aoff = axisOffset[a];
+					facelet[axis + 4] = "BFUDRL".charAt(value.getUint8(3 + a * 9));
+					for (var i = 0; i < 8; i++) {
+						facelet[axis + facePerm[(i + aoff) % 8]] = "BFUDRL".charAt(value.getUint8(3 + a * 9 + i + 1));
+					}
 				}
-				curFacelet = facelet.join('');
-				curCubie.fromFacelet(curFacelet);
+				var newFacelet = facelet.join('');
+				if (newFacelet != curFacelet) {
+					console.log('facelet', newFacelet);
+					curCubie.fromFacelet(newFacelet);
+				}
 			} else if (msgType == 3) { // quaternion
 			} else if (msgType == 5) { // battery level
-				console.log(toHexVal(value));
+				console.log('battery level', toHexVal(value));
 				curBatteryLevel = value.getUint8(3);
+				while (batteryResolveList.length != 0) {
+					batteryResolveList.shift()(curBatteryLevel);
+				}
 			} else if (msgType == 7) { // offline stats
-				console.log(toHexVal(value));
+				console.log('offline stats', toHexVal(value));
 			} else if (msgType == 8) { // cube type
-				console.log(toHexVal(value));
-			}
-			while (batteryResolveList.length != 0) {
-				batteryResolveList.shift()(curBatteryLevel);
+				console.log('cube type', toHexVal(value));
 			}
 		}
 
