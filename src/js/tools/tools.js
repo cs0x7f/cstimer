@@ -177,7 +177,7 @@ var tools = execMain(function() {
 			}
 		}
 
-		kernel.regProp('tools', 'solSpl', 0, 'Hide full solution', [false])
+		kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false])
 		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50]);
 		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4]);
 		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);

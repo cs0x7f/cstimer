@@ -725,7 +725,7 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50], 1);
-		kernel.regProp('scramble', 'scrASize', 0, 'Auto scramble size', [true], 1);
+		kernel.regProp('scramble', 'scrASize', 0, PROPERTY_SCRASIZE, [true], 1);
 		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true], 1);
 		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [false], 1);
 		kernel.regProp('scramble', 'scrAlign', 1, PROPERTY_SCRALIGN, ['c', ['c', 'l', 'r'], PROPERTY_SCRALIGN_STR.split('|')], 1);

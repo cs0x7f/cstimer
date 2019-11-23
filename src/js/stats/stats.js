@@ -328,7 +328,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var time = timesAt(cfmIdx);
 			var reviewElem = '';
 			if (time[4]) {
-				reviewElem = $('<a target="_blank">Review</a>').addClass('click');
+				reviewElem = $('<a target="_blank">' + STATS_REVIEW + '</a>').addClass('click');
 				reviewElem.attr('href', getReviewUrl(time));
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}
@@ -352,7 +352,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 			cfmIdxRow = target.parent();
 			genDiv();
 			cfmDiv.css('font-size', '1.2em');
-			kernel.showDialog([cfmDiv, hideToTools, undefined, hideToTools], 'cfm', 'Solves No.' + (idx + 1));
+			kernel.showDialog([cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function() {
+				hideToTools();
+				setHighlight(times_stats_table, timesAt, idx, 1, 10, true);
+			}]], 'cfm', 'Solves No.' + (idx + 1));
 		}
 
 		function setPenalty(value, idx, idxRow) {
@@ -414,14 +417,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 			return;
 		}
 		switch (row) {
-			case 0: floatCfm.proc(idx, target); break;
-			case 1:
+			case 0:
 				if (kernel.getProp('rsfor1s')) {
 					setHighlight(times_stats_table, timesAt, idx, 1, 10, true);
-				} else {
-					floatCfm.proc(idx, target);
+					break;
 				}
-				break;
+			case 1: floatCfm.proc(idx, target); break;
 			case 2: setHighlight(times_stats_table, timesAt, idx - len1 + 1, len1, len1 * 10, stat1 < 0); break;
 			case 3: setHighlight(times_stats_table, timesAt, idx - len2 + 1, len2, len2 * 10, stat2 < 0); break;
 		}
@@ -768,19 +769,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}).bind(undefined, idx));
 			}
 			loadproc.then(function() {
-				var sortedArr = [];
-				for (var i = 0; i < hugeTimes.length; i++) {
-					sortedArr.push(i);
-				}
-				sortedArr.sort(function(a, b) {
-					var idxa = hugeTimes[a][3] || 0;
-					var idxb = hugeTimes[b][3] || 0;
-					return idxa == idxb ? (a - b) : (idxa - idxb);
-				});
-				for (var i = 0; i < hugeTimes.length; i++) {
-					sortedArr[i] = hugeTimes[sortedArr[i]];
-				}
-				hugeTimes = sortedArr;
+				hugeTimes = getSortedTimesByDate(hugeTimes);
 				hugeStats.reset(hugeTimes.length);
 				updateSpan();
 			});
@@ -973,6 +962,22 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	function timesAt(idx) {
 		return times[idx];
+	}
+
+	function getSortedTimesByDate(times) {
+		var sorted = [];
+		for (var i = 0; i < times.length; i++) {
+			sorted.push(i);
+		}
+		sorted.sort(function(a, b) {
+			var idxa = times[a][3] || 0;
+			var idxb = times[b][3] || 0;
+			return idxa == idxb ? (a - b) : (idxa - idxb);
+		});
+		for (var i = 0; i < times.length; i++) {
+			sorted[i] = times[sorted[i]];
+		}
+		return sorted;
 	}
 
 	var distribution = (function() {
@@ -1473,6 +1478,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 				case 'm': //append current session to
 					mergeSessionTo(idx);
 					break;
+				case 'o': //sort current session by date
+					sortSession();
+					break;
 				case 'p': //split current session
 					splitSession();
 					break;
@@ -1545,6 +1553,28 @@ var stats = execMain(function(kpretty, round, kpround) {
 			});
 		}
 
+		function sortSession() {
+			var timesNew = getSortedTimesByDate(times);
+			var cntdiff = 0;
+			for (var i = 0; i < times.length; i++) {
+				if (timesNew[i] != times[i]) {
+					cntdiff++;
+				}
+			}
+			if (cntdiff == 0) {
+				logohint.push('Already sorted');
+				return;
+			}
+			if (!confirm(STATS_SSMGR_SORTCFM.replace('%d', cntdiff))) {
+				return;
+			}
+			times = timesNew;
+			times_stats_table.reset();
+			times_stats_list.reset();
+			save();
+			sessionLoaded(sessionIdx, times);
+		}
+
 		function getMgrRowAtRank(rank) {
 			var idx = ssSorted[rank - 1];
 			var ssData = sessionData[idx];
@@ -1561,6 +1591,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<option value="+">' + ops[1] + '</option>' +
 				'<option value="' + (idx == sessionIdx ? ('p">' + ops[2]) : ('m">' + ops[3])) + '</option>' +
 				'<option value="x">' + ops[4] + '</option>' +
+				(idx == sessionIdx ? '<option value="o">' + ops[5] + '</option>' : '') +
 				'<option value="v">' + STATS_EXPORTCSV + '</option>' +
 				'</select>';
 			var uClk = rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>';
@@ -2193,7 +2224,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'stat1l', 2, stattl[1].replace('%d', 1), [5, 3, 1000], 1);
 		kernel.regProp('stats', 'stat2t', 1, stattl[0].replace('%d', 2), [0, [0, 1], stattl.slice(2)], 1);
 		kernel.regProp('stats', 'stat2l', 2, stattl[1].replace('%d', 2), [12, 3, 1000], 1);
-		kernel.regProp('stats', 'rsfor1s', 0, 'Round statistics for a single solve', [false]);
+		kernel.regProp('stats', 'rsfor1s', 0, STATS_RSFORSS, [false]);
 		kernel.regProp('stats', 'statalu', 5, PROPERTY_STATALU, ['mo3 ao5 ao12 ao100'], 1);
 		kernel.regProp('stats', 'statal', 1, PROPERTY_STATAL, ['mo3 ao5 ao12 ao100', ['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'u'],
 			['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'Custom']
