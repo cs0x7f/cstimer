@@ -248,7 +248,7 @@ var scrdata = [
 		['Moviments de l\'espai en blanc', "15pm", 80],
 		['^<>v', "15pat", 80]
 	]],
-	['LxAxF', [
+	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],
 		['2x3x3 (Domino)', "233", 25],

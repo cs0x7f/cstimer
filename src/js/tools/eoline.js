@@ -102,7 +102,7 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 				len++;
 			}
 			sol.reverse();
-			fdiv.append(faceStr[face] + ": " + rotIdx[face], tools.getSolutionSpan(sol), '<br>');
+			fdiv.append($('<span class="sol">').append(faceStr[face] + ": " + rotIdx[face], tools.getSolutionSpan(sol)), '<br>');
 		}
 	}
 

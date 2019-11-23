@@ -324,7 +324,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			curScramble = kernel.parseScramble(scramble, "FRUBLD");
 			var solutions = solve_cross(curScramble);
 			for (var face = 0; face < 6; face++) {
-				var span = $('<span />');
+				var span = $('<span class="sol"/>');
 				var clk = $('<span />').html('ec').addClass('click').click(ecClick);
 				span.append(faceStr[face] + "(", clk, "): " + rotIdx[face], tools.getSolutionSpan(solutions[face]), '<br>');
 				fdiv.append(span);

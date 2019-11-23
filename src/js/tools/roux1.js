@@ -99,7 +99,7 @@ execMain(function(CubieCube) {
 			for (var i = 0; i < sol.length; i++) {
 				sol[i] = "URFDLB".charAt(sol[i][0]) + " 2'".charAt(sol[i][1]);
 			}
-			fdiv.append(faceStr[face] + ": " + rotIdx[face] + ["&nbsp;&nbsp;&nbsp;", "x'&nbsp;", "x2&nbsp;", "x&nbsp;&nbsp;"][ori], tools.getSolutionSpan(sol), '<br>');
+			fdiv.append($('<span class="sol">').append(faceStr[face] + ": " + rotIdx[face] + ["&nbsp;&nbsp;&nbsp;", "x'&nbsp;", "x2&nbsp;", "x&nbsp;&nbsp;"][ori], tools.getSolutionSpan(sol)), '<br>');
 		}
 	}
 
