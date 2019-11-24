@@ -487,13 +487,16 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	height: 100%;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+.noScrollBar {
 	padding-right: 21px;
 	padding-right: 1.5rem;
 	margin-right: -21px;
 	margin-right: -1.5rem;
 }
 
-.tabValue > *::-webkit-scrollbar {
+.noScrollBar::-webkit-scrollbar {
 	display: none;
 }
 

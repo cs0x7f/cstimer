@@ -52,7 +52,7 @@ var kernel = execMain(function() {
 		var subDivs = {};
 		var isDivOut = true;
 
-		var scrollDiv = $('<div>');
+		var scrollDiv = $('<div class="noScrollBar">');
 		var optTable = $('<table class="opttable">');
 
 		function resetPropertyes() {
@@ -254,7 +254,10 @@ var kernel = execMain(function() {
 				resetPropertyes();
 				generateDiv();
 				return false;
-			}], [BUTTON_EXPORT.replace('<br', ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace('-<br>', ''));
+			}], [BUTTON_EXPORT.replace('<br', ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace('-<br>', ''), function() {
+				right.find('select[name="lang"]').focus().blur();
+				scrollToModule();
+			});
 			return;
 		}
 
@@ -442,7 +445,7 @@ var kernel = execMain(function() {
 		var CAN = $('<input type="button" class="buttonOK">').val(CANCEL_LANG);
 		dialog.append(title, value, buttons);
 
-		function showDialog(values, diagclass, titlestr) {
+		function showDialog(values, diagclass, titlestr, callback) {
 			dialog.removeClass().addClass('dialog').addClass('dialog' + diagclass);
 			title.html(titlestr);
 			value.children().appendTo(temp);
@@ -482,18 +485,22 @@ var kernel = execMain(function() {
 				})(values[i][1])));
 			}
 
-			dialog.stop(true, true).fadeTo(100, 0.98);
+			dialog.stop(true, true).fadeTo(100, 0.98, function() {
+				values[0].focus();
+				callback && callback();
+			});
 			gray.stop(true, true).fadeTo(100, 0.25);
 			isPopup = true;
-			values[0].focus();
 		}
 
 		function hideDialog() {
-			value.children().appendTo(temp);
-			dialog.stop(true, true).fadeOut(100).removeClass();
+			dialog.stop(true, true).fadeOut(100, function() {
+				dialog.removeClass();
+				value.children().appendTo(temp);
+				refocus();
+			});
 			gray.hide();
 			isPopup = false;
-			refocus();
 		}
 
 		function hide() {

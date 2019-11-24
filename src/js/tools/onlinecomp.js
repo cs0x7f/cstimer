@@ -6,7 +6,7 @@ var onlinecomp = execMain(function() {
 	var uidSpan = $('<span class="click">');
 	var refreshButton = $('<input type="button">').val(OLCOMP_UPDATELIST).click(updateCompList);
 	var compSelectDiv = $('<div>');
-	var compProgressDiv = $('<div style="max-height: 10em; overflow-y: auto;">');
+	var compProgressDiv = $('<div class="noScrollBar" style="max-height: 8em; overflow-y: auto;">');
 	var compMainButton = $('<input type="button">');
 	var viewResultButton = $('<input type="button">').val(OLCOMP_VIEWRESULT);
 	var viewMyResultButton = $('<input type="button">').val(OLCOMP_VIEWMYRESULT);
