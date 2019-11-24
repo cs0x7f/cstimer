@@ -28,6 +28,11 @@
 		for (b = 6; 1 <= b; b--) g = 3 * g + f[b] % 3;
 		return g
 	}
+
+	var egcases = [[0], [2, 3, 4, 5], [1]];
+	var egprobs = [1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4];
+	var egmap = [0, 17, 5, 14, 8, 1, 2, 4];
+	var egfilter = ['EG0-O', 'EG0-H', 'EG0-L', 'EG0-Pi', 'EG0-S', 'EG0-T', 'EG0-U', 'EG0-aS', 'EG1-O', 'EG1-H', 'EG1-L', 'EG1-Pi', 'EG1-S', 'EG1-T', 'EG1-U', 'EG1-aS', 'EG2-O', 'EG2-H', 'EG2-L', 'EG2-Pi', 'EG2-S', 'EG2-T', 'EG2-U', 'EG2-aS'];
 	function getScramble(type, length, state) {
 		var a, b, c, g, lim;
 		a = type == '222o' ? 0 : 9;
@@ -44,34 +49,22 @@
 				b = rn(729);
 				lim = 3;
 			} else if (type == '222eg') {
-				if (state == 0) {
-					return getScramble('222eg0', length);
-				} else if (state == 1) {
-					return getScramble('222eg1', length);
-				} else if (state == 2) {
-					return getScramble('222eg2', length);
+				b = egmap[state & 0x7];
+				c = mathlib.rndEl(egcases[state >> 3]);
+				mathlib.set8Perm(g[c], rn(24), 4);
+				c = mathlib.get8Perm(g[c], 7);
+				var rndU = rn(4);
+				while (rndU-- > 0) {
+					b = doOriMove(b, 0);
 				}
-			} else if (type == '222eg0') {
-				c = rn(24);
+			} else if (/^222eg[012]$/.exec(type)) {
 				b = rn(27);
-				g = g[0];
-				mathlib.set8Perm(g, c, 4);
-				c = mathlib.get8Perm(g, 7);
-			} else if (type == '222eg1') {
-				c = rn(24);
-				b = rn(27);
-				g = g[rn(4) + 2];
-				mathlib.set8Perm(g, c, 4);
-				c = mathlib.get8Perm(g, 7);
-			} else if (type == '222eg2') {
-				c = rn(24);
-				b = rn(27);
-				g = g[1];
-				mathlib.set8Perm(g, c, 4);
-				c = mathlib.get8Perm(g, 7);
+				c = mathlib.rndEl(egcases[~~type[5]]);
+				mathlib.set8Perm(g[c], rn(24), 4);
+				c = mathlib.get8Perm(g[c], 7);
 			}
 		} while (c == 0 && b == 0 || solv.search([c, b], 0, lim) != null);
 		return solv.toStr(solv.search([c, b], a).reverse(), "URF", "'2 ");
 	}
-	scrMgr.reg(['222o', '222so', '222eg0', '222eg1', '222eg2'], getScramble)('222eg', getScramble, [['CLL', 'EG1', 'EG2'], [1, 4, 1]]);
+	scrMgr.reg(['222o', '222so', '222eg0', '222eg1', '222eg2'], getScramble)('222eg', getScramble, [egfilter, egprobs]);
 }) (mathlib.circle, mathlib.rn);
