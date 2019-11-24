@@ -389,7 +389,7 @@ var STATS_SSMGR_DETAIL = 'Időszak részletek';
 var STATS_SSMGR_OPS = 'Átnvezés|Létrehozás|Szétválasztás|Egybevonás|Törlés|Sort';
 var STATS_SSMGR_ORDER = 'Rendezés keverés szerint';
 var STATS_SSMGR_ODCFM = 'Az összes időszakot rendezed keverés szerint?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_SORTCFM = '%d kirakás újra lesz rendezve. Folytatod?';
 var STATS_ALERTMG = 'Egybevonod az összes időt a(z) [%f] időszakban a(z) [%t] időszak végéig?';
 var STATS_PROMPTSPL = 'Hány időt szeretnél leválasztani a(z) [%s] időszakról?';
 var STATS_ALERTSPL = 'Szétválasszon vagy legalább egy időt hagyjon';
@@ -427,10 +427,10 @@ var PROPERTY_TRIM = 'A kétoldalt levágott megoldások száma';
 var PROPERTY_TRIM_MED = 'Medián';
 var PROPERTY_STKHEAD = 'A Stackmat státuszának használata';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_IMPPREV = 'A régebbi adatok importálása';
+var PROPERTY_AUTOEXP = 'Automatikus exportálás (100 kirakásonként)';
+var PROPERTY_AUTOEXP_OPT = 'Soha|File-ba|csTimer ID-val|WCA fiókkal';
+var PROPERTY_SCRASIZE = 'Automatikus keverésméret';
 var MODULE_NAMES = {
 	"kernel": 'globális',
 	"ui": 'kijelző',
