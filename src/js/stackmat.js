@@ -29,7 +29,7 @@ var stackmat = execMain(function() {
 		});
 	}
 
-	function init(timer, deviceId) {
+	function init(timer, deviceId, force) {
 		curTimer = timer;
 
 		if (navigator.mediaDevices === undefined) {
@@ -51,7 +51,7 @@ var stackmat = execMain(function() {
 		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 
 		audio_context = new AudioContext();
-		if (audio_context.state == 'suspended') {
+		if (audio_context.state == 'suspended' && !force) {
 			return Promise.reject();
 		}
 

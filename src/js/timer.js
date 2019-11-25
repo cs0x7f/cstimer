@@ -623,9 +623,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				enable = input == 's' || input == 'm';
 				if (enable) {
 					stackmatutil.setCallBack(stackmatCallback);
-					stackmatutil.init(input).then($.noop, function() {
+					stackmatutil.init(input, false).then($.noop, function() {
 						kernel.showDialog([$('<div>Press OK To Connect To Stackmat</div>'), function() {
-							stackmatutil.init(input).then($.noop, console.log);
+							stackmatutil.init(input, true).then($.noop, console.log);
 						}, 0, 0], 'share', 'Stackmat Connect');
 					});
 				} else {

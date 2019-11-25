@@ -38,7 +38,7 @@ var stackmatutil = execMain(function(CubieCube) {
 			deviceSelect.unbind('change').change(function() {
 				stackmat.stop();
 				console.log('select device ', deviceSelect.val());
-				stackmat.init(undefined, deviceSelect.val());
+				stackmat.init(undefined, deviceSelect.val(), true);
 				kernel.blur();
 			});
 		});
@@ -51,8 +51,8 @@ var stackmatutil = execMain(function(CubieCube) {
 	});
 
 	return {
-		init: function(timer) {
-			return stackmat.init(timer).then(updateDevices);
+		init: function(timer, force) {
+			return stackmat.init(timer, undefined, force).then(updateDevices);
 		},
 		stop: stackmat.stop,
 		setCallBack: function(func) {
