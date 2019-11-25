@@ -409,7 +409,6 @@ var STATS_XSESSION_DATE = 'jedes Datum|letzten 24 Stunden|letzten 7 Tage|letzten
 var STATS_XSESSION_NAME = 'jeder Name';
 var STATS_XSESSION_SCR = 'jeder Scramble';
 var STATS_XSESSION_CALC = 'Berechnen';
-var STATS_SSSTAT = '1-solve stat.';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'Scramble(s) in den Statistiken anzeigen';
 var PROPERTY_PRINTDATE = 'Datum des Solves in den Statistiken anzeigen';

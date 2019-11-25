@@ -409,7 +409,6 @@ var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 
 var STATS_XSESSION_NAME = 'any name';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
-var STATS_SSSTAT = '1-solve stat.';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'mostrar embaralhamentos nas estatísticas';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';

@@ -409,7 +409,6 @@ var STATS_XSESSION_DATE = '任意日期|24小时内|7天内|30天内|365天内';
 var STATS_XSESSION_NAME = '任意名称';
 var STATS_XSESSION_SCR = '任意打乱';
 var STATS_XSESSION_CALC = '计算';
-var STATS_SSSTAT = '单还原统计';
 var STATS_RSFORSS = '点击还原序号时显示统计';
 var PROPERTY_PRINTSCR = '成绩统计中显示打乱';
 var PROPERTY_PRINTDATE = '成绩统计中显示日期';
