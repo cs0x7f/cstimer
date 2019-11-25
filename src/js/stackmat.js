@@ -51,9 +51,6 @@ var stackmat = execMain(function() {
 		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 
 		audio_context = new AudioContext();
-		if (audio_context.state == 'suspended' && !force) {
-			return Promise.reject();
-		}
 
 		if (curTimer == 'm') {
 			sample_rate = audio_context["sampleRate"] / 8000;
@@ -81,7 +78,12 @@ var stackmat = execMain(function() {
 		if (audio_stream == undefined) {
 			return navigator.mediaDevices.getUserMedia({
 				"audio": selectObj
-			}).then(success, $.noop);
+			}).then(function(stream) {
+				if (audio_context.state == 'suspended' && !force) {
+					return Promise.reject();
+				}
+				success(stream);
+			}, console.log);
 		} else {
 			return Promise.resolve();
 		}
