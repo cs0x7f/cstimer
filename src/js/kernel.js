@@ -446,6 +446,7 @@ var kernel = execMain(function() {
 		dialog.append(title, value, buttons);
 
 		function showDialog(values, diagclass, titlestr, callback) {
+			isPopup = true;
 			dialog.removeClass().addClass('dialog').addClass('dialog' + diagclass);
 			title.html(titlestr);
 			value.children().appendTo(temp);
@@ -490,13 +491,15 @@ var kernel = execMain(function() {
 				callback && callback();
 			});
 			gray.stop(true, true).fadeTo(100, 0.25);
-			isPopup = true;
 		}
 
 		function hideDialog() {
 			dialog.stop(true, true).fadeOut(100, function() {
-				dialog.removeClass();
+				if (isPopup) {
+					return;
+				}
 				value.children().appendTo(temp);
+				dialog.removeClass();
 				refocus();
 			});
 			gray.hide();
