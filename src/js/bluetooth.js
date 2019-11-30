@@ -376,6 +376,7 @@ var GiikerCube = execMain(function() {
 					for (var i = moveDiff - 1; i >= 0; i--) {
 						var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + " 2'".indexOf(prevMoves[i][1]);
 						mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+						mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 						prevTimestamp += timeOffs[i];
 						callback(curCubie.toFaceCube(), prevMoves.slice(i), prevTimestamp, 'Gan 356i');
 						var tmp = curCubie;
