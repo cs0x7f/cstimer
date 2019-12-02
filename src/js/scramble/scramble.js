@@ -135,7 +135,8 @@ var scramble = execMain(function(rn, rndEl) {
 	var scrFltSelAll = $('<input type="button">').val('Select All');
 	var scrFltSelNon = $('<input type="button">').val('Select None');
 	var scrLen = $('<input type="text" maxlength="3">');
-	var sdiv = $('<div id="scrambleTxt"/>');
+	var sdiv = $('<div>');
+	var ssdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
 		'333oh': '333',
 		'333ft': '333'
@@ -219,9 +220,10 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 		if (forDisplay) {
 			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scramble.length, 10), 0.30) * 20) / 20) : 1;
+			sdiv.css('font-size', fontSize + 'em');
 			DEBUG && console.log('[scrFontSize]', fontSize);
-			return '<div style="font-size:' + fontSize + 'em;">' + scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
-				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1') + '</div>';
+			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
+				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 		} else {
 			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^']*)`/g, '$1')];
 		}
@@ -749,10 +751,10 @@ var scramble = execMain(function(rn, rndEl) {
 
 		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
-		div.append(title, sdiv.click(procScrambleClick));
+		div.append(title, ssdiv.append(sdiv).click(procScrambleClick));
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
-		sdiv.click(function() {
+		ssdiv.click(function() {
 			title.show();
 			kernel.blur();
 			kernel.setProp('scrHide', false);
