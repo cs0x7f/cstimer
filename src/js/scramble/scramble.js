@@ -603,7 +603,7 @@ var scramble = execMain(function(rn, rndEl) {
 			}
 		} else if (signal == 'property') {
 			if (value[0] == 'scrSize') {
-				sdiv.css('font-size', value[1] / 7 + 'em');
+				ssdiv.css('font-size', value[1] / 7 + 'em');
 			} else if (value[0] == 'scrMono') {
 				div.css('font-family', value[1] ? 'SimHei, Monospace' : 'Arial');
 			} else if (value[0] == 'scrType') {
@@ -612,9 +612,9 @@ var scramble = execMain(function(rn, rndEl) {
 				}
 			} else if (value[0] == 'scrLim') {
 				if (value[1]) {
-					sdiv.addClass('limit');
+					ssdiv.addClass('limit');
 				} else {
-					sdiv.removeClass('limit');
+					ssdiv.removeClass('limit');
 				}
 			} else if (value[0] == 'scrAlign') {
 				if (value[1] == 'c') {
