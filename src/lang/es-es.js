@@ -183,7 +183,8 @@ var scrdata = [
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
-		['EG2', "222eg2", 0]
+		['EG2', "222eg2", 0],
+		['No Bar', "222nb", 0]
 	]],
 	['Cubo de 444', [
 		["WCA", "444wca", -40],
@@ -266,7 +267,7 @@ var scrdata = [
 		['optimal', "gearo", 0],
 		['random move', "gear", 10]
 	]],
-	['Cmetrick', [
+	['Cmetrico', [
 		[' ', "cm3", 25]
 	]],
 	['Cmetrick Mini', [

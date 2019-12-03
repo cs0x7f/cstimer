@@ -48,7 +48,7 @@ var EXPORT_LOGINGGL = 'Googleアカウントでログイン';
 var EXPORT_LOGINWCA = 'WCAアカウントでログイン';
 var EXPORT_LOGOUTCFM = 'ログアウトしてもよいですか？';
 var EXPORT_LOGINAUTHED = '認可されました。<br>データ取得中...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
+var IMPORT_FINAL_CONFIRM = 'この操作はローカルデータを上書きします！ %d 個のセッションが変更され、少なくとも %a 個のソルブが追加され %r 個のソルブが削除されます。 インポートを実行しますか？';
 var BUTTON_SCRAMBLE = 'スクラ-<br>ンブル';
 var BUTTON_TOOLS = 'ツール';
 var IMAGE_UNAVAILABLE = 'このスクランブルタイプでは利用できません';
@@ -183,7 +183,8 @@ var scrdata = [
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
-		['EG2', "222eg2", 0]
+		['EG2', "222eg2", 0],
+		['No Bar', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],

@@ -53,7 +53,7 @@ var tools = execMain(function() {
 	}
 
 	function puzzleType(scrambleType) {
-		if (/^222(so|[236o]|eg[012]?)$/.exec(scrambleType)) {
+		if (/^222(so|[236o]|eg[012]?|nb)$/.exec(scrambleType)) {
 			return "222";
 		} else if (/^(333(oh?|ni|f[mt])?|(z[zb]|[coep]|cm|2g|ls)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|zbls|roux|RrU|half|easyc|eoline)$/.exec(scrambleType)) {
 			return "333";

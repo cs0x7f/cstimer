@@ -117,13 +117,13 @@ var PROPERTY_GIIKERVRC = 'Laat virtuele Giiker kubus zien';
 var PROPERTY_GIISOK_DELAY = 'Markeer gescrambled';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Nooit|Goed gescrambled';
 var PROPERTY_GIISOK_KEY = 'Markeer gescrabbeld met spatie balk';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
+var PROPERTY_GIISOK_MOVE = 'Markeer gemixt door te doen';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
+var PROPERTY_GIISBEEP = 'Piep als hussel is gemarkeerd';
+var PROPERTY_GIIRST = 'Reset bluetooth cube wanneer aangesloten';
 var PROPERTY_GIIRSTS = 'Altijd|Vraag|Nooit';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var CONFIRM_GIIRST = 'Reset bluetooth cube als opgelost?';
+var PROPERTY_GIIAED = 'Automatische hardware fout-detectie';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -136,12 +136,12 @@ var scrdata = [
 		['3x3 fm', "333fm", 0],
 		['3x3 oh', "333oh", 0],
 		['3x3 ft', "333ft", 0],
-		['clock', "clkwca", 0],
+		['klok', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
+		['Skewb', "skbso", 0],
 		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
+		['4x bld', "444bld", -40],
 		['5x5 bld', "555bld", -60],
 		['3x3 mbld', "r3ni", 5]
 	]],
@@ -179,15 +179,16 @@ var scrdata = [
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],
 		['optimal', "222o", 0],
-		['3-gen', "2223", 25],
+		['derde generatie', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
-		['EG2', "222eg2", 0]
+		['EG2', "222eg2", 0],
+		['No Bar', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['willekeurige draai', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['4x4x4 randen', "4edge", 8],
@@ -201,18 +202,18 @@ var scrdata = [
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
+		['voorvoegsel', "666p", 80],
+		['achtervoegsel', "666s", 80],
 		['6x6x6 randen', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['voorvoegsel', "777p", 100],
-		['suffix', "777s", 100],
+		['achtervoegsel', "777s", 100],
 		['7x7x7 randen', "7edge", 8]
 	]],
-	['Clock', [
+	['Klok', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['optimal', "clko", 0],

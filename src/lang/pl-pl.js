@@ -183,7 +183,8 @@ var scrdata = [
 		['EG', "222eg", 0],
 		['EG-0', "222eg0", 0],
 		['EG-1', "222eg1", 0],
-		['EG-2', "222eg2", 0]
+		['EG-2', "222eg2", 0],
+		['No Bar', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -203,14 +204,14 @@ var scrdata = [
 		['SiGN', "666si", 80],
 		['prefix', "666p", 80],
 		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['6x6x6 krawędzie', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['7x7x7 krawędzie', "7edge", 8]
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
@@ -221,8 +222,8 @@ var scrdata = [
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['Marchew', "mgmc", 70],
+		['stary styl', "mgmo", 70]
 	]],
 	['Pyraminx', [
 		["random state (WCA)", "pyrso", 10],
@@ -244,7 +245,7 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
-		['piece moves', "15p", 80],
+		['ruchy elementów', "15p", 80],
 		['blank moves', "15pm", 80],
 		['^<>v', "15pat", 80]
 	]],
@@ -261,7 +262,7 @@ var scrdata = [
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120]
 	]],
-	['Gear Cube', [
+	['Gear cube', [
 		['random state', "gearso", 0],
 		['optimal', "gearo", 0],
 		['random move', "gear", 10]
@@ -280,7 +281,7 @@ var scrdata = [
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['stary', "redi", 20]
 	]],
 	['Ivy cube', [
 		['random state', "ivyso", 0],
@@ -292,7 +293,7 @@ var scrdata = [
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['stary styl', "prco", 70]
 	]],
 	['Siamese Cube', [
 		['1x1x3', "sia113", 25],
@@ -325,7 +326,7 @@ var scrdata = [
 		['tylko ruchy R,U,L', "3gen_L", 25],
 		['tylko ruchy R,r,U', "RrU", 25],
 		['tylko podwójne ruchy', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+		['ostatni slot + ostatnia warstwa', "lsll", 15]
 	]],
 	['Bandaged Cube', [
 		['Bicube', "bic", 30],
@@ -336,7 +337,7 @@ var scrdata = [
 		['ostatni para + ostatnia warstwa', "mlsll", 20]
 	]],
 	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
+		['wiele 3x3x3', "r3", 5],
 		['234 relay', "r234", 0],
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],

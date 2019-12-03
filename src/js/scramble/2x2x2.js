@@ -12,21 +12,63 @@
 		}
 		return mathlib.get8Perm(g, 7);
 	}
-	function doOriMove(a, c) {
-		var b, d, e, h = 0,
-		g = a,
-		f = [];
-		for (b = 1; 6 >= b; b++) e = ~~ (g / 3),
-		d = g - 3 * e,
-		g = e,
-		f[b] = d,
-		h -= d,
-		0 > h && (h += 3);
-		f[0] = h;
-		0 == c ? circle(f, 0, 2, 3, 1) : 1 == c ? (circle(f, 0, 1, 5, 4), f[0] += 2, f[1]++, f[5] += 2, f[4]++) : 2 == c && (circle(f, 0, 4, 6, 2), f[2] += 2, f[0]++, f[4] += 2, f[6]++);
-		g = 0;
-		for (b = 6; 1 <= b; b--) g = 3 * g + f[b] % 3;
-		return g
+	function doOriMove(oidx, m) {
+		var ori = [15];
+		for (var i = 1; i < 7; i++) {
+			ori[i] = oidx % 3;
+			oidx = ~~(oidx / 3);
+			ori[0] -= ori[i];
+		}
+		if (m == 0) {
+			circle(ori, 0, 2, 3, 1);
+		} else if (m == 1) {
+			circle(ori, 0, 1, 5, 4);
+			ori[0] += 2; ori[1]++; ori[5] += 2; ori[4]++;
+		} else if (m == 2) {
+			circle(ori, 0, 4, 6, 2);
+			ori[2] += 2; ori[0]++; ori[4] += 2; ori[6]++;
+		}
+		oidx = 0;
+		for (var i = 6; i > 0; i--) {
+			oidx = oidx * 3 + ori[i] % 3;
+		}
+		return oidx;
+	}
+
+	var cFacelet = [
+		[3, 4, 9],
+		[1, 20, 5],
+		[2, 8, 17],
+		[0, 16, 21],
+		[13, 11, 6],
+		[15, 7, 22],
+		[12, 19, 10]
+	];
+
+	function checkNoBar(pidx, oidx) {
+		var perm = [];
+		var ori = [15];
+		mathlib.set8Perm(perm, pidx, 7);
+		for (var i = 1; i < 7; i++) {
+			ori[i] = oidx % 3;
+			oidx = ~~(oidx / 3);
+			ori[0] -= ori[i];
+		}
+		var f = [];
+		for (var i = 0; i < 24; i++) {
+			f[i] = i >> 2;
+		}
+		for (var i = 0; i < 7; i++) {
+			for (var n = 0; n < 3; n++) {
+				f[cFacelet[i][(n + ori[i]) % 3]] = cFacelet[perm[i]][n] >> 2;
+			}
+		}
+		for (var i = 0; i < 24; i+= 4) {
+			if ((1 << f[i] | 1 << f[i + 3]) & (1 << f[i + 1] | 1 << f[i + 2])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	var egcases = [[0], [2, 3, 4, 5], [1]];
@@ -62,9 +104,15 @@
 				c = mathlib.rndEl(egcases[~~type[5]]);
 				mathlib.set8Perm(g[c], rn(24), 4);
 				c = mathlib.get8Perm(g[c], 7);
+			} else if (type == '222nb') {
+				do {
+					c = rn(5040);
+					b = rn(729);
+				} while (!checkNoBar(c, b));
 			}
 		} while (c == 0 && b == 0 || solv.search([c, b], 0, lim) != null);
 		return solv.toStr(solv.search([c, b], a).reverse(), "URF", "'2 ");
 	}
-	scrMgr.reg(['222o', '222so', '222eg0', '222eg1', '222eg2'], getScramble)('222eg', getScramble, [egfilter, egprobs]);
+
+	scrMgr.reg(['222o', '222so', '222eg0', '222eg1', '222eg2', '222nb'], getScramble)('222eg', getScramble, [egfilter, egprobs]);
 }) (mathlib.circle, mathlib.rn);
