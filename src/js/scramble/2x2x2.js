@@ -72,18 +72,19 @@
 	}
 
 	var egcases = [[0], [2, 3, 4, 5], [1]];
-	var egprobs = [1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4];
+	var egprobs = [1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4];
 	var egmap = [0, 17, 5, 14, 8, 1, 2, 4];
-	var egfilter = ['EG0-O', 'EG0-H', 'EG0-L', 'EG0-Pi', 'EG0-S', 'EG0-T', 'EG0-U', 'EG0-aS', 'EG1-O', 'EG1-H', 'EG1-L', 'EG1-Pi', 'EG1-S', 'EG1-T', 'EG1-U', 'EG1-aS', 'EG2-O', 'EG2-H', 'EG2-L', 'EG2-Pi', 'EG2-S', 'EG2-T', 'EG2-U', 'EG2-aS'];
+	var egfilter = ['EG0-O', 'EG0-H', 'EG0-L', 'EG0-Pi', 'EG0-S', 'EG0-T', 'EG0-U', 'EG0-aS', 'EG1B-O', 'EG1B-H', 'EG1B-L', 'EG1B-Pi', 'EG1B-S', 'EG1B-T', 'EG1B-U', 'EG1B-aS', 'EG1L-O', 'EG1L-H', 'EG1L-L', 'EG1L-Pi', 'EG1L-S', 'EG1L-T', 'EG1L-U', 'EG1L-aS', 'EG1F-O', 'EG1F-H', 'EG1F-L', 'EG1F-Pi', 'EG1F-S', 'EG1F-T', 'EG1F-U', 'EG1F-aS', 'EG1R-O', 'EG1R-H', 'EG1R-L', 'EG1R-Pi', 'EG1R-S', 'EG1R-T', 'EG1R-U', 'EG1R-aS', 'EG2-O', 'EG2-H', 'EG2-L', 'EG2-Pi', 'EG2-S', 'EG2-T', 'EG2-U', 'EG2-aS'];
+
 	function getScramble(type, length, state) {
 		var a, b, c, g, lim;
 		a = type == '222o' ? 0 : 9;
 		g = [[0, 0, 0, 0, 4, 5, 6],
 			 [0, 0, 0, 0, 4, 6, 5],
+			 [0, 0, 0, 0, 6, 5, 4],
 			 [0, 0, 0, 0, 5, 4, 6],
 			 [0, 0, 0, 0, 5, 6, 4],
-			 [0, 0, 0, 0, 6, 4, 5],
-			 [0, 0, 0, 0, 6, 5, 4]];
+			 [0, 0, 0, 0, 6, 4, 5]];
 		do {
 			lim = 2;
 			if (type == '222o' || type == '222so') {
@@ -92,7 +93,7 @@
 				lim = 3;
 			} else if (type == '222eg') {
 				b = egmap[state & 0x7];
-				c = mathlib.rndEl(egcases[state >> 3]);
+				c = [0, 2, 3, 4, 5, 1][state >> 3];
 				mathlib.set8Perm(g[c], rn(24), 4);
 				c = mathlib.get8Perm(g[c], 7);
 				var rndU = rn(4);
