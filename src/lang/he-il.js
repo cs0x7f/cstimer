@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'פונקציה';
 var TOOLS_CROSS = 'פתור פלוס';
 var TOOLS_EOLINE = 'פתור EOLine';
 var TOOLS_ROUX1 = 'פתור Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'קוביית Giiker';
 var TOOLS_IMAGE = 'בלגון חדש';
 var TOOLS_STATS = 'סטטיסטיקות';

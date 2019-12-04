@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Function';
 var TOOLS_CROSS = 'solve cross';
 var TOOLS_EOLINE = 'solve EOLine';
 var TOOLS_ROUX1 = 'solve Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Cube';
 var TOOLS_IMAGE = 'draw scramble';
 var TOOLS_STATS = 'Statistics';

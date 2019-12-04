@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Functie';
 var TOOLS_CROSS = 'Los kruis op';
 var TOOLS_EOLINE = 'Los EOLine op';
 var TOOLS_ROUX1 = 'Los Roux S1 op';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker Kubus';
 var TOOLS_IMAGE = 'Teken scramble';
 var TOOLS_STATS = 'Statistiek';

@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funktion';
 var TOOLS_CROSS = 'Kreuz lösen';
 var TOOLS_EOLINE = 'EOLine Lösen';
 var TOOLS_ROUX1 = 'Roux ersten Block lösen';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Scramble zeichnen';
 var TOOLS_STATS = 'Statistiken';

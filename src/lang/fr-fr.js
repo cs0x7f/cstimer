@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Fonction';
 var TOOLS_CROSS = 'Résoudre la croix';
 var TOOLS_EOLINE = 'Résoudre l\'EOLine';
 var TOOLS_ROUX1 = 'Résoudre 1er bloc Roux';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Image du mélange';
 var TOOLS_STATS = 'Statistiques';

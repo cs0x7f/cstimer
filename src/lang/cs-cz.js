@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funkce';
 var TOOLS_CROSS = 'složit kříž';
 var TOOLS_EOLINE = 'složit EOLine';
 var TOOLS_ROUX1 = 'složit Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker kostka';
 var TOOLS_IMAGE = 'nakreslit scramble';
 var TOOLS_STATS = 'Statistiky';

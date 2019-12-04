@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Função';
 var TOOLS_CROSS = 'resolver a cruz';
 var TOOLS_EOLINE = 'resolver a EOLine';
 var TOOLS_ROUX1 = 'resolver o Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'cubo Giiker';
 var TOOLS_IMAGE = 'desenhar o embaralhamento';
 var TOOLS_STATS = 'Estatíticas';

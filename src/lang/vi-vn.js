@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Chức năng';
 var TOOLS_CROSS = 'giải cross';
 var TOOLS_EOLINE = 'giải EOLine';
 var TOOLS_ROUX1 = 'giải Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Cube';
 var TOOLS_IMAGE = 'vẽ scramble';
 var TOOLS_STATS = 'Thành tích ( kiểu 1)';

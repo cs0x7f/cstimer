@@ -95,7 +95,7 @@ var pocketface = execMain(function() {
 	}
 
 	$(function() {
-		tools.regTool('222face', '2x2x2 Face', execFunc);
+		tools.regTool('222face', TOOLS_222FACE, execFunc);
 	});
 
 }, []);

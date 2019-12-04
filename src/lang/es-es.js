@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Función';
 var TOOLS_CROSS = 'Resolver cruz';
 var TOOLS_EOLINE = 'Resolver EOLine';
 var TOOLS_ROUX1 = 'Resolver Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Cubo Giiker';
 var TOOLS_IMAGE = 'Imagen de la mezcla';
 var TOOLS_STATS = 'Estadísticas';

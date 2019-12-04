@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funzione';
 var TOOLS_CROSS = 'Risoluzione croce';
 var TOOLS_EOLINE = 'Risoluzione EOLine';
 var TOOLS_ROUX1 = 'Risoluzione Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Cubo Giiker';
 var TOOLS_IMAGE = 'Disegna scramble';
 var TOOLS_STATS = 'Statistiche';

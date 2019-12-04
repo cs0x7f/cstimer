@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = '选择功能';
 var TOOLS_CROSS = '十字求解';
 var TOOLS_EOLINE = 'EOLine求解';
 var TOOLS_ROUX1 = '桥式S1求解';
+var TOOLS_222FACE = '二阶一面求解';
 var TOOLS_GIIKER = '蓝牙魔方';
 var TOOLS_IMAGE = '打乱图案';
 var TOOLS_STATS = '统计数据';

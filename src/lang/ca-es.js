@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funció';
 var TOOLS_CROSS = 'Solucionar creu';
 var TOOLS_EOLINE = 'Solucionar línia EO';
 var TOOLS_ROUX1 = 'Solucionar S1 Roux';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Cub Giiker';
 var TOOLS_IMAGE = 'Dibuixar barreja';
 var TOOLS_STATS = 'Estadístiques';

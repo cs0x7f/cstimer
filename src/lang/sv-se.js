@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funktion';
 var TOOLS_CROSS = 'lös kors';
 var TOOLS_EOLINE = 'lös EOLine';
 var TOOLS_ROUX1 = 'lös Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'rita blandning';
 var TOOLS_STATS = 'Statistik';

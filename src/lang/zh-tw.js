@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = '功能';
 var TOOLS_CROSS = '解好十字';
 var TOOLS_EOLINE = '解好EOLine';
 var TOOLS_ROUX1 = '解好橋式左橋';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = '計客魔方';
 var TOOLS_IMAGE = '畫出打亂圖形';
 var TOOLS_STATS = '統計';

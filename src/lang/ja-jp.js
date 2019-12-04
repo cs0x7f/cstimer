@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = '機能';
 var TOOLS_CROSS = 'クロスソルブ';
 var TOOLS_EOLINE = 'EOLineソルブ';
 var TOOLS_ROUX1 = 'Roux S1 ソルブ';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker キューブ';
 var TOOLS_IMAGE = 'スクランブルの描画';
 var TOOLS_STATS = '統計情報';

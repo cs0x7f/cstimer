@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funktion';
 var TOOLS_CROSS = 'løs kryds';
 var TOOLS_EOLINE = 'løs EOLine';
 var TOOLS_ROUX1 = 'løs Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Cube';
 var TOOLS_IMAGE = 'tegn blanding';
 var TOOLS_STATS = 'Statistiker';

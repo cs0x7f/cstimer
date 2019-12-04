@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'kullanım';
 var TOOLS_CROSS = 'cross çözümü';
 var TOOLS_EOLINE = 'EO Line çözümü';
 var TOOLS_ROUX1 = 'Roux S1 çözümü';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Cube';
 var TOOLS_IMAGE = 'karıştırmayı göster';
 var TOOLS_STATS = 'İstatistikler';

@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Функција';
 var TOOLS_CROSS = 'решаванје крста';
 var TOOLS_EOLINE = 'решавање EOLine';
 var TOOLS_ROUX1 = 'решавање Roux S1  ';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker коцкa';
 var TOOLS_IMAGE = 'Нацртај скрембл';
 var TOOLS_STATS = 'Статистика';

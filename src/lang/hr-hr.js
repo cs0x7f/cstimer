@@ -56,6 +56,7 @@ var TOOLS_SELECTFUNC = 'Funkcija';
 var TOOLS_CROSS = 'složi križ';
 var TOOLS_EOLINE = 'složi EOLine';
 var TOOLS_ROUX1 = 'složi Roux S1';
+var TOOLS_222FACE = 'solve 2x2x2 face';
 var TOOLS_GIIKER = 'Giiker Kocka';
 var TOOLS_IMAGE = 'prikaži scramble';
 var TOOLS_STATS = 'Statistika';
