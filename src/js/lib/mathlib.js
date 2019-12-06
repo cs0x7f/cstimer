@@ -110,6 +110,9 @@ var mathlib = (function() {
 		n = (n || 8) - 1;
 		var val = 0x76543210;
 		var prt = 0;
+		if (even) {
+			idx <<= 1;
+		}
 		for (var i = 0; i < n; ++i) {
 			var p = fact[n - i];
 			var v = ~~(idx / p);
@@ -126,6 +129,26 @@ var mathlib = (function() {
 		} else {
 			arr[n] = val & 7;
 		}
+		return arr;
+	}
+
+	function getNOri(arr, n, base, even) {
+		var idx = even ? 0 : arr[0] % base;
+		for (var i = n - 1; i > 0; i--) {
+			idx = idx * base + arr[i] % base;
+		}
+		return idx;
+	}
+
+	function setNOri(arr, idx, n, base, even) {
+		var parity = base * n;
+		for (var i = 1; i < n; i++) {
+			arr[i] = idx % base;
+			parity -= arr[i];
+			idx = ~~(idx / base);
+		}
+		arr[0] = (even ? parity : idx) % base;
+		return arr;
 	}
 
 	function createMove(moveTable, size, doMove, N_MOVES) {
@@ -675,6 +698,8 @@ var mathlib = (function() {
 		getNParity: getNParity,
 		get8Perm: get8Perm,
 		set8Perm: set8Perm,
+		getNOri: getNOri,
+		setNOri: setNOri,
 		createMove: createMove,
 		edgeMove: edgeMove,
 		circle: circle,

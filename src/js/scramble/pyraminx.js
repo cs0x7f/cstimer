@@ -1,44 +1,36 @@
 (function(circle) {
 	var solv = new mathlib.Solver(4, 2, [
-		[0, l, 360],
-		[0, i, 2592]
+		[0, epermMove, 360],
+		[0, oriMove, 2592]
 	]);
 
-	function l(a, c) {
-		var e = [];
-		mathlib.set8Perm(e, a << 1, 6);
-		1 == mathlib.getNParity(a << 1, 6) && circle(e, 4, 5);
-		0 == c && circle(e, 0, 1, 3);
-		1 == c && circle(e, 1, 2, 5);
-		2 == c && circle(e, 0, 4, 2);
-		3 == c && circle(e, 3, 5, 4);
-		return mathlib.get8Perm(e, 6) >> 1;
+	var movePieces = [
+		[0, 1, 3],
+		[1, 2, 5],
+		[0, 4, 2],
+		[3, 5, 4]
+	];
+
+	var moveOris = [
+		[0, 1, 0, 2],
+		[0, 1, 0, 2],
+		[0, 0, 1, 2],
+		[0, 0, 1, 2]
+	];
+
+	function epermMove(a, c) {
+		var arr = mathlib.set8Perm([], a, 6, true);
+		mathlib.acycle(arr, movePieces[c]);
+		return mathlib.get8Perm(arr, 6, true);
 	}
 
-	function i(a, c) {
-		var e, d, f;
-		d = 0;
-		var b = [],
-			h = a;
-		for (e = 0; 4 >= e; e++) b[e] = h & 1,
-			h >>= 1,
-			d ^= b[e];
-		b[5] = d;
-		for (e = 6; 9 >= e; e++) f = ~~(h / 3),
-			d = h - 3 * f,
-			h = f,
-			b[e] = d;
-		b[c + 6] = (b[c + 6] + 1) % 3;
-		0 == c && (circle(b, 0, 1, 3), b[1] ^= 1, b[3] ^= 1);
-		1 == c && (circle(b, 1, 2, 5), b[2] ^= 1, b[5] ^= 1);
-		2 == c && (circle(b, 0, 4, 2), b[0] ^= 1, b[2] ^= 1);
-		3 == c && (circle(b, 3, 5, 4), b[3] ^= 1, b[4] ^= 1);
-		h = 0;
-		for (e = 9; 6 <= e; e--) h = 3 * h + b[e];
-		for (e = 4; 0 <= e; e--) h = 2 * h + b[e];
-		return h
+	function oriMove(a, c) {
+		var edgeOri = mathlib.setNOri([], a & 0x1f, 6, 2, true);
+		var cornOri = mathlib.setNOri([], a >> 5, 4, 3, false);
+		cornOri[c]++;
+		mathlib.acycle(edgeOri, movePieces[c], 1, moveOris[c]);
+		return mathlib.getNOri(cornOri, 4, 3, false) << 5 | mathlib.getNOri(edgeOri, 6, 2, true);
 	}
-	var k = [1, 1, 1, 3, 12, 60, 360];
 
 	function getScramble(type) {
 		var l = type == 'pyrso' ? 8 : 0;

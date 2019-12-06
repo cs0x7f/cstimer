@@ -1,72 +1,30 @@
-(function(circle) {
+(function() {
+	var moveCenters = [
+		[0, 3, 1],
+		[0, 2, 4],
+		[1, 5, 2],
+		[3, 4, 5]
+	];
+
+	var moveCorners = [
+		[0, 2, 1],
+		[0, 1, 3],
+		[0, 3, 2],
+		[1, 2, 3]
+	];
+
 	function ctcpMove(idx, m) {
-		var cornPerm = cornPermMove[idx % 12][m];
-		idx = ~~(idx / 12) << 1;
-		var center = [];
-		mathlib.set8Perm(center, idx, 6);
-		if (mathlib.getNParity(idx, 6) == 1) {
-			circle(center, 4, 5);
-		}
-		if (m == 0) {
-			circle(center, 0, 3, 1);
-		} else if (m == 1) {
-			circle(center, 0, 2, 4);
-		} else if (m == 2) {
-			circle(center, 1, 5, 2);
-		} else if (m == 3) {
-			circle(center, 3, 4, 5);
-		}
-		return (mathlib.get8Perm(center, 6) >> 1) * 12 + cornPerm;
+		var center = mathlib.set8Perm([], ~~(idx / 12), 6, true);
+		mathlib.acycle(center, moveCenters[m]);
+		return mathlib.get8Perm(center, 6, true) * 12 + cornPermMove[idx % 12][m];
 	}
 
 	function twstMove(idx, move) {
-		var fixedtwst = [];
-		var twst = [];
-		for (var i = 0; i < 4; i++) {
-			fixedtwst[i] = idx % 3;
-			idx = ~~(idx / 3);
-		}
-		for (var i = 0; i < 3; i++) {
-			twst[i] = idx % 3;
-			idx = ~~(idx / 3);
-		}
-		twst[3] = (6 - twst[0] - twst[1] - twst[2]) % 3;
-		fixedtwst[move] = (fixedtwst[move] + 1) % 3;
-		var t;
-		switch (move) {
-			case 0:
-				t = twst[0];
-				twst[0] = twst[2] + 2;
-				twst[2] = twst[1] + 2;
-				twst[1] = t + 2;
-				break;
-			case 1:
-				t = twst[0];
-				twst[0] = twst[1] + 2;
-				twst[1] = twst[3] + 2;
-				twst[3] = t + 2;
-				break;
-			case 2:
-				t = twst[0];
-				twst[0] = twst[3] + 2;
-				twst[3] = twst[2] + 2;
-				twst[2] = t + 2;
-				break;
-			case 3:
-				t = twst[1];
-				twst[1] = twst[2] + 2;
-				twst[2] = twst[3] + 2;
-				twst[3] = t + 2;
-				break;
-			default:
-		}
-		for (var i = 2; i >= 0; i--) {
-			idx = idx * 3 + twst[i] % 3;
-		}
-		for (var i = 3; i >= 0; i--) {
-			idx = idx * 3 + fixedtwst[i];
-		}
-		return idx;
+		var fixedtwst = mathlib.setNOri([], idx % 81, 4, 3, false);
+		var twst = mathlib.setNOri([], ~~(idx / 81), 4, 3, true);
+		fixedtwst[move]++;
+		mathlib.acycle(twst, moveCorners[move], 1, [0, 2, 1, 3]);
+		return mathlib.getNOri(twst, 4, 3, true) * 81 + mathlib.getNOri(fixedtwst, 4, 3, false);
 	}
 
 	var cornPermMove = [
@@ -107,7 +65,7 @@
 			var pow = 1 - sol[i][1];
 			if (axis == 2) { //step two.
 				for (var p = 0; p <= pow; p++) {
-					circle(move2str, 0, 3, 1);
+					mathlib.acycle(move2str, [0, 3, 1]);
 				}
 			}
 			ret.push(move2str[axis] + ((pow == 1) ? "'" : ""));
@@ -138,4 +96,4 @@
 
 	scrMgr.reg(['skbo', 'skbso'], getScramble)(['ivyo', 'ivyso'], getScrambleIvy);
 
-})(mathlib.circle);
+})();

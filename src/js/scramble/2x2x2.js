@@ -14,25 +14,15 @@
 	];
 
 	function doPermMove(idx, m) {
-		var arr = [];
-		mathlib.set8Perm(arr, idx, 7);
+		var arr = mathlib.set8Perm([], idx, 7);
 		mathlib.acycle(arr, movePieces[m]);
 		return mathlib.get8Perm(arr, 7);
 	}
 
 	function doOriMove(oidx, m) {
-		var ori = [15];
-		for (var i = 1; i < 7; i++) {
-			ori[i] = oidx % 3;
-			oidx = ~~(oidx / 3);
-			ori[0] -= ori[i];
-		}
+		var ori = mathlib.setNOri([], oidx, 7, 3, true);
 		mathlib.acycle(ori, movePieces[m], 1, moveOris[m]);
-		oidx = 0;
-		for (var i = 6; i > 0; i--) {
-			oidx = oidx * 3 + ori[i] % 3;
-		}
-		return oidx;
+		return mathlib.getNOri(ori, 7, 3, true);
 	}
 
 	var cFacelet = [
@@ -47,13 +37,9 @@
 
 	function checkNoBar(pidx, oidx) {
 		var perm = [];
-		var ori = [15];
+		var ori = [];
 		mathlib.set8Perm(perm, pidx, 7);
-		for (var i = 1; i < 7; i++) {
-			ori[i] = oidx % 3;
-			oidx = ~~(oidx / 3);
-			ori[0] -= ori[i];
-		}
+		mathlib.setNOri(ori, oidx, 7, 3, true);
 		var f = [];
 		for (var i = 0; i < 24; i++) {
 			f[i] = i >> 2;

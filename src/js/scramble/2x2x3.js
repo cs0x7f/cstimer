@@ -25,8 +25,7 @@
 		if (m < 2) {
 			return idx;
 		}
-		var g = [];
-		mathlib.set8Perm(g, idx, 3);
+		var g = mathlib.set8Perm([], idx, 3);
 		if (m == 2) {
 			circle(g, 0, 1);
 		} else if (m == 3) {
