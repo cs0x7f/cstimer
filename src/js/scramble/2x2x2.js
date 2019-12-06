@@ -1,17 +1,25 @@
-(function(circle, rn) {
+(function(rn) {
 	var solv = new mathlib.Solver(3, 3, [[0, doPermMove, 5040], [0, doOriMove, 729]]);
+
+	var movePieces = [
+		[0, 2, 3, 1],
+		[0, 1, 5, 4],
+		[0, 4, 6, 2]
+	];
+
+	var moveOris = [
+		null,
+		[0, 1, 0, 1, 3],
+		[1, 0, 1, 0, 3]
+	];
+
 	function doPermMove(idx, m) {
-		var g = [];
-		mathlib.set8Perm(g, idx, 7);
-		if (m == 0) {
-			circle(g, 0, 2, 3, 1);
-		} else if (m == 1) {
-			circle(g, 0, 1, 5, 4);
-		} else if (m == 2) {
-			circle(g, 0, 4, 6, 2);
-		}
-		return mathlib.get8Perm(g, 7);
+		var arr = [];
+		mathlib.set8Perm(arr, idx, 7);
+		mathlib.acycle(arr, movePieces[m]);
+		return mathlib.get8Perm(arr, 7);
 	}
+
 	function doOriMove(oidx, m) {
 		var ori = [15];
 		for (var i = 1; i < 7; i++) {
@@ -19,15 +27,7 @@
 			oidx = ~~(oidx / 3);
 			ori[0] -= ori[i];
 		}
-		if (m == 0) {
-			circle(ori, 0, 2, 3, 1);
-		} else if (m == 1) {
-			circle(ori, 0, 1, 5, 4);
-			ori[0] += 2; ori[1]++; ori[5] += 2; ori[4]++;
-		} else if (m == 2) {
-			circle(ori, 0, 4, 6, 2);
-			ori[2] += 2; ori[0]++; ori[4] += 2; ori[6]++;
-		}
+		mathlib.acycle(ori, movePieces[m], 1, moveOris[m]);
 		oidx = 0;
 		for (var i = 6; i > 0; i--) {
 			oidx = oidx * 3 + ori[i] % 3;
@@ -63,7 +63,7 @@
 				f[cFacelet[i][(n + ori[i]) % 3]] = cFacelet[perm[i]][n] >> 2;
 			}
 		}
-		for (var i = 0; i < 24; i+= 4) {
+		for (var i = 0; i < 24; i += 4) {
 			if ((1 << f[i] | 1 << f[i + 3]) & (1 << f[i + 1] | 1 << f[i + 2])) {
 				return false;
 			}
@@ -116,4 +116,4 @@
 	}
 
 	scrMgr.reg(['222o', '222so', '222eg0', '222eg1', '222eg2', '222nb'], getScramble)('222eg', getScramble, [egfilter, egprobs]);
-}) (mathlib.circle, mathlib.rn);
+})(mathlib.rn);

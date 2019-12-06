@@ -21,22 +21,11 @@ var pocketface = execMain(function() {
 			[3, 6, 12, 17]
 		]
 	};
-	
+
 	function pocketFaceletMove(state, move) {
-		var turn = moveData[move[0]];
 		var ret = state.split('');
 		for (var i = 0; i < 3; i++) {
-			switch (move[1]) {
-				case " ":
-					mathlib.circle(ret, turn[i][0], turn[i][1], turn[i][2], turn[i][3]);
-					break;
-				case "2":
-					mathlib.circle(ret, turn[i][0], turn[i][2])(ret, turn[i][1], turn[i][3]);
-					break;
-				case "'":
-					mathlib.circle(ret, turn[i][0], turn[i][3], turn[i][2], turn[i][1]);
-					break;
-			}
+			mathlib.acycle(ret, moveData[move[0]][i], "? 2'".indexOf(move[1]));
 		}
 		return ret.join('');
 	}

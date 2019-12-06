@@ -202,7 +202,7 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 		var act = kernel.getProp('scrClk', 'n');
 		if (act == 'c') {
-			var succ = $.clipboardCopy(sdiv.html());
+			var succ = $.clipboardCopy(sdiv.text());
 			if (succ) {
 				logohint.push('scramble copied');
 			}

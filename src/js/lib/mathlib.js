@@ -35,6 +35,27 @@ var mathlib = (function() {
 		return circle;
 	}
 
+	//perm: [idx1, idx2, ..., idxn]
+	//pow: 1, 2, 3, ...
+	//ori: ori1, ori2, ..., orin, base
+	// arr[perm[idx2]] = arr[perm[idx1]] + ori[idx2] - ori[idx1] + base
+	function acycle(arr, perm, pow, ori) {
+		pow = pow || 1;
+		var plen = perm.length;
+		var tmp = [];
+		for (var i = 0; i < plen; i++) {
+			tmp[i] = arr[perm[i]];
+		}
+		for (var i = 0; i < plen; i++) {
+			var j = (i + pow) % plen;
+			arr[perm[j]] = tmp[i];
+			if (ori) {
+				arr[perm[j]] += ori[j] - ori[i] + ori[ori.length - 1];
+			}
+		}
+		return acycle;
+	}
+
 	function getPruning(table, index) {
 		return table[index >> 3] >> ((index & 7) << 2) & 15;
 	}
@@ -73,38 +94,38 @@ var mathlib = (function() {
 		return p & 1;
 	}
 
-	function get8Perm(arr, n) {
-		if (n === undefined) {
-			n = 8;
-		}
-		var i, idx, v, val;
-		idx = 0;
-		val = 1985229328;
-		for (i = 0; i < n - 1; ++i) {
-			v = arr[i] << 2;
+	function get8Perm(arr, n, even) {
+		n = n || 8;
+		var idx = 0;
+		var val = 0x76543210;
+		for (var i = 0; i < n - 1; ++i) {
+			var v = arr[i] << 2;
 			idx = (n - i) * idx + (val >> v & 7);
-			val -= 286331152 << v;
+			val -= 0x11111110 << v;
 		}
-		return idx;
+		return even ? (idx >> 1) : idx;
 	}
 
-	function set8Perm(arr, idx, n) {
-		if (n === undefined) {
-			n = 8;
-		}
-		n--;
-		var i, m, p, v, val;
-		val = 1985229328;
-		for (i = 0; i < n; ++i) {
-			p = fact[n - i];
-			v = ~~(idx / p);
+	function set8Perm(arr, idx, n, even) {
+		n = (n || 8) - 1;
+		var val = 0x76543210;
+		var prt = 0;
+		for (var i = 0; i < n; ++i) {
+			var p = fact[n - i];
+			var v = ~~(idx / p);
+			prt ^= v;
 			idx %= p;
 			v <<= 2;
 			arr[i] = val >> v & 7;
-			m = (1 << v) - 1;
+			var m = (1 << v) - 1;
 			val = (val & m) + (val >> 4 & ~m);
 		}
-		arr[n] = val & 7;
+		if (even && (prt & 1) != 0) {
+			arr[n] = arr[n - 1];
+			arr[n - 1] = val & 7;
+		} else {
+			arr[n] = val & 7;
+		}
 	}
 
 	function createMove(moveTable, size, doMove, N_MOVES) {
@@ -658,6 +679,7 @@ var mathlib = (function() {
 		edgeMove: edgeMove,
 		circle: circle,
 		circleOri: circleOri,
+		acycle: acycle,
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
