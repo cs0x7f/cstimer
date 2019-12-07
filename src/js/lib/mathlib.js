@@ -103,14 +103,14 @@ var mathlib = (function() {
 			idx = (n - i) * idx + (val >> v & 7);
 			val -= 0x11111110 << v;
 		}
-		return even ? (idx >> 1) : idx;
+		return even < 0 ? (idx >> 1) : idx;
 	}
 
 	function set8Perm(arr, idx, n, even) {
 		n = (n || 8) - 1;
 		var val = 0x76543210;
 		var prt = 0;
-		if (even) {
+		if (even < 0) {
 			idx <<= 1;
 		}
 		for (var i = 0; i < n; ++i) {
@@ -123,7 +123,7 @@ var mathlib = (function() {
 			var m = (1 << v) - 1;
 			val = (val & m) + (val >> 4 & ~m);
 		}
-		if (even && (prt & 1) != 0) {
+		if (even < 0 && (prt & 1) != 0) {
 			arr[n] = arr[n - 1];
 			arr[n - 1] = val & 7;
 		} else {
@@ -132,31 +132,65 @@ var mathlib = (function() {
 		return arr;
 	}
 
-	function getNOri(arr, n, base, even) {
-		var idx = even ? 0 : arr[0] % base;
+	function getNOri(arr, n, evenbase) {
+		var base = Math.abs(evenbase);
+		var idx = evenbase < 0 ? 0 : arr[0] % base;
 		for (var i = n - 1; i > 0; i--) {
 			idx = idx * base + arr[i] % base;
 		}
 		return idx;
 	}
 
-	function setNOri(arr, idx, n, base, even) {
+	function setNOri(arr, idx, n, evenbase) {
+		var base = Math.abs(evenbase);
 		var parity = base * n;
 		for (var i = 1; i < n; i++) {
 			arr[i] = idx % base;
 			parity -= arr[i];
 			idx = ~~(idx / base);
 		}
-		arr[0] = (even ? parity : idx) % base;
+		arr[0] = (evenbase < 0 ? parity : idx) % base;
 		return arr;
+	}
+
+	// type: 'p', 'o'
+	// evenbase: base for ori, sign for even parity
+	function coord(type, length, evenbase) {
+		this.length = length;
+		this.evenbase = evenbase;
+		this.get = type == 'p' ?
+			function(arr) {
+				return get8Perm(arr, this.length, this.evenbase);
+			} : function(arr) {
+				return getNOri(arr, this.length, this.evenbase);
+			};
+		this.set = type == 'p' ?
+			function(arr, idx) {
+				return set8Perm(arr, idx, this.length, this.evenbase);
+			} : function(arr, idx) {
+				return setNOri(arr, idx, this.length, this.evenbase);
+			};
 	}
 
 	function createMove(moveTable, size, doMove, N_MOVES) {
 		N_MOVES = N_MOVES || 6;
-		for (var j = 0; j < N_MOVES; j++) {
-			moveTable[j] = [];
-			for (var i = 0; i < size; i++) {
-				moveTable[j][i] = doMove(i, j);
+		if ($.isArray(doMove)) {
+			var cord = new coord(doMove[1], doMove[2], doMove[3]);
+			doMove = doMove[0];
+			for (var j = 0; j < N_MOVES; j++) {
+				moveTable[j] = [];
+				for (var i = 0; i < size; i++) {
+					var arr = cord.set([], i);
+					doMove(arr, j);
+					moveTable[j][i] = cord.get(arr);
+				}
+			}
+		} else {
+			for (var j = 0; j < N_MOVES; j++) {
+				moveTable[j] = [];
+				for (var i = 0; i < size; i++) {
+					moveTable[j][i] = doMove(i, j);
+				}
 			}
 		}
 	}
@@ -698,8 +732,7 @@ var mathlib = (function() {
 		getNParity: getNParity,
 		get8Perm: get8Perm,
 		set8Perm: set8Perm,
-		getNOri: getNOri,
-		setNOri: setNOri,
+		coord: coord,
 		createMove: createMove,
 		edgeMove: edgeMove,
 		circle: circle,

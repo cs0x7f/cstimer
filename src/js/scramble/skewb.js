@@ -13,18 +13,22 @@
 		[1, 2, 3]
 	];
 
+	var ctcord = new mathlib.coord('p', 6, -1);
+	var ftcord = new mathlib.coord('o', 4, 3);
+	var twcord = new mathlib.coord('o', 4, -3);
+
 	function ctcpMove(idx, m) {
-		var center = mathlib.set8Perm([], ~~(idx / 12), 6, true);
+		var center = ctcord.set([], ~~(idx / 12));
 		mathlib.acycle(center, moveCenters[m]);
-		return mathlib.get8Perm(center, 6, true) * 12 + cornPermMove[idx % 12][m];
+		return ctcord.get(center) * 12 + cornPermMove[idx % 12][m];
 	}
 
 	function twstMove(idx, move) {
-		var fixedtwst = mathlib.setNOri([], idx % 81, 4, 3, false);
-		var twst = mathlib.setNOri([], ~~(idx / 81), 4, 3, true);
+		var fixedtwst = ftcord.set([], idx % 81);
+		var twst = twcord.set([], ~~(idx / 81));
 		fixedtwst[move]++;
 		mathlib.acycle(twst, moveCorners[move], 1, [0, 2, 1, 3]);
-		return mathlib.getNOri(twst, 4, 3, true) * 81 + mathlib.getNOri(fixedtwst, 4, 3, false);
+		return twcord.get(twst) * 81 + ftcord.get(fixedtwst);
 	}
 
 	var cornPermMove = [
@@ -64,14 +68,13 @@
 			var axis = sol[i][0];
 			var pow = 1 - sol[i][1];
 			if (axis == 2) { //step two.
-				for (var p = 0; p <= pow; p++) {
-					mathlib.acycle(move2str, [0, 3, 1]);
-				}
+				mathlib.acycle(move2str, [0, 3, 1], pow + 1);
 			}
 			ret.push(move2str[axis] + ((pow == 1) ? "'" : ""));
 		}
 		return ret.join(" ");
 	}
+
 	var ori = [0, 1, 2, 0, 2, 1, 1, 2, 0, 2, 1, 0];
 
 	function getScramble(type) {

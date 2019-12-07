@@ -1,124 +1,83 @@
-(function(circle) {
+(function() {
 	var cmv = [];
 	var emv = [];
-	var prun = [];
-	
-	function cornerMove(idx, m) {
-		var arr = [];
-		mathlib.setNPerm(arr, idx, 4);
-		circle(arr, 0, m+1);
-		return mathlib.getNPerm(arr, 4);
+	var prun = [[], [], []];
+
+	var moveEdges = [
+		[0, 3, 2, 1],
+		[0, 1],
+		[0, 3]
+	];
+
+	function cornerMove(arr, m) {
+		mathlib.acycle(arr, [0, m + 1]);
 	}
+
 	function edgeMove(idx, m) {
-		var arr = [], ori;
-		ori = idx % 3;
-		mathlib.setNPerm(arr, ~~(idx / 3), 4);
-		if (m == 0) {
-			circle(arr, 0, 3, 2, 1);
-			ori = (ori + 1) % 3;
-		} else if (m == 1) {
-			circle(arr, 0, 1);
-		} else if (m == 2) {
-			circle(arr, 0, 3);
-		}
-		return mathlib.getNPerm(arr, 4) * 3 + ori;	
+		var arr = mathlib.set8Perm([], ~~(idx / 3), 4);
+		mathlib.acycle(arr, moveEdges[m]);
+		return mathlib.get8Perm(arr, 4) * 3 + (idx % 3 + (m == 0 ? 1 : 0)) % 3;
 	}
-/*	function doMove2(idx, m) {
-		var edge1 = idx % 72;
-		var edge2 = ~~(idx / 72) % 72;
-		var edge3 = ~~(idx / 72 / 72) % 72;
-		var corner = ~~(idx / 72 / 72 / 72);
-		corner = cornerMove(corner, m);
-		edge1 = edgeMove(edge1, m);
-		edge2 = edgeMove(edge2, (m+1)%3);
-		edge3 = edgeMove(edge3, (m+2)%3);
-		return ((corner * 72 + edge3) * 72 + edge2) * 72 + edge1;
-	}
-*/	function doMove(idx, m, off) {
+
+	function doMove(off, idx, m) {
 		var edge = idx % 72;
 		var corner = ~~(idx / 72);
-		corner = cmv[corner][m];
-		edge = emv[edge][(m + off) % 3];
+		corner = cmv[m][corner];
+		edge = emv[(m + off) % 3][edge];
 		return corner * 72 + edge;
 	}
-	function getPrun(c, e1, e2, e3) {
-		return Math.max(prun[0][c * 72 + e1], prun[1][c * 72 + e2], prun[2][c * 72 + e3]);
+
+	function getPrun(state) {
+		return Math.max(
+			mathlib.getPruning(prun[0], state[0] * 72 + state[1]),
+			mathlib.getPruning(prun[1], state[0] * 72 + state[2]),
+			mathlib.getPruning(prun[2], state[0] * 72 + state[3]));
 	}
-	function search(c, e1, e2, e3, maxl, lm, sol) {
+
+	function search(state, maxl, lm, sol) {
 		if (maxl == 0) {
-			return c == 0 && e1 == 0 && e2 == 0 && e3 == 0;
+			return state[0] == 0 && state[1] == 0 && state[2] == 0 && state[3] == 0;
 		}
-		if (getPrun(c, e1, e2, e3) > maxl) {
+		if (getPrun(state) > maxl) {
 			return false;
 		}
-		var cx, e1x, e2x, e3x;
-		for (var m=0; m<3; m++) {
-			if (m != lm) {
-				cx = c;
-				e1x = e1;
-				e2x = e2;
-				e3x = e3;
-				for (var a=0; a<11; a++) {
-					cx = cmv[cx][m];
-					e1x = emv[e1x][m];
-					e2x = emv[e2x][(m+1)%3];
-					e3x = emv[e3x][(m+2)%3];
-					if (search(cx, e1x, e2x, e3x, maxl-1, m, sol)) {
-						sol.push("URF".charAt(m) + ["'", "2'", "3'", "4'", "5'", "6", "5", "4", "3", "2", ""][a]);
-						return true;
-					}
+		for (var m = 0; m < 3; m++) {
+			if (m == lm) {
+				continue
+			}
+			var statex = state.slice();
+			for (var a = 0; a < 11; a++) {
+				statex[0] = cmv[m][statex[0]];
+				for (var i = 1; i < 4; i++) {
+					statex[i] = emv[(m + i - 1) % 3][statex[i]];
+				}
+				if (search(statex, maxl - 1, m, sol)) {
+					sol.push("URF".charAt(m) + ["'", "2'", "3'", "4'", "5'", "6", "5", "4", "3", "2", ""][a]);
+					return true;
 				}
 			}
 		}
 	}
+
 	function init() {
 		init = $.noop;
-		for (var i=0; i<72; i++) {
-			emv[i] = [];
-			for (var m=0; m<3; m++) {
-				emv[i][m] = edgeMove(i, m);
-			}
-		}
-		for (var i=0; i<24; i++) {
-			cmv[i] = [];
-			for (var m=0; m<3; m++) {
-				cmv[i][m] = cornerMove(i, m);
-			}
-		}
-		for (var i=0; i<3; i++) {
-			var dist = {};
-			dist[0] = 0;
-//			var done = 1;
-			for (var depth=0; depth<5; depth++) {
-//				done = 0;
-				for (var idx in dist) {
-					if (dist[idx] == depth) {
-						for (var m=0; m<3; m++){
-							var q = idx;
-							for (var c=0; c<12; c++){
-								q = doMove(q, m, i);
-								if (dist[q] == undefined) {
-									dist[q] = depth + 1;
-//									++done;
-								}
-							}
-						}
-					}
-				}
-//				console.log(done);
-			}
-			prun[i] = dist;
+		mathlib.createMove(emv, 72, edgeMove, 3);
+		mathlib.createMove(cmv, 24, [cornerMove, 'p', 4], 3);
+		for (var i = 0; i < 3; i++) {
+			mathlib.createPrun(prun[i], 0, 24 * 72, 5, doMove.bind(null, i), 3, 12, 0)
 		}
 	}
+
 	function getRandomState() {
 		var ret = [mathlib.rn(24)];
-		for (var i=0; i<3; i++) {
+		for (var i = 0; i < 3; i++) {
 			do {
-				ret[i+1] = mathlib.rn(72);
-			} while (prun[i][ret[0] * 72 + ret[i+1]] == undefined);
+				ret[i + 1] = mathlib.rn(72);
+			} while (mathlib.getPruning(prun[i], ret[0] * 72 + ret[i + 1]) == 15);
 		}
 		return ret;
 	}
+
 	function generateScramble(type) {
 		init();
 		var state;
@@ -128,13 +87,12 @@
 		var len = type == 'gearso' ? 4 : 0;
 		var sol = [];
 		while (true) {
-			if (search(state[0], state[1], state[2], state[3], len, -1, sol)) {
+			if (search(state, len, -1, sol)) {
 				break;
-			}				
+			}
 			len++;
 		}
 		return sol.reverse().join(" ");
 	}
 	scrMgr.reg(['gearo', 'gearso'], generateScramble);
-	return generateScramble;
-})(mathlib.circle);
+})();

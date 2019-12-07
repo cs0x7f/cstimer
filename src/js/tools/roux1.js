@@ -48,11 +48,9 @@ execMain(function(CubieCube) {
 		[SOLVED_CORN, cMove, 24 * 24],
 		[SOLVED_EDGE, eMove, 24 * 24 * 24]
 	]);
-	// solv.search([0, 0], 0, 0);
 
 	var faceStr = ["LU", "LD", "FU", "FD"];
 	var moveIdx = ["DRBULF", "URFDLB", "DBLUFR", "UBRDFL"];
-	// var moveIdx = ["FRUBLD", "RBULFD", "FLDBRU", "LBDRFU", "FDRBUL", "DBRUFL", "FULBDR", "UBLDFR", "URBDLF", "RDBLUF", "DRFULB", "RUFLDB"];
 	var rotIdx = ["&nbsp;&nbsp;", "&nbsp;&nbsp;", "y&nbsp;", "y&nbsp;"];
 
 	function solveRoux1Ori(scramble, solvOri) {

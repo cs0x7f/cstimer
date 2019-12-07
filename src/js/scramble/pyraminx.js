@@ -1,6 +1,6 @@
 (function(circle) {
 	var solv = new mathlib.Solver(4, 2, [
-		[0, epermMove, 360],
+		[0, [epermMove, 'p', 6, -1], 360],
 		[0, oriMove, 2592]
 	]);
 
@@ -18,18 +18,19 @@
 		[0, 0, 1, 2]
 	];
 
-	function epermMove(a, c) {
-		var arr = mathlib.set8Perm([], a, 6, true);
-		mathlib.acycle(arr, movePieces[c]);
-		return mathlib.get8Perm(arr, 6, true);
+	function epermMove(arr, m) {
+		mathlib.acycle(arr, movePieces[m]);
 	}
 
+	var eocoord = new mathlib.coord('o', 6, -2);
+	var cocoord = new mathlib.coord('o', 4, 3);
+
 	function oriMove(a, c) {
-		var edgeOri = mathlib.setNOri([], a & 0x1f, 6, 2, true);
-		var cornOri = mathlib.setNOri([], a >> 5, 4, 3, false);
+		var edgeOri = eocoord.set([], a & 0x1f);
+		var cornOri = cocoord.set([], a >> 5);
 		cornOri[c]++;
 		mathlib.acycle(edgeOri, movePieces[c], 1, moveOris[c]);
-		return mathlib.getNOri(cornOri, 4, 3, false) << 5 | mathlib.getNOri(edgeOri, 6, 2, true);
+		return cocoord.get(cornOri) << 5 | eocoord.get(edgeOri);
 	}
 
 	function getScramble(type) {
