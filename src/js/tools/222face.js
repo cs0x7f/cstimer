@@ -269,6 +269,7 @@ execMain(function() {
 	}
 
 	function exec333Test(scramble, fdiv) {
+		var span = $('<span class="sol"/>');
 		var t = +new Date;
 		var sol = [];
 		fdiv.empty();
@@ -283,22 +284,21 @@ execMain(function() {
 		}
 		sol = sol.concat(solcross);
 		DEBUG && console.log('cross: ', solcross, '->', stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
+		span.append("Cross: &nbsp;z2", tools.getSolutionSpan(solcross), '<br>');
 
 		var ret = [null, 0];
 		var f2lsols = [];
 		for (var i = 0; i < 4; i++) {
 			ret = solveParallel(f2lsolvs[i], f2lmaps[i], sol, ret[1]);
 			f2lsols[i] = ret[0];
+			if (ret[0] == undefined) {
+				span.append("F2L-" + (i + 1) + ": &nbsp;(no solution found in 10 moves)", '<br>');
+				break;
+			}
+			span.append("F2L-" + (i + 1) + ": ", f2lsols[i].length == 0 ? '&nbsp;(skip)' : tools.getSolutionSpan(f2lsols[i]), '<br>');
 			sol = sol.concat(f2lsols[i]);
 			DEBUG && console.log('f2l' + (i + 1) + ': ', f2lsols[i], '->', ret[1], stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
 		}
-
-		var span = $('<span class="sol"/>');
-		span.append("Cross: &nbsp;z2", tools.getSolutionSpan(solcross), '<br>');
-		span.append("F2L-1: ", tools.getSolutionSpan(f2lsols[0]), '<br>');
-		span.append("F2L-2: ", tools.getSolutionSpan(f2lsols[1]), '<br>');
-		span.append("F2L-3: ", tools.getSolutionSpan(f2lsols[2]), '<br>');
-		span.append("F2L-4: ", tools.getSolutionSpan(f2lsols[3]), '<br>');
 		fdiv.append(span);
 	}
 
@@ -316,7 +316,7 @@ execMain(function() {
 	}
 
 	$(function() {
-		tools.regTool('333cf', 'Cross + F2l', execFunc);
+		tools.regTool('333cf', 'Cross + F2L', execFunc);
 	});
 
 }, []);
