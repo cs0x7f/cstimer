@@ -568,10 +568,8 @@ var mathlib = (function() {
 
 	_.updatePrun = function() {
 		var curDepth = this.prunTable.length - 1;
-		var allMoves = [];
 		var done = 0;
 		var updatedStates = {};
-		Array.prototype.concat.apply(allMoves, this.moves);
 		for (var state in this.prunTable[curDepth]) {
 			for (var move in this.moves) {
 				var newState = this.doMove(state, move);
