@@ -589,7 +589,7 @@ var mathlib = (function() {
 	}
 
 	_.search = function(state, minl, MAXL, nsol) {
-		MAXL = (MAXL || 99) + 1;
+		MAXL = (MAXL + 1) || 99;
 		this.sol = [];
 		this.sols = [];
 		this.nsol = nsol || 1;
