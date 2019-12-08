@@ -146,12 +146,18 @@ execMain(function() {
 		B9 = 53;
 
 	var moveData = [
-		[[U1, U3, U9, U7], [U2, U6, U8, U4], [F1, L1, B1, R1], [F2, L2, B2, R2], [F3, L3, B3, R3]],
-		[[R1, R3, R9, R7], [R2, R6, R8, R4], [U3, B7, D3, F3], [U6, B4, D6, F6], [U9, B1, D9, F9]],
-		[[F1, F3, F9, F7], [F2, F6, F8, F4], [U7, R1, D3, L9], [U8, R4, D2, L6], [U9, R7, D1, L3]],
-		[[D1, D3, D9, D7], [D2, D6, D8, D4], [F7, R7, B7, L7], [F8, R8, B8, L8], [F9, R9, B9, L9]],
-		[[L1, L3, L9, L7], [L2, L6, L8, L4], [U1, F1, D1, B9], [U4, F4, D4, B6], [U7, F7, D7, B3]],
-		[[B1, B3, B9, B7], [B2, B6, B8, B4], [U3, L1, D7, R9], [U2, L4, D8, R6], [U1, L7, D9, R3]]
+		[[U1, U3, U9, U7], [U2, U6, U8, U4], [F1, L1, B1, R1], [F2, L2, B2, R2], [F3, L3, B3, R3]], // U
+		[[R1, R3, R9, R7], [R2, R6, R8, R4], [U3, B7, D3, F3], [U6, B4, D6, F6], [U9, B1, D9, F9]], // R
+		[[F1, F3, F9, F7], [F2, F6, F8, F4], [U7, R1, D3, L9], [U8, R4, D2, L6], [U9, R7, D1, L3]], // F
+		[[D1, D3, D9, D7], [D2, D6, D8, D4], [F7, R7, B7, L7], [F8, R8, B8, L8], [F9, R9, B9, L9]], // D
+		[[L1, L3, L9, L7], [L2, L6, L8, L4], [U1, F1, D1, B9], [U4, F4, D4, B6], [U7, F7, D7, B3]], // L
+		[[B1, B3, B9, B7], [B2, B6, B8, B4], [U3, L1, D7, R9], [U2, L4, D8, R6], [U1, L7, D9, R3]], // B
+		[[U2, F2, D2, B8], [U5, F5, D5, B5], [U8, F8, D8, B2]], // M
+		[[R1, R3, R9, R7], [R2, R6, R8, R4], [U3, B7, D3, F3], [U6, B4, D6, F6], [U9, B1, D9, F9],
+		 [L1, L7, L9, L3], [L2, L4, L8, L6], [U1, B9, D1, F1], [U4, B6, D4, F4], [U7, B3, D7, F7],
+		 [U2, B8, D2, F2], [U5, B5, D5, F5], [U8, B2, D8, F8]], // x
+		[[R1, R3, R9, R7], [R2, R6, R8, R4], [U3, B7, D3, F3], [U6, B4, D6, F6], [U9, B1, D9, F9],
+		 [U2, B8, D2, F2], [U5, B5, D5, F5], [U8, B2, D8, F8]] // r = Rw
 	];
 
 	var moves = {
@@ -193,130 +199,206 @@ execMain(function() {
 		"B'": 0x52
 	}
 
+	var movesRouxSB = {
+		"U ": 0x00,
+		"U2": 0x00,
+		"U'": 0x00,
+		"R ": 0x11,
+		"R2": 0x11,
+		"R'": 0x11,
+		"M ": 0x61,
+		"M2": 0x61,
+		"M'": 0x61,
+		"r ": 0x71,
+		"r2": 0x71,
+		"r'": 0x71,
+	}
+
 	var faceStr = ["U", "R", "F", "D", "L", "B"];
 
-	function pocketFaceletMove(state, move) {
+	function cubeFaceletMove(state, move) {
 		var ret = state.split('');
-		var axis = "URFDLB".indexOf(move[0]);
+		var swaps = moveData["URFDLBMxr".indexOf(move[0])];
 		var pow = "? 2'".indexOf(move[1]);
-		for (var i = 0; i < 5; i++) {
-			mathlib.acycle(ret, moveData[axis][i], pow);
+		for (var i = 0; i < swaps.length; i++) {
+			mathlib.acycle(ret, swaps[i], pow);
 		}
 		return ret.join('');
 	}
 
 	var curScramble;
 
-	var CROSS_SOLVED = "----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-";
-	var solvCross = new mathlib.gSolver([
-		CROSS_SOLVED
-	], pocketFaceletMove, moves);
+	var cfmeta = [
+		{
+			'move': moves,
+			'maxl': 8,
+			'head': "Cross: ",
+			'step': {
+				"----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-": 0x0
+			}
+		}, {
+			'move': movesWithoutD,
+			'head': "F2L-1: ",
+			'step': {
+				"----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-": 0x1,
+				"----U--------R--R----FF-FF-DD-DDD-D-----LL-LL----B--B-": 0x2,
+				"----U--------RR-RR----F--F--D-DDD-DD----L--L----BB-BB-": 0x4,
+				"----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB": 0x8
+			}
+		}, {
+			'move': movesWithoutD,
+			'head': "F2L-2: ",
+			'step': {
+				"----U-------RR-RR----FFFFFFDDDDDD-D-----LL-LL----B--B-": 0x3,
+				"----U-------RRRRRR----FF-FF-DDDDD-DD----L--L----BB-BB-": 0x5,
+				"----U--------RR-RR---FF-FF-DD-DDD-DD----LL-LL---BB-BB-": 0x6,
+				"----U-------RR-RR-----FF-FF-DDDDDDD----LL-LL-----BB-BB": 0x9,
+				"----U--------R--R----FF-FF-DD-DDDDD----LLLLLL----BB-BB": 0xa,
+				"----U--------RR-RR----F--F--D-DDDDDD---LL-LL----BBBBBB": 0xc
+			}
+		}, {
+			'move': movesWithoutD,
+			'head': "F2L-3: ",
+			'step': {
+				"----U-------RRRRRR---FFFFFFDDDDDD-DD----LL-LL---BB-BB-": 0x7,
+				"----U-------RR-RR----FFFFFFDDDDDDDD----LLLLLL----BB-BB": 0xb,
+				"----U-------RRRRRR----FF-FF-DDDDDDDD---LL-LL----BBBBBB": 0xd,
+				"----U--------RR-RR---FF-FF-DD-DDDDDD---LLLLLL---BBBBBB": 0xe
+			}
+		}, {
+			'move': movesWithoutD,
+			'head': "F2L-4: ",
+			'step': {
+				"----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB": 0xf
+			}
+		}
+	];
 
-	var f2lmaps = [{
-		"----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-": 0x1,
-		"----U--------R--R----FF-FF-DD-DDD-D-----LL-LL----B--B-": 0x2,
-		"----U--------RR-RR----F--F--D-DDD-DD----L--L----BB-BB-": 0x4,
-		"----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB": 0x8
-	}, {
-		"----U-------RR-RR----FFFFFFDDDDDD-D-----LL-LL----B--B-": 0x3,
-		"----U-------RRRRRR----FF-FF-DDDDD-DD----L--L----BB-BB-": 0x5,
-		"----U--------RR-RR---FF-FF-DD-DDD-DD----LL-LL---BB-BB-": 0x6,
-		"----U-------RR-RR-----FF-FF-DDDDDDD----LL-LL-----BB-BB": 0x9,
-		"----U--------R--R----FF-FF-DD-DDDDD----LLLLLL----BB-BB": 0xa,
-		"----U--------RR-RR----F--F--D-DDDDDD---LL-LL----BBBBBB": 0xc
-	}, {
-		"----U-------RRRRRR---FFFFFFDDDDDD-DD----LL-LL---BB-BB-": 0x7,
-		"----U-------RR-RR----FFFFFFDDDDDDDD----LLLLLL----BB-BB": 0xb,
-		"----U-------RRRRRR----FF-FF-DDDDDDDD---LL-LL----BBBBBB": 0xd,
-		"----U--------RR-RR---FF-FF-DD-DDDDDD---LLLLLL---BBBBBB": 0xe
-	}, {
-		"----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB": 0xf
-	}];
+	var sabmeta = [
+		{
+			'move': moves,
+			'maxl': 10,
+			'fmov': ["x ", "x2", "x'"],
+			'head': "Step 1: ",
+			'step': {
+				"---------------------F--F--D--D--D-----LLLLLL-----B--B": 0x0
+			}
+		}, {
+			'move': movesRouxSB,
+			'maxl': 16,
+			'head': "Step 2: ",
+			'step': {
+				"------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B": 0x1
+			}
+		}
+	];
 
-	var f2lsolvs = [];
-	for (var i = 0; i < 4; i++) {
-		f2lsolvs[i] = {};
-		for (var solved in f2lmaps[i]) {
-			f2lsolvs[i][solved] = new mathlib.gSolver([solved], pocketFaceletMove, movesWithoutD);
+
+
+	for (var i = 0; i < cfmeta.length; i++) {
+		cfmeta[i]['solv'] = {};
+		for (var solved in cfmeta[i]['step']) {
+			cfmeta[i]['solv'][solved] = new mathlib.gSolver([solved], cubeFaceletMove, cfmeta[i]['move']);
+		}
+	}
+
+	for (var i = 0; i < sabmeta.length; i++) {
+		sabmeta[i]['solv'] = {};
+		for (var solved in sabmeta[i]['step']) {
+			sabmeta[i]['solv'][solved] = new mathlib.gSolver([solved], cubeFaceletMove, sabmeta[i]['move']);
 		}
 	}
 
 	function stageInit(state, sol) {
 		for (var i = 0; i < curScramble.length; i++) {
-			state = pocketFaceletMove(state, "DLFURB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1));
+			state = cubeFaceletMove(state, "DLFURB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1));
 		}
 		for (var i = 0; i < sol.length; i++) {
-			state = pocketFaceletMove(state, sol[i]);
+			state = cubeFaceletMove(state, sol[i]);
 		}
 		return state
 	}
 
-	function solveParallel(solvs, maps, sol, mask) {
+	function solveParallel(solvs, maps, fmov, sol, mask, MAXL) {
 		var solcur;
-		out: for (var maxl = 0; maxl < 11; maxl++) {
+		out: for (var maxl = 0; maxl < MAXL + 1; maxl++) {
 			for (var solved in solvs) {
 				if ((maps[solved] | mask) != maps[solved]) {
 					continue;
 				}
-				solcur = solvs[solved].search(stageInit(solved, sol), 0, maxl)[0];
+				var state = stageInit(solved, sol);
+				solcur = solvs[solved].search(state, 0, maxl)[0];
 				if (solcur != undefined) {
 					mask |= maps[solved];
 					break out;
+				}
+				for (var m = 0; m < fmov.length; m++) {
+					var fstate = cubeFaceletMove(state, fmov[m]);
+					solcur = solvs[solved].search(fstate, 0, maxl)[0];
+					if (solcur != undefined) {
+						solcur.unshift(fmov[m]);
+						mask |= maps[solved];
+						break out;
+					}
 				}
 			}
 		}
 		return [solcur, mask];
 	}
 
-	function exec333Test(scramble, fdiv) {
-		var span = $('<span class="sol"/>');
+	function solveStepByStep(meta, span) {
 		var t = +new Date;
+		var ret = [null, 0];
+		var sols = [];
 		var sol = [];
+		for (var i = 0; i < meta.length; i++) {
+			ret = solveParallel(meta[i]['solv'], meta[i]['step'], meta[i]['fmov'] || [], sol, ret[1], meta[i]['maxl'] || 10);
+			sols[i] = ret[0];
+			if (ret[0] == undefined) {
+				span.append(meta[i]['head'] + "&nbsp;(no solution found in %d moves)".replace('%d', meta[i]['maxl'] || 10), '<br>');
+				break;
+			}
+			span.append(meta[i]['head'], sols[i].length == 0 ? '&nbsp;(skip)' : tools.getSolutionSpan(sols[i]), '<br>');
+			sol = sol.concat(sols[i]);
+			DEBUG && console.log('[step solver]', meta[i]['head'], sols[i], '->', ret[1], stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
+		}
+	}
+
+	function exec333StepSolver(type, scramble, fdiv) {
+		var span = $('<span class="sol"/>');
 		fdiv.empty();
 		if (!/^[URFDLB 2']+$/.exec(scramble)) {
 			fdiv.html(IMAGE_UNAVAILABLE);
 			return;
 		}
 		curScramble = kernel.parseScramble(scramble, "URFDLB");
-		var solcross = solvCross.search(stageInit(CROSS_SOLVED, sol), 0, 8)[0];
-		if (!solcross) {
-			return;
-		}
-		sol = sol.concat(solcross);
-		DEBUG && console.log('cross: ', solcross, '->', stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
-		span.append("Cross: &nbsp;z2", tools.getSolutionSpan(solcross), '<br>');
 
-		var ret = [null, 0];
-		var f2lsols = [];
-		for (var i = 0; i < 4; i++) {
-			ret = solveParallel(f2lsolvs[i], f2lmaps[i], sol, ret[1]);
-			f2lsols[i] = ret[0];
-			if (ret[0] == undefined) {
-				span.append("F2L-" + (i + 1) + ": &nbsp;(no solution found in 10 moves)", '<br>');
-				break;
-			}
-			span.append("F2L-" + (i + 1) + ": ", f2lsols[i].length == 0 ? '&nbsp;(skip)' : tools.getSolutionSpan(f2lsols[i]), '<br>');
-			sol = sol.concat(f2lsols[i]);
-			DEBUG && console.log('f2l' + (i + 1) + ': ', f2lsols[i], '->', ret[1], stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
+		span.append('Orientation: &nbsp;z2<br>');
+		if (type == 'cf') {
+			solveStepByStep(cfmeta, span);
+		}
+		if (type == 'roux') {
+			solveStepByStep(sabmeta, span);
 		}
 		fdiv.append(span);
 	}
 
-	function execFunc(fdiv) {
+	function execFunc(type, fdiv) {
 		if (!fdiv) {
 			return;
 		}
 		var scramble = tools.getCurScramble();
 		if (tools.puzzleType(scramble[0]) == '333' ||
 			scramble[0] == "input" && "|333|".indexOf('|' + tools.scrambleType(scramble[1]) + '|') != -1) {
-			exec333Test(scramble[1], fdiv);
+			exec333StepSolver(type, scramble[1], fdiv);
 		} else {
 			fdiv.html(IMAGE_UNAVAILABLE);
 		}
 	}
 
 	$(function() {
-		tools.regTool('333cf', 'Cross + F2L', execFunc);
+		tools.regTool('333cf', 'Cross + F2L', execFunc.bind(null, 'cf'));
+		tools.regTool('333roux', 'Roux step 1 + 2', execFunc.bind(null, 'roux'));
 	});
 
 }, []);
