@@ -227,18 +227,19 @@ execMain(function() {
 	}
 
 	var curScramble;
+	var curScrambleStr;
 
 	var cfmeta = [
 		{
 			'move': moves,
 			'maxl': 8,
-			'head': "Cross: ",
+			'head': "Cross",
 			'step': {
 				"----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-": 0x0
 			}
 		}, {
 			'move': movesWithoutD,
-			'head': "F2L-1: ",
+			'head': "F2L-1",
 			'step': {
 				"----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-": 0x1,
 				"----U--------R--R----FF-FF-DD-DDD-D-----LL-LL----B--B-": 0x2,
@@ -247,7 +248,7 @@ execMain(function() {
 			}
 		}, {
 			'move': movesWithoutD,
-			'head': "F2L-2: ",
+			'head': "F2L-2",
 			'step': {
 				"----U-------RR-RR----FFFFFFDDDDDD-D-----LL-LL----B--B-": 0x3,
 				"----U-------RRRRRR----FF-FF-DDDDD-DD----L--L----BB-BB-": 0x5,
@@ -258,7 +259,7 @@ execMain(function() {
 			}
 		}, {
 			'move': movesWithoutD,
-			'head': "F2L-3: ",
+			'head': "F2L-3",
 			'step': {
 				"----U-------RRRRRR---FFFFFFDDDDDD-DD----LL-LL---BB-BB-": 0x7,
 				"----U-------RR-RR----FFFFFFDDDDDDDD----LLLLLL----BB-BB": 0xb,
@@ -267,7 +268,7 @@ execMain(function() {
 			}
 		}, {
 			'move': movesWithoutD,
-			'head': "F2L-4: ",
+			'head': "F2L-4",
 			'step': {
 				"----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB": 0xf
 			}
@@ -279,14 +280,14 @@ execMain(function() {
 			'move': moves,
 			'maxl': 10,
 			'fmov': ["x ", "x2", "x'"],
-			'head': "Step 1: ",
+			'head': "Step 1",
 			'step': {
 				"---------------------F--F--D--D--D-----LLLLLL-----B--B": 0x0
 			}
 		}, {
 			'move': movesRouxSB,
 			'maxl': 16,
-			'head': "Step 2: ",
+			'head': "Step 2",
 			'step': {
 				"------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B": 0x1
 			}
@@ -346,6 +347,14 @@ execMain(function() {
 		return [solcur, mask];
 	}
 
+	function toAlgLink(meta, sols) {
+		var solstr = 'z2 // orientation \n';
+		for (var i = 0; i < meta.length; i++) {
+			solstr += sols[i].join(' ').replace(/\s+/g, ' ') + ' // ' + meta[i]['head'] + (sols[i].length == 0 ? ' skip' : '') + '\n';
+		}
+		return 'https://alg.cubing.net/?alg=' + encodeURIComponent(solstr);
+	}
+
 	function solveStepByStep(meta, span) {
 		var t = +new Date;
 		var ret = [null, 0];
@@ -355,13 +364,14 @@ execMain(function() {
 			ret = solveParallel(meta[i]['solv'], meta[i]['step'], meta[i]['fmov'] || [], sol, ret[1], meta[i]['maxl'] || 10);
 			sols[i] = ret[0];
 			if (ret[0] == undefined) {
-				span.append(meta[i]['head'] + "&nbsp;(no solution found in %d moves)".replace('%d', meta[i]['maxl'] || 10), '<br>');
+				span.append(meta[i]['head'] + ": &nbsp;(no solution found in %d moves)".replace('%d', meta[i]['maxl'] || 10), '<br>');
 				break;
 			}
-			span.append(meta[i]['head'], sols[i].length == 0 ? '&nbsp;(skip)' : tools.getSolutionSpan(sols[i]), '<br>');
+			span.append(meta[i]['head'] + ': ', sols[i].length == 0 ? '&nbsp;(skip)' : tools.getSolutionSpan(sols[i]), '<br>');
 			sol = sol.concat(sols[i]);
-			DEBUG && console.log('[step solver]', meta[i]['head'], sols[i], '->', ret[1], stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
+			DEBUG && console.log('[step solver]', meta[i]['head'] + ': ', sols[i], '->', ret[1], stageInit(mathlib.SOLVED_FACELET, sol), +new Date - t);
 		}
+		span.append($('<a class="click" target="_blank">alg.cubing.net</a>').attr('href', toAlgLink(meta, sols) + '&setup=' + encodeURIComponent(curScrambleStr)));
 	}
 
 	function exec333StepSolver(type, scramble, fdiv) {
@@ -371,6 +381,7 @@ execMain(function() {
 			fdiv.html(IMAGE_UNAVAILABLE);
 			return;
 		}
+		curScrambleStr = scramble;
 		curScramble = kernel.parseScramble(scramble, "URFDLB");
 
 		span.append('Orientation: &nbsp;z2<br>');
