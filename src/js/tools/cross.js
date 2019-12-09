@@ -335,7 +335,16 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			var span = $(this).parent();
 			var face = "DULRFB".indexOf(span.html()[0]);
 			var sol = solve_xcross(curScramble, face);
-			span.empty().append(faceStr[face] + "(ec): " + rotIdx[face], tools.getSolutionSpan(sol), '<br>');
+			var clktxt = $(this).html();
+			if (clktxt == 'ec') {
+				sol = solve_xcross(curScramble, face);
+				clktxt = '<<';
+			} else {
+				sol = solve_cross(curScramble)[face];
+				clktxt = 'ec';
+			}
+			var clk = $('<span />').html(clktxt).addClass('click').click(ecClick);
+			span.empty().append(faceStr[face] + "(", clk, "): " + rotIdx[face], tools.getSolutionSpan(sol), '<br>');
 		}
 
 		function execFunc(fdiv) {
