@@ -84,7 +84,7 @@ var pocketface = execMain(function() {
 	}
 
 	$(function() {
-		tools.regTool('222face', TOOLS_222FACE, execFunc);
+		tools.regTool('222face', TOOLS_SOLVERS + '>' + TOOLS_222FACE, execFunc);
 	});
 
 }, []);
@@ -211,7 +211,19 @@ execMain(function() {
 		"M'": 0x61,
 		"r ": 0x71,
 		"r2": 0x71,
-		"r'": 0x71,
+		"r'": 0x71
+	}
+
+	var movesZZF2L = {
+		"U ": 0x00,
+		"U2": 0x00,
+		"U'": 0x00,
+		"R ": 0x11,
+		"R2": 0x11,
+		"R'": 0x11,
+		"L ": 0x41,
+		"L2": 0x41,
+		"L'": 0x41
 	}
 
 	var faceStr = ["U", "R", "F", "D", "L", "B"];
@@ -294,21 +306,50 @@ execMain(function() {
 		}
 	];
 
-
-
-	for (var i = 0; i < cfmeta.length; i++) {
-		cfmeta[i]['solv'] = {};
-		for (var solved in cfmeta[i]['step']) {
-			cfmeta[i]['solv'][solved] = new mathlib.gSolver([solved], cubeFaceletMove, cfmeta[i]['move']);
+	var petrusmeta = [
+		{
+			'move': moves,
+			'maxl': 8,
+			'head': "2x2x2",
+			'step': {
+				"---------------------FF-FF-DD-DD--------LL-LL---------": 0x1,
+				"------------------------------DD-DD----LL-LL-----BB-BB": 0x2
+			}
+		}, {
+			'move': moves,
+			'maxl': 10,
+			'head': "2x2x3",
+			'step': {
+				"---------------------FF-FF-DD-DD-DD----LLLLLL----BB-BB": 0x3
+			}
 		}
-	}
+	];
 
-	for (var i = 0; i < sabmeta.length; i++) {
-		sabmeta[i]['solv'] = {};
-		for (var solved in sabmeta[i]['step']) {
-			sabmeta[i]['solv'][solved] = new mathlib.gSolver([solved], cubeFaceletMove, sabmeta[i]['move']);
+	var zzmeta = [
+		{
+			'move': moves,
+			'maxl': 10,
+			'head': "EOLine",
+			'step': {
+				"-H-HUH-H-----R-------HFH-F--D-HDH-D-----L-------HBH-B-": 0x0,
+			}
+		}, {
+			'move': movesZZF2L,
+			'maxl': 16,
+			'head': "ZZF2L1",
+			'step': {
+				"-H-HUH-H----RRRRRR---HFF-FF-DDHDD-DD----L-------BBHBB-": 0x1,
+				"-H-HUH-H-----R-------FFHFF-DD-DDHDD----LLLLLL---HBB-BB": 0x2
+			}
+		}, {
+			'move': movesZZF2L,
+			'maxl': 16,
+			'head': "ZZF2L2",
+			'step': {
+				"-H-HUH-H----RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB": 0x3
+			}
 		}
-	}
+	];
 
 	function stageInit(state, sol) {
 		for (var i = 0; i < curScramble.length; i++) {
@@ -349,7 +390,10 @@ execMain(function() {
 
 	function toAlgLink(meta, sols) {
 		var solstr = 'z2 // orientation \n';
-		for (var i = 0; i < meta.length; i++) {
+		for (var i = 0; i < sols.length; i++) {
+			if (sols[i] == undefined) {
+				break;
+			}
 			solstr += sols[i].join(' ').replace(/\s+/g, ' ') + ' // ' + meta[i]['head'] + (sols[i].length == 0 ? ' skip' : '') + '\n';
 		}
 		return 'https://alg.cubing.net/?alg=' + encodeURIComponent(solstr);
@@ -361,6 +405,12 @@ execMain(function() {
 		var sols = [];
 		var sol = [];
 		for (var i = 0; i < meta.length; i++) {
+			if (!meta[i]['solv']) {
+				meta[i]['solv'] = {};
+				for (var solved in meta[i]['step']) {
+					meta[i]['solv'][solved] = new mathlib.gSolver([solved], cubeFaceletMove, meta[i]['move']);
+				}
+			}
 			ret = solveParallel(meta[i]['solv'], meta[i]['step'], meta[i]['fmov'] || [], sol, ret[1], meta[i]['maxl'] || 10);
 			sols[i] = ret[0];
 			if (ret[0] == undefined) {
@@ -391,6 +441,12 @@ execMain(function() {
 		if (type == 'roux') {
 			solveStepByStep(sabmeta, span);
 		}
+		if (type == 'petrus') {
+			solveStepByStep(petrusmeta, span);
+		}
+		if (type == 'zz') {
+			solveStepByStep(zzmeta, span);
+		}
 		fdiv.append(span);
 	}
 
@@ -408,8 +464,10 @@ execMain(function() {
 	}
 
 	$(function() {
-		tools.regTool('333cf', 'Cross + F2L', execFunc.bind(null, 'cf'));
-		tools.regTool('333roux', 'Roux step 1 + 2', execFunc.bind(null, 'roux'));
+		tools.regTool('333cf', TOOLS_SOLVERS + '>Cross + F2L', execFunc.bind(null, 'cf'));
+		tools.regTool('333roux', TOOLS_SOLVERS + '>Roux S1 + S2', execFunc.bind(null, 'roux'));
+		tools.regTool('333petrus', TOOLS_SOLVERS + '>2x2x2 + 2x2x3', execFunc.bind(null, 'petrus'));
+		tools.regTool('333zz', TOOLS_SOLVERS + '>EOLine + ZZF2L', execFunc.bind(null, 'zz'));
 	});
 
 }, []);

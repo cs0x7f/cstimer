@@ -88,13 +88,31 @@ var tools = execMain(function() {
 
 	var fdivs = [];
 	var funcs = ['image', 'stats', 'cross'];
-	var funcSelects = [];
 	var funcSpan = [];
+	var funcMenu = [];
+	var funcData = [];
+
 	for (var i = 0; i < 4; i++) {
 		fdivs[i] = $('<div />');
 		funcSpan[i] = $('<span />');
-		funcSelects[i] = $('<select />');
+		funcMenu[i] = new kernel.TwoLvMenu(funcData, onFuncSelected.bind(null, i), $('<select />'), $('<select />'));
 		divs[i] = $('<div />').css('display', 'inline-block');
+	}
+
+	function onFuncSelected(idx, val) {
+		DEBUG && console.log('[func select]', idx, val);
+        kernel.blur();
+		var start = idx === undefined ? 0 : idx;
+		var end = idx === undefined ? 4 : idx + 1;
+        for (var i = start; i < end; i++) {
+			var newVal = funcMenu[i].getSelected();
+            if (funcs[i] != newVal) {
+                disableFunc(i, 'property');
+                funcs[i] = newVal;
+                kernel.setProp('toolsfunc', JSON.stringify(funcs));
+                execFunc(i, 'property');
+            }
+        }
 	}
 
 	function procSignal(signal, value) {
@@ -122,9 +140,9 @@ var tools = execMain(function() {
 			} else if (value[0] == 'toolsfunc' && value[2] == 'session') {
 				var newfuncs = JSON.parse(value[1]);
 				for (var i = 0; i < 4; i++) {
-					funcSelects[i].val(newfuncs[i]);
+					funcMenu[i].loadVal(newfuncs[i]);
 				}
-				changeSelect();
+				onFuncSelected();
 			}
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value;
@@ -169,8 +187,7 @@ var tools = execMain(function() {
 		var mainDiv = $('<div id="toolsDiv"/>');
 		for (var i = 0; i < 4; i++) {
 			fdivs[i].click(showFuncSpan);
-			funcSelects[i].change(changeSelect);
-			funcSpan[i].append("<br>", TOOLS_SELECTFUNC, funcSelects[i]);
+			funcSpan[i].append("<br>", TOOLS_SELECTFUNC, funcMenu[i].select1, funcMenu[i].select2);
 			divs[i].append(fdivs[i], funcSpan[i]).appendTo(mainDiv);
 			if (i == 1) {
 				mainDiv.append('<br>');
@@ -200,21 +217,25 @@ var tools = execMain(function() {
 	function regTool(name, str, execFunc) {
 		DEBUG && console.log('[regtool]', name, str);
 		toolBox[name] = execFunc;
-		for (var i = 0; i < 4; i++) {
-			funcSelects[i].append($('<option />').val(name).html(str)).val(funcs[i]);
-		}
-	}
-
-	function changeSelect() {
-		kernel.blur();
-		for (var i = 0; i < 4; i++) {
-			var newVal = funcSelects[i].val();
-			if (funcs[i] != newVal) {
-				disableFunc(i, 'property');
-				funcs[i] = newVal;
-				kernel.setProp('toolsfunc', JSON.stringify(funcs));
-				execFunc(i, 'property');
+		str = str.split('>');
+		if (str.length == 2) {
+			var idx1 = -1;
+			for (var i = 0; i < funcData.length; i++) {
+				if (funcData[i][0] == str[0]) {
+					idx1 = i;
+					break;
+				}
 			}
+			if (idx1 != -1) {
+				funcData[idx1][1].push([str[1], name]);
+			} else {
+				funcData.push([str[0], [[str[1], name]]]);
+			}
+		} else {
+			funcData.push([str[0], name]);
+		}
+		for (var i = 0; i < 4; i++) {
+			funcMenu[i].reset(funcs[i]);
 		}
 	}
 

@@ -842,6 +842,121 @@ var kernel = execMain(function() {
 		}
 	})();
 
+	var TwoLvMenu = (function() {
+		/**
+		 *  data = [[text1, value1], [text2, value2], ...]
+		 *  value = 'value' or [[texta, valuea], [textb, valueb]]
+		 */
+		function TwoLvMenu(data, callback, select1, select2, val) {
+			this.data = data;
+			this.callback = callback;
+			this.select1 = select1;
+			this.select2 = select2;
+			this.reset(val);
+		}
+
+		function procOnVal(data, val, func) {
+			for (var idx1 = 0; idx1 < data.length; idx1++) {
+				if (!$.isArray(data[idx1][1])) {
+					if (data[idx1][1] == val) {
+						func(idx1, null);
+						return;
+					}
+					continue;
+				}
+				for (var idx2 = 0; idx2 < data[idx1][1].length; idx2++) {
+					if (data[idx1][1][idx2][1] == val) {
+						func(idx1, idx2);
+						return;
+					}
+				}
+			}
+		}
+
+		var _ = TwoLvMenu.prototype;
+
+		_.loadSelect2 = function(idx2) {
+			refocus();
+			idx2 = idx2 || 0;
+			var idx1 = ~~this.select1.prop('selectedIndex');
+			var data2 = (this.data[idx1] || [])[1];
+			this.select2.empty();
+			if (!$.isArray(data2)) { // no 2-level data
+				this.select2.hide();
+			} else {
+				this.select2.show();
+				for (var i = 0; i < data2.length; i++) {
+					this.select2.append($('<option>').html(data2[i][0]).val(data2[i][1]));
+				}
+				this.select2.prop('selectedIndex', idx2);
+			}
+			this.onSelect2Change();
+		}
+
+		_.onSelect1Change = function() {
+			this.loadSelect2();
+		}
+
+		_.onSelect2Change = function() {
+			this.callback && this.callback(this.getSelected());
+		}
+
+		_.getSelected = function() {
+			var idx1 = ~~this.select1.prop('selectedIndex');
+			var data2 = (this.data[idx1] || [])[1];
+			if (!$.isArray(data2)) {
+				return data2;
+			}
+			var idx2 = ~~this.select2.prop('selectedIndex');
+			return data2[idx2][1];
+		}
+
+		_.reset = function(val) {
+			val = val || this.getSelected();
+			this.select1.empty();
+			for (var i = 0; i < this.data.length; i++) {
+				this.select1.append($('<option>').html(this.data[i][0]).val(
+					$.isArray(this.data[i][1]) ? i : this.data[i][1]
+				));
+			}
+			this.select1.unbind('change').change(this.onSelect1Change.bind(this));
+			this.select2.unbind('change').change(this.onSelect2Change.bind(this));
+			if (val) {
+				this.loadVal(val);
+			}
+		}
+
+		_.loadVal = function(val) {
+			var callback = this.callback;
+			this.callback = null; // disable callback
+			procOnVal(this.data, val, function(idx1, idx2) {
+				this.select1.prop('selectedIndex', idx1);
+				this.loadSelect2(idx2);
+			}.bind(this));
+			this.callback = callback;
+		}
+
+		_.getValName = function(val) {
+			var name = null;
+			procOnVal(this.data, val, function(idx1, idx2) {
+				name = this.data[idx1][0];
+				if (idx2 != null) {
+					name += '>' + this.data[idx1][1][idx2][0];
+				}
+			}.bind(this));
+			return name;
+		}
+
+		_.getValIdx = function(val) {
+			var idx = null;
+			procOnVal(this.data, val, function(idx1, idx2) {
+				idx = idx1 * 100 + (idx2 == null ? idx2 : 99);
+			});
+			return idx;
+		}
+
+		return TwoLvMenu;
+	})();
 
 	var bgImage = (function() {
 		var src = "";
@@ -1105,6 +1220,7 @@ var kernel = execMain(function() {
 		parseScramble: parseScramble,
 		blur: refocus,
 		ui: ui,
+		TwoLvMenu: TwoLvMenu,
 		pround: prettyRound,
 		round: round
 	};

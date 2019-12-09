@@ -115,7 +115,7 @@ execMain(function(CubieCube) {
 	}
 
 	$(function() {
-		tools.regTool('roux1', TOOLS_ROUX1, execFunc);
+		tools.regTool('roux1', TOOLS_SOLVERS + '>' + TOOLS_ROUX1, execFunc);
 	});
 
 	return {

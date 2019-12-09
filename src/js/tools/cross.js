@@ -361,7 +361,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 		}
 
 		$(function() {
-			tools.regTool('cross', TOOLS_CROSS, execFunc);
+			tools.regTool('cross', TOOLS_SOLVERS + '>' + TOOLS_CROSS, execFunc);
 		});
 	});
 

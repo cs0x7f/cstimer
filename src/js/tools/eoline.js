@@ -78,7 +78,7 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 	}
 
 	$(function() {
-		tools.regTool('eoline', TOOLS_EOLINE, execFunc);
+		tools.regTool('eoline', TOOLS_SOLVERS + '>' + TOOLS_EOLINE, execFunc);
 	});
 
 	return {
