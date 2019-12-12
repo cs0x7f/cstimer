@@ -555,7 +555,6 @@ execMain(function() {
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = "RULB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
-			var faceMap = ["URFDLB", "RFULBD", "FURBDL", "DLBURF", "LBDRFU", "BDLFUR"];
 			var faceStr = ["U", "R", "F", "D", "L", "B"];
 			var faceSolved = [
 				'UUUUU?RR???FF????????LL???BB??',
@@ -589,6 +588,110 @@ execMain(function() {
 		return skewbSolver;
 	})();
 
+	var pyraCube = (function(){
+		var F0 = 0,
+			F1 = 1,
+			F2 = 2,
+			F3 = 3,
+			F4 = 4,
+			F5 = 5,
+			R0 = 6,
+			R1 = 7,
+			R2 = 8,
+			R3 = 9,
+			R4 = 10,
+			R5 = 11,
+			L0 = 12,
+			L1 = 13,
+			L2 = 14,
+			L3 = 15,
+			L4 = 16,
+			L5 = 17,
+			D0 = 18,
+			D1 = 19,
+			D2 = 20,
+			D3 = 21,
+			D4 = 22,
+			D5 = 23;
+		/*
+		L F R
+		  D
+		x504x x x504x
+		 132 231 132
+		  x x405x x
+
+		    x504x
+		     132
+		      x  */
+		var moveData = [
+			[[F5, R3, D4], [F0, R1, D2], [F1, R2, D0]],//R
+			[[F3, L4, R5], [F1, L2, R0], [F2, L0, R1]],//U
+			[[F4, D5, L3], [F2, D0, L1], [F0, D1, L2]],//L
+			[[R4, L5, D3], [R2, L0, D1], [R0, L1, D2]] //B
+		];
+
+		function pyraMove(state, move) {
+			var ret = state.split('');
+			var swaps = moveData["RULB".indexOf(move[0])];
+			var pow = "? '".indexOf(move[1]);
+			for (var i = 0; i < swaps.length; i++) {
+				mathlib.acycle(ret, swaps[i], pow);
+			}
+			return ret.join('');
+		}
+
+		var solv;
+
+		function pyraSolver(scramble, span) {
+			solv = solv || new mathlib.gSolver([
+				'????FF??RRR??L?L?L?DDDDD',
+			], pyraMove, appendSuffix({
+				'R': 0x0,
+				'U': 0x1,
+				'L': 0x2,
+				'B': 0x3
+			}, " '"));
+			curScramble = kernel.parseScramble(scramble, "RULBrulb");
+			scramble = [];
+			for (var i = 0; i < curScramble.length; i++) {
+				if (curScramble[i][1] == 1) {
+					scramble.push("RULB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1));
+				}
+			}
+			var faceStr = ["D", "L", "R", "F"];
+			var rawMap = "RULB";
+			var moveMaps = [["RULB", "LUBR", "BURL"], ["URBL", "LRUB", "BRLU"], ["RLBU", "ULRB", "BLUR"], ["RBUL", "UBLR", "LBRU"]];
+			for (var i = 0; i < 4; i++) {
+				sol = [];
+				var sol1;
+				out: for (var depth = 0; depth < 99; depth++) {
+					for (var j = 0; j < 3; j++) {
+						var moveMap = moveMaps[i][j];
+						curScramble = [];
+						for (var m = 0; m < scramble.length; m++) {
+							curScramble.push(rawMap[moveMap.indexOf(scramble[m][0])] + scramble[m][1]);
+						}
+						sol1 = solv.search(stateInit(pyraMove, '????FF??RRR??L?L?L?DDDDD'), depth, depth)[0];
+						if (!sol1) {
+							continue;
+						}
+						for (var m = 0; m < sol1.length; m++) {
+							sol1[m] = moveMap[rawMap.indexOf(sol1[m][0])] + sol1[m][1];
+						}
+						break out;
+					}
+				}
+				if (sol1) {
+					span.append(faceStr[i] + ': ', tools.getSolutionSpan(sol1), '<br>');
+				} else {
+					span.append(faceStr[i] + ': no solution found<br>');
+				}
+			}
+		}
+
+		return pyraSolver;
+	})();
+
 	function execFunc(type, fdiv) {
 		if (!fdiv) {
 			return;
@@ -612,6 +715,9 @@ execMain(function() {
 		} else if (type == 'skbl1' && (
 				tools.puzzleType(scramble[0]) == 'skb')) {
 			skewbCube(scramble[1], span);
+		} else if (type == 'pyrv' && (
+				tools.puzzleType(scramble[0]) == 'pyr')) {
+			pyraCube(scramble[1], span);
 		} else {
 			fdiv.html(IMAGE_UNAVAILABLE);
 			return;
@@ -626,6 +732,7 @@ execMain(function() {
 		tools.regTool('333petrus', TOOLS_SOLVERS + '>2x2x2 + 2x2x3', execFunc.bind(null, '333petrus'));
 		tools.regTool('333zz', TOOLS_SOLVERS + '>EOLine + ZZF2L', execFunc.bind(null, '333zz'));
 		tools.regTool('sq1cs', TOOLS_SOLVERS + '>SQ1 S1 + S2', execFunc.bind(null, 'sq1cs'));
+		tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
 		tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));
 	});
 });
