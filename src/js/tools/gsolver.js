@@ -549,7 +549,7 @@ execMain(function() {
 				'R': 0x0,
 				'r': 0x1,
 				'B': 0x2,
-				'b': 0x3,
+				'b': 0x3
 			}, " '"));
 			curScramble = kernel.parseScramble(scramble, "RULB");
 			for (var i = 0; i < curScramble.length; i++) {
@@ -564,8 +564,11 @@ execMain(function() {
 			}
 			span.append('Orientation: &nbsp;' + (ori[uidx] || '').replace("'", "2").replace("*", "'") + '<br>');
 			var sol1 = solv.search(stateInit(skewbMove, 'UUUUU?RR???FF????????LL???BB??'), 0)[0];
-			span.append('Face: ', tools.getSolutionSpan(sol1), '<br>');
-			sol = sol.concat(sol1);
+			if (sol1) {
+				span.append('Face: ', tools.getSolutionSpan(sol1), '<br>');
+			} else {
+				span.append('Face: no solution found<br>');
+			}
 		}
 
 		return skewbSolver;
