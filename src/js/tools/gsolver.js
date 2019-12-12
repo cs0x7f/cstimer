@@ -555,19 +555,34 @@ execMain(function() {
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = "RULB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
-			sol = [];
-			var state = stateInit(skewbMove, 'U?????????????????????????????');
-			var ori = ["x*", "y ", null, "x ", "y*", "y'"];
-			var uidx = ~~(state.indexOf('U') / 5);
-			if (ori[uidx]) {
-				sol.push(ori[uidx]);
-			}
-			span.append('Orientation: &nbsp;' + (ori[uidx] || '').replace("'", "2").replace("*", "'") + '<br>');
-			var sol1 = solv.search(stateInit(skewbMove, 'UUUUU?RR???FF????????LL???BB??'), 0)[0];
-			if (sol1) {
-				span.append('Face: ', tools.getSolutionSpan(sol1), '<br>');
-			} else {
-				span.append('Face: no solution found<br>');
+			var faceMap = ["URFDLB", "RFULBD", "FURBDL", "DLBURF", "LBDRFU", "BDLFUR"];
+			var faceStr = ["U", "R", "F", "D", "L", "B"];
+			var faceSolved = [
+				'UUUUU?RR???FF????????LL???BB??',
+				'???BBUUUUU??L?L?FF????????R?R?',
+				'?B?B??R?R?UUUUU?F?F???L?L?????',
+				'????????RR???BBUUUUU???LL???FF',
+				'?BB????????R?R????FFUUUUU??L?L',
+				'??F?F??R?R???????B?B?L?L?UUUUU'
+			];
+			for (var i = 0; i < 6; i++) {
+				sol = [];
+				var state = stateInit(skewbMove, 'U????R????F????D????L????B????');
+				var ori = ["x*", "y ", null, "x ", "y*", "y'"];
+				var uidx = ~~(state.indexOf(faceStr[i]) / 5);
+				if (ori[uidx]) {
+					sol.push(ori[uidx]);
+				}
+				var sol1 = solv.search(stateInit(skewbMove, faceSolved[i]), 0)[0];
+				if (sol1) {
+					span.append(faceStr[i] + ': ');
+					if (sol[0]) {
+						span.append('&nbsp;' + sol[0].replace("'", "2").replace("*", "'"));
+					}
+					span.append(tools.getSolutionSpan(sol1), '<br>');
+				} else {
+					span.append(faceStr[i] + ': no solution found<br>');
+				}
 			}
 		}
 
