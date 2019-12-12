@@ -12,7 +12,7 @@ var PROPERTY_USEINS = 'использовать WCA инспекцию';
 var PROPERTY_USEINS_STR = 'Всегда|Кроме блд|Никогда';
 var PROPERTY_VOICEINS = 'голосовое предупреждение при инспекции';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Громкость голоса';
 var PROPERTY_PHASES = 'число этапов';
 var PROPERTY_TIMERSIZE = 'размер таймера';
 var PROPERTY_USEMILLI = 'использовать миллисекунды';
@@ -67,16 +67,16 @@ var TOOLS_METRONOME = 'метроном';
 var TOOLS_CFMTIME = 'Подтвердить время';
 var TOOLS_SOLVERS = 'Solvers';
 var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
+var OLCOMP_VIEWRESULT = 'Посмотреть результат';
 var OLCOMP_VIEWMYRESULT = 'Моя история';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
+var OLCOMP_START = 'Начать!';
+var OLCOMP_SUBMIT = 'Отправить!';
 var OLCOMP_SUBMITAS = 'Submit As: ';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_OLCOMP = 'Онлайн соревнование';
+var OLCOMP_ANONYM = 'Аноним';
+var OLCOMP_ME = 'Я';
+var OLCOMP_WCAACCOUNT = 'WCA Аккаунт';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Размер изображения скрамбла';
@@ -230,7 +230,8 @@ var scrdata = [
 	['Пирамидка', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		['random move', "pyrm", 25],
+		['L4E', "pyrl4e", 0]
 	]],
 	['Скьюб', [
 		["random state (WCA)", "skbso", 0],

@@ -1,4 +1,4 @@
-(function(circle) {
+(function() {
 	var solv = new mathlib.Solver(4, 2, [
 		[0, [epermMove, 'p', 6, -1], 360],
 		[0, oriMove, 2592]
@@ -34,25 +34,31 @@
 	}
 
 	function getScramble(type) {
-		var l = type == 'pyrso' ? 8 : 0;
-
+		var minl = type == 'pyro' ? 0 : 8;
+		var limit = type == 'pyrl4e' ? 2 : 7;
 		var len = 0;
+		var sol;
+		var perm;
+		var ori;
 		do {
-			var st = mathlib.rn(360 * 2592 - 1) + 1;
-			var i = st % 360;
-			var g = ~~(st / 360);
-
-			len = solv.search([i, g], 0).length;
-			k = solv.toStr(solv.search([i, g], l), "ULRB", ["", "'"]) + ' ';
-			for (g = 0; g < 4; g++) {
-				i = mathlib.rn(3);
-				if (i < 2) {
-					k += "lrbu".charAt(g) + [" ", "' "][i];
+			if (type == 'pyro' || type == 'pyrso') {
+				perm = mathlib.rn(360);
+				ori = mathlib.rn(2592);
+			} else if (type == 'pyrl4e') {
+				perm = mathlib.get8Perm(mathlib.set8Perm([], mathlib.rn(12), 4, -1).concat([4, 5]), 6, -1);
+				ori = mathlib.rn(3) * 864 + mathlib.rn(8);
+			}
+			len = solv.search([perm, ori], 0).length;
+			sol = solv.toStr(solv.search([perm, ori], minl), "ULRB", ["", "'"]) + ' ';
+			for (var i = 0; i < 4; i++) {
+				var r = mathlib.rn(3);
+				if (r < 2) {
+					sol += "lrbu".charAt(i) + [" ", "' "][r];
 					len++;
 				}
 			}
-		} while (len < 6);
-		return k
+		} while (len < limit);
+		return sol;
 	}
-	scrMgr.reg(['pyro', 'pyrso'], getScramble);
-})(mathlib.circle);
+	scrMgr.reg(['pyro', 'pyrso', 'pyrl4e'], getScramble);
+})();

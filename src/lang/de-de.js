@@ -230,7 +230,8 @@ var scrdata = [
 	['Pyraminx', [
 		["zufälliger Status (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
-		['zufällige Bewegung', "pyrm", 25]
+		['zufällige Bewegung', "pyrm", 25],
+		['L4E', "pyrl4e", 0]
 	]],
 	['Skewb', [
 		["zufälliger Status (WCA)", "skbso", 0],

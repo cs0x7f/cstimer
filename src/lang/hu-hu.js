@@ -230,7 +230,8 @@ var scrdata = [
 	['Pyraminx', [
 		["véletlen állapot (WCA)", "pyrso", 10],
 		['optimális', "pyro", 0],
-		['véletlen mozdulat', "pyrm", 25]
+		['véletlen mozdulat', "pyrm", 25],
+		['L4E', "pyrl4e", 0]
 	]],
 	['Skewb', [
 		["véletlen állapot (WCA)", "skbso", 0],

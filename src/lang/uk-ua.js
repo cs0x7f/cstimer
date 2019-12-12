@@ -8,9 +8,9 @@ var BUTTON_OPTIONS = 'ПАРАМЕТР';
 var BUTTON_EXPORT = 'ЕКСПОРТ';
 var BUTTON_DONATE = 'ПОЖЕРТВУВАТИ';
 var PROPERTY_SR = 'With session';
-var PROPERTY_USEINS = 'використовувати WCA інспекції';
-var PROPERTY_USEINS_STR = 'Завжди|за винятком BLD|ніколи не';
-var PROPERTY_VOICEINS = 'voice alert of WCA inspection';
+var PROPERTY_USEINS = 'використовувати WCA інспекцію';
+var PROPERTY_USEINS_STR = 'Завжди|Тільки для BLD|Ніколи';
+var PROPERTY_VOICEINS = 'голосове попередження інспекції WCA';
 var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
 var PROPERTY_VOICEVOL = 'Voice volume';
 var PROPERTY_PHASES = 'multi-phase';
@@ -230,7 +230,8 @@ var scrdata = [
 	['Pyraminx', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
-		['random move', "pyrm", 25]
+		['random move', "pyrm", 25],
+		['L4E', "pyrl4e", 0]
 	]],
 	['Skewb', [
 		["random state (WCA)", "skbso", 0],
