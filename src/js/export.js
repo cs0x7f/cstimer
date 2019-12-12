@@ -275,6 +275,7 @@ var exportFunc = execMain(function() {
 					alert('No Valid Data Found');
 					return updateUserInfoFromGGL();
 				}
+				updateUserInfoFromGGL();
 				loadData(data);
 			}).error(function() {
 				alert(EXPORT_ERROR + '\nPlease Re-login');
