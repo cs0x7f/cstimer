@@ -77,7 +77,7 @@ var tools = execMain(function() {
 			return "pyr";
 		} else if (/^skb(so)?$/.exec(scrambleType)) {
 			return "skb";
-		} else if (/^sq(rs|1[ht])$/.exec(scrambleType)) {
+		} else if (/^sq(rs|1[ht]|rcsp)$/.exec(scrambleType)) {
 			return "sq1";
 		} else if (/^clk(wca|o)$/.exec(scrambleType)) {
 			return "clk";

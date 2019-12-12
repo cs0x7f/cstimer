@@ -37,7 +37,7 @@ importScripts(
 	'tools/cross.js',
 	'tools/eoline.js',
 	'tools/roux1.js',
-	'tools/222face.js',
+	'tools/gsolver.js',
 	'tools/bluetoothutil.js',
 	'tools/insertionfinder.js',
 	'tools/metronome.js',

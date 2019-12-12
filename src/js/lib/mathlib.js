@@ -608,7 +608,7 @@ var mathlib = (function() {
 		this.minl = minl || 0;
 		for (var maxl = minl; maxl < MAXL; maxl++) {
 			this.updatePrun(Math.ceil(maxl / 2));
-			if (this.idaSearch(state, maxl, -1)) {
+			if (this.idaSearch(state, maxl, null)) {
 				break;
 			}
 		}
