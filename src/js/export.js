@@ -243,8 +243,11 @@ var exportFunc = execMain(function() {
 			return;
 		}
 		inServGGL.html('Check File List...');
-		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27&access_token=' + gglToken, {
-			'type': 'GET'
+		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27', {
+			'type': 'GET',
+			'beforeSend': function(xhr) {
+				xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
+			}
 		}).success(function(data, status, xhr) {
 			var files = data['files'];
 			if (files.length == 0) {
@@ -254,13 +257,18 @@ var exportFunc = execMain(function() {
 			var idx = 1;
 			if (kernel.getProp('expp')) {
 				idx = ~~prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', files.length), '1');
-				if (idx <= 0 || idx > cnt) {
+				if (idx <= 0 || idx > files.length) {
 					return updateUserInfoFromGGL();
 				}
 			}
 			inServGGL.html('Import Data...');
 			var fileId = files[idx - 1]['id'];
-			$.get('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media&access_token=' + gglToken).success(function(data) {
+			$.ajax('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media', {
+				'type': 'GET',
+				'beforeSend': function(xhr) {
+					xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
+				}
+			}).success(function(data) {
 				try {
 					data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
 				} catch (e) {
@@ -275,8 +283,11 @@ var exportFunc = execMain(function() {
 
 			// removeRedundantGoogleFiles
 			for (var i = 10; i < files.length; i++) {
-				$.ajax('https://www.googleapis.com/drive/v3/files/' + files[i]['id'] + '?access_token=' + gglToken, {
-					'type': 'DELETE'
+				$.ajax('https://www.googleapis.com/drive/v3/files/' + files[i]['id'], {
+					'type': 'DELETE',
+					'beforeSend': function(xhr) {
+						xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
+					}
 				});
 			}
 		}).error(function() {
@@ -291,13 +302,16 @@ var exportFunc = execMain(function() {
 			return;
 		}
 		outServGGL.html('Create File...');
-		$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&access_token=' + gglToken, {
+		$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', {
 			'type': 'POST',
 			'contentType': 'application/json',
 			'data': JSON.stringify({
 				'parents': ['appDataFolder'],
 				'name': 'cstimer.txt'
-			})
+			}),
+			'beforeSend': function(xhr) {
+				xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
+			}
 		}).success(function(data, status, xhr) {
 			var uploadUrl = xhr.getResponseHeader('location');
 			outServGGL.html('Uploading Data...');
