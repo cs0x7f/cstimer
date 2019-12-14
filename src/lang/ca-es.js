@@ -248,9 +248,12 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['Puzzle de 15 peces', [
-		['Moviments de peça', "15p", 80],
-		['Moviments de l\'espai en blanc', "15pm", 80],
-		['^<>v', "15pat", 80]
+		['random state URLD', "15prp", 0],
+		['random state ^<>v', "15prap", 0],
+		['random state Blank', "15prmp", 0],
+		['random move URLD', "15p", 80],
+		['random move ^<>v', "15pat", 80],
+		['random move Blank', "15pm", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],

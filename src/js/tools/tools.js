@@ -83,6 +83,10 @@ var tools = execMain(function() {
 			return "clk";
 		} else if (/^mgmp$/.exec(scrambleType)) {
 			return "mgm";
+		} else if (/^15p(at|ra?p?)?$/.exec(scrambleType)) {
+			return "15p";
+		} else if (/^15p(rmp|m)$/.exec(scrambleType)) {
+			return "15b";
 		}
 	}
 

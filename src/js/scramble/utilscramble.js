@@ -212,7 +212,7 @@
 			var m = mirrored ? ret[i][0] : (3 - ret[i][0]);
 			m = (arrow ? "\uFFEA\uFFE9\uFFEB\uFFEC" : "ULRD").charAt(m);
 			if (tiny) {
-				retstr += (ret[i][1] == 1 ? '' : ret[i][1]) + m + ' ';
+				retstr += m + (ret[i][1] == 1 ? '' : ret[i][1]) + ' ';
 			} else {
 				for (var j = 0; j < ret[i][1]; j++) {
 					retstr += m + ' ';

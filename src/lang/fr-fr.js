@@ -248,9 +248,12 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['Taquin', [
-		['Pièces', "15p", 80],
-		['Case vide', "15pm", 80],
-		['^<>v', "15pat", 80]
+		['état aléatoire URLD', "15prp", 0],
+		['état aléatoire ^<>v', "15prap", 0],
+		['état aléatoire Blank', "15prmp", 0],
+		['mouvements aléatoires URLD', "15p", 80],
+		['mouvements aléatoires ^<>v', "15pat", 80],
+		['mouvements aléatoires Blank', "15pm", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],

@@ -717,6 +717,71 @@ posit:
 		}
 	})();
 
+	var sldImage = (function() {
+
+		return function(type, size, moveseq) {
+			var width = 50;
+			var gap = 0.05;
+
+			var state = [];
+			var effect = [
+				[1, 0],
+				[0, 1],
+				[0, -1],
+				[-1, 0]
+			];
+			for (var i = 0; i < size * size; i++) {
+				state[i] = i;
+			}
+			var x = size - 1;
+			var y = size - 1;
+
+			var movere = /([ULRD\uFFEA\uFFE9\uFFEB\uFFEC])([\d]?)/;
+			moveseq = moveseq.split(' ');
+			// console.log(moves.findall)
+			for (var s = 0; s < moveseq.length; s++) {
+				var m = movere.exec(moveseq[s]);
+				if (!m) {
+					continue;
+				}
+				var turn = 'ULRD\uFFEA\uFFE9\uFFEB\uFFEC'.indexOf(m[1]) % 4;
+				var pow = ~~m[2] || 1;
+				var eff = effect[type == 'b' ? 3 - turn : turn];
+				for (var p = 0; p < pow; p++) {
+					mathlib.circle(state, x * size + y, (x + eff[0]) * size + y + eff[1]);
+					x += eff[0];
+					y += eff[1];
+				}
+			}
+
+			var imgSize = kernel.getProp('imgSize') / 50;
+			canvas.width(35 * imgSize + 'em');
+			canvas.height(35 * imgSize + 'em');
+
+			canvas.attr('width', (size + gap * 2) * width);
+			canvas.attr('height', (size + gap * 2) * width);
+
+			for (var i = 0; i < size; i++) {
+				for (var j = 0; j < size; j++) {
+					drawPolygon(ctx, '#fff', [
+						[i + gap, i + gap, i + 1 - gap, i + 1 - gap],
+						[j + gap, j + 1 - gap, j + 1 - gap, j + gap]
+					], [width, 0.1, 0.1]);
+					var val = state[j * size + i] + 1;
+					if (val == size * size) {
+						continue;
+					}
+					ctx.fillStyle = "#000";
+					ctx.font = width * 0.6 + "px monospace";
+					ctx.textAlign = "center";
+					ctx.textBaseline = "middle";
+					ctx.fillText(val, width * (i + 0.5 + gap * 2), width * (j + 0.5 + gap * 2));
+				}
+			}
+		}
+	})();
+
+
 	var types_nnn = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
 
 	function genImage(scramble) {
@@ -750,6 +815,10 @@ posit:
 		}
 		if (type == "mgm") {
 			mgmImage(scramble[1]);
+			return true;
+		}
+		if (type == "15b" || type == "15p") {
+			sldImage(type[2], 4, scramble[1]);
 			return true;
 		}
 		return false;

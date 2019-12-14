@@ -569,11 +569,31 @@ var mathlib = (function() {
 		for (var depth = this.prunDepth + 1; depth <= targetDepth; depth++) {
 			var t = +new Date;
 			var prevSize = this.prunTableSize;
-			for (var i = 0; i < this.solvedStates.length; i++) {
-				this.updatePrunDFS(this.solvedStates[i], depth, 0, null);
+			if (depth < 8) {
+				for (var i = 0; i < this.solvedStates.length; i++) {
+					this.updatePrunDFS(this.solvedStates[i], depth, 0, null);
+				}
+			} else {
+				this.updatePrunBFS(depth - 1);
 			}
 			this.prunDepth = depth;
 			DEBUG && console.log(depth, this.prunTableSize - prevSize, +new Date - t);
+		}
+	}
+
+	_.updatePrunBFS = function(fromDepth) {
+		for (var state in this.prunTable) {
+			if (this.prunTable[state][0] != fromDepth) {
+				continue;
+			}
+			for (var move in this.moves) {
+				var newState = this.doMove(state, move);
+				if (!newState || newState in this.prunTable) {
+					continue;
+				}
+				this.prunTable[newState] = [fromDepth + 1, move];
+				this.prunTableSize++;
+			}
 		}
 	}
 
@@ -608,6 +628,7 @@ var mathlib = (function() {
 		this.minl = minl || 0;
 		for (var maxl = minl; maxl < MAXL; maxl++) {
 			this.updatePrun(Math.ceil(maxl / 2));
+			this.visited = {};
 			if (this.idaSearch(state, maxl, null)) {
 				break;
 			}
@@ -621,9 +642,10 @@ var mathlib = (function() {
 	}
 
 	_.idaSearch = function(state, maxl, lm) {
-		if (this.getPruning(state) > maxl) {
+		if (this.getPruning(state) > maxl || state in this.visited) {
 			return false;
 		}
+		this.visited[state] = 0;
 		if (maxl == 0) {
 			this.sols.push(this.sol.slice());
 			return this.sols.length >= this.nsol;
@@ -636,7 +658,7 @@ var mathlib = (function() {
 				continue;
 			}
 			var newState = this.doMove(state, move);
-			if (newState == state) {
+			if (!newState || newState == state) {
 				continue;
 			}
 			this.sol.push(move);
@@ -654,6 +676,17 @@ var mathlib = (function() {
 
 	function rn(n) {
 		return ~~(Math.random() * n)
+	}
+
+	function rndPerm(n) {
+		var arr = [];
+		for (var i = 0; i < n; i++) {
+			arr[i] = i;
+		}
+		for (var i = 0; i < n - 1; i++) {
+			circle(arr, i, i + rn(n - i));
+		}
+		return arr;
 	}
 
 	function rndProb(plist) {
@@ -754,6 +787,7 @@ var mathlib = (function() {
 		str2obj: str2obj,
 		valuedArray: valuedArray,
 		Solver: Solver,
+		rndPerm: rndPerm,
 		gSolver: gSolver
 	}
 })();

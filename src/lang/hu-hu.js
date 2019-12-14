@@ -248,9 +248,12 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
-		['elem mozgások', "15p", 80],
-		['üres mozgások', "15pm", 80],
-		['^<>v', "15pat", 80]
+		['véletlen állapot URLD', "15prp", 0],
+		['véletlen állapot ^<>v', "15prap", 0],
+		['véletlen állapot Blank', "15prmp", 0],
+		['véletlen mozdulat URLD', "15p", 80],
+		['véletlen mozdulat ^<>v', "15pat", 80],
+		['véletlen mozdulat Blank', "15pm", 80]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
