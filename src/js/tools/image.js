@@ -761,13 +761,16 @@ posit:
 			canvas.attr('width', (size + gap * 2) * width);
 			canvas.attr('height', (size + gap * 2) * width);
 
+			var cols = kernel.getProp('col15p').match(colre);
 			for (var i = 0; i < size; i++) {
 				for (var j = 0; j < size; j++) {
-					drawPolygon(ctx, '#fff', [
+					var val = state[j * size + i];
+					var colorIdx = Math.min(~~(val / size), val % size);
+					val++;
+					drawPolygon(ctx, cols[colorIdx], [
 						[i + gap, i + gap, i + 1 - gap, i + 1 - gap],
 						[j + gap, j + 1 - gap, j + 1 - gap, j + gap]
 					], [width, 0.1, 0.1]);
-					var val = state[j * size + i] + 1;
 					if (val == size * size) {
 						continue;
 					}
