@@ -758,8 +758,8 @@ posit:
 			canvas.width(30 * imgSize + 'em');
 			canvas.height(30 * imgSize + 'em');
 
-			canvas.attr('width', (size + gap * 2) * width);
-			canvas.attr('height', (size + gap * 2) * width);
+			canvas.attr('width', (size + gap * 4) * width);
+			canvas.attr('height', (size + gap * 4) * width);
 
 			var cols = kernel.getProp('col15p').match(colre);
 			for (var i = 0; i < size; i++) {
@@ -770,7 +770,7 @@ posit:
 					drawPolygon(ctx, cols[colorIdx], [
 						[i + gap, i + gap, i + 1 - gap, i + 1 - gap],
 						[j + gap, j + 1 - gap, j + 1 - gap, j + gap]
-					], [width, 0.1, 0.1]);
+					], [width, gap * 2, gap * 2]);
 					if (val == size * size) {
 						continue;
 					}
