@@ -755,8 +755,8 @@ posit:
 			}
 
 			var imgSize = kernel.getProp('imgSize') / 50;
-			canvas.width(35 * imgSize + 'em');
-			canvas.height(35 * imgSize + 'em');
+			canvas.width(30 * imgSize + 'em');
+			canvas.height(30 * imgSize + 'em');
 
 			canvas.attr('width', (size + gap * 2) * width);
 			canvas.attr('height', (size + gap * 2) * width);
