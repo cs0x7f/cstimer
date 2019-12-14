@@ -902,14 +902,19 @@ var kernel = execMain(function() {
 			this.callback && this.callback(this.getSelected());
 		}
 
-		_.getSelected = function() {
+		_.getSelIdx = function() {
 			var idx1 = ~~this.select1.prop('selectedIndex');
 			var data2 = (this.data[idx1] || [])[1];
 			if (!$.isArray(data2)) {
-				return data2;
+				return [idx1];
 			}
 			var idx2 = ~~this.select2.prop('selectedIndex');
-			return data2[idx2][1];
+			return [idx1, idx2];
+		}
+
+		_.getSelected = function() {
+			var idx = this.getSelIdx();
+			return idx.length == 1 ? (this.data[idx[0]] || [])[1] : this.data[idx[0]][1][idx[1]][1];
 		}
 
 		_.reset = function(val) {

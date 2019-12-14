@@ -33,7 +33,11 @@ var scrMgr = (function(rn, rndEl) {
 	 *	{type: callback(type, length, state)}
 	 *	callback return: scramble string or undefined means delay
 	 */
-	var scramblers = {};
+	var scramblers = {
+		"blank": function() {
+			return "N/A";
+		}
+	};
 
 	/**
 	 *	{type: [str1, str2, ..., strN]}
@@ -127,8 +131,8 @@ var scramble = execMain(function(rn, rndEl) {
 
 	var div = $('<div id="scrambleDiv"/>');
 	var title = $('<div />').addClass('title');
-	var select = $('<select />');
-	var select2 = $('<select />');
+	var selects = [$('<select />'), $('<select />')];
+	var menu = new kernel.TwoLvMenu(scrdata, loadScrOptsAndGen, selects[0], selects[1], '333');
 	var scrOpt = $('<input type="button" class="icon">').val('\ue994');
 	var scrOptDiv = $('<div>');
 	var scrFltDiv = $('<div class="sflt">');
@@ -158,7 +162,7 @@ var scramble = execMain(function(rn, rndEl) {
 			lastClick.addClass('click').unbind('click').click(procLastClick);
 		}
 
-		type = select2.val();
+		type = menu.getSelected();
 		len = ~~scrLen.val();
 		if (lasttype != type) {
 			kernel.setProp('scrType', type);
@@ -431,37 +435,19 @@ var scramble = execMain(function(rn, rndEl) {
 		};
 	})();
 
-	function loadSelect2(idx) {
-		if (!$.isNumeric(idx)) {
-			idx = 0;
-			var selectedStr = scrdata[select[0].selectedIndex][0];
-			if (selectedStr && selectedStr.match(/^===/)) {
-				select[0].selectedIndex++;
-			}
-		} else {
-			kernel.blur();
-		}
-		var box2 = scrdata[select[0].selectedIndex][1];
-		select2.empty();
-		for (var i = 0; i < box2.length; i++) {
-			select2.append('<option value="' + box2[i][1] + '">' + box2[i][0] + '</option');
-		}
-		select2[0].selectedIndex = idx;
-		loadScrOptsAndGen();
-	}
-
 	function loadScrOptsAndGen() {
 		kernel.blur();
-		scrLen.val(Math.abs(scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2]));
-		scrLen[0].disabled = scrdata[select[0].selectedIndex][1][select2[0].selectedIndex][2] <= 0;
-		var curType = select2.val();
+		var idx = menu.getSelIdx();
+		var len = scrdata[idx[0]][1][idx[1]][2];
+		scrLen.val(Math.abs(len));
+		scrLen[0].disabled = len <= 0;
+		var curType = menu.getSelected();
 		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, filters[curType]])));
 		scrOpt[0].disabled = scrLen[0].disabled && !(curType in filters);
 		if (scrFlt[0] != curType) {
 			scrFlt = [curType, filters[curType] && mathlib.valuedArray(filters[curType].length, 1)];
 			kernel.setProp('scrFlt', JSON.stringify(scrFlt), 'session');
 		}
-		// console.log(scrFlt);
 		genScramble();
 	}
 
@@ -607,7 +593,7 @@ var scramble = execMain(function(rn, rndEl) {
 			} else if (value[0] == 'scrMono') {
 				div.css('font-family', value[1] ? 'SimHei, Monospace' : 'Arial');
 			} else if (value[0] == 'scrType') {
-				if (value[1] != select2.val()) {
+				if (value[1] != menu.getSelected()) {
 					loadType(value[1]);
 				}
 			} else if (value[0] == 'scrLim') {
@@ -664,10 +650,8 @@ var scramble = execMain(function(rn, rndEl) {
 	}
 
 	function loadType(type) {
-		procOnType(type, function(i, j) {
-			select[0].selectedIndex = i;
-			loadSelect2(j);
-		});
+		menu.loadVal(type);
+		loadScrOptsAndGen();
 	}
 
 	function getTypeName(type) {
@@ -737,19 +721,13 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
 		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['n', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);
-
-		for (var i = 0; i < scrdata.length; i++) {
-			select.append('<option>' + scrdata[i][0] + '</option>');
-		}
 		kernel.regProp('scramble', 'scrType', ~5, 'Scramble Type', ['333'], 3);
 
-		select.change(loadSelect2);
-		select2.change(loadScrOptsAndGen);
 		scrLen.change(genScramble);
 		scrOpt.click(showScrOpt);
 		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltDiv);
 
-		title.append($('<nobr>').append(select, ' ', select2, ' ', scrOpt), " <wbr>");
+		title.append($('<nobr>').append(selects[0], ' ', selects[1], ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
 		div.append(title, ssdiv.append(sdiv).click(procScrambleClick));
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
