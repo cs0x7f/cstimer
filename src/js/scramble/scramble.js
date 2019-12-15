@@ -738,6 +738,7 @@ var scramble = execMain(function(rn, rndEl) {
 			kernel.setProp('scrHide', false);
 		});
 		kernel.regProp('ui', 'scrHide', ~0, 'Hide Scramble Selector', [false]);
+		loadScrOptsAndGen();
 	});
 
 	return {
