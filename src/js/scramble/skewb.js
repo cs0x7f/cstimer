@@ -7,20 +7,23 @@
 	];
 
 	var moveCorners = [
-		[0, 2, 1],
-		[0, 1, 3],
-		[0, 3, 2],
-		[1, 2, 3]
+		[0, 1, 2],
+		[0, 3, 1],
+		[0, 2, 3],
+		[1, 3, 2]
 	];
 
 	var ctcord = new mathlib.coord('p', 6, -1);
+	var cpcord = new mathlib.coord('p', 4, -1);
 	var ftcord = new mathlib.coord('o', 4, 3);
 	var twcord = new mathlib.coord('o', 4, -3);
 
 	function ctcpMove(idx, m) {
+		var corner = cpcord.set([], idx % 12);
 		var center = ctcord.set([], ~~(idx / 12));
 		mathlib.acycle(center, moveCenters[m]);
-		return ctcord.get(center) * 12 + cornPermMove[idx % 12][m];
+		mathlib.acycle(corner, moveCorners[m]);
+		return ctcord.get(center) * 12 + cpcord.get(corner);
 	}
 
 	function twstMove(idx, move) {
@@ -30,21 +33,6 @@
 		mathlib.acycle(twst, moveCorners[move], 1, [0, 2, 1, 3]);
 		return twcord.get(twst) * 81 + ftcord.get(fixedtwst);
 	}
-
-	var cornPermMove = [
-		[6, 5, 10, 1],
-		[9, 7, 4, 2],
-		[3, 11, 8, 0],
-		[10, 1, 6, 5],
-		[0, 8, 11, 3],
-		[7, 9, 2, 4],
-		[4, 2, 9, 7],
-		[11, 3, 0, 8],
-		[1, 10, 5, 6],
-		[8, 0, 3, 11],
-		[2, 4, 7, 9],
-		[5, 6, 1, 10]
-	];
 
 	var solv = new mathlib.Solver(4, 2, [
 		[0, ctcpMove, 4320],
