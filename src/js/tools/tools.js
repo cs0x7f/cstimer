@@ -225,7 +225,7 @@ var tools = execMain(function() {
 		if (str.length == 2) {
 			var idx1 = -1;
 			for (var i = 0; i < funcData.length; i++) {
-				if (funcData[i][0] == str[0]) {
+				if (funcData[i][0] == str[0] && $.isArray(funcData[i][1])) {
 					idx1 = i;
 					break;
 				}
