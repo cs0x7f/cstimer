@@ -874,23 +874,15 @@
 			var span = $('<span class="sol"/>');
 			var scramble = tools.getCurScramble();
 			curScrambleStr = scramble[1];
-			if (type == '222face' && (
-					tools.puzzleType(scramble[0]) == '222' ||
-					scramble[0] == "input" && tools.scrambleType(scramble[1]) == '222o')) {
+			if (type == '222face' && tools.isPuzzle('222')) {
 				pocketCube(scramble[1], span);
-			} else if (type.startsWith('333') && (
-					tools.puzzleType(scramble[0]) == '333' ||
-					scramble[0] == "input" && tools.scrambleType(scramble[1]) == '333') &&
-				/^[URFDLB 2']+$/.exec(scramble[1])) {
+			} else if (type.startsWith('333') && tools.isPuzzle('333') && /^[URFDLB 2']+$/.exec(scramble[1])) {
 				rubiksCube(type.slice(3), scramble[1], span);
-			} else if (type == 'sq1cs' && (
-					tools.puzzleType(scramble[0]) == 'sq1')) {
+			} else if (type == 'sq1cs' && tools.isPuzzle('sq1')) {
 				sq1Cube(scramble[1], span);
-			} else if (type == 'skbl1' && (
-					tools.puzzleType(scramble[0]) == 'skb')) {
+			} else if (type == 'skbl1' && tools.isPuzzle('skb')) {
 				skewbCube(scramble[1], span);
-			} else if (type == 'pyrv' && (
-					tools.puzzleType(scramble[0]) == 'pyr')) {
+			} else if (type == 'pyrv' && tools.isPuzzle('pyr')) {
 				pyraCube(scramble[1], span);
 			} else {
 				fdiv.html(IMAGE_UNAVAILABLE);

@@ -52,6 +52,30 @@ var tools = execMain(function() {
 		}
 	}
 
+	function isPuzzle(puzzle, scramble) {
+		scramble = scramble || curScramble;
+		var scrPuzzle = puzzleType(scramble[0]);
+		scramble = scramble[1];
+		if (scrPuzzle) {
+			return scrPuzzle == puzzle;
+		} else if (puzzle == '222') {
+			return scramble.match(/^([xyzFRU][2']?\s*)+$/);
+		} else if (puzzle == '333') {
+			return scramble.match(/^([xyzFRUBLDSME][2']?\s*)+$/);
+		} else if (puzzle == '444') {
+			return scramble.match(/^(([xyzFRUBLDfru]|[FRU]w)[2']?\s*)+$/);
+		} else if (puzzle == '555') {
+			return scramble.match(/^(([xyzFRUBLDfrubld])[w]?[2']?\s*)+$/);
+		} else if (puzzle == 'skb') {
+			return scramble.match(/^([RLUB]'?\s*)+$/);
+		} else if (puzzle == 'pyr') {
+			return scramble.match(/^([RLUBrlub]'?\s*)+$/);
+		} else if (puzzle == 'sq1') {
+			return scramble.match(/^$/);
+		}
+		return false;
+	}
+
 	function puzzleType(scrambleType) {
 		if (/^222(so|[236o]|eg[012]?|nb)$/.exec(scrambleType)) {
 			return "222";
@@ -280,6 +304,7 @@ var tools = execMain(function() {
 		},
 		getSolutionSpan: getSolutionSpan,
 		scrambleType: scrambleType,
-		puzzleType: puzzleType
+		puzzleType: puzzleType,
+		isPuzzle: isPuzzle
 	}
 });

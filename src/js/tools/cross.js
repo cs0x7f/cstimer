@@ -351,9 +351,8 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			if (!fdiv) {
 				return;
 			}
-			var scramble = tools.getCurScramble();
-			if ("|333|333o|333oh|333fm|333ft|edges|easyc|".indexOf('|' + scramble[0] + '|') != -1 ||
-				scramble[0] == "input" && "|333|222o|".indexOf('|' + tools.scrambleType(scramble[1]) + '|') != -1) {
+			if (tools.isPuzzle('333')) {
+				var scramble = tools.getCurScramble();
 				execCross(scramble[1], fdiv);
 			} else {
 				fdiv.html(IMAGE_UNAVAILABLE);
