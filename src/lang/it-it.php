@@ -119,34 +119,34 @@
 <li><strong data="opt_giiSM">Considera scrambled quando esegue</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
 <li><strong data="opt_giiBS">Avviso sonoro a fine scramble</strong>. Beep when some of scramble-finish signal is triggered.</li>
 <li><strong data="opt_giiRST">Reset Giiker cube quando viene connesso</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Rilevazione automatica errori hardware</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such hardware.</li>
+<li><strong data="opt_giiAED">Rilevazione automatica errori hardware</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
 </ul>
 <h2>Tools detail</h2>
 <ul>
-<li><strong data="tool_scrgen">Generatore di scramble</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_cfm">Conferma tempo</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_hugestats">Statistiche cross-session</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_stats">Statistiche</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_distribution">Distribuzione temporale</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_trend">trend dei tempi</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_image">Disegna scramble</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_roux1">Solvers &gt; Risoluzione Roux S1</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_eoline">Solvers &gt; Risoluzione EOLine</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_cross">Solvers &gt; Risoluzione croce</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333zz">Solvers &gt; EOLine + ZZF2L</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_giikerutil">Cubo Giiker</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_if">InsertionFinder</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_mtrnm">metronomo</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_onlinecomp">Online Competition</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. TO_BE_FILLED</li>
+<li><strong data="tool_scrgen">Generatore di scramble</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
+<li><strong data="tool_cfm">Conferma tempo</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
+<li><strong data="tool_hugestats">Statistiche cross-session</strong>. You are able to do cross-session statistics with this tool.</li>
+<li><strong data="tool_stats">Statistiche</strong>. Statistic table similar with the table in the list times panel.</li>
+<li><strong data="tool_distribution">Distribuzione temporale</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
+<li><strong data="tool_trend">trend dei tempi</strong>. Shows a trend curve of all solves in current session.</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
+<li><strong data="tool_image">Disegna scramble</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
+<li><strong data="tool_roux1">Solvers &gt; Risoluzione Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
+<li><strong data="tool_eoline">Solvers &gt; Risoluzione EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
+<li><strong data="tool_cross">Solvers &gt; Risoluzione croce</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
+<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
+<li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
+<li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
+<li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
+<li><strong data="tool_333zz">Solvers &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
+<li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
+<li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
+<li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
+<li><strong data="tool_giikerutil">Cubo Giiker</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
+<li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
+<li><strong data="tool_mtrnm">metronomo</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_onlinecomp">Online Competition</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>Links</h2>
 <ul>

@@ -494,6 +494,7 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	padding-right: 1.5rem;
 	margin-right: -21px;
 	margin-right: -1.5rem;
+	scrollbar-width: none;
 }
 
 .noScrollBar::-webkit-scrollbar {
@@ -603,6 +604,14 @@ table.opttable .sr {
 .opttable td.sr {
 	border-left: 1px dashed;
 	border-left: 0.1rem dashed;
+}
+
+div.helptable > * {
+	padding: 0.2em;
+}
+
+div.helptable ul {
+	padding-left: 1.2em;
 }
 
 .table {

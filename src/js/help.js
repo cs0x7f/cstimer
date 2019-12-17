@@ -7,7 +7,7 @@ var help = execMain(function() {
 	var table = $('<table class="options" />');
 	var left = $('<td />');
 	var right = $('<td />').addClass('tabValue');
-	var rightDiv = $('<div class="noScrollBar">');
+	var rightDiv = $('<div class="noScrollBar helptable">');
 
 	table.append($('<tr />').append(left, right.append(rightDiv)));
 

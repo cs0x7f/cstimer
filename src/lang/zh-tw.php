@@ -119,34 +119,34 @@
 <li><strong data="opt_giiSM">以特殊動作標記打亂</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
 <li><strong data="opt_giiBS">打亂完成時發出聲音</strong>. Beep when some of scramble-finish signal is triggered.</li>
 <li><strong data="opt_giiRST">連接時重置計客魔方</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">自動硬體錯誤偵測</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such hardware.</li>
+<li><strong data="opt_giiAED">自動硬體錯誤偵測</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
 </ul>
 <h2>Tools detail</h2>
 <ul>
-<li><strong data="tool_scrgen">打亂製造器</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_cfm">確認時間</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_hugestats">跨階段統計</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_stats">統計</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_distribution">分階段計時</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_trend">時間趨勢</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_image">畫出打亂圖形</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_roux1">速解小幫手 &gt; 解好橋式左橋</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_eoline">速解小幫手 &gt; 解好EOLine</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_cross">速解小幫手 &gt; 解好十字</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_222face">速解小幫手 &gt; 2x2x2 一面</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333cf">速解小幫手 &gt; Cross + F2L</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333roux">速解小幫手 &gt; Roux S1 + S2</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333petrus">速解小幫手 &gt; 2x2x2 + 2x2x3</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_333zz">速解小幫手 &gt; EOLine + ZZF2L</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_sq1cs">速解小幫手 &gt; SQ1 S1 + S2</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_pyrv">速解小幫手 &gt; Pyraminx V</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_skbl1">速解小幫手 &gt; Skewb Face</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_giikerutil">計客魔方</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_if">InsertionFinder</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_mtrnm">節拍器</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_onlinecomp">線上比賽</strong>. TO_BE_FILLED</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. TO_BE_FILLED</li>
+<li><strong data="tool_scrgen">打亂製造器</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
+<li><strong data="tool_cfm">確認時間</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
+<li><strong data="tool_hugestats">跨階段統計</strong>. You are able to do cross-session statistics with this tool.</li>
+<li><strong data="tool_stats">統計</strong>. Statistic table similar with the table in the list times panel.</li>
+<li><strong data="tool_distribution">分階段計時</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
+<li><strong data="tool_trend">時間趨勢</strong>. Shows a trend curve of all solves in current session.</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
+<li><strong data="tool_image">畫出打亂圖形</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
+<li><strong data="tool_roux1">速解小幫手 &gt; 解好橋式左橋</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
+<li><strong data="tool_eoline">速解小幫手 &gt; 解好EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
+<li><strong data="tool_cross">速解小幫手 &gt; 解好十字</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
+<li><strong data="tool_222face">速解小幫手 &gt; 2x2x2 一面</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
+<li><strong data="tool_333cf">速解小幫手 &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
+<li><strong data="tool_333roux">速解小幫手 &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
+<li><strong data="tool_333petrus">速解小幫手 &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
+<li><strong data="tool_333zz">速解小幫手 &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
+<li><strong data="tool_sq1cs">速解小幫手 &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
+<li><strong data="tool_pyrv">速解小幫手 &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
+<li><strong data="tool_skbl1">速解小幫手 &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
+<li><strong data="tool_giikerutil">計客魔方</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
+<li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
+<li><strong data="tool_mtrnm">節拍器</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_onlinecomp">線上比賽</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>Links</h2>
 <ul>
