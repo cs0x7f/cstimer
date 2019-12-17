@@ -59,7 +59,7 @@ var stackmatutil = execMain(function(CubieCube) {
 			stackmat.setCallBack(function(value) {
 				updateStatus(value);
 				func && func(value);
-			})
+			});
 		}
-	}
+	};
 });

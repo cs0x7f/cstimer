@@ -248,7 +248,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (csTimerWorker && csTimerWorker.getScramble) {
 			cacheTid = cacheTid || csTimerWorker.getScramble(args, function(detailType, scramble) {
 				DEBUG && console.log('[scrcache]', detailType + ' cached by csTimerWorker');
-				saveCachedScramble(detailType, scramble)
+				saveCachedScramble(detailType, scramble);
 			}.bind(undefined, detailType));
 		} else if (!isPredict) {
 			cacheTid = cacheTid || setTimeout(function(detailType, args) {
@@ -341,7 +341,7 @@ var scramble = execMain(function(rn, rndEl) {
 				if (!onlinecomp) {
 					remoteFail();
 				}
-				var ret = onlinecomp.getScrambles();
+				ret = onlinecomp.getScrambles();
 				if (!parseInput(ret)) {
 					remoteFail();
 				} else {
@@ -490,7 +490,7 @@ var scramble = execMain(function(rn, rndEl) {
 					cnt += chkBoxList[val][0].checked ? 1 : 0;
 				});
 				return cnt + '/' + dataGroup[g].length;
-			}
+			};
 
 			for (var g in dataGroup) {
 				if (dataGroup[g].length == 1) {

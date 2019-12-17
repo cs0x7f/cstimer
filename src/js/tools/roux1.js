@@ -119,5 +119,5 @@ execMain(function(CubieCube) {
 
 	return {
 		solve: solveRoux1
-	}
+	};
 }, [mathlib.CubieCube]);

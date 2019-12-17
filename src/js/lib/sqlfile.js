@@ -45,7 +45,7 @@ var SQLFile = execMain(function() {
 				serialData[i] = 0;
 			} else if (serialType == 9) {
 				serialData[i] = 1;
-			} else if (serialType == 10 || serialType == 11) {;
+			} else if (serialType == 10 || serialType == 11) {
 			} else if (serialTypes[i] % 2 == 0) {
 				serialData[i] = data.slice(offset[0], offset[0] + (serialType - 12) / 2);
 				offset[0] += (serialType - 12) / 2;
@@ -68,14 +68,12 @@ var SQLFile = execMain(function() {
 		}
 		for (var i = 0; i < numOfCell; i++) {
 			var coffset = [(offset == 100 ? 0 : offset) + getInt(data, [caoff[0] + i * 2], 2)];
-			if (pageType == 0x2 || pageType == 0xa) {;
+			if (pageType == 0x2 || pageType == 0xa) {
 			} else if (pageType == 0x5) {
 				var leftChild = getInt(data, coffset, 4);
-				var key = getInt(data, coffset);
 				loadPage(data, leftChild, callback);
 			} else if (pageType == 0xd) {
 				var nBytes = getInt(data, coffset);
-				var rowid = getInt(data, coffset);
 				procPayload(data, coffset[0], nBytes, callback);
 				coffset[0] += nBytes;
 			}
@@ -96,5 +94,5 @@ var SQLFile = execMain(function() {
 	return {
 		loadTableList: loadTableList,
 		loadPage: loadPage
-	}
+	};
 });

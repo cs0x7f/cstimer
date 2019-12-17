@@ -220,25 +220,25 @@ var mathlib = (function() {
 		for (var ed = 0; ed < 12; ed++) {
 			prod.ea[ed] = a.ea[b.ea[ed] >> 1] ^ (b.ea[ed] & 1);
 		}
-	}
+	};
 
 	CubieCube.CornMult = function(a, b, prod) {
 		for (var corn = 0; corn < 8; corn++) {
 			var ori = ((a.ca[b.ca[corn] & 7] >> 3) + (b.ca[corn] >> 3)) % 3;
 			prod.ca[corn] = a.ca[b.ca[corn] & 7] & 7 | ori << 3;
 		}
-	}
+	};
 
 	CubieCube.CubeMult = function(a, b, prod) {
 		CubieCube.CornMult(a, b, prod);
 		CubieCube.EdgeMult(a, b, prod);
-	}
+	};
 
 	CubieCube.prototype.init = function(ca, ea) {
 		this.ca = ca.slice();
 		this.ea = ea.slice();
 		return this;
-	}
+	};
 
 	CubieCube.prototype.isEqual = function(c) {
 		for (var i = 0; i < 8; i++) {
@@ -252,7 +252,7 @@ var mathlib = (function() {
 			}
 		}
 		return true;
-	}
+	};
 
 	var cornerFacelet = [
 		[8, 9, 20],
@@ -359,7 +359,7 @@ var mathlib = (function() {
 
 	var moveCube = [];
 	for (var i = 0; i < 18; i++) {
-		moveCube[i] = new CubieCube()
+		moveCube[i] = new CubieCube();
 	}
 	moveCube[0].init([3, 0, 1, 2, 4, 5, 6, 7], [6, 0, 2, 4, 8, 10, 12, 14, 16, 18, 20, 22]);
 	moveCube[3].init([20, 1, 2, 8, 15, 5, 6, 19], [16, 2, 4, 6, 22, 10, 12, 14, 8, 18, 20, 0]);
@@ -417,7 +417,7 @@ var mathlib = (function() {
 			cycles += small_cycles[1] + flip_cycles[(small_cycles[0] - small_cycles[1]) >> 1];
 		}
 		return cycles - parity;
-	}
+	};
 
 	function createPrun(prun, init, size, maxd, doMove, N_MOVES, N_POWER, N_INV) {
 		var isMoveTable = $.isArray(doMove);
@@ -509,7 +509,7 @@ var mathlib = (function() {
 			}
 		}
 		return maxl == MAXL ? null : this.sol.reverse();
-	}
+	};
 
 	_.toStr = function(sol, move_map, power_map) {
 		var ret = [];
@@ -517,7 +517,7 @@ var mathlib = (function() {
 			ret.push(move_map[sol[i][0]] + power_map[sol[i][1]]);
 		}
 		return ret.join(' ').replace(/ +/g, ' ');
-	}
+	};
 
 	_.idaSearch = function(state, maxl, lm) {
 		var N_STATES = this.N_STATES;
@@ -547,7 +547,7 @@ var mathlib = (function() {
 			}
 		}
 		return false;
-	}
+	};
 
 	// state: string not null
 	// solvedStates: [solvedstate, solvedstate, ...], string not null
@@ -579,7 +579,7 @@ var mathlib = (function() {
 			this.prunDepth = depth;
 			DEBUG && console.log(depth, this.prunTableSize - prevSize, +new Date - t);
 		}
-	}
+	};
 
 	_.updatePrunBFS = function(fromDepth) {
 		for (var state in this.prunTable) {
@@ -595,7 +595,7 @@ var mathlib = (function() {
 				this.prunTableSize++;
 			}
 		}
-	}
+	};
 
 	_.updatePrunDFS = function(state, maxl, depth, lm) {
 		if (!(state in this.prunTable)) {
@@ -618,7 +618,7 @@ var mathlib = (function() {
 			}
 			this.updatePrunDFS(newState, maxl - 1, depth + 1, move);
 		}
-	}
+	};
 
 	_.search = function(state, minl, MAXL, nsol) {
 		MAXL = (MAXL + 1) || 99;
@@ -634,12 +634,12 @@ var mathlib = (function() {
 			}
 		}
 		return this.sols.slice();
-	}
+	};
 
 	_.getPruning = function(state) {
 		var prun = this.prunTable[state];
 		return prun === undefined ? this.prunDepth + 1 : prun[0];
-	}
+	};
 
 	_.idaSearch = function(state, maxl, lm) {
 		if (this.getPruning(state) > maxl || state in this.visited) {
@@ -668,7 +668,7 @@ var mathlib = (function() {
 			this.sol.pop();
 		}
 		return false;
-	}
+	};
 
 	function rndEl(x) {
 		return x[~~(Math.random() * x.length)];
@@ -719,7 +719,7 @@ var mathlib = (function() {
 			.replace('%s', ('0' + date.getSeconds()).slice(-2));
 	}
 
-	var timeRe = /^\s*(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)\s*$/
+	var timeRe = /^\s*(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)\s*$/;
 
 	function str2time(val) {
 		var m = timeRe.exec(val);
@@ -745,7 +745,7 @@ var mathlib = (function() {
 
 	function str2obj(val) {
 		if (typeof val != 'string') {
-			return val
+			return val;
 		}
 		return JSON.parse(val);
 	}
@@ -789,5 +789,5 @@ var mathlib = (function() {
 		Solver: Solver,
 		rndPerm: rndPerm,
 		gSolver: gSolver
-	}
+	};
 })();

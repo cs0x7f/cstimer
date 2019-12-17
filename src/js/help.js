@@ -42,7 +42,6 @@ var help = execMain(function() {
 	}
 
 	function onOptScroll() {
-		var prevScrollTop = rightDiv.scrollTop();
 		var type = ABOUT_LANG;
 		for (var m in docs) {
 			if (docs[m].position().top > 50) {

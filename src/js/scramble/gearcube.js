@@ -64,7 +64,7 @@
 		mathlib.createMove(emv, 72, edgeMove, 3);
 		mathlib.createMove(cmv, 24, [cornerMove, 'p', 4], 3);
 		for (var i = 0; i < 3; i++) {
-			mathlib.createPrun(prun[i], 0, 24 * 72, 5, doMove.bind(null, i), 3, 12, 0)
+			mathlib.createPrun(prun[i], 0, 24 * 72, 5, doMove.bind(null, i), 3, 12, 0);
 		}
 	}
 

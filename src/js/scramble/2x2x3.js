@@ -71,14 +71,14 @@
 		do {
 			c = mathlib.rn(40320);
 			b = mathlib.rn(6);
-		} while (b + c == 0)
+		} while (b + c == 0);
 		var d = [];
 		for (var a = 0; a < 99; a++) {
 			if (search(c, b, a, -1, d)) {
 				break;
 			}
 		}
-		return d.reverse().join(" ")
+		return d.reverse().join(" ");
 	}
 	scrMgr.reg('223', generateScramble);
 })(mathlib.circle, mathlib.get8Perm);

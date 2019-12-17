@@ -74,7 +74,7 @@ execMain(function() {
 	})();
 
 	if (!window.localStorage) {
-		window.localStorage = {}
+		window.localStorage = {};
 	}
 
 	if (!('properties' in localStorage) && location.protocol != 'https:' && location.hostname != 'localhost') {
@@ -84,7 +84,7 @@ execMain(function() {
 	if (window.performance && window.performance.now) {
 		$.now = function() {
 			return Math.floor(window.performance.now());
-		}
+		};
 	}
 
 	$.urlParam = function(name) {
@@ -94,7 +94,7 @@ execMain(function() {
 		} else {
 			return results[1] || 0;
 		}
-	}
+	};
 
 	$.hashParam = function(name) {
 		var results = new RegExp('[#&]' + name + '=([^&#]*)').exec(window.location.hash);
@@ -103,7 +103,7 @@ execMain(function() {
 		} else {
 			return results[1] || 0;
 		}
-	}
+	};
 
 	$.clearUrl = function(name) {
 		var results = new RegExp('[\?&](' + name + '=[^&#]*&?)').exec(window.location.href);
@@ -115,7 +115,7 @@ execMain(function() {
 		} else {
 			location.href = result;
 		}
-	}
+	};
 
 	$.clearHash = function(name) {
 		var results = new RegExp('[#&](' + name + '=[^&#]*&?)').exec(window.location.href);
@@ -127,7 +127,7 @@ execMain(function() {
 		} else {
 			location.href = result;
 		}
-	}
+	};
 
 	$.clipboardCopy = function(value, callback) {
 		var textArea = $('<textarea>' + value + '</textarea>').appendTo(document.body);
@@ -138,7 +138,7 @@ execMain(function() {
 		} catch (err) {}
 		textArea.remove();
 		return succ;
-	}
+	};
 
 	$.fingerprint = function() {
 		var fp_screen = window.screen && [Math.max(screen.height, screen.width), Math.min(screen.height, screen.width), screen.colorDepth].join("x");
@@ -196,7 +196,7 @@ if (!Array.prototype.indexOf) {
 			}
 		}
 		return -1;
-	}
+	};
 }
 
 if (!Function.prototype.bind) {

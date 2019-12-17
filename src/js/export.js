@@ -209,7 +209,7 @@ var exportFunc = execMain(function() {
 				'id': id,
 				'offset': idx - 1
 			}, dataCallback, 'json').error(onerr).always(revert);
-		}
+		};
 
 		var dataCallback = function(val) {
 			var retcode = val['retcode'];
@@ -225,7 +225,7 @@ var exportFunc = execMain(function() {
 				alert(EXPORT_ERROR);
 			}
 			revert();
-		}
+		};
 
 		if (kernel.getProp('expp')) {
 			$.post('https://cstimer.net/userdata.php', {
@@ -376,7 +376,7 @@ var exportFunc = execMain(function() {
 		if (!newOpt) {
 			return false;
 		}
-		var data = JSON.parse(localStorage['properties']);
+		data = JSON.parse(localStorage['properties']);
 		for (var key in data) {
 			if (key.startsWith('session')) {
 				newOpt[key] = data[key];
@@ -392,7 +392,7 @@ var exportFunc = execMain(function() {
 			'wcaData': localStorage['wcaData'],
 			'gglData': localStorage['gglData'],
 			'locData': localStorage['locData']
-		}
+		};
 		var newOpt = exportByPrompt(expOpt);
 		if (!newOpt) {
 			return false;
@@ -581,7 +581,7 @@ var exportFunc = execMain(function() {
 					logohint.push('No session imported');
 				}
 			};
-			inFile.change(importFile.bind(inFile[0], reader))
+			inFile.change(importFile.bind(inFile[0], reader));
 			inOtherFile.change(importFile.bind(inOtherFile[0], readerOther));
 		}
 
@@ -649,5 +649,5 @@ var exportFunc = execMain(function() {
 		getDataId: getDataId,
 		logoutFromWCA: logoutFromWCA,
 		wcaLoginUrl: wcaLoginUrl
-	}
+	};
 });

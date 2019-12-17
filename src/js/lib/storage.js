@@ -51,7 +51,7 @@ var storage = execMain(function() {
 			request.onsuccess = function(event) {
 				// console.log("Success opening DB");
 				db = event.target.result;
-			}
+			};
 		});
 	}
 
@@ -87,7 +87,7 @@ var storage = execMain(function() {
 							Array.prototype.push.apply(times, cursor.value);
 							cursor["continue"]();
 						}
-					}
+					};
 				}, function() {
 					startIdx = startIdx || 0;
 					endIdx = endIdx || times.length;
@@ -98,7 +98,6 @@ var storage = execMain(function() {
 				});
 			} else {
 				var timeStr = localStorage['session' + sessionIdx];
-				var times = [];
 				if (timeStr != undefined && timeStr != '') {
 					times = JSON.parse(timeStr);
 				}
@@ -124,10 +123,10 @@ var storage = execMain(function() {
 						objectStore["delete"](cursor.key);
 						cursor["continue"]();
 					}
-				}
+				};
 			}, callback);
 		} else {
-			localStorage['session' + sessionIdx] = localStorage['session' + sessionIdxMax]
+			localStorage['session' + sessionIdx] = localStorage['session' + sessionIdxMax];
 			delete localStorage['session' + sessionIdxMax];
 			callback && requestAnimFrame(callback);
 		}
@@ -147,7 +146,7 @@ var storage = execMain(function() {
 							Array.prototype.push.apply(exportObj['session' + sessionIdx], cursor.value);
 							cursor["continue"]();
 						}
-					}
+					};
 				}, function() {
 					resolve(exportObj);
 				});
@@ -190,5 +189,5 @@ var storage = execMain(function() {
 		del: del,
 		importAll: importAll,
 		exportAll: exportAll
-	}
+	};
 });

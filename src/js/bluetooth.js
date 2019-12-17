@@ -302,7 +302,7 @@ var GiikerCube = execMain(function() {
 				for (var i = 0; i < value.length - 2; i += 3) {
 					var face = value[i ^ 1] << 16 | value[i + 1 ^ 1] << 8 | value[i + 2 ^ 1];
 					for (var j = 21; j >= 0; j -= 3) {
-						state.push("URFDLB".charAt([face >> j & 0x7]));
+						state.push("URFDLB".charAt(face >> j & 0x7));
 						if (j == 12) {
 							state.push("URFDLB".charAt(i / 3));
 						}
@@ -390,7 +390,7 @@ var GiikerCube = execMain(function() {
 						prevCubie.fromFacelet(latestFacelet);
 					}
 				});
-			}).then(loopRead);;
+			}).then(loopRead);
 		}
 
 		function getBatteryLevel() {
@@ -466,7 +466,7 @@ var GiikerCube = execMain(function() {
 					}
 				}
 				this.key = exKey;
-			};
+			}
 
 			AES128.prototype.decrypt = function(block) {
 				addRoundKey(block, this.key.slice(160, 176));
@@ -582,7 +582,7 @@ var GiikerCube = execMain(function() {
 				var facelet = [];
 				for (var a = 0; a < 6; a++) {
 					var axis = axisPerm[a] * 9;
-					var aoff = axisOffset[a];
+					var aoff = faceOffset[a];
 					facelet[axis + 4] = "BFUDRL".charAt(value.getUint8(3 + a * 9));
 					for (var i = 0; i < 8; i++) {
 						facelet[axis + facePerm[(i + aoff) % 8]] = "BFUDRL".charAt(value.getUint8(3 + a * 9 + i + 1));
@@ -618,7 +618,7 @@ var GiikerCube = execMain(function() {
 			init: init,
 			opservs: [SERVICE_UUID],
 			getBatteryLevel: getBatteryLevel
-		}
+		};
 	})();
 
 	function init(timer) {
@@ -683,5 +683,5 @@ var GiikerCube = execMain(function() {
 		getCube: function() {
 			return cube;
 		}
-	}
+	};
 });

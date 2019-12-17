@@ -124,7 +124,7 @@ var sbtree = (function() {
 
 	function traverseDir(node, func, dir) {
 		return node == null || traverseDir(node[dir], func, dir) && func(node) && traverseDir(node[dir ^ 1], func, dir);
-	};
+	}
 
 	SBTree.prototype.insertR = function(node, key, value) {
 		if (node === null) { // empty tree
@@ -202,5 +202,5 @@ var sbtree = (function() {
 		tree: function(cmp) {
 			return new SBTree(cmp);
 		}
-	}
+	};
 })();

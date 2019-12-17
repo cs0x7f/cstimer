@@ -238,7 +238,7 @@ var onlinecomp = execMain(function() {
 		}
 		var uid = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
 		if (!uid) {
-			return
+			return;
 		}
 		var comppath = getCompPath();
 		$.post('https://cstimer.net/comp.php', {
@@ -351,7 +351,7 @@ var onlinecomp = execMain(function() {
 		resetProgress(false, true);
 		var uid = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
 		if (!uid) {
-			return
+			return;
 		}
 		$.post('https://cstimer.net/comp.php', {
 			'action': 'myresult',

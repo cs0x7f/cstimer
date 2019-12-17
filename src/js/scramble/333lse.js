@@ -39,7 +39,7 @@
 		do {
 			c = mathlib.rn(5760);
 			b = mathlib.rn(32);
-		} while (b + c == 0)
+		} while (b + c == 0);
 		return solv.toStr(solv.search([c, b], 0), "UM", " 2'").replace(/ +/g, ' ');
 	}
 	scrMgr.reg('lsemu', generateScramble);

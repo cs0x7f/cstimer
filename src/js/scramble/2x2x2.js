@@ -66,7 +66,7 @@
 	];
 
 	function getScramble(type, length, state) {
-		var a, ori, perm, lim;
+		var ori, perm, lim;
 		var maxl = type == '222o' ? 0 : 9;
 		do {
 			lim = 2;

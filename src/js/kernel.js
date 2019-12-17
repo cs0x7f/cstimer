@@ -356,7 +356,7 @@ var kernel = execMain(function() {
 			setSProps: setSProps,
 			load : load,
 			reload: generateDiv
-		}
+		};
 	})();
 
 	var getProp = property.get;
@@ -407,7 +407,7 @@ var kernel = execMain(function() {
 				mybutton.removeClass("enable");
 				if (!isHide || !modules[module].auto) {
 					modules[module].div.stop(true, true).fadeOut(200, (function(module) {
-						return function() {pushSignal('button', [module, false]);}
+						return function() {pushSignal('button', [module, false]);};
 					})(module));
 				}
 			} else {
@@ -493,7 +493,7 @@ var kernel = execMain(function() {
 						if (func()) {
 							hideDialog();
 						}
-					}
+					};
 				})(values[i][1])));
 			}
 
@@ -645,11 +645,11 @@ var kernel = execMain(function() {
 		function nearColor(color, ref, longFormat) {
 			var col, m;
 			ref = ref || 0;
-			m = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/.exec(color)
+			m = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/.exec(color);
 			if (m) {
 				col = [m[1] + m[1], m[2] + m[2], m[3] + m[3]];
 			}
-			m = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/.exec(color)
+			m = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/.exec(color);
 			if (m) {
 				col = [m[1], m[2], m[3]];
 			}
@@ -663,7 +663,7 @@ var kernel = execMain(function() {
 		}
 
 		function importColor(val) {
-			var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7})\s*$/
+			var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7})\s*$/;
 			var m = colstr_re.exec(val);
 			if (m) {
 				useColorTemplate(m[1]);
@@ -851,7 +851,7 @@ var kernel = execMain(function() {
 			show: show,
 			isPop: function(){return isPopup;},
 			toggleLeftBar: toggleLeftBar
-		}
+		};
 	})();
 
 	var TwoLvMenu = (function() {
@@ -903,15 +903,15 @@ var kernel = execMain(function() {
 				this.select2.prop('selectedIndex', idx2);
 			}
 			this.onSelect2Change();
-		}
+		};
 
 		_.onSelect1Change = function() {
 			this.loadSelect2();
-		}
+		};
 
 		_.onSelect2Change = function() {
 			this.callback && this.callback(this.getSelected());
-		}
+		};
 
 		_.getSelIdx = function() {
 			var idx1 = ~~this.select1.prop('selectedIndex');
@@ -921,12 +921,12 @@ var kernel = execMain(function() {
 			}
 			var idx2 = ~~this.select2.prop('selectedIndex');
 			return [idx1, idx2];
-		}
+		};
 
 		_.getSelected = function() {
 			var idx = this.getSelIdx();
 			return idx.length == 1 ? (this.data[idx[0]] || [])[1] : this.data[idx[0]][1][idx[1]][1];
-		}
+		};
 
 		_.reset = function(val) {
 			val = val || this.getSelected();
@@ -941,7 +941,7 @@ var kernel = execMain(function() {
 			if (val) {
 				this.loadVal(val);
 			}
-		}
+		};
 
 		_.loadVal = function(val) {
 			var callback = this.callback;
@@ -951,7 +951,7 @@ var kernel = execMain(function() {
 				this.loadSelect2(idx2);
 			}.bind(this));
 			this.callback = callback;
-		}
+		};
 
 		_.getValName = function(val) {
 			var name = null;
@@ -962,7 +962,7 @@ var kernel = execMain(function() {
 				}
 			}.bind(this));
 			return name;
-		}
+		};
 
 		_.getValIdx = function(val) {
 			var idx = null;
@@ -970,7 +970,7 @@ var kernel = execMain(function() {
 				idx = idx1 * 100 + (idx2 == null ? idx2 : 99);
 			});
 			return idx;
-		}
+		};
 
 		return TwoLvMenu;
 	})();

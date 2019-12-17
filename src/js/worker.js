@@ -14,7 +14,7 @@ var csTimerWorker = execBoth(function() {
 		var callback = callbacks[data[0]];
 		delete callbacks[data[0]];
 		callback && callback(data[2]);
-	}
+	};
 
 	//[realType, len, state]
 	function getScramble(args, callback) {
@@ -29,7 +29,7 @@ var csTimerWorker = execBoth(function() {
 
 	return {
 		getScramble: getScramble
-	}
+	};
 }, function() {
 	self.onmessage = function(e) {
 		var data = e.data;
@@ -49,5 +49,5 @@ var csTimerWorker = execBoth(function() {
 				break;
 		}
 		postMessage([msgid, type, ret]);
-	}
+	};
 });

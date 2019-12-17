@@ -42,7 +42,7 @@ var TimerDataConverter = execMain(function() {
 	}
 
 	// {'name': [regex, converter]}
-	var Timers = {}
+	var Timers = {};
 
 	Timers['csTimer'] = [/^{"session1"/i, function(data) {
 		data = JSON.parse(stdStr(data));
@@ -123,7 +123,7 @@ var TimerDataConverter = execMain(function() {
 				var val = Math.round(3600000 * ~~(m[2]) + 60000 * ~~(m[3]) + 1000 * parseFloat(m[4]));
 				time[line.length - j] = (time[line.length - j + 1] || 0) + val;
 			}
-			var time = [time, line[3], line[2], mathlib.str2time(line[4])];
+			time = [time, line[3], line[2], mathlib.str2time(line[4])];
 			times.push(time);
 		}
 		return [{
@@ -230,7 +230,7 @@ var TimerDataConverter = execMain(function() {
 						'scrType': ScrambleMap[puzzleScr] || '333'
 					},
 					'times': timeList
-				})
+				});
 			});
 		});
 		return ret;
@@ -296,7 +296,7 @@ var TimerDataConverter = execMain(function() {
 				checkExistSidx(sidx);
 				ret[sidx2idx[sidx]]['times'].push([
 					[value[3] == '1' ? (value[2] == '1' ? 2000 : 0) : -1, ~~value[1]], stdStr(value[4] || ''), stdStr(value[6] || ''), mathlib.str2time(value[5])
-				])
+				]);
 			});
 		}
 		SQLFile.loadPage(uint8arr, tables['resultstb'][0], function(value) {
@@ -304,7 +304,7 @@ var TimerDataConverter = execMain(function() {
 			checkExistSidx(sidx);
 			ret[sidx2idx[sidx]]['times'].push([
 				[value[4] == '1' ? (value[3] == '1' ? 2000 : 0) : -1, ~~value[2]], stdStr(value[5] || ''), stdStr(value[7] || ''), mathlib.str2time(value[6])
-			])
+			]);
 		});
 		return ret;
 	}];

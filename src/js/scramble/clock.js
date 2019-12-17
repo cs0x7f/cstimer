@@ -238,6 +238,6 @@ var clock = (function(rn, Cnk) {
 
 	return {
 		moveArr: moveArr
-	}
+	};
 
 })(mathlib.rn, mathlib.Cnk);

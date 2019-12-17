@@ -97,5 +97,5 @@ var logohint = execMain(function() {
 			msgList.push(msg);
 			render();
 		}
-	}
+	};
 });
