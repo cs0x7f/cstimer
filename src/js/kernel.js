@@ -107,10 +107,18 @@ var kernel = execMain(function() {
 			switchLeftModule(curModule);
 		}
 
+		var DEFAULT_HELP_SPAN = ' [?] ';
+
 		function procClick(e) {
 			var target = $(this);
 			var key = target.prop('name');
-			if (target.is('select')) {
+			if (target.is('.opthelp')) {
+				if (target.html() == DEFAULT_HELP_SPAN) {
+					target.html('<br>' + DEFAULT_HELP_SPAN + $('strong[data="opt_' + target.attr('data') + '"]').parent().html().split('</strong>. ')[1]);
+				} else {
+					target.html(DEFAULT_HELP_SPAN);
+				}
+			} else if (target.is('select')) {
 				setProp(key, target.val());
 			} else {
 				switch (target.prop('type')) {
@@ -234,7 +242,9 @@ var kernel = execMain(function() {
 							proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(curVal);
 							valTd.append(proSet[2], proSet[0]);
 						}
-
+					}
+					if ($('strong[data="opt_' + key + '"]').length > 0) {
+						valTd.append($('<span class="click opthelp" data="' + key + '"/>').html(DEFAULT_HELP_SPAN).click(procClick));
 					}
 					optTable.append($('<tr>').append(valTd, srTd));
 				}
@@ -248,6 +258,7 @@ var kernel = execMain(function() {
 				generateDiv();
 				isDivOut = false;
 			}
+			$('.opthelp').html(DEFAULT_HELP_SPAN);
 			scrollToModule();
 
 			ui.showDialog([table, $.noop, undefined, $.noop, [RESET_LANG, function(){
