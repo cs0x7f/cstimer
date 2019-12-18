@@ -33,7 +33,7 @@
 <tr><th>Alt + d</th><td>Remove all times in current session.</td></tr>
 <tr><th>Alt + z</th><td>Remove the latest time.</td></tr>
 <tr><th>Alt + up/down</th><td>To next/last session.</td></tr>
-<tr><th>Alt + left/rightt</th><td>Display last/next scramble.</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
 </table>
 
