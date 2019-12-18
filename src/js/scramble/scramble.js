@@ -285,6 +285,9 @@ var scramble = execMain(function(rn, rndEl) {
 	});
 
 	function calcScramble() {
+		if (!type) {
+			return;
+		}
 		scramble = "";
 		var realType = alias[type] || type;
 
