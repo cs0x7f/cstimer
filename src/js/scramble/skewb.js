@@ -1,4 +1,51 @@
 (function() {
+
+	/**	1 2   U
+		 0  LFRB
+		3 4   D  */
+	//centers: U R F B L D
+	//twstcor: URF ULB DRB DLF
+	//fixedco: UBR UFL DFR DBL
+
+	var fixedCorn = [
+		[4, 16, 7], // U4 B1 R2
+		[1, 11, 22], // U1 F1 L2
+		[26, 14, 8], // D1 F4 R3
+		[29, 19, 23] // D4 B4 L3
+	];
+
+	var twstCorn = [
+		[3, 6, 12], // U3 R1 F2
+		[2, 21, 17], // U2 L1 B2
+		[27, 9, 18], // D2 R4 B3
+		[28, 24, 13] // D3 L4 F3
+	];
+
+	function checkNoBar(perm, twst) {
+		var corner = cpcord.set([], perm % 12);
+		var center = ctcord.set([], ~~(perm / 12));
+		var fixedtwst = ftcord.set([], twst % 81);
+		var twst = twcord.set([], ~~(twst / 81));
+		var f = [];
+		for (var i = 0; i < 6; i++) {
+			f[i * 5] = center[i];
+		}
+		for (var i = 0; i < 4; i++) {
+			for (var j = 0; j < 3; j++) {
+				f[fixedCorn[i][(j + fixedtwst[i]) % 3]] = ~~(fixedCorn[i][j] / 5);
+				f[twstCorn[i][(j + twst[i]) % 3]] = ~~(twstCorn[corner[i]][j] / 5);
+			}
+		}
+		for (var i = 0; i < 6; i++) {
+			for (var j = 1; j < 5; j++) {
+				if (f[i * 5] == f[i * 5 + j]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	var moveCenters = [
 		[0, 3, 1],
 		[0, 2, 4],
@@ -66,13 +113,18 @@
 	var ori = [0, 1, 2, 0, 2, 1, 1, 2, 0, 2, 1, 0];
 
 	function getScramble(type) {
-		var perm, twst, lim = 6,
-			maxl = type == 'skbso' ? 8 : 0;
+		var perm, twst;
+		var lim = type == 'skbso' ? 6 : 2;
+		var minl = type == 'skbo' ? 0 : 8;
 		do {
 			perm = mathlib.rn(4320);
 			twst = mathlib.rn(2187);
-		} while (perm == 0 && twst == 0 || ori[perm % 12] != (twst + ~~(twst / 3) + ~~(twst / 9) + ~~(twst / 27)) % 3 || solv.search([perm, twst], 0, lim) != null);
-		return sol2str(solv.search([perm, twst], maxl).reverse());
+		} while (
+			perm == 0 && twst == 0 ||
+			ori[perm % 12] != (twst + ~~(twst / 3) + ~~(twst / 9) + ~~(twst / 27)) % 3 ||
+			solv.search([perm, twst], 0, lim) != null ||
+			type == 'skbnb' && !checkNoBar(perm, twst));
+		return sol2str(solv.search([perm, twst], minl).reverse());
 	}
 
 	function getScrambleIvy(type) {
@@ -85,6 +137,6 @@
 		return solvivy.toStr(solvivy.search([perm, twst], maxl).reverse(), "RLDB", "' ");
 	}
 
-	scrMgr.reg(['skbo', 'skbso'], getScramble)(['ivyo', 'ivyso'], getScrambleIvy);
+	scrMgr.reg(['skbo', 'skbso', 'skbnb'], getScramble)(['ivyo', 'ivyso'], getScrambleIvy);
 
 })();

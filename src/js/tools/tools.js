@@ -99,7 +99,7 @@ var tools = execMain(function() {
 			return "111111";
 		} else if (/^pyr(s?[om]|l4e)$/.exec(scrambleType)) {
 			return "pyr";
-		} else if (/^skb(so)?$/.exec(scrambleType)) {
+		} else if (/^skb(s?o|nb)?$/.exec(scrambleType)) {
 			return "skb";
 		} else if (/^sq(rs|1[ht]|rcsp)$/.exec(scrambleType)) {
 			return "sq1";

@@ -236,7 +236,8 @@ var scrdata = [
 	['Skewb', [
 		["random state (WCA)", "skbso", 0],
 		['optimal', "skbo", 0],
-		['random move', "skb", 25]
+		['random move', "skb", 25],
+		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
 		["random state (WCA)", "sqrs", 0],

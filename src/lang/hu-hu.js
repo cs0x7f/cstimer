@@ -236,7 +236,8 @@ var scrdata = [
 	['Skewb', [
 		["véletlen állapot (WCA)", "skbso", 0],
 		['optimális', "skbo", 0],
-		['véletlen mozdulat', "skb", 25]
+		['véletlen mozdulat', "skb", 25],
+		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
 		["véletlen állapot (WCA)", "sqrs", 0],

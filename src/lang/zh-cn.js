@@ -236,7 +236,8 @@ var scrdata = [
 	['Skewb', [
 		["随机状态 (WCA)", "skbso", 0],
 		['最少步', "skbo", 0],
-		['随机转动', "skb", 25]
+		['随机转动', "skb", 25],
+		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
 		["随机状态 (WCA)", "sqrs", 0],
