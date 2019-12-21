@@ -2,9 +2,10 @@
 
 execMain(function() {
 
-	var seedSpan = $('<span>').html('Disabled');
-	var seedInput = $('<input type="button">').val('Input Seed');
-	var seedButton = $('<input type="button">').val('Use 30s Seed');
+	var seedSpan = $('<span>').html('N/A');
+	var helpSpan = $('<span class="click">').html('[?]');
+	var seedInput = $('<input type="button">').val(TOOLS_SYNCSEED_INPUT);
+	var seedButton = $('<input type="button">').val(TOOLS_SYNCSEED_30S);
 
 	var seedMode = false;
 	var rawSeed;
@@ -12,7 +13,7 @@ execMain(function() {
 	var hackedData = {};
 
 	function inputSeed() {
-		var val = prompt('Input a value (a-zA-Z0-9) as seed');
+		var val = prompt(TOOLS_SYNCSEED_INPUTA);
 		kernel.blur();
 		if (val == null) {
 			return;
@@ -44,9 +45,9 @@ execMain(function() {
 	}
 
 	function clearSeedClick() {
-		if (seedMode && confirm('Disable current seed?')) {
+		if (seedMode && confirm(TOOLS_SYNCSEED_DISABLE)) {
 			clearSeed();
-			seedSpan.html('Disabled').unbind('click').removeClass('click');
+			seedSpan.html('N/A').unbind('click').removeClass('click');
 		}
 	}
 
@@ -55,16 +56,20 @@ execMain(function() {
 		kernel.blur();
 	}
 
+	function clickHelp() {
+		alert(TOOLS_SYNCSEED_HELP);
+	}
+
 	function execFunc(fdiv) {
 		if (!fdiv) {
 			return;
 		}
-		fdiv.empty().append('Seed: ', seedSpan.unbind('click').click(clearSeedClick), '<br><br>')
-			.append(seedInput.unbind('click').click(inputSeed),
-				'<br>', seedButton.unbind('click').click(timeSeedClick));
+		fdiv.empty().append(TOOLS_SYNCSEED_SEED, helpSpan.unbind('click').click(clickHelp), ': ', seedSpan.unbind('click').click(clearSeedClick))
+			.append('<br><br>', seedInput.unbind('click').click(inputSeed), )
+			.append('<br>', seedButton.unbind('click').click(timeSeedClick));
 	}
 
 	$(function() {
-		tools.regTool('syncseed', 'Seed Mode', execFunc);
+		tools.regTool('syncseed', TOOLS_SYNCSEED, execFunc);
 	});
 });
