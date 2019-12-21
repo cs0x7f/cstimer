@@ -33,7 +33,7 @@
 <tr><th>Alt + d</th><td>Remove all times in current session.</td></tr>
 <tr><th>Alt + z</th><td>Remove the latest time.</td></tr>
 <tr><th>Alt + up/down</th><td>To next/last session.</td></tr>
-<tr><th>Alt + left/rightt</th><td>Display last/next scramble.</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
 </table>
 
@@ -62,7 +62,7 @@
 <li><strong data="opt_timeFormat">формат времени</strong>. Time format to display.</li>
 <li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Подсказки в логотипе</strong>. cstimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
+<li><strong data="opt_useLogo">Подсказки в логотипе</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">Показывать Таблицу Avg</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">Увеличить</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">выберите шрифт таймера</strong>. Font of the main timer.</li>
