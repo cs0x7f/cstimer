@@ -12,6 +12,7 @@
   <script type="text/javascript" src="js/lib/jquery-1.8.0.js"></script>
   <script type="text/javascript" src="js/lib/utillib.js"></script>
   <script type="text/javascript" src="js/lib/sha256.js"></script>
+  <script type="text/javascript" src="js/lib/mersennetwister.js"></script>
   <script type="text/javascript" src="js/lib/mathlib.js"></script>
   <script type="text/javascript" src="js/lib/sbtree.js"></script>
   <script type="text/javascript" src="js/lib/sqlfile.js"></script>
@@ -19,7 +20,6 @@
   <script type="text/javascript" src="js/lib/lzstring.js"></script>
   <script type="text/javascript" src="js/lib/min2phase.js"></script>
   <script type="text/javascript" src="js/lib/cubeutil.js"></script>
-  <script type="text/javascript" src="js/lib/mersennetwister.js"></script>
   <script type="text/javascript" src="js/lib/json.min.js"></script>
   <script type="text/javascript" src="js/kernel.js"></script>
   <script type="text/javascript" src="js/export.js"></script>
@@ -52,6 +52,7 @@
   <script type="text/javascript" src="js/tools/insertionfinder.js"></script>
   <script type="text/javascript" src="js/tools/metronome.js"></script>
   <script type="text/javascript" src="js/tools/onlinecomp.js"></script>
+  <script type="text/javascript" src="js/tools/syncseed.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>

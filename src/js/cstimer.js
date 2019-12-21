@@ -3,6 +3,7 @@
 importScripts(
 	'lib/utillib.js',
 	'lib/sha256.js',
+	'lib/mersennetwister.js',
 	'lib/mathlib.js',
 	'lib/sbtree.js',
 	'lib/sqlfile.js',
@@ -10,7 +11,6 @@ importScripts(
 	'lib/lzstring.js',
 	'lib/min2phase.js',
 	'lib/cubeutil.js',
-	'lib/mersennetwister.js',
 	'lib/json.min.js',
 	'kernel.js',
 	'logohint.js',

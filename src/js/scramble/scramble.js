@@ -242,9 +242,18 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 	}
 
+	var enableCache = true;
+
+	function setCacheEnable(enable) {
+		enableCache = enable;
+	}
+
 	var cacheTid = 0;
 
 	function genCachedScramble(args, detailType, isPredict) {
+		if (!enableCache) {
+			return;
+		}
 		if (csTimerWorker && csTimerWorker.getScramble) {
 			cacheTid = cacheTid || csTimerWorker.getScramble(args, function(detailType, scramble) {
 				DEBUG && console.log('[scrcache]', detailType + ' cached by csTimerWorker');
@@ -279,7 +288,7 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 		for (var i = 0; i < forceCached.length; i++) {
 			if (!(forceCached[i] in cachedScr)) {
-				setTimeout(genCachedScramble.bind(undefined, JSON.parse(forceCached[i]), forceCached[i], true), 2500 + rn(5000));
+				setTimeout(genCachedScramble.bind(undefined, JSON.parse(forceCached[i]), forceCached[i], true), 2500 + ~~(Math.random() * 5000));
 			}
 		}
 	});
@@ -308,7 +317,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (realType in scramblers) {
 			var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
 			var detailType = JSON.stringify([realType, len, scrFlt[1]]);
-			if (detailType in cachedScr) {
+			if (enableCache && detailType in cachedScr) {
 				scramble = cachedScr[detailType];
 				delete cachedScr[detailType];
 				localStorage['cachedScr'] = JSON.stringify(cachedScr);
@@ -733,7 +742,6 @@ var scramble = execMain(function(rn, rndEl) {
 		title.append($('<nobr>').append(selects[0], ' ', selects[1], ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
 		div.append(title, ssdiv.append(sdiv).click(procScrambleClick));
-		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
 		ssdiv.click(function() {
 			title.show();
@@ -741,12 +749,13 @@ var scramble = execMain(function(rn, rndEl) {
 			kernel.setProp('scrHide', false);
 		});
 		kernel.regProp('ui', 'scrHide', ~0, 'Hide Scramble Selector', [false]);
-		loadScrOptsAndGen();
+		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
 	});
 
 	return {
 		getTypeName: getTypeName,
 		getTypeIdx: getTypeIdx,
-		scrStd: scrStd
+		scrStd: scrStd,
+		setCacheEnable: setCacheEnable
 	}
 }, [mathlib.rn, mathlib.rndEl]);

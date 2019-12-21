@@ -670,12 +670,53 @@ var mathlib = (function() {
 		return false;
 	};
 
+	var randGen = (function() {
+		var rndFunc;
+		var rndCnt;
+		var seedStr; // '' + new Date().getTime();
+
+		function random() {
+			rndCnt++;
+			// console.log(rndCnt);
+			return rndFunc();
+		}
+
+		function getSeed() {
+			return [rndCnt, seedStr];
+		}
+
+		function setSeed(_rndCnt, _seedStr) {
+			if (_seedStr && (_seedStr != seedStr || rndCnt > _rndCnt)) {
+				var seed = [];
+				for (var i = 0; i < _seedStr.length; i++) {
+					seed[i] = _seedStr.charCodeAt(i);
+				}
+				rndFunc = new MersenneTwisterObject(seed[0], seed);
+				rndCnt = 0;
+				seedStr = _seedStr;
+			}
+			while (rndCnt < _rndCnt) {
+				rndFunc();
+				rndCnt++;
+			}
+		}
+
+		// setSeed(0, '1576938267035');
+		setSeed(0, '' + new Date().getTime());
+
+		return {
+			random: random,
+			getSeed: getSeed,
+			setSeed: setSeed
+		};
+	})();
+
 	function rndEl(x) {
-		return x[~~(Math.random() * x.length)];
+		return x[~~(randGen.random() * x.length)];
 	}
 
 	function rn(n) {
-		return ~~(Math.random() * n)
+		return ~~(randGen.random() * n)
 	}
 
 	function rndPerm(n) {
@@ -696,7 +737,7 @@ var mathlib = (function() {
 			if (plist[i] == 0) {
 				continue;
 			}
-			if (Math.random() < plist[i] / (cum + plist[i])) {
+			if (randGen.random() < plist[i] / (cum + plist[i])) {
 				curIdx = i;
 			}
 			cum += plist[i];
@@ -788,6 +829,8 @@ var mathlib = (function() {
 		valuedArray: valuedArray,
 		Solver: Solver,
 		rndPerm: rndPerm,
-		gSolver: gSolver
+		gSolver: gSolver,
+		getSeed: randGen.getSeed,
+		setSeed: randGen.setSeed
 	};
 })();

@@ -12,6 +12,7 @@ debugoff = --define='DEBUGM=false' --define='DEBUGWK=false'
 timerSrc = $(addprefix $(src)/js/, \
 lib/utillib.js \
 lib/sha256.js \
+lib/mersennetwister.js \
 lib/mathlib.js \
 lib/sbtree.js \
 lib/sqlfile.js \
@@ -19,7 +20,6 @@ lib/tdconverter.js \
 lib/lzstring.js \
 lib/min2phase.js \
 lib/cubeutil.js \
-lib/mersennetwister.js \
 lib/json.min.js \
 kernel.js \
 export.js \
@@ -52,6 +52,7 @@ tools/bluetoothutil.js \
 tools/insertionfinder.js \
 tools/metronome.js \
 tools/onlinecomp.js \
+tools/syncseed.js \
 shortcut.js \
 help.js \
 stackmat.js \
