@@ -447,7 +447,7 @@ var scramble = execMain(function(rn, rndEl) {
 		};
 	})();
 
-	function loadScrOptsAndGen() {
+	function loadScrOpts() {
 		kernel.blur();
 		var idx = menu.getSelIdx();
 		var len = scrdata[idx[0]][1][idx[1]][2];
@@ -460,6 +460,10 @@ var scramble = execMain(function(rn, rndEl) {
 			scrFlt = [curType, filters[curType] && mathlib.valuedArray(filters[curType].length, 1)];
 			kernel.setProp('scrFlt', JSON.stringify(scrFlt), 'session');
 		}
+	}
+
+	function loadScrOptsAndGen() {
+		loadScrOpts();
 		genScramble();
 	}
 
@@ -750,6 +754,7 @@ var scramble = execMain(function(rn, rndEl) {
 		});
 		kernel.regProp('ui', 'scrHide', ~0, 'Hide Scramble Selector', [false]);
 		kernel.addWindow('scramble', BUTTON_SCRAMBLE, div, true, true, 3);
+		loadScrOpts();
 	});
 
 	return {
