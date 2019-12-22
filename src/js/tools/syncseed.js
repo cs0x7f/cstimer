@@ -40,6 +40,7 @@ execMain(function() {
 		}
 		seedMode = false;
 		mathlib.setSeed(0, rawSeed[1] + '' + rawSeed[0]);
+		rawSeed = undefined;
 		scramble.setCacheEnable(true);
 		kernel.pushSignal('ctrl', ['scramble', 'next']);
 	}

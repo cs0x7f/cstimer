@@ -238,7 +238,9 @@ var scrdata = [
 		["随机状态 (WCA)", "pyrso", 10],
 		['最少步', "pyro", 0],
 		['随机转动', "pyrm", 25],
-		['L4E', "pyrl4e", 0]
+		['L4E', "pyrl4e", 0],
+		['4 tips', "pyr4c", 0],
+		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
 		["随机状态 (WCA)", "skbso", 0],

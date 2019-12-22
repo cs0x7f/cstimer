@@ -40,11 +40,7 @@
 		for (var i = 0; i < 24; i++) {
 			f[i] = i >> 2;
 		}
-		for (var i = 0; i < 7; i++) {
-			for (var n = 0; n < 3; n++) {
-				f[cFacelet[i][(n + ori[i]) % 3]] = cFacelet[perm[i]][n] >> 2;
-			}
-		}
+		mathlib.fillFacelet(cFacelet, f, perm, ori, 4);
 		for (var i = 0; i < 24; i += 4) {
 			if ((1 << f[i] | 1 << f[i + 3]) & (1 << f[i + 1] | 1 << f[i + 2])) {
 				return false;

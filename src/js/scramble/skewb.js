@@ -30,15 +30,11 @@
 		for (var i = 0; i < 6; i++) {
 			f[i * 5] = center[i];
 		}
-		for (var i = 0; i < 4; i++) {
-			for (var j = 0; j < 3; j++) {
-				f[fixedCorn[i][(j + fixedtwst[i]) % 3]] = ~~(fixedCorn[i][j] / 5);
-				f[twstCorn[i][(j + twst[i]) % 3]] = ~~(twstCorn[corner[i]][j] / 5);
-			}
-		}
-		for (var i = 0; i < 6; i++) {
+		mathlib.fillFacelet(fixedCorn, f, [0, 1, 2, 3], fixedtwst, 5);
+		mathlib.fillFacelet(twstCorn, f, corner, twst, 5);
+		for (var i = 0; i < 30; i += 5) {
 			for (var j = 1; j < 5; j++) {
-				if (f[i * 5] == f[i * 5 + j]) {
+				if (f[i] == f[i + j]) {
 					return false;
 				}
 			}

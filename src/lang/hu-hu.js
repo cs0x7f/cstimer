@@ -238,7 +238,9 @@ var scrdata = [
 		["véletlen állapot (WCA)", "pyrso", 10],
 		['optimális', "pyro", 0],
 		['véletlen mozdulat', "pyrm", 25],
-		['L4E', "pyrl4e", 0]
+		['L4E', "pyrl4e", 0],
+		['4 tips', "pyr4c", 0],
+		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
 		["véletlen állapot (WCA)", "skbso", 0],

@@ -97,7 +97,7 @@ var tools = execMain(function() {
 			return "101010";
 		} else if (/^111111$/.exec(scrambleType)) {
 			return "111111";
-		} else if (/^pyr(s?[om]|l4e)$/.exec(scrambleType)) {
+		} else if (/^pyr(s?[om]|l4e|nb|4c)$/.exec(scrambleType)) {
 			return "pyr";
 		} else if (/^skb(s?o|nb)?$/.exec(scrambleType)) {
 			return "skb";

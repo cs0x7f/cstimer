@@ -238,7 +238,9 @@ var scrdata = [
 		["ランダム状態 (WCA)", "pyrso", 10],
 		['最適', "pyro", 0],
 		['ランダムムーブ', "pyrm", 25],
-		['L4E', "pyrl4e", 0]
+		['L4E', "pyrl4e", 0],
+		['4 tips', "pyr4c", 0],
+		['No bar', "pyrnb", 0]
 	]],
 	['スキューブ', [
 		["ランダム状態 (WCA)", "skbso", 0],

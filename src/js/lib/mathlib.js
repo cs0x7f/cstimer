@@ -172,6 +172,14 @@ var mathlib = (function() {
 			};
 	}
 
+	function fillFacelet(facelets, f, perm, ori, divcol) {
+		for (var i = 0; i < facelets.length; i++) {
+			for (var j = 0; j < facelets[i].length; j++) {
+				f[facelets[i][(j + ori[i]) % facelets[i].length]] = ~~(facelets[perm[i]][j] / divcol);
+			}
+		}
+	}
+
 	function createMove(moveTable, size, doMove, N_MOVES) {
 		N_MOVES = N_MOVES || 6;
 		if ($.isArray(doMove)) {
@@ -819,6 +827,7 @@ var mathlib = (function() {
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
+		fillFacelet: fillFacelet,
 		rn: rn,
 		rndEl: rndEl,
 		rndProb: rndProb,

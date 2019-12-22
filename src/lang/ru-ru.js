@@ -238,7 +238,9 @@ var scrdata = [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
 		['random move', "pyrm", 25],
-		['L4E', "pyrl4e", 0]
+		['L4E', "pyrl4e", 0],
+		['4 tips', "pyr4c", 0],
+		['No bar', "pyrnb", 0]
 	]],
 	['Скьюб', [
 		["random state (WCA)", "skbso", 0],
