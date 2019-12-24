@@ -144,7 +144,6 @@ var scrdata = [
 		['3x3 naslijepo', "333ni", 0],
 		['3x3 najmanje poteza', "333fm", 0],
 		['3x3 ojednoručno', "333oh", 0],
-		['3x3 s nogama', "333ft", 0],
 		['sat', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
@@ -183,7 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['lagani križ', "easyc", 3]
+		['lagani križ', "easyc", 3],
+		['3x3 s nogama', "333ft", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],

@@ -66,13 +66,13 @@ var TOOLS_TREND = 'タイムトレンド';
 var TOOLS_METRONOME = 'メトロノーム';
 var TOOLS_CFMTIME = 'タイム確認';
 var TOOLS_SOLVERS = 'ソルバー';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_SYNCSEED = '共通スクランブル';
+var TOOLS_SYNCSEED_SEED = 'シード値';
+var TOOLS_SYNCSEED_INPUT = 'シード値の入力';
+var TOOLS_SYNCSEED_30S = '30秒シード値の利用';
+var TOOLS_SYNCSEED_HELP = '（可能なら）スクランブルをシード値とスクランブル設定に基づくものにします。つまり、二人のプレイヤーが同じシード値を使った場合、同じスクランブルを得ます。';
+var TOOLS_SYNCSEED_DISABLE = '現在のシード値を無効にしますか？';
+var TOOLS_SYNCSEED_INPUTA = 'シード値の値 (a-zA-Z0-9) を入力';
 var OLCOMP_UPDATELIST = '大会リストの更新';
 var OLCOMP_VIEWRESULT = '結果表示';
 var OLCOMP_VIEWMYRESULT = '履歴';
@@ -144,7 +144,6 @@ var scrdata = [
 		['3x3目隠し', "333ni", 0],
 		['3x3最少手数', "333fm", 0],
 		['3x3片手', "333oh", 0],
-		['3x3足', "333ft", 0],
 		['クロック', "clkwca", 0],
 		['メガミンクス', "mgmp", -70],
 		['ピラミンクス', "pyrso", -10],
@@ -183,7 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3]
+		['easy cross', "easyc", 3],
+		['3x3足', "333ft", 0]
 	]],
 	['2x2x2', [
 		["ランダム状態 (WCA)", "222so", 0],

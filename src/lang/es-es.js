@@ -144,7 +144,6 @@ var scrdata = [
 		['3x3x3 BLD', "333ni", 0],
 		['3x3 fm', "333fm", 0],
 		['3x3 OH', "333oh", 0],
-		['3x3 ft', "333ft", 0],
 		['Clock', "clkwca", 0],
 		['Megaminx', "mgmp", -70],
 		['Pyraminx', "pyrso", -10],
@@ -183,7 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine(EOLínea)', "eoline", 0],
-		['Cruz sencilla', "easyc", 3]
+		['Cruz sencilla', "easyc", 3],
+		['3x3 ft', "333ft", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],

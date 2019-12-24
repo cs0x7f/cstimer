@@ -144,7 +144,6 @@ var scrdata = [
 		['3x3 A cegues', "333ni", 0],
 		['3x3 Moviments Mínims', "333fm", 0],
 		['3x3 Una mà', "333oh", 0],
-		['3x3 Peus', "333ft", 0],
 		['Rellotge', "clkwca", 0],
 		['Megaminx', "mgmp", -70],
 		['Pyraminx', "pyrso", -10],
@@ -183,7 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['Línia EO', "eoline", 0],
-		['Creu fàcil', "easyc", 3]
+		['Creu fàcil', "easyc", 3],
+		['3x3 Peus', "333ft", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],

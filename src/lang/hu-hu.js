@@ -144,7 +144,6 @@ var scrdata = [
 		['3x3 bld (vakon)', "333ni", 0],
 		['3x3 FM', "333fm", 0],
 		['3x3 oh (egykezes)', "333oh", 0],
-		['3x3 ft (lábbal)', "333ft", 0],
 		['óra', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
@@ -183,7 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['könnyű kereszt', "easyc", 3]
+		['könnyű kereszt', "easyc", 3],
+		['3x3 ft (lábbal)', "333ft", 0]
 	]],
 	['2x2x2', [
 		["véletlen állapot (WCA)", "222so", 0],

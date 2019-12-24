@@ -144,7 +144,6 @@ var scrdata = [
 		['3x3 blind', "333ni", 0],
 		['3x3 Fewest Moves', "333fm", 0],
 		['3x3 einhändig', "333oh", 0],
-		['3x3 mit Füßen', "333ft", 0],
 		['Clock', "clkwca", 0],
 		['Megaminx', "mgmp", -70],
 		['Pyraminx', "pyrso", -10],
@@ -183,7 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['einfaches Kreuz', "easyc", 3]
+		['einfaches Kreuz', "easyc", 3],
+		['3x3 mit Füßen', "333ft", 0]
 	]],
 	['2x2x2', [
 		["zufälliger Status (WCA)", "222so", 0],
