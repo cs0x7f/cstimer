@@ -53,6 +53,7 @@
   <script type="text/javascript" src="js/tools/metronome.js"></script>
   <script type="text/javascript" src="js/tools/onlinecomp.js"></script>
   <script type="text/javascript" src="js/tools/syncseed.js"></script>
+  <script type="text/javascript" src="js/tools/algsearch.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>

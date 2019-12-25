@@ -53,6 +53,7 @@ tools/insertionfinder.js \
 tools/metronome.js \
 tools/onlinecomp.js \
 tools/syncseed.js \
+tools/algsearch.js \
 shortcut.js \
 help.js \
 stackmat.js \
