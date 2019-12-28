@@ -156,6 +156,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (!isDisplayLast) {
 			lasttype = type;
 			lastscramble = scramble;
+			lastlen = len;
 		}
 		isDisplayLast = false;
 		if (lastscramble) {
@@ -172,29 +173,28 @@ var scramble = execMain(function(rn, rndEl) {
 	}
 
 
-	var type, lasttype, typeExIn = '333';
-	var len = 0;
-
-	var scramble, lastscramble;
+	var type, scramble, len = 0;
+	var lasttype, lastscramble, lastlen = 0;
+	var typeExIn = '333';
 	var isDisplayLast = false;
 	var lastClick = $('<span />').html(SCRAMBLE_LAST);
 	var nextClick = $('<span />').addClass('click').html(SCRAMBLE_NEXT).click(procNextClick);
 
 	function procLastClick() {
 		isDisplayLast = true;
-		sdiv.html(scrStd(lasttype, lastscramble, true));
+		sdiv.html(scrStd(lasttype, lastscramble, lastlen, true));
 		lastClick.removeClass('click').unbind('click');
 		if (lastscramble != undefined) {
-			kernel.pushSignal('scrambleX', scrStd(lasttype, lastscramble));
+			kernel.pushSignal('scrambleX', scrStd(lasttype, lastscramble, lastlen));
 		}
 	}
 
 	function procNextClick() {
 		if (isDisplayLast) {
 			isDisplayLast = false;
-			sdiv.html(scrStd(type, scramble, true));
+			sdiv.html(scrStd(type, scramble, len, true));
 			lastClick.addClass('click').unbind('click').click(procLastClick);
-			kernel.pushSignal('scrambleX', scrStd(type, scramble));
+			kernel.pushSignal('scrambleX', scrStd(type, scramble, len));
 		} else {
 			genScramble();
 		}
@@ -215,12 +215,14 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 	}
 
-	function scrStd(type, scramble, forDisplay) {
+	function scrStd(type, scramble, len, forDisplay) {
 		scramble = scramble || '';
-		var m = /^\$T([a-zA-Z0-9]+)\$\s*(.*)$/.exec(scramble);
+		len = len || 0;
+		var m = /^\$T([a-zA-Z0-9]+)(-[0-9]+)?\$\s*(.*)$/.exec(scramble);
 		if (m) {
 			type = m[1];
-			scramble = m[2];
+			scramble = m[3];
+			len = ~~m[2];
 		}
 		if (forDisplay) {
 			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scramble.length, 10), 0.30) * 20) / 20) : 1;
@@ -229,7 +231,7 @@ var scramble = execMain(function(rn, rndEl) {
 			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
 				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 		} else {
-			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^']*)`/g, '$1')];
+			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^']*)`/g, '$1'), len];
 		}
 	}
 
@@ -333,8 +335,8 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function scrambleOK(scrStr) {
 		scramble = (scrStr || scramble).replace(/(\s*)$/, "");
-		sdiv.html(scrStd(type, scramble, true));
-		kernel.pushSignal('scramble', scrStd(type, scramble));
+		sdiv.html(scrStd(type, scramble, len, true));
+		kernel.pushSignal('scramble', scrStd(type, scramble, len));
 	}
 
 	var remoteScrambleGen = (function() {
@@ -601,7 +603,7 @@ var scramble = execMain(function(rn, rndEl) {
 				genScramble();
 			} else {
 				sdiv.empty();
-				kernel.pushSignal('scramble', ['-', '']);
+				kernel.pushSignal('scramble', ['-', '', 0]);
 			}
 		} else if (signal == 'property') {
 			if (value[0] == 'scrSize') {
@@ -632,7 +634,7 @@ var scramble = execMain(function(rn, rndEl) {
 					genScramble();
 				}
 			} else if (value[0] == 'scrKeyM') {
-				sdiv.html(isDisplayLast ? scrStd(lasttype, lastscramble || '', true) : scrStd(type, scramble || '', true));
+				sdiv.html(isDisplayLast ? scrStd(lasttype, lastscramble || '', lastlen || 0, true) : scrStd(type, scramble || '', len, true));
 			} else if (value[0] == 'scrHide') {
 				if (value[1]) {
 					title.hide();

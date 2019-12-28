@@ -1,7 +1,7 @@
 "use strict";
 
 var tools = execMain(function() {
-	var curScramble = ['-', ''];
+	var curScramble = ['-', '', 0];
 	var isEn = false;
 
 	var divs = [];
@@ -81,7 +81,7 @@ var tools = execMain(function() {
 			return "222";
 		} else if (/^(333(oh?|ni|f[mt])?|(z[zb]|[coep]|cm|2g|ls)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|zbls|roux|RrU|half|easyc|eoline)$/.exec(scrambleType)) {
 			return "333";
-		} else if (/^(444(o|wca|yj|bld)?|4edge|RrUu)$/.exec(scrambleType)) {
+		} else if (/^(444([mo]|wca|yj|bld)?|4edge|RrUu)$/.exec(scrambleType)) {
 			return "444";
 		} else if (/^(555(wca|bld)?|5edge)$/.exec(scrambleType)) {
 			return "555";
@@ -97,6 +97,8 @@ var tools = execMain(function() {
 			return "101010";
 		} else if (/^111111$/.exec(scrambleType)) {
 			return "111111";
+		} else if (/^cubennn$/.exec(scrambleType)) {
+			return "cubennn";
 		} else if (/^pyr(s?[om]|l4e|nb|4c)$/.exec(scrambleType)) {
 			return "pyr";
 		} else if (/^skb(s?o|nb)?$/.exec(scrambleType)) {

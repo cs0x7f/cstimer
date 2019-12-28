@@ -1061,7 +1061,7 @@ var kernel = execMain(function() {
 		return pretty(round(time), small);
 	}
 
-	var scrambleReg = /^([\d])?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
+	var scrambleReg = /^([\d]+)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
 
 	function parseScramble(scramble, moveMap) {
 		var moveseq = [];

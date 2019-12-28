@@ -660,7 +660,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var now = $.now();
 			if (status == -3 || status == -2) {
-				if (twisty.isInspectionLegalMove(twisty, move) && !/^(333ni|444bld|555bld)$/.exec(currentScrambleType)) {
+				if (twisty.isInspectionLegalMove(twisty, move) && !/^(333ni|444bld|555bld)$/.exec(curScrType)) {
 					if (mstep == 0) {
 						rawMoves[0].push([twisty.move2str(move), 0]);
 					}
@@ -673,7 +673,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					startTime = now;
 					moveCnt = 0;
-					status = currentScrambleSize == 3 && currentScrambleType != "r3" ? nPhases[getProp('vrcMP', 'n')] : 1;
+					status = curScrSize == 3 && curScrType != "r3" ? nPhases[getProp('vrcMP', 'n')] : 1;
 					var inspectionMoves = rawMoves[0];
 					rawMoves = [];
 					for (var i = 0; i < status; i++) {
@@ -687,7 +687,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 			}
 			if (status >= 1) {
-				if (/^(333ni|444bld|555bld)$/.exec(currentScrambleType) && !twisty.isInspectionLegalMove(twisty, move)) {
+				if (/^(333ni|444bld|555bld)$/.exec(curScrType) && !twisty.isInspectionLegalMove(twisty, move)) {
 					twisty.toggleColorVisible(twisty, twisty.isSolved(twisty, getProp('vrcMP', 'n')) == 0);
 				}
 				if (mstep == 0) {
@@ -707,9 +707,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				if (curProgress == 0 && mstep == 2) {
 					moveCnt += twisty.moveCnt();
-					if (currentScrambleType.match(/^r\d+$/) && currentScramble.length != 0) {
-						if (currentScrambleType != "r3") {
-							currentScrambleSize++;
+					if (curScrType.match(/^r\d+$/) && curScramble.length != 0) {
+						if (curScrType != "r3") {
+							curScrSize++;
 						}
 						reset(true);
 						scrambleIt();
@@ -734,29 +734,29 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				return;
 			}
 			isReseted = true;
-			var size = currentScrambleSize;
+			var size = curScrSize;
 			if (!size) {
 				size = 3;
 			}
-			if (currentScrambleSize == 12) {
+			if (curPuzzle == 'skb') {
 				twistyScene.initializeTwisty({
 					type: "skewb",
 					faceColors: col2std(kernel.getProp('colskb'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
 				});
-			} else if (currentScrambleSize == 13) {
+			} else if (curPuzzle == 'mgm') {
 				twistyScene.initializeTwisty({
 					type: "mgm",
 					faceColors: col2std(kernel.getProp('colmgm'), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]),
 					scale: 0.9
 				});
-			} else if (currentScrambleSize == 14) {
+			} else if (curPuzzle == 'pyr') {
 				twistyScene.initializeTwisty({
 					type: "pyr",
 					faceColors: col2std(kernel.getProp('colpyr'), [3, 1, 2, 0]),
 					scale: 0.9
 				});
-			} else if (currentScrambleSize == 1) {
+			} else if (curPuzzle == 'sq1') {
 				twistyScene.initializeTwisty({
 					type: "sq1",
 					faceColors: col2std(kernel.getProp('colsq1'), [0, 5, 4, 2, 1, 3]),
@@ -782,10 +782,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function scrambleIt() {
 			reset();
-			var scramble = currentScramble;
-			if (currentScrambleType.match(/^r\d+$/)) {
-				scramble = currentScramble.shift().match(/\d+\) (.*)$/)[1];
-				lcd.setStaticAppend("<br>" + (currentScramble.length + 1) + "/" + currentScramble.len);
+			var scramble = curScramble;
+			if (curScrType.match(/^r\d+$/)) {
+				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
+				lcd.setStaticAppend("<br>" + (curScramble.length + 1) + "/" + curScramble.len);
 			}
 			scramble = twisty.parseScramble(scramble);
 			isReseted = false;
@@ -855,29 +855,34 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		var currentScramble;
-		var currentScrambleType;
-		var currentScrambleSize;
+		var curScramble;
+		var curScrType;
+		var curScrSize;
+		var curPuzzle;
 		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr'];
 		var isReseted = false;
 
 		function procSignal(signal, value) {
 			if (signal == 'scramble') {
-				currentScrambleType = value[0];
-				currentScramble = value[1];
-				var puzzleType = tools.puzzleType(currentScrambleType);
-				var size = types.indexOf(puzzleType);
-				if (size != -1 && currentScrambleSize != size) {
-					currentScrambleSize = size
+				curScrType = value[0];
+				curScramble = value[1];
+				var puzzle = tools.puzzleType(curScrType);
+				var size = types.indexOf(puzzle);
+				if (puzzle == 'cubennn') {
+					size = value[2];
+				}
+				if (size != -1 && (curScrSize != size || curPuzzle != puzzle)) {
+					curScrSize = size;
+					curPuzzle = puzzle;
 					isReseted = false;
 					reset();
 				}
 				var m = value[0].match(/^r(\d)\d*$/);
 				if (m) {
-					currentScramble = currentScramble.split('\n');
-					currentScramble.len = currentScramble.length;
-					if (currentScrambleSize != ~~m[1]) {
-						currentScrambleSize = ~~m[1];
+					curScramble = curScramble.split('\n');
+					curScramble.len = curScramble.length;
+					if (curScrSize != ~~m[1]) {
+						curScrSize = ~~m[1];
 						isReseted = false;
 						reset();
 					}
@@ -1137,7 +1142,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (status == -1) {
 				giikerutil.markScrambled();
 				if (!giikerutil.checkScramble()) {
-					pushSignal('scramble', ['333', scramble_333.genFacelet(currentFacelet)]);
+					pushSignal('scramble', ['333', scramble_333.genFacelet(currentFacelet), 0]);
 				}
 				status = -2;
 				startTime = now;

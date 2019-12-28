@@ -800,6 +800,10 @@ posit:
 				return true;
 			}
 		}
+		if (type == "cubennn") {
+			nnnImage(scramble[2], scramble[1]);
+			return true;
+		}
 		if (type == "pyr") {
 			pyraImage(scramble[1]);
 			return true;

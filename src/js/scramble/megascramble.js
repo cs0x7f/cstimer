@@ -106,6 +106,28 @@
 		scrMgr.reg(i, edgescramble);
 	}
 
+	function cubeNNN(type, len) {
+		var size = len;
+		if (size <= 1) {
+			return "N/A";
+		}
+		var data = [[], [], []];
+		for (var i = 0; i < len - 1; i++) {
+			if (i % 2 == 0) {
+				data[0].push((i < 4 ? '' : ~~(i / 2 + 1)) + (i < 2 ? 'U' : 'u'));
+				data[1].push((i < 4 ? '' : ~~(i / 2 + 1)) + (i < 2 ? 'R' : 'r'));
+				data[2].push((i < 4 ? '' : ~~(i / 2 + 1)) + (i < 2 ? 'F' : 'f'));
+			} else {
+
+				data[0].push((i < 4 ? '' : ~~(i / 2 + 1)) + (i < 2 ? 'D' : 'd'));
+				data[1].push((i < 4 ? '' : ~~(i / 2 + 1)) + (i < 2 ? 'L' : 'l'));
+				data[2].push((i < 4 ? '' : ~~(i / 2 + 1)) + (i < 2 ? 'B' : 'b'));
+			}
+		}
+		return mega(data, cubesuff, size * 10);
+	}
+	scrMgr.reg('cubennn', cubeNNN);
+
 	function edge(start, end, moves, len) {
 		var u=0,d=0,movemis=[];
 		var triggers=[["R","R'"],["R'","R"],["L","L'"],["L'","L"],["F'","F"],["F","F'"],["B","B'"],["B'","B"]];
