@@ -362,7 +362,42 @@
 			span.append($('<a class="click" target="_blank">alg.cubing.net</a>').attr('href', toAlgLink(meta, sols) + '&setup=' + encodeURIComponent(curScrambleStr)));
 		}
 
+		var block222solv;
+
+		function block222Solver(scramble, span) {
+			curScramble = kernel.parseScramble(scramble, "URFDLB");
+			for (var i = 0; i < curScramble.length; i++) {
+				curScramble[i] = "URFDLB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
+			}
+			var faceStr = ["URF", "UFL", "ULB", "UBR", "DFR", "DLF", "DBL", "DRB"];
+			var faceSolved = [
+				'----UU-UURR-RR-----FF-FF------------------------------',
+				'---UU-UU----------FF-FF--------------LL-LL------------',
+				'UU-UU-------------------------------LL-LL-----BB-BB---',
+				'-UU-UU----RR-RR------------------------------BB-BB----',
+				'------------RR-RR-----FF-FF-DD-DD---------------------',
+				'---------------------FF-FF-DD-DD--------LL-LL---------',
+				'------------------------------DD-DD----LL-LL-----BB-BB',
+				'-------------RR-RR-------------DD-DD------------BB-BB-'
+			];
+			block222solv = block222solv || new mathlib.gSolver(faceSolved, cubeMove, moves);
+			for (var i = 0; i < 8; i++) {
+				span.append(faceStr[i] + ': ');
+				sol = [];
+				var sol1 = block222solv.search(stateInit(cubeMove, faceSolved[i]), 0)[0];
+				if (sol1) {
+					span.append(tools.getSolutionSpan(sol1), '<br>');
+				} else {
+					span.append('no solution found<br>');
+				}
+			}
+		}
+
 		function exec333StepSolver(type, scramble, span) {
+			if (type == '222') {
+				block222Solver(scramble, span);
+				return;
+			}
 			curScramble = kernel.parseScramble(scramble, "URFDLB");
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = "DLFURB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
@@ -897,6 +932,7 @@
 			tools.regTool('333roux', TOOLS_SOLVERS + '>Roux S1 + S2', execFunc.bind(null, '333roux'));
 			tools.regTool('333petrus', TOOLS_SOLVERS + '>2x2x2 + 2x2x3', execFunc.bind(null, '333petrus'));
 			tools.regTool('333zz', TOOLS_SOLVERS + '>EOLine + ZZF2L', execFunc.bind(null, '333zz'));
+			tools.regTool('333222', TOOLS_SOLVERS + '>2x2x2', execFunc.bind(null, '333222'));
 			tools.regTool('sq1cs', TOOLS_SOLVERS + '>SQ1 S1 + S2', execFunc.bind(null, 'sq1cs'));
 			tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
 			tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));
