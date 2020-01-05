@@ -35,14 +35,14 @@ var gsolver = (function() {
 					continue;
 				}
 				var state = stateInit(doMove, solved);
-				solcur = solvs[solved].search(state, 0, maxl)[0];
+				solcur = solvs[solved].search(state, 0, maxl);
 				if (solcur != undefined) {
 					mask |= maps[solved];
 					break out;
 				}
 				for (var m = 0; m < fmov.length; m++) {
 					var fstate = doMove(state, fmov[m]);
-					solcur = solvs[solved].search(fstate, 0, maxl)[0];
+					solcur = solvs[solved].search(fstate, 0, maxl);
 					if (solcur != undefined) {
 						solcur.unshift(fmov[m]);
 						mask |= maps[solved];
@@ -97,7 +97,7 @@ var gsolver = (function() {
 				for (var i = 0; i < 24; i++) {
 					faceState.push(state[i] == "URFDLB".charAt(face) ? 'X' : '?');
 				}
-				var sol = solv.search(faceState.join(''), 0)[0];
+				var sol = solv.search(faceState.join(''), 0);
 				span.append(faceStr[face] + ": ", tools.getSolutionSpan(sol), '<br>');
 			}
 		}
@@ -402,7 +402,7 @@ var gsolver = (function() {
 			for (var i = 0; i < 8; i++) {
 				span.append(faceStr[i] + ': ');
 				sol = [];
-				var sol1 = block222solv.search(stateInit(cubeMove, faceSolved[i]), 0)[0];
+				var sol1 = block222solv.search(stateInit(cubeMove, faceSolved[i]), 0);
 				if (sol1) {
 					span.append(tools.getSolutionSpan(sol1), '<br>');
 				} else {
@@ -527,10 +527,10 @@ var gsolver = (function() {
 				curScramble.pop();
 			}
 			sol = [];
-			var sol1 = solv1.search(stateInit(sq1Move, '0Aa0Aa0Aa0Aa|Aa0Aa0Aa0Aa0'), 0)[0];
+			var sol1 = solv1.search(stateInit(sq1Move, '0Aa0Aa0Aa0Aa|Aa0Aa0Aa0Aa0'), 0);
 			span.append('Shape: ', tools.getSolutionSpan(prettySq1Arr(sol1)), '<br>');
 			sol = sol.concat(sol1);
-			var sol2 = solv2.search(stateInit(sq1Move, '0Aa0Aa0Aa0Aa|Bb1Bb1Bb1Bb1'), 0)[0];
+			var sol2 = solv2.search(stateInit(sq1Move, '0Aa0Aa0Aa0Aa|Bb1Bb1Bb1Bb1'), 0);
 			span.append('Color: ', tools.getSolutionSpan(prettySq1Arr(sol2)), '<br>');
 		}
 
@@ -628,7 +628,7 @@ var gsolver = (function() {
 				if (ori[uidx]) {
 					sol.push(ori[uidx]);
 				}
-				var sol1 = solv.search(stateInit(skewbMove, faceSolved[i]), 0)[0];
+				var sol1 = solv.search(stateInit(skewbMove, faceSolved[i]), 0);
 				if (sol1) {
 					span.append(faceStr[i] + ': ');
 					if (sol[0]) {
@@ -727,7 +727,7 @@ var gsolver = (function() {
 						for (var m = 0; m < scramble.length; m++) {
 							curScramble.push(rawMap[moveMap.indexOf(scramble[m][0])] + scramble[m][1]);
 						}
-						sol1 = solv.search(stateInit(pyraMove, '????FF??RRR??L?L?L?DDDDD'), depth, depth)[0];
+						sol1 = solv.search(stateInit(pyraMove, '????FF??RRR??L?L?L?DDDDD'), depth, depth);
 						if (!sol1) {
 							continue;
 						}
@@ -758,30 +758,24 @@ var gsolver = (function() {
 			var ret = state.split('');
 			var ori = m[0];
 			var target = ~~m[1];
-			var arr = [x * 4 + y];
+			var arr = [x << 2 | y];
 			if (ori == 'V') {
-				if (ret[x * 4 + target] == '$') {
+				if (ret[x << 2 | target] == '$') {
 					return null;
 				}
-				while (y > target) {
-					y--;
-					arr.push(x * 4 + y);
-				}
-				while (y < target) {
-					y++;
-					arr.push(x * 4 + y);
+				var inc = y > target ? -1 : 1;
+				while (y != target) {
+					y += inc;
+					arr.push(x << 2 | y);
 				}
 			} else {
-				if (ret[target * 4 + y] == '$') {
+				if (ret[target << 2 | y] == '$') {
 					return null;
 				}
-				while (x > target) {
-					x--;
-					arr.push(x * 4 + y);
-				}
-				while (x < target) {
-					x++;
-					arr.push(x * 4 + y);
+				var inc = x > target ? -1 : 1;
+				while (x != target) {
+					x += inc;
+					arr.push(x << 2 | y);
 				}
 			}
 			arr.reverse();
@@ -811,31 +805,27 @@ var gsolver = (function() {
 			return ret;
 		}
 
+		var moves = appendSuffix({
+			'V': 0x0,
+			'H': 0x1
+		}, '0123');
+
 		var solv1 = new mathlib.gSolver(
 			fixBlank('0123????????????'),
 			slideMove,
-			appendSuffix({
-				'V': 0x0,
-				'H': 0x1
-			}, '0123')
+			moves
 		);
 
 		var solv2 = new mathlib.gSolver(
 			fixBlank('$$$$4???8???c???'),
 			slideMove,
-			appendSuffix({
-				'V': 0x0,
-				'H': 0x1
-			}, '0123')
+			moves
 		);
 
 		var solv3 = new mathlib.gSolver(
 			['$$$$$567$9ab$de-'],
 			slideMove,
-			appendSuffix({
-				'V': 0x0,
-				'H': 0x1
-			}, '0123')
+			moves
 		);
 
 		function stateInit(state, perm) {
@@ -893,32 +883,44 @@ var gsolver = (function() {
 			return ret.join(' ').replace(/1/g, '');
 		}
 
-		function getScramble(type) {
+		function getScramble(size, type) {
 			var t = +new Date;
-			var perm = randPerm(4);
-			perm = [perm, mirror(perm)];
+			var perm = [];
 			var midx = 0;
-			out: for (var d = 0; d < 99; d++) {
-				for (midx = 0; midx < 2; midx++) {
-					var blank = perm[midx].indexOf(perm.length - 1);
-					sol = ['V' + (blank & 3), 'H' + (blank >> 2)];
-					var state = stateInit('0123???????????-', perm[midx]);
-					var sol1 = solv1.search(state, d, d)[0];
-					if (sol1) {
-						sol = sol.concat(sol1);
-						break out;
+			if (size == 4) {
+				perm[0] = randPerm(4);
+				perm[1] = mirror(perm[0]);
+				out: for (var d = 0; d < 99; d++) {
+					for (midx = 0; midx < 2; midx++) {
+						var blank = perm[midx].indexOf(perm.length - 1);
+						sol = ['V' + (blank & 3), 'H' + (blank >> 2)];
+						var sol1 = solv1.search(stateInit('0123???????????-', perm[midx]), d, d);
+						if (sol1) {
+							sol = sol.concat(sol1);
+							break out;
+						}
 					}
 				}
+				var sol2 = solv2.search(stateInit('01234???8???c??-', perm[midx]).replace(/[0123]/g, '$'), 0);
+				sol = sol.concat(sol2);
+			} else if (size == 3) {
+				var perm8 = randPerm(3);
+				var slide8 = [5, 6, 7, 9, 10, 11, 13, 14, 15];
+				for (var i = 0; i < 16; i++) {
+					perm[i] = slide8[perm8[slide8.indexOf(i)]] || i;
+				}
+				var blank = perm.indexOf(perm.length - 1);
+				sol = ['V' + (blank & 3), 'H' + (blank >> 2)];
+				perm = [perm];
 			}
-			var sol2 = solv2.search(stateInit('01234???8???c??-', perm[midx]).replace(/[0123]/g, '$'), 0)[0];
-			sol = sol.concat(sol2);
-			var sol3 = solv3.search(stateInit('0123456789abcde-', perm[midx]).replace(/[012348c]/g, '$'), 0)[0];
+			var sol3 = solv3.search(stateInit('0123456789abcde-', perm[midx]).replace(/[012348c]/g, '$'), 0);
 			sol = sol.concat(sol3);
 			DEBUG && console.log('[15p solver]', midx, stateInit('0123456789abcde-', perm[midx]), sol.join(''), sol.length, +new Date - t);
 			sol.reverse();
-			return prettySol(type.slice(4), 4, midx);
+			return prettySol(type.slice(size == 3 ? 3 : 4), 4, midx);
 		}
-		scrMgr.reg(['15prp', '15prap', '15prmp'], getScramble);
+		scrMgr.reg(['15prp', '15prap', '15prmp'], getScramble.bind(null, 4))
+			(['8prp', '8prap', '8prmp'], getScramble.bind(null, 3));
 	})();
 
 	execMain(function() {

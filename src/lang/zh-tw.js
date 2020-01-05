@@ -66,13 +66,13 @@ var TOOLS_TREND = '時間趨勢';
 var TOOLS_METRONOME = '節拍器';
 var TOOLS_CFMTIME = '確認時間';
 var TOOLS_SOLVERS = '速解小幫手';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_SYNCSEED = '共同打亂';
+var TOOLS_SYNCSEED_SEED = '種子碼';
+var TOOLS_SYNCSEED_INPUT = '輸入種子碼';
+var TOOLS_SYNCSEED_30S = '使用30秒種子碼';
+var TOOLS_SYNCSEED_HELP = '如果使用這個選項的話，就會以輸入的種子碼來生成打亂。也就是說，如果有兩個玩家用同一個種子碼的話，他們會得到一樣的打亂。底下的30秒種子碼是以現在的時刻生成種子碼，如果兩個玩家按下按鈕的時間相近，他們就會得到一樣的種子碼。';
+var TOOLS_SYNCSEED_DISABLE = '停用目前的種子碼？';
+var TOOLS_SYNCSEED_INPUTA = '輸入種子碼 (可以包含a-zA-Z0-9)';
 var OLCOMP_UPDATELIST = '更新比賽列表';
 var OLCOMP_VIEWRESULT = '查看結果';
 var OLCOMP_VIEWMYRESULT = '歷史紀錄';
@@ -264,6 +264,11 @@ var scrdata = [
 		['隨機步驟 URLD', "15p", 80],
 		['隨機步驟 ^<>v', "15pat", 80],
 		['隨機步驟 Blank', "15pm", 80]
+	]],
+	['8 puzzle', [
+		['隨機狀態 URLD', "8prp", 0],
+		['隨機狀態 ^<>v', "8prap", 0],
+		['隨機狀態 Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3', "133", 0],

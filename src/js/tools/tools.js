@@ -113,6 +113,10 @@ var tools = execMain(function() {
 			return "15p";
 		} else if (/^15p(rmp|m)$/.exec(scrambleType)) {
 			return "15b";
+		} else if (/^8p(at|ra?p?)?$/.exec(scrambleType)) {
+			return "8p";
+		} else if (/^8p(rmp|m)$/.exec(scrambleType)) {
+			return "8b";
 		}
 	}
 

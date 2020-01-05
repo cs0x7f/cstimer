@@ -762,6 +762,7 @@ posit:
 			canvas.attr('height', (size + gap * 4) * width);
 
 			var cols = kernel.getProp('col15p').match(colre);
+			cols[size - 1] = cols[cols.length - 1];
 			for (var i = 0; i < size; i++) {
 				for (var j = 0; j < size; j++) {
 					var val = state[j * size + i];
@@ -826,6 +827,10 @@ posit:
 		}
 		if (type == "15b" || type == "15p") {
 			sldImage(type[2], 4, scramble[1]);
+			return true;
+		}
+		if (type == "8b" || type == "8p") {
+			sldImage(type[1], 3, scramble[1]);
 			return true;
 		}
 		return false;

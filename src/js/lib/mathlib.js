@@ -641,7 +641,7 @@ var mathlib = (function() {
 				break;
 			}
 		}
-		return this.sols.slice();
+		return this.nsol == 1 ? this.sols.slice()[0] : this.sols.slice();
 	};
 
 	_.getPruning = function(state) {
@@ -650,14 +650,17 @@ var mathlib = (function() {
 	};
 
 	_.idaSearch = function(state, maxl, lm) {
-		if (this.getPruning(state) > maxl || state in this.visited) {
+		if (this.getPruning(state) > maxl) {
 			return false;
 		}
-		this.visited[state] = 0;
 		if (maxl == 0) {
 			this.sols.push(this.sol.slice());
 			return this.sols.length >= this.nsol;
 		}
+		if (state in this.visited) {
+			return false;
+		}
+		this.visited[state] = 0;
 		var lastAxisFace = lm == null ? -1 : this.moves[lm];
 		for (var move in this.moves) {
 			var axisface = this.moves[move] ^ lastAxisFace;

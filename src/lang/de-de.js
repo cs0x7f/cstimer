@@ -265,6 +265,11 @@ var scrdata = [
 		['zufällige Bewegung ^<>v', "15pat", 80],
 		['zufällige Bewegung Blank', "15pm", 80]
 	]],
+	['8 puzzle', [
+		['zufälliger Status URLD', "8prp", 0],
+		['zufälliger Status ^<>v', "8prap", 0],
+		['zufälliger Status Blank', "8prmp", 0]
+	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],

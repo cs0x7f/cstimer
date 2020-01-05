@@ -265,6 +265,11 @@ var scrdata = [
 		['random move ^<>v', "15pat", 80],
 		['random move Blank', "15pm", 80]
 	]],
+	['8 puzzle', [
+		['random state URLD', "8prp", 0],
+		['random state ^<>v', "8prap", 0],
+		['random state Blank', "8prmp", 0]
+	]],
 	['LxMxN', [
 		['1x3x3 (Флоппи Куб)', "133", 0],
 		['2x2x3 (Башня Куб)', "223", 0],

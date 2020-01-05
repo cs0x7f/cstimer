@@ -265,6 +265,11 @@ var scrdata = [
 		['ランダムムーブ ^<>v', "15pat", 80],
 		['ランダムムーブ Blank', "15pm", 80]
 	]],
+	['8 puzzle', [
+		['ランダム状態 URLD', "8prp", 0],
+		['ランダム状態 ^<>v', "8prap", 0],
+		['ランダム状態 Blank', "8prmp", 0]
+	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],
