@@ -865,6 +865,13 @@ var gsolver = (function() {
 			var compress = settings.indexOf('p') != -1;
 			var pos = [size - 1, size - 1];
 			for (var i = 0; i < sol.length; i++) {
+				if (i < sol.length - 1 && sol[i][0] == sol[i + 1][0]
+						|| i >= 2 && sol[i - 2] == sol[i]) {
+					sol.splice(i, 1);
+					i = -1;
+				}
+			}
+			for (var i = 0; i < sol.length; i++) {
 				var val = ~~sol[i][1];
 				var m = moveRef.indexOf(sol[i][0]);
 				if (pos[m] != val) {
