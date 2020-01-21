@@ -187,45 +187,45 @@
 		// some of the scrambles contain D2 D or D U, which makes it pretty annoying
 		var negative={'R':'L', 'L':'R', 'U':'D', 'D':'U'}
 		sc=sc.split(' ')
-		var i, prevmove, nextmove
+		var i, prevmove, nextmove;
 		for(i=0;i<sc.length-1;i++){
 			if(sc[i][0]==negative[sc[i+1][0]]){
 				if(sc[i].length==1){
-					prevmove=1
+					prevmove=1;
 				} else{
-					prevmove=parseInt(sc[i][1])
+					prevmove=parseInt(sc[i][1]);
 				}
 				if(sc[i+1].length==1){
-					nextmove=1
+					nextmove=1;
 				} else{
-					nextmove=parseInt(sc[i+1][1])
+					nextmove=parseInt(sc[i+1][1]);
 				}
 				if(prevmove==nextmove){
-					sc=sc.slice(0,i).concat(sc.slice(i+2))
-					i=i==0?-1:i-2
+					sc=sc.slice(0,i).concat(sc.slice(i+2));
+					i=i==0?-1:i-2;
 				} else if(prevmove>nextmove){
-					sc=sc.slice(0,i).concat([prevmove-nextmove==1?sc[i][0]:sc[i][0]+(prevmove-nextmove).toString()]).concat(sc.slice(i+2))
-					i--
+					sc=sc.slice(0,i).concat([prevmove-nextmove==1?sc[i][0]:sc[i][0]+(prevmove-nextmove).toString()]).concat(sc.slice(i+2));
+					i--;
 				} else{
-					sc=sc.slice(0,i).concat([nextmove-prevmove==1?sc[i+1][0]:sc[i+1][0]+(nextmove-prevmove).toString()]).concat(sc.slice(i+2))
-					i--
+					sc=sc.slice(0,i).concat([nextmove-prevmove==1?sc[i+1][0]:sc[i+1][0]+(nextmove-prevmove).toString()]).concat(sc.slice(i+2));
+					i--;
 				}
 			} else if(sc[i][0]==sc[i+1][0]){
 				if(sc[i].length==1){
-					prevmove=1
+					prevmove=1;
 				} else{
-					prevmove=parseInt(sc[i][1])
+					prevmove=parseInt(sc[i][1]);
 				}
 				if(sc[i+1].length==1){
-					nextmove=1
+					nextmove=1;
 				} else{
-					nextmove=parseInt(sc[i+1][1])
+					nextmove=parseInt(sc[i+1][1]);
 				}
-				sc=sc.slice(0,i).concat([sc[i][0]+(prevmove+nextmove).toString()]).concat(sc.slice(i+2))
-				i--
+				sc=sc.slice(0,i).concat([sc[i][0]+(prevmove+nextmove).toString()]).concat(sc.slice(i+2));
+				i--;
 			}
 		}
-		return sc.join(' ')
+		return sc.join(' ');
 	}
 	
 	function do15puzzle(mirrored, len, arrow, tiny) {
