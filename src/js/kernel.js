@@ -813,7 +813,7 @@ var kernel = execMain(function() {
 
 			$('.donate').appendTo(donateDiv);
 			addButton('donate', BUTTON_DONATE, function() {
-				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE);
+				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE.replace('<br>', ''));
 			}, 5);
 			leftbar.appendTo(wndCtn).mouseenter(function() {
 				toggleLeftBar(true);

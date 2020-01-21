@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Zarovnání scramble oblasti';
 var PROPERTY_SCRALIGN_STR = 'střed|vlevo|vpravo';
 var PROPERTY_SCRFAST = 'Použít rychlí scramble pro 4x4x4(neoficiální)';
 var PROPERTY_SCRKEYM = 'Klíčovy krok pohybů v zamíchání';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Akce při kliknutí na zamíchání';
+var PROPERTY_SCRCLK_STR = 'Žádný|Kopírovat|Další zamíchání';
 var PROPERTY_WNDSCR = 'Styl zobrazení panelu s scramblem';
 var PROPERTY_WNDSTAT = 'Styl zobrazení panelu Statistiky';
 var PROPERTY_WNDTOOL = 'Styl zobrazení panelu nástrojů';
@@ -48,7 +48,7 @@ var EXPORT_LOGINGGL = 'Přihlásit Pomocí Google Účtu';
 var EXPORT_LOGINWCA = 'Přihlásit Pomocí WCA Účtu';
 var EXPORT_LOGOUTCFM = 'Potvrdit odhlášení?';
 var EXPORT_LOGINAUTHED = 'Autorizováno<br>Načítání Dat...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
+var IMPORT_FINAL_CONFIRM = 'Toto přepíše všechna lokální data! Upraví %d relací, přidá %a odstraní %r řešení. Potvrdit import dat?';
 var BUTTON_SCRAMBLE = 'Scramble';
 var BUTTON_TOOLS = 'NÁSTROJE';
 var IMAGE_UNAVAILABLE = 'Nedostupné pro tento typ scramblu';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Funkce';
 var TOOLS_CROSS = 'složit kříž';
 var TOOLS_EOLINE = 'složit EOLine';
 var TOOLS_ROUX1 = 'složit Roux S1';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = 'strana 2x2x2';
 var TOOLS_GIIKER = 'Giiker kostka';
 var TOOLS_IMAGE = 'nakreslit scramble';
 var TOOLS_STATS = 'Statistiky';
@@ -65,27 +65,27 @@ var TOOLS_DISTRIBUTION = 'distribuce času';
 var TOOLS_TREND = 'trend času';
 var TOOLS_METRONOME = 'metronom';
 var TOOLS_CFMTIME = 'Potvrďte čas';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
+var TOOLS_SOLVERS = 'Řešitelé';
+var TOOLS_SYNCSEED = 'Běžné zamíchání';
+var TOOLS_SYNCSEED_SEED = 'Semínko';
+var TOOLS_SYNCSEED_INPUT = 'Vstupní semínko';
+var TOOLS_SYNCSEED_30S = 'Použít semínko platné 30s';
+var TOOLS_SYNCSEED_HELP = 'Pokud povoleno, bude zamíchání záviset pouze na nastavení semínka. Obecně lze říci, že pokud dva hráči sdílejí stejné semínko, získají stejné zamíchání.';
+var TOOLS_SYNCSEED_DISABLE = 'Vypnout aktuální semínko?';
+var TOOLS_SYNCSEED_INPUTA = 'Vložte hodnotu (a-zA-Z0-9) jako semínko';
+var OLCOMP_UPDATELIST = 'Aktualizovat seznam soutěží';
+var OLCOMP_VIEWRESULT = 'Zobrazit výsledek';
+var OLCOMP_VIEWMYRESULT = 'Moje historie';
+var OLCOMP_START = 'Začít!';
+var OLCOMP_SUBMIT = 'Potvrdit!';
+var OLCOMP_SUBMITAS = 'Potvrdit jako: ';
+var OLCOMP_WCANOTICE = 'Potvrdit jako váš WCA účet? (Přihlašte se znovu pokud není účet po odeslání rozpoznán)';
+var OLCOMP_OLCOMP = 'Online soutěž';
 var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_ME = 'Já';
+var OLCOMP_WCAACCOUNT = 'Účet WCA';
+var OLCOMP_ABORT = 'Zrušit soutěž a ukázat výsledky?';
+var OLCOMP_WITHANONYM = 'S Anonymem';
 var PROPERTY_IMGSIZE = 'Velikost zamíchaného obrázku';
 var TIMER_INSPECT = 'zkontrolovat';
 var TIMER_SOLVE = 'vyřešit';
@@ -95,8 +95,8 @@ var PROPERTY_TIMEU_STR = 'aktualizovat|0.1s|sekund|inspekce|nic';
 var PROPERTY_PRETIME = 'čas držení mezery dole(sekund)';
 var PROPERTY_ENTERING = 'vstup v dobách s';
 var PROPERTY_ENTERING_STR = 'časovač|psaní|stackmat|MoYuČasovač|virtuální|Giiker';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT = 'Jednotka při zadávání celého čísla';
+var PROPERTY_INTUNIT_STR = 'sekunda|setina|tisícina';
 var PROPERTY_COLOR = 'vybrat schéma barev';
 var PROPERTY_COLORS = 'barva písma|barva pozadí|barva desky|barva tlačítka|odkaz barva|barva Loga|barva pozadí Loga';
 var PROPERTY_VIEW = 'styl uživatelského rozhraní je';
@@ -155,15 +155,15 @@ var scrdata = [
 	]],
 	['Vstup', [
 		['Extern', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Soutěž', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["náhodný stav (WCA)", "333", 0],
+		['náhodný tah', "333o", 25],
 		['3x3x3 pro nooby', "333noob", 25],
 		['pouze hrany', "edges", 0],
 		['pouze rohy', "corners", 0],
@@ -186,14 +186,14 @@ var scrdata = [
 		['3x3 ft', "333ft", 0]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["náhodný stav (WCA)", "222so", 0],
+		['optimální', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Žádný bar', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -225,7 +225,7 @@ var scrdata = [
 	['Hodiny', [
 		['věci', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['optimální', "clko", 0],
 		['stručně', "clkc", 0],
 		['efektivní pin řád', "clke", 0]
 	]],
@@ -235,21 +235,21 @@ var scrdata = [
 		['starý styl', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		["náhodný stav (WCA)", "pyrso", 10],
+		['optimální', "pyro", 0],
+		['náhodný tah', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		["náhodný stav (WCA)", "skbso", 0],
+		['optimální', "skbo", 0],
+		['náhodný tah', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["náhodný stav (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['přední metrické otočení', "sq1h", 40],
 		['metrický twist', "sq1t", 20]
@@ -258,17 +258,17 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
-		['random state URLD', "15prp", 0],
-		['random state ^<>v', "15prap", 0],
-		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+		['náhodný stav URLD', "15prp", 0],
+		['náhodný stav ^<>v', "15prap", 0],
+		['náhodný stav Blank', "15prmp", 0],
+		['náhodný tah URLD', "15p", 80],
+		['náhodný tah ^<>v', "15pat", 80],
+		['náhodný tah Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
-		['random state URLD', "8prp", 0],
-		['random state ^<>v', "8prap", 0],
-		['random state Blank', "8prmp", 0]
+		['náhodný stav URLD', "8prp", 0],
+		['náhodný stav ^<>v', "8prap", 0],
+		['náhodný stav Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
@@ -285,9 +285,9 @@ var scrdata = [
 		['NxNxN', "cubennn", 12]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['náhodný stav', "gearso", 0],
+		['optimální', "gearo", 0],
+		['náhodný tah', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -305,10 +305,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['starý', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['kostka Ivy', [
+		['náhodný stav', "ivyso", 0],
+		['optimální', "ivyo", 0],
+		['náhodný tah', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -399,9 +399,9 @@ var STATS_CFM_DELSS = 'smazat relaci [%s]?';
 var STATS_CFM_DELMUL = 'Číslo Smazaných Hodnot Z Aktuálního Indexu?';
 var STATS_CFM_DELETE = 'smazat tento čas?';
 var STATS_COMMENT = 'Okomentovat';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Zkontrolovat';
 var STATS_DATE = 'Datum';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_SSSTAT = 'statistika 1 řešení.';
 var STATS_CURROUND = 'Statistiky Aktuálního Kola';
 var STATS_CURSESSION = 'Statistiky Aktuální relace';
 var STATS_CURSPLIT = 'Fáze %d Aktuální Statistiky Relace';
@@ -412,7 +412,7 @@ var STATS_SSMGR_DETAIL = 'Detaily Relace';
 var STATS_SSMGR_OPS = 'Přejmenovat|Vytvořit|Spojit|Rozpojit|Smazat|Seřadit';
 var STATS_SSMGR_ORDER = 'Seřadit podle zamíchání';
 var STATS_SSMGR_ODCFM = 'Řadit všechni relace jako zamíchání?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_SORTCFM = '%d řešení bude přeřazeno, potvrdit?';
 var STATS_ALERTMG = 'Spojit všechny časy v relaci [%f] do konce relace[%t]?';
 var STATS_PROMPTSPL = 'Spojit počet posledních časů z relace[%s]?';
 var STATS_ALERTSPL = 'Mělo by se rozdělit nebo nechat alespoň 1';
@@ -432,7 +432,7 @@ var STATS_XSESSION_DATE = 'jakékoliv datum|minulých 24 hodin|minulých 7 dnů|
 var STATS_XSESSION_NAME = 'jakkékoliv jméno';
 var STATS_XSESSION_SCR = 'jakékoliv zamíchání';
 var STATS_XSESSION_CALC = 'Calc';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_RSFORSS = 'Zobrazit statistiku při kliknutí na číslo řešení';
 var PROPERTY_PRINTSCR = 'zobrazit zamíchání ve statistikách';
 var PROPERTY_PRINTDATE = 'zobrazit datum složení ve statistikách';
 var PROPERTY_SUMMARY = 'zobrazit shrnutí před časovím listem';
@@ -448,11 +448,11 @@ var PROPERTY_TOOLSFUNC = 'Vybraná Funkce';
 var PROPERTY_TRIM = 'Počet složení použitích na každé straně';
 var PROPERTY_TRIM_MED = 'Medián';
 var PROPERTY_STKHEAD = 'Použít Informace O Stavu Stackmatu';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_HIDEFULLSOL = 'Ukázat řešení postupně';
+var PROPERTY_IMPPREV = 'Importovat ne-aktuálnější data';
+var PROPERTY_AUTOEXP = 'Automatický export dat (po 100 řešení)';
+var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s ID csTimer|S účtem WCA';
+var PROPERTY_SCRASIZE = 'Automatická velikost zamíchání';
 var MODULE_NAMES = {
 	"kernel": 'globální',
 	"ui": 'displej',

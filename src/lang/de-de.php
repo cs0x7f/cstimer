@@ -1,66 +1,66 @@
-<h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
+<h1>csTimer Version <?php echo $version;?> - Proffesioneller Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
-<p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
+<h2>Einführung</h2>
+<p>csTimer ist ein professionelles Timingprogramm für Rubik's cube speedsolver, es enthält:</p>
 <ul>
-<li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
-<li>Plenty of statistics functions, it supports <strong>time-split timing</strong>; <strong>Any number of sessions</strong>, session split/merge, etc.</li>
-<li>Varieties of solver, such as <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, for learning or training these sub steps.</li>
-<li>Other auxiliary tools, such as scramble image, 8-second inspection (voice) alert, metronome, batch-scramble generator, etc.</li>
-<li>Backup function, For avoiding data missing, you can backup your solves to local files, csTimer's server or Google storage.</li>
+<li>Eine große Anzahl an scramble Algorithmen, einschließlich <strong>aller offiziellen WCA Events</strong>, verschiedener Rätsel, <strong>Übungs Scrambles</strong> für spezielle unterschritte (z.B. <strong>F2L, OLL, PLL, ZBLL</strong>, ausserdem kann es fälle filtern), usw</li>
+<li>Viele Statistikfunktionen, es unterstützt <strong>zeitschaltuhren</strong>; <strong>belibig viele Sitzungen</strong>, sitzungen teilen/zusammenfügen, usw.</li>
+<li>Verschiedene Lösungen, wie <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, um diese Unterschritte zu erlernen oder trainieren.</li>
+<li>Andere Hilfswerkzeuge wie Scramble-Bilder, 8-Sekunden Inspektions (Stimmen-) Alarm, Metronom-, Stapel-Scramble Generator, usw.</li>
+<li>Backup-funktion, um verlieren von Daten zu vermeiden, sie können Backups in ihren lokalen Dateien, auf den Servern von csTimer oder in den Google-Speichern speichern.</li>
 </ul>
-<p>csTimer supports most of modern desktop browsers, on mobile phone and tablet PC, you can add csTimer to your home screen, and it will work as a native APP.</p>
-<p>csTimer takes advantage of browser cache, which consumes traffic only when you open it for the first time, after that, csTimer is able to work without network connection (except for functions like backup)</p>
+<p>csTimer unterstützt die meisten modernen Desktop-Browser, auf dem Handy und Tablet-PC, Sie können csTimer zu Ihrem Startbildschirm hinzufügen, wodurch es als normale App funktioniert.</p>
+<p>csTimer nutzt den Browser-Cache, der den Traffic nur dann verbraucht, wenn Sie ihn zum ersten Mal öffnen. Danach kann csTimer ohne Netzwerkverbindung funktionieren (außer Funktionen wie Sicherungen)</p>
 <h3>Copyright</h3>
-<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues">here</a></p>
-<p>Written by: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
-<p>UI designed by: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
-<h2>Basic functions</h2>
+<p>csTimer ist eine Open-Source-Software, die dem GPLv3 folgt. Wenn du Vorschläge oder Kommentare zu csTimer hast, sende es bitte <a class="click" href="https://github.com/cs0x7f/cstimer/issues">hier</a></p>
+<p>Geschrieben von: <a href="mailto:cs0x7f@gmail.com"> Shuang Chen (cs0x7f@gmail.com) </a></p>
+<p>UI erstellt von: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
+<h2>Basicfunktionen</h2>
 <ul>
-<li><strong>How to start timing</strong> - Hold the space bar (or both of left and right Ctrl keys, or touch the screen on mobile devices) and wait for the timer to turn green, the timer will start timing once the space bar is released, press any key to stop timing and the solving time will be record.</li>
-<li><strong>UI description</strong> - There are 6 buttons near the logo of csTimer: option, export, scramble, list times, donate, tools, click on the <strong>scramble</strong>, <strong>list times</strong>, <strong>tool</strong> to open the corresponding function panel.</li>
-<li><strong>Scramble panel</strong> - In the Scramble panel, you can select scramble type, set scramble length and case filter (if available), review previous scramble, generate next scramble.</li>
-<li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
-<li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
+<li><strong>Starten des Timers</strong> Halte die Leertaste (oder die linke und die rechte Strg-Taste oder den Bildschirm auf Mobilgeräten) gedrückt und warten Sie bis der Timer grün wird. Der Timer beginnt sobald man die Tasten oder den Bildschirm loslässt. Zum stoppen des Timers und aufzeichnen der Zeit eine Belibige Taste drücken.</li>
+<li><strong>UI-Beschreibung</strong> - Es gibt 6 Tasten in der nähe des Logos von csTimer: Optionen, exportieren, Scramble, Zeitliste, Spenden, Werkzeuge. Klicken Sie auf <strong>Scramble</strong>, <strong>Zeitliste</strong> oder <strong>Werkzeuge</strong> um das entsprechende Funktionsfenster zu öffnen.</li>
+<li><strong>Scramble Panel</strong> - Im Scramble Panel kannst du den Scramble-Typ wählen, setze länge und Case Filter fest (falls verfügbar), zeige das vorherige Scramble oder generiere den nächsten Scramble.</li>
+<li><strong>Zeitliste</strong> - Im Zeitlistenfenster können Sie den Sitzungsmanager öffnen, indem sie auf "Sitzungen" klicken. Hier können Sie durch die drei Punkte Rechts Sitzungen wählen, hinzufügen oder löschen. Hier können sie auch die aktuellen single/averages, die besten single/averages und die volle Zeitliste einsehen.</li>
+<li><strong>Werkzeuge-Panel</strong> - Im Werkzeugfenster können sie spezielle Hilfsfunktionen wie Scramble-Bilder, Scramble Generatoren, Solver und viele andere Arten von Statistiken auswählen.</li>
 </ul>
-<h2>Keyboard shortcut</h2>
+<h2>Tastenkombinationen</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7.</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb.</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input.</td></tr>
-<tr><th>Alt + d</th><td>Remove all times in current session.</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest time.</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session.</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
+<tr><th>Key</th><td>Funktionen</td></tr>
+<tr><th>Alt + 1</th><td>Scramble des Square-1.</td></tr>
+<tr><th>Alt + 2 - 7</th><td>Scramble von 2x2x2 bis 7x7x7.</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble von pyraminx/megaminx/clock/skewb.</td></tr>
+<tr><th>Alt + i</th><td>Scramble vom Input.</td></tr>
+<tr><th>Alt + d</th><td>Entfernt alle Zeiten in der aktuellen Sitzung.</td></tr>
+<tr><th>Alt + z</th><td>Entfernt die letzte Zeit.</td></tr>
+<tr><th>Alt + up/down</th><td>Zur nächsten/letzten Sitzung.</td></tr>
+<tr><th>Alt + left/right</th><td>Zeigt das letzte/nächste Scramble an.</td></tr>
+<tr><th>Strg + 1/2/3</th><td>Die letzte Zeit wird OK/+2 sec/DNF</td></tr>
 </table>
 
 </table>
 
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
+<tr><th colspan=10>Virtuelle Cube Key Map</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
 <td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
 </tr><tr>
-<td>Q<br><span> z'</span></td><td>W<br><span>  B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span>  x</span></td> 
-<td>Y<br><span>  x</span></td><td>U<br><span> Rw</span></td><td>I<br><span>  R</span></td><td>O<br><span> B'</span></td><td>P<br><span>  z</span></td> 
+<td>Q<br><span> z'</span></td><td>W<br><span> B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span> x</span></td> 
+<td>Y<br><span> x</span></td><td>U<br><span> Rw</span></td><td>I<br><span> R</span></td><td>O<br><span> B'</span></td><td>P<br><span> z</span></td> 
 </tr><tr>
-<td>A<br><span> y'</span></td><td>S<br><span>  D</span></td><td>D<br><span>  L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
-<td>H<br><span>  F</span></td><td>J<br><span>  U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span>  y</span></td>
+<td>A<br><span> y'</span></td><td>S<br><span> D</span></td><td>D<br><span> L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
+<td>H<br><span> F</span></td><td>J<br><span> U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span> y</span></td>
 </tr><tr>
 <td>Z<br><span> Dw</span></td><td>X<br><span> M'</span></td><td>C<br><span>Uw'</span></td><td>V<br><span> Lw</span></td><td>B<br><span> x'</span></td>
 <td>N<br><span> x'</span></td><td>M<br><span>Rw'</span></td><td>,<br><span> Uw</span></td><td>.<br><span> M'</span></td><td>/<br><span>Dw'</span></td>
 </tr>
 </table>
 
-<h2>Option details</h2>
+<h2>Optionsdetails</h2>
 <ul>
-<li><strong data="opt_ahide">Alle Elemente während des Timens verstecken</strong>. Hide logo and all panels when timing.</li>
-<li><strong data="opt_useMilli">Millisekunden benutzen</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
-<li><strong data="opt_timeFormat">Zeitformat</strong>. Time format to display.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
+<li><strong data="opt_ahide">Alle Elemente während des Timens verstecken</strong>. Logo und alle Panele beim Timing ausblenden.</li>
+<li><strong data="opt_useMilli">Millisekunden benutzen</strong>. Zeigt die Millisekunden, unabhängig davon ob sie aktiviert ist, an. Die Timinggenauigkeit von csTimer beträgt 1 Millisekunde.</li>
+<li><strong data="opt_timeFormat">Zeitformat</strong>. Zeitformat zum Anzeigen.</li>
+<li><strong data="opt_atexpa">Autoexport (alle 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
 <li><strong data="opt_useLogo">Hinweis-Meldungen im Logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">Durchnitts-Label anzeigen</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
@@ -107,7 +107,7 @@
 <li><strong data="opt_statal">Statistische Indikatoren</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">Mehrfach-Löschung aktivieren</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">Genauigkeit des Histograms</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
+<li><strong data="opt_solSpl">Zeige die Lösungen schrittweise an</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Scramble-Bild Größe</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">Anzahl der Werkzeuge</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">Tastenkombinationen benutzen</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>

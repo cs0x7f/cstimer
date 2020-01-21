@@ -114,61 +114,61 @@
 <li><strong data="opt_vrcSpeed">VRC基準速度(轉/秒)</strong>. 使用虛擬方塊時的基礎轉動速度。如果有很多步驟要做的話，會自動跳過某些動畫。</li>
 <li><strong data="opt_vrcMP">分項計時</strong>. 在使用虛擬方塊或藍芽方塊時自動使用多階段計時。</li>
 <li><strong data="opt_giiVRC">顯示虛擬計客魔方</strong>. 連接藍芽方塊時在螢幕中顯示虛擬方塊。</li>
-<li><strong data="opt_giiSD">停滯時當作已打亂</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
-<li><strong data="opt_giiSK">按下空白鍵標記打亂完成</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
-<li><strong data="opt_giiSM">以特殊動作標記打亂</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
-<li><strong data="opt_giiBS">打亂完成時發出聲音</strong>. Beep when some of scramble-finish signal is triggered.</li>
-<li><strong data="opt_giiRST">連接時重置計客魔方</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">自動硬體錯誤偵測</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_giiSD">停滯時當作已打亂</strong>. 使用藍牙方塊時，csTimer不知道什麼現在的操作是打亂的一部分還是在復原。</li>
+<li><strong data="opt_giiSK">按下空白鍵標記打亂完成</strong>. 按下空白鍵時，藍牙方塊會被視為打亂完成，接下來進行任何轉動都會開始計時。</li>
+<li><strong data="opt_giiSM">以特殊動作標記打亂</strong>. 用一組特定的動作來標記藍牙方塊已打亂完成。</li>
+<li><strong data="opt_giiBS">打亂完成時發出聲音</strong>. 打亂完成動作觸發時發出嗶聲。</li>
+<li><strong data="opt_giiRST">連接時重置計客魔方</strong>. 連接到藍牙方塊時，csTimer會偵測方塊是否已復原。如果沒有的話，可能是真的沒有復原，也可能是硬體上出了問題。</li>
+<li><strong data="opt_giiAED">自動硬體錯誤偵測</strong>. 有些作工拙劣(X)的藍牙方塊會不小心漏掉幾步，csTimer會試著從軟體面偵測這樣的狀況。</li>
 </ul>
-<h2>Tools detail</h2>
+<h2>小工具說明</h2>
 <ul>
-<li><strong data="tool_scrgen">打亂製造器</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">確認時間</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
-<li><strong data="tool_hugestats">跨階段統計</strong>. You are able to do cross-session statistics with this tool.</li>
-<li><strong data="tool_stats">統計</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">分階段計時</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">時間趨勢</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
-<li><strong data="tool_image">畫出打亂圖形</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">速解小幫手 &gt; 解好橋式左橋</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">速解小幫手 &gt; 解好EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">速解小幫手 &gt; 解好十字</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">速解小幫手 &gt; 2x2x2 一面</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
-<li><strong data="tool_333cf">速解小幫手 &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
-<li><strong data="tool_333roux">速解小幫手 &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
-<li><strong data="tool_333petrus">速解小幫手 &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
-<li><strong data="tool_333zz">速解小幫手 &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
-<li><strong data="tool_sq1cs">速解小幫手 &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
-<li><strong data="tool_pyrv">速解小幫手 &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
-<li><strong data="tool_skbl1">速解小幫手 &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">計客魔方</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
-<li><strong data="tool_mtrnm">節拍器</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_onlinecomp">線上比賽</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_scrgen">打亂製造器</strong>. 用這個工具可以一次創造最多999組打亂。</li>
+<li><strong data="tool_cfm">確認時間</strong>. 用這個工具可以看見這轉的詳細資料，包括打亂、駐記、日期跟解法(如果有的話)，說穿了就是按下成績會跳出來的那個對話框。</li>
+<li><strong data="tool_hugestats">跨階段統計</strong>. 用這個工具可以看見跨階段的統計數據。</li>
+<li><strong data="tool_stats">統計</strong>. 類似左側時間列表的小面板。</li>
+<li><strong data="tool_distribution">分階段計時</strong>. 時間分佈跟穩定度分析，&lt;X Y/Z代表少於X秒的總共有Y轉，而且最近有Z轉小於X秒。</li>
+<li><strong data="tool_trend">時間趨勢</strong>. 顯示現階段的時間分佈曲線。</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. 計算每年/每週/每月/每年的復原次數。</li>
+<li><strong data="tool_image">畫出打亂圖形</strong>. 顯示本次打亂後的樣子，支援所有的WCA方塊。</li>
+<li><strong data="tool_roux1">速解小幫手 &gt; 解好橋式左橋</strong>. 解好橋式的第一步，也就是左下方的1x2x3。</li>
+<li><strong data="tool_eoline">速解小幫手 &gt; 解好EOLine</strong>. 解好EO line，也就是會轉正所有的邊，並且解好底面的直線。</li>
+<li><strong data="tool_cross">速解小幫手 &gt; 解好十字</strong>. 解好底面十字。</li>
+<li><strong data="tool_222face">速解小幫手 &gt; 2x2x2 一面</strong>. 解好2x2x2底面。</li>
+<li><strong data="tool_333cf">速解小幫手 &gt; Cross + F2L</strong>. 一次解好前兩層。因為要解的東西太多，它輸出的解法會超出人類所想。</li>
+<li><strong data="tool_333roux">速解小幫手 &gt; Roux S1 + S2</strong>. 橋事前兩步驟的小幫手。它會先解好左下角的1x2x3，再用R, M, r, U解出右邊的1x2x3。</li>
+<li><strong data="tool_333petrus">速解小幫手 &gt; 2x2x2 + 2x2x3</strong>. Petrus前兩步的小幫手。它會先解好左下方的2x2x2後，再擴展成2x2x3。</li>
+<li><strong data="tool_333zz">速解小幫手 &gt; EOLine + ZZF2L</strong>. EO line與ZZF2L的小幫手。解好EO line之後，它會以ZZ的方式先解好一側的1x2x3，再擴展成2x2x3(也就是前兩層)。</li>
+<li><strong data="tool_sq1cs">速解小幫手 &gt; SQ1 S1 + S2</strong>. Sq-1前兩步驟的小幫手。它會讓方塊回正後，再使U、D面的顏色一致。</li>
+<li><strong data="tool_pyrv">速解小幫手 &gt; Pyraminx V</strong>. 金字塔「V」的小幫手。它會解好成V字型的三個角與兩個邊。</li>
+<li><strong data="tool_skbl1">速解小幫手 &gt; Skewb Face</strong>. 解好斜轉方塊的一面一層。</li>
+<li><strong data="tool_giikerutil">計客魔方</strong>. 藍牙方塊專用的小工具。它會顯示目前方塊的狀態、電池電量、上一轉解法等。</li>
+<li><strong data="tool_if">InsertionFinder</strong>. FMC做Insertion用的輔助工具。</li>
+<li><strong data="tool_mtrnm">節拍器</strong>. 你可以自由設定節拍速度，也可以設成開始計時的時候啟動。</li>
+<li><strong data="tool_onlinecomp">線上比賽</strong>. 用WCA帳號登入後，可以在這裡與全世界的玩家一起參加線上小比賽。</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. SS計時器的附加工具。可以在這裡看見計時器的狀態、訊號強度跟雜訊大小。</li>
 </ul>
-<h2>Links</h2>
+<h2>連結</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer beta version</a></li>
-<li><a class="click" href="/src/">csTimer beta version with uncompressed files</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer source code</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/">粗餅</a></li>
+<li><a class="click" href="/new/">csTimer 測試板</a></li>
+<li><a class="click" href="/src/">沒有壓縮檔的csTimer</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer的原始碼</a></li>
+<li><a class="click" href="/old3/">csTimer 2015.12.12版</a></li>
+<li><a class="click" href="/old2/">csTimer 2012.3.15版</a></li>
+<li><a class="click" href="/old/">csTimer 2012.2.29版</a></li>
 </ul>
-<h2>Color schemes</h2>
+<h2>配色方案</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
-<p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
-<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>.</p>
+<p>csTimer感謝你的資助！ 你的捐款會用作開發經費跟維護成本。</p>
+<p>如果想要使用PayPal捐款的話，可以按下面的按鈕或是<a class="click" href="https://www.paypal.me/cs0x7f">這個連結</a>。</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">
 <input type="image" src="data:image/gif;base64,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" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
-<p>You can also fund us by Alipay, scan the next two-dimensional code or please pay to the account: cs0x7f@gmail.com</p>
+<p>你也可以在支付保上面捐款，只要掃一下底下的QR Code，或是轉帳給cs0x7f@gmail.com。</p>
 <p><img style="display:inline-block; width:10em; height:10em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAIAAAAABMCaAAABoklEQVR42u3aUY6DMAwFQO5/6e0JViq1XwjO5LOqIAxSHJ5z/RnlcSGACHEk4hUY/974i/9/83vlXl3PBREixPmIpYX25oNVrl95GV3PBREixLMQ05OuXD9RoG5fByJEiBCfnDREiBAhDkashAulTTJEiBAhbhJAJIKM41IciBAhLkOMNHQ2+P313T6IECEuQ9z60FBTcYjMDSJEiCMRKx//K4tMYvNcOkwAESLEoxBXNukTwW1XKAsRIsRzEZ9CqUAkClQpxYEIEeIYxApo1+b2qeK2xRcLRIgQH0dMLPaVSVeg080piBAhzkdMB59dQWn6BTxWnSFChLgtYrqAlCYdPmwVCWUhQoQ4HjFRZBIHCBIbeIgQIUJs/WhPLPDhxhlEiBDPQkyPdIFKo99OtiFChPhqxHRzZ+Xho3SwAhEixLMQ0wt/2wOEN+dtoSxEiBDHIO7QhFrZtLr94iFChAgx1AzqKmgrwwiIECFC7ERMh69dG2yIECFCXBFAVIpAegP/mhQHIkSIUcSVjar0hjkeJEOECHEkovFjIUUAEeKU8QE0apeVMce/LwAAAABJRU5ErkJggg=="></p>
-<p>Thank you again for your donation!</p>
+<p>再次感謝你的支持！</p>
 </div>
