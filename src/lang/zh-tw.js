@@ -94,7 +94,7 @@ var PROPERTY_TIMEU = '時間更新頻率';
 var PROPERTY_TIMEU_STR = '更新|每0.1秒|每秒|僅觀察|無';
 var PROPERTY_PRETIME = '按壓空白鍵時間(秒)';
 var PROPERTY_ENTERING = '輸入時間使用';
-var PROPERTY_ENTERING_STR = '空白鍵|鍵入|SS計時器|魔域計時器|虛擬方塊|計客魔方';
+var PROPERTY_ENTERING_STR = '空白鍵|鍵入|SS計時器|魔域計時器|虛擬方塊|蓝牙魔方|qCube';
 var PROPERTY_INTUNIT = '輸入整數時的單位';
 var PROPERTY_INTUNIT_STR = '秒|0.01秒|0.001秒';
 var PROPERTY_COLOR = '選擇色彩樣式';
@@ -148,7 +148,7 @@ var scrdata = [
 		['十二面體', "mgmp", -70],
 		['金字塔', "pyrso", -10],
 		['斜轉', "skbso", 0],
-		['sq-1', "sqrs", 0],
+		['SQ-1', "sqrs", 0],
 		['4x4x4盲解', "444bld", -40],
 		['5x5x5盲解', "555bld", -60],
 		['3x3x3多顆盲解', "r3ni", 5]
@@ -248,7 +248,7 @@ var scrdata = [
 		['隨機步驟', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
-	['sq-1', [
+	['SQ-1', [
 		["隨機狀態 (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['面轉演算法', "sq1h", 40],
@@ -322,13 +322,13 @@ var scrdata = [
 		['1x2x3 block', "sia123", 25],
 		['2x2x2 block', "sia222", 25]
 	]],
-	['sq-2', [
+	['SQ-2', [
 		[' ', "sq2", 20]
 	]],
 	['超級軟碟方塊', [
 		[' ', "sfl", 25]
 	]],
-	['超級sq-1', [
+	['超級SQ-1', [
 		['扭轉演算法', "ssq1t", 20]
 	]],
 	['飛碟方塊', [
@@ -352,7 +352,7 @@ var scrdata = [
 	]],
 	['綁帶方塊', [
 		['Bicube', "bic", 30],
-		['sq-1 /, (1,0)', "bsq", 25]
+		['SQ-1 /, (1,0)', "bsq", 25]
 	]],
 	['五魔方子群', [
 		['僅使用RU', "minx2g", 30],

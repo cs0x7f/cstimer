@@ -134,7 +134,7 @@
 <li><strong data="tool_roux1">Solvers &gt; Résoudre 1er bloc Roux</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
 <li><strong data="tool_eoline">Solvers &gt; Résoudre l'EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
 <li><strong data="tool_cross">Solvers &gt; Résoudre la croix</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
+<li><strong data="tool_222face">Solvers &gt; Face 2x2x2</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
 <li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
 <li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
 <li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>

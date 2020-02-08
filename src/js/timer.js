@@ -21,10 +21,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var type = getProp('input');
 		status = -1;
 
-		virtual333.setEnable(type == 'v');
+		virtual333.setEnable(type == 'v' || type == 'q');
 		virtual333.reset();
 		lcd.setEnable(type != 'i');
-		lcd.reset(type == 'v' || type == 'g' && getProp('giiVRC'));
+		lcd.reset(type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC'));
 		keyboardTimer.reset();
 		inputTimer.setEnable(type == 'i');
 		ui.setAutoShow(true);
@@ -646,9 +646,88 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		return ret;
 	}
 
-	var virtual333 = (function() {
+	var puzzleFactory = (function() {
+		var isLoading = false;
+
 		var twistyScene;
 		var twisty;
+		var qcubeObj;
+		var puzzle = {
+			keydown: function(args) {
+				return twistyScene.keydown(args);
+			},
+			resize: function() {
+				return twistyScene.resize();
+			},
+			addMoves: function(args) {
+				return twistyScene.addMoves(args);
+			},
+			applyMoves: function(args) {
+				return twistyScene.applyMoves(args);
+			},
+			isRotation: function(move) {
+				return twisty.isInspectionLegalMove(twisty, move);
+			},
+			move2str: function(move) {
+				return twisty.move2str(move);
+			},
+			toggleColorVisible: function(args) {
+				return twisty.toggleColorVisible(twisty, args);
+			},
+			isSolved: function(args) {
+				return twisty.isSolved(twisty, args);
+			},
+			moveCnt: function(clr) {
+				return twisty.moveCnt(clr);
+			},
+			parseScramble: function(scramble) {
+				return twisty.parseScramble(scramble);
+			}
+		};
+
+		function init(options, moveListener, parent, callback) {
+			if (window.twistyjs == undefined) {
+				if (!isLoading && document.createElement('canvas').getContext) {
+					isLoading = true;
+					$.getScript("js/twisty.js", init.bind(null, options, moveListener, parent, callback));
+				} else {
+					callback(undefined, true);
+				}
+				return;
+			}
+			if (getProp('input') != 'q') {
+				var isInit = twistyScene == undefined;
+				if (isInit) {
+					twistyScene = new twistyjs.TwistyScene();
+					twistyScene.addMoveListener(moveListener);
+					parent.empty().append(twistyScene.getDomElement());
+					qcubeObj = null;
+				}
+				twistyScene.initializeTwisty(options);
+				twisty = twistyScene.getTwisty();
+				callback(puzzle, isInit);
+			} else {
+				var isInit = qcubeObj == undefined;
+				if (isInit) {
+					qcubeObj = twistyjs.qcube;
+					qcubeObj.addMoveListener(moveListener);
+					parent.empty().append(qcubeObj.getDomElement());
+					qcubeObj.resize();
+					twistyScene = null;
+				}
+				qcubeObj.init(options);
+				callback(qcubeObj, isInit);
+			}
+		}
+
+		return {
+			init: init
+		}
+	})();
+
+	var virtual333 = (function() {
+		var puzzleObj;
+		var vrcType = '';
 		var insTime = 0;
 		var moveCnt = 0;
 		var totPhases = 1;
@@ -660,9 +739,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var now = $.now();
 			if (status == -3 || status == -2) {
-				if (twisty.isInspectionLegalMove(twisty, move) && !/^(333ni|444bld|555bld)$/.exec(curScrType)) {
+				if (puzzleObj.isRotation(move) && !/^(333ni|444bld|555bld)$/.exec(curScrType)) {
 					if (mstep == 0) {
-						rawMoves[0].push([twisty.move2str(move), 0]);
+						rawMoves[0].push([puzzleObj.move2str(move), 0]);
 					}
 					return;
 				} else {
@@ -687,14 +766,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 			}
 			if (status >= 1) {
-				if (/^(333ni|444bld|555bld)$/.exec(curScrType) && !twisty.isInspectionLegalMove(twisty, move)) {
-					twisty.toggleColorVisible(twisty, twisty.isSolved(twisty, getProp('vrcMP', 'n')) == 0);
+				if (/^(333ni|444bld|555bld)$/.exec(curScrType) && !puzzleObj.isRotation(move)) {
+					puzzleObj.toggleColorVisible(puzzleObj.isSolved(getProp('vrcMP', 'n')) == 0);
 				}
 				if (mstep == 0) {
-					rawMoves[status - 1].push([twisty.move2str(move), now - startTime]);
+					rawMoves[status - 1].push([puzzleObj.move2str(move), now - startTime]);
 				}
 				if (mstep == 2) {
-					var curProgress = twisty.isSolved(twisty, getProp('vrcMP', 'n'));
+					var curProgress = puzzleObj.isSolved(getProp('vrcMP', 'n'));
 					if (curProgress < status) {
 						for (var i = status; i > curProgress; i--) {
 							curTime[i] = now - startTime;
@@ -706,7 +785,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 				}
 				if (curProgress == 0 && mstep == 2) {
-					moveCnt += twisty.moveCnt();
+					moveCnt += puzzleObj.moveCnt();
 					if (curScrType.match(/^r\d+$/) && curScramble.length != 0) {
 						if (curScrType != "r3") {
 							curScrSize++;
@@ -730,55 +809,62 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function reset(temp) {
-			if (twistyScene == undefined || isReseted || !isEnable) {
+			if (isReseted && getProp('input') == vrcType || !isEnable) {
 				return;
 			}
 			isReseted = true;
+			vrcType = getProp('input');
 			var size = curScrSize;
 			if (!size) {
 				size = 3;
 			}
+			var options = {
+				type: "cube",
+				faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
+				dimension: size,
+				stickerWidth: 1.7,
+				scale: 0.9
+			};
 			if (curPuzzle == 'skb') {
-				twistyScene.initializeTwisty({
+				options = {
 					type: "skewb",
 					faceColors: col2std(kernel.getProp('colskb'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
-				});
+				};
 			} else if (curPuzzle == 'mgm') {
-				twistyScene.initializeTwisty({
+				options = {
 					type: "mgm",
 					faceColors: col2std(kernel.getProp('colmgm'), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]),
 					scale: 0.9
-				});
+				};
 			} else if (curPuzzle == 'pyr') {
-				twistyScene.initializeTwisty({
+				options = {
 					type: "pyr",
 					faceColors: col2std(kernel.getProp('colpyr'), [3, 1, 2, 0]),
 					scale: 0.9
-				});
+				};
 			} else if (curPuzzle == 'sq1') {
-				twistyScene.initializeTwisty({
+				options = {
 					type: "sq1",
 					faceColors: col2std(kernel.getProp('colsq1'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
-				});
-			} else {
-				twistyScene.initializeTwisty({
-					type: "cube",
-					faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
-					dimension: size,
-					stickerWidth: 1.7,
-					scale: 0.9
-				});
+				};
 			}
 
-			twisty = twistyScene.getTwisty();
-			if (!temp) {
-				lcd.setRunning(false, true);
-				lcd.setStaticAppend('');
-				setSize(getProp('timerSize'));
-			}
+			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
+				puzzleObj = ret;
+				if (isInit && !puzzleObj) {
+					div.css('height', '');
+					div.html('--:--');
+				}
+				if (!temp) {
+					lcd.setRunning(false, true);
+					lcd.setStaticAppend('');
+					setSize(getProp('timerSize'));
+				}
+			});
 		}
+
 
 		function scrambleIt() {
 			reset();
@@ -787,18 +873,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
 				lcd.setStaticAppend("<br>" + (curScramble.length + 1) + "/" + curScramble.len);
 			}
-			scramble = twisty.parseScramble(scramble);
+			scramble = puzzleObj.parseScramble(scramble);
 			isReseted = false;
 
-			twistyScene.applyMoves(scramble);
-			twisty.moveCnt(true);
+			puzzleObj.applyMoves(scramble);
+			puzzleObj.moveCnt(true);
 			rawMoves = [
 				[]
 			];
 		}
 
 		function onkeydown(keyCode) {
-			if (twistyScene == undefined) {
+			if (puzzleObj == undefined) {
 				return;
 			}
 			var now = $.now();
@@ -828,30 +914,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					var a = {
 						keyCode: keyCode
 					};
-					twistyScene.keydown(a);
+					puzzleObj.keydown(a);
 				}
 			}
 			if (keyCode == 27 || keyCode == 32) {
 				kernel.clrKey();
-			}
-		}
-
-		var isLoading = false;
-
-		function load() {
-			if (twistyScene != undefined) {} else if (window.twistyjs != undefined) {
-				twistyScene = new twistyjs.TwistyScene();
-				twistyScene.addMoveListener(moveListener);
-				div.empty().append(twistyScene.getDomElement());
-				reset();
-				twistyScene.resize();
-				isLoading = false;
-			} else if (!isLoading && document.createElement('canvas').getContext) {
-				$.getScript("js/twisty.js", load);
-				isLoading = true;
-			} else {
-				div.css('height', '');
-				div.html('--:--');
 			}
 		}
 
@@ -896,14 +963,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function setEnable(enable) {
 			isEnable = enable;
 			enable ? div.show() : div.hide();
-			if (enable) {
-				load();
-			}
 		}
 
 		function setSize(value) {
 			div.css('height', value * $('#logo').width() / 9 + 'px');
-			twistyScene && twistyScene.resize();
+			puzzleObj && puzzleObj.resize();
 		}
 
 		$(function() {
@@ -1247,6 +1311,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			case 'i':
 				break;
 			case 'v':
+			case 'q':
 				virtual333.onkeydown(keyCode, e);
 				break;
 			case 'g':
@@ -1319,7 +1384,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
-		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g'], PROPERTY_ENTERING_STR.split('|')], 1);
+		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q'], PROPERTY_ENTERING_STR.split('|')], 1);
 		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [20100, [1, 100, 1000, 10001, 10100, 11000, 20001, 20100, 21000], 'X|X.XX|X.XXX|X:XX|X:XX.XX|X:XX.XXX|X:XX:XX|X:XX:XX.XX|X:XX:XX.XXX'.split('|')], 1);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);

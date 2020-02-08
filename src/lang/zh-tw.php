@@ -114,7 +114,7 @@
 <li><strong data="opt_vrcSpeed">VRC基準速度(轉/秒)</strong>. 使用虛擬方塊時的基礎轉動速度。如果有很多步驟要做的話，會自動跳過某些動畫。</li>
 <li><strong data="opt_vrcMP">分項計時</strong>. 在使用虛擬方塊或藍芽方塊時自動使用多階段計時。</li>
 <li><strong data="opt_giiVRC">顯示虛擬計客魔方</strong>. 連接藍芽方塊時在螢幕中顯示虛擬方塊。</li>
-<li><strong data="opt_giiSD">停滯時當作已打亂</strong>. 使用藍牙方塊時，csTimer不知道什麼現在的操作是打亂的一部分還是在復原。</li>
+<li><strong data="opt_giiSD">停滯時當作已打亂</strong>. 使用藍牙方塊時，csTimer不知道現在的操作是打亂的一部分還是在復原。如果這個選項設為開啟，停頓過久會視為打亂結束。</li>
 <li><strong data="opt_giiSK">按下空白鍵標記打亂完成</strong>. 按下空白鍵時，藍牙方塊會被視為打亂完成，接下來進行任何轉動都會開始計時。</li>
 <li><strong data="opt_giiSM">以特殊動作標記打亂</strong>. 用一組特定的動作來標記藍牙方塊已打亂完成。</li>
 <li><strong data="opt_giiBS">打亂完成時發出聲音</strong>. 打亂完成動作觸發時發出嗶聲。</li>
@@ -135,7 +135,7 @@
 <li><strong data="tool_eoline">速解小幫手 &gt; 解好EOLine</strong>. 解好EO line，也就是會轉正所有的邊，並且解好底面的直線。</li>
 <li><strong data="tool_cross">速解小幫手 &gt; 解好十字</strong>. 解好底面十字。</li>
 <li><strong data="tool_222face">速解小幫手 &gt; 2x2x2 一面</strong>. 解好2x2x2底面。</li>
-<li><strong data="tool_333cf">速解小幫手 &gt; Cross + F2L</strong>. 一次解好前兩層。因為要解的東西太多，它輸出的解法會超出人類所想。</li>
+<li><strong data="tool_333cf">速解小幫手 &gt; Cross + F2L</strong>. 一次解好前兩層。因為要解的東西太多，它輸出的解法通常會超出人腦的計算量。</li>
 <li><strong data="tool_333roux">速解小幫手 &gt; Roux S1 + S2</strong>. 橋事前兩步驟的小幫手。它會先解好左下角的1x2x3，再用R, M, r, U解出右邊的1x2x3。</li>
 <li><strong data="tool_333petrus">速解小幫手 &gt; 2x2x2 + 2x2x3</strong>. Petrus前兩步的小幫手。它會先解好左下方的2x2x2後，再擴展成2x2x3。</li>
 <li><strong data="tool_333zz">速解小幫手 &gt; EOLine + ZZF2L</strong>. EO line與ZZF2L的小幫手。解好EO line之後，它會以ZZ的方式先解好一側的1x2x3，再擴展成2x2x3(也就是前兩層)。</li>

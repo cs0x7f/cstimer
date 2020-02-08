@@ -67,10 +67,10 @@
 <li><strong data="opt_zoom">Phóng to</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">Kiểu chữ timer</strong>. Font of the main timer.</li>
 <li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
-<li><strong data="opt_view">UI style is</strong>. Switch between desktop and mobile views.</li>
-<li><strong data="opt_wndScr">Scramble panel display style</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Statistics panel display style</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Tools panel display style</strong>. Make tool panel embedded into background.</li>
+<li><strong data="opt_view">Kiểu giao diện người dùng</strong>. Switch between desktop and mobile views.</li>
+<li><strong data="opt_wndScr">Cách hiển thị thanh công thức tráo</strong>. Make scramble panel embedded into background.</li>
+<li><strong data="opt_wndStat">Cách hiển thị thanh thống kê thời gian</strong>. Make list times panel embedded into background.</li>
+<li><strong data="opt_wndTool">Cách hiển thị bảng công cụ</strong>. Make tool panel embedded into background.</li>
 <li><strong data="opt_bgImgO">Background</strong>. Opacity of the background image.</li>
 <li><strong data="opt_bgImgS">background</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">kích cớ của timer</strong>. Set the size of main timer.</li>
@@ -91,8 +91,8 @@
 <li><strong data="opt_scrLim">Giới hạn chiều cao của vùng scramble</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
 <li><strong data="opt_scrAlign">Vị trí của scramble</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
-<li><strong data="opt_scrFast">Using fast scramble for 4x4x4 (non-official)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
-<li><strong data="opt_scrKeyM">Label key move(s) in scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
+<li><strong data="opt_scrFast">Dùng công thức tráo nhanh cho 4x4x4 (không chính thức)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
+<li><strong data="opt_scrKeyM">Đánh dấu (các) bước xoay quan trọng trong công thức tráo</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
 <li><strong data="opt_trim">Number of solves trimmed at each side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">cho xem bảng thành tích	</strong>. Show the statistics table before time list.</li>
@@ -111,9 +111,9 @@
 <li><strong data="opt_imgSize">kích cớ hình vẽ scramble</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">số công cụ</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">Sử dụng nút tắt</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
-<li><strong data="opt_vrcSpeed">VRC base speed (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
+<li><strong data="opt_vrcSpeed">Tốc độ của rubik ảo (tốc độ xoay)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">multi-phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiVRC">Show virtual bluetooth cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
+<li><strong data="opt_giiVRC">Hiển thị rubik bluetooth ảo</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Mark scrambled if stay</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Mark scrambled with spacebar</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
 <li><strong data="opt_giiSM">Mark scrambled by doing</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
@@ -142,9 +142,9 @@
 <li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
 <li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
 <li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">Bluetooth Cube</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
+<li><strong data="tool_giikerutil">Rubik có kết nối Bluetooth</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
 <li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
-<li><strong data="tool_mtrnm">metronome</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_mtrnm">Đếm nhịp</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
 <li><strong data="tool_onlinecomp">Online Competition</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
