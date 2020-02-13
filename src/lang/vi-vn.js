@@ -119,20 +119,20 @@ var SCRAMBLE_NEXT = 'sau';
 var SCRAMBLE_SCRAMBLE = ' tráo';
 var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
-var PROPERTY_VRCSPEED = 'Tốc độ của rubik ảo (tốc độ xoay)';
+var PROPERTY_VRCSPEED = 'Tốc độ ban đầu của rubik ảo (tốc độ xoay ban đầu)';
 var PROPERTY_VRCMP = 'multi-phase';
 var PROPERTY_VRCMPS = 'Không có|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Hiển thị rubik bluetooth ảo';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_GIISOK_DELAY = 'Xem như đã tráo rubik nếu đứng yên trong';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Không bao giờ|Đã tráo một cách chính xác';
+var PROPERTY_GIISOK_KEY = 'Xem như đã tráo bằng cách nhấn phím cách';
+var PROPERTY_GIISOK_MOVE = 'Xem như đã tráo bằng cách thực hiện';
+var PROPERTY_GIISOK_MOVES = 'U4, R4,...|(U U\')2, (U\' U)2,...|Không bao giờ';
+var PROPERTY_GIISBEEP = 'Phát tiếng bíp khi tráo xong';
+var PROPERTY_GIIRST = 'Khởi động lại rubik bluetooth khi kết nối';
+var PROPERTY_GIIRSTS = 'Luôn luôn|Nhắc tôi|Không bao giờ';
+var CONFIRM_GIIRST = 'Khởi động lại rubik bluetooth khi giải xong?';
+var PROPERTY_GIIAED = 'Tự động phát hiện lỗi phần cứng';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -254,10 +254,10 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===KHÁC===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
+	['Sắp xếp 15 số', [
 		['random state URLD', "15prp", 0],
 		['random state ^<>v', "15prap", 0],
 		['random state Blank', "15prmp", 0],
@@ -337,7 +337,7 @@ var scrdata = [
 	['Other', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
-	['===SPECIAL===', [
+	['===ĐẶC BIỆT===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [

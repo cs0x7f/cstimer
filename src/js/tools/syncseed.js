@@ -66,7 +66,7 @@ execMain(function() {
 			return;
 		}
 		fdiv.empty().append(TOOLS_SYNCSEED_SEED, helpSpan.unbind('click').click(clickHelp), ': ', seedSpan.unbind('click').click(clearSeedClick))
-			.append('<br><br>', seedInput.unbind('click').click(inputSeed), )
+			.append('<br><br>', seedInput.unbind('click').click(inputSeed))
 			.append('<br>', seedButton.unbind('click').click(timeSeedClick));
 	}
 

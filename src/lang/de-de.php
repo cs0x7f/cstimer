@@ -1,15 +1,15 @@
 <h1>csTimer Version <?php echo $version;?> - Proffesioneller Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
 <h2>Einführung</h2>
-<p>csTimer ist ein professionelles Timingprogramm für Rubik's cube speedsolver, es enthält:</p>
+<p>csTimer ist ein professionelles Timingprogramm für Rubik's cube Speedsolver, es enthält:</p>
 <ul>
-<li>Eine große Anzahl an scramble Algorithmen, einschließlich <strong>aller offiziellen WCA Events</strong>, verschiedener Rätsel, <strong>Übungs Scrambles</strong> für spezielle unterschritte (z.B. <strong>F2L, OLL, PLL, ZBLL</strong>, ausserdem kann es fälle filtern), usw</li>
-<li>Viele Statistikfunktionen, es unterstützt <strong>zeitschaltuhren</strong>; <strong>belibig viele Sitzungen</strong>, sitzungen teilen/zusammenfügen, usw.</li>
-<li>Verschiedene Lösungen, wie <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, um diese Unterschritte zu erlernen oder trainieren.</li>
+<li>Eine große Anzahl an scramble Algorithmen, einschließlich <strong>aller offiziellen WCA Events</strong>, verschiedener Rätsel, <strong>Übungs Scrambles</strong> für spezielle Unterschritte (z.B. <strong>F2L, OLL, PLL, ZBLL</strong>, außerdem kann es Fälle filtern), usw</li>
+<li>Viele Statistikfunktionen, es unterstützt <strong>Zeitschaltuhren</strong>; <strong>beliebig viele Sitzungen</strong>, Sitzungen teilen/zusammenfügen, usw.</li>
+<li>Verschiedene Lösungen, wie <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, um diese Unterschritte zu erlernen oder zu trainieren.</li>
 <li>Andere Hilfswerkzeuge wie Scramble-Bilder, 8-Sekunden Inspektions (Stimmen-) Alarm, Metronom-, Stapel-Scramble Generator, usw.</li>
-<li>Backup-funktion, um verlieren von Daten zu vermeiden, sie können Backups in ihren lokalen Dateien, auf den Servern von csTimer oder in den Google-Speichern speichern.</li>
+<li>Backup-Funktion, um das Verlieren von Daten zu vermeiden, können sie Backups in ihren lokalen Dateien, auf den Servern von csTimer oder in den Google-Speichern speichern.</li>
 </ul>
-<p>csTimer unterstützt die meisten modernen Desktop-Browser, auf dem Handy und Tablet-PC, Sie können csTimer zu Ihrem Startbildschirm hinzufügen, wodurch es als normale App funktioniert.</p>
+<p>csTimer unterstützt die meisten modernen Desktop-Browser, auf dem Handy und Tablet-PC. Sie können csTimer zu Ihrem Startbildschirm hinzufügen, wodurch es als normale App fungiert.</p>
 <p>csTimer nutzt den Browser-Cache, der den Traffic nur dann verbraucht, wenn Sie ihn zum ersten Mal öffnen. Danach kann csTimer ohne Netzwerkverbindung funktionieren (außer Funktionen wie Sicherungen)</p>
 <h3>Copyright</h3>
 <p>csTimer ist eine Open-Source-Software, die dem GPLv3 folgt. Wenn du Vorschläge oder Kommentare zu csTimer hast, sende es bitte <a class="click" href="https://github.com/cs0x7f/cstimer/issues">hier</a></p>
@@ -17,9 +17,9 @@
 <p>UI erstellt von: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>Basicfunktionen</h2>
 <ul>
-<li><strong>Starten des Timers</strong> Halte die Leertaste (oder die linke und die rechte Strg-Taste oder den Bildschirm auf Mobilgeräten) gedrückt und warten Sie bis der Timer grün wird. Der Timer beginnt sobald man die Tasten oder den Bildschirm loslässt. Zum stoppen des Timers und aufzeichnen der Zeit eine Belibige Taste drücken.</li>
-<li><strong>UI-Beschreibung</strong> - Es gibt 6 Tasten in der nähe des Logos von csTimer: Optionen, exportieren, Scramble, Zeitliste, Spenden, Werkzeuge. Klicken Sie auf <strong>Scramble</strong>, <strong>Zeitliste</strong> oder <strong>Werkzeuge</strong> um das entsprechende Funktionsfenster zu öffnen.</li>
-<li><strong>Scramble Panel</strong> - Im Scramble Panel kannst du den Scramble-Typ wählen, setze länge und Case Filter fest (falls verfügbar), zeige das vorherige Scramble oder generiere den nächsten Scramble.</li>
+<li><strong>Starten des Timers</strong> Halte die Leertaste (oder die linke und die rechte Strg-Taste oder den Bildschirm auf Mobilgeräten) gedrückt und warten Sie bis der Timer grün wird. Der Timer beginnt, sobald man die Tasten oder den Bildschirm loslässt. Zum Stoppen des Timers und Aufzeichnen der Zeit eine beliebige Taste drücken.</li>
+<li><strong>UI-Beschreibung</strong> - Es gibt 6 Tasten in der Nähe des Logos von csTimer: Optionen, exportieren, Scramble, Zeitliste, Spenden, Werkzeuge. Klicken Sie auf <strong>Scramble</strong>, <strong>Zeitliste</strong> oder <strong>Werkzeuge</strong> um das entsprechende Funktionsfenster zu öffnen.</li>
+<li><strong>Scramble Panel</strong> - Im Scramble Panel kannst du den Scramble-Typ wählen, setze Länge und Case Filter fest (falls verfügbar), zeige den vorherigen Scramble oder generiere den nächsten Scramble.</li>
 <li><strong>Zeitliste</strong> - Im Zeitlistenfenster können Sie den Sitzungsmanager öffnen, indem sie auf "Sitzungen" klicken. Hier können Sie durch die drei Punkte Rechts Sitzungen wählen, hinzufügen oder löschen. Hier können sie auch die aktuellen single/averages, die besten single/averages und die volle Zeitliste einsehen.</li>
 <li><strong>Werkzeuge-Panel</strong> - Im Werkzeugfenster können sie spezielle Hilfsfunktionen wie Scramble-Bilder, Scramble Generatoren, Solver und viele andere Arten von Statistiken auswählen.</li>
 </ul>
@@ -60,22 +60,22 @@
 <li><strong data="opt_ahide">Alle Elemente während des Timens verstecken</strong>. Logo und alle Panele beim Timing ausblenden.</li>
 <li><strong data="opt_useMilli">Millisekunden benutzen</strong>. Zeigt die Millisekunden, unabhängig davon ob sie aktiviert ist, an. Die Timinggenauigkeit von csTimer beträgt 1 Millisekunde.</li>
 <li><strong data="opt_timeFormat">Zeitformat</strong>. Zeitformat zum Anzeigen.</li>
-<li><strong data="opt_atexpa">Autoexport (alle 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
-<li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Hinweis-Meldungen im Logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
-<li><strong data="opt_showAvg">Durchnitts-Label anzeigen</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
-<li><strong data="opt_zoom">Vergrößerung</strong>. You can adjust sizes of all elements by this option.</li>
-<li><strong data="opt_font">Timer-Schriftart wählen</strong>. Font of the main timer.</li>
-<li><strong data="opt_uidesign">Design der Benutzeroberfläch</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
-<li><strong data="opt_view">Stil der Benutzeroberfläche</strong>. Switch between desktop and mobile views.</li>
-<li><strong data="opt_wndScr">Scramble-Panel Anzeige-Stil</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Statistik-Panel Anzeige-Stil</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Werkzeug-Panel Anzeige-Stil</strong>. Make tool panel embedded into background.</li>
-<li><strong data="opt_bgImgO">Deckkraft des Hintergrundbilds</strong>. Opacity of the background image.</li>
-<li><strong data="opt_bgImgS">Hintergrundbild</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
-<li><strong data="opt_timerSize">Timer-Größe</strong>. Set the size of main timer.</li>
-<li><strong data="opt_smallADP">kleine Schrift nach dem Komma benutzen</strong>. Use a smaller font size after the digital point in main timer.</li>
-<li><strong data="opt_useMouse">Maus-Timer verwenden</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
+<li><strong data="opt_atexpa">Autoexport (alle 100 solves)</strong>. Falls angekreuzt wird der csTimer automatisch nach 100 Solves die Solves zum eigens ausgewählten Ort (Lokale Datei, csTimer Server, Google Speicher) exportieren.</li>
+<li><strong data="opt_expp">Import non-latest data</strong>. Sollten Sie mehrere Sicherungen hochgeladen haben, können Sie eines der 10 neuesten Sicherungen importieren. Sollten Sie aus Versehen eine leere Sicherung hochgeladen haben, hilft Ihnen diese Option beim Abrufen der Lösungen.</li>
+<li><strong data="opt_useLogo">Hinweis-Meldungen im Logo</strong>. csTimers Logo wird Ihnen als eine Informationsanzeige dienen, welche Ihnen eine Vielzahl von Informationen ausgibt, die Sie interessieren, zB. wie bricht man seinen persönlichen Rekord.</li>
+<li><strong data="opt_showAvg">Durchnitts-Label anzeigen</strong>. Es werden Ihnen zwei Informationen unter dem Haupt-Timer ausgegeben, die aktuellen Durchschnittswerte, ao5 und ao12 im Normalfall.</li>
+<li><strong data="opt_zoom">Vergrößerung</strong>. Sie können mit dieser Option die Größen aller Elemente anpassen.</li>
+<li><strong data="opt_font">Timer-Schriftart wählen</strong>. Schriftart des Haupt-Timers.</li>
+<li><strong data="opt_uidesign">Design der Benutzeroberfläch</strong>. Sie können das UI-Design auf material-ähnlich wechseln, oder die Schatten verstecken.</li>
+<li><strong data="opt_view">Stil der Benutzeroberfläche</strong>. Wechseln Sie zwischen der Desktop- und der mobilen Ansicht.</li>
+<li><strong data="opt_wndScr">Scramble-Panel Anzeige-Stil</strong>. Scramble-Panel in den Hintergrund einbetten.</li>
+<li><strong data="opt_wndStat">Statistik-Panel Anzeige-Stil</strong>. Betten sie die Listenzeiten in den Hintergrund ein.</li>
+<li><strong data="opt_wndTool">Werkzeug-Panel Anzeige-Stil</strong>. Werkzeug-Panel in den Hintergrund einbetten.</li>
+<li><strong data="opt_bgImgO">Deckkraft des Hintergrundbilds</strong>. Deckkraft des Hintergrundbilds.</li>
+<li><strong data="opt_bgImgS">Hintergrundbild</strong>. Sie können Ihr eigenes Bild als Hintergrundbild auswählen. Aufgrund der Sicherheitsbeschränkung des Browsers sind jedoch nur http-Urls verfügbar.</li>
+<li><strong data="opt_timerSize">Timer-Größe</strong>. Legen Sie die Größe des Haupt-Timers fest.</li>
+<li><strong data="opt_smallADP">kleine Schrift nach dem Komma benutzen</strong>. Verwenden sie eine kleinere Schriftgröße nach dem Dezimalpunkt im Haupt-Timer.</li>
+<li><strong data="opt_useMouse">Maus-Timer verwenden</strong>. Starten Sie den Timer mit der Maus oder der Tastatur.</li>
 <li><strong data="opt_useIns">WCA-Inspektion benutzen</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
 <li><strong data="opt_voiceIns">Sprachansage für WCA-Inspektion</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
 <li><strong data="opt_voiceVol">Sprachlautstärke</strong>. Voice level of the alert above.</li>
