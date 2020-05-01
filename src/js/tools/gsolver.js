@@ -865,8 +865,8 @@ var gsolver = (function() {
 			var compress = settings.indexOf('p') != -1;
 			var pos = [size - 1, size - 1];
 			for (var i = 0; i < sol.length; i++) {
-				if (i < sol.length - 1 && sol[i][0] == sol[i + 1][0]
-						|| i >= 2 && sol[i - 2] == sol[i]) {
+				if (i < sol.length - 1 && sol[i][0] == sol[i + 1][0] ||
+					i >= 2 && sol[i - 2] == sol[i]) {
 					sol.splice(i, 1);
 					i = -1;
 				}
@@ -930,6 +930,185 @@ var gsolver = (function() {
 			(['8prp', '8prap', '8prmp'], getScramble.bind(null, 3));
 	})();
 
+	var general333Solver = execMain(function() {
+		var selectPre = $('<select style="font-size:0.75em;">');
+		var solveButton = $('<input type="button" value="Solve!" style="font-size:0.75em;">');
+		var presets = {
+			'3x3x3': mathlib.SOLVED_FACELET,
+			'Empty': '----U--------R--------F--------D--------L--------B----',
+			'2x2x2': '----UU-UURR-RR-----FF-FF------------------------------',
+			'Cross': '----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-',
+			'XCross': '----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-',
+			'EOLine': '-X-XUX-X-----R-------XFX-F--D-XDX-D-----L-------XBX-B-',
+			'Roux1': '---------------------F--F--D--D--D-----LLLLLL-----B--B'
+		};
+		var canvas, ctx;
+		var solvedState = mathlib.SOLVED_FACELET;
+		var colors = {
+			'U': '#fff',
+			'R': '#f00',
+			'F': '#0d0',
+			'D': '#ff0',
+			'L': '#fa0',
+			'B': '#00f',
+			'-': '#777',
+			'X': '#0ff',
+			'Y': '#f0f',
+			'Z': '#000'
+		};
+		var selColor = '-';
+		var width = 30;
+		var offxs = [1, 2, 1, 1, 0, 3, 7.25];
+		var offys = [0, 1, 1, 2, 1, 1, 0.50];
+		var selXYs = [[-0.7, -0.7, 0.7, 0.7], [-0.7, 0.7, 0.7, -0.7]];
+		var offw = 3.3;
+		var stateRE = /^[URFDLBXYZ-]{54}$/;
+
+		function procClick(e) {
+			var rect = canvas[0].getBoundingClientRect();
+			var cordX = e.offsetX / width * canvas[0].width / rect.width;
+			var cordY = e.offsetY / width * canvas[0].height / rect.height;
+
+			for (var face = 0; face < 6; face++) {
+				if (cordX >= offxs[face] * offw &&
+					cordX <= offxs[face] * offw + 3 &&
+					cordY >= offys[face] * offw &&
+					cordY <= offys[face] * offw + 3) {
+					var i = ~~(cordX - offxs[face] * offw);
+					var j = ~~(cordY - offys[face] * offw);
+					solvedState = solvedState.split('');
+					solvedState[face * 9 + 3 * j + i] = selColor;
+					solvedState = solvedState.join('');
+					drawFacelet(ctx, face, i, j, solvedState);
+				}
+			}
+			if (cordX >= offxs[6] &&
+				cordX <= offxs[6] + 5 &&
+				cordY >= offys[6] &&
+				cordY <= offys[6] + 2) {
+				var i = ~~(cordX - offxs[6]);
+				var j = ~~(cordY - offys[6]);
+				selColor = 'URFDLB-XYZ'.charAt(i * 2 + j);
+				$.ctxDrawPolygon(ctx, colors[selColor], selXYs, [width, 1.5, 1.5]);
+			}
+		}
+
+		function drawFacelet(ctx, face, i, j, state) {
+			$.ctxDrawPolygon(ctx, colors[state[face * 9 + j * 3 + i]], [
+				[i, i, i + 1, i + 1],
+				[j, j + 1, j + 1, j]
+			], [width, offxs[face] * offw, offys[face] * offw]);
+		}
+
+		function drawCube(ctx, state) {
+			var imgSize = kernel.getProp('imgSize') / 60;
+			canvas.width(39 * imgSize + 'em');
+			canvas.height(29 * imgSize + 'em');
+
+			canvas.attr('width', 39 * 3 / 9 * width + 1);
+			canvas.attr('height', 29 * 3 / 9 * width + 1);
+
+			for (var face = 0; face < 6; face++) {
+				for (var i = 0; i < 3; i++) {
+					for (var j = 0; j < 3; j++) {
+						drawFacelet(ctx, face, i, j, state);
+					}
+				}
+			}
+			for (var i = 0; i < 5; i++) {
+				for (var j = 0; j < 2; j++) {
+					$.ctxDrawPolygon(ctx, colors['URFDLB-XYZ'.charAt(i * 2 + j)], [
+						[i, i, i + 1, i + 1],
+						[j, j + 1, j + 1, j]
+					], [width, 7.25, 0.5]);
+				}
+			}
+			$.ctxDrawPolygon(ctx, colors[selColor], selXYs, [width, 1.5, 1.5]);
+		}
+
+		function selectChange(e) {
+			var state = selectPre.val();
+			selectPre.val('');
+			kernel.blur();
+			if (state == 'input') {
+				var state = prompt('U1U2...U9R1..R9F1..D1..L1..B1..B9', solvedState);
+				if (state == null) {
+					return;
+				}
+				if (!stateRE.exec(state)) {
+					logohint.push('Invalid Input');
+					return;
+				}
+				setState(state);
+			} else if (state != '') {
+				setState(state);
+			}
+		}
+
+		function setState(state) {
+			solvedState = state;
+			drawCube(ctx, solvedState);
+		}
+
+		var curSolver = ['', null];
+
+		function doSolve() {
+			kernel.blur();
+			if (curSolver[0] != solvedState) {
+				curSolver[0] = solvedState;
+				curSolver[1] = new mathlib.gSolver([solvedState], rubiksCube.move, appendSuffix({
+					"U": 0x00,
+					"R": 0x11,
+					"F": 0x22,
+					"D": 0x30,
+					"L": 0x41,
+					"B": 0x52
+				}));
+			}
+			var startTime = +new Date;
+			var startState = stateInit(rubiksCube.move, solvedState);
+			var ret = null;
+			for (var depth = 0; depth < 100; depth++) {
+				ret = curSolver[1].search(startState, depth, depth);
+				if (ret || +new Date - startTime > 1000) {
+					break;
+				}
+			}
+			if (ret) {
+				prompt('Find solution (' + ret.length + 'f): ', ret.join(' '));
+			} else {
+				alert('Cannot find solution in time limit.');
+			}
+		}
+
+		function execFunc(scramble, span) {
+			curScramble = kernel.parseScramble(scramble, "URFDLB");
+			for (var i = 0; i < curScramble.length; i++) {
+				curScramble[i] = "URFDLB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
+			}
+			sol = [];
+			span.empty().append(selectPre.unbind('change').change(selectChange), ' ')
+				.append(solveButton.unbind('click').click(doSolve), '<br>')
+				.append(canvas.unbind('mousedown').bind('mousedown', procClick));
+			setState(presets['Cross']);
+		}
+
+		$(function() {
+			canvas = $('<canvas>');
+			if (!canvas[0].getContext) {
+				return;
+			}
+			ctx = canvas[0].getContext('2d');
+			selectPre.append($('<option>').val('').html('Edit subset'));
+			for (var subset in presets) {
+				selectPre.append($('<option>').val(presets[subset]).html(subset));
+			}
+			selectPre.append($('<option>').val('input').html('...'));
+		});
+
+		return execFunc;
+	});
+
 	execMain(function() {
 		function execFunc(type, fdiv) {
 			if (!fdiv) {
@@ -941,6 +1120,8 @@ var gsolver = (function() {
 			curScrambleStr = scramble[1];
 			if (type == '222face' && tools.isPuzzle('222')) {
 				pocketCube(scramble[1], span);
+			} else if (type == '333udf' && tools.isPuzzle('333') && /^[URFDLB 2']+$/.exec(scramble[1])) {
+				general333Solver(scramble[1], span);
 			} else if (type.startsWith('333') && tools.isPuzzle('333') && /^[URFDLB 2']+$/.exec(scramble[1])) {
 				rubiksCube.exec(type.slice(3), scramble[1], span);
 			} else if (type == 'sq1cs' && tools.isPuzzle('sq1')) {
@@ -966,6 +1147,7 @@ var gsolver = (function() {
 			tools.regTool('sq1cs', TOOLS_SOLVERS + '>SQ1 S1 + S2', execFunc.bind(null, 'sq1cs'));
 			tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
 			tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));
+			tools.regTool('333udf', TOOLS_SOLVERS + '>3x3x3 General', execFunc.bind(null, '333udf'));
 		});
 	});
 

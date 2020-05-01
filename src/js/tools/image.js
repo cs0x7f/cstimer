@@ -6,46 +6,9 @@ var image = execMain(function() {
 	var hsq3 = Math.sqrt(3) / 2;
 	var PI = Math.PI;
 
-	function Rotate(arr, theta) {
-		return Transform(arr, [Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta), 0]);
-	}
-
-	function Transform(arr) {
-		var ret;
-		for (var i = 1; i < arguments.length; i++) {
-			var trans = arguments[i];
-			if (trans.length == 3) {
-				trans = [trans[0], 0, trans[1] * trans[0], 0, trans[0], trans[2] * trans[0]];
-			}
-			ret = [
-				[],
-				[]
-			];
-			for (var i = 0; i < arr[0].length; i++) {
-				ret[0][i] = arr[0][i] * trans[0] + arr[1][i] * trans[1] + trans[2];
-				ret[1][i] = arr[0][i] * trans[3] + arr[1][i] * trans[4] + trans[5];
-			}
-		}
-		return ret;
-	}
-
-	// trans: [size, offx, offy] == [size, 0, offx * size, 0, size, offy * size] or [a11 a12 a13 a21 a22 a23]
-	function drawPolygon(ctx, color, arr, trans) {
-		if (!ctx) {
-			return;
-		}
-		trans = trans || [1, 0, 0, 0, 1, 0];
-		arr = Transform(arr, trans);
-		ctx.beginPath();
-		ctx.fillStyle = color;
-		ctx.moveTo(arr[0][0], arr[1][0]);
-		for (var i = 1; i < arr[0].length; i++) {
-			ctx.lineTo(arr[0][i], arr[1][i]);
-		}
-		ctx.closePath();
-		ctx.fill();
-		ctx.stroke();
-	}
+	var Rotate = $.ctxRotate;
+	var Transform = $.ctxTransform;
+	var drawPolygon = $.ctxDrawPolygon;
 
 	var mgmImage = (function() {
 		var moveU = [4, 0, 1, 2, 3, 9, 5, 6, 7, 8, 10, 11, 12, 13, 58, 59, 16, 17, 18, 63, 20, 21, 22, 23, 24, 14, 15, 27, 28, 29, 19, 31, 32, 33, 34, 35, 25, 26, 38, 39, 40, 30, 42, 43, 44, 45, 46, 36, 37, 49, 50, 51, 41, 53, 54, 55, 56, 57, 47, 48, 60, 61, 62, 52, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131];
@@ -858,7 +821,6 @@ posit:
 	});
 
 	return {
-		draw: genImage,
-		drawPolygon: drawPolygon
+		draw: genImage
 	}
 });

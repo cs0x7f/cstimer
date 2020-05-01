@@ -657,7 +657,7 @@ var mathlib = (function() {
 			this.sols.push(this.sol.slice());
 			return this.sols.length >= this.nsol;
 		}
-		if (state in this.visited) {
+		if (this.nsol == 1 && state in this.visited) {
 			return false;
 		}
 		this.visited[state] = 0;

@@ -10,40 +10,7 @@
 window.twistyjs.qcube = (function() {
 
 	var canvas;
-
-	function Transform(arr) {
-		var ret;
-		for (var i = 1; i < arguments.length; i++) {
-			var trans = arguments[i];
-			if (trans.length == 3) {
-				trans = [trans[0], 0, trans[1] * trans[0], 0, trans[0], trans[2] * trans[0]];
-			}
-			ret = [[], []];
-			for (var i = 0; i < arr[0].length; i++) {
-				ret[0][i] = arr[0][i] * trans[0] + arr[1][i] * trans[1] + trans[2];
-				ret[1][i] = arr[0][i] * trans[3] + arr[1][i] * trans[4] + trans[5];
-			}
-		}
-		return ret;
-	}
-
-	// trans: [size, offx, offy] == [size, 0, offx * size, 0, size, offy * size] or [a11 a12 a13 a21 a22 a23]
-	function drawPolygon(ctx, color, arr, trans) {
-		if (!ctx) {
-			return;
-		}
-		trans = trans || [1, 0, 0, 0, 1, 0];
-		arr = Transform(arr, trans);
-		ctx.beginPath();
-		ctx.fillStyle = color;
-		ctx.moveTo(arr[0][0], arr[1][0]);
-		for (var i = 1; i < arr[0].length; i++) {
-			ctx.lineTo(arr[0][i], arr[1][i]);
-		}
-		ctx.closePath();
-		ctx.fill();
-		ctx.stroke();
-	}
+	var drawPolygon = $.ctxDrawPolygon;
 
 	var posit = [];
 	var colors = ['#ff0', '#fa0', '#00f', '#fff', '#f00', '#0d0'];

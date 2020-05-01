@@ -20,7 +20,7 @@ var giikerutil = execMain(function(CubieCube) {
 				offy = 10 / 3 * faceOffsetY[f];
 			for (var x = 0; x < 3; x++) {
 				for (var y = 0; y < 3; y++) {
-					image.drawPolygon(ctx, colors["DLBURF".indexOf(facelet[(f * 3 + y) * 3 + x])], [
+					$.ctxDrawPolygon(ctx, colors["DLBURF".indexOf(facelet[(f * 3 + y) * 3 + x])], [
 						[x, x, x + 1, x + 1],
 						[y, y + 1, y + 1, y]
 					], [width, offx, offy]);
