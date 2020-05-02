@@ -565,9 +565,14 @@ var mathlib = (function() {
 		this.solvedStates = solvedStates;
 		this.doMove = doMove;
 		this.moves = moves;
+		this.movesList = [];
+		for (var move in moves) {
+			this.movesList.push([move, moves[move]]);
+		}
 		this.prunTable = {};
 		this.prunTableSize = 0;
 		this.prunDepth = -1;
+		this.cost = 0;
 	}
 
 	_ = gSolver.prototype;
@@ -577,12 +582,15 @@ var mathlib = (function() {
 		for (var depth = this.prunDepth + 1; depth <= targetDepth; depth++) {
 			var t = +new Date;
 			var prevSize = this.prunTableSize;
-			if (depth < 8) {
+			if (depth < 1) {
 				for (var i = 0; i < this.solvedStates.length; i++) {
 					this.updatePrunDFS(this.solvedStates[i], depth, 0, null);
 				}
 			} else {
 				this.updatePrunBFS(depth - 1);
+			}
+			if (this.cost == 0) {
+				return;
 			}
 			this.prunDepth = depth;
 			DEBUG && console.log(depth, this.prunTableSize - prevSize, +new Date - t);
@@ -601,6 +609,13 @@ var mathlib = (function() {
 				}
 				this.prunTable[newState] = [fromDepth + 1, move];
 				this.prunTableSize++;
+			}
+			this.prunTable[state][0] = -fromDepth;
+			if (this.cost >= 0) {
+				if (this.cost == 0) {
+					return;
+				}
+				this.cost--;
 			}
 		}
 	};
@@ -628,58 +643,93 @@ var mathlib = (function() {
 		}
 	};
 
-	_.search = function(state, minl, MAXL, nsol) {
-		MAXL = (MAXL + 1) || 99;
+	_.search = function(state, minl, MAXL) {
 		this.sol = [];
-		this.sols = [];
-		this.nsol = nsol || 1;
-		this.minl = minl || 0;
-		for (var maxl = minl; maxl < MAXL; maxl++) {
-			this.updatePrun(Math.ceil(maxl / 2));
-			this.visited = {};
-			if (this.idaSearch(state, maxl, null)) {
+		this.subOpt = false;
+		this.state = state;
+		this.visited = {};
+		this.maxl = minl = minl || 0;
+		return this.searchNext(MAXL);
+	};
+
+	_.searchNext = function(MAXL, cost) {
+		MAXL = (MAXL + 1) || 99;
+		this.prevSolStr = this.solArr ? this.solArr.join(',') : null;
+		this.solArr = null;
+		this.cost = cost || -1;
+		for (; this.maxl < MAXL; this.maxl++) {
+			this.updatePrun(Math.ceil(this.maxl / 2));
+			if (this.cost == 0) {
+				return null;
+			}
+			if (this.idaSearch(this.state, this.maxl, null, 0)) {
 				break;
 			}
+			this.visited = {};
 		}
-		return this.nsol == 1 ? this.sols.slice()[0] : this.sols.slice();
-	};
+		return this.solArr;
+	}
 
 	_.getPruning = function(state) {
 		var prun = this.prunTable[state];
-		return prun === undefined ? this.prunDepth + 1 : prun[0];
+		return prun === undefined ? this.prunDepth + 1 : Math.abs(prun[0]);
 	};
 
-	_.idaSearch = function(state, maxl, lm) {
+	_.idaSearch = function(state, maxl, lm, depth) {
 		if (this.getPruning(state) > maxl) {
 			return false;
 		}
 		if (maxl == 0) {
-			this.sols.push(this.sol.slice());
-			return this.sols.length >= this.nsol;
+			var solArr = this.getSolArr();
+			this.subOpt = true;
+			if (solArr.join(',') == this.prevSolStr) {
+				return false;
+			}
+			this.solArr = solArr;
+			return true;
 		}
-		if (this.nsol == 1 && state in this.visited) {
-			return false;
+		if (!this.subOpt) {
+			if (state in this.visited) {
+				return false;
+			}
+			this.visited[state] = 0;
 		}
-		this.visited[state] = 0;
-		var lastAxisFace = lm == null ? -1 : this.moves[lm];
-		for (var move in this.moves) {
-			var axisface = this.moves[move] ^ lastAxisFace;
+		if (this.cost >= 0) {
+			if (this.cost == 0) {
+				return true;
+			}
+			this.cost--;
+		}
+		var lastMove = lm == null ? '' : this.movesList[lm][0];
+		var lastAxisFace = lm == null ? -1 : this.movesList[lm][1];
+		for (var moveIdx = this.sol[depth] || 0; moveIdx < this.movesList.length; moveIdx++) {
+			var moveArgs = this.movesList[moveIdx];
+			var axisface = moveArgs[1] ^ lastAxisFace;
+			var move = moveArgs[0];
 			if (axisface == 0 ||
-				(axisface & 0xf) == 0 && move < lm) {
+				(axisface & 0xf) == 0 && move <= lastMove) {
 				continue;
 			}
 			var newState = this.doMove(state, move);
 			if (!newState || newState == state) {
 				continue;
 			}
-			this.sol.push(move);
-			if (this.idaSearch(newState, maxl - 1, move)) {
+			this.sol[depth] = moveIdx;
+			if (this.idaSearch(newState, maxl - 1, moveIdx, depth + 1)) {
 				return true;
 			}
 			this.sol.pop();
 		}
 		return false;
 	};
+
+	_.getSolArr = function() {
+		var solArr = [];
+		for (var i = 0; i < this.sol.length; i++) {
+			solArr.push(this.movesList[this.sol[i]][0]);
+		}
+		return solArr;
+	}
 
 	var randGen = (function() {
 		var rndFunc;

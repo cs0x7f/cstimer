@@ -931,8 +931,11 @@ var gsolver = (function() {
 	})();
 
 	var general333Solver = execMain(function() {
+		var isSolving = false;
 		var selectPre = $('<select style="font-size:0.75em;">');
-		var solveButton = $('<input type="button" value="Solve!" style="font-size:0.75em;">');
+		var solveButton = $('<input type="button" value="Start Solve!" style="font-size:0.75em;">');
+		var resultText = $('<textarea wrap=off rows="2" cols="24" style="font-size:0.75em;">');
+		var resultArr = [];
 		var presets = {
 			'3x3x3': mathlib.SOLVED_FACELET,
 			'Empty': '----U--------R--------F--------D--------L--------B----',
@@ -1051,9 +1054,34 @@ var gsolver = (function() {
 		}
 
 		var curSolver = ['', null];
+		var startTime = 0;
 
-		function doSolve() {
+		function searchThread() {
+			if (!isSolving) {
+				return;
+			}
+			var ret = curSolver[1].searchNext(1000, 1000);
+			var curStatus = '';
+			curStatus = resultArr.length + ' sol(s), @' + ~~((+new Date - startTime) / 1000) + 's|' + curSolver[1].maxl + 'f';
+			if (ret) {
+				resultArr.push(ret.join(' ') + ' (' + ret.length + 'f)');
+			}
+			resultText.html(resultArr.join('\n') + '\n' + curStatus);
+			resultText[0].scrollTop = resultText[0].scrollHeight;
+			setTimeout(searchThread, 16);
+		}
+
+		function toggleSolve() {
+			isSolving = !isSolving;
+			if (isSolving) {
+				solveButton.val('Stop Solve!');
+			} else {
+				solveButton.val('Start Solve!');
+			}
 			kernel.blur();
+			if (!isSolving) {
+				return;
+			}
 			if (curSolver[0] != solvedState) {
 				curSolver[0] = solvedState;
 				curSolver[1] = new mathlib.gSolver([solvedState], rubiksCube.move, appendSuffix({
@@ -1065,20 +1093,11 @@ var gsolver = (function() {
 					"B": 0x52
 				}));
 			}
-			var startTime = +new Date;
 			var startState = stateInit(rubiksCube.move, solvedState);
-			var ret = null;
-			for (var depth = 0; depth < 100; depth++) {
-				ret = curSolver[1].search(startState, depth, depth);
-				if (ret || +new Date - startTime > 1000) {
-					break;
-				}
-			}
-			if (ret) {
-				prompt('Find solution (' + ret.length + 'f): ', ret.join(' '));
-			} else {
-				alert('Cannot find solution in time limit.');
-			}
+			var ret = curSolver[1].search(startState, 0, 0);
+			startTime = +new Date;
+			resultArr = [];
+			searchThread();
 		}
 
 		function execFunc(scramble, span) {
@@ -1088,9 +1107,12 @@ var gsolver = (function() {
 			}
 			sol = [];
 			span.empty().append(selectPre.unbind('change').change(selectChange), ' ')
-				.append(solveButton.unbind('click').click(doSolve), '<br>')
+				.append(solveButton.unbind('click').click(toggleSolve), '<br>')
+				.append(resultText.empty(), '<br>')
 				.append(canvas.unbind('mousedown').bind('mousedown', procClick));
-			setState(presets['Cross']);
+			if (isSolving) {
+				toggleSolve();
+			}
 		}
 
 		$(function() {
@@ -1104,6 +1126,7 @@ var gsolver = (function() {
 				selectPre.append($('<option>').val(presets[subset]).html(subset));
 			}
 			selectPre.append($('<option>').val('input').html('...'));
+			setState(presets['Cross']);
 		});
 
 		return execFunc;
