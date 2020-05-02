@@ -940,10 +940,13 @@ var gsolver = (function() {
 			'3x3x3': mathlib.SOLVED_FACELET,
 			'Empty': '----U--------R--------F--------D--------L--------B----',
 			'2x2x2': '----UU-UURR-RR-----FF-FF------------------------------',
+			'2x2x3': '---UUUUUURR-RR----FFFFFF-------------LL-LL------------',
 			'Cross': '----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-',
 			'XCross': '----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-',
 			'EOLine': '-X-XUX-X-----R-------XFX-F--D-XDX-D-----L-------XBX-B-',
-			'Roux1': '---------------------F--F--D--D--D-----LLLLLL-----B--B'
+			'Roux1': '---------------------F--F--D--D--D-----LLLLLL-----B--B',
+			'Domino': 'UUUUUUUUU---RRR------FFF---UUUUUUUUU---RRR------FFF---',
+			'EO&CO': 'XXXXUXXXX----R-------XFX---XXXXDXXXX----L-------XBX---'
 		};
 		var canvas, ctx;
 		var solvedState = mathlib.SOLVED_FACELET;
