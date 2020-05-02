@@ -934,7 +934,7 @@ var gsolver = (function() {
 		var isSolving = false;
 		var selectPre = $('<select style="font-size:0.75em;">');
 		var solveButton = $('<input type="button" value="Start Solve!" style="font-size:0.75em;">');
-		var resultText = $('<textarea wrap=off rows="2" cols="24" style="font-size:0.75em;">');
+		var resultText = $('<textarea wrap=off rows="2" cols="30" style="font-size:0.75em;">');
 		var resultArr = [];
 		var presets = {
 			'3x3x3': mathlib.SOLVED_FACELET,
@@ -946,7 +946,8 @@ var gsolver = (function() {
 			'EOLine': '-X-XUX-X-----R-------XFX-F--D-XDX-D-----L-------XBX-B-',
 			'Roux1': '---------------------F--F--D--D--D-----LLLLLL-----B--B',
 			'Domino': 'UUUUUUUUU---RRR------FFF---UUUUUUUUU---RRR------FFF---',
-			'EO&CO': 'XXXXUXXXX----R-------XFX---XXXXDXXXX----L-------XBX---'
+			'EO&CO': 'XYXYUYXYX----R-------YFY---XYXYDYXYX----L-------YBY---',
+			'Corner': 'U-U---U-UR-R---R-RF-F---F-FD-D---D-DL-L---L-LB-B---B-B'
 		};
 		var canvas, ctx;
 		var solvedState = mathlib.SOLVED_FACELET;
@@ -1007,7 +1008,7 @@ var gsolver = (function() {
 		}
 
 		function drawCube(ctx, state) {
-			var imgSize = kernel.getProp('imgSize') / 60;
+			var imgSize = kernel.getProp('imgSize') / 48;
 			canvas.width(39 * imgSize + 'em');
 			canvas.height(29 * imgSize + 'em');
 
