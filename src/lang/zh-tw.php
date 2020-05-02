@@ -67,7 +67,7 @@
 <li><strong data="opt_zoom">縮放</strong>. 在這個選項中可以調整所有物件的大小。</li>
 <li><strong data="opt_font">計時器字體</strong>. 計時器的字型。</li>
 <li><strong data="opt_uidesign">UI設計</strong>. 在這個選項中可以調整UI的設計，像去除陰影或材質設計。</li>
-<li><strong data="opt_view">UI 介面</strong>. 切換成桌面板或行動版。</li>
+<li><strong data="opt_view">UI 介面樣式</strong>. 切換成桌面板或行動版。</li>
 <li><strong data="opt_wndScr">打亂面板顯示樣式</strong>. 讓打亂面板嵌入到背景中。</li>
 <li><strong data="opt_wndStat">統計面板顯示樣式</strong>. 讓成績列表嵌入到背景中。</li>
 <li><strong data="opt_wndTool">工具面板顯示樣式</strong>. 讓工具面板嵌入到背景中。</li>

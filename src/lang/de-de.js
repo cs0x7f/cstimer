@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Funktion';
 var TOOLS_CROSS = 'Kreuz lösen';
 var TOOLS_EOLINE = 'EOLine Lösen';
 var TOOLS_ROUX1 = 'Roux ersten Block lösen';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = '2x2x2 Würfel';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Scramble zeichnen';
 var TOOLS_STATS = 'Statistiken';
@@ -65,14 +65,14 @@ var TOOLS_DISTRIBUTION = 'Zeitverteilung';
 var TOOLS_TREND = 'Zeit-Trend';
 var TOOLS_METRONOME = 'Metronom';
 var TOOLS_CFMTIME = 'Zeit bestätigen';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
+var TOOLS_SOLVERS = 'Löser';
+var TOOLS_SYNCSEED = 'Gewöhnlicher Scramble';
 var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_SYNCSEED_INPUT = 'Eingabe Seed';
+var TOOLS_SYNCSEED_30S = 'Benutzte 30s Seed';
+var TOOLS_SYNCSEED_HELP = 'Wenn es aktiviert ist, hängt der Scramble nur von den Seed- und Scramble-Einstellungen ab. Wenn zwei Spieler einen Seed teilen, werden sie die selben Scrambles erhalten.';
+var TOOLS_SYNCSEED_DISABLE = 'Aktuellen Seed deaktivieren?';
+var TOOLS_SYNCSEED_INPUTA = 'Gebe einen Wert (a-zA-Z0-9) als Seed ein';
 var OLCOMP_UPDATELIST = 'Wettbewerbsliste aktualisieren';
 var OLCOMP_VIEWRESULT = 'Ergebisse betrachten';
 var OLCOMP_VIEWMYRESULT = 'Verlauf';
@@ -193,7 +193,7 @@ var scrdata = [
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Keine Bar', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -399,9 +399,9 @@ var STATS_CFM_DELSS = 'Sitzung [%s] löschen?';
 var STATS_CFM_DELMUL = 'Anzahl der zu löschenden Einträge ab aktuellem Index?';
 var STATS_CFM_DELETE = 'diese Zeit löschen?';
 var STATS_COMMENT = 'Kommentar';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Rezension';
 var STATS_DATE = 'Datum';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_SSSTAT = '1-Zeit Statistik';
 var STATS_CURROUND = 'Statistiken der aktuellen Runde';
 var STATS_CURSESSION = 'Statistiken der aktuellen Sitzung';
 var STATS_CURSPLIT = 'Statistiken der Phase %d der aktuellen Sitzung';
@@ -412,7 +412,7 @@ var STATS_SSMGR_DETAIL = 'Sitzungs-Details';
 var STATS_SSMGR_OPS = 'Umbenennen|Erstellen|Aufteilen|Vereinigen|Löschen|Sortieren';
 var STATS_SSMGR_ORDER = 'Nach Scramble sortieren';
 var STATS_SSMGR_ODCFM = 'Alle Sitzungen nach Scramble sortieren?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_SORTCFM = 'Zeiten werden aufgenommen, akzeptieren?';
 var STATS_ALERTMG = 'Alle Zeiten der Sitzung [%f] an das Ende von Sitzung [%t] anfügen?';
 var STATS_PROMPTSPL = 'Nummer des neuesten Zeit-Splits der Sitzung [%s]?';
 var STATS_ALERTSPL = 'Soll geteilt werden, oder mindestens eine Zeit übrig lassen';
@@ -432,7 +432,7 @@ var STATS_XSESSION_DATE = 'jedes Datum|letzten 24 Stunden|letzten 7 Tage|letzten
 var STATS_XSESSION_NAME = 'jeder Name';
 var STATS_XSESSION_SCR = 'jeder Scramble';
 var STATS_XSESSION_CALC = 'Berechnen';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_RSFORSS = 'Zeige Statistik, when die Zeitnummer angeklickt wird';
 var PROPERTY_PRINTSCR = 'Scramble(s) in den Statistiken anzeigen';
 var PROPERTY_PRINTDATE = 'Datum des Solves in den Statistiken anzeigen';
 var PROPERTY_SUMMARY = 'Zusammenfassung vor der Zeiten-Liste anzeigen';
@@ -449,10 +449,10 @@ var PROPERTY_TRIM = 'Anzahl der Versuche, die auf beiden Seiten getrimmt wurden'
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Benutze die Stackmat Statusinformationen';
 var PROPERTY_HIDEFULLSOL = 'Zeige die Lösungen schrittweise an';
-var PROPERTY_IMPPREV = 'Import non-latest data';
+var PROPERTY_IMPPREV = 'Veraltete Daten importieren?';
 var PROPERTY_AUTOEXP = 'Autoexport (alle 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_AUTOEXP_OPT = 'Nie|In Datei|Mit csTiemr ID|Mit WCA Account';
+var PROPERTY_SCRASIZE = 'Automatische Scramble Größe';
 var MODULE_NAMES = {
 	"kernel": 'global',
 	"ui": 'Anzeige',
