@@ -570,6 +570,7 @@ var mathlib = (function() {
 			this.movesList.push([move, moves[move]]);
 		}
 		this.prunTable = {};
+		this.toUpdateArr = null;
 		this.prunTableSize = 0;
 		this.prunDepth = -1;
 		this.cost = 0;
@@ -584,7 +585,10 @@ var mathlib = (function() {
 			var prevSize = this.prunTableSize;
 			if (depth < 1) {
 				for (var i = 0; i < this.solvedStates.length; i++) {
-					this.updatePrunDFS(this.solvedStates[i], depth, 0, null);
+					if (!(this.solvedStates[i] in this.prunTable)) {
+						this.prunTable[this.solvedStates[i]] = depth;
+						this.prunTableSize++;
+					}
 				}
 			} else {
 				this.updatePrunBFS(depth - 1);
@@ -598,19 +602,25 @@ var mathlib = (function() {
 	};
 
 	_.updatePrunBFS = function(fromDepth) {
-		for (var state in this.prunTable) {
-			if (this.prunTable[state][0] != fromDepth) {
-				continue;
+		if (this.toUpdateArr == null) {
+			this.toUpdateArr = [];
+			for (var state in this.prunTable) {
+				if (this.prunTable[state] != fromDepth) {
+					continue;
+				}
+				this.toUpdateArr.push(state);
 			}
+		}
+		while (this.toUpdateArr.length != 0) {
+			var state = this.toUpdateArr.pop();
 			for (var move in this.moves) {
 				var newState = this.doMove(state, move);
 				if (!newState || newState in this.prunTable) {
 					continue;
 				}
-				this.prunTable[newState] = [fromDepth + 1, move];
+				this.prunTable[newState] = fromDepth + 1;
 				this.prunTableSize++;
 			}
-			this.prunTable[state][0] = -fromDepth;
 			if (this.cost >= 0) {
 				if (this.cost == 0) {
 					return;
@@ -618,29 +628,7 @@ var mathlib = (function() {
 				this.cost--;
 			}
 		}
-	};
-
-	_.updatePrunDFS = function(state, maxl, depth, lm) {
-		if (!(state in this.prunTable)) {
-			this.prunTable[state] = [depth, lm];
-			this.prunTableSize++;
-		}
-		if (maxl <= 0 || this.prunTable[state][1] != lm) {
-			return;
-		}
-		var lastAxisFace = lm == null ? -1 : this.moves[lm];
-		for (var move in this.moves) {
-			var axisface = this.moves[move] ^ lastAxisFace;
-			if (axisface == 0 ||
-				(axisface & 0xf) == 0 && move < lm) {
-				continue;
-			}
-			var newState = this.doMove(state, move);
-			if (!newState || newState == state) {
-				continue;
-			}
-			this.updatePrunDFS(newState, maxl - 1, depth + 1, move);
-		}
+		this.toUpdateArr = null;
 	};
 
 	_.search = function(state, minl, MAXL) {
@@ -665,14 +653,13 @@ var mathlib = (function() {
 			if (this.idaSearch(this.state, this.maxl, null, 0)) {
 				break;
 			}
-			this.visited = {};
 		}
 		return this.solArr;
 	}
 
 	_.getPruning = function(state) {
 		var prun = this.prunTable[state];
-		return prun === undefined ? this.prunDepth + 1 : Math.abs(prun[0]);
+		return prun === undefined ? this.prunDepth + 1 : prun;
 	};
 
 	_.idaSearch = function(state, maxl, lm, depth) {
@@ -689,10 +676,10 @@ var mathlib = (function() {
 			return true;
 		}
 		if (!this.subOpt) {
-			if (state in this.visited) {
+			if (state in this.visited && this.visited[state] < depth) {
 				return false;
 			}
-			this.visited[state] = 0;
+			this.visited[state] = depth;
 		}
 		if (this.cost >= 0) {
 			if (this.cost == 0) {
