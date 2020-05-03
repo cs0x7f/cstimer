@@ -362,8 +362,8 @@ var gsolver = (function() {
 			}
 		];
 
-		function toAlgLink(meta, sols) {
-			var solstr = 'z2 // orientation \n';
+		function toAlgLink(meta, sols, ori) {
+			var solstr = ori + ' // orientation \n';
 			for (var i = 0; i < sols.length; i++) {
 				if (sols[i] == undefined) {
 					break;
@@ -395,7 +395,7 @@ var gsolver = (function() {
 				sol = sol.concat(sols[i]);
 				DEBUG && console.log('[step solver]', meta[i]['head'] + ': ', sols[i], '->', ret[1], stateInit(cubeMove, mathlib.SOLVED_FACELET), +new Date - t);
 			}
-			span.append($('<a class="click" target="_blank">alg.cubing.net</a>').attr('href', toAlgLink(meta, sols) + '&setup=' + encodeURIComponent(curScrambleStr)));
+			span.append($('<a class="click" target="_blank">alg.cubing.net</a>').attr('href', toAlgLink(meta, sols, curOri) + '&setup=' + encodeURIComponent(curScrambleStr)));
 		}
 
 		var block222solv;
@@ -429,16 +429,68 @@ var gsolver = (function() {
 			}
 		}
 
+		function getMoveMap(ori) {
+			var rot = ori.split(' ');
+			var map = [0, 1, 2, 3, 4, 5];
+			var rotMap = [
+				[5, 1, 0, 2, 4, 3], //x
+				[0, 2, 4, 3, 5, 1], //y
+				[1, 3, 2, 4, 0, 5] //z
+			];
+			for (var i = 0; i < rot.length; i++) {
+				if (!rot[i][0]) {
+					continue;
+				}
+				var axis = "xyz".indexOf(rot[i][0]);
+				var pow = "? 2'".indexOf(rot[i][1] || ' ');
+				for (var p = 0; p < pow; p++) {
+					for (var j = 0; j < 6; j++) {
+						map[j] = rotMap[axis][map[j]];
+					}
+				}
+			}
+			for (var j = 0; j < 6; j++) {
+				map[j] = "URFDLB".charAt(map[j]);
+			}
+			return map.join('');
+		}
+
+		var oriSelect;
+		var curType;
+		var curSpan;
+		var curOri = 'z2';
+
+		function oriChange() {
+			curOri = oriSelect.val();
+			rubiksCube.exec(curType, curScrambleStr, curSpan.empty());
+		}
+
+		execMain(function() {
+			var cubeOris = ["z2", "", "z ", "z'", "x ", "x'"];
+			for (var i = 0; i < 6; i++) {
+				for (var j = 0; j < 3; j++) {
+					cubeOris.push(cubeOris[i] + " y" + " 2'".charAt(j));
+				}
+			}
+			oriSelect = $('<select>');
+			for (var i = 0; i < cubeOris.length; i++) {
+				oriSelect.append($('<option>').val(cubeOris[i]).html(cubeOris[i]));
+			}
+		});
+
 		function exec333StepSolver(type, scramble, span) {
 			if (type == '222') {
 				block222Solver(scramble, span);
 				return;
 			}
+			curSpan = span;
+			curType = type;
+			var moveMap = getMoveMap(curOri);
 			curScramble = kernel.parseScramble(scramble, "URFDLB");
 			for (var i = 0; i < curScramble.length; i++) {
-				curScramble[i] = "DLFURB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
+				curScramble[i] = moveMap.charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
-			span.append('Orientation: &nbsp;z2<br>');
+			span.append('Orientation:', oriSelect.unbind('change').change(oriChange), '<br>');
 			if (type == 'cf') {
 				solveStepByStep(cfmeta, span);
 			}
