@@ -344,6 +344,24 @@ var gsolver = (function() {
 			}
 		];
 
+		var eodrmeta = [
+			{
+				'move': moves,
+				'maxl': 7,
+				'head': "EO",
+				'step': {
+					"-H-HUH-H-----R-------HFH----H-HDH-H-----L-------HBH---": 0x0
+				}
+			}, {
+				'move': moves,
+				'maxl': 10,
+				'head': "DR",
+				'step': {
+					"UUUUUUUUU---RRR------FFF---UUUUUUUUU---RRR------FFF---": 0x1
+				}
+			}
+		];
+
 		function toAlgLink(meta, sols) {
 			var solstr = 'z2 // orientation \n';
 			for (var i = 0; i < sols.length; i++) {
@@ -432,6 +450,9 @@ var gsolver = (function() {
 			}
 			if (type == 'zz') {
 				solveStepByStep(zzmeta, span);
+			}
+			if (type == 'eodr') {
+				solveStepByStep(eodrmeta, span);
 			}
 		}
 
@@ -1171,6 +1192,7 @@ var gsolver = (function() {
 			tools.regTool('333petrus', TOOLS_SOLVERS + '>2x2x2 + 2x2x3', execFunc.bind(null, '333petrus'));
 			tools.regTool('333zz', TOOLS_SOLVERS + '>EOLine + ZZF2L', execFunc.bind(null, '333zz'));
 			tools.regTool('333222', TOOLS_SOLVERS + '>2x2x2', execFunc.bind(null, '333222'));
+			tools.regTool('333eodr', TOOLS_SOLVERS + '>EO + DR', execFunc.bind(null, '333eodr'));
 			tools.regTool('sq1cs', TOOLS_SOLVERS + '>SQ1 S1 + S2', execFunc.bind(null, 'sq1cs'));
 			tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
 			tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));

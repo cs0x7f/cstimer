@@ -557,18 +557,22 @@ var mathlib = (function() {
 		return false;
 	};
 
+	function identity(state) {
+		return state;
+	}
+
 	// state: string not null
 	// solvedStates: [solvedstate, solvedstate, ...], string not null
 	// moveFunc: function(state, move);
 	// moves: {move: face0 | axis0}, face0 | axis0 = 4 + 4 bits
-	function gSolver(solvedStates, doMove, moves) {
+	function gSolver(solvedStates, doMove, moves, prunHash) {
 		this.solvedStates = solvedStates;
 		this.doMove = doMove;
-		this.moves = moves;
 		this.movesList = [];
 		for (var move in moves) {
 			this.movesList.push([move, moves[move]]);
 		}
+		this.prunHash = prunHash || identity;
 		this.prunTable = {};
 		this.toUpdateArr = null;
 		this.prunTableSize = 0;
@@ -582,11 +586,12 @@ var mathlib = (function() {
 		targetDepth = targetDepth === undefined ? this.prunDepth + 1 : targetDepth;
 		for (var depth = this.prunDepth + 1; depth <= targetDepth; depth++) {
 			var t = +new Date;
-			var prevSize = this.prunTableSize;
 			if (depth < 1) {
+				this.prevSize = 0;
 				for (var i = 0; i < this.solvedStates.length; i++) {
-					if (!(this.solvedStates[i] in this.prunTable)) {
-						this.prunTable[this.solvedStates[i]] = depth;
+					var state = this.prunHash(this.solvedStates[i]);
+					if (!(state in this.prunTable)) {
+						this.prunTable[state] = depth;
 						this.prunTableSize++;
 					}
 				}
@@ -597,7 +602,8 @@ var mathlib = (function() {
 				return;
 			}
 			this.prunDepth = depth;
-			DEBUG && console.log(depth, this.prunTableSize - prevSize, +new Date - t);
+			DEBUG && console.log(depth, this.prunTableSize - this.prevSize, +new Date - t);
+			this.prevSize = this.prunTableSize;
 		}
 	};
 
@@ -613,8 +619,8 @@ var mathlib = (function() {
 		}
 		while (this.toUpdateArr.length != 0) {
 			var state = this.toUpdateArr.pop();
-			for (var move in this.moves) {
-				var newState = this.doMove(state, move);
+			for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
+				var newState = this.doMove(state, this.movesList[moveIdx][0]);
 				if (!newState || newState in this.prunTable) {
 					continue;
 				}
@@ -658,7 +664,7 @@ var mathlib = (function() {
 	}
 
 	_.getPruning = function(state) {
-		var prun = this.prunTable[state];
+		var prun = this.prunTable[this.prunHash(state)];
 		return prun === undefined ? this.prunDepth + 1 : prun;
 	};
 
@@ -667,6 +673,9 @@ var mathlib = (function() {
 			return false;
 		}
 		if (maxl == 0) {
+			if (this.solvedStates.indexOf(state) == -1) {
+				return false;
+			}
 			var solArr = this.getSolArr();
 			this.subOpt = true;
 			if (solArr.join(',') == this.prevSolStr) {
