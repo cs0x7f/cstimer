@@ -1,6 +1,6 @@
 "use strict";
 
-var SQLFile = execMain(function() {
+var SQLFile = execMain(() => {
 
 	function getInt(data, offset, length) {
 		var ret = 0;

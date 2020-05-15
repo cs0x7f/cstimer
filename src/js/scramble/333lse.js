@@ -1,4 +1,4 @@
-(function() {
+(() => {
 
 	var edgePerms = [
 		[0, 1, 2, 3],
@@ -10,7 +10,7 @@
 		[0, 1, 0, 1, 2]
 	];
 
-	function doPermMove(idx, m) {
+	let doPermMove = (idx, m) => {
 		var edge = idx >> 3;
 		var corn = idx;
 		var cent = idx << 1 | (mathlib.getNParity(edge, 6) ^ ((corn >> 1) & 1));
@@ -25,7 +25,7 @@
 		return (mathlib.getNPerm(g, 6) << 3) | (corn & 6) | ((cent >> 1) & 1);
 	}
 
-	function doOriMove(arr, m) {
+	var doOriMove = (arr, m) => {
 		mathlib.acycle(arr, edgePerms[m], 1, edgeOris[m]);
 	}
 
@@ -34,8 +34,8 @@
 		[0, [doOriMove, 'o', 6, -2], 32]
 	]);
 
-	function generateScramble() {
-		var b, c;
+	var generateScramble = () => {
+		let b, c;
 		do {
 			c = mathlib.rn(5760);
 			b = mathlib.rn(32);

@@ -1,9 +1,9 @@
-(function(circle, get8Perm) {
+((circle, get8Perm) => {
 	var cmv = [];
 	var cprun = [];
 
-	function initCornerMoveTable() {
-		var g = [],
+	let initCornerMoveTable = () => {
+		let g = [],
 			temp;
 		for (var i = 0; i < 40320; i++) {
 			cmv[i] = [];
@@ -21,11 +21,11 @@
 		}
 	}
 
-	function doEdgeMove(idx, m) {
+	let doEdgeMove = (idx, m) => {
 		if (m < 2) {
 			return idx;
 		}
-		var g = mathlib.set8Perm([], idx, 3);
+		let g = mathlib.set8Perm([], idx, 3);
 		if (m == 2) {
 			circle(g, 0, 1);
 		} else if (m == 3) {
@@ -36,7 +36,7 @@
 	//	function doMv(idx, m) {
 	//		return cmv[~~(idx / 6)][m] * 6 + doEdgeMove(idx % 6, m);
 	//	}
-	function init() {
+	let init = () =>{
 		init = $.noop;
 		initCornerMoveTable();
 		mathlib.createPrun(cprun, 0, 40320, 12, cmv, 4, 3);

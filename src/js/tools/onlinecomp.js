@@ -1,6 +1,6 @@
 "use strict";
 
-var onlinecomp = execMain(function() {
+var onlinecomp = execMain(() => {
 	var accountDiv = $('<div>');
 	var wcaSpan = $('<span class="click">');
 	var uidSpan = $('<span class="click">');

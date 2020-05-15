@@ -1,6 +1,6 @@
 "use strict";
 
-var logohint = execMain(function() {
+var logohint = execMain(() => {
 
 	var msgList = [];
 	var curMsg;

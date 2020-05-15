@@ -1,6 +1,6 @@
 "use strict";
 
-var stats = execMain(function(kpretty, round, kpround) {
+var stats = execMain((kpretty, round, kpround) => {
 	//[[penalty, phaseN end time, phaseN-1 end time, ..., phase1 end time], scramble, comment, timestamp of start, extension]
 	var times = [];
 	var div = $('<div id="stats" />');

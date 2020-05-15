@@ -1,6 +1,6 @@
 "use strict";
 
-var help = execMain(function() {
+var help = execMain(() => {
 
 	var docs = {};
 
@@ -12,9 +12,7 @@ var help = execMain(function() {
 	table.append($('<tr />').append(left, right.append(rightDiv)));
 
 	function leftClick() {
-		if ($(this).hasClass('enable')) {
-			return;
-		}
+		if ($(this).hasClass('enable')) return;
 		updateTable($(this).html());
 	}
 
@@ -65,7 +63,7 @@ var help = execMain(function() {
 		}
 	}
 
-	$(function() {
+	$(() => {
 		generateDocs();
 		updateTable();
 		$('#about').html(table);

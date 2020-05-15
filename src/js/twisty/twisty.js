@@ -65,17 +65,12 @@ window.twistyjs = (function() {
 		twistyContainer.css('height', '100%');
 		twistyContainer = twistyContainer[0];
 
-		this.getDomElement = function() {
-			return twistyContainer;
-		};
-		this.getCanvas = function() {
-			return twistyCanvas;
-		};
-		this.getTwisty = function() {
-			return twisty;
-		};
+		this.getDomElement = () => {return twistyContainer};
+		
+		this.getCanvas = () => { return twistyCanvas; }
+		this.getTwisty = () => { return twisty; }
 
-		this.initializeTwisty = function(twistyType) {
+		this.initializeTwisty = twistyType => {
 			moveQueue = [];
 			currentMove = [];
 			moveProgress = [];
@@ -124,7 +119,7 @@ window.twistyjs = (function() {
 			that.resize();
 		}
 
-		this.resize = function() {
+		this.resize = () => {
 			// This function should be called after setting twistyContainer
 			// to the desired size.
 			var min = Math.min($(twistyContainer).width(), $(twistyContainer).height());
@@ -139,7 +134,7 @@ window.twistyjs = (function() {
 			render();
 		};
 
-		this.keydown = function(e) {
+		this.keydown = e => {
 			var keyCode = e.keyCode;
 			var ret = twisty.keydownCallback(twisty, e);
 
@@ -161,12 +156,12 @@ window.twistyjs = (function() {
 		var mouseX = 0;
 		var mouseXLast = 0;
 
-		this.cam = function(deltaTheta) {
+		this.cam = deltaTheta => {
 			theta += deltaTheta;
 			moveCamera(theta);
 		}
 
-		function onDocumentMouseDown(event) {
+		let onDocumentMouseDown = (event) => {
 			e.preventDefault && e.preventDefault();
 			twistyContainer.addEventListener('mousemove', onDocumentMouseMove, false);
 			twistyContainer.addEventListener('mouseup', onDocumentMouseUp, false);
@@ -174,32 +169,32 @@ window.twistyjs = (function() {
 			mouseXLast = event.clientX;
 		}
 
-		function onDocumentMouseMove(event) {
+		let onDocumentMouseMove = (event) => {
 			mouseX = event.clientX;
 			that.cam((mouseXLast - mouseX) / 256);
 			mouseXLast = mouseX;
 		}
 
-		function onDocumentMouseUp(event) {
+		let onDocumentMouseUp = (event) => {
 			twistyContainer.removeEventListener('mousemove', onDocumentMouseMove, false);
 			twistyContainer.removeEventListener('mouseup', onDocumentMouseUp, false);
 			twistyContainer.removeEventListener('mouseout', onDocumentMouseOut, false);
 		}
 
-		function onDocumentMouseOut(event) {
+		let onDocumentMouseOut = (event) => {
 			twistyContainer.removeEventListener('mousemove', onDocumentMouseMove, false);
 			twistyContainer.removeEventListener('mouseup', onDocumentMouseUp, false);
 			twistyContainer.removeEventListener('mouseout', onDocumentMouseOut, false);
 		}
 
-		function onDocumentTouchStart(event) {
+		 let onDocumentTouchStart = (event) => {
 			if (event.touches.length == 1) {
 				event.preventDefault && event.preventDefault();
 				mouseXLast = event.touches[0].pageX;
 			}
 		}
 
-		function onDocumentTouchMove(event) {
+		let onDocumentTouchMove = (event) => {
 			if (event.touches.length == 1) {
 				event.preventDefault && event.preventDefault();
 				mouseX = event.touches[0].pageX;
@@ -208,63 +203,61 @@ window.twistyjs = (function() {
 			}
 		}
 
-		function render() {
+		var render = () => {
 			renderer.render(scene, camera);
 		}
 
-		function moveCameraPure(theta) {
+		var moveCameraPure = (theta) => {
 			cameraTheta = theta;
 			camera.position = new THREE.Vector3(2 * Math.sin(theta), 2, 2 * Math.cos(theta));
 		}
 
-		function moveCameraDelta(deltaTheta) {
+		var moveCameraDelta = (deltaTheta) => {
 			cameraTheta += deltaTheta;
 			moveCameraPure(cameraTheta);
 			render();
 		}
 
-		function moveCamera(theta) {
+		var moveCamera = (theta) => {
 			moveCameraPure(theta);
 			render();
 		}
 
 		//callback(move, step), step: 0 move added, 1 move animation started, 2 move animation finished
 		var moveListeners = [];
-		this.addMoveListener = function(listener) {
-			moveListeners.push(listener);
-		};
+		this.addMoveListener = (listener) => moveListeners.push(listener);
 		this.removeMoveListener = function(listener) {
-			var index = moveListeners.indexOf(listener);
+			let index = moveListeners.indexOf(listener);
 			//		assert(index >= 0);
 			delete moveListeners[index];
 		};
 
-		function fireMoveAdded(move) {
+		var fireMoveAdded = (move) => {
 			for (var i = 0; i < moveListeners.length; i++) {
 				moveListeners[i](move, 0);
 			}
 		}
 
-		function fireMoveStarted(move) {
+		let fireMoveStarted = (move) => {
 			for (var i = 0; i < moveListeners.length; i++) {
 				moveListeners[i](move, 1);
 			}
 		}
 
-		function fireMoveEnded(move) {
+		let fireMoveEnded = (move) => {
 			for (var i = 0; i < moveListeners.length; i++) {
 				moveListeners[i](move, 2);
 			}
 		}
 
-		function startMove() {
+		let startMove = () => {
 			currentMove.push(moveQueue.shift());
 			moveProgress.push(0);
 			currentMoveStartTime.push($.now());
 			fireMoveStarted(currentMove[currentMove.length - 1]);
 		}
 
-		this.addMoves = function(moves) {
+		this.addMoves = (moves) => {
 			$.map(moves, fireMoveAdded);
 			if (!kernel.getProp('vrcSpeed', 100)) {
 				this.applyMoves(moves);
@@ -276,15 +269,15 @@ window.twistyjs = (function() {
 			}
 		};
 
-		this.isMoveFinished = function() {
+		this.isMoveFinished = () => {
 			return moveQueue.length == 0 && currentMove.length == 0 && cachedFireMoves.length == 0;
 		}
 
-		this.isAnimationFinished = function() {
+		this.isAnimationFinished = () => {
 			return currentMove.length == 0;
 		}
 
-		this.applyMoves = function(moves) {
+		this.applyMoves = (moves) => {
 			moveQueue = moveQueue.concat(moves);
 			while (moveQueue.length > 0) {
 				startMove();
