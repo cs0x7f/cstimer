@@ -1,14 +1,12 @@
 "use strict";
 
-var csTimerWorker = execBoth(function() {
-	if (!window.Worker) {
-		return {};
-	}
+var csTimerWorker = execBoth(() => {
+	if (!window.Worker) return {};
 	var worker = new Worker('js/cstimer.js');
 	var callbacks = {};
 	var msgid = 0;
 
-	worker.onmessage = function(e) {
+	worker.onmessage = (e) => {
 		//data: [msgid, type, ret]
 		var data = e.data;
 		var callback = callbacks[data[0]];
@@ -17,7 +15,7 @@ var csTimerWorker = execBoth(function() {
 	};
 
 	//[realType, len, state]
-	function getScramble(args, callback) {
+	let getScramble = (args, callback) => {
 		++msgid;
 		callbacks[msgid] = callback;
 		worker.postMessage([msgid, 'scramble', args]);
@@ -28,10 +26,10 @@ var csTimerWorker = execBoth(function() {
 	worker.postMessage([0, 'set', ['SCRAMBLE_NOOBSS', SCRAMBLE_NOOBSS]]);
 
 	return {
-		getScramble: getScramble
+		getScramble
 	};
 }, function() {
-	self.onmessage = function(e) {
+	self.onmessage = (e) => {
 		var data = e.data;
 		var msgid = data[0];
 		var type = data[1];
