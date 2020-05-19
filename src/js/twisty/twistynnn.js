@@ -100,7 +100,7 @@
 		}
 
 		// Cube Materials
-		var materials = [];
+		var materials = {};
 		var borderMaterial = new THREE.MeshBasicMaterial({
 			color: 0x000000,
 			wireframe: true,
@@ -108,12 +108,11 @@
 			opacity: cubeOptions.opacity
 		});
 		for (var i = 0; i < numSides; i++) {
-			materials.push(new THREE.MeshBasicMaterial({
+			materials[i] = new THREE.MeshBasicMaterial({
 				color: cubeOptions.faceColors[i],
 				opacity: cubeOptions.opacity
-			}));
+			});
 		}
-
 		// Cube Helper Linear Algebra
 
 		//Cube Object Generation
@@ -125,11 +124,20 @@
 
 					var sticker = new THREE.Object3D();
 
-					var meshes = [materials[i]];
+					var key = i;
+					if (cubeOptions.dimension > 7) {
+						var su1 = Math.min(su, cubeOptions.dimension - 1 - su);
+						var sv1 = Math.min(sv, cubeOptions.dimension - 1 - sv);
+						key += ',' + (su1 + sv1) + ',' + (su1 * sv1);
+					}
+					materials[key] = materials[key] || new THREE.MeshBasicMaterial({
+						color: cubeOptions.faceColors[i],
+						opacity: cubeOptions.opacity
+					});
+					var meshes = [materials[key]];
 					if (cubeOptions.stickerBorder) {
 						meshes.push(borderMaterial);
 					}
-
 					var stickerInterior = new THREE.Mesh(new THREE.Plane(cubeOptions.stickerWidth, cubeOptions.stickerWidth), meshes);
 					stickerInterior.doubleSided = cubeOptions.doubleSided;
 					sticker.addChild(stickerInterior);
@@ -281,6 +289,35 @@
 			}
 		}
 
+		function toggleColorVisibleHuge(twisty, colorVisible, borderVisible) {
+			var dim = twisty.options.dimension;
+			var state = twisty.cubePieces;
+			var effLayers = {};
+			effLayers[0] = 0;
+			effLayers[1] = 0;
+			effLayers[oSl - 1] = 0;
+			effLayers[oSl + 0] = 0;
+			effLayers[oSl + 1] = 0;
+			effLayers[oSr - 1] = 0;
+			effLayers[oSr + 0] = 0;
+			effLayers[oSr + 1] = 0;
+			for (var faceIndex = 0; faceIndex < numSides; faceIndex++) {
+				var faceStickers = state[faceIndex];
+				for (var stickerIndex = 0, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
+					var cord1 = stickerIndex % dim;
+					var cord2 = ~~(stickerIndex / dim);
+					var materials = faceStickers[stickerIndex][1].children[0].materials;
+					var hit = cord1 in effLayers || (dim - 1 - cord1) in effLayers || cord2 in effLayers || (dim - 1 - cord2) in effLayers;
+					materials[0].opacity = hit || colorVisible ? 1 : 0;
+					if (hit || borderVisible) {
+						materials[1] = twisty.borderMaterial;
+					} else {
+						materials.length = 1;
+					}
+				}
+			}
+		}
+
 		function generateScramble(twisty) {
 			var dim = twisty.options.dimension;
 			var n = 32;
@@ -369,6 +406,11 @@
 				}
 				cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
 				updateHandMarks(twisty.handMarks, iSi, oSl, oSr);
+				if (twisty.options.dimension > 7) {
+					toggleColorVisibleHuge(twisty,
+						kernel.getProp('vrcAH', '01')[0] == '0' ? false : true,
+						kernel.getProp('vrcAH', '01')[1] == '0' ? false : true);
+				}
 				ret = true;
 			}
 			if (keyCode in cubeKeyMapping) {
@@ -518,6 +560,7 @@
 			parseScramble: parseScramble,
 			getFacelet: getFacelet,
 			moveCnt: moveCnt,
+			borderMaterial: borderMaterial,
 			move2str: move2str
 		};
 	}
