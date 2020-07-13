@@ -401,6 +401,7 @@ var STATS_CFM_DELETE = 'delete this time?';
 var STATS_COMMENT = 'Comment';
 var STATS_REVIEW = 'Review';
 var STATS_DATE = 'Date';
+var STATS_RECONSTRUCTION = 'Create reconstruction';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'Current Round Statistics';
 var STATS_CURSESSION = 'Current Session Statistics';

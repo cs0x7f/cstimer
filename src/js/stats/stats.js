@@ -319,6 +319,21 @@ var stats = execMain(function(kpretty, round, kpround) {
 				genDiv();
 			}
 		}
+		
+		function getTimeForReconsturction(penalty, time) {
+			if (penalty === -1) {
+			  return "";
+			}
+			return ((time + penalty) / 1000).toFixed(3);
+		  }
+		  function genReconstuctionLink(timeArr) {
+			const [timeData, scramble, title, date] = timeArr;
+	
+			const finalTime = getTimeForReconsturction(...timeData);
+			return `https://jonatanklosko.github.io/reconstructions/#/?title=${encodeURI(
+			  title
+			)}&time=${encodeURI(finalTime)}&scramble=${encodeURI(scramble)}`;
+		  }
 
 		function genDiv() {
 			if (!times[cfmIdx]) {
@@ -338,6 +353,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
 					$('<tr>').append('<td><span class="click" data="s">' + SCRAMBLE_SCRAMBLE + '</span></td>', $('<td>').append(cfmScrR)),
 					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
+					$('<tr>').append(`<td colspan=2><a href="${genReconstuctionLink(time)}" style="text-decoration:none; color:blue"> ${STATS_RECONSTRUCTION} </a></td>`),
 					reviewElem
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
