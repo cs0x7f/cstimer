@@ -335,7 +335,7 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['"Ostatní"', [
-		['PSO (Přední Soutěžní Osmistěn)', "fto", 25]
+		['PSO (Přední Soutěžní Osmistěn)', "fto", 30]
 	]],
 	['==SPECIÁLNÍ==', [
 		['--', "blank", 0]
