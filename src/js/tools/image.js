@@ -816,12 +816,12 @@ posit:
 
 		// are the colors stored in a property?
 		var colorsByFace = {
-			u: 'white',
-			r: 'blue',
-			f: 'red',
-			d: 'yellow',
-			l: 'green',
-			b: 'orange'
+			u: '#fff',
+			r: '#00f',
+			f: '#f00',
+			d: '#ff0',
+			l: '#0f0',
+			b: '#f80'
 		};
 
 		var colors = [
