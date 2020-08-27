@@ -201,7 +201,6 @@ var image = execMain(function() {
 		};
 	})();
 
-
 	var sq1Image = (function() {
 		var posit = [];
 		var mid = 0;
@@ -263,7 +262,7 @@ var image = execMain(function() {
 
 		var width = 45;
 
-		var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/
+		var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/;
 
 		return function(moveseq) {
 			var cols = kernel.getProp('colsq1').match(colre);
@@ -464,7 +463,6 @@ posit:
              0    
 
      */
-
 	var pyraImage = (function() {
 		var width = 45;
 		var posit = [];
@@ -748,6 +746,248 @@ posit:
 		}
 	})();
 
+	var sq2Image = (function() {
+		var state = [];
+		var mid = 1;
+
+		var L = 100;
+		var A = (L / 2) + (L / 6);
+		var S = L * 2.2; //space between centers of faces
+
+		var e = [
+			[0, 0],
+			[-(L * 0.133), -(L / 2)],
+			[L * 0.133, -(L / 2)]
+		];
+
+		var hc1 = [
+			[0, 0],
+			[L / 2, -(L / 2)],
+			[L * 0.133, -(L / 2)]
+		];
+
+		var hc2 = [
+			[0, 0],
+			[-(L * 0.133), -(L / 2)],
+			[-(L / 2), -(L / 2)]
+		];
+
+		var edgeSide = [
+			[-(A * 0.266), -A],
+			[A * 0.266, -A],
+			[L * 0.133, -(L / 2)],
+			[-(L * 0.133), -(L / 2)]
+		];
+
+		var side1 = [
+			[A * 0.266, -A],
+			[A, -A],
+			[L / 2, -(L / 2)],
+			[L * 0.133, -(L / 2)]
+		];
+
+		var side2 = [
+			[-(A * 0.266), -A],
+			[-A, -A],
+			[-(L / 2), -(L / 2)],
+			[-(L * 0.133), -(L / 2)]
+		];
+
+		var ml = [
+			[0, 0],
+			[L / 3, 0],
+			[L / 3, L / 3],
+			[0, L / 3]
+		];
+
+		var mf = [
+			[L / 3, 0],
+			[L, 0],
+			[L, L / 3],
+			[L / 3, L / 3]
+		];
+
+		var mb = [
+			[L / 3, 0],
+			[(L * 2) / 3, 0],
+			[(L * 2) / 3, L / 3],
+			[L / 3, L / 3]
+		];
+
+		// are the colors stored in a property?
+		var colorsByFace = {
+			u: 'white',
+			r: 'blue',
+			f: 'red',
+			d: 'yellow',
+			l: 'green',
+			b: 'orange'
+		};
+
+		var colors = [
+			[colorsByFace.u, colorsByFace.b],
+			[colorsByFace.u, colorsByFace.b],
+			[colorsByFace.u, colorsByFace.r],
+			[colorsByFace.u, colorsByFace.r],
+			[colorsByFace.u, colorsByFace.r],
+			[colorsByFace.u, colorsByFace.f],
+			[colorsByFace.u, colorsByFace.f],
+			[colorsByFace.u, colorsByFace.f],
+			[colorsByFace.u, colorsByFace.l],
+			[colorsByFace.u, colorsByFace.l],
+			[colorsByFace.u, colorsByFace.l],
+			[colorsByFace.u, colorsByFace.b],
+
+			[colorsByFace.d, colorsByFace.f],
+			[colorsByFace.d, colorsByFace.f],
+			[colorsByFace.d, colorsByFace.r],
+			[colorsByFace.d, colorsByFace.r],
+			[colorsByFace.d, colorsByFace.r],
+			[colorsByFace.d, colorsByFace.b],
+			[colorsByFace.d, colorsByFace.b],
+			[colorsByFace.d, colorsByFace.b],
+			[colorsByFace.d, colorsByFace.l],
+			[colorsByFace.d, colorsByFace.l],
+			[colorsByFace.d, colorsByFace.l],
+			[colorsByFace.d, colorsByFace.f]
+		];
+
+		function setToSolvedState(target) {
+			target.length = 0;
+			for (var i = 0, pType = 0; i < 24; i++, pType++) {
+				target.push({ id: i, type: pType });
+				if (pType === 2) pType = -1;
+			}
+			mid = 1;
+		}
+
+		//always rotates around [x, y]
+		function fillAndDrawPolygon(x, y, points, rotationAngle, color, context) {
+			context.save();
+
+			context.lineWidth = '3';
+			context.strokeStyle = 'black';
+			context.fillStyle = color;
+
+			//first rotate
+			context.translate(x, y);
+			context.rotate(rotationAngle * Math.PI / 180); //angle in radians
+			context.translate(-x, -y);
+
+			context.beginPath();
+			context.moveTo(x + points[0][0], y + points[0][1]); //todo: inline [x + 0, y + 0]
+			for (var i = 1; i < points.length; i++) context.lineTo(x + points[i][0], y + points[i][1]);
+			context.closePath();
+			context.fill();
+			context.stroke();
+
+			context.restore();
+		}
+
+		function drawCube(x, y, context) {
+			//draw top
+			for (var i = 0, angle = 0; i < state.length / 2; i++, angle += 30) {
+				var p = state[i];
+				if (p.type === 0) { //edge
+					fillAndDrawPolygon(x, y, e, angle, colors[p.id][0], context);
+					fillAndDrawPolygon(x, y, edgeSide, angle, colors[p.id][1], context);
+				} else if (p.type === 1) { //hc1
+					fillAndDrawPolygon(x, y, hc1, angle + -30, colors[p.id][0], context);
+					fillAndDrawPolygon(x, y, side1, angle + -30, colors[p.id][1], context);
+				} else { //hc2
+					fillAndDrawPolygon(x, y, hc2, angle + 30, colors[p.id][0], context);
+					fillAndDrawPolygon(x, y, side2, angle + 30, colors[p.id][1], context);
+				}
+			}
+
+			//draw bottom
+			for (var i = state.length / 2, angle = 0; i < state.length; i++, angle += 30) {
+				var p = state[i];
+				if (p.type === 0) { //edge
+					fillAndDrawPolygon(x + S, y, e, angle, colors[p.id][0], context);
+					fillAndDrawPolygon(x + S, y, edgeSide, angle, colors[p.id][1], context);
+				} else if (p.type === 1) { //hc1
+					fillAndDrawPolygon(x + S, y, hc1, angle + -30, colors[p.id][0], context);
+					fillAndDrawPolygon(x + S, y, side1, angle + -30, colors[p.id][1], context);
+				} else { //hc2
+					fillAndDrawPolygon(x + S, y, hc2, angle + 30, colors[p.id][0], context);
+					fillAndDrawPolygon(x + S, y, side2, angle + 30, colors[p.id][1], context);
+				}
+			}
+
+			//draw left-middle
+			fillAndDrawPolygon(x + (S / 4), y + 120, ml, 0, colorsByFace.f, context);
+
+			//draw right-middle
+			if (mid < 0) fillAndDrawPolygon(x + (S / 4), y + 120, mb, 0, colorsByFace.b, context);
+			else fillAndDrawPolygon(x + (S / 4), y + 120, mf, 0, colorsByFace.f, context);
+		}
+
+		function moveTop(currentState) {
+			const tmp = currentState[11];
+			for (var i = 11; i > 0; i--) currentState[i] = currentState[i - 1];
+			currentState[0] = tmp;
+		}
+
+		function moveBottom(currentState) {
+			const tmp = currentState[23];
+			for (var i = 23; i > 12; i--) currentState[i] = currentState[i - 1];
+			currentState[12] = tmp;
+		}
+
+		function slash(currentState) {
+			for (var i = 1; i <= 6; i++) {
+				const tmp = currentState[i];
+				currentState[i] = currentState[i + 11];
+				currentState[i + 11] = tmp;
+			}
+			mid *= -1; // flips middle state
+		}
+
+		function execSequence(seq, currentState, moveTopFunc, moveBottomFunc, slashFunc) {
+			var negative = false, top = true;
+			for (var _k = 0; _k < seq.length; _k++) {
+				var c = seq[_k];
+				if (c !== ' ' || c !== '(' || c !== ')') {
+					if (c === '-') {
+						negative = true;
+					} else if (c === ',') {
+						top = false;
+					} else if (c === '/') {
+						slashFunc(currentState);
+						top = true;
+					} else {
+						var targetFunction = top ? moveTopFunc : moveBottomFunc;
+						//todo: improve -5..6 range clamping
+						var currentMove = parseInt(c) * (negative ? -1 : 1);
+						var moveCount = currentMove > 0 ? currentMove : 12 - -currentMove;
+						for (var i = 0; i < moveCount; i++) targetFunction(currentState);
+						negative = false;
+					}
+				}
+			}
+		}
+
+		// called on every new scramble
+		return function(moveseq) {
+			// always reset the pieces
+			setToSolvedState(state);
+
+			// apply the argument to the state
+			execSequence(moveseq, state, moveTop, moveBottom, slash);
+
+			// prepare the container
+			var imgSize = kernel.getProp('imgSize') / 10;
+			canvas.width(11 * imgSize / 1.3 + 'em');
+			canvas.height(6.3 * imgSize / 1.3 + 'em');
+
+			canvas.attr('width', 11 * (L / 2.5));
+			canvas.attr('height', 6.3 * (L / 2.3));
+
+			// draws the result
+			drawCube((L / 2) + 55, (L / 2) + 55, ctx);
+		}
+	})();
 
 	var types_nnn = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
 
@@ -794,6 +1034,10 @@ posit:
 		}
 		if (type == "8b" || type == "8p") {
 			sldImage(type[1], 3, scramble[1]);
+			return true;
+		}
+		if (type == "sq2") {
+			sq2Image(scramble[1]);
 			return true;
 		}
 		return false;
