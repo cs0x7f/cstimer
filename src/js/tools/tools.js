@@ -117,6 +117,8 @@ var tools = execMain(function() {
 			return "8p";
 		} else if (/^8p(rmp|m)$/.exec(scrambleType)) {
 			return "8b";
+		} else if (/^sq2$/.exec(scrambleType)) { //matching only sq2 case
+			return "sq2";
 		}
 	}
 
