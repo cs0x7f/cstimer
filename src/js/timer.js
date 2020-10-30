@@ -558,7 +558,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				status = 1;
 				startTime = now - curTime;
 				ui.setAutoShow(false);
-			} else if (status == -1 && checkUseIns() && curTime == 0 && (state.rightHand || state.leftHand)) {
+			} else if (status == -1 && checkUseIns() && curTime == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
 				status = -3;
 				ui.setAutoShow(false);
 				startTime = now;
