@@ -494,7 +494,7 @@ var GiikerCube = execMain(function() {
 		var _service;
 		var _read;
 		var _write;
-
+		var _deviceName;
 		var UUID_SUFFIX = '-b5a3-f393-e0a9-e50e24dcca9e';
 		var SERVICE_UUID = '6e400001' + UUID_SUFFIX;
 		var CHRCT_UUID_WRITE = '6e400002' + UUID_SUFFIX;
@@ -504,6 +504,7 @@ var GiikerCube = execMain(function() {
 		var WRITE_STATE = 51;
 
 		function init(device) {
+			_deviceName = device.name.startsWith('GoCube') ? 'GoCube' : 'Rubiks Connected'
 			return device.gatt.connect().then(function(server) {
 				_server = server;
 				return server.getPrimaryService(SERVICE_UUID);
@@ -536,12 +537,11 @@ var GiikerCube = execMain(function() {
 			}
 			return valhex;
 		}
+		var _batteryLevel;
 
 		var axisPerm = [5, 2, 0, 3, 1, 4];
 		var facePerm = [0, 1, 2, 5, 8, 7, 6, 3];
 		var faceOffset = [0, 0, 6, 2, 0, 0];
-		var curBatteryLevel = -1;
-		var batteryResolveList = [];
 		var moveCntFree = 100;
 		var curFacelet = mathlib.SOLVED_FACELET;
 		var curCubie = new mathlib.CubieCube();
@@ -569,7 +569,7 @@ var GiikerCube = execMain(function() {
 					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					curFacelet = curCubie.toFaceCube();
-					callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(power)], timestamp, 'GoCube');
+					callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(power)], timestamp, _deviceName);
 					var tmp = curCubie;
 					curCubie = prevCubie;
 					prevCubie = tmp;
@@ -595,11 +595,8 @@ var GiikerCube = execMain(function() {
 				}
 			} else if (msgType == 3) { // quaternion
 			} else if (msgType == 5) { // battery level
-				console.log('battery level', toHexVal(value));
-				curBatteryLevel = value.getUint8(3);
-				while (batteryResolveList.length != 0) {
-					batteryResolveList.shift()(curBatteryLevel);
-				}
+				_batteryLevel = value.getUint8(3);
+				console.log('battery level', _batteryLevel);
 			} else if (msgType == 7) { // offline stats
 				console.log('offline stats', toHexVal(value));
 			} else if (msgType == 8) { // cube type
@@ -607,10 +604,11 @@ var GiikerCube = execMain(function() {
 			}
 		}
 
+
 		function getBatteryLevel() {
 			_write.writeValue(new Uint8Array([WRITE_BATTERY]).buffer);
 			return new Promise(function(resolve) {
-				batteryResolveList.push(resolve);
+				resolve([_batteryLevel, _deviceName])
 			});
 		}
 
@@ -638,6 +636,8 @@ var GiikerCube = execMain(function() {
 			}, {
 				namePrefix: 'GoCube'
 			}, {
+				namePrefix: 'Rubiks'
+			},{
 				services: ['0000fe95-0000-1000-8000-00805f9b34fb']
 			}, {
 				services: [GiikerCube.opservs[0]]
@@ -652,7 +652,7 @@ var GiikerCube = execMain(function() {
 			} else if (device.name.startsWith('GAN')) {
 				cube = GanCube;
 				return GanCube.init(device);
-			} else if (device.name.startsWith('GoCube')) {
+			} else if (device.name.startsWith('GoCube') || device.name.startsWith('Rubiks')) {
 				cube = GoCube;
 				return GoCube.init(device);
 			} else {
