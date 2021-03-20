@@ -122,6 +122,7 @@ textarea {
 	overflow-y: auto;
 	border-radius: 5px;
 	padding: 5px;
+	margin-left: 0.96em;
 }
 
 #timer, #touch {
