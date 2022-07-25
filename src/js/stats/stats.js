@@ -1158,7 +1158,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 				plot(x, y, '#00f');
 			}
-
+			bestFitLine(plotmin, plotmax, ploth);
 			plot([0, 1, 1, 0, 0], [0, 0, 1, 1, 0], '#000');
 		}
 
@@ -1182,6 +1182,43 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			ctx.fill();
 			ctx.closePath();
+		}
+		
+		function bestFitLine(plotmin, plotmax, ploth){
+			let x = range(0, times.length - 1);
+			console.log(x);
+			let y = [];
+			for(let i = 0; i < times.length; i++){
+				y[i] = times[i][0][1];
+			}
+			console.log(y);
+			let xy = 0;
+			let xsquared = 0;
+			for(let i = 0; i < x.length; i++){
+				xy += x[i]*y[i];
+				xsquared += x[i]*x[i];
+			}
+			let slope = ((x.length)*(xy)-(sum(x)*sum(y)))/((x.length)*(xsquared)-((sum(x)*sum(x))));
+			let intercept = (sum(y) - slope*sum(x))/(x.length);
+			slope = slope/(plotmax-plotmin);
+			intercept = (intercept - plotmin)/(plotmax-plotmin);
+			plot([0, 1],[intercept, intercept+slope*x.length], "#0f0");
+		}
+
+		function sum(array){
+			let sum = 0;
+			for(let i = 0; i < array.length; i++){
+				sum += array[i];
+			}
+			return sum;
+		}
+
+		function range(start, end) {
+			var ans = [];
+			for (let i = start; i <= end; i++) {
+				ans.push(i);
+			}
+			return ans;
 		}
 
 		function execFunc(fdiv, signal) {
