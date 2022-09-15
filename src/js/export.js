@@ -106,7 +106,7 @@ var exportFunc = execMain(function() {
 	function importFile(reader) {
 		if (this.files.length) {
 			var f = this.files[0];
-			reader.readAsBinaryString(f);
+			reader.readAsText(f, "UTF-8")
 		}
 	}
 
