@@ -1,3 +1,31 @@
+
+# Generated output
 /dist
-/.idea
-cstimer.iml
+/tmp
+node_modules
+
+# IDE, Editors, Local configs
+.vscode/
+.history/
+*~
+*.sw?
+.idea/
+*.iml
+*.iml
+ *.ipr
+ *.iws
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.pem
+.npmrc
+
+# Common
+*.log
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
