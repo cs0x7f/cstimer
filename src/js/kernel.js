@@ -265,7 +265,7 @@ var kernel = execMain(function() {
 				resetPropertyes();
 				generateDiv();
 				return false;
-			}], [BUTTON_EXPORT.replace('<br', ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace('-<br>', ''), function() {
+			}], [BUTTON_EXPORT.replace('-<br>', ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace('-<br>', ''), function() {
 				right.find('select[name="lang"]').focus().blur();
 				scrollToModule();
 			});

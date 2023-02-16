@@ -56,6 +56,7 @@ help.js \
 stackmat.js \
 tools/stackmatutil.js \
 bluetooth.js \
+gantimer.js \
 worker.js)
 
 cache = $(addprefix $(dest)/, \
