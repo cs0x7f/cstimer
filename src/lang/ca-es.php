@@ -12,7 +12,7 @@
 <p>csTimer supports most of modern desktop browsers, on mobile phone and tablet PC, you can add csTimer to your home screen, and it will work as a native APP.</p>
 <p>csTimer takes advantage of browser cache, which consumes traffic only when you open it for the first time, after that, csTimer is able to work without network connection (except for functions like backup)</p>
 <h3>Copyright</h3>
-<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues">here</a></p>
+<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">here</a></p>
 <p>Written by: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
 <p>UI designed by: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>Basic functions</h2>
@@ -36,9 +36,7 @@
 <tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
@@ -69,27 +67,27 @@
 <li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
 <li><strong data="opt_view">Estil de la IU</strong>. Switch between desktop and mobile views.</li>
 <li><strong data="opt_wndScr">Tipus de panell de barreja</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Tipus de panell d'estadístiques</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Tipus de panell d'eines</strong>. Make tool panel embedded into background.</li>
+<li><strong data="opt_wndStat">Tipus de panell d&#x27;estadístiques</strong>. Make list times panel embedded into background.</li>
+<li><strong data="opt_wndTool">Tipus de panell d&#x27;eines</strong>. Make tool panel embedded into background.</li>
 <li><strong data="opt_bgImgO">background image opacity</strong>. Opacity of the background image.</li>
 <li><strong data="opt_bgImgS">background image</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">Mida del cronòmetre</strong>. Set the size of main timer.</li>
 <li><strong data="opt_smallADP">Fer servir lletra petita després del punt decimal</strong>. Use a smaller font size after the digital point in main timer.</li>
 <li><strong data="opt_useMouse">Utilitzar el ratolí com a cronòmetre</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
 <li><strong data="opt_useIns">Inspecions WCA</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
-<li><strong data="opt_voiceIns">Alerta d'inspecció WCA</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
+<li><strong data="opt_voiceIns">Alerta d&#x27;inspecció WCA</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
 <li><strong data="opt_voiceVol">Voice volume</strong>. Voice level of the alert above.</li>
 <li><strong data="opt_input">Entrar temps amb</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
 <li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
 <li><strong data="opt_timeU">Actualització de temporitzador</strong>. How timer is updated when timing.</li>
-<li><strong data="opt_preTime">Temps d'espera de l'espai(Segon(s))</strong>. How long the space bar should be held before the timer turns green.</li>
+<li><strong data="opt_preTime">Temps d&#x27;espera de l&#x27;espai(Segon(s))</strong>. How long the space bar should be held before the timer turns green.</li>
 <li><strong data="opt_phases">Multiples fases</strong>. Number of phases, press any key to mark a split point when timing.</li>
 <li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">Mida de la barreja</strong>. Size of the scramble text.</li>
 <li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
 <li><strong data="opt_scrMono">Barreja Mono-espai</strong>. Use monospaced font for scramble text.</li>
-<li><strong data="opt_scrLim">Limitar l'altura de l'àrea de barreja</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
-<li><strong data="opt_scrAlign">Aliniament de l'àrea de barreja</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
+<li><strong data="opt_scrLim">Limitar l&#x27;altura de l&#x27;àrea de barreja</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
+<li><strong data="opt_scrAlign">Aliniament de l&#x27;àrea de barreja</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrFast">Fer servir barreja ràpida per 4x4x4 (no-oficial)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Marcar moviment(s) clau en la barreja</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
@@ -108,8 +106,8 @@
 <li><strong data="opt_delmul">Habilitar Esborrat Multiple</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">time distribution precision</strong>. Time interval for the time distribution tool.</li>
 <li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
-<li><strong data="opt_imgSize">Mida de l'imatge de barreja</strong>. Set the size of scramble image.</li>
-<li><strong data="opt_NTools">Nombre d'eines</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
+<li><strong data="opt_imgSize">Mida de l&#x27;imatge de barreja</strong>. Set the size of scramble image.</li>
+<li><strong data="opt_NTools">Nombre d&#x27;eines</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">Fer servir dreceres del teclat</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
 <li><strong data="opt_vrcSpeed">Velocitat base VRC (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">Multi-fase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
@@ -119,7 +117,7 @@
 <li><strong data="opt_giiSM">Marcar barrejat fent</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
 <li><strong data="opt_giiBS">Emet so quan es marqui barrejat</strong>. Beep when some of scramble-finish signal is triggered.</li>
 <li><strong data="opt_giiRST">Reiniciar cub Giiker quan es connecti</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Detecció automàtica d'errors físics</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_giiAED">Detecció automàtica d&#x27;errors físics</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
 </ul>
 <h2>Tools detail</h2>
 <ul>
@@ -150,19 +148,19 @@
 </ul>
 <h2>Links</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer beta version</a></li>
-<li><a class="click" href="/src/">csTimer beta version with uncompressed files</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer source code</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
+<li><a class="click" href="/new/" title="">csTimer beta version</a></li>
+<li><a class="click" href="/src/" title="">csTimer beta version with uncompressed files</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer source code</a></li>
+<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
+<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
 </ul>
 <h2>Color schemes</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
-<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>.</p>
+<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">

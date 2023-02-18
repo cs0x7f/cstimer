@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Uitlijnen van scramble vlak';
 var PROPERTY_SCRALIGN_STR = 'midden|links|rechts';
 var PROPERTY_SCRFAST = 'Gebruik snelle scramble voor 4x4x4 (niet-officiëel)';
 var PROPERTY_SCRKEYM = 'Label sleutelbeweging (en) in scramble';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Actie bij klikken op scramble';
+var PROPERTY_SCRCLK_STR = 'Geen|Kopiëren|Volgende scramble';
 var PROPERTY_WNDSCR = 'Scramble paneel scherm stijl';
 var PROPERTY_WNDSTAT = 'Statistieken paneel scherm style';
 var PROPERTY_WNDTOOL = 'Gereedschappen paneel scherm stijl';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Functie';
 var TOOLS_CROSS = 'Los kruis op';
 var TOOLS_EOLINE = 'Los EOLine op';
 var TOOLS_ROUX1 = 'Los Roux S1 op';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = '2x2x2 kant';
 var TOOLS_GIIKER = 'Giiker Kubus';
 var TOOLS_IMAGE = 'Teken scramble';
 var TOOLS_STATS = 'Statistiek';
@@ -65,7 +65,7 @@ var TOOLS_DISTRIBUTION = 'Verdeling tijden';
 var TOOLS_TREND = 'tijd trend';
 var TOOLS_METRONOME = 'metronoom';
 var TOOLS_CFMTIME = 'Bevestig tijd';
-var TOOLS_SOLVERS = 'Solvers';
+var TOOLS_SOLVERS = 'Oplossers';
 var TOOLS_SYNCSEED = 'Common Scramble';
 var TOOLS_SYNCSEED_SEED = 'Seed';
 var TOOLS_SYNCSEED_INPUT = 'Input Seed';
@@ -74,18 +74,18 @@ var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
 var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_VIEWMYRESULT = 'My History';
+var OLCOMP_VIEWRESULT = 'Toon resultaat';
+var OLCOMP_VIEWMYRESULT = 'Mijn geschiedenis';
 var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
+var OLCOMP_SUBMIT = 'Versturen';
+var OLCOMP_SUBMITAS = 'Verstuur als:';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
+var OLCOMP_OLCOMP = 'Online competitie';
+var OLCOMP_ANONYM = 'Anoniem';
+var OLCOMP_ME = 'Mij';
 var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_ABORT = 'Competitie afbreken en resultaten laten zien?';
+var OLCOMP_WITHANONYM = 'Met anoniem';
 var PROPERTY_IMGSIZE = 'Tekstgrootte scramble';
 var TIMER_INSPECT = 'Inspectie';
 var TIMER_SOLVE = 'Oplossen';
@@ -101,8 +101,8 @@ var PROPERTY_COLOR = 'Selecteer kleurenschema';
 var PROPERTY_COLORS = 'Lettertype kleur|Kleur achtergrond|Board kleur|Kleur knop|Kleur link|Kleur logo|Logo bgkleur';
 var PROPERTY_VIEW = 'Ui stijl is';
 var PROPERTY_VIEW_STR = 'Automatisch|Mobiel|Desktop';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
+var PROPERTY_UIDESIGN = 'UI ontwerp is';
+var PROPERTY_UIDESIGN_STR = 'Normaal|Materiaal ontwerp|Normaal zonder shaduwen|Materiaal ontwerp zonder schaduwen';
 var COLOR_EXPORT = 'Bewaar aub de tekst voor importeren';
 var COLOR_IMPORT = 'Bewaar aub de tekst voor exporteren';
 var COLOR_FAIL = 'Incorrecte gegevens, Importeren Mislukt';
@@ -155,15 +155,15 @@ var scrdata = [
 	]],
 	['Invoer', [
 		['??', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Competitie', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["willekeurige staat (WCA)", "333", 0],
+		['willekeurige draai', "333o", 25],
 		['3x3x3 voor beginners', "333noob", 25],
 		['Alleen randen', "edges", 0],
 		['Alleen hoeken', "corners", 0],
@@ -186,14 +186,14 @@ var scrdata = [
 		['3x3 ft', "333ft", 0]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["willekeurige staat (WCA)", "222so", 0],
+		['optimaal', "222o", 0],
 		['derde generatie', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Geen balk', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -225,31 +225,31 @@ var scrdata = [
 	['Klok', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
-		['concise', "clkc", 0],
+		['optimaal', "clko", 0],
+		['beknopt', "clkc", 0],
 		['Efficiente knop volgorde', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
+		['Wortel', "mgmc", 70],
 		['Oude methode', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		["willekeurige staat (WCA)", "pyrso", 10],
+		['optimaal', "pyro", 0],
+		['willekeurige draai', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		["willekeurige staat (WCA)", "skbso", 0],
+		['optimaal', "skbo", 0],
+		['willekeurige draai', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["willekeurige staat (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['vlak draait metrisch', "sq1h", 40],
 		['draai metrisch', "sq1t", 20]
@@ -257,18 +257,18 @@ var scrdata = [
 	['===OVERIGE===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
-		['random state URLD', "15prp", 0],
-		['random state ^<>v', "15prap", 0],
-		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+	['15 puzzel', [
+		['willekeurige staat URLD', "15prp", 0],
+		['willekeurige staat ^<>v', "15prap", 0],
+		['willekeurige staat Blank', "15prmp", 0],
+		['willekeurige draai URLD', "15p", 80],
+		['willekeurige draai ^<>v', "15pat", 80],
+		['willekeurige draai Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
-		['random state URLD', "8prp", 0],
-		['random state ^<>v', "8prap", 0],
-		['random state Blank', "8prmp", 0]
+		['willekeurige staat URLD', "8prp", 0],
+		['willekeurige staat ^<>v', "8prap", 0],
+		['willekeurige staat Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
@@ -285,9 +285,9 @@ var scrdata = [
 		['NxNxN', "cubennn", 12]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['willekeurige staat', "gearso", 0],
+		['optimaal', "gearo", 0],
+		['willekeurige draai', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -306,9 +306,9 @@ var scrdata = [
 		['old', "redi", 20]
 	]],
 	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+		['willekeurige staat', "ivyso", 0],
+		['optimaal', "ivyo", 0],
+		['willekeurige draai', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -334,7 +334,7 @@ var scrdata = [
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
+	['Overig', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
 	['===SPECIAAL===', [
@@ -395,23 +395,23 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' 90 graden met de klok mee,| 90 graden tegen de klok in,| 180 graden,';
 var STATS_CFM_RESET = 'Herstel alle tijden van deze sessie?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_DELSS = 'sessie [%s] verwijderen?';
 var STATS_CFM_DELMUL = 'Het aantal verwijderde waarden van de huidige index?';
 var STATS_CFM_DELETE = 'Deze tijd verwijderen?';
 var STATS_COMMENT = 'Opmerking';
-var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
+var STATS_REVIEW = 'Beoordelen';
+var STATS_DATE = 'Datum';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'Gegevens actuele ronde';
 var STATS_CURSESSION = 'Gegevens actuele sessie';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
+var STATS_EXPORTCSV = 'Exporteer CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
+var STATS_SSMGR_NAME = 'Naam';
+var STATS_SSMGR_DETAIL = 'Sessie details';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
+var STATS_SSMGR_ORDER = 'Sorteer op scramble';
+var STATS_SSMGR_ODCFM = 'Alle sessies sorteren op scramble?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
 var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
@@ -420,13 +420,13 @@ var STATS_AVG = 'Gemiddelde';
 var STATS_SOLVE = 'Opgelost';
 var STATS_TIME = 'Tijd';
 var STATS_SESSION = 'Sessie';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAME = 'Verander sessie naam';
+var STATS_SESSION_NAMEC = 'Naam van de nieuwe sessie';
 var STATS_STRING = 'Beste|Actuele|Slechtste|Gegenereerd door csTimer op %Y-%M-%D|opgelost/totaal: %d|enkele|mean van %mk|avg of %mk|Gemiddelde: %v{ (s = %sgm)}|Mean: %v|Lijst met tijden:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'precisie tijdsverdeling';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
+var STATS_PREC_STR = 'Automatisch|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'lijst %d type|lijst %d lengte|average|mean';
-var STATS_STATCLR = 'Enable session emptying';
+var STATS_STATCLR = 'Schakel sessie leegmaken in';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
 var STATS_XSESSION_NAME = 'any name';
@@ -449,19 +449,19 @@ var PROPERTY_TRIM = 'Number of solves trimmed at each side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_IMPPREV = 'Importeer niet-nieuwste gegevens';
+var PROPERTY_AUTOEXP = 'Automatisch exporteren (per 100 solves)';
+var PROPERTY_AUTOEXP_OPT = 'Nooit|Naar bestand|Met csTimer ID|Met WCA Account';
+var PROPERTY_SCRASIZE = 'Automatische scramble grootte';
 var MODULE_NAMES = {
 	"kernel": 'Global',
-	"ui": 'display',
+	"ui": 'Weergave',
 	"color": 'Kleur',
 	"timer": 'Timer',
 	"scramble": 'scramble',
 	"stats": 'Statistiek',
 	"tools": 'Hulpmiddelen',
-	"vrc": 'virtual&<br>bluetooth'
+	"vrc": 'virtueel &<br>bluetooth'
 };
 var BGIMAGE_URL = 'Voer URL in';
 var BGIMAGE_INVALID = 'Ongeldige URL';
@@ -469,7 +469,7 @@ var BGIMAGE_OPACITY = 'Transparantie achtergrondafbeelding';
 var BGIMAGE_IMAGE = 'Achtergrondafbeelding';
 var BGIMAGE_IMAGE_STR = 'Geen|Automatischl|CCT';
 var SHOW_AVG_LABEL = 'Toon gemiddelde';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'Hint berichten in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Aantal scrambles';
 var SCRGEN_PRE = 'prefix';

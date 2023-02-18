@@ -7,12 +7,12 @@ var BUTTON_TIME_LIST = 'הצג<br>זמנים';
 var BUTTON_OPTIONS = 'אפשרויות';
 var BUTTON_EXPORT = 'ייצוא';
 var BUTTON_DONATE = 'תרום';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'עם סשן';
 var PROPERTY_USEINS = 'השתמש בסקירת WCA';
 var PROPERTY_USEINS_STR = 'תמיד|מלבד BLD|אף פעם';
 var PROPERTY_VOICEINS = 'התראה קולית של סקירת WCA';
 var PROPERTY_VOICEINS_STR = 'ללא|קול זכר|קול נקבה';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'עוצמת שמע';
 var PROPERTY_PHASES = 'רב-שלבי';
 var PROPERTY_TIMERSIZE = 'גודל טיימר';
 var PROPERTY_USEMILLI = 'השתמש באלפיות שנייה';
@@ -43,10 +43,10 @@ var EXPORT_NODATA = 'לא נמצאו נתונים עבור החשבון שלך';
 var EXPORT_UPLOADED = 'הקובץ הועלה בהצלחה';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
+var EXPORT_ACCOUNT = 'יצא משתמשים';
+var EXPORT_LOGINGGL = 'התחבר עם חשבון גוגל';
+var EXPORT_LOGINWCA = 'התחבר עם חשבון WCA';
+var EXPORT_LOGOUTCFM = 'האם להתנתק?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'בלגון';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'פונקציה';
 var TOOLS_CROSS = 'פתור פלוס';
 var TOOLS_EOLINE = 'פתור EOLine';
 var TOOLS_ROUX1 = 'פתור Roux S1';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = 'פאת 2x2x2';
 var TOOLS_GIIKER = 'קוביית Giiker';
 var TOOLS_IMAGE = 'בלגון חדש';
 var TOOLS_STATS = 'סטטיסטיקות';
@@ -65,25 +65,25 @@ var TOOLS_DISTRIBUTION = 'חלוקת זמן';
 var TOOLS_TREND = 'מגמת זמן';
 var TOOLS_METRONOME = 'מטרונום';
 var TOOLS_CFMTIME = 'אשר זמן';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
+var TOOLS_SOLVERS = 'פותרים';
+var TOOLS_SYNCSEED = 'ערבוב נפוץ';
+var TOOLS_SYNCSEED_SEED = 'זרע';
+var TOOLS_SYNCSEED_INPUT = 'זרע קלט';
+var TOOLS_SYNCSEED_30S = 'השתמש בזרע חדש כל 30ש';
+var TOOLS_SYNCSEED_HELP = 'אם מופעל, הערבוב יהיה תלוי רק בזרע ובהגדרות. בכלליות, אם שני אנשים משתמשים באותו זרע, הם יקבלו את אותם ערבובים.';
+var TOOLS_SYNCSEED_DISABLE = 'כבה זרע נוכחי?';
+var TOOLS_SYNCSEED_INPUTA = 'הכנס ערך (a-zA-Z0-9) כזרע';
+var OLCOMP_UPDATELIST = 'עדכן רשימת תחרויות';
+var OLCOMP_VIEWRESULT = 'צפה בתוצאה';
 var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_START = 'התחל!';
+var OLCOMP_SUBMIT = 'הגש!';
+var OLCOMP_SUBMITAS = 'הגש כ:';
+var OLCOMP_WCANOTICE = 'הגש עם משתמש WCA? (התחבר מחדש אם אתה לא מזוהה אחרי שאתה מגיש)';
+var OLCOMP_OLCOMP = 'תחרות אונליין';
+var OLCOMP_ANONYM = 'אנונימי';
+var OLCOMP_ME = 'אני';
+var OLCOMP_WCAACCOUNT = 'משתמש WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'גודל תמונת בלגון';
@@ -95,54 +95,54 @@ var PROPERTY_TIMEU_STR = 'עדכון|0.1ש|שניות|סקירה|ללא';
 var PROPERTY_PRETIME = 'זמן השארת מקש הרווח לחוץ(שנייה(ות))';
 var PROPERTY_ENTERING = 'הזן זמנים עם';
 var PROPERTY_ENTERING_STR = 'טיימר|הקלדה|Stackmat|טיימרמויו|וירטואלי|Bluetooth|qCube';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT = 'יחידה כשמכניסים מספר';
+var PROPERTY_INTUNIT_STR = 'שנייה|עשירית שנייה|מאית שנייה';
 var PROPERTY_COLOR = 'בחר צבע נושא';
 var PROPERTY_COLORS = 'צבע פונט|צבע רקע|צבע לוח|צבע כפתור|צבע קישור|צבע לוגו|צבע רקע ללוגו';
 var PROPERTY_VIEW = 'סגנון ממשק משתמש הוא';
 var PROPERTY_VIEW_STR = 'אוטומטי | מובייל | מחשב שולחני';
 var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
+var PROPERTY_UIDESIGN_STR = 'רגיל|עיצוב חומר|רגיל בלי צל|עיצוב חומר בלי צל';
 var COLOR_EXPORT = 'אנא שמור את המחרוזת לייבוא';
-var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
-var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
-var PROPERTY_FONT = 'select timer\'s font';
-var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
+var COLOR_IMPORT = 'בבקשה תכניס את הטקסט המיוצא';
+var COLOR_FAIL = 'מידע שגוי, ייבוא נכשל';
+var PROPERTY_FONTCOLOR_STR = 'שחור|לבן';
+var PROPERTY_COLOR_STR = 'ידני|יבוא/יצוא...|רנדומלי|סטייל1|סטייל2|סטייל3|שחור|לב|סטייל6|חושך מואר| אור מוחשך';
+var PROPERTY_FONT = 'תבחר גופן לטיימר';
+var PROPERTY_FONT_STR = 'דיגיטלי רנדומלי|רגיל|דיגיטלי1|דיגיטלי2|דיגיטלי3|דיגיטלי4|דיגיטלי5';
+var PROPERTY_FORMAT = 'פורמט זמן';
+var PROPERTY_USEKSC = 'השתמש בקיצורי מקלדת';
+var PROPERTY_NTOOLS = 'מספר כלים';
+var PROPERTY_AHIDE = 'החבא את כל האלמנטים כאשר מודד זמן';
 var SCRAMBLE_LAST = 'האחרון';
 var SCRAMBLE_NEXT = 'הבא';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
+var SCRAMBLE_SCRAMBLE = 'בלגון';
+var SCRAMBLE_LENGTH = 'אורך';
+var SCRAMBLE_INPUT = 'הקלד בלגון(ים)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
+var PROPERTY_VRCMP = 'רב-שלבי';
+var PROPERTY_VRCMPS = 'ללא|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
+var PROPERTY_GIIKERVRC = 'הראה קובייה דיגיטלית';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
+var PROPERTY_GIISOK_DELAYS = '2ש|3ש|4ש|5ש|אף פעם|מבולגן נכון';
+var PROPERTY_GIISOK_KEY = 'סמן מבולגן עם רווח';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIIRST = 'אפס קוביית בלוטות\' כאשר מחובר';
+var PROPERTY_GIIRSTS = 'תמיד|שאל|אף פעם';
 var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
-		['3x3x3', "333", 0],
-		['2x2x2', "222so", 0],
-		['4x4x4', "444wca", -40],
-		['5x5x5', "555wca", -60],
-		['6x6x6', "666wca", -80],
-		['7x7x7', "777wca", -100],
+		['3×3×3', "333", 0],
+		['2×2×2', "222so", 0],
+		['4×4×4', "444wca", -40],
+		['5×5×5', "555wca", -60],
+		['6×6×6', "666wca", -80],
+		['7×7×7', "777wca", -100],
 		['3×3 בליינד', "333ni", 0],
-		['3x3 fm', "333fm", 0],
+		['3×3 הכי פחות מהלכים', "333fm", 0],
 		['3×3 יד אחת', "333oh", 0],
 		['שָׁעוֹן', "clkwca", 0],
 		['מגמינקס', "mgmp", -70],
@@ -172,7 +172,7 @@ var scrdata = [
 		['פינות של שכבה אחרונה (coll)', "cll", 0],
 		['אדג\'ים של שכבה אחרונה', "ell", 0],
 		['שישה אדג\'ים אחרונים', "lse", 0],
-		['last six edges&ltM,U&gt', "lsemu", 0],
+		['שישה אדג\'ים אחרונים &ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
 		['פלוס פתור', "f2l", 0],
 		['סלוט אחרון + שכבה אחרונה', "lsll2", 0],
@@ -193,7 +193,7 @@ var scrdata = [
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['בלי בלוקים', "222nb", 0]
 	]],
 	['4×4×4', [
 		["WCA", "444wca", -40],
@@ -213,28 +213,28 @@ var scrdata = [
 		['SiGN', "666si", 80],
 		['prefix', "666p", 80],
 		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['אדג\'ים 6×6×6', "6edge", 8]
 	]],
-	['7x7x7', [
+	['7×7×7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['אדג\'ים 7×7×7', "7edge", 8]
 	]],
-	['Clock', [
+	['שעון', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['רשמי', "clkwca", 0],
 		['optimal', "clko", 0],
-		['concise', "clkc", 0],
+		['קצר', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
-	['Megaminx', [
+	['מגהמינקס', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['גזר', "mgmc", 70],
+		['סגנון ישן', "mgmo", 70]
 	]],
-	['Pyraminx', [
+	['פיראמינקס', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
 		['random move', "pyrm", 25],
@@ -242,7 +242,7 @@ var scrdata = [
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
-	['Skewb', [
+	['סקיוב', [
 		["random state (WCA)", "skbso", 0],
 		['optimal', "skbo", 0],
 		['random move', "skb", 25],
@@ -254,10 +254,10 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===אחר===', [
 		['--', "blank", 0]
 	]],
-	['15 puzzle', [
+	['פאזל 15', [
 		['random state URLD', "15prp", 0],
 		['random state ^<>v', "15prap", 0],
 		['random state Blank', "15prmp", 0],
@@ -271,9 +271,9 @@ var scrdata = [
 		['random state Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
-		['2x3x3 (Domino)', "233", 25],
+		['1x3x3', "133", 0],
+		['2x2x3', "223", 0],
+		['2x3x3', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
 		['3x3x6', "336", 40],
@@ -301,7 +301,7 @@ var scrdata = [
 	['קוביית הליקופטר', [
 		[' ', "heli", 40]
 	]],
-	['Redi Cube', [
+	['קוביית רדי', [
 		['MoYu', "redim", 8],
 		['ישן', "redi", 20]
 	]],
@@ -335,7 +335,7 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['אחר', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+		['אוקטהדרון פאות', "fto", 25]
 	]],
 	['===מיוחד===', [
 		['--', "blank", 0]
@@ -348,28 +348,28 @@ var scrdata = [
 		['3-ג\'ן R,U,L', "3gen_L", 25],
 		['3-ג\'ן R,r,U', "RrU", 25],
 		['חצאי מהלכים בלבד', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+		['סלוט אחרון + שכבה אחרונה (ישן)', "lsll", 15]
 	]],
 	['Bandaged Cube', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
-	['Megaminx subsets', [
-		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
+	['קבוצות משנה של מגמינקס', [
+		['2-ג\'ן R,U', "minx2g", 30],
+		['סלוט אחרון + שכבה אחרונה', "mlsll", 20]
 	]],
-	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
-		['234 relay', "r234", 0],
-		['2345 relay', "r2345", 0],
-		['23456 relay', "r23456", 0],
-		['234567 relay', "r234567", 0],
-		['234 relay (WCA)', "r234w", 0],
-		['2345 relay (WCA)', "r2345w", 0],
-		['23456 relay (WCA)', "r23456w", 0],
-		['234567 relay (WCA)', "r234567w", 0]
+	['קוביות מרובות', [
+		['הרבה 3x3x3', "r3", 5],
+		['234', "r234", 0],
+		['2345', "r2345", 0],
+		['23456', "r23456", 0],
+		['2 - 7', "r234567", 0],
+		['234 (WCA)', "r234w", 0],
+		['2345 (WCA)', "r2345w", 0],
+		['23456 (WCA)', "r23456w", 0],
+		['2 - 7 (WCA)', "r234567w", 0]
 	]],
-	['===JOKES===', [
+	['===בדיחות===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -389,88 +389,88 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['סובב את הפאה העליונה', 'סובב את הפאה התחתונה'],
+	['סובב את הפאה הימנית', 'סובב את הפאה השמאלית'],
+	['סובב את הפאה הקדמית', 'סובב את הפאה האחורית']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
-var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
-var STATS_SSSTAT = '1-solve stat.';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
+var SCRAMBLE_NOOBSS = 'בכיוון השעון 90°,| נגד כיוון השעון 90°,| ב-180°';
+var STATS_CFM_RESET = 'אפס את כל הזמנית בסשן הזה?';
+var STATS_CFM_DELSS = 'מחק סשן [%s]?';
+var STATS_CFM_DELMUL = 'כמות הערכים המחוקים מהאינדקס הנוכחי?';
+var STATS_CFM_DELETE = 'למחוק את הזמן הזה?';
+var STATS_COMMENT = 'הערה';
+var STATS_REVIEW = 'ביקורת';
+var STATS_DATE = 'תאריך';
+var STATS_SSSTAT = 'סטטיסטיקות פתירה אחת';
+var STATS_CURROUND = 'נתוני סיבוב נוכחי';
+var STATS_CURSESSION = 'נתוני סשן נוכחי';
+var STATS_CURSPLIT = 'שלב %d של סטטיסטיקות הסשן הנוכחי';
+var STATS_EXPORTCSV = 'יצא CSV';
+var STATS_SSMGR_TITLE = 'מנהל הסשנים';
+var STATS_SSMGR_NAME = 'שם';
+var STATS_SSMGR_DETAIL = 'פרטי סשן';
+var STATS_SSMGR_OPS = 'שנה שם|הכן|פצל|שלב|מחק|סדר';
+var STATS_SSMGR_ORDER = 'סדר לפי בלגון';
+var STATS_SSMGR_ODCFM = 'סדר את כל הסשנים לפי בלגון?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
-var STATS_AVG = 'mean';
-var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
-var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
-var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:|solving from %s to %e|Totally spent: %d';
-var STATS_PREC = 'time distribution precision';
-var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var STATS_STATCLR = 'Enable session emptying';
+var STATS_ALERTMG = 'שלב את כל השמנים בסשן [%f] לסוף של סשן [%t]?';
+var STATS_PROMPTSPL = 'כמות הזמנים האחרונים הנחתכים מסשן [%s]?';
+var STATS_ALERTSPL = 'לחתוך או להשאיר לפחות זמן אחד?';
+var STATS_AVG = 'ממוצע';
+var STATS_SOLVE = 'פתירה';
+var STATS_TIME = 'זמן';
+var STATS_SESSION = 'סשן';
+var STATS_SESSION_NAME = 'ערוך שם סשן';
+var STATS_SESSION_NAMEC = 'שם הסשן החדש';
+var STATS_STRING = 'הכי טוב|עכשווי|הכי גרוע|יוצר על ידי csTimer ב%Y-%M-%D|פתירות/סך הכל: %d|סינגל|ממוצע של %mk| ממוצע של %mk| ממוצע: Average: %v{ (σ = %sgm)}|ממוצע: %v|רשימת זמנים:|פתירות מ%s עד %e|זמן סך הכל: %d';
+var STATS_PREC = 'דיוק פריסת זמנים';
+var STATS_PREC_STR = 'אוטומטי|0.1ש|0.2ש|0.5ש|1ש|2ש|5ש|10ש|20ש|50ש|100ש';
+var STATS_TYPELEN = 'רשימה %d סוג| רשימה %d אורך|ממוצע (בלי צדדים)|ממוצע';
+var STATS_STATCLR = 'להפעיל ריקון סשנים';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
-var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
+var STATS_XSESSION_DATE = 'כל תאריך|24 השעות האחרונות|ה-7 ימים האחרונים|החודש האחרון|השנה האחרונה';
+var STATS_XSESSION_NAME = 'כל שם';
+var STATS_XSESSION_SCR = 'כל ערבוב';
+var STATS_XSESSION_CALC = 'חשב';
+var STATS_RSFORSS = 'הראה סטטיסטיקות כשלוחצים על מספר פתירה';
+var PROPERTY_PRINTSCR = 'הראה ערבוב(ים) בסטטיסטיקות';
+var PROPERTY_PRINTDATE = 'הראה תאריך בסטטיסטיקות';
+var PROPERTY_SUMMARY = 'הראה סיכום לפני רשימת זמנים';
+var PROPERTY_IMRENAME = 'שנה שם סשן ישר אחרי יצירה';
+var PROPERTY_SCR2SS = 'תיצור סשן חדש כשמחליפים סוג ערבוב';
+var PROPERTY_SS2SCR = 'לשמר סוג ערבוב כשמחליפים סשן';
 var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators';
-var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
+var PROPERTY_STATINV = 'להפוך רשימת זמנים';
+var PROPERTY_STATAL = 'אינדקטורים סטטיסטיים';
+var PROPERTY_STATALU = 'אינדקטור סטטיסטי מותאם אישית';
+var PROPERTY_DELMUL = 'להפעיל מחיקה מרובה';
+var PROPERTY_TOOLSFUNC = 'הפונקציות שנבחרו';
+var PROPERTY_TRIM = 'כמות פתירות חתוכה מכל צד';
+var PROPERTY_TRIM_MED = 'חציון';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_IMPPREV = 'יבא מידע לא עדכני';
+var PROPERTY_AUTOEXP = 'יצוא אוטומטי (כל 100 פתירות)';
+var PROPERTY_AUTOEXP_OPT = 'אף פעם|לקובץ|עם משתמש csTimer|עם משתמש WCA';
+var PROPERTY_SCRASIZE = 'גודל ערבוב אוטומטי';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'display',
-	"color": 'color',
-	"timer": 'timer',
-	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools',
+	"kernel": 'גלובלי',
+	"ui": 'תצוגה',
+	"color": 'צבע',
+	"timer": 'טיימר',
+	"scramble": 'בלגון',
+	"stats": 'סטטיסטיקות',
+	"tools": 'כלים',
 	"vrc": 'virtual&<br>bluetooth'
 };
-var BGIMAGE_URL = 'please input image\'s url';
-var BGIMAGE_INVALID = 'invalid url';
-var BGIMAGE_OPACITY = 'background image opacity';
-var BGIMAGE_IMAGE = 'background image';
-var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
-var SHOW_AVG_LABEL = 'Show Avg Label';
+var BGIMAGE_URL = 'בבקשה תכניס את הurl של התמונה';
+var BGIMAGE_INVALID = 'כתובת אתר לא חוקית';
+var BGIMAGE_OPACITY = 'שקיפות תמונת רקע';
+var BGIMAGE_IMAGE = 'תמונת רקע';
+var BGIMAGE_IMAGE_STR = 'כלום|ידני|CCT';
+var SHOW_AVG_LABEL = 'הראה ממוצע מתחת לטיימר';
 var USE_LOGOHINT = 'Hint messages in logo';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var TOOLS_SCRGEN = 'מייצר ערבובים';
+var SCRGEN_NSCR = 'כמות ערבובים';
+var SCRGEN_PRE = 'קידומת';
+var SCRGEN_GEN = 'יצר ערבובים';

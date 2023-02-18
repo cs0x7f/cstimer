@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Fonction';
 var TOOLS_CROSS = 'Résoudre la croix';
 var TOOLS_EOLINE = 'Résoudre l\'EOLine';
 var TOOLS_ROUX1 = 'Résoudre 1er bloc Roux';
-var TOOLS_222FACE = 'Face 2x2x2';
+var TOOLS_222FACE = 'Face de 2x2x2';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'Image du mélange';
 var TOOLS_STATS = 'Statistiques';
@@ -65,14 +65,14 @@ var TOOLS_DISTRIBUTION = 'Répartition des temps';
 var TOOLS_TREND = 'Tendance des temps';
 var TOOLS_METRONOME = 'Métronome';
 var TOOLS_CFMTIME = 'Confirmer le temps';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Melange commun';
+var TOOLS_SOLVERS = 'Solveurs';
+var TOOLS_SYNCSEED = 'Mélange classique';
 var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_SYNCSEED_INPUT = 'Entrer un Seed';
+var TOOLS_SYNCSEED_30S = 'Utiliser un Seed de 30 sec';
+var TOOLS_SYNCSEED_HELP = 'Si activé, le mélange ne dépendra que du seed et des paramètres de mélange. En pratique, si deux joueurs utilisent le même seed, ils obtiendront les mêmes algorithmes de mélange.';
+var TOOLS_SYNCSEED_DISABLE = 'Désactiver le seed actuel ?';
+var TOOLS_SYNCSEED_INPUTA = 'Entrez une valeur (a-zA-Z0-9) en tant que seed';
 var OLCOMP_UPDATELIST = 'Mettre à jour la liste de compétition';
 var OLCOMP_VIEWRESULT = 'Voir le résultat';
 var OLCOMP_VIEWMYRESULT = 'Mon historique';
@@ -193,7 +193,7 @@ var scrdata = [
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Sans barre', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -399,7 +399,7 @@ var STATS_CFM_DELSS = 'Effacer la session [%s]?';
 var STATS_CFM_DELMUL = 'Nombre de valeurs effacées de l\'index en cours ?';
 var STATS_CFM_DELETE = 'Effacer ce temps ?';
 var STATS_COMMENT = 'Commentaire';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Évaluer';
 var STATS_DATE = 'Date';
 var STATS_SSSTAT = 'Statistiques pour 1 résolution.';
 var STATS_CURROUND = 'Statistiques de la moyenne';
@@ -412,7 +412,7 @@ var STATS_SSMGR_DETAIL = 'Détails de la session';
 var STATS_SSMGR_OPS = 'Renommer|Créer|Diviser|Fusionner|Supprimer|Trier';
 var STATS_SSMGR_ORDER = 'Classer par mélange';
 var STATS_SSMGR_ODCFM = 'Classer toutes les sessions par type de mélange?';
-var STATS_SSMGR_SORTCFM = '%d solution(s) vont être réordonnées, confirmer?';
+var STATS_SSMGR_SORTCFM = '%d résolution(s) vont être réordonnées. Confirmer ?';
 var STATS_ALERTMG = 'Déplacer tous les temps de la session [%f] à la fin de la session [%f]?';
 var STATS_PROMPTSPL = 'Nombre de temps à diviser de la session [%s] (en partant de la fin)?';
 var STATS_ALERTSPL = 'Il faut laisser au moins un temps, ou fusionner la session avec une autre';
@@ -449,7 +449,7 @@ var PROPERTY_TRIM = 'Nombre de résolutions coupés de chaque côté';
 var PROPERTY_TRIM_MED = 'Médiane';
 var PROPERTY_STKHEAD = 'Utiliser les informations sur l\'état du stackmat';
 var PROPERTY_HIDEFULLSOL = 'Montrer progressivement la solution';
-var PROPERTY_IMPPREV = 'Import non-latest data';
+var PROPERTY_IMPPREV = 'Importer d\'anciennes données';
 var PROPERTY_AUTOEXP = 'Exportation automatique (par 100 résolutions)';
 var PROPERTY_AUTOEXP_OPT = 'Jamais|Fichier|ID csTimer|Compte WCA';
 var PROPERTY_SCRASIZE = 'Taille du mélange automatique';

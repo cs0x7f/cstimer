@@ -14,18 +14,18 @@ var PROPERTY_VOICEINS = 'röstvarning av WCA inspekton';
 var PROPERTY_VOICEINS_STR = 'ingen|manlig röst|kvinnlig röst';
 var PROPERTY_VOICEVOL = 'Röstvolym';
 var PROPERTY_PHASES = 'flera faser';
-var PROPERTY_TIMERSIZE = 'timerstorlek';
-var PROPERTY_USEMILLI = 'använd millisekunder';
-var PROPERTY_SMALLADP = 'använd små tecken efter decimaltecknet';
-var PROPERTY_SCRSIZE = 'blandningsstorlek';
-var PROPERTY_SCRMONO = 'fastbredd blandning';
+var PROPERTY_TIMERSIZE = 'Timerstorlek';
+var PROPERTY_USEMILLI = 'Använd millisekunder';
+var PROPERTY_SMALLADP = 'Använd små tecken efter decimaltecknet';
+var PROPERTY_SCRSIZE = 'Blandningsstorlek';
+var PROPERTY_SCRMONO = 'Fastbredd blandning';
 var PROPERTY_SCRLIM = 'Begränsa höjden av blandningsområdet';
 var PROPERTY_SCRALIGN = 'Anpassning av blandningsområdet';
 var PROPERTY_SCRALIGN_STR = 'Mitten|Vänster|Höger';
 var PROPERTY_SCRFAST = 'Använd snabb blandning för 4x4x4 (ej officiell)';
 var PROPERTY_SCRKEYM = 'Markeringsnyckeln flyttas i blandning';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Händelse vid tryckning på blanda';
+var PROPERTY_SCRCLK_STR = 'Ingen|Kopiera|Nästa blandning';
 var PROPERTY_WNDSCR = 'Blandningspanel display stil';
 var PROPERTY_WNDSTAT = 'Statistikspanel display stil';
 var PROPERTY_WNDTOOL = 'Verktygspanel display stil';
@@ -48,56 +48,56 @@ var EXPORT_LOGINGGL = 'Logga in med Google-konto';
 var EXPORT_LOGINWCA = 'Logga in med WCA-konto';
 var EXPORT_LOGOUTCFM = 'Bekräfta att logga ut?';
 var EXPORT_LOGINAUTHED = 'Godkänd<br>hämtar data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
-var BUTTON_SCRAMBLE = 'BLA<br>NDA';
+var IMPORT_FINAL_CONFIRM = 'Detta kommer att överskrida all lokal data! Det kommer att ändra %d sessioner,  lägga till %a och ta bort %r lösningar åtminstone. Bekräfta att importera data?';
+var BUTTON_SCRAMBLE = 'BLAN<br>NING';
 var BUTTON_TOOLS = 'VERKTYG';
 var IMAGE_UNAVAILABLE = 'Inte tillgänglig för den här blandningstypen';
 var TOOLS_SELECTFUNC = 'Funktion';
-var TOOLS_CROSS = 'lös kors';
-var TOOLS_EOLINE = 'lös EOLine';
-var TOOLS_ROUX1 = 'lös Roux S1';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_CROSS = 'Kors';
+var TOOLS_EOLINE = 'EOLine';
+var TOOLS_ROUX1 = 'Roux S1';
+var TOOLS_222FACE = '2x2x2 sida';
 var TOOLS_GIIKER = 'Giiker Cube';
-var TOOLS_IMAGE = 'rita blandning';
+var TOOLS_IMAGE = 'Bild på blandning';
 var TOOLS_STATS = 'Statistik';
 var TOOLS_HUGESTATS = 'kors-session statistik';
-var TOOLS_DISTRIBUTION = 'tidsfördelning';
-var TOOLS_TREND = 'tidsutveckling';
-var TOOLS_METRONOME = 'metronom';
+var TOOLS_DISTRIBUTION = 'Tidsfördelning';
+var TOOLS_TREND = 'Tidsutveckling';
+var TOOLS_METRONOME = 'Metronom';
 var TOOLS_CFMTIME = 'Bekräfta tid';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_SOLVERS = 'Lösare';
+var TOOLS_SYNCSEED = 'Vanlig blandning';
+var TOOLS_SYNCSEED_SEED = 'Frö';
+var TOOLS_SYNCSEED_INPUT = 'Mata in frö';
+var TOOLS_SYNCSEED_30S = 'Använd 30s frö';
+var TOOLS_SYNCSEED_HELP = 'Om aktiverad, kommer blandningen bero på frö- och blandningsinställningar. Generellt sett, om två spelare dekar ett frö, kommer de att för samma blandningar.';
+var TOOLS_SYNCSEED_DISABLE = 'Inaktivera nuvarande frö?';
+var TOOLS_SYNCSEED_INPUTA = 'Ange ett värde (a-zA-Z0-9) som frö';
 var OLCOMP_UPDATELIST = 'Uppdatera tävlingslista';
 var OLCOMP_VIEWRESULT = 'Visa resultat';
-var OLCOMP_VIEWMYRESULT = 'My History';
+var OLCOMP_VIEWMYRESULT = 'Min historik';
 var OLCOMP_START = 'Starta!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Lämna in som: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
+var OLCOMP_SUBMIT = 'Skicka in!';
+var OLCOMP_SUBMITAS = 'Skicka in som: ';
+var OLCOMP_WCANOTICE = 'Skicka in som ditt WCA-konto? (Logga in på nytt om den inte känns igen efter inlämning)';
 var OLCOMP_OLCOMP = 'Onlinetävling';
 var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Jag';
 var OLCOMP_WCAACCOUNT = 'WCA Konto';
 var OLCOMP_ABORT = 'Avbryt tävlingen och visa resultat?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_WITHANONYM = 'Med Anonym';
 var PROPERTY_IMGSIZE = 'Blandningsbildstorlek';
-var TIMER_INSPECT = 'inspektera';
-var TIMER_SOLVE = 'lös';
-var PROPERTY_USEMOUSE = 'använd mus timer';
-var PROPERTY_TIMEU = 'timeruppdateringen är';
+var TIMER_INSPECT = 'Inspektera';
+var TIMER_SOLVE = 'Lös';
+var PROPERTY_USEMOUSE = 'Använd mustimer';
+var PROPERTY_TIMEU = 'Timeruppdateringen är';
 var PROPERTY_TIMEU_STR = 'uppdatera|0.1s|sekunder|inspektion|ingen';
-var PROPERTY_PRETIME = 'tid för att hålla mellanslagstangenten nere(sekund(er))';
-var PROPERTY_ENTERING = 'ange tider med';
+var PROPERTY_PRETIME = 'Tid för att hålla mellanslagstangenten nere(sekund(er))';
+var PROPERTY_ENTERING = 'Ange tider med';
 var PROPERTY_ENTERING_STR = 'timer|skriv|stackmat|MoYu timer|virtuell|Bluetooth|qCube';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
+var PROPERTY_INTUNIT = 'Enhet vid inmatning av heltal';
 var PROPERTY_INTUNIT_STR = 'sekund|centisekund|millisekund';
-var PROPERTY_COLOR = 'välj färgtema';
+var PROPERTY_COLOR = 'Välj färgtema';
 var PROPERTY_COLORS = 'teckensnitt färg|bakgrunden färg|styrelsen färg|knappen färg|länk färg|Logo färg|logotyp bakgrund färg';
 var PROPERTY_VIEW = 'UI stil är';
 var PROPERTY_VIEW_STR = 'Auto|Mobil|Dator';
@@ -106,21 +106,21 @@ var PROPERTY_UIDESIGN_STR = 'Normal|Materialdesign|Normal m/u skuggor|Materialde
 var COLOR_EXPORT = 'Vänligen spara strängen för importering';
 var COLOR_IMPORT = 'Vänligen ange strängen som ska exporteras';
 var COLOR_FAIL = 'Felaktig data, importering misslyckad';
-var PROPERTY_FONTCOLOR_STR = 'svart|vit';
+var PROPERTY_FONTCOLOR_STR = 'Svart|Vit';
 var PROPERTY_COLOR_STR = 'manuell|importera/exportera...|random|stil1|stil2|stil3|svart|vit|stil6|soliserat mörkt|soliserat ljus';
-var PROPERTY_FONT = 'använd timerns teckensnitt';
+var PROPERTY_FONT = 'Timerns teckensnitt';
 var PROPERTY_FONT_STR = 'slumpmässig digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'tidsformat';
+var PROPERTY_FORMAT = 'Tidsformat';
 var PROPERTY_USEKSC = 'använd tangentborsgenväg';
-var PROPERTY_NTOOLS = 'antal verktyg';
-var PROPERTY_AHIDE = 'Göm alla element när timern tar tid';
+var PROPERTY_NTOOLS = 'Antal verktyg';
+var PROPERTY_AHIDE = 'Göm allt när timern tar tid';
 var SCRAMBLE_LAST = 'senaste';
 var SCRAMBLE_NEXT = 'nästa';
 var SCRAMBLE_SCRAMBLE = ' blandning';
 var SCRAMBLE_LENGTH = 'längd';
-var SCRAMBLE_INPUT = 'Skriv in Blandning(ar)';
+var SCRAMBLE_INPUT = 'Mata in Blandning(ar)';
 var PROPERTY_VRCSPEED = 'VRC bashastighet (tps)';
-var PROPERTY_VRCMP = 'flera faser';
+var PROPERTY_VRCMP = 'Flera faser';
 var PROPERTY_VRCMPS = 'Ingen|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Visa virtuell Giiker cube';
 var PROPERTY_GIISOK_DELAY = 'Markera blandad om stannat på blandat i antal sekunder';
@@ -132,7 +132,7 @@ var PROPERTY_GIISBEEP = 'Pip när blandning markeras';
 var PROPERTY_GIIRST = 'Återställ Giiker cube när den är ansluten';
 var PROPERTY_GIIRSTS = 'Alltid|Prompt|Aldrig';
 var CONFIRM_GIIRST = 'Återställ Giiker cube när den är löst?';
-var PROPERTY_GIIAED = 'Automatisk identifiering av hårdvarafel';
+var PROPERTY_GIIAED = 'Automatisk identifiering av maskinvarufel';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -162,8 +162,8 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["Slumpmässigt tillstånd (WCA)", "333", 0],
+		['Slumpmässigt drag', "333o", 25],
 		['3x3x3 för nybörjare', "333noob", 25],
 		['endast kanter', "edges", 0],
 		['endast hörn', "corners", 0],
@@ -186,14 +186,14 @@ var scrdata = [
 		['3x3 ft', "333ft", 0]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["Slumpmässigt tillstånd (WCA)", "222so", 0],
+		['Optimal', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Ingen bar', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -225,7 +225,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['Optimal', "clko", 0],
 		['koncis', "clkc", 0],
 		['effektiv pinordning', "clke", 0]
 	]],
@@ -235,21 +235,21 @@ var scrdata = [
 		['gammal stil', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		["Slumpmässigt tillstånd (WCA)", "pyrso", 10],
+		['Optimal', "pyro", 0],
+		['Slumpmässigt drag', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		["Slumpmässigt tillstånd (WCA)", "skbso", 0],
+		['Optimal', "skbo", 0],
+		['Slumpmässigt drag', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["Slumpmässigt tillstånd (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
@@ -258,17 +258,17 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['15 pussel', [
-		['random state URLD', "15prp", 0],
-		['random state ^<>v', "15prap", 0],
-		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+		['Slumpmässigt tillstånd URLD', "15prp", 0],
+		['Slumpmässigt tillstånd ^<>v', "15prap", 0],
+		['Slumpmässigt tillstånd Blank', "15prmp", 0],
+		['Slumpmässigt drag URLD', "15p", 80],
+		['Slumpmässigt drag ^<>v', "15pat", 80],
+		['Slumpmässigt drag Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
-		['random state URLD', "8prp", 0],
-		['random state ^<>v', "8prap", 0],
-		['random state Blank', "8prmp", 0]
+		['Slumpmässigt tillstånd URLD', "8prp", 0],
+		['Slumpmässigt tillstånd ^<>v', "8prap", 0],
+		['Slumpmässigt tillstånd Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
@@ -285,9 +285,9 @@ var scrdata = [
 		['NxNxN', "cubennn", 12]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['Slumpmässigt tillstånd', "gearso", 0],
+		['Optimal', "gearo", 0],
+		['Slumpmässigt drag', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -306,9 +306,9 @@ var scrdata = [
 		['gammal', "redi", 20]
 	]],
 	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+		['Slumpmässigt tillstånd', "ivyso", 0],
+		['Optimal', "ivyo", 0],
+		['Slumpmässigt drag', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -394,14 +394,14 @@ var SCRAMBLE_NOOBST = [
 	['vrid den främsta sidan', 'vrid den bakre sidan']
 ];
 var SCRAMBLE_NOOBSS = ' medurs med 90 grader,| moturs med 90 grader,| med 180 grader';
-var STATS_CFM_RESET = 'återställ alla tider i den här sessionen?';
-var STATS_CFM_DELSS = 'ta bort sessioner [%s]?';
+var STATS_CFM_RESET = 'Återställ alla tider i den här sessionen?';
+var STATS_CFM_DELSS = 'Ta bort sessioner [%s]?';
 var STATS_CFM_DELMUL = 'Antalet borttagna värden från nuvarande Index?';
-var STATS_CFM_DELETE = 'ta bort den här tiden?';
-var STATS_COMMENT = 'Komentera';
-var STATS_REVIEW = 'Review';
+var STATS_CFM_DELETE = 'Ta bort den här tiden?';
+var STATS_COMMENT = 'Kommentar';
+var STATS_REVIEW = 'Granksa';
 var STATS_DATE = 'Datum';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_SSSTAT = 'Lösningens statistik';
 var STATS_CURROUND = 'Nuvarande rundas statistik';
 var STATS_CURSESSION = 'Nuvarande sessionsstatistik';
 var STATS_CURSPLIT = 'Fas %d av nuvarande sessionsstatistik';
@@ -410,65 +410,65 @@ var STATS_SSMGR_TITLE = 'Sessionshanterare';
 var STATS_SSMGR_NAME = 'Namn';
 var STATS_SSMGR_DETAIL = 'Sessionsdetaljer';
 var STATS_SSMGR_OPS = 'Döpa|Skapa|Dela|Sammanfoga|Radera|Sort';
-var STATS_SSMGR_ORDER = 'Ordning av blandning';
-var STATS_SSMGR_ODCFM = 'Sortera alla sessioner genom blandning?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_ORDER = 'Sortera efter blandning';
+var STATS_SSMGR_ODCFM = 'Sortera alla sessioner efter blandning?';
+var STATS_SSMGR_SORTCFM = '%d Lösning(ar) kommer att bli omårdnad(e)';
 var STATS_ALERTMG = 'Sammanfoga alla tider i sessionen [%f] till slutet av sessionen [%t]?';
 var STATS_PROMPTSPL = 'Antal senaste tider delade från sessionen [%s]?';
-var STATS_ALERTSPL = 'Borde delas eller lämnas 1 gång';
+var STATS_ALERTSPL = 'Bör delas eller lämnas 1 gång';
 var STATS_AVG = 'mean';
 var STATS_SOLVE = 'lösning';
 var STATS_TIME = 'tid';
 var STATS_SESSION = 'Session';
 var STATS_SESSION_NAME = 'Redigera sessionsnamn';
-var STATS_SESSION_NAMEC = 'Namnet på den nya sessionen';
+var STATS_SESSION_NAMEC = 'Namn på den nya sessionen';
 var STATS_STRING = 'bästa|nuvarande|sämsta|Genererad av csTimer %Y-%M-%D|lösningar/totalt: %d|enda|mean of %mk|avg of %mk| Average: %v{ (σ = %sgm)}| Mean: %v|Tidslista|löser från %s till %e|Totalt spenderat: %d';
 var STATS_PREC = 'tidsfördelningsprecision';
 var STATS_PREC_STR = 'automatisk|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'lista %d typ|lista %d längd|average|mean';
+var STATS_TYPELEN = 'Lista %d typ|Lista %d längd|Average|Mean';
 var STATS_STATCLR = 'Aktivera tömning av sessionen';
 var STATS_ABSIDX = 'Visa absolut index i statistikrapporten';
 var STATS_XSESSION_DATE = 'vilket datum som helst|senaste 24 timmarna|senaste 7 dagarna|senaste 30 dagarna|senaste 365 dagarna';
-var STATS_XSESSION_NAME = 'vilket namn som helst';
-var STATS_XSESSION_SCR = 'vilken blandning som helst';
+var STATS_XSESSION_NAME = 'något namn';
+var STATS_XSESSION_SCR = 'någon blandning';
 var STATS_XSESSION_CALC = 'Kalkyl';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
-var PROPERTY_PRINTSCR = 'skriv ut blandning(ar) i statistik';
-var PROPERTY_PRINTDATE = 'skriv ut lösningens datum i statistik';
-var PROPERTY_SUMMARY = 'visa sammanfattning före tidslistan';
-var PROPERTY_IMRENAME = 'namnge session omedelbart efter skapande';
-var PROPERTY_SCR2SS = 'skapa ny session när ny blandningstyp väljs';
-var PROPERTY_SS2SCR = 'återställ blandningstyp när session byts';
-var PROPERTY_SS2PHASES = 'återställ flerfastidtagning vid växling av session';
+var STATS_RSFORSS = 'Visa statistik. när du klickar lös nummer';
+var PROPERTY_PRINTSCR = 'Visa blandning(ar) i statistik';
+var PROPERTY_PRINTDATE = 'Visa lösningens datum i statistik';
+var PROPERTY_SUMMARY = 'Visa sammanfattning före tidslistan';
+var PROPERTY_IMRENAME = 'Namnge session omedelbart efter skapande';
+var PROPERTY_SCR2SS = 'Skapa ny session vid växling av blandningstyp';
+var PROPERTY_SS2SCR = 'Återställ blandningstyp vid byte av session';
+var PROPERTY_SS2PHASES = 'Återställ flerfastidtagning vid växling av session';
 var PROPERTY_STATINV = 'Omvänd tidslista';
 var PROPERTY_STATAL = 'Statistiska indikatorer';
 var PROPERTY_STATALU = 'Anpassad statistiskindikator';
-var PROPERTY_DELMUL = 'Aktivera flera raderingar';
+var PROPERTY_DELMUL = 'Aktivera flera borttagningar';
 var PROPERTY_TOOLSFUNC = 'Valda Funktioner';
 var PROPERTY_TRIM = 'Antal lösningar trimmade på varje sida';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Använd Stackmatstatusinformation';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_HIDEFULLSOL = 'Visa lösning proggressivt';
+var PROPERTY_IMPPREV = 'Importera icke-senaste data';
+var PROPERTY_AUTOEXP = 'Automatisk exportering (per 100 lösningar)';
+var PROPERTY_AUTOEXP_OPT = 'Aldrig|Till fil|Med csTimer ID|Med WCA konot';
+var PROPERTY_SCRASIZE = 'Automatisk blandningsstorlek';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'visa',
-	"color": 'färg',
-	"timer": 'timer',
-	"scramble": 'blanda',
-	"stats": 'statistik',
-	"tools": 'verktyg',
-	"vrc": 'virtuell&<br>Giiker'
+	"kernel": 'Global',
+	"ui": 'Display',
+	"color": 'Färg',
+	"timer": 'Timer',
+	"scramble": 'Blandning',
+	"stats": 'Statistik',
+	"tools": 'Verktyg',
+	"vrc": 'Virtuell&<br>Giiker'
 };
-var BGIMAGE_URL = 'vänligen skriv in bildens webbadress';
-var BGIMAGE_INVALID = 'ogiltig webbsida';
-var BGIMAGE_OPACITY = 'bakgrundsbildens opacitet';
-var BGIMAGE_IMAGE = 'bakgrundsbild';
-var BGIMAGE_IMAGE_STR = 'ingen|manuell|CCT';
-var SHOW_AVG_LABEL = 'Visa avergage markering';
+var BGIMAGE_URL = 'Vänligen skriv in bildens URL';
+var BGIMAGE_INVALID = 'Ogiltig URL';
+var BGIMAGE_OPACITY = 'Bakgrundsbildens opacitet';
+var BGIMAGE_IMAGE = 'Bakgrundsbild';
+var BGIMAGE_IMAGE_STR = 'Ingen|Manuell|CCT';
+var SHOW_AVG_LABEL = 'Visa average markering';
 var USE_LOGOHINT = 'Tipsmeddelanden i logotypen';
 var TOOLS_SCRGEN = 'Blandningsgenerator';
 var SCRGEN_NSCR = 'Antal blandningar';

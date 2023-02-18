@@ -1,46 +1,44 @@
-<h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
+<h1>csTimer version <?php echo $version;?> - Professionel Speedcubing/Trænings stopur</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
-<p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
+<h2>Introduktion</h2>
+<p>csTimer er et professionelt stopur designet til hurtigløsere af professorterninger, der giver:</p>
 <ul>
-<li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
-<li>Plenty of statistics functions, it supports <strong>time-split timing</strong>; <strong>Any number of sessions</strong>, session split/merge, etc.</li>
-<li>Varieties of solver, such as <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, for learning or training these sub steps.</li>
-<li>Other auxiliary tools, such as scramble image, 8-second inspection (voice) alert, metronome, batch-scramble generator, etc.</li>
-<li>Backup function, For avoiding data missing, you can backup your solves to local files, csTimer's server or Google storage.</li>
+<li>Mængden af blandingsalgoritmer, herunder <strong>alle WCA-officielle begivenheder</strong>varianter af specielle terninger, <strong>træningsbladninger</strong> for specifikke deltrin (f. eks. . <strong>F2L, OLL, PLL, ZBLL</strong>, og kan filtrere tilfælde) osv.</li>
+<li>Mange statistikfunktioner, understøttelse af <strong>tidsdelt tiddstagning</strong>; <strong>Uendeligt antal sessioner</strong>, sessions-opdeling/sammenskædning osv.</li>
+<li>Adskillelige muligheder, som <strong>Kryds, Xkryds, 2x2x2 side, Skæv side, SQ1 form</strong>, for læring eller træning af disse deltring</li>
+<li>Andre tillægsværktøj, som for eksempel blandingsbillede, 8-sekunders inspektion (stemme) advarsel, metronom, parti-blandingsgenerator osv.</li>
+<li>Backup funktion, For at undgå manglende data, kan du sikkerhedskopiere dine løsninger til lokale filer, csTimers' servere eller Google.</li>
 </ul>
-<p>csTimer supports most of modern desktop browsers, on mobile phone and tablet PC, you can add csTimer to your home screen, and it will work as a native APP.</p>
-<p>csTimer takes advantage of browser cache, which consumes traffic only when you open it for the first time, after that, csTimer is able to work without network connection (except for functions like backup)</p>
-<h3>Copyright</h3>
-<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues">here</a></p>
-<p>Written by: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
-<p>UI designed by: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
-<h2>Basic functions</h2>
+<p>csTimer understøtter de fleste moderne browsere, på mobiltelefon og tablet, du kan tilføje csTimer til din startskærm, og det vil fungere som en integreret APP.</p>
+<p>csTimer udnytter browser-cache, som kun bruger trafik, når du åbner den for første gang. Derefter er csTimer i stand til at arbejde uden netværksforbindelse (undtagen funktioner som backup)</p>
+<h3>Ophavsret</h3>
+<p>csTimer er open source software, der følger GPLv3. Hvis du har forslag eller kommentarer til csTimer, bedes du indsende dem <a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">her</a></p>
+<p>Skrevet af: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
+<p>UI designet af: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@ 126.com)</a></p>
+<h2>Basis funktioner</h2>
 <ul>
-<li><strong>How to start timing</strong> - Hold the space bar (or both of left and right Ctrl keys, or touch the screen on mobile devices) and wait for the timer to turn green, the timer will start timing once the space bar is released, press any key to stop timing and the solving time will be record.</li>
-<li><strong>UI description</strong> - There are 6 buttons near the logo of csTimer: option, export, scramble, list times, donate, tools, click on the <strong>scramble</strong>, <strong>list times</strong>, <strong>tool</strong> to open the corresponding function panel.</li>
-<li><strong>Scramble panel</strong> - In the Scramble panel, you can select scramble type, set scramble length and case filter (if available), review previous scramble, generate next scramble.</li>
-<li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
-<li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
+<li><strong>Hvordan starter du tidstagning</strong> - Hold mellemrumstasten (eller både venstre og højre CTRL taster, eller rør skærmen på mobile enheder) og vent på, at tiden bliver grøn. Stopuret vil starte når mellemrumstasten er sluppet. Tryk på en hvilken som helst tast for at stoppe tiden og løsningstiden vil være registreret.</li>
+<li><strong>UI beskrivelse</strong> - Der er 6 knapper nær logoet af csTimer: Valg, eksport, blanding, list tider, doner, værktøj, klik på <strong>blanding</strong>, <strong>list tider</strong>, <strong>værktøj</strong> for at åbne det tilsvarende funktionspanel.</li>
+<li><strong>Blandings panel</strong> - I blandingspanelet, kan du vælge blandingstype, sætte blandingslængde og tilfælde-filter (hvis tilgængeligt), gennemgå tidligere blandinger generere næste blandning.</li>
+<li><strong>Listetider panel</strong> - I tidslistepanel, kan du åbne sessioner ved at klikke "Session", vælge/tilføje/slette session, tøm session med knappen ved siden af, så du kan se nuværende enkelt/gennemsnit, bedste enkelt/gennemsnit, og hele tidslisten.</li>
+<li><strong>Værktøjspanel</strong> - I værktøjspanelet kan du vælge specifikke hjælpefunktioner, herunder blandingsbillede, blandingsgeneratorer, løsere, andre former for statistik osv.</li>
 </ul>
-<h2>Keyboard shortcut</h2>
+<h2>Genvejstaster</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7.</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb.</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input.</td></tr>
-<tr><th>Alt + d</th><td>Remove all times in current session.</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest time.</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session.</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
+<tr><th>Tast</th><td>Funktion</td></tr>
+<tr><th>Alt + 1</th><td>Blandingstype Firkant-1.</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Blandingstype 2x2x2~7x7x7.</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Blandingstype pyra/megaminx/ur/skewb.</td></tr>
+<tr><th>Alt + i</th><td>Blandingstype input.</td></tr>
+<tr><th>Alt + d</th><td>Fjern alle tider i den aktuelle session.</td></tr>
+<tr><th>Alt+Z</th><td>Fjern den seneste tid.</td></tr>
+<tr><th>Alt + ↑/↓</th><td>Til næste/sidste session.</td></tr>
+<tr><th>Alt + ←/→</th><td>Vis sidste/næste blanding.</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>Den sidste tid er OK/+2/DNF</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
+<tr><th colspan=10>Virtuel Terning Nøglekort</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
 <td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
 </tr><tr>
@@ -55,120 +53,120 @@
 </tr>
 </table>
 
-<h2>Option details</h2>
+<h2>Detaljer omkring indstillinger</h2>
 <ul>
-<li><strong data="opt_ahide">Gem alle elementer når du tager tid</strong>. Hide logo and all panels when timing.</li>
-<li><strong data="opt_useMilli">brug millisekunder</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
-<li><strong data="opt_timeFormat">tids format</strong>. Time format to display.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
-<li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
-<li><strong data="opt_showAvg">Vis Gns Etiket</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
-<li><strong data="opt_zoom">Zoom</strong>. You can adjust sizes of all elements by this option.</li>
-<li><strong data="opt_font">Vælg timerens font</strong>. Font of the main timer.</li>
-<li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
-<li><strong data="opt_view">UI stil er</strong>. Switch between desktop and mobile views.</li>
-<li><strong data="opt_wndScr">Scramble panel display style</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Statistics panel display style</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Tools panel display style</strong>. Make tool panel embedded into background.</li>
-<li><strong data="opt_bgImgO">baggrunds billede gennemsigtigheds</strong>. Opacity of the background image.</li>
-<li><strong data="opt_bgImgS">baggrunds billede</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
-<li><strong data="opt_timerSize">timer størrelse</strong>. Set the size of main timer.</li>
-<li><strong data="opt_smallADP">brug lille font efter decimal punkt</strong>. Use a smaller font size after the digital point in main timer.</li>
-<li><strong data="opt_useMouse">Brug musetimer</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
-<li><strong data="opt_useIns">brug WCA inspektion</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
-<li><strong data="opt_voiceIns">stemme advarsel af WCA inspektion</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
-<li><strong data="opt_voiceVol">Voice volume</strong>. Voice level of the alert above.</li>
-<li><strong data="opt_input">Put tid ind med</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
-<li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
-<li><strong data="opt_timeU">Timer opdatering er</strong>. How timer is updated when timing.</li>
-<li><strong data="opt_preTime">Tid at holde mellemrumsknappen inde(sekunder(s))</strong>. How long the space bar should be held before the timer turns green.</li>
-<li><strong data="opt_phases">multi-fase</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
-<li><strong data="opt_scrSize">blanding størrelse</strong>. Size of the scramble text.</li>
-<li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
-<li><strong data="opt_scrMono">monospaced blanding</strong>. Use monospaced font for scramble text.</li>
-<li><strong data="opt_scrLim">Begræns højden af blandings området</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
-<li><strong data="opt_scrAlign">Justering af blandings området</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
-<li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
-<li><strong data="opt_scrFast">Using fast scramble for 4x4x4 (non-official)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
-<li><strong data="opt_scrKeyM">Label key move(s) in scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
-<li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
-<li><strong data="opt_trim">Number of solves trimmed at each side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
-<li><strong data="opt_statsum">vis sammendrag inden tidslisten</strong>. Show the statistics table before time list.</li>
-<li><strong data="opt_printScr">print blanding(erne) i statistikker</strong>. Print scramble in round statistics dialog.</li>
-<li><strong data="opt_printDate">print solving date in statistics</strong>. Print solving date in round statistics dialog.</li>
-<li><strong data="opt_imrename">omdøb session umiddelbart efter oprettelsen</strong>. Immediately rename a session after creating it.</li>
-<li><strong data="opt_scr2ss">Opret ny session, når du skifter blandings type</strong>. When switching scramble type, a new session will be created.</li>
-<li><strong data="opt_statinv">Inverse time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
-<li><strong data="opt_statclr">Enable session emptying</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
-<li><strong data="opt_absidx">Show absolute index in statistics report</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
-<li><strong data="opt_statal">Statistiske indikatorer</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
-<li><strong data="opt_delmul">Tillad flere sletninger</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
-<li><strong data="opt_disPrec">tidsfordeling præcision</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
-<li><strong data="opt_imgSize">Blandings billed størrelse</strong>. Set the size of scramble image.</li>
-<li><strong data="opt_NTools">nummer af værktøj</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">brug tastatur genvej</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
-<li><strong data="opt_vrcSpeed">VRC base speed (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
-<li><strong data="opt_vrcMP">multi-phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiVRC">Show virtual bluetooth cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
-<li><strong data="opt_giiSD">Mark scrambled if stay</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
-<li><strong data="opt_giiSK">Mark scrambled with spacebar</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
-<li><strong data="opt_giiSM">Mark scrambled by doing</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
-<li><strong data="opt_giiBS">Beep when mark scrambled</strong>. Beep when some of scramble-finish signal is triggered.</li>
-<li><strong data="opt_giiRST">Reset bluetooth cube when connect</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Auto hardware error detection</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_ahide">Gem alle elementer når du tager tid</strong>. Skjul logo og alle paneler under tidstagning.</li>
+<li><strong data="opt_useMilli">brug millisekunder</strong>. Vis millisekund, uanset om det er kontrolleret, nøjagtigheden af csTimer er 1 millisekund.</li>
+<li><strong data="opt_timeFormat">tids format</strong>. Tidsformat der skal vises.</li>
+<li><strong data="opt_atexpa">Auto Export (per 100 løsning)</strong>. Hvis ifyldt, vil csTimer automatisk eksportere løsningerne pr. 100 løsning til det angivne sted, lokal fil, csTimer server eller Google Storage.</li>
+<li><strong data="opt_expp">Importer ikke-seneste data</strong>. Hvis du har uploadet flere sikkerhedskopier, kan du importere fra en af de til 10 senest uploadede sikkerhedskopier, hvis du ved et uheld uploader en tom backup, vil denne indstilling hjælpe dig med at hente dine løsninger.</li>
+<li><strong data="opt_useLogo">Tip beskeder i logo</strong>. csTimers Logo vil fungere som et displaypanel, der anmoder om en række oplysninger, du kan være interesseret i, såsom at slå din personlige rekord.</li>
+<li><strong data="opt_showAvg">Vis Gns Etiket</strong>. To linjer af etiketter er vist under stopuret, de nuværende to gennemsnit, som standard; ao5 og ao12.</li>
+<li><strong data="opt_zoom">Zoom</strong>. Du kan med denne indstilling, justere størrelser af alle elementer.</li>
+<li><strong data="opt_font">Vælg timerens font</strong>. Skrifttype for stopuret.</li>
+<li><strong data="opt_uidesign">UI design er</strong>. Du kan med denne indstilling ændre UI design til materiale-lignende eller skjule skygger.</li>
+<li><strong data="opt_view">UI stil er</strong>. Skift mellem skrivebords- og mobilvisning.</li>
+<li><strong data="opt_wndScr">Blandingspanel visuelle stil</strong>. Gør blandingspanel indlejret.</li>
+<li><strong data="opt_wndStat">Statistikpanel visuelle stil</strong>. Gør tidslistepanel indlejret.</li>
+<li><strong data="opt_wndTool">Værktøjpanels visuelle stil</strong>. Gør værktøjsspanel indlejret.</li>
+<li><strong data="opt_bgImgO">baggrunds billede gennemsigtigheds</strong>. Gennemsigtighed af baggrundsbilledet.</li>
+<li><strong data="opt_bgImgS">baggrunds billede</strong>. Du kan vælge dit eget billede som baggrundsbillede, dog kun fra https webadresser, på grund af sikkerhedskravet i browseren.</li>
+<li><strong data="opt_timerSize">timer størrelse</strong>. Indstil størrelsen på stopuret.</li>
+<li><strong data="opt_smallADP">brug lille font efter decimal punkt</strong>. Brug en mindre skriftstørrelse for decimaler i stopuret.</li>
+<li><strong data="opt_useMouse">Brug musetimer</strong>. Brug musen til at starte stopuret, genvejstaster vil også være tilgængelig.</li>
+<li><strong data="opt_useIns">brug WCA inspektion</strong>. Aktiver WCA inspektion procedure, som er en 15-sekunders nedtælling, automatisk +2/DNF straf vil også være aktiveret, hvis du inspicerer i mere end 15 sekunder.</li>
+<li><strong data="opt_voiceIns">stemme advarsel af WCA inspektion</strong>. Advarsel ved 8/12'erne af inspektion, for at simulere advarsel fra dommer i WCA-konkurrencer.</li>
+<li><strong data="opt_voiceVol">Stemme lydstyrke</strong>. Stemmeniveau af førnævnte advarsel.</li>
+<li><strong data="opt_input">Put tid ind med</strong>. csTimer er i stand til at tilføje løsninger på flere måder; Manuelt input, Automatisk optagelse via et stackmat-ur, oprette forbindelse til en bluetooth terning eller virtuel professor terning, keyboard stopur.</li>
+<li><strong data="opt_intUN">Enhed ved indtastning af heltal</strong>. Måleenheden når du indtaster et heltal XXX i input-boksen (sekunder, centisekunder eller millisekunder)?</li>
+<li><strong data="opt_timeU">Timer opdatering er</strong>. Hvordan stopuret opdateres under tidstagning.</li>
+<li><strong data="opt_preTime">Tid at holde mellemrumsknappen inde(sekunder(s))</strong>. Hvor længe mellemrumstasten skal holdes før stopuret bliver grøn.</li>
+<li><strong data="opt_phases">multi-fase</strong>. Antal faser: Tryk på en tast for at markere et splittid, under tidstagning.</li>
+<li><strong data="opt_stkHead">Brug Stackmat status information</strong>. Stackmat vil rapportere sin status, eks. om venstre eller højre område er rørt, så csTimer er i stand til at bruge disse oplysninger, bemærk dog at datafejl kan opstå og forårsage uventet adfærd.</li>
+<li><strong data="opt_scrSize">blanding størrelse</strong>. Størrelse på blandingstekst.</li>
+<li><strong data="opt_scrASize">Automatisk blandingsstørrelse</strong>. Størrelsen af blandingsteksten justeres automatisk med afhængig af blandingen, hvilket hænger sammen med tidligere indstilling.</li>
+<li><strong data="opt_scrMono">monospaced blanding</strong>. Brug monospace skrifttype til blandingstekst.</li>
+<li><strong data="opt_scrLim">Begræns højden af blandings området</strong>. I tilfælde af blandingsteksten fylder mere end der er plads til, vil der vises en rullebjælke for at undgå at forstørre blandingspanelet.</li>
+<li><strong data="opt_scrAlign">Justering af blandings området</strong>. Justering af hele blandingsområdet, inkluderer valg af blandingstype.</li>
+<li><strong data="opt_preScr">pre-scramble</strong>. Pre rotationer før blanding, som bruges til virtuelle professorterninger og blandingsbillede.</li>
+<li><strong data="opt_scrFast">Brug hurtig blanding til 4x4x4 (ikke officiel)</strong>. Oficielle WCA blandinger kræver mange beregnings resurser. Brug denne indstilling for tilfældig blanding af 4x4x4.</li>
+<li><strong data="opt_scrKeyM">Marker nøgle rotationer i blanding</strong>. Marker et nøgletræk i blandingen, f.eks. det træk, der tager tilstanden væk fra dets firkantede form i SQ1-blandinger.</li>
+<li><strong data="opt_scrClk">Handling ved klik på blanding</strong>. Handling når du klikker på blandingsteksten; Kopiér blanding eller generer næste blanding.</li>
+<li><strong data="opt_trim">Antal af løsninger fjernet på hver side</strong>. Antal af løsninger fjernet i top og bund af løsninger ved beregning af gennemsnit.</li>
+<li><strong data="opt_statsum">vis sammendrag inden tidslisten</strong>. Vis statistiktabellen før tidslisten.</li>
+<li><strong data="opt_printScr">print blanding(erne) i statistikker</strong>. Udskriv blanding i statistik.</li>
+<li><strong data="opt_printDate">Udskriv løsningsdato i statistik</strong>. Udskriv løsningdato i statistik.</li>
+<li><strong data="opt_imrename">omdøb session umiddelbart efter oprettelsen</strong>. Omdøb session efter oprettelse.</li>
+<li><strong data="opt_scr2ss">Opret ny session, når du skifter blandings type</strong>. Opret session ved skift af blandingstype.</li>
+<li><strong data="opt_statinv">Omvendt tidsliste</strong>. Invertere tidslisten, således de seneste løsninger er i bunden af tidslisten.</li>
+<li><strong data="opt_statclr">Aktivér tømning af session</strong>. Når deaktiveret, vil en '+'-knap (til oprettelse af session) erstatte 'X'-knappen ved siden af sessionsvælgeren, så når du klikker på knappen, vil der blive oprettet en ny session i stedet for at rydde sessionen.</li>
+<li><strong data="opt_absidx">Vis absolut indeks i statistikrapport</strong>. Vis absolut indeks i session i stedet for 1 til antal løsninger (eks. 1/2/3 for mo3) i runde statistikker.</li>
+<li><strong data="opt_rsfor1s">Vis statistik når du klikker på løsning</strong>. Når du klikker på den første række af tidslisten, vises en afrundet statistik for en enkelt løsning.</li>
+<li><strong data="opt_statal">Statistiske indikatorer</strong>. Statistisk indikator for statistikktabel (aoX og moX er tilgængelig).</li>
+<li><strong data="opt_delmul">Tillad flere sletninger</strong>. Mulighed for at slette flere tider/løsninger, for at undgå misforståelser vil den valgte tid/løsningen være den ældste tid/løsningen som slettes.</li>
+<li><strong data="opt_disPrec">tidsfordeling præcision</strong>. Tidsinterval for tidsfordelingsværktøjet.</li>
+<li><strong data="opt_solSpl">Vis løsning progressivt</strong>. Hvis valgt, vises kun længden af en løsning, og man kan se løsningen trin for trin, ellers vises hele  løsningen.</li>
+<li><strong data="opt_imgSize">Blandings billed størrelse</strong>. Størrelsen af blandingsbillede.</li>
+<li><strong data="opt_NTools">nummer af værktøj</strong>. csTimer er i stand til at vise op til 4 værktøjer samtidigt.</li>
+<li><strong data="opt_useKSC">brug tastatur genvej</strong>. Brug tastaturgenveje til at skifte blandingstype, generere næste blanding, skifte mellem sessioner osv.</li>
+<li><strong data="opt_vrcSpeed">VRC base hastighed (TPS)</strong>. Basis rotationshastighed på den virutelle professorterning. Hastigheden vil stige, hvis der er flere træk.</li>
+<li><strong data="opt_vrcMP">flerfaset</strong>. Automatisk flerfase deling for virtuel professorterning og bluetooth terning.</li>
+<li><strong data="opt_giiVRC">Vis virtuel Bluetooth terning</strong>. Vis en virtuel professorterning i stopuret ved tilslutning af en bluetooth terning.</li>
+<li><strong data="opt_giiSD">Marker blandet efter pause i blanding</strong>. For en bluetooth terning, kan csTimer ikke vide, om et træk er til en blanding eller løsning.</li>
+<li><strong data="opt_giiSK">Marker blandet med mellemrumstast</strong>. Når mellemrumstasten trykkes, er bluetooth terningen markeret blandet. Ethvert træk efter, vil behandles som start af løsning og start af stopuret.</li>
+<li><strong data="opt_giiSM">Marker blandet ved udførelse</strong>. Brug specifikke sekvenser på bluetooth terningen for at registrere den som blandet.</li>
+<li><strong data="opt_giiBS">Bip ved blandet markering </strong>. Bip når nogle af sekvnerserne registreres.</li>
+<li><strong data="opt_giiRST">Nulstil bluetooth terning ved tilslutning</strong>. Ved tilslutning til en bluetooth terning, vil csTimer opdage, om den er løst. Hvis ikke, kan det være nogle hardware problemer, eller at terningen ikker er løst.</li>
+<li><strong data="opt_giiAED">Automatisk hardware fejl opdagelse</strong>. Nogle bluetooth terninger vil miste nogle træk på grund af hardwarefejl, csTimer vil forsøge at opdage sådanne tilfælde.</li>
 </ul>
-<h2>Tools detail</h2>
+<h2>Værktøjs detaljer</h2>
 <ul>
-<li><strong data="tool_scrgen">BlandingsGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">Confirm time</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
-<li><strong data="tool_hugestats">cross-session stats</strong>. You are able to do cross-session statistics with this tool.</li>
-<li><strong data="tool_stats">Statistiker</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">Tidsfordeling</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">Tidsudvikling</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
-<li><strong data="tool_image">tegn blanding</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">Solvers &gt; løs Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Solvers &gt; løs EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Solvers &gt; løs kryds</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
-<li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
-<li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
-<li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
-<li><strong data="tool_333zz">Solvers &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
-<li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
-<li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
-<li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">Bluetooth Cube</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
-<li><strong data="tool_mtrnm">metronome</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_onlinecomp">Online Competition</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_scrgen">BlandingsGenerator</strong>. Du er i stand til at generere op til 999 blandinger med et enkelt klik med dette værktøj.</li>
+<li><strong data="tool_cfm">Bekræft tid</strong>. Værktøj til at se nuværende løsninger med kommentarer, blanding, løsningsdato og rekonstruktion hvis tilgængelig, hvilket også er dialogen du ser, når du klikker på en løsning.</li>
+<li><strong data="tool_hugestats">Krydssessions statistik</strong>. Du er i stand til at udføre kryds-session statistik med dette værktøj.</li>
+<li><strong data="tool_stats">Statistiker</strong>. Statistisktabel i stil med tabellen i tidslistepanelet.</li>
+<li><strong data="tool_distribution">Tidsfordeling</strong>. Tidsfordeling og stabilitetsanalyse, &lt;X Y/Z betyder, at der i alt Y løsninger mindre end X sekunder, og alle de nyeste Z løsninger er mindre end X sekunder i nuværende session.</li>
+<li><strong data="tool_trend">Tidsudvikling</strong>. Viser en trendkurve for alle løsninger i den aktuelle session.</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. Tæl antallet af løsninger pr. dag/uge/måned/år.</li>
+<li><strong data="tool_image">tegn blanding</strong>. Blandingsbillede for at bekræfte en korrekt blanding, alle WCA terninger understøttes.</li>
+<li><strong data="tool_roux1">Løsere &gt; løs Roux S1</strong>. Roux 1 trings løser, som løser en 1x2x3 blok.</li>
+<li><strong data="tool_eoline">Løsere &gt; løs EOLine</strong>. EO linje løser, som løser orienteringer af alle 12 kanter, og positioner af DF og DB kanter.</li>
+<li><strong data="tool_cross">Løsere &gt; løs kryds</strong>. Kryds løser, som løser DF, DL, DR, DB kanter.</li>
+<li><strong data="tool_222face">Løsere &gt; 2x2x2 side</strong>. 2x2x2 side løser, som løser én side på en 2x2x2 terning.</li>
+<li><strong data="tool_333cf">Løsere &gt; Cross + F2L</strong>. Kryds og F2L løser, som løser kryds og 4 F2L med AI, så løsningen kan adskille sig betydeligt fra menneskelige løsninger.</li>
+<li><strong data="tool_333roux">Løsere &gt; Roux S1 + S2</strong>. Roux 1. og 2. trins løser, som først løser en 1x2x3 blok på venstre side og derefter en 1x2x3 blok på højre side med R, M, r, U.</li>
+<li><strong data="tool_333petrus">Løsere &gt; 2x2x2 + 2x2x3</strong>. Petrus 1. og 2. trin løser, som først løser en 2x2x2 blok til venstre og derefter udvider den til 2x2x2x3 på venstre side.</li>
+<li><strong data="tool_333zz">Løsere &gt; EOLine + ZZF2L</strong>. Eoline og ZZF2L løser, som først løser EOLine og derefter løser en af venstre 1x2x3 eller højre 1x2x3 og til sidst den anden 2x2x3.</li>
+<li><strong data="tool_sq1cs">Løsere &gt; SQ1 S1 + S2</strong>. FK1 1. og 2. trin løser, som først løser formen af FK1 og derefter opdeler U og D stykker.</li>
+<li><strong data="tool_pyrv">Løsere &gt; Pyraminx V</strong>. Pyraminx V løser, som løser tre hjørner og to kanter og former et 'V' mønster til pyraminx.</li>
+<li><strong data="tool_skbl1">Løsere &gt; Skewb Face</strong>. Skewb side solver, som løser et lag af skewb, dvs. 1 midt og 4 nabohjørner.</li>
+<li><strong data="tool_giikerutil">Bluetooth Terning</strong>. Hjælpeværktøj til bluetooth-terning, som er i stand til at vise nuværende status, batteristrøm, rekonstruktion i realtid osv.</li>
+<li><strong data="tool_if">InsertionFinder</strong>. Indsættelse finder til FMC (Fewest Move Challenge).</li>
+<li><strong data="tool_mtrnm">metronom</strong>. Metronom, ud over at bippe ved en bestemt frekvens, bippes også ved et bestemt tidspunkt efter at påbegyndt løsning.</li>
+<li><strong data="tool_onlinecomp">Online konkurrence</strong>. Online konkurrence, så du kan logge ind med din WCA-konto og konkurrere mod alle hastighedsløsere rundt om i verden med samme blandinger.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Hjælpeværktøj til Stackmat, som er i stand til at se status, effekt og støjniveau på signalet, osv.</li>
 </ul>
 <h2>Links</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer beta version</a></li>
-<li><a class="click" href="/src/">csTimer beta version with uncompressed files</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer source code</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
+<li><a class="click" href="/new/" title="">csTimer beta version</a></li>
+<li><a class="click" href="/src/" title="">csTimer beta version med ukomprimerede filer</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer kildekode</a></li>
+<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
+<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
 </ul>
-<h2>Color schemes</h2>
+<h2>Farveskemaer</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
-<p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
-<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>.</p>
+<p>Tak for din støtte til csTimer! Din donation vil blive brugt til at understøtte vores udviklings- og vedligeholdelsesomkostninger.</p>
+<p>Hvis du ønsker at give en donation via PayPal, skal du klikke på knappen nedenfor eller via <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">
 <input type="image" src="data:image/gif;base64,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" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
-<p>You can also fund us by Alipay, scan the next two-dimensional code or please pay to the account: cs0x7f@gmail.com</p>
+<p>Du kan også donere til os med Alipay ved at skanne den næste todimensionelle kode eller betale til kontoen: cs0x7f@gmail.com</p>
 <p><img style="display:inline-block; width:10em; height:10em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAIAAAAABMCaAAABoklEQVR42u3aUY6DMAwFQO5/6e0JViq1XwjO5LOqIAxSHJ5z/RnlcSGACHEk4hUY/974i/9/83vlXl3PBREixPmIpYX25oNVrl95GV3PBREixLMQ05OuXD9RoG5fByJEiBCfnDREiBAhDkashAulTTJEiBAhbhJAJIKM41IciBAhLkOMNHQ2+P313T6IECEuQ9z60FBTcYjMDSJEiCMRKx//K4tMYvNcOkwAESLEoxBXNukTwW1XKAsRIsRzEZ9CqUAkClQpxYEIEeIYxApo1+b2qeK2xRcLRIgQH0dMLPaVSVeg080piBAhzkdMB59dQWn6BTxWnSFChLgtYrqAlCYdPmwVCWUhQoQ4HjFRZBIHCBIbeIgQIUJs/WhPLPDhxhlEiBDPQkyPdIFKo99OtiFChPhqxHRzZ+Xho3SwAhEixLMQ0wt/2wOEN+dtoSxEiBDHIO7QhFrZtLr94iFChAgx1AzqKmgrwwiIECFC7ERMh69dG2yIECFCXBFAVIpAegP/mhQHIkSIUcSVjar0hjkeJEOECHEkovFjIUUAEeKU8QE0apeVMce/LwAAAABJRU5ErkJggg=="></p>
-<p>Thank you again for your donation!</p>
+<p>Mange TAK for din donation</p>
 </div>

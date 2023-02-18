@@ -12,7 +12,7 @@
 <p>csTimer supports most of modern desktop browsers, on mobile phone and tablet PC, you can add csTimer to your home screen, and it will work as a native APP.</p>
 <p>csTimer takes advantage of browser cache, which consumes traffic only when you open it for the first time, after that, csTimer is able to work without network connection (except for functions like backup)</p>
 <h3>Copyright</h3>
-<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues">here</a></p>
+<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">here</a></p>
 <p>Written by: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
 <p>UI designed by: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>Basic functions</h2>
@@ -36,9 +36,7 @@
 <tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
@@ -57,17 +55,17 @@
 
 <h2>Option details</h2>
 <ul>
-<li><strong data="opt_ahide">Hide All Elements When Timing</strong>. Hide logo and all panels when timing.</li>
+<li><strong data="opt_ahide">Сакријте све елементе док се мери време</strong>. Hide logo and all panels when timing.</li>
 <li><strong data="opt_useMilli">Користите милисекунде</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
-<li><strong data="opt_timeFormat">time format</strong>. Time format to display.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
+<li><strong data="opt_timeFormat">Формат времена</strong>. Time format to display.</li>
+<li><strong data="opt_atexpa">Аутоматски извези (сваких 100 решења)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
 <li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">Show Avg Label</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">Зумирај</strong>. You can adjust sizes of all elements by this option.</li>
-<li><strong data="opt_font">select timer's font</strong>. Font of the main timer.</li>
+<li><strong data="opt_font">Изаберите фонт тајмера</strong>. Font of the main timer.</li>
 <li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
-<li><strong data="opt_view">UI style is</strong>. Switch between desktop and mobile views.</li>
+<li><strong data="opt_view">Стил корисничког интерфејца је</strong>. Switch between desktop and mobile views.</li>
 <li><strong data="opt_wndScr">Стил приказа скрембл панела</strong>. Make scramble panel embedded into background.</li>
 <li><strong data="opt_wndStat">Стил приказа панела статистике</strong>. Make list times panel embedded into background.</li>
 <li><strong data="opt_wndTool">Стил приказа панела алатки</strong>. Make tool panel embedded into background.</li>
@@ -103,38 +101,38 @@
 <li><strong data="opt_statinv">Inverse time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
 <li><strong data="opt_statclr">Enable session emptying</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
 <li><strong data="opt_absidx">Show absolute index in statistics report</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
+<li><strong data="opt_rsfor1s">Прикажи статистику када је кликнут решен број</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
 <li><strong data="opt_statal">Statistical indicators</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">Enable Multiple Deletion</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">time distribution precision</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
+<li><strong data="opt_solSpl">Прикажи решење прогресивно</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Scramble Image Size</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">number of tools</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">use keyboard shortcut</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
+<li><strong data="opt_useKSC">Пречице за тастатуру</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
 <li><strong data="opt_vrcSpeed">VRC base speed (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">multi-phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiVRC">Show virtual bluetooth cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
+<li><strong data="opt_giiVRC">Прикажи виртуелну Блутут коцку?</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Mark scrambled if stay</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Mark scrambled with spacebar</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
 <li><strong data="opt_giiSM">Mark scrambled by doing</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
-<li><strong data="opt_giiBS">Beep when mark scrambled</strong>. Beep when some of scramble-finish signal is triggered.</li>
-<li><strong data="opt_giiRST">Reset bluetooth cube when connect</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Auto hardware error detection</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_giiBS">Pisti kad je jagma</strong>. Beep when some of scramble-finish signal is triggered.</li>
+<li><strong data="opt_giiRST">Ресетуј Блутут коцку када је повезана?</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
+<li><strong data="opt_giiAED">Аутоматско откривање хардверских грешака</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
 </ul>
 <h2>Tools detail</h2>
 <ul>
 <li><strong data="tool_scrgen">ScrambleGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">Confirm time</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
+<li><strong data="tool_cfm">Потврди време</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">Крст-сесија статистике</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">Статистика</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">time distribution</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">time trend</strong>. Shows a trend curve of all solves in current session.</li>
+<li><strong data="tool_distribution">Дистрибуција времена</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
+<li><strong data="tool_trend">Alatke_Trend</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">Нацртај скрембл</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
 <li><strong data="tool_roux1">Solvers &gt; решавање Roux S1  </strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
 <li><strong data="tool_eoline">Solvers &gt; решавање EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
 <li><strong data="tool_cross">Solvers &gt; решаванје крста</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
+<li><strong data="tool_222face">Solvers &gt; 2x2x2 лице</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
 <li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
 <li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
 <li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
@@ -144,25 +142,25 @@
 <li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
 <li><strong data="tool_giikerutil">Giiker коцкa</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
 <li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
-<li><strong data="tool_mtrnm">metronome</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_mtrnm">Метроном</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
 <li><strong data="tool_onlinecomp">Online Competition</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>Links</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer beta version</a></li>
-<li><a class="click" href="/src/">csTimer beta version with uncompressed files</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer source code</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
+<li><a class="click" href="/new/" title="">csTimer beta version</a></li>
+<li><a class="click" href="/src/" title="">csTimer beta version with uncompressed files</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer source code</a></li>
+<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
+<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
 </ul>
 <h2>Color schemes</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
-<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>.</p>
+<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">

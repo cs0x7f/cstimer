@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Zarovnání scramble oblasti';
 var PROPERTY_SCRALIGN_STR = 'střed|vlevo|vpravo';
 var PROPERTY_SCRFAST = 'Použít rychlí scramble pro 4x4x4(neoficiální)';
 var PROPERTY_SCRKEYM = 'Klíčovy krok pohybů v zamíchání';
-var PROPERTY_SCRCLK = 'Akce při kliknutí na zamíchání';
-var PROPERTY_SCRCLK_STR = 'Žádný|Kopírovat|Další zamíchání';
+var PROPERTY_SCRCLK = 'Akce při kliknutí na scramble';
+var PROPERTY_SCRCLK_STR = 'Nic|Kopírovat|Další zamíchání';
 var PROPERTY_WNDSCR = 'Styl zobrazení panelu s scramblem';
 var PROPERTY_WNDSTAT = 'Styl zobrazení panelu Statistiky';
 var PROPERTY_WNDTOOL = 'Styl zobrazení panelu nástrojů';
@@ -48,7 +48,7 @@ var EXPORT_LOGINGGL = 'Přihlásit Pomocí Google Účtu';
 var EXPORT_LOGINWCA = 'Přihlásit Pomocí WCA Účtu';
 var EXPORT_LOGOUTCFM = 'Potvrdit odhlášení?';
 var EXPORT_LOGINAUTHED = 'Autorizováno<br>Načítání Dat...';
-var IMPORT_FINAL_CONFIRM = 'Toto přepíše všechna lokální data! Upraví %d relací, přidá %a odstraní %r řešení. Potvrdit import dat?';
+var IMPORT_FINAL_CONFIRM = 'Toto přepíše všechna lokální data! Upraví %d relací, přidá alespoň %a odstraní %r řešení. Potvrdit import dat?';
 var BUTTON_SCRAMBLE = 'Scramble';
 var BUTTON_TOOLS = 'NÁSTROJE';
 var IMAGE_UNAVAILABLE = 'Nedostupné pro tento typ scramblu';
@@ -65,14 +65,14 @@ var TOOLS_DISTRIBUTION = 'distribuce času';
 var TOOLS_TREND = 'trend času';
 var TOOLS_METRONOME = 'metronom';
 var TOOLS_CFMTIME = 'Potvrďte čas';
-var TOOLS_SOLVERS = 'Řešitelé';
-var TOOLS_SYNCSEED = 'Běžné zamíchání';
-var TOOLS_SYNCSEED_SEED = 'Semínko';
-var TOOLS_SYNCSEED_INPUT = 'Vstupní semínko';
-var TOOLS_SYNCSEED_30S = 'Použít semínko platné 30s';
-var TOOLS_SYNCSEED_HELP = 'Pokud povoleno, bude zamíchání záviset pouze na nastavení semínka. Obecně lze říci, že pokud dva hráči sdílejí stejné semínko, získají stejné zamíchání.';
-var TOOLS_SYNCSEED_DISABLE = 'Vypnout aktuální semínko?';
-var TOOLS_SYNCSEED_INPUTA = 'Vložte hodnotu (a-zA-Z0-9) jako semínko';
+var TOOLS_SOLVERS = 'Solvery';
+var TOOLS_SYNCSEED = 'Společné zamíchání';
+var TOOLS_SYNCSEED_SEED = 'Seed';
+var TOOLS_SYNCSEED_INPUT = 'Vstupní seed';
+var TOOLS_SYNCSEED_30S = 'Použít 30s seed';
+var TOOLS_SYNCSEED_HELP = 'Je-li povoleno, bude scramble záviset pouze na nastavení seedu. Obecně lze říci, že pokud dva hráči sdílejí stejný seed, získají stejné scramble.';
+var TOOLS_SYNCSEED_DISABLE = 'Vypnout aktuální seed?';
+var TOOLS_SYNCSEED_INPUTA = 'Vložte hodnotu (a-zA-Z0-9) jako seed';
 var OLCOMP_UPDATELIST = 'Aktualizovat seznam soutěží';
 var OLCOMP_VIEWRESULT = 'Zobrazit výsledek';
 var OLCOMP_VIEWMYRESULT = 'Moje historie';
@@ -193,7 +193,7 @@ var scrdata = [
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['Žádný bar', "222nb", 0]
+		['Žádný blok', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -305,7 +305,7 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['starý', "redi", 20]
 	]],
-	['kostka Ivy', [
+	['Ivy cube', [
 		['náhodný stav', "ivyso", 0],
 		['optimální', "ivyo", 0],
 		['náhodný tah', "ivy", 10]
@@ -401,7 +401,7 @@ var STATS_CFM_DELETE = 'smazat tento čas?';
 var STATS_COMMENT = 'Okomentovat';
 var STATS_REVIEW = 'Zkontrolovat';
 var STATS_DATE = 'Datum';
-var STATS_SSSTAT = 'statistika 1 řešení.';
+var STATS_SSSTAT = 'statistika jednoho řešení';
 var STATS_CURROUND = 'Statistiky Aktuálního Kola';
 var STATS_CURSESSION = 'Statistiky Aktuální relace';
 var STATS_CURSPLIT = 'Fáze %d Aktuální Statistiky Relace';
@@ -412,7 +412,7 @@ var STATS_SSMGR_DETAIL = 'Detaily Relace';
 var STATS_SSMGR_OPS = 'Přejmenovat|Vytvořit|Spojit|Rozpojit|Smazat|Seřadit';
 var STATS_SSMGR_ORDER = 'Seřadit podle zamíchání';
 var STATS_SSMGR_ODCFM = 'Řadit všechni relace jako zamíchání?';
-var STATS_SSMGR_SORTCFM = '%d řešení bude přeřazeno, potvrdit?';
+var STATS_SSMGR_SORTCFM = '%d řešení bude přeuspořádáno, potvrdit?';
 var STATS_ALERTMG = 'Spojit všechny časy v relaci [%f] do konce relace[%t]?';
 var STATS_PROMPTSPL = 'Spojit počet posledních časů z relace[%s]?';
 var STATS_ALERTSPL = 'Mělo by se rozdělit nebo nechat alespoň 1';
@@ -432,7 +432,7 @@ var STATS_XSESSION_DATE = 'jakékoliv datum|minulých 24 hodin|minulých 7 dnů|
 var STATS_XSESSION_NAME = 'jakkékoliv jméno';
 var STATS_XSESSION_SCR = 'jakékoliv zamíchání';
 var STATS_XSESSION_CALC = 'Calc';
-var STATS_RSFORSS = 'Zobrazit statistiku při kliknutí na číslo řešení';
+var STATS_RSFORSS = 'Zobrazit statistiku při kliknutí na číslo solvu';
 var PROPERTY_PRINTSCR = 'zobrazit zamíchání ve statistikách';
 var PROPERTY_PRINTDATE = 'zobrazit datum složení ve statistikách';
 var PROPERTY_SUMMARY = 'zobrazit shrnutí před časovím listem';
@@ -449,10 +449,10 @@ var PROPERTY_TRIM = 'Počet složení použitích na každé straně';
 var PROPERTY_TRIM_MED = 'Medián';
 var PROPERTY_STKHEAD = 'Použít Informace O Stavu Stackmatu';
 var PROPERTY_HIDEFULLSOL = 'Ukázat řešení postupně';
-var PROPERTY_IMPPREV = 'Importovat ne-aktuálnější data';
-var PROPERTY_AUTOEXP = 'Automatický export dat (po 100 řešení)';
-var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s ID csTimer|S účtem WCA';
-var PROPERTY_SCRASIZE = 'Automatická velikost zamíchání';
+var PROPERTY_IMPPREV = 'Importovat ne-poslední data';
+var PROPERTY_AUTOEXP = 'Automatický export dat (po 100 solvech)';
+var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s csTimer ID|S účtem WCA';
+var PROPERTY_SCRASIZE = 'Automatická velikost scramblu';
 var MODULE_NAMES = {
 	"kernel": 'globální',
 	"ui": 'displej',

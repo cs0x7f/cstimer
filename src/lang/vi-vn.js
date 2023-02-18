@@ -60,11 +60,11 @@ var TOOLS_222FACE = '2x2x2 face';
 var TOOLS_GIIKER = 'Rubik có kết nối Bluetooth';
 var TOOLS_IMAGE = 'vẽ scramble';
 var TOOLS_STATS = 'Thành tích ( kiểu 1)';
-var TOOLS_HUGESTATS = 'cross-session stats';
+var TOOLS_HUGESTATS = 'bắt đầu dấu cộng';
 var TOOLS_DISTRIBUTION = 'Thành tích ( kiểu 2)';
 var TOOLS_TREND = 'Thành tích ( kiểu 3)';
 var TOOLS_METRONOME = 'Đếm nhịp';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_CFMTIME = 'Xác nhận';
 var TOOLS_SOLVERS = 'Solvers';
 var TOOLS_SYNCSEED = 'Common Scramble';
 var TOOLS_SYNCSEED_SEED = 'Seed';
@@ -120,7 +120,7 @@ var SCRAMBLE_SCRAMBLE = ' tráo';
 var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
 var PROPERTY_VRCSPEED = 'Tốc độ ban đầu của rubik ảo (tốc độ xoay ban đầu)';
-var PROPERTY_VRCMP = 'multi-phase';
+var PROPERTY_VRCMP = 'nhiều đợt';
 var PROPERTY_VRCMPS = 'Không có|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Hiển thị rubik bluetooth ảo';
 var PROPERTY_GIISOK_DELAY = 'Xem như đã tráo rubik nếu đứng yên trong';
@@ -181,7 +181,7 @@ var scrdata = [
 		['ZZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
-		['EOLine', "eoline", 0],
+		['Edge Orientation Line', "eoline", 0],
 		['solve dởm', "easyc", 3],
 		['3x3 FT', "333ft", 0]
 	]],
@@ -197,11 +197,11 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['Ngẫu nhiên', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['4x4x4 cạnh', "4edge", 8],
-		['R,r,U,u', "RrUu", 40]
+		['Chỉ dùng R,r,U,u để tráo', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
@@ -222,19 +222,19 @@ var scrdata = [
 		['suffix', "777s", 100],
 		['7x7x7 cạnh', "7edge", 8]
 	]],
-	['Clock', [
+	['Rubik Clock', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['Hiệp hội Rubik Thế giới', "clkwca", 0],
 		['optimal', "clko", 0],
-		['concise', "clkc", 0],
+		['Ngắn Gọn', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
-		['Carrot', "mgmc", 70],
+		['Cà rốt', "mgmc", 70],
 		['Kiểu cũ', "mgmo", 70]
 	]],
-	['Pyraminx', [
+	['Rubik kim tử tháp (Pyraminx)', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
 		['random move', "pyrm", 25],
@@ -248,7 +248,7 @@ var scrdata = [
 		['random move', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
-	['Square-1', [
+	['Rubik square ', [
 		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['face turn metric', "sq1h", 40],
@@ -271,9 +271,9 @@ var scrdata = [
 		['random state Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
-		['2x3x3 (Domino)', "233", 25],
+		['1x3x3', "133", 0],
+		['2x2x3', "223", 0],
+		['2x3x3', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
 		['3x3x6', "336", 40],
@@ -296,14 +296,14 @@ var scrdata = [
 		[' ', "cm2", 25]
 	]],
 	['Gigaminx', [
-		['Pochmann', "giga", 300]
+		['Pochman', "giga", 300]
 	]],
 	['Helicopter Cube', [
 		[' ', "heli", 40]
 	]],
 	['Redi Cube', [
-		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['Moyu', "redim", 8],
+		['Old', "redi", 20]
 	]],
 	['Ivy cube', [
 		['random state', "ivyso", 0],
@@ -313,11 +313,11 @@ var scrdata = [
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
-	['Pyraminx Crystal', [
+	['Pyraminxx Crystal', [
 		['Pochmann', "prcp", 70],
 		['Kiểu cũ', "prco", 70]
 	]],
-	['Siamese Cube', [
+	['Khối vuông kiểu Xiêm', [
 		['khối 1x1x3 ', "sia113", 25],
 		['khối 1x2x3', "sia123", 25],
 		['khối 2x2x2', "sia222", 25]
@@ -399,7 +399,7 @@ var STATS_CFM_DELSS = 'delete session [%s]?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
 var STATS_CFM_DELETE = 'Xóa thời gian này?';
 var STATS_COMMENT = 'bình luận';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Xem xét lại';
 var STATS_DATE = 'Date';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'thành tích vòng hiện tại';

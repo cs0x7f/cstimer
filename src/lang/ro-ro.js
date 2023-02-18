@@ -17,7 +17,7 @@ var PROPERTY_PHASES = 'mai multe faze';
 var PROPERTY_TIMERSIZE = 'marimea timer-urui';
 var PROPERTY_USEMILLI = 'utilizeaza milisecunde';
 var PROPERTY_SMALLADP = 'use small font after decimal point';
-var PROPERTY_SCRSIZE = 'scramble size';
+var PROPERTY_SCRSIZE = 'Mărimea amestecării.';
 var PROPERTY_SCRMONO = 'monospaced scramble';
 var PROPERTY_SCRLIM = 'Limit the height of scramble area';
 var PROPERTY_SCRALIGN = 'Alignment of scramble area';
@@ -99,14 +99,14 @@ var PROPERTY_INTUNIT = 'Unit when entering an integer';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
 var PROPERTY_COLOR = 'select color theme';
 var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
+var PROPERTY_VIEW = 'Stilul UI-ului este';
 var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
 var COLOR_EXPORT = 'Please save the string for import';
 var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
+var COLOR_FAIL = 'Dete incorecte, import nereușit';
+var PROPERTY_FONTCOLOR_STR = 'negru|alb';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
 var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
@@ -254,7 +254,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===ALTELE===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -272,7 +272,7 @@ var scrdata = [
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
+		['2x2x2(Cub Tower)', "223", 0],
 		['2x3x3 (Domino)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
@@ -303,7 +303,7 @@ var scrdata = [
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['Vechi', "redi", 20]
 	]],
 	['Ivy cube', [
 		['random state', "ivyso", 0],
@@ -313,9 +313,9 @@ var scrdata = [
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
-	['Pyraminx Crystal', [
+	['Pyraminx Cristal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['stil vechi', "prco", 70]
 	]],
 	['Siamese Cube', [
 		['1x1x3 block', "sia113", 25],
@@ -334,7 +334,7 @@ var scrdata = [
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
+	['Altele', [
 		['FTO (Face-Turning Octahedron)', "fto", 25]
 	]],
 	['===SPECIAL===', [
@@ -347,7 +347,7 @@ var scrdata = [
 		['3-generator F,R,U', "3gen_F", 25],
 		['3-generator R,U,L', "3gen_L", 25],
 		['3-generator R,r,U', "RrU", 25],
-		['half turns only', "half", 25],
+		['Doar jumătate de întoarceri', "half", 25],
 		['last slot + last layer (old)', "lsll", 15]
 	]],
 	['Bandaged Cube', [

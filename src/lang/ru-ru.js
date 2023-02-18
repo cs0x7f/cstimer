@@ -7,7 +7,7 @@ var BUTTON_TIME_LIST = 'СПИСОК<br>ВРЕМЕНИ';
 var BUTTON_OPTIONS = 'НАСТ-<br>РОЙКИ';
 var BUTTON_EXPORT = 'ЗАГРУ-<br>ЗИТЬ';
 var BUTTON_DONATE = 'ПОЖЕРТ-<br>ВОВАТЬ';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'С сессией';
 var PROPERTY_USEINS = 'использовать WCA инспекцию';
 var PROPERTY_USEINS_STR = 'Всегда|Кроме блд|Никогда';
 var PROPERTY_VOICEINS = 'голосовое предупреждение при инспекции';
@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Выравнивание зоны скрамбла';
 var PROPERTY_SCRALIGN_STR = 'центр|лево|право';
 var PROPERTY_SCRFAST = 'Использовать быстрый скрамбл для 4х4х4(неофициально)';
 var PROPERTY_SCRKEYM = 'Главный(ые) ход(ы) в скрамбле';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Действие при нажатии на скрамбл';
+var PROPERTY_SCRCLK_STR = 'Ничего|Копировать|Следущий скрамбл';
 var PROPERTY_WNDSCR = 'Стиль панели со скрамблом';
 var PROPERTY_WNDSTAT = 'Стиль панели статистики';
 var PROPERTY_WNDTOOL = 'Стиль отображения панели инструментов';
@@ -48,7 +48,7 @@ var EXPORT_LOGINGGL = 'Войти используя аккаунт Google';
 var EXPORT_LOGINWCA = 'Войти используя аккаунт WCA';
 var EXPORT_LOGOUTCFM = 'Подтвердить для выхода?';
 var EXPORT_LOGINAUTHED = 'Авторизовано<br>Получение данных...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
+var IMPORT_FINAL_CONFIRM = 'Это перезапишет все локальные данные! Будет перезаписано как минимум %d сессий, добавлено %a и удалено %r сборок. Продолжить?';
 var BUTTON_SCRAMBLE = 'СКРА-<br>МБЛ';
 var BUTTON_TOOLS = 'ИНСТРУ-<br>МЕНТЫ';
 var IMAGE_UNAVAILABLE = 'Невозможно для этого типа скрамбла';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Функция';
 var TOOLS_CROSS = 'собрать крест';
 var TOOLS_EOLINE = 'собрать EOLine';
 var TOOLS_ROUX1 = 'собрать Roux S1';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = 'Сторона 2х2х2';
 var TOOLS_GIIKER = 'Giiker Cube';
 var TOOLS_IMAGE = 'нарисовать скрамбл';
 var TOOLS_STATS = 'Статистика';
@@ -65,27 +65,27 @@ var TOOLS_DISTRIBUTION = 'распределение времени';
 var TOOLS_TREND = 'тенденция времени';
 var TOOLS_METRONOME = 'метроном';
 var TOOLS_CFMTIME = 'Подтвердить время';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
+var TOOLS_SOLVERS = 'Cборщики';
+var TOOLS_SYNCSEED = 'Обычный скрамбл';
+var TOOLS_SYNCSEED_SEED = 'Ключ';
+var TOOLS_SYNCSEED_INPUT = 'Введите ключ';
+var TOOLS_SYNCSEED_30S = 'Используйте 30-секундный ключ';
+var TOOLS_SYNCSEED_HELP = 'Если включено, то скрамблы будут зависеть только от ключа и настроек скрамбла. В целом, если два игрока  используют одинаковый ключ, то они получат одинаковые скрамблы.';
+var TOOLS_SYNCSEED_DISABLE = 'Выключить текущий ключ?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var OLCOMP_UPDATELIST = 'Update Competition List';
+var OLCOMP_UPDATELIST = 'Обновить список соревнований';
 var OLCOMP_VIEWRESULT = 'Посмотреть результат';
 var OLCOMP_VIEWMYRESULT = 'Моя история';
 var OLCOMP_START = 'Начать!';
 var OLCOMP_SUBMIT = 'Отправить!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
+var OLCOMP_SUBMITAS = 'Отправить как: ';
+var OLCOMP_WCANOTICE = 'Отправить от лица своего WCA аккаунта? (Перезайдите если вы не распознаетесь после отправки)';
 var OLCOMP_OLCOMP = 'Онлайн соревнование';
 var OLCOMP_ANONYM = 'Аноним';
 var OLCOMP_ME = 'Я';
 var OLCOMP_WCAACCOUNT = 'WCA Аккаунт';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_ABORT = 'Прервать соревнование и показать результаты?';
+var OLCOMP_WITHANONYM = 'Анонимно';
 var PROPERTY_IMGSIZE = 'Размер изображения скрамбла';
 var TIMER_INSPECT = 'рассмотр';
 var TIMER_SOLVE = 'сборка';
@@ -155,15 +155,15 @@ var scrdata = [
 	]],
 	['Загрузить', [
 		['Внешний', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Соревнование', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['3х3х3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["случайное состояние (WCA)", "333", 0],
+		['случайный ход', "333o", 25],
 		['3x3x3 для нубов', "333noob", 25],
 		['только ребра', "edges", 0],
 		['только углы', "corners", 0],
@@ -186,8 +186,8 @@ var scrdata = [
 		['3х3 ногами', "333ft", 0]
 	]],
 	['2х2х2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["случайное состояние (WCA)", "222so", 0],
+		['оптимально', "222o", 0],
 		['3-поколен', "2223", 25],
 		['EG', "222eg", 0],
 		['ЕГ0', "222eg0", 0],
@@ -225,7 +225,7 @@ var scrdata = [
 	['Клок', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['оптимально', "clko", 0],
 		['сжатие', "clkc", 0],
 		['эффективный порядок контактов', "clke", 0]
 	]],
@@ -235,21 +235,21 @@ var scrdata = [
 		['старый стиль', "mgmo", 70]
 	]],
 	['Пирамидка', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		["случайное состояние (WCA)", "pyrso", 10],
+		['оптимально', "pyro", 0],
+		['случайный ход', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
 	['Скьюб', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		["случайное состояние (WCA)", "skbso", 0],
+		['оптимально', "skbo", 0],
+		['случайный ход', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Скваер', [
-		["random state (WCA)", "sqrs", 0],
+		["случайное состояние (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['метрическое вращение граней', "sq1h", 40],
 		['метрическое вращение', "sq1t", 20]
@@ -258,17 +258,17 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['Пятнашки', [
-		['random state URLD', "15prp", 0],
-		['random state ^<>v', "15prap", 0],
-		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+		['случайное состояние URLD', "15prp", 0],
+		['случайное состояние ^<>v', "15prap", 0],
+		['случайное состояние Blank', "15prmp", 0],
+		['случайный ход URLD', "15p", 80],
+		['случайный ход ^<>v', "15pat", 80],
+		['случайный ход Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
-		['random state URLD', "8prp", 0],
-		['random state ^<>v', "8prap", 0],
-		['random state Blank', "8prmp", 0]
+		['случайное состояние URLD', "8prp", 0],
+		['случайное состояние ^<>v', "8prap", 0],
+		['случайное состояние Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3 (Флоппи Куб)', "133", 0],
@@ -285,9 +285,9 @@ var scrdata = [
 		['NxNxN', "cubennn", 12]
 	]],
 	['Шестеренчатый куб', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['случайное состояние', "gearso", 0],
+		['оптимально', "gearo", 0],
+		['случайный ход', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -305,10 +305,10 @@ var scrdata = [
 		['Moyu', "redim", 8],
 		['старый', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['Иви-куб', [
+		['случайное состояние', "ivyso", 0],
+		['оптимально', "ivyo", 0],
+		['случайный ход', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -399,7 +399,7 @@ var STATS_CFM_DELSS = 'удалить сессию[%s]?';
 var STATS_CFM_DELMUL = 'Количество Удаленных Величин В Текущем Индексе?';
 var STATS_CFM_DELETE = 'удалить это время?';
 var STATS_COMMENT = 'Комментарий';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Обзор';
 var STATS_DATE = 'Дата';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'Статистика Текущего Раунда';
@@ -412,9 +412,9 @@ var STATS_SSMGR_DETAIL = 'Подробности сессии';
 var STATS_SSMGR_OPS = 'Переименовать|Создать|Разделить|Объединить|Удалить|Sort';
 var STATS_SSMGR_ORDER = 'Сортировать по скрамблу';
 var STATS_SSMGR_ODCFM = 'Сортировать все сессии по скрамблу?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_SORTCFM = '%d решения(й) будут переупорядочен, подтвердить?';
 var STATS_ALERTMG = 'Объединить все времена в сеансе [%f] до конца сеанса [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
+var STATS_PROMPTSPL = 'Количество последних сборок, отделенных от сессии [%s]?';
 var STATS_ALERTSPL = 'Разделить или оставить хотя-бы одно время';
 var STATS_AVG = 'среднее';
 var STATS_SOLVE = 'сборка';
@@ -427,14 +427,14 @@ var STATS_PREC = 'точное распределение времени';
 var STATS_PREC_STR = 'авто|0.1с|0.2с|0.5с|1с|2с|5с|10с|20с|50с|100с';
 var STATS_TYPELEN = 'список %d тип|список %d ширина|средний|средний';
 var STATS_STATCLR = 'Включить удаление сессии';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
+var STATS_ABSIDX = 'Показать абсолютный индекс в отчете статистики';
 var STATS_XSESSION_DATE = 'любое время|за последние 24 часа|за последнюю неделю|за последний месяц|за последний год';
 var STATS_XSESSION_NAME = 'любое название';
 var STATS_XSESSION_SCR = 'любой скрамбл';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_CALC = 'Калькулятор';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'печатать скрамблы в статистику';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
+var PROPERTY_PRINTDATE = 'Добавлять дату сборки в статистику';
 var PROPERTY_SUMMARY = 'как суммарный после списка времени';
 var PROPERTY_IMRENAME = 'переименовать сессию сразу же после создания';
 var PROPERTY_SCR2SS = 'создавать новую сессию при измене типа скрамбла';
@@ -442,17 +442,17 @@ var PROPERTY_SS2SCR = 'восстанавливать тип скрамбла п
 var PROPERTY_SS2PHASES = 'восстанавливать время мульти-фазы при смене сессии';
 var PROPERTY_STATINV = 'обратный список времени';
 var PROPERTY_STATAL = 'Статистические индикаторы';
-var PROPERTY_STATALU = 'Customized statistical indicator';
+var PROPERTY_STATALU = 'Настраиваемый индикатор статистики';
 var PROPERTY_DELMUL = 'Включить множественное удаление';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_TOOLSFUNC = 'Выбранные функции';
 var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
+var PROPERTY_TRIM_MED = 'Среднее';
 var PROPERTY_STKHEAD = 'Использовать информацию о статусе Stackmat';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_AUTOEXP = 'Авто-экспорт (по 100 сборок)';
+var PROPERTY_AUTOEXP_OPT = 'Никогда|В Файл|С csTimer ID|С аккаунтом WCA';
+var PROPERTY_SCRASIZE = 'Размер автоматического скрамбла';
 var MODULE_NAMES = {
 	"kernel": 'глобальный',
 	"ui": 'дисплей',
