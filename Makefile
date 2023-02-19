@@ -49,11 +49,8 @@ tools/eoline.js \
 tools/roux1.js \
 tools/gsolver.js \
 tools/bluetoothutil.js \
-tools/insertionfinder.js \
 tools/metronome.js \
-tools/onlinecomp.js \
 tools/syncseed.js \
-tools/algsearch.js \
 shortcut.js \
 help.js \
 stackmat.js \
