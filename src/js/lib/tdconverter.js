@@ -369,6 +369,78 @@ var TimerDataConverter = execMain(function() {
 		return ret;
 	}];
 
+	Timers['CubeDesk.new'] = [/^{"sessions":\[/i, function(data) {
+		data = JSON.parse(stdStr(data));
+
+		var id2name = {};
+		var id2rank = {};
+		$.each(data['sessions'], function(idx, obj) {
+			id2name[obj['id']] = obj['name'];
+			id2rank[obj['id']] = obj['order'];
+		});
+
+		var ScrambleMap = {
+			'222': '222so',
+			'333': '333',
+			'444': '444wca',
+			'555': '555wca',
+			'pyram': 'pyrso',
+			'skewb': 'skbso',
+			'minx': 'mgmp',
+			'sq1': 'sqrs',
+			'clock': 'clkwca',
+			'666': '666wca',
+			'777': '777wca',
+			'333mirror': '333',
+			'222oh': '222so',
+			'333oh': '333oh',
+			'333bl': '333ni'
+		};
+		var ret = [];
+		var sessionIdx = {};
+		$.each(data['solves'], function(idx, obj) {
+			var session = obj['session_id'] + '-' + obj['cube_type'];
+			if (!(session in sessionIdx)) {
+				sessionIdx[session] = ret.length;
+				ret.push({
+					'name': (id2name[obj['session_id']] || obj['session_id']) + '-' + obj['cube_type'],
+					'opt': {
+						'scrType': ScrambleMap[obj['cube_type']] || '333'
+					},
+					'rank': id2rank[obj['session_id']],
+					'times': []
+				})
+			}
+			var sessionData = ret[sessionIdx[session]];
+			var penalty = 0;
+			if (obj['dnf']) {
+				penalty = -1;
+			} else if (obj['plus_two']) {
+				penalty = 2000;
+			}
+			var val = obj['raw_time'] * 1000;
+			sessionData['times'].push([
+				[penalty, val], obj['scramble'], obj['notes'] || '', Math.round(obj['started_at'] / 1000)
+			]);
+			var curScrType = ScrambleMap[obj['cube_type']];
+			if (curScrType) {
+				sessionData['opt']['scrType'] = curScrType;
+			}
+		});
+
+		$.each(ret, function(idx, sessionData) {
+			sessionData['times'].sort(function(a, b) {
+				return a[3] - b[3];
+			})
+		});
+
+		ret.sort(function(a, b) {
+			return a['rank'] - b['rank'];
+		});
+		return ret;
+	}];
+
+
 	function convert(data) {
 		var ret = undefined;
 		for (var timer in Timers) {
