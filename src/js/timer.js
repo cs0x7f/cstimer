@@ -246,7 +246,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var isShowAvgDiv = true;
 
 		function showAvgDiv(enable) {
-			if (enable && getProp('showAvg') && $.inArray(getProp('input'), ['s', 'm', 't', 'i']) != -1) {
+			if (enable && getProp('showAvg') && $.inArray(getProp('input'), ['s', 'm', 't', 'i', 'b']) != -1) {
 				if (!isShowAvgDiv) {
 					avgDiv.show();
 					isShowAvgDiv = true;
@@ -635,6 +635,98 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			onkeyup: onkeyup,
 			onkeydown: onkeydown
 		}
+	})();
+
+	// Timer Implementation that uses GAN Smart Timer via its Bluetooth protocol
+	var ganSmartTimer = (function () {
+
+		var enable = false;
+		var inspectionTime = 0;
+
+		function onGanTimerEvent(timerEvent) {
+			if (!enable)
+				return;
+			switch (timerEvent.state) {
+				case GanTimerState.HANDS_ON: // both hands placed on timer
+					lcd.color('#f00');
+					break;
+				case GanTimerState.HANDS_OFF: // hands removed from timer before grace period expired
+					lcd.color('');
+					break;
+				case GanTimerState.GET_SET:   // grace period expired and timer is ready to start
+					lcd.color('#0d0');
+					break;
+				case GanTimerState.IDLE: // timer reset button pressed
+					inspectionTime = 0;
+					switch (status) {
+						case -1:         // if was idle start inspection timer
+							if (checkUseIns()) { // only when inspection enabled in settings
+								status = -3;
+								lcd.setRunning(true);
+								startTime = $.now();
+								ui.setAutoShow(false);
+							}
+							break;
+						default:         // by default just reset / cancel timer
+							status = -1;
+							lcd.reset();
+							ui.setAutoShow(true);
+							break;
+					}
+					break;
+				case GanTimerState.RUNNING: // timer is started
+					if (status == -3) { // if inspection timer was running, record elapsed inspection time
+						inspectionTime = $.now() - startTime;
+						// 0 == Normal, 2000 == +2, -1 == DNF
+						inspectionTime = checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
+					}
+					startTime = $.now();
+					lcd.reset();
+					lcd.color('');
+					status = 1;
+					lcd.setRunning(true);
+					ui.setAutoShow(false);
+					break;
+				case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
+					lcd.setRunning(false);
+					lcd.val(timerEvent.recordedTime.asTimestamp);
+					ui.setAutoShow(true);
+					pushSignal('time', [inspectionTime, timerEvent.recordedTime.asTimestamp]);
+					break;
+				case GanTimerState.DISCONNECT: // timer is switched off or something else
+					status = -1;
+					lcd.val();
+					lcd.setRunning(false);
+					lcd.color('');
+					ui.setAutoShow(true);
+					break;
+			}
+
+		}
+
+		function setEnableImpl(input) {
+			enable = input == 'b';
+			if (enable) {
+				setTimeout(lcd.val, 100);
+				kernel.showDialog([$('<div><br><br><b>Press OK to connect to GAN Smart Timer</b><br><br>If you have enabled WCA inspections in settings, use GAN Smart Timer RESET button to start/cancel inspection timer.</div>'), function () {
+					GanTimerDriver.connect().then(function () {
+						GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
+						lcd.reset(0);
+					}).catch(function (err) {
+						alert(err);
+					});
+				}, 0, 0], 'share', 'GAN Smart Timer');
+			} else {
+				GanTimerDriver.disconnect();
+			}
+		}
+
+		return {
+			setEnable: setEnableImpl,
+			onkeyup: $.noop,
+			onkeydown: $.noop
+		};
+
 	})();
 
 	function col2std(col, faceMap) {
@@ -1308,6 +1400,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				break;
 			case 's':
 				stackmatTimer.onkeydown(keyCode, e);
+				break;
+			case 'b':
+				ganSmartTimer.onkeydown(keyCode, e);
+				break;
 			case 'i':
 				break;
 			case 'v':
@@ -1341,6 +1437,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			case 's':
 				stackmatTimer.onkeyup(keyCode, e);
 				break;
+			case 'b':
+				ganSmartTimer.onkeyup(keyCode, e);
+				break;
 		}
 	}
 
@@ -1360,6 +1459,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (value[0] == 'input') {
 				stackmatTimer.setEnable(value[1]);
 				giikerTimer.setEnable(value[1]);
+				ganSmartTimer.setEnable(value[1]);
 			}
 			if (value[0] == 'showAvg') {
 				avgDiv.showAvgDiv(value[1]);
@@ -1385,7 +1485,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
-		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q'], PROPERTY_ENTERING_STR.split('|')], 1);
+		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q', 'b'], PROPERTY_ENTERING_STR.split('|')], 1);
 		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [20100, [1, 100, 1000, 10001, 10100, 11000, 20001, 20100, 21000], 'X|X.XX|X.XXX|X:XX|X:XX.XX|X:XX.XXX|X:XX:XX|X:XX:XX.XX|X:XX:XX.XXX'.split('|')], 1);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
