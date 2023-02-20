@@ -56,6 +56,7 @@
   <script type="text/javascript" src="js/stackmat.js"></script>
   <script type="text/javascript" src="js/tools/stackmatutil.js"></script>
   <script type="text/javascript" src="js/bluetooth.js"></script>
+  <script type="text/javascript" src="js/gantimer.js"></script>
   <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>
   <script type="text/javascript" src="js/twisty/twisty.js"></script>
