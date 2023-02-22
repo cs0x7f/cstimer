@@ -427,6 +427,169 @@ var mathlib = (function() {
 		return cycles - parity;
 	};
 
+	function schreierSims(gen, shuffle) {
+		this.sgs = [];
+		this.sgsi = [];
+		this.Tk = [];
+		var n = gen[0].length;
+		var e = [];
+		for (var i = 0; i < n; i++) {
+			e[i] = i;
+		}
+		for (var i = 0; i < n; i++) {
+			this.sgs.push([]);
+			this.sgsi.push([]);
+			this.Tk.push([]);
+			this.sgs[i][i] = e;
+			this.sgsi[i][i] = e;
+		}
+		for (var i = 0; i < gen.length; i++) {
+			var g = gen[i];
+			if (shuffle) {
+				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
+			}
+			this.knutha(n - 1, g);
+		}
+	}
+
+	schreierSims.prototype.permMult = function(permA, permB) {
+		var ret = [];
+		for (var i = 0; i < permA.length; i++) {
+			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	schreierSims.prototype.permInv = function(perm) {
+		var ret = [];
+		for (var i = 0; i < perm.length; i++) {
+			ret[perm[i]] = i;
+		}
+		return ret;
+	}
+
+	schreierSims.prototype.isMember = function(p, depth) {
+		depth = depth || 0;
+		for (var i = p.length - 1; i >= depth; i--) {
+			var j = p[i];
+			if (j !== i) {
+				if (!this.sgs[i][j]) {
+					return false;
+				}
+				p = this.permMult(p, this.sgsi[i][j]);
+			}
+		}
+		return true;
+	}
+
+	schreierSims.prototype.knutha = function(k, p) {
+		this.Tk[k].push(p);
+		for (var i = 0; i < this.sgs[k].length; i++) {
+			if (this.sgs[k][i]) {
+				this.knuthb(k, this.permMult(this.sgs[k][i], p));
+			}
+		}
+	}
+
+	schreierSims.prototype.knuthb = function(k, p) {
+		var j = p[k];
+		if (!this.sgs[k][j]) {
+			this.sgs[k][j] = p;
+			this.sgsi[k][j] = this.permInv(p);
+			for (var i = 0; i < this.Tk[k].length; i++) {
+				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
+			}
+			return;
+		}
+		var p2 = this.permMult(p, this.sgsi[k][j]);
+		if (!this.isMember(p2)) {
+			this.knutha(k - 1, p2);
+		}
+	}
+
+	schreierSims.prototype.size = function() {
+		var n = this.sgs.length;
+		var size = 1;
+		for (var j = 0; j < n; j++) {
+			var cnt = 0;
+			for (var k = 0; k < n; k++) {
+				if (this.sgs[j][k]) {
+					cnt++;
+				}
+			}
+			size *= cnt;
+		}
+		return size;
+	}
+
+	schreierSims.prototype.intersect = function(other, thres) {
+		if (this.size() > other.size()) {
+			return other.intersect(this, thres);
+		}
+		thres = thres || 100000;
+		var ret = new schreierSims([this.sgs[0][0]]);
+		var n = this.sgs.length;
+		ret.cnt = 0;
+		for (var i = 0; i < n; i++) {
+			for (var j = 0; j < i; j++) {
+				if (!this.sgs[i][j] || ret.sgs[i][j]) {
+					continue;
+				}
+				// console.log(i, j);
+				this.enumDFS(i - 1, this.sgs[i][j], function(perm) {
+					ret.knutha(n - 1, perm);
+					// console.log(i, j, ret.size(), perm);
+					return true;
+				}, function(depth, perm) {
+					if (ret.cnt > thres || ret.cnt == -1) {
+						ret.cnt = -1;
+						return false;
+					}
+					ret.cnt++;
+					var mchk = other.isMember(perm, depth);
+					if (!mchk) {
+						return false;
+					}
+					for (var i = 0; i < ret.sgs[depth].length - 1; i++) {
+						if (ret.sgs[depth][i]) {
+							var pp = ret.permMult(perm, ret.sgs[depth][i]);
+							if (pp[depth] < perm[depth]) {
+								return false;
+							}
+						}
+					}
+					return true;
+				});
+				if (ret.cnt == -1) {
+					return ret;
+				}
+			}
+		}
+		return ret;
+	}
+
+	schreierSims.prototype.enumDFS = function(depth, perm, callback, checkFunc) {
+		if (checkFunc && !checkFunc(depth + 1, perm)) {
+			return;
+		}
+		if (depth == 0) {
+			return callback(perm);
+		}
+		for (var j = 0; j <= depth; j++) {
+			if (this.sgs[depth][j]) {
+				var ret = this.enumDFS(depth - 1, this.permMult(this.sgs[depth][j], perm), callback, checkFunc);
+				if (ret) {
+					// console.log(depth, j, this.sgs[depth][j])
+					return ret;
+				}
+			}
+		}
+	}
+
+	schreierSims.prototype.enum = function(callback) {
+		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
+	}
+
 	function createPrun(prun, init, size, maxd, doMove, N_MOVES, N_POWER, N_INV) {
 		var isMoveTable = $.isArray(doMove);
 		N_MOVES = N_MOVES || 6;
@@ -581,6 +744,67 @@ var mathlib = (function() {
 	}
 
 	_ = gSolver.prototype;
+
+	_.calcNumOfStates = function() {
+		var len = this.solvedStates[0].length;
+		var genMove = [];
+		for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
+			var state = [];
+			for (var i=0; i<len; i++) {
+				state.push(i + 32);
+			}
+			var newState = this.doMove(String.fromCharCode.apply(null, state), this.movesList[moveIdx][0]);
+			if (!newState || newState in this.prunTable) {
+				continue;
+			}
+			for (var i=0; i<len; i++) {
+				state[i] = newState.charCodeAt(i) - 32;
+			}
+			genMove.push(state);
+		}
+		var genColor = [];
+		var state = this.solvedStates[0];
+		var e = [];
+		for (var i = 0; i < len; i++) {
+			e[i] = i;
+		}
+		var checked = [];
+		for (var i = 0; i < len; i++) {
+			if (checked[i]) {
+				continue;
+			}
+			for (var j = i + 1; j < len; j++) {
+				if (state[i] == state[j] && (i % 9 % 2) == (j % 9 % 2)) {
+					var perm = e.slice();
+					perm[i] = j;
+					perm[j] = i;
+					checked[j] = 1;
+					genColor.push(perm);
+				}
+			}
+		}
+		var sgs0, sgs1, sgs01;
+		for (var r = 0; r < 100; r++) {
+			var shuffle = [];
+			for (var i = 0; i < len; i++) {
+				shuffle[i] = i;
+			}
+			for (var i = 0; i < len; i++) {
+				var j = ~~(Math.random() * (len - i)) + i;
+				var tmp = shuffle[i];
+				shuffle[i] = shuffle[j];
+				shuffle[j] = tmp;
+			}
+			sgs0 = new schreierSims(genColor, shuffle);
+			sgs1 = new schreierSims(genMove, shuffle);
+			sgs01 = sgs0.intersect(sgs1);
+			if (sgs01.cnt != -1) {
+				console.log(r);
+				break;
+			}
+		}
+		console.log(sgs01.cnt, sgs0.size(), sgs1.size(), sgs01.size(), sgs1.size() / sgs01.size());
+	};
 
 	_.updatePrun = function(targetDepth) {
 		targetDepth = targetDepth === undefined ? this.prunDepth + 1 : targetDepth;
@@ -873,6 +1097,7 @@ var mathlib = (function() {
 		circle: circle,
 		circleOri: circleOri,
 		acycle: acycle,
+		schreierSims: schreierSims,
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
