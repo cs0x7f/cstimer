@@ -724,18 +724,196 @@ var mathlib = (function() {
 		return state;
 	}
 
-	// state: string not null
-	// solvedStates: [solvedstate, solvedstate, ...], string not null
-	// moveFunc: function(state, move);
-	// moves: {move: face0 | axis0}, face0 | axis0 = 4 + 4 bits
-	function gSolver(solvedStates, doMove, moves, prunHash) {
+	function phSolver(solvedStates, doMove, moves, prunHashs, isPartial) {
 		this.solvedStates = solvedStates;
 		this.doMove = doMove;
 		this.movesList = [];
 		for (var move in moves) {
 			this.movesList.push([move, moves[move]]);
 		}
-		this.prunHash = prunHash || identity;
+		this.state2Idxs = [];
+		this.moveTables = [];
+		this.prunTables = [];
+		this.isPartial = isPartial || false;
+		this.prunHashs = prunHashs || [identity];
+	}
+
+	_ = phSolver.prototype;
+
+	_.initPrun = function(idx) {
+		if (this.moveTables.length != 0) {
+			return;
+		}
+		for (var idx = 0; idx < this.prunHashs.length; idx++) {
+			var state2Idx = {};
+			var moveTable = [null];
+			var prunTable = [];
+			for(var i = 0; i < this.solvedStates.length; i++) {
+				var state = this.prunHashs[idx](this.solvedStates[i]);
+				if (state in state2Idx) {
+					continue;
+				}
+				state2Idx[state] = moveTable.length << 8;
+				moveTable.push(state);
+			}
+			var head = 1;
+			var curDepth = 0;
+			var t = +new Date;
+			while (head != moveTable.length) {
+				var state = moveTable[head];
+				var prun = (state2Idx[state] & 0xff) + 1;
+				if (prun != curDepth) {
+					DEBUG && console.log('[phSolver] initPrun', curDepth, moveTable.length - 1, +new Date - t);
+					curDepth = prun;
+					prunTable.push(moveTable.length - 1); // if idx > prunTable[i] then prun(idx) > i
+				}
+				var curTable = [];
+				for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
+					var newState = this.doMove(state, this.movesList[moveIdx][0]);
+					if (!newState) {
+						continue;
+					}
+					if (!(newState in state2Idx)) {
+						state2Idx[newState] = moveTable.length << 8 | prun;
+						moveTable.push(newState);
+					}
+					var newIdx = state2Idx[newState] >> 8;
+					curTable[moveIdx] = newIdx;
+				}
+				moveTable[head] = curTable;
+				head++;
+			}
+			this.moveTables[idx] = moveTable;
+			this.prunTables[idx] = prunTable;
+			this.state2Idxs[idx] = state2Idx;
+		}
+	}
+
+	_.search = function(state, minl, MAXL) {
+		this.initPrun();
+		this.sol = [];
+		this.subOpt = false;
+		this.rawState = state;
+		this.state = [];
+		for (var idx = 0; idx < this.prunHashs.length; idx++) {
+			var hstate = this.prunHashs[idx](state);
+			this.state.push(this.state2Idxs[idx][hstate] >> 8);
+		}
+		this.visited = {};
+		this.maxl = minl = minl || 0;
+		return this.searchNext(MAXL);
+	};
+
+	_.searchNext = function(MAXL, cost) {
+		this.initPrun();
+		MAXL = (MAXL + 1) || 99;
+		this.prevSolStr = this.solArr ? this.solArr.join(',') : null;
+		this.solArr = null;
+		this.cost = cost || -1;
+		for (; this.maxl < MAXL; this.maxl++) {
+			if (this.cost == 0) {
+				return null;
+			}
+			if (this.idaSearch(this.state, this.maxl, null, 0)) {
+				break;
+			}
+		}
+		return this.solArr;
+	}
+
+	_.idaSearch = function(state, maxl, lm, depth) {
+		if (this.getPruning(state) > maxl) {
+			return false;
+		}
+		if (maxl == 0) {
+			var rawState = this.rawState;
+			var solArr = [];
+			var curVisited = [];
+			for (var i = 0; i < this.sol.length; i++) {
+				var move = this.movesList[this.sol[i]][0];
+				rawState = this.doMove(rawState, move);
+				solArr.push(move);
+				curVisited.push(rawState);
+				if (!this.subOpt && rawState in this.visited && this.visited[state] < depth) {
+					return false;
+				}
+			}
+			if (this.solvedStates.indexOf(rawState) == -1) {
+				return false;
+			}
+			for (var i = 0; i < curVisited.length; i++) {
+				this.visited[curVisited[i]] = i;
+			}
+			this.subOpt = true;
+			if (solArr.join(',') == this.prevSolStr) {
+				return false;
+			}
+			this.solArr = solArr;
+			return true;
+		}
+		if (this.cost >= 0) {
+			if (this.cost == 0) {
+				return true;
+			}
+			this.cost--;
+		}
+		var lastMove = lm == null ? '' : this.movesList[lm][0];
+		var lastAxisFace = lm == null ? -1 : this.movesList[lm][1];
+		for (var moveIdx = this.sol[depth] || 0; moveIdx < this.movesList.length; moveIdx++) {
+			var moveArgs = this.movesList[moveIdx];
+			var axisface = moveArgs[1] ^ lastAxisFace;
+			var move = moveArgs[0];
+			if (axisface == 0 ||
+				(axisface & 0xf) == 0 && move <= lastMove) {
+				continue;
+			}
+			var isSkip = false;
+			var isEqual = true;
+			var newState = [];
+			for (var i = 0; i < state.length; i++) {
+				var val = this.moveTables[i][state[i]][moveIdx];
+				if (!val) {
+					isSkip = true;
+					break;
+				} else if (val != state[i]) {
+					isEqual = false;
+				}
+				newState.push(val);
+			}
+			if (isSkip || isEqual && !this.isPartial) {
+				continue;
+			}
+			this.sol[depth] = moveIdx;
+			if (this.idaSearch(newState, maxl - 1, moveIdx, depth + 1)) {
+				return true;
+			}
+			this.sol.pop();
+		}
+		return false;
+	};
+
+	_.getPruning = function(state) {
+		var prun = 0;
+		for (var i = 0; i < state.length; i++) {
+			var prunTable = this.prunTables[i];
+			while (prunTable[prun] < state[i]) {
+				prun++;
+			}
+		}
+		return prun;
+	};
+
+	// state: string not null
+	// solvedStates: [solvedstate, solvedstate, ...], string not null
+	// moveFunc: function(state, move);
+	// moves: {move: face0 | axis0}, face0 | axis0 = 4 + 4 bits
+	function gSolver(solvedStates, doMove, moves) {
+		this.solvedStates = solvedStates;
+		this.doMove = doMove;
+		this.movesList = [];
+		for (var move in moves) {
+			this.movesList.push([move, moves[move]]);
+		}
 		this.prunTable = {};
 		this.toUpdateArr = null;
 		this.prunTableSize = 0;
@@ -813,7 +991,7 @@ var mathlib = (function() {
 			if (depth < 1) {
 				this.prevSize = 0;
 				for (var i = 0; i < this.solvedStates.length; i++) {
-					var state = this.prunHash(this.solvedStates[i]);
+					var state = this.solvedStates[i];
 					if (!(state in this.prunTable)) {
 						this.prunTable[state] = depth;
 						this.prunTableSize++;
@@ -826,7 +1004,7 @@ var mathlib = (function() {
 				return;
 			}
 			this.prunDepth = depth;
-			DEBUG && console.log(depth, this.prunTableSize - this.prevSize, +new Date - t);
+			DEBUG && console.log('[gSolver] updatePrun', depth, this.prunTableSize - this.prevSize, +new Date - t);
 			this.prevSize = this.prunTableSize;
 		}
 	};
@@ -888,7 +1066,7 @@ var mathlib = (function() {
 	}
 
 	_.getPruning = function(state) {
-		var prun = this.prunTable[this.prunHash(state)];
+		var prun = this.prunTable[state];
 		return prun === undefined ? this.prunDepth + 1 : prun;
 	};
 
@@ -1113,6 +1291,7 @@ var mathlib = (function() {
 		Solver: Solver,
 		rndPerm: rndPerm,
 		gSolver: gSolver,
+		phSolver: phSolver,
 		getSeed: randGen.getSeed,
 		setSeed: randGen.setSeed
 	};
