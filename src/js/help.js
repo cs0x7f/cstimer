@@ -80,7 +80,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 	];
 
 	var funcmap = [
-		["<br>", "<br>", "&lt;", "&gt;", "<br>", "<br>", "&lt;", "&gt;", "<br>", "<br>"],
+		["<br>", "<br>", "&lt;", "&gt;", "  M", "  M", "&lt;", "&gt;", "<br>", "<br>"],
 		[" z'", "  B", " L'", "Lw'", "  x", "  x", " Rw", "  R", " B'", "  z"],
 		[" y'", "  D", "  L", " U'", " F'", "  F", "  U", " R'", " D'", "  y"],
 		[" Dw", " M'", "Uw'", " Lw", " x'", " x'", "Rw'", " Uw", " M'", "Dw'"],
