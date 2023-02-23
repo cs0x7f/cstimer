@@ -1003,8 +1003,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					reset();
 					status = -1;
 				} else {
+					var mappedCode = help.getMappedCode(keyCode);
 					var a = {
-						keyCode: keyCode
+						"keyCode": mappedCode
 					};
 					puzzleObj.keydown(a);
 				}
