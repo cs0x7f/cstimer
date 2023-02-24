@@ -185,7 +185,7 @@ execMain(function() {
 	}
 
 	$.ctxRotate = function(arr, theta) {
-		return Transform(arr, [Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta), 0]);
+		return $.ctxTransform(arr, [Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta), 0]);
 	}
 
 	$.ctxTransform = function(arr) {
