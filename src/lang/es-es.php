@@ -39,19 +39,7 @@
 </table>
 </table>
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>Mapa de teclas para Cubo virtual</th></tr><tr>
-<td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
-<td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
-</tr><tr>
-<td>Q<br><span> z'</span></td><td>W<br><span>  B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span>  x</span></td> 
-<td>Y<br><span>  x</span></td><td>U<br><span> Rw</span></td><td>I<br><span>  R</span></td><td>O<br><span> B'</span></td><td>P<br><span>  z</span></td> 
-</tr><tr>
-<td>A<br><span> y'</span></td><td>S<br><span>  D</span></td><td>D<br><span>  L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
-<td>H<br><span>  F</span></td><td>J<br><span>  U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span>  y</span></td>
-</tr><tr>
-<td>Z<br><span> Dw</span></td><td>X<br><span> M'</span></td><td>C<br><span>Uw'</span></td><td>V<br><span> Lw</span></td><td>B<br><span> x'</span></td>
-<td>N<br><span> x'</span></td><td>M<br><span>Rw'</span></td><td>,<br><span> Uw</span></td><td>.<br><span> M'</span></td><td>/<br><span>Dw'</span></td>
-</tr>
+<tr><th colspan=10>Mapa de teclas para Cubo virtual</th></tr>
 </table>
 
 <h2>Detalles de las opciones.</h2>
@@ -142,10 +130,9 @@
 <li><strong data="tool_pyrv">Solucionadores &gt; Pyraminx V</strong>. Resolución del Pyraminx V, que resuelve tres esquinas y dos bordes para formar un patrón 'V' para Pyraminx.</li>
 <li><strong data="tool_skbl1">Solucionadores &gt; Skewb Face</strong>. Resolución de la cara Skewb, que resuelve una capa de Skewb, más específicamente, 1 centro y 4 esquinas adyacentes.</li>
 <li><strong data="tool_giikerutil">Cubo Giiker</strong>. Herramienta auxiliar para el cubo bluetooth, que es capaz de mostrar el estado actual, la potencia de la batería, la reconstrucción en tiempo real, etc.</li>
-<li><strong data="tool_if">InsertionFinder</strong>. Buscador de inserciones, que es para FMC.</li>
-<li><strong data="tool_mtrnm">Metrónomo</strong>. El métronomo, además de sonar con una frecuencia específica, la hace sonar en un momento específico después de empezar a resolverla.</li>
-<li><strong data="tool_onlinecomp">Competición en línea</strong>. Concurso en línea, para que pueda iniciar sesión con la cuenta WCA y competir con todos los Speedcubers en el mundo con las mismas mezclas.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Herramienta auxiliar para Stackmat, que es capaz de ver el estado, potencia y nivel de ruido de la señal, etc.</li>
+<li><strong data="tool_mtrnm">Metrónomo</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_syncseed">Mezclado común</strong>. Using same scrambles with friends by setting a common seed.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>Enlaces</h2>
 <ul>

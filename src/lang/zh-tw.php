@@ -38,19 +38,7 @@
 </table>
 </table>
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>虛擬方塊按鍵</th></tr><tr>
-<td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
-<td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
-</tr><tr>
-<td>Q<br><span> z'</span></td><td>W<br><span>  B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span>  x</span></td> 
-<td>Y<br><span>  x</span></td><td>U<br><span> Rw</span></td><td>I<br><span>  R</span></td><td>O<br><span> B'</span></td><td>P<br><span>  z</span></td> 
-</tr><tr>
-<td>A<br><span> y'</span></td><td>S<br><span>  D</span></td><td>D<br><span>  L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
-<td>H<br><span>  F</span></td><td>J<br><span>  U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span>  y</span></td>
-</tr><tr>
-<td>Z<br><span> Dw</span></td><td>X<br><span> M'</span></td><td>C<br><span>Uw'</span></td><td>V<br><span> Lw</span></td><td>B<br><span> x'</span></td>
-<td>N<br><span> x'</span></td><td>M<br><span>Rw'</span></td><td>,<br><span> Uw</span></td><td>.<br><span> M'</span></td><td>/<br><span>Dw'</span></td>
-</tr>
+<tr><th colspan=10>虛擬方塊按鍵</th></tr>
 </table>
 
 <h2>設定</h2>
@@ -141,10 +129,9 @@
 <li><strong data="tool_pyrv">速解小幫手 &gt; Pyraminx V</strong>. 金字塔「V」的小幫手。它會解好成V字型的三個角與兩個邊。</li>
 <li><strong data="tool_skbl1">速解小幫手 &gt; Skewb Face</strong>. 解好斜轉方塊的一面一層。</li>
 <li><strong data="tool_giikerutil">計客魔方</strong>. 藍牙方塊專用的小工具。它會顯示目前方塊的狀態、電池電量、上一轉解法等。</li>
-<li><strong data="tool_if">InsertionFinder</strong>. FMC做Insertion用的輔助工具。</li>
-<li><strong data="tool_mtrnm">節拍器</strong>. 你可以自由設定節拍速度，也可以設成開始計時的時候啟動。</li>
-<li><strong data="tool_onlinecomp">線上比賽</strong>. 用WCA帳號登入後，可以在這裡與全世界的玩家一起參加線上小比賽。</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. SS計時器的附加工具。可以在這裡看見計時器的狀態、訊號強度跟雜訊大小。</li>
+<li><strong data="tool_mtrnm">節拍器</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_syncseed">共同打亂</strong>. Using same scrambles with friends by setting a common seed.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>連結</h2>
 <ul>

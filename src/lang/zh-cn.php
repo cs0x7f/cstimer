@@ -38,19 +38,7 @@
 </table>
 </table>
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>虚拟魔方按键表</th></tr><tr>
-<td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
-<td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
-</tr><tr>
-<td>Q<br><span> z'</span></td><td>W<br><span>  B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span>  x</span></td> 
-<td>Y<br><span>  x</span></td><td>U<br><span> Rw</span></td><td>I<br><span>  R</span></td><td>O<br><span> B'</span></td><td>P<br><span>  z</span></td> 
-</tr><tr>
-<td>A<br><span> y'</span></td><td>S<br><span>  D</span></td><td>D<br><span>  L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
-<td>H<br><span>  F</span></td><td>J<br><span>  U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span>  y</span></td>
-</tr><tr>
-<td>Z<br><span> Dw</span></td><td>X<br><span> M'</span></td><td>C<br><span>Uw'</span></td><td>V<br><span> Lw</span></td><td>B<br><span> x'</span></td>
-<td>N<br><span> x'</span></td><td>M<br><span>Rw'</span></td><td>,<br><span> Uw</span></td><td>.<br><span> M'</span></td><td>/<br><span>Dw'</span></td>
-</tr>
+<tr><th colspan=10>虚拟魔方按键表</th></tr>
 </table>
 
 <h2>设置项明细</h2>
@@ -141,9 +129,8 @@
 <li><strong data="tool_pyrv">求解器 &gt; Pyraminx V</strong>. 金字塔V求解，它还原3个角块和两个棱块，从而形成一个‘V’图案。</li>
 <li><strong data="tool_skbl1">求解器 &gt; Skewb Face</strong>. 斜转一面求解，它会求解斜转的一层，更具体地说，围绕1个中心还原4个相邻的角块。</li>
 <li><strong data="tool_giikerutil">蓝牙魔方</strong>. 用于蓝牙魔方的辅助工具，可以显示当前状态、电量、实时解法重构等。</li>
-<li><strong data="tool_if">InsertionFinder</strong>. 插入查找工具，用于最少步。</li>
 <li><strong data="tool_mtrnm">节拍器</strong>. 节拍器，除了可以按特定频率发出滴声，你还可以让它在还原开始后的特定时间发出滴声。</li>
-<li><strong data="tool_onlinecomp">线上比赛</strong>. 在线比赛，你可以用WCA账号登陆，然后和全世界的魔方速拧玩家用同一组打乱比赛。</li>
+<li><strong data="tool_syncseed">公共打乱</strong>. 通过设置相同的种子，你可以和朋友共享相同的打乱公式。</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. 用于Stackmat的辅助工具，可以显示状态、信号功率、噪声等。</li>
 </ul>
 <h2>链接</h2>

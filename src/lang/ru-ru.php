@@ -38,19 +38,7 @@
 </table>
 </table>
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
-<td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
-<td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
-</tr><tr>
-<td>Q<br><span> z'</span></td><td>W<br><span>  B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span>  x</span></td> 
-<td>Y<br><span>  x</span></td><td>U<br><span> Rw</span></td><td>I<br><span>  R</span></td><td>O<br><span> B'</span></td><td>P<br><span>  z</span></td> 
-</tr><tr>
-<td>A<br><span> y'</span></td><td>S<br><span>  D</span></td><td>D<br><span>  L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
-<td>H<br><span>  F</span></td><td>J<br><span>  U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span>  y</span></td>
-</tr><tr>
-<td>Z<br><span> Dw</span></td><td>X<br><span> M'</span></td><td>C<br><span>Uw'</span></td><td>V<br><span> Lw</span></td><td>B<br><span> x'</span></td>
-<td>N<br><span> x'</span></td><td>M<br><span>Rw'</span></td><td>,<br><span> Uw</span></td><td>.<br><span> M'</span></td><td>/<br><span>Dw'</span></td>
-</tr>
+<tr><th colspan=10>Virtual Cube Key Map</th></tr>
 </table>
 
 <h2>Option details</h2>
@@ -141,10 +129,9 @@
 <li><strong data="tool_pyrv">Cборщики &gt; Pyraminx V</strong>. Сборщик V для пирамидки, который сначала собирает 3 угла и 2 ребра в форму буквы 'V' для пирамидки.</li>
 <li><strong data="tool_skbl1">Cборщики &gt; Skewb Face</strong>. Сборщик стороны скьюба, который собирает его слой, а точнее, 1 центр и 4 соседние угла.</li>
 <li><strong data="tool_giikerutil">Giiker Cube</strong>. Дополнительный инструмент для Bluetooth-куба, который способен показать состояние, зарядку, реконструкцию в режиме реального времени и т.д.</li>
-<li><strong data="tool_if">InsertionFinder</strong>. Поиск вставки для сборки на количество ходов.</li>
-<li><strong data="tool_mtrnm">метроном</strong>. Метроном, помимо издавания звуков на специальной частоте, вы можете заставить его издавать звуки в определенное время даже после начала сборки.</li>
-<li><strong data="tool_onlinecomp">Онлайн соревнование</strong>. Онлайн-соревнование, где вы можете войти через аккаунт WCA и соревноваться со спидкуберами со всего мира с одинаковыми скрамблами.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Дополнительный инструмент для Stackmat, способный просматривать статус, мощность и шум сигнала, и т.д.</li>
+<li><strong data="tool_mtrnm">метроном</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_syncseed">Обычный скрамбл</strong>. Using same scrambles with friends by setting a common seed.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>Ссылки</h2>
 <ul>

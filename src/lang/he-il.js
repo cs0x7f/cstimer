@@ -70,7 +70,7 @@ var TOOLS_SYNCSEED = 'ערבוב נפוץ';
 var TOOLS_SYNCSEED_SEED = 'זרע';
 var TOOLS_SYNCSEED_INPUT = 'זרע קלט';
 var TOOLS_SYNCSEED_30S = 'השתמש בזרע חדש כל 30ש';
-var TOOLS_SYNCSEED_HELP = 'אם מופעל, הערבוב יהיה תלוי רק בזרע ובהגדרות. בכלליות, אם שני אנשים משתמשים באותו זרע, הם יקבלו את אותם ערבובים.';
+var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'כבה זרע נוכחי?';
 var TOOLS_SYNCSEED_INPUTA = 'הכנס ערך (a-zA-Z0-9) כזרע';
 var OLCOMP_UPDATELIST = 'עדכן רשימת תחרויות';
@@ -94,7 +94,7 @@ var PROPERTY_TIMEU = 'עדכון הטיימר הוא';
 var PROPERTY_TIMEU_STR = 'עדכון|0.1ש|שניות|סקירה|ללא';
 var PROPERTY_PRETIME = 'זמן השארת מקש הרווח לחוץ(שנייה(ות))';
 var PROPERTY_ENTERING = 'הזן זמנים עם';
-var PROPERTY_ENTERING_STR = 'טיימר|הקלדה|Stackmat|טיימרמויו|וירטואלי|Bluetooth|qCube';
+var PROPERTY_ENTERING_STR = 'טיימר|הקלדה|Stackmat|טיימרמויו|וירטואלי|Bluetooth|qCube|GanTimer';
 var PROPERTY_INTUNIT = 'יחידה כשמכניסים מספר';
 var PROPERTY_INTUNIT_STR = 'שנייה|עשירית שנייה|מאית שנייה';
 var PROPERTY_COLOR = 'בחר צבע נושא';
@@ -127,12 +127,12 @@ var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2ש|3ש|4ש|5ש|אף פעם|מבולגן נכון';
 var PROPERTY_GIISOK_KEY = 'סמן מבולגן עם רווח';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
+var PROPERTY_GIISOK_MOVES = 'U4, R4 וכדומה|2(\'U U), 2(U\' U)2 וכדומה|אף פעם';
+var PROPERTY_GIISBEEP = 'צפצף כאשר מסומן שמבולגן';
 var PROPERTY_GIIRST = 'אפס קוביית בלוטות\' כאשר מחובר';
 var PROPERTY_GIIRSTS = 'תמיד|שאל|אף פעם';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var CONFIRM_GIIRST = 'אפס קוביית בלוטות\' כאשר נפתר?';
+var PROPERTY_GIIAED = 'זיהוי תקלות חומרה אוטומטי';
 var scrdata = [
 	['WCA', [
 		['3×3×3', "333", 0],
@@ -251,8 +251,8 @@ var scrdata = [
 	['Square-1', [
 		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['מטריקת סיבוב פאה', "sq1h", 40],
+		['מטריקת סיבוב', "sq1t", 20]
 	]],
 	['===אחר===', [
 		['--', "blank", 0]

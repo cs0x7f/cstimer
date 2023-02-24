@@ -38,19 +38,7 @@
 </table>
 </table>
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>仮想キューブのキー割り当て</th></tr><tr>
-<td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
-<td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
-</tr><tr>
-<td>Q<br><span> z'</span></td><td>W<br><span>  B</span></td><td>E<br><span> L'</span></td><td>R<br><span>Lw'</span></td><td>T<br><span>  x</span></td> 
-<td>Y<br><span>  x</span></td><td>U<br><span> Rw</span></td><td>I<br><span>  R</span></td><td>O<br><span> B'</span></td><td>P<br><span>  z</span></td> 
-</tr><tr>
-<td>A<br><span> y'</span></td><td>S<br><span>  D</span></td><td>D<br><span>  L</span></td><td>F<br><span> U'</span></td><td>G<br><span> F'</span></td>
-<td>H<br><span>  F</span></td><td>J<br><span>  U</span></td><td>K<br><span> R'</span></td><td>L<br><span> D'</span></td><td>;<br><span>  y</span></td>
-</tr><tr>
-<td>Z<br><span> Dw</span></td><td>X<br><span> M'</span></td><td>C<br><span>Uw'</span></td><td>V<br><span> Lw</span></td><td>B<br><span> x'</span></td>
-<td>N<br><span> x'</span></td><td>M<br><span>Rw'</span></td><td>,<br><span> Uw</span></td><td>.<br><span> M'</span></td><td>/<br><span>Dw'</span></td>
-</tr>
+<tr><th colspan=10>仮想キューブのキー割り当て</th></tr>
 </table>
 
 <h2>オプションの詳細</h2>
@@ -141,10 +129,9 @@
 <li><strong data="tool_pyrv">ソルバー &gt; Pyraminx V</strong>. ピラミンクスのVソルバーです。3つのコーナーと2つのエッジを解き、'V'のパターンを作ります。</li>
 <li><strong data="tool_skbl1">ソルバー &gt; Skewb Face</strong>. スキューブの一面ソルバーです。具体的には、1つのセンターとそれに対応する4つのコーナーを揃えます。</li>
 <li><strong data="tool_giikerutil">Giiker キューブ</strong>. スマートキューブの補助ツールです。現在の状態や、バッテリー残量や、リアルタイムのreconstructionなどを表示します。</li>
-<li><strong data="tool_if">InsertionFinder</strong>. FMCで用いるInsertion finderです。</li>
-<li><strong data="tool_mtrnm">メトロノーム</strong>. 特定の周期で音を鳴らすメトロノームです。ソルブ開始から特定の時間が経過したときにも音を鳴らせます。</li>
-<li><strong data="tool_onlinecomp">オンライン大会</strong>. オンライン大会です。WCAアカウントでログインすることができ、世界中のスピードキューバーと同じスクランブルを用いて競うことができます。</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. スタックタイマーの補助ツールです。接続状態を確認したり、信号強度やノイズレベルなどを表示できます。</li>
+<li><strong data="tool_mtrnm">メトロノーム</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_syncseed">共通スクランブル</strong>. Using same scrambles with friends by setting a common seed.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>リンク</h2>
 <ul>
