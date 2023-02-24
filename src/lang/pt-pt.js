@@ -7,12 +7,12 @@ var BUTTON_TIME_LIST = 'LISTAR<br>TEMPOS';
 var BUTTON_OPTIONS = 'OPÇÕES';
 var BUTTON_EXPORT = 'EXPORTAR';
 var BUTTON_DONATE = 'DOAR';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Com sessão';
 var PROPERTY_USEINS = 'usar inspeção da WCA';
 var PROPERTY_USEINS_STR = 'Sempre|Exceto BLD|Nunca';
 var PROPERTY_VOICEINS = 'aviso de voz da inspeção da WCA';
 var PROPERTY_VOICEINS_STR = 'nenhuma|voz masculina|voz feminina';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Volume de voz';
 var PROPERTY_PHASES = 'fases de cronometragem';
 var PROPERTY_TIMERSIZE = 'tamanho do cronômetro';
 var PROPERTY_USEMILLI = 'usar milisegundos';
@@ -23,7 +23,7 @@ var PROPERTY_SCRLIM = 'Limitar a altura da área de embaralhamento';
 var PROPERTY_SCRALIGN = 'Alinhamento da área do embaralhamento';
 var PROPERTY_SCRALIGN_STR = 'centro|esquerda|direita';
 var PROPERTY_SCRFAST = 'Usando embaralhamento rápido para 4x4x4 (não-oficial)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_SCRKEYM = 'Destacar movimento(s) chave';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'Estilo do painel de exibição do embaralhamento';
@@ -42,12 +42,12 @@ var EXPORT_ERROR = 'Alguns erros ocorreram...';
 var EXPORT_NODATA = 'Sem dados encontrados para sua conta';
 var EXPORT_UPLOADED = 'Enviado com sucesso';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_ONLYOPT = 'Exportar/Importar apenas Opções';
+var EXPORT_ACCOUNT = 'Exportar Contas';
+var EXPORT_LOGINGGL = 'Acessar usando conta Google';
+var EXPORT_LOGINWCA = 'Login usando a conta WCA';
+var EXPORT_LOGOUTCFM = 'Confirmar a saída?';
+var EXPORT_LOGINAUTHED = 'Autorizado<br>Recuperando Dados...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'EMBARA-<br>LHAMENTO';
 var BUTTON_TOOLS = 'FERRA-<br>MENTAS';
@@ -74,18 +74,18 @@ var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
 var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
+var OLCOMP_VIEWRESULT = 'Ver Resultado';
+var OLCOMP_VIEWMYRESULT = 'Meu Histórico';
+var OLCOMP_START = 'Iniciar!';
 var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
+var OLCOMP_SUBMITAS = 'Enviar Como: ';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
 var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_ANONYM = 'Anônimo';
+var OLCOMP_ME = 'Eu';
+var OLCOMP_WCAACCOUNT = 'Conta WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_WITHANONYM = 'Com Perfil Anônimo';
 var PROPERTY_IMGSIZE = 'Tamanho da imagem do embaralhamento';
 var TIMER_INSPECT = 'inspecionando...';
 var TIMER_SOLVE = 'resolvendo!';
@@ -119,14 +119,14 @@ var SCRAMBLE_NEXT = 'próximo';
 var SCRAMBLE_SCRAMBLE = ' embaralhamento';
 var SCRAMBLE_LENGTH = 'tamanho';
 var SCRAMBLE_INPUT = 'colocar embaralhamento(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
+var PROPERTY_VRCSPEED = 'velocidade base do VRC (tps)';
 var PROPERTY_VRCMP = 'múltiplas fases';
 var PROPERTY_VRCMPS = 'Nenhum|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Mostrar cubo Giiker virtual';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
+var PROPERTY_GIISOK_DELAY = 'Indicar o final do embaralhamento esperando';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Nunca|Embaralhado corretamente';
-var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
+var PROPERTY_GIISOK_KEY = 'indicar o final do embaralhamento com a barra de espaço';
+var PROPERTY_GIISOK_MOVE = 'Indicar o final do embaralhamento fazendo';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Nunca';
 var PROPERTY_GIISBEEP = 'Apitar quando estiver embaralhado';
 var PROPERTY_GIIRST = 'Resetar cubo Giiker quando conectado';
@@ -155,7 +155,7 @@ var scrdata = [
 	]],
 	['Entrada', [
 		['??', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Competição', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -163,26 +163,26 @@ var scrdata = [
 	]],
 	['3x3x3', [
 		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		['movimento aleatório', "333o", 25],
 		['3x3x3 para novatos', "333noob", 25],
 		['Apenas meios', "edges", 0],
 		['Apenas cantos', "corners", 0],
-		['last layer', "ll", 0],
-		['zb last layer', "zbll", 0],
-		['corners of last layer', "cll", 0],
-		['edges of last layer', "ell", 0],
-		['last six edges', "lse", 0],
-		['last six edges&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
-		['cross solved', "f2l", 0],
-		['last slot + last layer', "lsll2", 0],
+		['última camada', "ll", 0],
+		['zbll', "zbll", 0],
+		['cantos da última camada', "cll", 0],
+		['meios da última camada', "ell", 0],
+		['LSE', "lse", 0],
+		['lse&ltM,U&gt', "lsemu", 0],
+		['L10P de Roux', "cmll", 0],
+		['cruz resolvida', "f2l", 0],
+		['último slot + última camada', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
 		['ZZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3],
+		['cruz fácil', "easyc", 3],
 		['3x3x3 com os pés', "333ft", 0]
 	]],
 	['2x2x2', [
@@ -197,47 +197,47 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['movimentos aleatórios', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['Meios do 4x4x4', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['Meios do 5x5x5', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['prefixo', "666p", 80],
+		['sufixo', "666s", 80],
+		['Meios do 6x6x6', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['prefixo', "777p", 100],
+		['sufixo', "777s", 100],
+		['Meios do 7x7x7', "7edge", 8]
 	]],
-	['Clock', [
+	['Relógio', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['optimal', "clko", 0],
-		['concise', "clkc", 0],
+		['conciso', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70]
+		['estilo antigo', "mgmo", 70]
 	]],
 	['Pyraminx', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		['movimento aleatório', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
@@ -245,7 +245,7 @@ var scrdata = [
 	['Skewb', [
 		["random state (WCA)", "skbso", 0],
 		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		['movimento aleatório', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
@@ -261,9 +261,9 @@ var scrdata = [
 		['random state URLD', "15prp", 0],
 		['random state ^<>v', "15prap", 0],
 		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+		['movimento aleatório URLD', "15p", 80],
+		['movimento aleatório ^<>v', "15pat", 80],
+		['movimento aleatório Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
 		['random state URLD', "8prp", 0],
@@ -271,7 +271,7 @@ var scrdata = [
 		['random state Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
-		['1x3x3 (Floppy Cube)', "133", 0],
+		['1x3x3 (Cubo Floppy)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],
 		['2x3x3 (Domino)', "233", 25],
 		['3x3x4', "334", 40],
@@ -287,7 +287,7 @@ var scrdata = [
 	['Gear Cube', [
 		['random state', "gearso", 0],
 		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['movimento aleatório', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -303,21 +303,21 @@ var scrdata = [
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['antigo', "redi", 20]
 	]],
 	['Ivy cube', [
 		['random state', "ivyso", 0],
 		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+		['movimento aleatório', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['estilo antigo', "prco", 70]
 	]],
-	['Siamese Cube', [
+	['Cubo siamês', [
 		['1x1x3 block', "sia113", 25],
 		['1x2x3 block', "sia123", 25],
 		['2x2x2 block', "sia222", 25]
@@ -405,36 +405,36 @@ var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'Estatísticas do round atual';
 var STATS_CURSESSION = 'Estatísticas atuais da sessão';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
+var STATS_EXPORTCSV = 'Exportar CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
+var STATS_SSMGR_NAME = 'Nome';
 var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
+var STATS_SSMGR_OPS = 'Renomear | Criar | Dividir | Mesclar | Excluir | Ordenar';
+var STATS_SSMGR_ORDER = 'Ordenar por embaralhamento';
+var STATS_SSMGR_ODCFM = 'Ordenar todas as sessões por embaralhamento?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
+var STATS_ALERTMG = 'Mesclar todos os tempos na sessão [%f] até o final da sessão [%t]?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'média';
-var STATS_SOLVE = 'solve';
+var STATS_SOLVE = 'resolvendo';
 var STATS_TIME = 'tempo';
 var STATS_SESSION = 'Sessão';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAME = 'Editar nome da sessão';
+var STATS_SESSION_NAMEC = 'Nome da nova sessão';
 var STATS_STRING = 'melhor|atual|pior|Gerado pelo csTimer em %Y-%M-%D|solves/total: %d|single|média de %mk|média de %mk|Média: %v{ (s = %sgm)}|Média: %v|Lista de Tempos:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'precisão da distribuição de tempos';
 var STATS_PREC_STR = 'automático|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'tipo da lista %d|tamanho da lista %d|average|média';
-var STATS_STATCLR = 'Enable session emptying';
+var STATS_STATCLR = 'Habilitar o esvaziamento de sessão';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
+var STATS_XSESSION_DATE = 'qualquer data | últimas 24 horas | últimos 7 dias | últimos 30 dias | últimos 365 dias';
+var STATS_XSESSION_NAME = 'qualquer nome';
+var STATS_XSESSION_SCR = 'qualquer embaralhamento';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'mostrar embaralhamentos nas estatísticas';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
+var PROPERTY_PRINTDATE = 'mostrar data de resolução nas estatísticas';
 var PROPERTY_SUMMARY = 'mostrar dados antes da lista de tempos';
 var PROPERTY_IMRENAME = 'renomear a sessão imediatamente depois de criar';
 var PROPERTY_SCR2SS = 'criar uma nova sessão quando mudar o tipo de embaralhamento';
@@ -442,15 +442,15 @@ var PROPERTY_SS2SCR = 'restaurar o tipo de embaralhamento quando mudar de sessã
 var PROPERTY_SS2PHASES = 'restaurar modadlidade de múltiplas fases quando mudar de sessão';
 var PROPERTY_STATINV = 'Lista de tempos ao contrário';
 var PROPERTY_STATAL = 'Indicadores estatísticos';
-var PROPERTY_STATALU = 'Customized statistical indicator';
+var PROPERTY_STATALU = 'Indicador estatístico personalizado';
 var PROPERTY_DELMUL = 'Ativar deleção múltipla';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
+var PROPERTY_TOOLSFUNC = 'Funções selecionadas';
+var PROPERTY_TRIM = 'Número de resoluções retiradas de cada lado';
+var PROPERTY_TRIM_MED = 'Mediana';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
+var PROPERTY_AUTOEXP = 'Exportação automática (a cada 100 resoluções)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
@@ -469,7 +469,7 @@ var BGIMAGE_OPACITY = 'opacidade da imagem de fundo';
 var BGIMAGE_IMAGE = 'imagem de fundo';
 var BGIMAGE_IMAGE_STR = 'nenhum|manual|CCT';
 var SHOW_AVG_LABEL = 'Mostrar averages rápidas na frente';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'mensagens de dicas na logo';
 var TOOLS_SCRGEN = 'Gerador de Embaralhamentos';
 var SCRGEN_NSCR = 'Número de embaralhamentos';
 var SCRGEN_PRE = 'prefixo';

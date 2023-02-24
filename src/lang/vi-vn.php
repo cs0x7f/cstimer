@@ -1,7 +1,7 @@
-<h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
+<h1>csTimer phiên bản <?php echo $version;?> - Chuyên Nghiệp Đồng hồ đếm giờ cho việc luyện tập speedcubing</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
-<p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
+<h2>Giới thiệu</h2>
+<p>csTimer là một chương trình đếm giờ chuyên nghiệp được thiết kế cho những người giải khối vuông Rubik chuyên nghiệp; chương trình này cung cấp:</p>
 <ul>
 <li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
 <li>Plenty of statistics functions, it supports <strong>time-split timing</strong>; <strong>Any number of sessions</strong>, session split/merge, etc.</li>
@@ -12,7 +12,7 @@
 <p>csTimer supports most of modern desktop browsers, on mobile phone and tablet PC, you can add csTimer to your home screen, and it will work as a native APP.</p>
 <p>csTimer takes advantage of browser cache, which consumes traffic only when you open it for the first time, after that, csTimer is able to work without network connection (except for functions like backup)</p>
 <h3>Copyright</h3>
-<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues">here</a></p>
+<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">here</a></p>
 <p>Written by: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
 <p>UI designed by: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>Basic functions</h2>
@@ -36,9 +36,7 @@
 <tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
@@ -112,7 +110,7 @@
 <li><strong data="opt_NTools">số công cụ</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">Sử dụng nút tắt</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
 <li><strong data="opt_vrcSpeed">Tốc độ ban đầu của rubik ảo (tốc độ xoay ban đầu)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
-<li><strong data="opt_vrcMP">multi-phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
+<li><strong data="opt_vrcMP">nhiều đợt</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
 <li><strong data="opt_giiVRC">Hiển thị rubik bluetooth ảo</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Xem như đã tráo rubik nếu đứng yên trong</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Xem như đã tráo bằng cách nhấn phím cách</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
@@ -124,8 +122,8 @@
 <h2>Tools detail</h2>
 <ul>
 <li><strong data="tool_scrgen">ScrambleGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">Confirm time</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
-<li><strong data="tool_hugestats">cross-session stats</strong>. You are able to do cross-session statistics with this tool.</li>
+<li><strong data="tool_cfm">Xác nhận</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
+<li><strong data="tool_hugestats">bắt đầu dấu cộng</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">Thành tích ( kiểu 1)</strong>. Statistic table similar with the table in the list times panel.</li>
 <li><strong data="tool_distribution">Thành tích ( kiểu 2)</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
 <li><strong data="tool_trend">Thành tích ( kiểu 3)</strong>. Shows a trend curve of all solves in current session.</li>
@@ -150,19 +148,19 @@
 </ul>
 <h2>Links</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer beta version</a></li>
-<li><a class="click" href="/src/">csTimer beta version with uncompressed files</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer source code</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
+<li><a class="click" href="/new/" title="">csTimer beta version</a></li>
+<li><a class="click" href="/src/" title="">csTimer beta version with uncompressed files</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer source code</a></li>
+<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
+<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
 </ul>
 <h2>Color schemes</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
-<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>.</p>
+<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">

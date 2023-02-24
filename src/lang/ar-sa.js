@@ -1,46 +1,46 @@
-var OK_LANG = 'قبول';
-var CANCEL_LANG = 'لغو';
-var RESET_LANG = 'تنطیم مجدد';
-var ABOUT_LANG = 'درباره';
-var ZOOM_LANG = 'بزرگنمایی';
-var BUTTON_TIME_LIST = 'لیست زمان ها';
-var BUTTON_OPTIONS = 'تنظیمات';
-var BUTTON_EXPORT = 'صادر کردن';
-var BUTTON_DONATE = 'اهدا کردن';
+var OK_LANG = 'موافق';
+var CANCEL_LANG = 'الغاء';
+var RESET_LANG = 'أعيد';
+var ABOUT_LANG = 'حول';
+var ZOOM_LANG = 'تكبير';
+var BUTTON_TIME_LIST = 'لأحات<br>الأوقات';
+var BUTTON_OPTIONS = 'أعدادات';
+var BUTTON_EXPORT = 'تصدير';
+var BUTTON_DONATE = 'تبرع';
 var PROPERTY_SR = 'With session';
-var PROPERTY_USEINS = 'استفاده از زمان بازدید WCA';
-var PROPERTY_USEINS_STR = 'همیشه|به جز با چشمان بسته|هرگز';
-var PROPERTY_VOICEINS = 'هشدار صوتی زمان بازدید WCA';
-var PROPERTY_VOICEINS_STR = 'هیچ کدام|صدای مرد|صدای زن';
+var PROPERTY_USEINS = 'استخدام فحص WCA';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
+var PROPERTY_VOICEINS = 'تنبيه صوتي مثل في مسابقات WCA';
+var PROPERTY_VOICEINS_STR = 'لا|صوت رجل|صوت امرأة';
 var PROPERTY_VOICEVOL = 'Voice volume';
-var PROPERTY_PHASES = 'multi-phase';
-var PROPERTY_TIMERSIZE = 'اندازه تایمر';
-var PROPERTY_USEMILLI = 'استفاده از میلی ثانیه';
-var PROPERTY_SMALLADP = 'استفاده از فونت کوچک تر بعد از ممیّز';
-var PROPERTY_SCRSIZE = 'اندازه اسکرمبل';
-var PROPERTY_SCRMONO = 'استفاده از فونت مونواسپیس برای اسکرمبل';
-var PROPERTY_SCRLIM = 'محدود کردن ناحیه اسکرمبل';
-var PROPERTY_SCRALIGN = 'تعیین تراز اسکرمبل';
-var PROPERTY_SCRALIGN_STR = 'وسط|چپ|راست';
-var PROPERTY_SCRFAST = 'استفاده از اسکرمبل سریع تر برای 4x4x4 (غیر رسمی)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_PHASES = 'مراحل متعددة';
+var PROPERTY_TIMERSIZE = 'حجم المؤقت';
+var PROPERTY_USEMILLI = 'استخدام جزء من ثانية';
+var PROPERTY_SMALLADP = 'استخدام خط صغير بعد النقطة العشرية';
+var PROPERTY_SCRSIZE = 'حجم الخلط';
+var PROPERTY_SCRMONO = 'خلط احادي الحجم';
+var PROPERTY_SCRLIM = 'الحد من حجم منطقة الخلط';
+var PROPERTY_SCRALIGN = 'محاذاة منطقة الخلط';
+var PROPERTY_SCRALIGN_STR = 'center|left|right';
+var PROPERTY_SCRFAST = 'استخدام الخلط السريع لـمكعب 4x4x4 (غير رسمي)';
+var PROPERTY_SCRKEYM = 'تسمية مفتاح الحركة (الحركات) في الخلط';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
-var PROPERTY_WNDSCR = 'Scramble panel display style';
-var PROPERTY_WNDSTAT = 'Statistics panel display style';
-var PROPERTY_WNDTOOL = 'Tools panel display style';
+var PROPERTY_WNDSCR = 'أسلوب عرض لوحة الخلط';
+var PROPERTY_WNDSTAT = 'أسلوب عرض لوحة الإحصاء';
+var PROPERTY_WNDTOOL = 'اسلوب عرض لوحة الادوات';
 var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
-var EXPORT_USERID = 'Please input your account (only alphabet or number)';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var EXPORT_DATAEXPORT = 'استيراد و تصدير البيانات';
+var EXPORT_TOFILE = 'تصدير إلى ملف';
+var EXPORT_FROMFILE = 'استيراد من ملف';
+var EXPORT_TOSERV = 'تصدير الى الخادم';
+var EXPORT_FROMSERV = 'استيراد من الخادم';
+var EXPORT_FROMOTHER = 'استيراد جلسة (جلسات) من مؤقتات اخرى';
+var EXPORT_USERID = 'الرجاء إدخال الحساب الخاص بك (فقط الحروف أو الارقام)';
+var EXPORT_INVID = 'فقط الحروف أو الارقام مسموح بها!';
+var EXPORT_ERROR = 'حدثت بعض الأخطاء';
+var EXPORT_NODATA = 'لم يتم العثور على بيانات لحسابك';
+var EXPORT_UPLOADED = 'تم الرفع بنجاح';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Export Accounts';
@@ -49,22 +49,22 @@ var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
-var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
-var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
-var TOOLS_SELECTFUNC = 'Function';
-var TOOLS_CROSS = 'cross';
-var TOOLS_EOLINE = 'EOLine';
-var TOOLS_ROUX1 = 'Roux S1';
+var BUTTON_SCRAMBLE = 'خ-ل-ط';
+var BUTTON_TOOLS = 'الأدوات';
+var IMAGE_UNAVAILABLE = 'غير متوفر لهذا النوع من الخلط';
+var TOOLS_SELECTFUNC = 'الاستعمال';
+var TOOLS_CROSS = 'الزائد';
+var TOOLS_EOLINE = 'خط الEO';
+var TOOLS_ROUX1 = 'روكسS1';
 var TOOLS_222FACE = '2x2x2 face';
-var TOOLS_GIIKER = 'Bluetooth Cube';
-var TOOLS_IMAGE = 'draw scramble';
-var TOOLS_STATS = 'Statistics';
-var TOOLS_HUGESTATS = 'cross-session stats';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_GIIKER = 'مكعب البلوتوث';
+var TOOLS_IMAGE = 'رسم الخلط ';
+var TOOLS_STATS = 'الإحصائيات';
+var TOOLS_HUGESTATS = 'احصاء جلسة اتمام الزائد';
+var TOOLS_DISTRIBUTION = 'توزيع الوقت';
+var TOOLS_TREND = 'اتجاه الوقت';
+var TOOLS_METRONOME = 'إيقاع';
+var TOOLS_CFMTIME = 'تأكيد الوقت';
 var TOOLS_SOLVERS = 'Solvers';
 var TOOLS_SYNCSEED = 'Common Scramble';
 var TOOLS_SYNCSEED_SEED = 'Seed';
@@ -86,43 +86,43 @@ var OLCOMP_ME = 'Me';
 var OLCOMP_WCAACCOUNT = 'WCA Account';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
-var PROPERTY_IMGSIZE = 'Scramble Image Size';
-var TIMER_INSPECT = 'inspect';
-var TIMER_SOLVE = 'solve';
-var PROPERTY_USEMOUSE = 'use mouse timer';
-var PROPERTY_TIMEU = 'timer update is';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
-var PROPERTY_ENTERING = 'entering in times with';
-var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|bluetooth|qCube';
+var PROPERTY_IMGSIZE = 'حجم صورة البعثرة';
+var TIMER_INSPECT = 'الفحص';
+var TIMER_SOLVE = 'الحل';
+var PROPERTY_USEMOUSE = 'استخدام مؤقت الماوس';
+var PROPERTY_TIMEU = 'تحديث المؤقت هو';
+var PROPERTY_TIMEU_STR = 'تحديث|0,1ث|الثواني|الفحص|لا شيء';
+var PROPERTY_PRETIME = 'وقت إبقاء زر Space لأسفل (ثانية/ثوان)';
+var PROPERTY_ENTERING = 'دخول الأوقات من خلال';
+var PROPERTY_ENTERING_STR = 'المؤقت|الطباعة|stackmat|مؤقت MoYu|مؤقت إفتراضي|مؤقت الBluetooth|مكعب الqCube';
 var PROPERTY_INTUNIT = 'Unit when entering an integer';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
-var PROPERTY_COLOR = 'select color theme';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
-var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
+var PROPERTY_COLOR = 'حدد سمة اللون';
+var PROPERTY_COLORS = 'لون الخط | لون الخلفي | لون الإطار | لون الزر | لون الرابط | اللون الخلفي للشعار | لون الشعار';
+var PROPERTY_VIEW = 'شكل واجهه المستخدم';
+var PROPERTY_VIEW_STR = 'أوتوماتيكي|منتقل|المكتب';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
-var COLOR_EXPORT = 'Please save the string for import';
-var COLOR_IMPORT = 'Please input the string exported';
-var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
+var COLOR_EXPORT = 'الرجاء حفظ المقطع للاستيراد';
+var COLOR_IMPORT = 'الرجاء إدخال السلسلة المصدرة';
+var COLOR_FAIL = 'بيانات غير صحيحة، فشل الاستيراد';
+var PROPERTY_FONTCOLOR_STR = 'أسود|أبيض';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
-var PROPERTY_FONT = 'select timer\'s font';
+var PROPERTY_FONT = 'إختار طقم حروف المؤقت';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
-var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_LENGTH = 'length';
-var SCRAMBLE_INPUT = 'Input Scramble(s)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
+var PROPERTY_FORMAT = 'صيغة الوقت';
+var PROPERTY_USEKSC = 'إستخدم الإختصارات';
+var PROPERTY_NTOOLS = 'عدد الأدوات';
+var PROPERTY_AHIDE = 'إخفاء كل العناصر عند التوقيت';
+var SCRAMBLE_LAST = 'سابق';
+var SCRAMBLE_NEXT = 'تالي';
+var SCRAMBLE_SCRAMBLE = 'مزج';
+var SCRAMBLE_LENGTH = 'طول';
+var SCRAMBLE_INPUT = 'ادخل المزج';
+var PROPERTY_VRCSPEED = 'سرعة الدوران (دورة كل ثانية)';
+var PROPERTY_VRCMP = 'مراحل متعددة';
 var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
+var PROPERTY_GIIKERVRC = 'إظهار مكعب البلوتوث الإفتراضي';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
@@ -130,7 +130,7 @@ var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIIRSTS = 'دائماً|أسأل|أبداً';
 var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
@@ -141,19 +141,19 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
-		['3x3 fm', "333fm", 0],
-		['3x3 oh', "333oh", 0],
-		['clock', "clkwca", 0],
+		['3x3 مع معصوب العينين', "333ni", 0],
+		['3x3 بأقل عدد من الحركات', "333fm", 0],
+		['3x3 بيدّ واحدة', "333oh", 0],
+		['ساعة', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['skewb', "skbso", 0],
 		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['4x4 مع معصوب العينين', "444bld", -40],
+		['5x5 مع معصوب العينين', "555bld", -60],
+		['3x3 متعددة مع معصوب العينين', "r3ni", 5]
 	]],
-	['Input', [
+	['الإدخال', [
 		['Extern', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
@@ -164,17 +164,17 @@ var scrdata = [
 	['3x3x3', [
 		["random state (WCA)", "333", 0],
 		['random move', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
-		['last layer', "ll", 0],
+		['3x3x3 لالناس عديمي الخبرة', "333noob", 25],
+		['الحواف فقط', "edges", 0],
+		['الركنات فقط', "corners", 0],
+		['الطبقة الأخيرة', "ll", 0],
 		['zb last layer', "zbll", 0],
 		['corners of last layer', "cll", 0],
 		['edges of last layer', "ell", 0],
 		['last six edges', "lse", 0],
 		['last six edges&ltM,U&gt', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
-		['cross solved', "f2l", 0],
+		['صليب محلّل', "f2l", 0],
 		['last slot + last layer', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
@@ -182,8 +182,8 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3],
-		['3x3 ft', "333ft", 0]
+		['صليب سهل', "easyc", 3],
+		['3x3 بالقدمين', "333ft", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],
@@ -205,26 +205,26 @@ var scrdata = [
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
-		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['تسجيل', "555", 60],
+		['حواف ال5x5x5', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
 		['prefix', "666p", 80],
 		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['حواف ال6x6x6', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['حواف ال7x7x7', "7edge", 8]
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['جمعية الكيوبينغ العالمية', "clkwca", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
@@ -254,7 +254,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===آخر===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -429,9 +429,9 @@ var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_NAME = 'أي إسم';
 var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_CALC = 'أحسب';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
@@ -448,7 +448,7 @@ var PROPERTY_TOOLSFUNC = 'Selected Functions';
 var PROPERTY_TRIM = 'Number of solves trimmed at each side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
+var PROPERTY_HIDEFULLSOL = 'عرض الحل تدريجياً';
 var PROPERTY_IMPPREV = 'Import non-latest data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';

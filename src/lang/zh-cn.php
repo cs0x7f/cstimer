@@ -12,7 +12,7 @@
 <p>csTimer支持大部分桌面浏览器。在手机、平板电脑上，你可以把csTimer添加到你的屏幕，它将和本地app一样</p>
 <p>csTimer利用了浏览器的本地缓存功能，只有第一次打开它时会消耗流量。此后即便网络连接断开，csTimer也可以正常工作（除了备份等功能）</p>
 <h3>版权信息</h3>
-<p>csTimer是开源软件，遵循GPLv3协议。 如果你对csTimer有任何建议或意见，请提交到<a class="click" href="https://github.com/cs0x7f/cstimer/issues">这里</a></p>
+<p>csTimer是开源软件，遵循GPLv3协议。 如果你对csTimer有任何建议或意见，请提交到<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">这里</a></p>
 <p>功能设计：<a href="mailto:cs0x7f@gmail.com">陈霜 (cs0x7f@gmail.com)</a></p>
 <p>界面美工：<a href="mailto:liebe7@126.com">张悦 (liebe7@126.com)</a></p>
 <h2>基础功能</h2>
@@ -36,9 +36,7 @@
 <tr><th>Alt + 左/右</th><td>显示上/下一条打乱公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>将最新成绩的完成状态改为 OK/+2/DNF</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>虚拟魔方按键表</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
@@ -150,19 +148,19 @@
 </ul>
 <h2>链接</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">粗饼 中国魔方赛事网</a></li>
-<li><a class="click" href="/new/">csTimer测试版</a></li>
-<li><a class="click" href="/src/">csTimer测试版未压缩</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer源代码</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">粗饼 中国魔方赛事网</a></li>
+<li><a class="click" href="/new/" title="">csTimer测试版</a></li>
+<li><a class="click" href="/src/" title="">csTimer测试版未压缩</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer源代码</a></li>
+<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
+<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
 </ul>
 <h2>更多配色方案</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>感谢您愿意支持csTimer！ 您的捐赠将用于支持我们后续的开发和维护费用。</p>
-<p>如果您希望通过PayPal为我们提供捐赠，请单击下面的按钮或通过<a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a></p>
+<p>如果您希望通过PayPal为我们提供捐赠，请单击下面的按钮或通过<a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a></p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">

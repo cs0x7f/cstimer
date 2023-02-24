@@ -12,7 +12,7 @@
 <p>csTimer支援大多數的桌面、手機與平板瀏覽器。你可以把csTimer加到手機的主畫面中，運作起來就像APP一樣。</p>
 <p>csTimer使用了瀏覽器的快取，代表只有第一次上線的時候會佔流量。在那之後，即使要離線使用也沒關係。(備份等功能除外)</p>
 <h3>版權</h3>
-<p>csTimer是使用GPLv3的開放源始碼軟體。 如果對csTimer有任何的建議或問題，可以到<a class="click" href="https://github.com/cs0x7f/cstimer/issues">這裡</a>提交</p>
+<p>csTimer是使用GPLv3的開放源始碼軟體。 如果對csTimer有任何的建議或問題，可以到<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">這裡</a>提交</p>
 <p>作者：<a href="mailto:cs0x7f@gmail.com">陳霜(陈霜)(cs0x7f@gmail.com)</a></p>
 <p>使用者介面設計：<a href="mailto:liebe7@126.com">張悅(张悦)(liebe7@126.com)</a></p>
 <h2>基本功能</h2>
@@ -36,9 +36,7 @@
 <tr><th>Alt+左/右</th><td>顯示上一個/下一個打亂。</td></tr>
 <tr><th>Ctrl+1/2/3</th><td>這一轉是正常/+2/DNF</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>虛擬方塊按鍵</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
@@ -150,19 +148,19 @@
 </ul>
 <h2>連結</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">粗餅</a></li>
-<li><a class="click" href="/new/">csTimer 測試板</a></li>
-<li><a class="click" href="/src/">沒有壓縮檔的csTimer</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer的原始碼</a></li>
-<li><a class="click" href="/old3/">csTimer 2015.12.12版</a></li>
-<li><a class="click" href="/old2/">csTimer 2012.3.15版</a></li>
-<li><a class="click" href="/old/">csTimer 2012.2.29版</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">粗餅</a></li>
+<li><a class="click" href="/new/" title="">csTimer 測試板</a></li>
+<li><a class="click" href="/src/" title="">沒有壓縮檔的csTimer</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer的原始碼</a></li>
+<li><a class="click" href="/old3/" title="">csTimer 2015.12.12版</a></li>
+<li><a class="click" href="/old2/" title="">csTimer 2012.3.15版</a></li>
+<li><a class="click" href="/old/" title="">csTimer 2012.2.29版</a></li>
 </ul>
 <h2>配色方案</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>csTimer感謝你的資助！ 你的捐款會用作開發經費跟維護成本。</p>
-<p>如果想要使用PayPal捐款的話，可以按下面的按鈕或是<a class="click" href="https://www.paypal.me/cs0x7f">這個連結</a>。</p>
+<p>如果想要使用PayPal捐款的話，可以按下面的按鈕或是<a class="click" href="https://www.paypal.me/cs0x7f" title="">這個連結</a>。</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">

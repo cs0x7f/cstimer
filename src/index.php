@@ -49,16 +49,14 @@
   <script type="text/javascript" src="js/tools/roux1.js"></script>
   <script type="text/javascript" src="js/tools/gsolver.js"></script>
   <script type="text/javascript" src="js/tools/bluetoothutil.js"></script>
-  <script type="text/javascript" src="js/tools/insertionfinder.js"></script>
   <script type="text/javascript" src="js/tools/metronome.js"></script>
-  <script type="text/javascript" src="js/tools/onlinecomp.js"></script>
   <script type="text/javascript" src="js/tools/syncseed.js"></script>
-  <script type="text/javascript" src="js/tools/algsearch.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>
   <script type="text/javascript" src="js/tools/stackmatutil.js"></script>
   <script type="text/javascript" src="js/bluetooth.js"></script>
+  <script type="text/javascript" src="js/gantimer.js"></script>
   <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>
   <script type="text/javascript" src="js/twisty/twisty.js"></script>

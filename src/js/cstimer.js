@@ -39,7 +39,6 @@ importScripts(
 	'tools/roux1.js',
 	'tools/gsolver.js',
 	'tools/bluetoothutil.js',
-	'tools/insertionfinder.js',
 	'tools/metronome.js',
 	'shortcut.js',
 	'help.js',

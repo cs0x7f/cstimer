@@ -72,6 +72,8 @@ var tools = execMain(function() {
 			return scramble.match(/^([RLUBrlub]'?\s*)+$/);
 		} else if (puzzle == 'sq1') {
 			return scramble.match(/^$/);
+		} else if (puzzle == 'fto') {
+			return scramble.match(/^(([FRUBLD]|(?:BL)|(?:BR))[']?\s*)+$/);
 		}
 		return false;
 	}
@@ -119,6 +121,8 @@ var tools = execMain(function() {
 			return "8b";
 		} else if (/^sq2$/.exec(scrambleType)) { //matching only sq2 case
 			return "sq2";
+		} else if (/^fto$/.exec(scrambleType)) {
+			return "fto";
 		}
 	}
 

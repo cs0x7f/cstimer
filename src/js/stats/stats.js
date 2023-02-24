@@ -1092,6 +1092,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			ctx.lineWidth = 2;
 
 			ctx.font = '12pt Arial';
+			ctx.fillStyle = kernel.getProp('col-font');
 			ctx.fillText("time", 50, 13);
 			ctx.strokeStyle = '#888'; ctx.beginPath(); ctx.moveTo(90, 7); ctx.lineTo(150, 7); ctx.stroke();
 			ctx.fillText((stat1 > 0 ? "ao" : "mo") + len1, 200, 13);
@@ -1112,7 +1113,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 			fill([0, 1, 1, 0, 0], [0, 0, 1, 1, 0], '#fff');
 
-			ctx.fillStyle = '#000';
+			ctx.fillStyle = kernel.getProp('col-font');
 			ctx.strokeStyle = '#ccc';
 			ctx.lineWidth = 1;
 			ctx.textAlign = 'right';
@@ -1201,7 +1202,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					if (value[0] == 'disPrec') {
 						updateTrend();
 					}
-				}, /^disPrec$/);
+				}, /^disPrec|col-font$/);
 				if (canvas[0].getContext) {
 					tools.regTool('trend', TOOLS_TREND, execFunc);;
 				}

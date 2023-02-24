@@ -23,7 +23,7 @@ var PROPERTY_SCRLIM = 'Limita l\'altezza dell\'area di scramble';
 var PROPERTY_SCRALIGN = 'Allineamento area di scramble';
 var PROPERTY_SCRALIGN_STR = 'centro|sinistra|destra';
 var PROPERTY_SCRFAST = 'Usa scramble veloce per il 4x4x4 (non ufficiale)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_SCRKEYM = 'Etichetta le mosse principali nello scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'Stile visualizzazione scramble';
@@ -76,14 +76,14 @@ var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
 var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_START = 'Inizia!';
+var OLCOMP_SUBMIT = 'Invia!';
+var OLCOMP_SUBMITAS = 'Invia come:';
+var OLCOMP_WCANOTICE = 'Invia come il tuo account WCA? (Rientra nel tuo account se non è stato riconosciuto dopo aver inviato)';
+var OLCOMP_OLCOMP = 'Competizione Online';
+var OLCOMP_ANONYM = 'Anonimo';
+var OLCOMP_ME = 'Io';
+var OLCOMP_WCAACCOUNT = 'Account WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Dimensione della visualizzazione dello scramble';
@@ -153,7 +153,7 @@ var scrdata = [
 		['5x5 bld', "555bld", -60],
 		['3x3 mbld', "r3ni", 5]
 	]],
-	['Input', [
+	['Ingresso', [
 		['外部', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
@@ -172,7 +172,7 @@ var scrdata = [
 		['angoli del last layer', "cll", 0],
 		['spigoli del last layer', "ell", 0],
 		['last six edges', "lse", 0],
-		['last six edges&ltM,U&gt', "lsemu", 0],
+		['Ultimi sei bordi', "lsemu", 0],
 		['Roux L10P', "cmll", 0],
 		['croce risolta', "f2l", 0],
 		['last slot + last layer', "lsll2", 0],
@@ -227,7 +227,7 @@ var scrdata = [
 		['Wca', "clkwca", 0],
 		['optimal', "clko", 0],
 		['conciso', "clkc", 0],
-		['efficient pin order', "clke", 0]
+		['Ordine pin efficiente', "clke", 0]
 	]],
 	['Megaminx', [
 		["WCA", "mgmp", 70],
@@ -251,8 +251,8 @@ var scrdata = [
 	['Square-1', [
 		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['Giro della faccia metrica', "sq1h", 40],
+		['torsione metrica', "sq1t", 20]
 	]],
 	['===ALTRO===', [
 		['--', "blank", 0]
@@ -272,7 +272,7 @@ var scrdata = [
 	]],
 	['LxMxN', [
 		['1x3x3 (Cubo Floppy)', "133", 0],
-		['2x2x3 (Tower Cube)', "223", 0],
+		['2x2x3 (Cubo a Torre)', "223", 0],
 		['2x2x3 (Domino)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
@@ -289,19 +289,19 @@ var scrdata = [
 		['optimal', "gearo", 0],
 		['random move', "gear", 10]
 	]],
-	['Cmetrick', [
+	['Cmetrico', [
 		[' ', "cm3", 25]
 	]],
-	['Cmetrick Mini', [
+	['Cmetrico Mini', [
 		[' ', "cm2", 25]
 	]],
 	['Gigaminx', [
 		['Pochmann', "giga", 300]
 	]],
-	['Helicopter Cube', [
+	['Cubo Elicottero', [
 		[' ', "heli", 40]
 	]],
-	['Redi Cube', [
+	['Cubo Redi', [
 		['MoYu', "redim", 8],
 		['vecchio', "redi", 20]
 	]],
@@ -329,34 +329,34 @@ var scrdata = [
 		[' ', "sfl", 25]
 	]],
 	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
+		['torsione metrica', "ssq1t", 20]
 	]],
 	['UFO', [
 		['Stile Jaap', "ufo", 25]
 	]],
 	['Altro', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+		['FTO (Giro faccia Ottaedro)', "fto", 25]
 	]],
 	['===SPECIALI===', [
 		['--', "blank", 0]
 	]],
-	['3x3x3 subsets', [
+	['Sottoinsieme 3x3x3', [
 		['2-generatore R,U', "2gen", 25],
 		['2-generatore L,U', "2genl", 25],
 		['Roux-generatore M,U', "roux", 25],
 		['3-generatore F,R,U', "3gen_F", 25],
 		['3-generatore R,U,L', "3gen_L", 25],
 		['3-generatore R,r,U', "RrU", 25],
-		['half turns only', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+		['Solo mezzi giri', "half", 25],
+		['Ultimo slot + Ultimo strato (vecchio)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
-		['Bicube', "bic", 30],
+	['Cubo Bendato', [
+		['Cubo BI', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
-	['Megaminx subsets', [
+	['Sottoinsieme Megaminx', [
 		['2-generatore R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
+		['Ultimo slot + ultimo strato', "mlsll", 20]
 	]],
 	['Relay', [
 		['tanti 3x3x3', "r3", 5],
@@ -415,7 +415,7 @@ var STATS_SSMGR_ODCFM = 'Ordina le sessioni per scramble?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
 var STATS_ALERTMG = 'Unire tutti i tempi nella sessione [%f] alla fine della sessione [%t]?';
 var STATS_PROMPTSPL = 'Numero degli ultimi tempi da separare dalla sessione [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_ALERTSPL = 'Dovrebbe essere diviso o essere lasciato almeno una volta';
 var STATS_AVG = 'media';
 var STATS_SOLVE = 'risoluzione';
 var STATS_TIME = 'tempo';
@@ -461,7 +461,7 @@ var MODULE_NAMES = {
 	"scramble": 'scramble',
 	"stats": 'statistiche',
 	"tools": 'strumenti',
-	"vrc": 'virtual&<br>bluetooth'
+	"vrc": 'virtuale&<br>bluetooth'
 };
 var BGIMAGE_URL = 'Inserire url dell\'immagine';
 var BGIMAGE_INVALID = 'URL non valida';

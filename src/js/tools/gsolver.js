@@ -1004,9 +1004,10 @@ var gsolver = (function() {
 	})();
 
 	var general333Solver = execMain(function() {
-		var isSolving = false;
+		var isSolving = 0; //0 - idle, 1 - single, 2 - batch
 		var selectPre = $('<select style="font-size:0.75em;">');
-		var solveButton = $('<input type="button" value="Start Solve!" style="font-size:0.75em;">');
+		var batchButton = $('<input type="button" value="Batch Solve!" style="font-size:0.75em;">');
+		var singleButton = $('<input type="button" value="Single Solve!" style="font-size:0.75em;">');
 		var resultText = $('<textarea wrap=off rows="2" cols="30" style="font-size:0.75em;">');
 		var resultArr = [];
 		var presets = {
@@ -1071,6 +1072,7 @@ var gsolver = (function() {
 				selColor = 'URFDLB-XYZ'.charAt(i * 2 + j);
 				$.ctxDrawPolygon(ctx, colors[selColor], selXYs, [width, 1.5, 1.5]);
 			}
+			clearSolve();
 		}
 
 		function drawFacelet(ctx, face, i, j, state) {
@@ -1128,10 +1130,12 @@ var gsolver = (function() {
 		function setState(state) {
 			solvedState = state;
 			drawCube(ctx, solvedState);
+			clearSolve();
 		}
 
 		var curSolver = ['', null];
 		var startTime = 0;
+		var solveTid = 0;
 
 		function searchThread() {
 			if (!isSolving) {
@@ -1143,22 +1147,27 @@ var gsolver = (function() {
 			if (ret) {
 				resultArr.push(ret.join(' ') + ' (' + ret.length + 'f)');
 			}
-			resultText.html(resultArr.join('\n') + '\n' + curStatus);
-			resultText[0].scrollTop = resultText[0].scrollHeight;
-			setTimeout(searchThread, 16);
+			if (ret && isSolving == 1) {
+				resultText.html(resultArr.join('\n'));
+				resultText[0].scrollTop = resultText[0].scrollHeight;
+				solveTid = 0;
+				return;
+			} else {
+				resultText.html(resultArr.join('\n') + '\n' + curStatus);
+				resultText[0].scrollTop = resultText[0].scrollHeight;
+			}
+			solveTid = setTimeout(searchThread, 1);
 		}
 
-		function toggleSolve() {
-			isSolving = !isSolving;
-			if (isSolving) {
-				solveButton.val('Stop Solve!');
-			} else {
-				solveButton.val('Start Solve!');
+		function clearSolve() {
+			if (isSolving == 1) {
+				singleSolve();
+			} else if (isSolving == 2) {
+				batchSolve();
 			}
-			kernel.blur();
-			if (!isSolving) {
-				return;
-			}
+		}
+
+		function startSolve() {
 			if (curSolver[0] != solvedState) {
 				curSolver[0] = solvedState;
 				curSolver[1] = new mathlib.gSolver([solvedState], rubiksCube.move, appendSuffix({
@@ -1177,6 +1186,40 @@ var gsolver = (function() {
 			searchThread();
 		}
 
+		function batchSolve() {
+			if (isSolving == 0) {
+				batchButton.val('Stop Solve!');
+				singleButton.prop('disabled', true);
+				isSolving = 2;
+			} else {
+				batchButton.val('Batch Solve!');
+				singleButton.prop('disabled', false);
+				isSolving = 0;
+			}
+			kernel.blur();
+			if (!isSolving) {
+				return;
+			}
+			startSolve();
+		}
+
+		function singleSolve() {
+			if (isSolving == 0) {
+				singleButton.val('Stop Solve!');
+				batchButton.prop('disabled', true);
+				isSolving = 1;
+			} else {
+				singleButton.val('Single Solve!');
+				batchButton.prop('disabled', false);
+				isSolving = 0;
+			}
+			kernel.blur();
+			if (!isSolving) {
+				return;
+			}
+			startSolve();
+		}
+
 		function execFunc(scramble, span) {
 			curScramble = kernel.parseScramble(scramble, "URFDLB");
 			for (var i = 0; i < curScramble.length; i++) {
@@ -1184,11 +1227,16 @@ var gsolver = (function() {
 			}
 			sol = [];
 			span.empty().append(selectPre.unbind('change').change(selectChange), ' ')
-				.append(solveButton.unbind('click').click(toggleSolve), '<br>')
+				.append(batchButton.unbind('click').click(batchSolve), '')
+				.append(singleButton.unbind('click').click(singleSolve), '<br>')
 				.append(resultText.empty(), '<br>')
 				.append(canvas.unbind('mousedown').bind('mousedown', procClick));
 			if (isSolving) {
-				toggleSolve();
+				if (solveTid) {
+					clearTimeout(solveTid);
+					solveTid = 0;
+				}
+				startSolve();
 			}
 		}
 

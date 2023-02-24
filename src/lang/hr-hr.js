@@ -23,19 +23,19 @@ var PROPERTY_SCRLIM = 'Ograniči visinu okvira za scramble';
 var PROPERTY_SCRALIGN = 'Poravnanje okvira za scramble';
 var PROPERTY_SCRALIGN_STR = 'centrirano|lijevo|desno';
 var PROPERTY_SCRFAST = 'Korištenje brzog rastavljanja za 4x4x4 (nije sluzbeno)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_SCRKEYM = 'Označi ključne poteze u scrambleu';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
-var PROPERTY_WNDSCR = 'Scramble panel display style';
-var PROPERTY_WNDSTAT = 'Statistics panel display style';
-var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
+var PROPERTY_WNDSCR = 'Stil prikaza scramble panela';
+var PROPERTY_WNDSTAT = 'Stil prikaza panela statistike';
+var PROPERTY_WNDTOOL = 'Stil prikaza panela alata';
+var PROPERTY_WND_STR = 'Normalno|Ravno';
 var EXPORT_DATAEXPORT = 'Uvezi/izvezi podatke';
 var EXPORT_TOFILE = 'Izvezi u datoteku';
 var EXPORT_FROMFILE = 'Uvezi iz datoteke';
 var EXPORT_TOSERV = 'Izvezi na server';
 var EXPORT_FROMSERV = 'Uvezi iz servera';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
+var EXPORT_FROMOTHER = 'Uvezi sesije iz drugih štoperica';
 var EXPORT_USERID = 'Unesi svoj korisnički račun (samo slova ili brojevi)';
 var EXPORT_INVID = 'Dozvoljena su samo slova ili brojevi!';
 var EXPORT_ERROR = 'Dogodile su se neke greške...';
@@ -60,7 +60,7 @@ var TOOLS_222FACE = '2x2x2 face';
 var TOOLS_GIIKER = 'Giiker Kocka';
 var TOOLS_IMAGE = 'prikaži scramble';
 var TOOLS_STATS = 'Statistika';
-var TOOLS_HUGESTATS = 'cross-session stats';
+var TOOLS_HUGESTATS = 'statistika međusesija';
 var TOOLS_DISTRIBUTION = 'distribucija vremena';
 var TOOLS_TREND = 'trend vremena';
 var TOOLS_METRONOME = 'metronom';
@@ -119,20 +119,20 @@ var SCRAMBLE_NEXT = 'slijedeći';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'dužina';
 var SCRAMBLE_INPUT = 'Unesi scramble/ove)';
-var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
+var PROPERTY_VRCSPEED = 'VRC bazna brzina (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
-var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
-var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
-var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
-var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
+var PROPERTY_VRCMPS = 'Ništa|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
+var PROPERTY_GIIKERVRC = 'Prikaži virtualnu bluetooth kocku';
+var PROPERTY_GIISOK_DELAY = 'Označi kraj scramblea čekanjem';
+var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Nikad|Točno scrambleano';
 var PROPERTY_GIISOK_KEY = 'Mark scrambled with spacebar';
 var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
-var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
-var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
-var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
-var PROPERTY_GIIAED = 'Auto hardware error detection';
+var PROPERTY_GIISOK_MOVES = 'U4, R4, itd|(U U\')2, (U\' U)2, itd|Nikad';
+var PROPERTY_GIISBEEP = 'Zapišti kada je kocka scrambleana';
+var PROPERTY_GIIRST = 'Resetiraj bluetooth kocku prilikom povezivanja';
+var PROPERTY_GIIRSTS = 'Uvijek|Pitaj|Nikad';
+var CONFIRM_GIIRST = 'Resetiraj bluetooth kocku kao složenu?';
+var PROPERTY_GIIAED = 'Automatsko prepoznavanje hardver greške';
 var scrdata = [
 	['WCA', [
 		['3x3x3', "333", 0],
@@ -153,7 +153,7 @@ var scrdata = [
 		['5x5 naslijepo', "555bld", -60],
 		['3x3 višestruko naslijepo', "r3ni", 5]
 	]],
-	['Input', [
+	['Ulaz', [
 		['Eksterno', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
@@ -197,7 +197,7 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['nasumični potez', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['4x4x4 rubni dijelovi', "4edge", 8],
@@ -224,7 +224,7 @@ var scrdata = [
 	]],
 	['Clock', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['Scramble_podatci_sat_', "clkwca", 0],
 		['optimal', "clko", 0],
 		['sažet', "clkc", 0],
 		['efektivan red pin-ova', "clke", 0]
@@ -395,33 +395,33 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' u smjeru kazaljke na satu za 90°,| suprotno smjeru kazaljke na satu za 90°,| za 180°,';
 var STATS_CFM_RESET = 'resetiraj sva vremena u ovoj sesiji?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_DELSS = 'obriši sesiju [%s]?';
 var STATS_CFM_DELMUL = 'Broj izbrisanih vrijednosti iz trenutnog indeksa?';
 var STATS_CFM_DELETE = 'obrisati ovo vrijeme?';
 var STATS_COMMENT = 'Komentar';
 var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Datum';
 var STATS_SSSTAT = '1-solve stat.';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
+var STATS_CURROUND = 'Trenutna statistika runde';
+var STATS_CURSESSION = 'Trenutna statistika sesije';
+var STATS_CURSPLIT = 'Faza %d trenutne statistike sesije';
+var STATS_EXPORTCSV = 'Izvezi CSV';
+var STATS_SSMGR_TITLE = 'Upravitelj sesije';
+var STATS_SSMGR_NAME = 'Ime';
+var STATS_SSMGR_DETAIL = 'Detalji sesije';
+var STATS_SSMGR_OPS = 'Preimenuj|Kreiraj|Razdvoji|Spoji|Obriši|Sortiraj';
+var STATS_SSMGR_ORDER = 'Poredaj po scrambleu';
+var STATS_SSMGR_ODCFM = 'Sortiraj sve sesije po scrambleu?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_ALERTMG = 'Spoji sva vremena u sesiji  [%f] s krajem sesije [%t]?';
+var STATS_PROMPTSPL = 'Broj posljednjih vremena razdjeljenih iz sesije [%s]?';
+var STATS_ALERTSPL = 'Potrebno razdvojiti ili ostaviti barem jedno vrijeme';
 var STATS_AVG = 'srednja vrijednost';
 var STATS_SOLVE = 'slaganje';
 var STATS_TIME = 'vrijeme';
 var STATS_SESSION = 'Sesija';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAME = 'Uredi ime sesije';
+var STATS_SESSION_NAMEC = 'Ime nove sesije';
 var STATS_STRING = 'najbolje|trenutno|najgore|Generirao csTimer %Y-%M-%D|slaganja/total: %d|pojedinačno|srednja vrijednost od %mk|prosjek od %mk|Prosjek: %v{ (σ = %sgm)}|Srednja vrijednost: %v|Lista vremena:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'preciznost raspona vremena';
 var STATS_PREC_STR = 'automatska|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';

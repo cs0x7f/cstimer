@@ -179,7 +179,7 @@ var kernel = execMain(function() {
 				var curDiv = subDivs[module] = [$('<div>'), $('<tr>')];
 				curDiv[0].html('<span class="icon" style="font-size:1em;">' + moduleIcon[module] + '</span><span>' + MODULE_NAMES[module] + '</span>').addClass('tab').data('module', module).click(tabClick).appendTo(left);
 				curDiv[1].append(
-					$('<th>').html('<span class="icon">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/<br>-?/g, '')),
+					$('<th>').html('<span class="icon">' + moduleIcon[module] + '</span> ' + MODULE_NAMES[module].replace(/-?<br>-?/g, '')),
 					$('<th class="sr">').html(PROPERTY_SR),
 					$('<th class="sr">').html('<span class="icon">\ue9bb</span>')
 				);
@@ -265,7 +265,7 @@ var kernel = execMain(function() {
 				resetPropertyes();
 				generateDiv();
 				return false;
-			}], [BUTTON_EXPORT.replace('<br', ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace('-<br>', ''), function() {
+			}], [BUTTON_EXPORT.replace(/-?<br>-?/g, ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace(/-?<br>-?/g, ''), function() {
 				right.find('select[name="lang"]').focus().blur();
 				scrollToModule();
 			});
@@ -813,7 +813,7 @@ var kernel = execMain(function() {
 
 			$('.donate').appendTo(donateDiv);
 			addButton('donate', BUTTON_DONATE, function() {
-				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE.replace('<br>', ''));
+				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE.replace(/-?<br>-?/g, ''));
 			}, 5);
 			leftbar.appendTo(wndCtn).mouseenter(function() {
 				toggleLeftBar(true);

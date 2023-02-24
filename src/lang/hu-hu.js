@@ -18,7 +18,7 @@ var PROPERTY_TIMERSIZE = 'időmérő mérete';
 var PROPERTY_USEMILLI = 'milliszekundum használata';
 var PROPERTY_SMALLADP = 'kisebb számok használata a tizedespont után';
 var PROPERTY_SCRSIZE = 'keverés mérete';
-var PROPERTY_SCRMONO = 'állandó szélességű keverés';
+var PROPERTY_SCRMONO = 'Keverés megjelenítése monospace betűtípussal';
 var PROPERTY_SCRLIM = 'Keverési terület magasságának korlátozása';
 var PROPERTY_SCRALIGN = 'Keverési terület elhelyezése';
 var PROPERTY_SCRALIGN_STR = 'közép|bal|jobb';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Funkció';
 var TOOLS_CROSS = 'kereszt megoldása';
 var TOOLS_EOLINE = 'EOLine megoldása';
 var TOOLS_ROUX1 = 'Roux S1 megoldása';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = '2x2x2 oldal';
 var TOOLS_GIIKER = 'Giiker kocka';
 var TOOLS_IMAGE = 'Keverés mutatása';
 var TOOLS_STATS = 'Statisztikák';
@@ -65,14 +65,14 @@ var TOOLS_DISTRIBUTION = 'idő megoszlása';
 var TOOLS_TREND = 'idő trend';
 var TOOLS_METRONOME = 'metronóm';
 var TOOLS_CFMTIME = 'Idő megerősítése';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_SOLVERS = 'Kirakók';
+var TOOLS_SYNCSEED = 'Közös keverés';
+var TOOLS_SYNCSEED_SEED = 'Kezdőérték';
+var TOOLS_SYNCSEED_INPUT = 'Kezdőérték megadása';
+var TOOLS_SYNCSEED_30S = '30s kezdőérték használata';
+var TOOLS_SYNCSEED_HELP = 'Ezt bekapcsolva a keverés csak a kezdőértéktől és a keverési beállításoktól fog függeni. Ha két játékos ugyanazt a kezdőértéket használja, ugyanazt a keverést is kapják.';
+var TOOLS_SYNCSEED_DISABLE = 'Kikapcsolod a jelenlegi kezdőértéket?';
+var TOOLS_SYNCSEED_INPUTA = 'Adj meg egy kezdőértéket (a-zA-Z0-9)';
 var OLCOMP_UPDATELIST = 'Verseny lista frissítése';
 var OLCOMP_VIEWRESULT = 'Eredmény megtekintése';
 var OLCOMP_VIEWMYRESULT = 'Előzményeim';
@@ -193,7 +193,7 @@ var scrdata = [
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Oszlop nélkül', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -399,9 +399,9 @@ var STATS_CFM_DELSS = 'Törlöd [%s] időszakot?';
 var STATS_CFM_DELMUL = 'Hány értéket szeretnél törölni a jelenlegi időszakból?';
 var STATS_CFM_DELETE = 'Eredmény törlése?';
 var STATS_COMMENT = 'Megjegyzés';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Áttekintés';
 var STATS_DATE = 'Dátum';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_SSSTAT = '1 kirakás statisztikája';
 var STATS_CURROUND = 'Jelen forduló statisztikái';
 var STATS_CURSESSION = 'Jelen időszak statisztikái';
 var STATS_CURSPLIT = 'A jelenlegi időszak %d fázisának statisztikái';
@@ -432,7 +432,7 @@ var STATS_XSESSION_DATE = 'bármely időpont|elmúlt 24 óra|elmúlt 7 nap|elmú
 var STATS_XSESSION_NAME = 'bármely név';
 var STATS_XSESSION_SCR = 'bármely keverés';
 var STATS_XSESSION_CALC = 'Számítás';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_RSFORSS = 'A kirakás számra kattintva mutassa a statisztikát';
 var PROPERTY_PRINTSCR = 'Keverések nyomtatása a statisztikában';
 var PROPERTY_PRINTDATE = 'megoldási dátum megjelenítése a statisztikákban';
 var PROPERTY_SUMMARY = 'összegzés mutatása az időlista előtt';
@@ -448,7 +448,7 @@ var PROPERTY_TOOLSFUNC = 'Kiválasztott Funkciók';
 var PROPERTY_TRIM = 'A kétoldalt levágott megoldások száma';
 var PROPERTY_TRIM_MED = 'Medián';
 var PROPERTY_STKHEAD = 'A Stackmat státuszának használata';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
+var PROPERTY_HIDEFULLSOL = 'A megoldás lépésenkénti mutatása';
 var PROPERTY_IMPPREV = 'A régebbi adatok importálása';
 var PROPERTY_AUTOEXP = 'Automatikus exportálás (100 kirakásonként)';
 var PROPERTY_AUTOEXP_OPT = 'Soha|File-ba|csTimer ID-val|WCA fiókkal';

@@ -12,7 +12,7 @@
 <p>csTimerはモダンなデスクトップブラウザのほとんどをサポートしています。スマートフォンやタブレットPCでは、csTimerをホームスクリーンに追加することで、ネイティブアプリと同様に使用できます。</p>
 <p>csTimerはブラウザキャッシュを利用しています。そのため、初回起動時のみ通信が必要ですが、それ以降はネット接続なしで使用することが可能です。(バックアップ機能などを除く)</p>
 <h3>コピーライト</h3>
-<p>csTimerはGPLv3に準拠するオープンソースソフトウェアです。 csTimerに対する提案や意見などは、<a class="click" href="https://github.com/cs0x7f/cstimer/issues">こちら</a>にお寄せください。</p>
+<p>csTimerはGPLv3に準拠するオープンソースソフトウェアです。 csTimerに対する提案や意見などは、<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">こちら</a>にお寄せください。</p>
 <p>作者：<a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
 <p>UIデザイン：<a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>基本機能</h2>
@@ -36,9 +36,7 @@
 <tr><th>Alt + ←/→</th><td>前/次のスクランブルを表示</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>最後のタイムをOK/+2/DNFにする</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>仮想キューブのキー割り当て</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
@@ -150,19 +148,19 @@
 </ul>
 <h2>リンク</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer ベータ版</a></li>
-<li><a class="click" href="/src/">csTimer ベータ版(未圧縮)</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer ソースコード</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
+<li><a class="click" href="/new/" title="">csTimer ベータ版</a></li>
+<li><a class="click" href="/src/" title="">csTimer ベータ版(未圧縮)</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer ソースコード</a></li>
+<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
+<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
 </ul>
 <h2>配色</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
 <p>csTimerをサポートいただきありがとうございます！ あなたの寄付は、開発・保守に必要なコストの補填に活用されます。</p>
-<p>PayPal経由で寄付していただくには、下記のボタンをクリックするか、<a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>を経由してください。</p>
+<p>PayPal経由で寄付していただくには、下記のボタンをクリックするか、<a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>を経由してください。</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">

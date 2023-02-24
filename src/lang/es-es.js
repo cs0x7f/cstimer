@@ -7,12 +7,12 @@ var BUTTON_TIME_LIST = 'LISTA DE<br>TIEMPOS';
 var BUTTON_OPTIONS = 'OPCIO-<br>NES';
 var BUTTON_EXPORT = 'EXPORTAR';
 var BUTTON_DONATE = 'DONAR';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Con sesión';
 var PROPERTY_USEINS = 'Usar inspección de WCA';
 var PROPERTY_USEINS_STR = 'Siempre | Exceptuar BLD | Nunca';
 var PROPERTY_VOICEINS = 'voz de alerta en la inspección de la WCA';
 var PROPERTY_VOICEINS_STR = 'Ninguna | Voz masculina | Voz femenina';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Volumen de voz';
 var PROPERTY_PHASES = 'Multi-fase';
 var PROPERTY_TIMERSIZE = 'Tamaño del cronómetro';
 var PROPERTY_USEMILLI = 'Usar milisegundos';
@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Alineación del área de scramble';
 var PROPERTY_SCRALIGN_STR = 'Centro | Izquierda | Derecha';
 var PROPERTY_SCRFAST = 'Usar scramble rápido para 4x4x4 (no oficial)';
 var PROPERTY_SCRKEYM = 'Movimiento(s) clave de la etiqueta en el scramble';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Acción al hacer clic en mezcla';
+var PROPERTY_SCRCLK_STR = 'Ninguno|Copiar|Siguiente mezcla';
 var PROPERTY_WNDSCR = 'Estilo de la visualización del panel del scramble';
 var PROPERTY_WNDSTAT = 'Estilo de visualización del panel de las estadísticas';
 var PROPERTY_WNDTOOL = 'Estilo de la visualización del panel de las herramientas';
@@ -41,14 +41,14 @@ var EXPORT_INVID = '¡Sólo se permiten letras o números!';
 var EXPORT_ERROR = 'Ha ocurrido un error...';
 var EXPORT_NODATA = 'No se encontraron datos para tu cuenta';
 var EXPORT_UPLOADED = 'Subido exitosamente';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
+var EXPORT_CODEPROMPT = 'Guardar este código, o escriba el código guardado para importar';
+var EXPORT_ONLYOPT = 'Opciones de sólo exportar/importar';
+var EXPORT_ACCOUNT = 'Exportar cuentas';
+var EXPORT_LOGINGGL = 'Iniciar sesión usando la cuenta de Google';
+var EXPORT_LOGINWCA = 'Iniciar sesión usando su cuenta de WCA';
+var EXPORT_LOGOUTCFM = '¿Confirmar para cerrar sesión?';
+var EXPORT_LOGINAUTHED = 'Autorizado<br>Recolectando información...';
+var IMPORT_FINAL_CONFIRM = '¡Esto sobreescribirá todos los datos locales! Modificará %d sesiones, añadirá %a y quitará %r resoluciones. ¿Seguro que quieres importar los datos?';
 var BUTTON_SCRAMBLE = 'MEZCLA';
 var BUTTON_TOOLS = 'HERRA-<br>MIENTAS';
 var IMAGE_UNAVAILABLE = 'No disponible para este tipo de mezclas';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Función';
 var TOOLS_CROSS = 'Resolver cruz';
 var TOOLS_EOLINE = 'Resolver EOLine';
 var TOOLS_ROUX1 = 'Resolver Roux S1';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = 'Cara 2x2x2';
 var TOOLS_GIIKER = 'Cubo Giiker';
 var TOOLS_IMAGE = 'Imagen de la mezcla';
 var TOOLS_STATS = 'Estadísticas';
@@ -65,27 +65,27 @@ var TOOLS_DISTRIBUTION = 'Distribución de tiempos';
 var TOOLS_TREND = 'Tendencia del tiempo';
 var TOOLS_METRONOME = 'Metrónomo';
 var TOOLS_CFMTIME = 'Confirmar tiempo ';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings. Generally speaking, if two players share a seed, they will obtain same scrambles.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var TOOLS_SOLVERS = 'Solucionadores';
+var TOOLS_SYNCSEED = 'Mezclado común';
+var TOOLS_SYNCSEED_SEED = 'Semilla';
+var TOOLS_SYNCSEED_INPUT = 'Ingreso de semilla';
+var TOOLS_SYNCSEED_30S = 'Usar semilla de 30s';
+var TOOLS_SYNCSEED_HELP = 'Si está activado, la mezcla solo dependerá de la configuración de la semilla y la mezcla. Generalmente hablando, si dos jugadores comparten una semilla, obtendrán las mismas mezclas.';
+var TOOLS_SYNCSEED_DISABLE = '¿Desactivar la semilla actual?';
+var TOOLS_SYNCSEED_INPUTA = 'Ingrese un valor (a-zA-Z0-9) como semilla';
+var OLCOMP_UPDATELIST = 'Actualizar Lista de Competición';
+var OLCOMP_VIEWRESULT = 'Ver resultado';
+var OLCOMP_VIEWMYRESULT = 'Mi historia';
+var OLCOMP_START = '¡Empezar!';
+var OLCOMP_SUBMIT = '¡Enviar!';
+var OLCOMP_SUBMITAS = 'Enviar como: ';
+var OLCOMP_WCANOTICE = '¿Enviar como su cuenta WCA? (Recargar si no es reconocido después del envío)';
+var OLCOMP_OLCOMP = 'Competición en línea';
+var OLCOMP_ANONYM = 'Anónimo';
+var OLCOMP_ME = 'Yo';
+var OLCOMP_WCAACCOUNT = 'Cuenta WCA';
+var OLCOMP_ABORT = '¿Abortar la competencia y mostrar resultados?';
+var OLCOMP_WITHANONYM = 'Con anónimo';
 var PROPERTY_IMGSIZE = 'Tamaño de la imagen de la mezcla';
 var TIMER_INSPECT = 'Inspección';
 var TIMER_SOLVE = 'Resolución';
@@ -95,14 +95,14 @@ var PROPERTY_TIMEU_STR = 'normal|0.1s|segundos|solo inspección|nada';
 var PROPERTY_PRETIME = 'Tiempo manteniendo la barra espaciadora (en segundo(s))';
 var PROPERTY_ENTERING = 'Introducir tiempos con';
 var PROPERTY_ENTERING_STR = 'teclado|manualmente|stackmat|MoYuTimer|virtual|Bluetooth|qCube';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT = 'Unidad al introducir un entero';
+var PROPERTY_INTUNIT_STR = 'segundo|centísegundo|milisegundo';
 var PROPERTY_COLOR = 'Selecciona el color';
 var PROPERTY_COLORS = 'Color de la fuente | Color del fondo | Color del tablero | Color de los botones | Color del link | Color del logo | Color del fondo del logo';
 var PROPERTY_VIEW = 'Estilo de la interfaz del usuario';
 var PROPERTY_VIEW_STR = 'Automática | Móvil | Escritorio';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
+var PROPERTY_UIDESIGN = 'El diseño de interfaz de usuario es';
+var PROPERTY_UIDESIGN_STR = 'Normal|Diseño material|Normal sin sombras|Diseño material sin sombras';
 var COLOR_EXPORT = 'Por favor, guarde el código para importar';
 var COLOR_IMPORT = 'Por favor inserte el código exportado';
 var COLOR_FAIL = 'Datos incorrectos, importación fallida';
@@ -155,15 +155,15 @@ var scrdata = [
 	]],
 	['Introducir', [
 		['外部', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Competencia', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['Cubo de 333', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["estado aleatorio (WCA)", "333", 0],
+		['movimiento aleatorio', "333o", 25],
 		['Para principiantes', "333noob", 25],
 		['Sólo aristas', "edges", 0],
 		['Sólo esquinas', "corners", 0],
@@ -186,14 +186,14 @@ var scrdata = [
 		['3x3 ft', "333ft", 0]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["estado aleatorio (WCA)", "222so", 0],
+		['óptimo', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Sin barra', "222nb", 0]
 	]],
 	['Cubo de 444', [
 		["WCA", "444wca", -40],
@@ -225,7 +225,7 @@ var scrdata = [
 	['Reloj de Rubi', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
-		['optimal', "clko", 0],
+		['óptimo', "clko", 0],
 		['conciso', "clkc", 0],
 		['orden de pin eficiente', "clke", 0]
 	]],
@@ -235,21 +235,21 @@ var scrdata = [
 		['Antiguo estilo', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		["estado aleatorio (WCA)", "pyrso", 10],
+		['óptimo', "pyro", 0],
+		['movimiento aleatorio', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		["estado aleatorio (WCA)", "skbso", 0],
+		['óptimo', "skbo", 0],
+		['movimiento aleatorio', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["estado aleatorio (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		['cara vuelta métrica', "sq1h", 40],
 		['giro métrico', "sq1t", 20]
@@ -258,17 +258,17 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
-		['random state URLD', "15prp", 0],
-		['random state ^<>v', "15prap", 0],
-		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+		['estado aleatorio URLD', "15prp", 0],
+		['estado aleatorio ^<>v', "15prap", 0],
+		['estado aleatorio Blank', "15prmp", 0],
+		['movimiento aleatorio URLD', "15p", 80],
+		['movimiento aleatorio ^<>v', "15pat", 80],
+		['movimiento aleatorio Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
-		['random state URLD', "8prp", 0],
-		['random state ^<>v', "8prap", 0],
-		['random state Blank', "8prmp", 0]
+		['estado aleatorio URLD', "8prp", 0],
+		['estado aleatorio ^<>v', "8prap", 0],
+		['estado aleatorio Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3 (Cubo Flexible)', "133", 0],
@@ -284,31 +284,31 @@ var scrdata = [
 		['11x11x11', "111111", 120],
 		['NxNxN', "cubennn", 12]
 	]],
-	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+	['Cubo de engranajes', [
+		['estado aleatorio', "gearso", 0],
+		['óptimo', "gearo", 0],
+		['movimiento aleatorio', "gear", 10]
 	]],
 	['Cmetrico', [
 		[' ', "cm3", 25]
 	]],
-	['Cmetrick Mini', [
+	['Mini Cmetrick', [
 		[' ', "cm2", 25]
 	]],
 	['Gigaminx', [
 		['Pochmann', "giga", 300]
 	]],
-	['Helicopter Cube', [
+	['Cubo helicóptero', [
 		[' ', "heli", 40]
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['antiguo', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['cubo Ivy', [
+		['estado aleatorio', "ivyso", 0],
+		['óptimo', "ivyo", 0],
+		['movimiento aleatorio', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -317,10 +317,10 @@ var scrdata = [
 		['Pochmann', "prcp", 70],
 		['Antiguo estilo', "prco", 70]
 	]],
-	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+	['Cubo Siamés', [
+		['Bloque 1x1x3', "sia113", 25],
+		['Bloque 1x2x3', "sia123", 25],
+		['Bloque 2x2x2', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -329,13 +329,13 @@ var scrdata = [
 		[' ', "sfl", 25]
 	]],
 	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
+		['Métrica de movimientos', "ssq1t", 20]
 	]],
 	['UFO', [
-		['Jaap style', "ufo", 25]
+		['Estilo Jaap', "ufo", 25]
 	]],
 	['Otro', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+		['FTO (Octaedro de giro por caras)', "fto", 25]
 	]],
 	['===ESPECIAL===', [
 		['--', "blank", 0]
@@ -350,9 +350,9 @@ var scrdata = [
 		['Sólo giros a medias', "half", 25],
 		['última capa + último hueco (antiguo)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
+	['Cubo con bloqueos', [
 		['Bicube', "bic", 30],
-		['Square-1 /,(1,0)', "bsq", 25]
+		['Square-1/,(1,0)', "bsq", 25]
 	]],
 	['Subconjuntos de megaminx', [
 		['Sólo movimientos R,U', "minx2g", 30],
@@ -360,14 +360,14 @@ var scrdata = [
 	]],
 	['Relays', [
 		['Muchos 3x3x3s', "r3", 5],
-		['234 relay', "r234", 0],
-		['2345 relay', "r2345", 0],
-		['23456 relay', "r23456", 0],
-		['234567 relay', "r234567", 0],
-		['234 relay (WCA)', "r234w", 0],
-		['2345 relay (WCA)', "r2345w", 0],
-		['23456 relay (WCA)', "r23456w", 0],
-		['234567 relay (WCA)', "r234567w", 0]
+		['Relay 2-3-4', "r234", 0],
+		['Relay 2-3-4-5', "r2345", 0],
+		['Relay 2-3-4-5-6', "r23456", 0],
+		['Relay 2-3-4-5-6-7', "r234567", 0],
+		['Relay 2-3-4 (WCA)', "r234w", 0],
+		['Relay 2-3-4-5 (WCA)', "r2345w", 0],
+		['Relay 2-3-4-5-6 (WCA)', "r23456w", 0],
+		['Relay 2-3-4-5-6-7 (WCA)', "r234567w", 0]
 	]],
 	['===BROMAS===', [
 		['--', "blank", 0]
@@ -395,64 +395,64 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' en sentido horario 90 grados,| en sentido antihorario 90 grados,| 180 grados,';
 var STATS_CFM_RESET = '¿Desea reiniciar todos los tiempos de la sesión?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
+var STATS_CFM_DELSS = '¿Seguro que quieres eliminar la sesión [%s]?';
+var STATS_CFM_DELMUL = '¿Cuántos valores quieres eliminar desde este tiempo?';
 var STATS_CFM_DELETE = '¿Desea eliminar este tiempo?';
 var STATS_COMMENT = 'Comentario';
-var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_REVIEW = 'Revisión';
+var STATS_DATE = 'Fecha';
+var STATS_SSSTAT = 'Estadística de 1 solución.';
 var STATS_CURROUND = 'Estadísticas de la ronda actual';
 var STATS_CURSESSION = 'Estadísticas de la sesión actual';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
-var STATS_SSMGR_ORDER = 'Order by scramble';
-var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_CURSPLIT = 'Fase %d de las estadísticas de la sesión actual';
+var STATS_EXPORTCSV = 'Exportar CSV';
+var STATS_SSMGR_TITLE = 'Gestor de sesiones';
+var STATS_SSMGR_NAME = 'Nombre';
+var STATS_SSMGR_DETAIL = 'Detalles de la sesión';
+var STATS_SSMGR_OPS = 'Renombrar|Crear|Dividir|Fusionar|Borrar|Ordenar';
+var STATS_SSMGR_ORDER = 'Ordenar por mezclas';
+var STATS_SSMGR_ODCFM = '¿Ordenar todas las sesiones por mezcla?';
+var STATS_SSMGR_SORTCFM = '%d solución(es) serán reordenadas, ¿confirmar?';
+var STATS_ALERTMG = 'Fusionar todas las horas de la sesión [%f] al final de la sesión [%t]?';
+var STATS_PROMPTSPL = '¿Número de últimas veces dividido de la sesión [%s]?';
+var STATS_ALERTSPL = 'Debe dividirse o dejar 1 vez al menos';
 var STATS_AVG = 'Media';
 var STATS_SOLVE = 'Resolución';
 var STATS_TIME = 'Tiempo';
 var STATS_SESSION = 'Sesión';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAME = 'Editar nombre de sesión';
+var STATS_SESSION_NAMEC = 'Nombre de la nueva sesión';
 var STATS_STRING = 'Mejor|Actual|Peor|Generado por csTimer el %Y-%M-%D|resoluciones/total: %d|Single|Media de %mk|Avg de %mk|Average: %v{ (σ = %sgm)}|Media: %v|Lista de tiempos:|solving from %s to %e|Totally spent: %d';
 var STATS_PREC = 'Precisión de la distribución de tiempos';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
-var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
-var STATS_STATCLR = 'Enable session emptying';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_TYPELEN = 'lista %d tipo|lista %d longitud|promedio|media';
+var STATS_STATCLR = 'Habilitar vaciado de sesión';
+var STATS_ABSIDX = 'Mostrar índice absoluto en el informe de estadísticas';
+var STATS_XSESSION_DATE = 'Cualquier fecha|Últimas 24 horas|Últimos 7 días|Últimos 30 días|Últimos 365 días';
+var STATS_XSESSION_NAME = 'cualquier nombre';
+var STATS_XSESSION_SCR = 'cualquier mezcla';
+var STATS_XSESSION_CALC = 'Cálculo';
+var STATS_RSFORSS = 'Mostrar estadística al hacer clic en resolver número';
 var PROPERTY_PRINTSCR = 'Publicar mezcla(s) en las estadísticas.';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
-var PROPERTY_SUMMARY = 'show summary before time list';
-var PROPERTY_IMRENAME = 'rename session immediately after creation';
-var PROPERTY_SCR2SS = 'create new session when switching scramble type';
-var PROPERTY_SS2SCR = 'restore scramble type when switching session';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATAL = 'Statistical indicators';
-var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_DELMUL = 'Enable Multiple Deletion';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
-var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_PRINTDATE = 'imprimir fecha de resolución en estadísticas';
+var PROPERTY_SUMMARY = 'mostrar resumen antes de la lista de tiempos';
+var PROPERTY_IMRENAME = 'renombrar sesión inmediatamente después de la creación';
+var PROPERTY_SCR2SS = 'crear una nueva sesión al cambiar el tipo de scramble';
+var PROPERTY_SS2SCR = 'restaurar el tipo de mezcla al cambiar de sesión';
+var PROPERTY_SS2PHASES = 'Conservar tiempo multi-fase al cambiar de sesión';
+var PROPERTY_STATINV = 'Lista de tiempo inversa';
+var PROPERTY_STATAL = 'Indicadores estáticos';
+var PROPERTY_STATALU = 'Indicador estadístico personalizado';
+var PROPERTY_DELMUL = 'Habilitar eliminación múltiple';
+var PROPERTY_TOOLSFUNC = 'Funciones seleccionadas';
+var PROPERTY_TRIM = 'Cantidad de soluciones recortadas a cada lado';
+var PROPERTY_TRIM_MED = 'Media';
+var PROPERTY_STKHEAD = 'Usar información de estado de Stackmat';
+var PROPERTY_HIDEFULLSOL = 'Mostrar la solución progresivamente';
+var PROPERTY_IMPPREV = 'Importar datos no actualizados';
+var PROPERTY_AUTOEXP = 'Auto Exportación (por 100 soluciones)';
+var PROPERTY_AUTOEXP_OPT = 'Nunca|A archivo|Con csTimer ID|Con cuenta WCA';
+var PROPERTY_SCRASIZE = 'Tamaño de la mezcla automático';
 var MODULE_NAMES = {
 	"kernel": 'Global',
 	"ui": 'Interfaz',
@@ -469,8 +469,8 @@ var BGIMAGE_OPACITY = 'Opacidad de la imagen de fondo';
 var BGIMAGE_IMAGE = 'Imagen de fondo';
 var BGIMAGE_IMAGE_STR = 'ninguna|manual|CCT';
 var SHOW_AVG_LABEL = 'Mostrar la información de avg';
-var USE_LOGOHINT = 'Hint messages in logo';
-var TOOLS_SCRGEN = 'ScrambleGenerator';
-var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var USE_LOGOHINT = 'Mensajes de sugerencias en el logo';
+var TOOLS_SCRGEN = 'Generador de mezcla';
+var SCRGEN_NSCR = 'Número de mezclas';
+var SCRGEN_PRE = 'Prefijo';
+var SCRGEN_GEN = 'Generar mezclas';

@@ -1,46 +1,45 @@
-<h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
+<h1>csTimer versión <?php echo $version;?> - Cronómetro profesional para Speedcubing.</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
-<p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
+<h2>Introducción</h2>
+<p>csTimer es un programa de temporización profesionalmente diseñado para Speedcubers y aficionados del Cubo de Rubik. csTimer ofrece:</p>
 <ul>
-<li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
-<li>Plenty of statistics functions, it supports <strong>time-split timing</strong>; <strong>Any number of sessions</strong>, session split/merge, etc.</li>
-<li>Varieties of solver, such as <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, for learning or training these sub steps.</li>
-<li>Other auxiliary tools, such as scramble image, 8-second inspection (voice) alert, metronome, batch-scramble generator, etc.</li>
-<li>Backup function, For avoiding data missing, you can backup your solves to local files, csTimer's server or Google storage.</li>
+<li>Variedad de algoritmos para mezclar distintos tipos de puzzles, incluyendo <strong>todos los eventos oficiales de la WCA</strong>, amplia variedad de twisty puzzles, <strong>mezclas para entrenar</strong> pasos específicos de las resoluciones (como <strong>F2L, OLL, PLL, ZBLL</strong>, además de tener la capacidad de filtrar casos), etc</li>
+<li>Plenitud de estadísticas, permite <strong>cronometrar por fases</strong>; tener <strong>cualquier cantidad de sesiones</strong>, además de poder fusionarlas o separarlas, etc.</li>
+<li>Variedad de guías para resolver pasos como <strong>La cruz, X-cross, Primera cara del 2x2x2 o del Skewb, Cubeshape del SQ-1, etc</strong>, para aprenderlos o entrenarlos.</li>
+<li>Otras herramientas auxiliares, como imagen de la mezcla, alerta de inspección (Con voz) a los 8 y a los 12 segundos, metrónomo, generador de múltiples mezclas, etc.</li>
+<li>Copias de seguridad. Para evitar la pérdida de datos, puedes guardar tus tiempos en archivos locales, el servidor de csTimer, o en almacenamiento de Google.</li>
 </ul>
-<p>csTimer supports most of modern desktop browsers, on mobile phone and tablet PC, you can add csTimer to your home screen, and it will work as a native APP.</p>
-<p>csTimer takes advantage of browser cache, which consumes traffic only when you open it for the first time, after that, csTimer is able to work without network connection (except for functions like backup)</p>
-<h3>Copyright</h3>
-<p>csTimer is an open source software that follows the GPLv3. If you have any suggestions or comments on csTimer, please submit it <a class="click" href="https://github.com/cs0x7f/cstimer/issues">here</a></p>
-<p>Written by: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
-<p>UI designed by: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
-<h2>Basic functions</h2>
+<p>csTimer puede usarse en la mayoría de navegadores modernos, en celular, tablet y PC, en todos estos puedes añador csTimer a tu pantalla principal y funcionará como una aplicación nativa.</p>
+<p>csTimer usa el caché del navegador, lo cual consume bando de ancha solo cuando lo abres por primera vez, así que, después de eso, csTimer puede funcionar sin conexión a internet (excepto para funciones como copias de seguridad).</p>
+<h3>Copyright (Derechos de Autor)</h3>
+<p>csTimer es un software de código abierto (Open Source) que sigue GPLv3. Si tienes sugerencias o comentarios respecto a csTimer, por favor coméntanos <a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">aquí</a></p>
+<p>Escrito por: <a href="mailto:cs0x7f@gmail.com">Shuang Chen (cs0x7f@gmail.com)</a></p>
+<p>Interfaz diseñada por: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
+<h2>Funciones básicas:</h2>
 <ul>
-<li><strong>How to start timing</strong> - Hold the space bar (or both of left and right Ctrl keys, or touch the screen on mobile devices) and wait for the timer to turn green, the timer will start timing once the space bar is released, press any key to stop timing and the solving time will be record.</li>
-<li><strong>UI description</strong> - There are 6 buttons near the logo of csTimer: option, export, scramble, list times, donate, tools, click on the <strong>scramble</strong>, <strong>list times</strong>, <strong>tool</strong> to open the corresponding function panel.</li>
-<li><strong>Scramble panel</strong> - In the Scramble panel, you can select scramble type, set scramble length and case filter (if available), review previous scramble, generate next scramble.</li>
-<li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
-<li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
+<li><strong>Cómo empezar el tiempo</strong> - Mantén presionada la barra espaciadora (También sirven los Ctrl derecho e izquierdo, o presionar la pantalla en dispositivos táctiles), y espera a que el contador se ponga verde. Este empezará a correr una vez se suelte la barra espaciadora, al acabar la resolución, presiona cualquier tecla, el tiempo parará y quedará registrado.</li>
+<li><strong>Descripción de la interfaz</strong> - Hay seis botones cerca al logo de csTimer: Opciones, Exportar, Mezclas, Lista de tiempos, Donar y Herramientas. Haz click en <strong>Mezclas</strong>, <strong>Lista de tiempos</strong>, <strong>Herramientas</strong> para abrir el panel de función correspondiente.</li>
+<li><strong>Pánel de mezclas</strong> - En el Pánel de mezclas, puedes seleccionar el tipo de mezcla, su longitud y filtro de casos (Solo disponible para ciertos tipos de mezclas), también puedes revisar la última mezcla y generar una siguiente.</li>
+<li><strong>Pánel de Lista de tiempos</strong> - En el pánel de Lista de tiempos, puedes abrir el gestor de sesiones haciendo click en "Sesión", puedes seleccionar, añadir, vaciar o eliminar sesiones usando el selector y el botón junto a este, además, puedes ver el single y el promedio actual, y la lista de tiempos completa.</li>
+<li><strong>Pánel de herramientas</strong> - En el pánel de herramientas puedes seleccionar funciones auxiliares específicas, incluyendo imagen de mezcla, generadores de mezclas, guías, otros tipos de estadísticas, etc.</li>
 </ul>
-<h2>Keyboard shortcut</h2>
+<h2>Atajos de teclado</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7.</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb.</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input.</td></tr>
-<tr><th>Alt + d</th><td>Remove all times in current session.</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest time.</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session.</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest time is OK/+2/DNF</td></tr>
+<tr><th>Tecla</th><td>Función</td></tr>
+<tr><th>Alt + 1
+</th><td>Cambiar tipo de mezcla a Square-1.</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Cambiar tipo de mezcla a 2x2x2 ~ 7x7x7.</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Cambiar tipo de mezcla a Pyra/Mega/Clock/Skewb.</td></tr>
+<tr><th>Alt + i</th><td>Atajo para introducir mezcla.</td></tr>
+<tr><th>Alt + d</th><td>Eliminar todos los tiempos de la sesión.</td></tr>
+<tr><th>Alt + z</th><td>Eliminar el último tiempo.</td></tr>
+<tr><th>Alt + Arriba/Abajo</th><td>Desplazarse a la siguiente/última sesión.</td></tr>
+<tr><th>Alt + Izquierda/Derecha</th><td>Mostrar última/siguiente mezcla.</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>El último tiempo es Bueno/+2/DNF.</td></tr>
 </table>
-
 </table>
-
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>Virtual Cube Key Map</th></tr><tr>
+<tr><th colspan=10>Mapa de teclas para Cubo virtual</th></tr><tr>
 <td>1<br><br></td><td>2<br><br></td><td>3<br><span>&lt;</span></td><td>4<br><span>&gt;</span></td><td>5<br><span>M</span></td>
 <td>6<br><span>M</span></td><td>7<br><span>&lt;</span></td><td>8<br><span>&gt;</span></td><td>9<br><br></td><td>0<br><br></td>
 </tr><tr>
@@ -55,120 +54,120 @@
 </tr>
 </table>
 
-<h2>Option details</h2>
+<h2>Detalles de las opciones.</h2>
 <ul>
-<li><strong data="opt_ahide">Ocultar todos los elementos cuando se cronometra</strong>. Hide logo and all panels when timing.</li>
-<li><strong data="opt_useMilli">Usar milisegundos</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
-<li><strong data="opt_timeFormat">Formato de tiempos</strong>. Time format to display.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
-<li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
-<li><strong data="opt_showAvg">Mostrar la información de avg</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
-<li><strong data="opt_zoom">Distancia de visión</strong>. You can adjust sizes of all elements by this option.</li>
-<li><strong data="opt_font">Selecciona la fuente del cronómetro</strong>. Font of the main timer.</li>
-<li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
-<li><strong data="opt_view">Estilo de la interfaz del usuario</strong>. Switch between desktop and mobile views.</li>
-<li><strong data="opt_wndScr">Estilo de la visualización del panel del scramble</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Estilo de visualización del panel de las estadísticas</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Estilo de la visualización del panel de las herramientas</strong>. Make tool panel embedded into background.</li>
-<li><strong data="opt_bgImgO">Opacidad de la imagen de fondo</strong>. Opacity of the background image.</li>
-<li><strong data="opt_bgImgS">Imagen de fondo</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
-<li><strong data="opt_timerSize">Tamaño del cronómetro</strong>. Set the size of main timer.</li>
-<li><strong data="opt_smallADP">Usar fuente pequeña después del punto decimal</strong>. Use a smaller font size after the digital point in main timer.</li>
-<li><strong data="opt_useMouse">Usar cronómetro del ratón</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
-<li><strong data="opt_useIns">Usar inspección de WCA</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
-<li><strong data="opt_voiceIns">voz de alerta en la inspección de la WCA</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
-<li><strong data="opt_voiceVol">Voice volume</strong>. Voice level of the alert above.</li>
-<li><strong data="opt_input">Introducir tiempos con</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
-<li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
-<li><strong data="opt_timeU">Frecuencia del cronómetro</strong>. How timer is updated when timing.</li>
-<li><strong data="opt_preTime">Tiempo manteniendo la barra espaciadora (en segundo(s))</strong>. How long the space bar should be held before the timer turns green.</li>
-<li><strong data="opt_phases">Multi-fase</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
-<li><strong data="opt_scrSize">Tamaño de la mezcla</strong>. Size of the scramble text.</li>
-<li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
-<li><strong data="opt_scrMono">Mezcla monoespaciada</strong>. Use monospaced font for scramble text.</li>
-<li><strong data="opt_scrLim">Limitar la altura de la zona de mezcla</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
-<li><strong data="opt_scrAlign">Alineación del área de scramble</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
-<li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
-<li><strong data="opt_scrFast">Usar scramble rápido para 4x4x4 (no oficial)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
-<li><strong data="opt_scrKeyM">Movimiento(s) clave de la etiqueta en el scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
-<li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
-<li><strong data="opt_trim">Number of solves trimmed at each side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
-<li><strong data="opt_statsum">show summary before time list</strong>. Show the statistics table before time list.</li>
-<li><strong data="opt_printScr">Publicar mezcla(s) en las estadísticas.</strong>. Print scramble in round statistics dialog.</li>
-<li><strong data="opt_printDate">print solving date in statistics</strong>. Print solving date in round statistics dialog.</li>
-<li><strong data="opt_imrename">rename session immediately after creation</strong>. Immediately rename a session after creating it.</li>
-<li><strong data="opt_scr2ss">create new session when switching scramble type</strong>. When switching scramble type, a new session will be created.</li>
-<li><strong data="opt_statinv">Inverse time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
-<li><strong data="opt_statclr">Enable session emptying</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
-<li><strong data="opt_absidx">Show absolute index in statistics report</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
-<li><strong data="opt_statal">Statistical indicators</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
-<li><strong data="opt_delmul">Enable Multiple Deletion</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
-<li><strong data="opt_disPrec">Precisión de la distribución de tiempos</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
-<li><strong data="opt_imgSize">Tamaño de la imagen de la mezcla</strong>. Set the size of scramble image.</li>
-<li><strong data="opt_NTools">Número de herramientas</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">Usar atajos de teclado</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
-<li><strong data="opt_vrcSpeed">Velocidad base VRC (Giros por segundo)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
-<li><strong data="opt_vrcMP">Multi-fase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiVRC">Mostral cubo Giiker virtual</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
-<li><strong data="opt_giiSD">Indicar el final del scramble por el tiempo de espera</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
-<li><strong data="opt_giiSK">Indicar fin del scramble con la barra espaciadora</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
-<li><strong data="opt_giiSM">Indicar fin del scramble haciendo</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
-<li><strong data="opt_giiBS">Sonar cuando el cubo esté scrambleado</strong>. Beep when some of scramble-finish signal is triggered.</li>
-<li><strong data="opt_giiRST">Resetear el cubo Bluetooth cuando se conecte</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Detección de errores de hardware automática</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_ahide">Ocultar todos los elementos cuando se cronometra</strong>. Ocultar el logo y todos los páneles cuando se cronometra.</li>
+<li><strong data="opt_useMilli">Usar milisegundos</strong>. Mostrar el dígito de los milisegundos (No importa si se muestra o no, la precisión interna de csTimer es de un milisegundo).</li>
+<li><strong data="opt_timeFormat">Formato de tiempos</strong>. Formato del tiempo para mostrar.</li>
+<li><strong data="opt_atexpa">Auto Exportación (por 100 soluciones)</strong>. Si se activa, csTimer exportará los tiempos automáticamente una vez cada 100 resoluciones al lugar especificado, archivo local, servidor de csTimer o almacenamiento de Google.</li>
+<li><strong data="opt_expp">Importar datos no actualizados</strong>. Si has exportado múltiples copias de seguridad, puedes importar de una de las 10 copias más recientes. En caso de que accidentalmente exportes una copia vacía, esta opción te ayudará a recuperar tus tiempos.</li>
+<li><strong data="opt_useLogo">Mensajes de sugerencias en el logo</strong>. El logo de csTimer sirve como una pantalla para mostrar información de interés, tal como romper récords personales.</li>
+<li><strong data="opt_showAvg">Mostrar la información de avg</strong>. Dos líneas de información son mostradas bajo el cronómetro principal, los promedios de 5 y 12 actuales, por defecto, aunque pueden modificarse estos valores.</li>
+<li><strong data="opt_zoom">Distancia de visión</strong>. Puedes ajustar los tamaños de todos los elementos con esta opción.</li>
+<li><strong data="opt_font">Selecciona la fuente del cronómetro</strong>. Fuente del cronómetro principal.</li>
+<li><strong data="opt_uidesign">El diseño de interfaz de usuario es</strong>. Puedes cambiar el diseño de la interfaz por uno más material, u ocultar las sombras con esta opción.</li>
+<li><strong data="opt_view">Estilo de la interfaz del usuario</strong>. Cambiar entre modo de Computador o modo de Móviles.</li>
+<li><strong data="opt_wndScr">Estilo de la visualización del panel del scramble</strong>. Hacer que el pánel de mezcla se incruste en el fondo.</li>
+<li><strong data="opt_wndStat">Estilo de visualización del panel de las estadísticas</strong>. Hacer que el pánel de la lista de tiempos se junte con el fondo</li>
+<li><strong data="opt_wndTool">Estilo de la visualización del panel de las herramientas</strong>. Hacer que el pánel de herramientas se junte con el fondo.</li>
+<li><strong data="opt_bgImgO">Opacidad de la imagen de fondo</strong>. Opacidad de la imagen del fondo.</li>
+<li><strong data="opt_bgImgS">Imagen de fondo</strong>. Puedes seleccionar tu propia imagen como fondo de pantalla, sin embargo, solo las URL en formato HTTPS están disponibles debido a la restricción de seguridad del navegador.</li>
+<li><strong data="opt_timerSize">Tamaño del cronómetro</strong>. Establece el tamaño del cronómetro principal</li>
+<li><strong data="opt_smallADP">Usar fuente pequeña después del punto decimal</strong>. Utilizar un tamaño de fuente más pequeño para los números después del punto decimal</li>
+<li><strong data="opt_useMouse">Usar cronómetro del ratón</strong>. Usar el ratón para iniciar el cronómetro, el inicio con el teclado seguirá disponible</li>
+<li><strong data="opt_useIns">Usar inspección de WCA</strong>. Habilitar el procedimiento de inspección de la WCA, que es una cuenta regresiva de 15 segundos, la penalización automática de +2/DNF también será habilitada para cuando inspecciones durante más de 15 segundos</li>
+<li><strong data="opt_voiceIns">voz de alerta en la inspección de la WCA</strong>. Alerta a los 8/12 segundos de inspección simulando la alerta del juez en las competiciones de la WCA</li>
+<li><strong data="opt_voiceVol">Volumen de voz</strong>. Nivel de sonido de la alerta anterior</li>
+<li><strong data="opt_input">Introducir tiempos con</strong>. csTimer permite agregar soluciones de diversas maneras, soporta subida manual, grabación automática desde un cronómetro Stackmat, conexión a un cubo inteligente vía bluetooth o juegue al cubo de Rubik virtual, además del cronometrado vía teclado</li>
+<li><strong data="opt_intUN">Unidad al introducir un entero</strong>. Cuando ingresa un número entero XXX en el cuadro de entrada, ¿Qué significa, segundo XXX, centésima de segundo XXX, o milésima de segundo XXX?</li>
+<li><strong data="opt_timeU">Frecuencia del cronómetro</strong>. Como se actualiza el cronómetro durante el cronometrado</li>
+<li><strong data="opt_preTime">Tiempo manteniendo la barra espaciadora (en segundo(s))</strong>. Cuánto tiempo debe mantenerse pulsada la barra espaciadora antes de que el temporizador inicie</li>
+<li><strong data="opt_phases">Multi-fase</strong>. Número de fases, presione cualquier tecla para marcar una división durante el cronometrado</li>
+<li><strong data="opt_stkHead">Usar información de estado de Stackmat</strong>. El cronómetro Stackmat reportará su estado, por ej.: Qué área, ya sea derecha o izquierda es presionada, luego csTimer será capaz de utilizar esa información, de todas formas, un error de datos puede ocurrir y causar una situación inesperada</li>
+<li><strong data="opt_scrSize">Tamaño de la mezcla</strong>. Tamaño del texto de la mezcla</li>
+<li><strong data="opt_scrASize">Tamaño de la mezcla automático</strong>. El tamaño del texto de la mezcla será ajustado automáticamente según el largo de la misma, que funciona con la opción previa</li>
+<li><strong data="opt_scrMono">Mezcla monoespaciada</strong>. Usar fuente monoespaciada para el texto de la mezcla</li>
+<li><strong data="opt_scrLim">Limitar la altura de la zona de mezcla</strong>. Cuando el área del scramble es demasiado alta, se producirá una barra de desplazamiento para evitar el aumento del panel de mezcla.</li>
+<li><strong data="opt_scrAlign">Alineación del área de scramble</strong>. La alineación de la zona entera de la mezcla, incluye selector de tipo de mezcla.</li>
+<li><strong data="opt_preScr">pre-scramble</strong>. Movimientos previos a la mezcla, que se usan con el cubo de Rubik virtual e imagen de mezcla</li>
+<li><strong data="opt_scrFast">Usar scramble rápido para 4x4x4 (no oficial)</strong>. La mezcla 4x4x4 oficial de la WCA requiere una alta cantidad de recursos de cálculo, selecciona esta opción para utilizar una mezcla basada en movimientos al azar para el 4x4x4</li>
+<li><strong data="opt_scrKeyM">Movimiento(s) clave de la etiqueta en el scramble</strong>. Marque un movimiento clave en la mezcla, por ej.: el movimiento que quita el estado de forma cuadrada en las mezclas de SQ1</li>
+<li><strong data="opt_scrClk">Acción al hacer clic en mezcla</strong>. Comportamiento al hacer clic en el texto de la mezcla, copiar la mezcla o generar la siguiente mezcla.</li>
+<li><strong data="opt_trim">Cantidad de soluciones recortadas a cada lado</strong>. Eliminar la primera y última solución cuando se calcula el promedio de soluciones</li>
+<li><strong data="opt_statsum">mostrar resumen antes de la lista de tiempos</strong>. Mostrar la tabla de estadísticas antes de la lista de tiempo.</li>
+<li><strong data="opt_printScr">Publicar mezcla(s) en las estadísticas.</strong>. Mostrar la mezcla en el cuadro de estadísticas redondo</li>
+<li><strong data="opt_printDate">imprimir fecha de resolución en estadísticas</strong>. Mostrar la fecha de la solución en el cuadro de estadísticas</li>
+<li><strong data="opt_imrename">renombrar sesión inmediatamente después de la creación</strong>. Renombrar inmediatamente una sesión después de crearla.</li>
+<li><strong data="opt_scr2ss">crear una nueva sesión al cambiar el tipo de scramble</strong>. Al cambiar el tipo de scramble, se creará una nueva sesión.</li>
+<li><strong data="opt_statinv">Lista de tiempo inversa</strong>. Invierte la lista de tiempos, por lo tanto, las últimas soluciones estarán al final de la lista de tiempo.</li>
+<li><strong data="opt_statclr">Habilitar vaciado de sesión</strong>. Cuando está desactivado, un botón '+' (para crear una sesión) reemplazará el botón 'X' del selector de sesiones, Por lo tanto, al hacer clic se creará una nueva sesión vacía en lugar de borrar toda la sesión.</li>
+<li><strong data="opt_absidx">Mostrar índice absoluto en el informe de estadísticas</strong>. Mostrar índice absoluto en la sesión en lugar de 1 a número de soluciones (por ejemplo, 1/2/3 para mo3) en estadísticas redondeadas.</li>
+<li><strong data="opt_rsfor1s">Mostrar estadística al hacer clic en resolver número</strong>. Cuando haga clic en la primera fila de la lista de tiempos, muestre una estadística redondeada para una sola solución.</li>
+<li><strong data="opt_statal">Indicadores estáticos</strong>. Indicador estático para la tabla de estadísticas, al personalizar, aoX y moX están disponibles.</li>
+<li><strong data="opt_delmul">Habilitar eliminación múltiple</strong>. la posibilidad de eluminiar múltiples soluciones comienza desde una solución, para evitar malentendidos, la solución seleccionada será la más antigua a eliminar.</li>
+<li><strong data="opt_disPrec">Precisión de la distribución de tiempos</strong>. Intervalo de tiempo para la herramienta de distribución de tiempo.</li>
+<li><strong data="opt_solSpl">Mostrar la solución progresivamente</strong>. Si se selecciona, solo se muestra la longitud de la solución de la solución, y usted puede ver la solución paso a paso, de lo contrario, toda la solución se muestra.</li>
+<li><strong data="opt_imgSize">Tamaño de la imagen de la mezcla</strong>. Establecer el tamaño de la imagen de la mezcla.</li>
+<li><strong data="opt_NTools">Número de herramientas</strong>. csTimer puede mostrar hasta 4 herramientas simultáneamente</li>
+<li><strong data="opt_useKSC">Usar atajos de teclado</strong>. Utilice el acceso directo del teclado para cambiar el tipo de mezcla, generar la próxima mezcla, cambiar entre sesiones, etc.</li>
+<li><strong data="opt_vrcSpeed">Velocidad base VRC (Giros por segundo)</strong>. Velocidad básica de giro del cubo virtual de Rubik, el giro se acelerará si hay múltiples movimientos para girar.</li>
+<li><strong data="opt_vrcMP">Multi-fase</strong>. División multi-fase automática para cubo de Rubik virtual y Bluetooth.</li>
+<li><strong data="opt_giiVRC">Mostral cubo Giiker virtual</strong>. Mostrar un cubo de Rubik virtual en el cronómetro principal cuando se conecta a un cubo bluetooth.</li>
+<li><strong data="opt_giiSD">Indicar el final del scramble por el tiempo de espera</strong>. Para un cubo bluetooth, csTimer no puede saber si un movimiento de mezcla o resolución.</li>
+<li><strong data="opt_giiSK">Indicar fin del scramble con la barra espaciadora</strong>. Cuando se presiona la barra espaciadora, el cubo bluetooth se marcará como mezclado, cualquier movimiento después eso se tomará como el comienzo del cronómetro.</li>
+<li><strong data="opt_giiSM">Indicar fin del scramble haciendo</strong>. Usa secuencias específicas de movimiento en el cubo bluetooth para marcar la mezcla.</li>
+<li><strong data="opt_giiBS">Sonar cuando el cubo esté scrambleado</strong>. Suena cuando se activa alguna señal de finalización de mezcla.</li>
+<li><strong data="opt_giiRST">Resetear el cubo Bluetooth cuando se conecte</strong>. Cuando se conecta a un cubo Bluetooth, csTimer detectará si está resuelto, si no, puede haber algunos problemas de hardware o el cubo está realmente sin resolver.</li>
+<li><strong data="opt_giiAED">Detección de errores de hardware automática</strong>. Algunos cubos bluetooth perderán algunos movimientos debido a fallos de hardware, csTimer intentará detectar este caso.</li>
 </ul>
-<h2>Tools detail</h2>
+<h2>Detalles de herramientas</h2>
 <ul>
-<li><strong data="tool_scrgen">ScrambleGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">Confirmar tiempo </strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
-<li><strong data="tool_hugestats">estadísticas de la sesión de cruz</strong>. You are able to do cross-session statistics with this tool.</li>
-<li><strong data="tool_stats">Estadísticas</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">Distribución de tiempos</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">Tendencia del tiempo</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
-<li><strong data="tool_image">Imagen de la mezcla</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">Solvers &gt; Resolver Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Solvers &gt; Resolver EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Solvers &gt; Resolver cruz</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
-<li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
-<li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
-<li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
-<li><strong data="tool_333zz">Solvers &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
-<li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
-<li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
-<li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">Cubo Giiker</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_if">InsertionFinder</strong>. Insertion finder, which is for FMC.</li>
-<li><strong data="tool_mtrnm">Metrónomo</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_onlinecomp">Online Competition</strong>. Online competition, so you can login with WCA account and compete with all speedsolvers around the world with same scrambles.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_scrgen">Generador de mezcla</strong>. Usted puede generar hasta 999 mezclas con un solo clic con esta herramienta.</li>
+<li><strong data="tool_cfm">Confirmar tiempo </strong>. Herramienta para ver las soluciones actuales con su comentario, mezcla, fecha de resolución y la reconstrucción si está disponible, que es también el diálogo cuando hace clic en una solución.</li>
+<li><strong data="tool_hugestats">estadísticas de la sesión de cruz</strong>. Usted puede hacer estadísticas de sesiones cruzadas con esta herramienta.</li>
+<li><strong data="tool_stats">Estadísticas</strong>. Tabla de estadística similar con la tabla en el panel de tiempos de la lista.</li>
+<li><strong data="tool_distribution">Distribución de tiempos</strong>. La distribución del tiempo y el análisis de estabilidad, &lt;X Y/Z significa que hay soluciones Y totalmente inferiores a X segundos, y todas las últimas soluciones Z son menos de X segundos en la sesión.</li>
+<li><strong data="tool_trend">Tendencia del tiempo</strong>. Muestra una curva de tendencia de todas las soluciones en la sesión actual.</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. Número de soluciones cada día/semana/mes/año.</li>
+<li><strong data="tool_image">Imagen de la mezcla</strong>. Imagen de la mezcla para verificar una mezcla correcta, todas las mezclas de la WCA son soportadas.</li>
+<li><strong data="tool_roux1">Solucionadores &gt; Resolver Roux S1</strong>. Resolver el primer paso de Roux, que resuelve un bloque de 1x2x3.</li>
+<li><strong data="tool_eoline">Solucionadores &gt; Resolver EOLine</strong>. Solucionador de línea EO, que resuelve las orientaciones de los 12 bordes, y las posiciones de los bordes DF y DB.</li>
+<li><strong data="tool_cross">Solucionadores &gt; Resolver cruz</strong>. Resolución de la cruz, que resuelve DF, DL, DR, DB bordes.</li>
+<li><strong data="tool_222face">Solucionadores &gt; Cara 2x2x2</strong>. Resolución de cara 2x2x2, que resuelve una cara de cubo 2x2x2.</li>
+<li><strong data="tool_333cf">Solucionadores &gt; Cross + F2L</strong>. Resolución de la cruz y F2L, que resuelve la cruz y 4 F2Ls con búsqueda informática, por lo que la solución podría estar lejos de soluciones humanas.</li>
+<li><strong data="tool_333roux">Solucionadores &gt; Roux S1 + S2</strong>. Resolver primer y segundo paso de Roux que en primer lugar resuelve un bloque 1x2x3 en la cara izquierda y luego añade otro bloque 1x2x3 en la cara derecha con R, M, r, U.</li>
+<li><strong data="tool_333petrus">Solucionadores &gt; 2x2x2 + 2x2x3</strong>. Resolver el primer y segundo paso de Petrus, que resuelve primero un bloque 2x2x2 a la izquierda y luego añádelo a un 2x2x3 a la izquierda.</li>
+<li><strong data="tool_333zz">Solucionadores &gt; EOLine + ZZF2L</strong>. Resolución de Eoline y ZZF2L, que resuelve primero el EOLine y luego resuelve uno de la izquierda 1x2x3 o la derecha 1x2x3 y el resto de 2x2x3.</li>
+<li><strong data="tool_sq1cs">Solucionadores &gt; SQ1 S1 + S2</strong>. Resolución de primer y segundo paso, que primero resuelve la forma de SQ1 y luego divide las piezas U y las piezas D.</li>
+<li><strong data="tool_pyrv">Solucionadores &gt; Pyraminx V</strong>. Resolución del Pyraminx V, que resuelve tres esquinas y dos bordes para formar un patrón 'V' para Pyraminx.</li>
+<li><strong data="tool_skbl1">Solucionadores &gt; Skewb Face</strong>. Resolución de la cara Skewb, que resuelve una capa de Skewb, más específicamente, 1 centro y 4 esquinas adyacentes.</li>
+<li><strong data="tool_giikerutil">Cubo Giiker</strong>. Herramienta auxiliar para el cubo bluetooth, que es capaz de mostrar el estado actual, la potencia de la batería, la reconstrucción en tiempo real, etc.</li>
+<li><strong data="tool_if">InsertionFinder</strong>. Buscador de inserciones, que es para FMC.</li>
+<li><strong data="tool_mtrnm">Metrónomo</strong>. El métronomo, además de sonar con una frecuencia específica, la hace sonar en un momento específico después de empezar a resolverla.</li>
+<li><strong data="tool_onlinecomp">Competición en línea</strong>. Concurso en línea, para que pueda iniciar sesión con la cuenta WCA y competir con todos los Speedcubers en el mundo con las mismas mezclas.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Herramienta auxiliar para Stackmat, que es capaz de ver el estado, potencia y nivel de ruido de la señal, etc.</li>
 </ul>
-<h2>Links</h2>
+<h2>Enlaces</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/">Cubing China</a></li>
-<li><a class="click" href="/new/">csTimer beta version</a></li>
-<li><a class="click" href="/src/">csTimer beta version with uncompressed files</a></li>
-<li><a class="click" href="https://github.com/cs0x7f/cstimer">csTimer source code</a></li>
-<li><a class="click" href="/old3/">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">Cubing China </a></li>
+<li><a class="click" href="/new/" title="">csTimer version beta</a></li>
+<li><a class="click" href="/src/" title="">Versión beta de CsTimer sin archivos comprimidos</a></li>
+<li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">Código central de CsTimer</a></li>
+<li><a class="click" href="/old3/" title="">Versión 2015.12.12 de CsTimer</a></li>
+<li><a class="click" href="/old2/" title="">Versión 2012.3.15 de CsTimer</a></li>
+<li><a class="click" href="/old/" title="">Versión 2012.2.29 de CsTimer</a></li>
 </ul>
-<h2>Color schemes</h2>
+<h2>Modelos de colores</h2>
 <?php include('color.php') ?>
 <div class="donate" style="line-height:1.5em;">
-<p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
-<p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f">PayPal.me</a>.</p>
+<p>¡Muchas gracias por apoyar a CsTimer! Tu donación será usada para apoyar nuestro desarrollo y mantenimiento en términos de costo.</p>
+<p>Sí tú prefieres hacer tú donación por PayPal, por favor haga clic en el link o entre en <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="NW25HME3QUEZY">
 <input type="image" src="data:image/gif;base64,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" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 </form>
-<p>You can also fund us by Alipay, scan the next two-dimensional code or please pay to the account: cs0x7f@gmail.com</p>
+<p>También puede apoyarnos usando Alipay escaneando el siguiente código o pagando a la siguiente cuenta: cs0x7f@gmail.com</p>
 <p><img style="display:inline-block; width:10em; height:10em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAIAAAAABMCaAAABoklEQVR42u3aUY6DMAwFQO5/6e0JViq1XwjO5LOqIAxSHJ5z/RnlcSGACHEk4hUY/974i/9/83vlXl3PBREixPmIpYX25oNVrl95GV3PBREixLMQ05OuXD9RoG5fByJEiBCfnDREiBAhDkashAulTTJEiBAhbhJAJIKM41IciBAhLkOMNHQ2+P313T6IECEuQ9z60FBTcYjMDSJEiCMRKx//K4tMYvNcOkwAESLEoxBXNukTwW1XKAsRIsRzEZ9CqUAkClQpxYEIEeIYxApo1+b2qeK2xRcLRIgQH0dMLPaVSVeg080piBAhzkdMB59dQWn6BTxWnSFChLgtYrqAlCYdPmwVCWUhQoQ4HjFRZBIHCBIbeIgQIUJs/WhPLPDhxhlEiBDPQkyPdIFKo99OtiFChPhqxHRzZ+Xho3SwAhEixLMQ0wt/2wOEN+dtoSxEiBDHIO7QhFrZtLr94iFChAgx1AzqKmgrwwiIECFC7ERMh69dG2yIECFCXBFAVIpAegP/mhQHIkSIUcSVjar0hjkeJEOECHEkovFjIUUAEeKU8QE0apeVMce/LwAAAABJRU5ErkJggg=="></p>
-<p>Thank you again for your donation!</p>
+<p>¡Muchas gracias otra vez por la donación!</p>
 </div>

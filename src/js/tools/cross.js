@@ -8,6 +8,8 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 
 	var e1mv = [];
 	var c1mv = [];
+	var xxPrun01 = [];
+	var xxPrun02 = [];
 
 	function pmv(a, c) {
 		var b = cmv[c][~~(a / 24)];
@@ -98,6 +100,24 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 		}
 	}
 
+	function xxinit() {
+		xxinit = $.noop;
+		xinit();
+		var obj1 = 4;
+		var obj2 = 5;
+		createPrun(xxPrun01, obj1 * 3 * 24 + obj1 * 2 + 576 * (obj2 * 3 * 24 + obj2 * 2), 576 * 576, 7, function(q, m) {
+			var ec1 = q % 576;
+			var ec2 = ~~(q / 576);
+			return c1mv[~~(ec1 / 24)][m] * 24 + e1mv[ec1 % 24][m] + 576 * (c1mv[~~(ec2 / 24)][m] * 24 + e1mv[ec2 % 24][m])
+		});
+		obj2 = 6;
+		createPrun(xxPrun02, obj1 * 3 * 24 + obj1 * 2 + 576 * (obj2 * 3 * 24 + obj2 * 2), 576 * 576, 7, function(q, m) {
+			var ec1 = q % 576;
+			var ec2 = ~~(q / 576);
+			return c1mv[~~(ec1 / 24)][m] * 24 + e1mv[ec1 % 24][m] + 576 * (c1mv[~~(ec2 / 24)][m] * 24 + e1mv[ec2 % 24][m])
+		});
+	}
+
 	function xinit() {
 		xinit = $.noop;
 		init();
@@ -148,6 +168,40 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			twst = (twst + twstt[m][idx]) % 3;
 			return idxt[m][idx] * 3 + twst;
 		}
+	}
+
+	//e4perm, e4flip, e1, c1
+	//obj: -1:only cross.
+	//	i-4: end when e==i*2, c==i*3
+	function idaxxcross(q, t, e, c, xxPrun, l, lm, sol) {
+		if (l == 0) {
+			return q == 0 && t == 0 
+				&& e[0] == 4 * 2 && c[0] == 4 * 3
+				&& (e[1] == 5 * 2 && c[1] == 5 * 3 || e[1] == 6 * 2 && c[1] == 6 * 3);
+		} else {
+			if (getPruning(permPrun, q) > l || getPruning(flipPrun, t) > l 
+				|| getPruning(xxPrun, c[0] * 24 + e[0] + 576 * (c[1] * 24 + e[1])) > l) return false;
+			var p, s, ex, cx, a, m;
+			for (m = 0; m < 6; m++) {
+				if (m != lm && m != lm - 3) {
+					p = q;
+					s = t;
+					ex = e;
+					cx = c;
+					for (a = 0; a < 3; a++) {
+						p = pmv(p, m);
+						s = fmv(s, m);
+						ex = [e1mv[ex[0]][m], e1mv[ex[1]][m]];
+						cx = [c1mv[cx[0]][m], c1mv[cx[1]][m]];
+						if (idaxxcross(p, s, ex, cx, xxPrun, l - 1, m, sol)) {
+							sol.push("FRUBLD".charAt(m) + " 2'".charAt(a));
+							return (true);
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	//e4perm, e4flip, e1, c1
@@ -209,6 +263,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 	var faceStr = ["D", "U", "L", "R", "F", "B"];
 	var moveIdx = ["FRUBLD", "FLDBRU", "FDRBUL", "FULBDR", "URBDLF", "DRFULB"]
 	var rotIdx = ["&nbsp;&nbsp;", "z2", "z'", "z&nbsp;", "x'", "x&nbsp;"];
+	var yrotIdx = ["FRUBLD", "RBULFD", "BLUFRD", "LFURBD"];
 
 	var curScramble;
 
@@ -237,6 +292,55 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			ret.push(sol);
 		}
 		return ret;
+	}
+
+	function solve_xxcross(moves, face) {
+		xxinit();
+		var states = [];
+		var yrot = 0;
+		for (yrot = 0; yrot < 4; yrot++) {
+			var flip = 0;
+			var perm = 0;
+			var e1 = [8, 10, 12];
+			var c1 = [12, 15, 18];
+			for (var i = 0; i < moves.length; i++) {
+				var m = yrotIdx[yrot].indexOf("FRUBLD".charAt(moveIdx[face].indexOf("FRUBLD".charAt(moves[i][0]))));
+				var p = moves[i][2];
+				for (var j = 0; j < p; j++) {
+					flip = fmv(flip, m);
+					perm = pmv(perm, m);
+					e1 = [e1mv[e1[0]][m], e1mv[e1[1]][m], e1mv[e1[2]][m]];
+					c1 = [c1mv[c1[0]][m], c1mv[c1[1]][m], c1mv[c1[2]][m]];
+				}
+			}
+			states.push([perm, flip, e1, c1]);
+		}
+		var sol = [];
+		var found = false;
+		var len = 0;
+		while (!found) {
+			for (yrot = 0; yrot < 4; yrot++) {
+				var state = states[yrot];
+				if (idaxxcross(state[0], state[1], 
+						[state[2][0], state[2][1]], [state[3][0], state[3][1]], 
+						xxPrun01, len, -1, sol)) {
+					found = true;
+					break;
+				}
+				if (idaxxcross(state[0], state[1], 
+						[state[2][0], state[2][2]], [state[3][0], state[3][2]], 
+						xxPrun02, len, -1, sol)) {
+					found = true;
+					break;
+				}
+			}
+			len++;
+		}
+		sol.reverse();
+		for (var i = 0; i < sol.length; i++) {
+			sol[i] = yrotIdx[yrot]["FRUBLD".indexOf(sol[i][0])] + sol[i][1];
+		}
+		return sol;
 	}
 
 	function solve_xcross(moves, face) {
@@ -338,6 +442,9 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			var clktxt = $(this).html();
 			if (clktxt == 'ec') {
 				sol = solve_xcross(curScramble, face);
+				clktxt = 'xx';
+			} else if (clktxt == 'xx') {
+				sol = solve_xxcross(curScramble, face);
 				clktxt = '<<';
 			} else {
 				sol = solve_cross(curScramble)[face];

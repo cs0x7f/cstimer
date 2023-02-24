@@ -427,6 +427,169 @@ var mathlib = (function() {
 		return cycles - parity;
 	};
 
+	function schreierSims(gen, shuffle) {
+		this.sgs = [];
+		this.sgsi = [];
+		this.Tk = [];
+		var n = gen[0].length;
+		var e = [];
+		for (var i = 0; i < n; i++) {
+			e[i] = i;
+		}
+		for (var i = 0; i < n; i++) {
+			this.sgs.push([]);
+			this.sgsi.push([]);
+			this.Tk.push([]);
+			this.sgs[i][i] = e;
+			this.sgsi[i][i] = e;
+		}
+		for (var i = 0; i < gen.length; i++) {
+			var g = gen[i];
+			if (shuffle) {
+				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
+			}
+			this.knutha(n - 1, g);
+		}
+	}
+
+	schreierSims.prototype.permMult = function(permA, permB) {
+		var ret = [];
+		for (var i = 0; i < permA.length; i++) {
+			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	schreierSims.prototype.permInv = function(perm) {
+		var ret = [];
+		for (var i = 0; i < perm.length; i++) {
+			ret[perm[i]] = i;
+		}
+		return ret;
+	}
+
+	schreierSims.prototype.isMember = function(p, depth) {
+		depth = depth || 0;
+		for (var i = p.length - 1; i >= depth; i--) {
+			var j = p[i];
+			if (j !== i) {
+				if (!this.sgs[i][j]) {
+					return false;
+				}
+				p = this.permMult(p, this.sgsi[i][j]);
+			}
+		}
+		return true;
+	}
+
+	schreierSims.prototype.knutha = function(k, p) {
+		this.Tk[k].push(p);
+		for (var i = 0; i < this.sgs[k].length; i++) {
+			if (this.sgs[k][i]) {
+				this.knuthb(k, this.permMult(this.sgs[k][i], p));
+			}
+		}
+	}
+
+	schreierSims.prototype.knuthb = function(k, p) {
+		var j = p[k];
+		if (!this.sgs[k][j]) {
+			this.sgs[k][j] = p;
+			this.sgsi[k][j] = this.permInv(p);
+			for (var i = 0; i < this.Tk[k].length; i++) {
+				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
+			}
+			return;
+		}
+		var p2 = this.permMult(p, this.sgsi[k][j]);
+		if (!this.isMember(p2)) {
+			this.knutha(k - 1, p2);
+		}
+	}
+
+	schreierSims.prototype.size = function() {
+		var n = this.sgs.length;
+		var size = 1;
+		for (var j = 0; j < n; j++) {
+			var cnt = 0;
+			for (var k = 0; k < n; k++) {
+				if (this.sgs[j][k]) {
+					cnt++;
+				}
+			}
+			size *= cnt;
+		}
+		return size;
+	}
+
+	schreierSims.prototype.intersect = function(other, thres) {
+		if (this.size() > other.size()) {
+			return other.intersect(this, thres);
+		}
+		thres = thres || 100000;
+		var ret = new schreierSims([this.sgs[0][0]]);
+		var n = this.sgs.length;
+		ret.cnt = 0;
+		for (var i = 0; i < n; i++) {
+			for (var j = 0; j < i; j++) {
+				if (!this.sgs[i][j] || ret.sgs[i][j]) {
+					continue;
+				}
+				// console.log(i, j);
+				this.enumDFS(i - 1, this.sgs[i][j], function(perm) {
+					ret.knutha(n - 1, perm);
+					// console.log(i, j, ret.size(), perm);
+					return true;
+				}, function(depth, perm) {
+					if (ret.cnt > thres || ret.cnt == -1) {
+						ret.cnt = -1;
+						return false;
+					}
+					ret.cnt++;
+					var mchk = other.isMember(perm, depth);
+					if (!mchk) {
+						return false;
+					}
+					for (var i = 0; i < ret.sgs[depth].length - 1; i++) {
+						if (ret.sgs[depth][i]) {
+							var pp = ret.permMult(perm, ret.sgs[depth][i]);
+							if (pp[depth] < perm[depth]) {
+								return false;
+							}
+						}
+					}
+					return true;
+				});
+				if (ret.cnt == -1) {
+					return ret;
+				}
+			}
+		}
+		return ret;
+	}
+
+	schreierSims.prototype.enumDFS = function(depth, perm, callback, checkFunc) {
+		if (checkFunc && !checkFunc(depth + 1, perm)) {
+			return;
+		}
+		if (depth == 0) {
+			return callback(perm);
+		}
+		for (var j = 0; j <= depth; j++) {
+			if (this.sgs[depth][j]) {
+				var ret = this.enumDFS(depth - 1, this.permMult(this.sgs[depth][j], perm), callback, checkFunc);
+				if (ret) {
+					// console.log(depth, j, this.sgs[depth][j])
+					return ret;
+				}
+			}
+		}
+	}
+
+	schreierSims.prototype.enum = function(callback) {
+		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
+	}
+
 	function createPrun(prun, init, size, maxd, doMove, N_MOVES, N_POWER, N_INV) {
 		var isMoveTable = $.isArray(doMove);
 		N_MOVES = N_MOVES || 6;
@@ -561,18 +724,196 @@ var mathlib = (function() {
 		return state;
 	}
 
-	// state: string not null
-	// solvedStates: [solvedstate, solvedstate, ...], string not null
-	// moveFunc: function(state, move);
-	// moves: {move: face0 | axis0}, face0 | axis0 = 4 + 4 bits
-	function gSolver(solvedStates, doMove, moves, prunHash) {
+	function phSolver(solvedStates, doMove, moves, prunHashs, isPartial) {
 		this.solvedStates = solvedStates;
 		this.doMove = doMove;
 		this.movesList = [];
 		for (var move in moves) {
 			this.movesList.push([move, moves[move]]);
 		}
-		this.prunHash = prunHash || identity;
+		this.state2Idxs = [];
+		this.moveTables = [];
+		this.prunTables = [];
+		this.isPartial = isPartial || false;
+		this.prunHashs = prunHashs || [identity];
+	}
+
+	_ = phSolver.prototype;
+
+	_.initPrun = function(idx) {
+		if (this.moveTables.length != 0) {
+			return;
+		}
+		for (var idx = 0; idx < this.prunHashs.length; idx++) {
+			var state2Idx = {};
+			var moveTable = [null];
+			var prunTable = [];
+			for(var i = 0; i < this.solvedStates.length; i++) {
+				var state = this.prunHashs[idx](this.solvedStates[i]);
+				if (state in state2Idx) {
+					continue;
+				}
+				state2Idx[state] = moveTable.length << 8;
+				moveTable.push(state);
+			}
+			var head = 1;
+			var curDepth = 0;
+			var t = +new Date;
+			while (head != moveTable.length) {
+				var state = moveTable[head];
+				var prun = (state2Idx[state] & 0xff) + 1;
+				if (prun != curDepth) {
+					DEBUG && console.log('[phSolver] initPrun', curDepth, moveTable.length - 1, +new Date - t);
+					curDepth = prun;
+					prunTable.push(moveTable.length - 1); // if idx > prunTable[i] then prun(idx) > i
+				}
+				var curTable = [];
+				for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
+					var newState = this.doMove(state, this.movesList[moveIdx][0]);
+					if (!newState) {
+						continue;
+					}
+					if (!(newState in state2Idx)) {
+						state2Idx[newState] = moveTable.length << 8 | prun;
+						moveTable.push(newState);
+					}
+					var newIdx = state2Idx[newState] >> 8;
+					curTable[moveIdx] = newIdx;
+				}
+				moveTable[head] = curTable;
+				head++;
+			}
+			this.moveTables[idx] = moveTable;
+			this.prunTables[idx] = prunTable;
+			this.state2Idxs[idx] = state2Idx;
+		}
+	}
+
+	_.search = function(state, minl, MAXL) {
+		this.initPrun();
+		this.sol = [];
+		this.subOpt = false;
+		this.rawState = state;
+		this.state = [];
+		for (var idx = 0; idx < this.prunHashs.length; idx++) {
+			var hstate = this.prunHashs[idx](state);
+			this.state.push(this.state2Idxs[idx][hstate] >> 8);
+		}
+		this.visited = {};
+		this.maxl = minl = minl || 0;
+		return this.searchNext(MAXL);
+	};
+
+	_.searchNext = function(MAXL, cost) {
+		this.initPrun();
+		MAXL = (MAXL + 1) || 99;
+		this.prevSolStr = this.solArr ? this.solArr.join(',') : null;
+		this.solArr = null;
+		this.cost = cost || -1;
+		for (; this.maxl < MAXL; this.maxl++) {
+			if (this.cost == 0) {
+				return null;
+			}
+			if (this.idaSearch(this.state, this.maxl, null, 0)) {
+				break;
+			}
+		}
+		return this.solArr;
+	}
+
+	_.idaSearch = function(state, maxl, lm, depth) {
+		if (this.getPruning(state) > maxl) {
+			return false;
+		}
+		if (maxl == 0) {
+			var rawState = this.rawState;
+			var solArr = [];
+			var curVisited = [];
+			for (var i = 0; i < this.sol.length; i++) {
+				var move = this.movesList[this.sol[i]][0];
+				rawState = this.doMove(rawState, move);
+				solArr.push(move);
+				curVisited.push(rawState);
+				if (!this.subOpt && rawState in this.visited && this.visited[state] < depth) {
+					return false;
+				}
+			}
+			if (this.solvedStates.indexOf(rawState) == -1) {
+				return false;
+			}
+			for (var i = 0; i < curVisited.length; i++) {
+				this.visited[curVisited[i]] = i;
+			}
+			this.subOpt = true;
+			if (solArr.join(',') == this.prevSolStr) {
+				return false;
+			}
+			this.solArr = solArr;
+			return true;
+		}
+		if (this.cost >= 0) {
+			if (this.cost == 0) {
+				return true;
+			}
+			this.cost--;
+		}
+		var lastMove = lm == null ? '' : this.movesList[lm][0];
+		var lastAxisFace = lm == null ? -1 : this.movesList[lm][1];
+		for (var moveIdx = this.sol[depth] || 0; moveIdx < this.movesList.length; moveIdx++) {
+			var moveArgs = this.movesList[moveIdx];
+			var axisface = moveArgs[1] ^ lastAxisFace;
+			var move = moveArgs[0];
+			if (axisface == 0 ||
+				(axisface & 0xf) == 0 && move <= lastMove) {
+				continue;
+			}
+			var isSkip = false;
+			var isEqual = true;
+			var newState = [];
+			for (var i = 0; i < state.length; i++) {
+				var val = this.moveTables[i][state[i]][moveIdx];
+				if (!val) {
+					isSkip = true;
+					break;
+				} else if (val != state[i]) {
+					isEqual = false;
+				}
+				newState.push(val);
+			}
+			if (isSkip || isEqual && !this.isPartial) {
+				continue;
+			}
+			this.sol[depth] = moveIdx;
+			if (this.idaSearch(newState, maxl - 1, moveIdx, depth + 1)) {
+				return true;
+			}
+			this.sol.pop();
+		}
+		return false;
+	};
+
+	_.getPruning = function(state) {
+		var prun = 0;
+		for (var i = 0; i < state.length; i++) {
+			var prunTable = this.prunTables[i];
+			while (prunTable[prun] < state[i]) {
+				prun++;
+			}
+		}
+		return prun;
+	};
+
+	// state: string not null
+	// solvedStates: [solvedstate, solvedstate, ...], string not null
+	// moveFunc: function(state, move);
+	// moves: {move: face0 | axis0}, face0 | axis0 = 4 + 4 bits
+	function gSolver(solvedStates, doMove, moves) {
+		this.solvedStates = solvedStates;
+		this.doMove = doMove;
+		this.movesList = [];
+		for (var move in moves) {
+			this.movesList.push([move, moves[move]]);
+		}
 		this.prunTable = {};
 		this.toUpdateArr = null;
 		this.prunTableSize = 0;
@@ -582,6 +923,67 @@ var mathlib = (function() {
 
 	_ = gSolver.prototype;
 
+	_.calcNumOfStates = function() {
+		var len = this.solvedStates[0].length;
+		var genMove = [];
+		for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
+			var state = [];
+			for (var i=0; i<len; i++) {
+				state.push(i + 32);
+			}
+			var newState = this.doMove(String.fromCharCode.apply(null, state), this.movesList[moveIdx][0]);
+			if (!newState || newState in this.prunTable) {
+				continue;
+			}
+			for (var i=0; i<len; i++) {
+				state[i] = newState.charCodeAt(i) - 32;
+			}
+			genMove.push(state);
+		}
+		var genColor = [];
+		var state = this.solvedStates[0];
+		var e = [];
+		for (var i = 0; i < len; i++) {
+			e[i] = i;
+		}
+		var checked = [];
+		for (var i = 0; i < len; i++) {
+			if (checked[i]) {
+				continue;
+			}
+			for (var j = i + 1; j < len; j++) {
+				if (state[i] == state[j] && (i % 9 % 2) == (j % 9 % 2)) {
+					var perm = e.slice();
+					perm[i] = j;
+					perm[j] = i;
+					checked[j] = 1;
+					genColor.push(perm);
+				}
+			}
+		}
+		var sgs0, sgs1, sgs01;
+		for (var r = 0; r < 100; r++) {
+			var shuffle = [];
+			for (var i = 0; i < len; i++) {
+				shuffle[i] = i;
+			}
+			for (var i = 0; i < len; i++) {
+				var j = ~~(Math.random() * (len - i)) + i;
+				var tmp = shuffle[i];
+				shuffle[i] = shuffle[j];
+				shuffle[j] = tmp;
+			}
+			sgs0 = new schreierSims(genColor, shuffle);
+			sgs1 = new schreierSims(genMove, shuffle);
+			sgs01 = sgs0.intersect(sgs1);
+			if (sgs01.cnt != -1) {
+				console.log(r);
+				break;
+			}
+		}
+		console.log(sgs01.cnt, sgs0.size(), sgs1.size(), sgs01.size(), sgs1.size() / sgs01.size());
+	};
+
 	_.updatePrun = function(targetDepth) {
 		targetDepth = targetDepth === undefined ? this.prunDepth + 1 : targetDepth;
 		for (var depth = this.prunDepth + 1; depth <= targetDepth; depth++) {
@@ -589,7 +991,7 @@ var mathlib = (function() {
 			if (depth < 1) {
 				this.prevSize = 0;
 				for (var i = 0; i < this.solvedStates.length; i++) {
-					var state = this.prunHash(this.solvedStates[i]);
+					var state = this.solvedStates[i];
 					if (!(state in this.prunTable)) {
 						this.prunTable[state] = depth;
 						this.prunTableSize++;
@@ -602,7 +1004,7 @@ var mathlib = (function() {
 				return;
 			}
 			this.prunDepth = depth;
-			DEBUG && console.log(depth, this.prunTableSize - this.prevSize, +new Date - t);
+			DEBUG && console.log('[gSolver] updatePrun', depth, this.prunTableSize - this.prevSize, +new Date - t);
 			this.prevSize = this.prunTableSize;
 		}
 	};
@@ -664,7 +1066,7 @@ var mathlib = (function() {
 	}
 
 	_.getPruning = function(state) {
-		var prun = this.prunTable[this.prunHash(state)];
+		var prun = this.prunTable[state];
 		return prun === undefined ? this.prunDepth + 1 : prun;
 	};
 
@@ -873,6 +1275,7 @@ var mathlib = (function() {
 		circle: circle,
 		circleOri: circleOri,
 		acycle: acycle,
+		schreierSims: schreierSims,
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
@@ -888,6 +1291,7 @@ var mathlib = (function() {
 		Solver: Solver,
 		rndPerm: rndPerm,
 		gSolver: gSolver,
+		phSolver: phSolver,
 		getSeed: randGen.getSeed,
 		setSeed: randGen.setSeed
 	};
