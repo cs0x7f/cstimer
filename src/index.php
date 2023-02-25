@@ -65,6 +65,7 @@
   <script type="text/javascript" src="js/twisty/twistyskb.js"></script>
   <script type="text/javascript" src="js/twisty/twistypyra.js"></script>
   <script type="text/javascript" src="js/twisty/twistyminx.js"></script>
+  <script type="text/javascript" src="js/twisty/twistyclk.js"></script>
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
 </head>
 <body>

@@ -803,6 +803,7 @@ var kernel = execMain(function() {
 			regProp('color', 'colskb', 4, 'Skewb', ['#fff#00f#f00#ff0#0f0#f80']);
 			regProp('color', 'colmgm', 4, 'Megaminx', ['#fff#d00#060#81f#fc0#00b#ffb#8df#f83#7e0#f9f#999']);
 			regProp('color', 'colsq1', 4, 'SQ1', ['#ff0#f80#0f0#fff#f00#00f']);
+			regProp('color', 'colclk', 4, 'Clock', ['#f00#37b#5cf#ff0#850']);
 			regProp('color', 'col15p', 4, '15 Puzzle', ['#f99#9f9#99f#fff']);
 
 			regProp('ui', 'wndScr', 1, PROPERTY_WNDSCR, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);

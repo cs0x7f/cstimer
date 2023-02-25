@@ -74,6 +74,7 @@ twisty/twistysq1.js \
 twisty/twistyskb.js \
 twisty/twistypyra.js \
 twisty/twistyminx.js \
+twisty/twistyclk.js \
 twisty/qcube.js)
 
 

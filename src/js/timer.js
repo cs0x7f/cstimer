@@ -777,11 +777,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		};
 
+		var toInitCalls = null;
+
 		function init(options, moveListener, parent, callback) {
 			if (window.twistyjs == undefined) {
+				toInitCalls = init.bind(null, options, moveListener, parent, callback);
 				if (!isLoading && document.createElement('canvas').getContext) {
 					isLoading = true;
-					$.getScript("js/twisty.js", init.bind(null, options, moveListener, parent, callback));
+					$.getScript("js/twisty.js", function() {
+						toInitCalls && toInitCalls();
+					});
 				} else {
 					callback(undefined, true);
 				}
@@ -941,8 +946,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					faceColors: col2std(kernel.getProp('colsq1'), [0, 5, 4, 2, 1, 3]),
 					scale: 0.9
 				};
+			} else if (curPuzzle == 'clk') {
+				options = {
+					type: "clk",
+					faceColors: col2std(kernel.getProp('colclk'), [1, 2, 0, 3, 4]),
+					scale: 0.9
+				};
 			}
-
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
 				puzzleObj = ret;
 				if (isInit && !puzzleObj) {
@@ -1019,7 +1029,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curScrType;
 		var curScrSize;
 		var curPuzzle;
-		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr'];
+		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr', 'clk'];
 		var isReseted = false;
 
 		function procSignal(signal, value) {
