@@ -452,7 +452,6 @@
 				75: [mDR, -1], //K R'
 				76: [mDR, 1], //L D'
 				186: [mDR, 2], //; y
-				59: [mDR, 2], //y (TODO - why is this needed for firefox?)
 				82: [mUL, 2], //R l'
 				69: [mUL, 1], //E L'
 				87: [mUL, -1], //W B

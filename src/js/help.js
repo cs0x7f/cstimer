@@ -173,6 +173,9 @@ var help = execMain(function(regProp, setProp, getProp) {
 			if (raw != cur) {
 				codeMap[cur] = raw;
 			}
+			if (cur == 186) {
+				codeMap[59] = raw;
+			}
 		}
 	}
 

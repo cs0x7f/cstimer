@@ -139,7 +139,6 @@ window.twistyjs.qcube = (function() {
 			72: [1, 1, "F", 1], //H F
 			71: [1, 1, "F", -1], //G F'
 			186: [1, iSi, "U", 1], //; y
-			59: [1, iSi, "U", 1], //y (TODO - why is this needed for firefox?)
 			65: [1, iSi, "U", -1], //A y'
 			85: [1, oSr + 1, "R", 1], //U r
 			82: [1, oSl + 1, "L", -1], //R l'
