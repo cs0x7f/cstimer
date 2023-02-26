@@ -282,9 +282,10 @@
 			var state = twisty.cubePieces;
 			for (var faceIndex = 0; faceIndex < numSides; faceIndex++) {
 				var faceStickers = state[faceIndex];
+				var faceColor = visible ? cubeOptions.faceColors[faceIndex] : 0x7f7f7f;
 				for (var stickerIndex = 0, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
 					var sticker = faceStickers[stickerIndex];
-					sticker[1].children[0].materials[0].opacity = visible ? 1 : 0;
+					sticker[1].children[0].materials[0].color.setHex(faceColor);
 				}
 			}
 		}
@@ -308,7 +309,7 @@
 					var cord2 = ~~(stickerIndex / dim);
 					var materials = faceStickers[stickerIndex][1].children[0].materials;
 					var hit = cord1 in effLayers || (dim - 1 - cord1) in effLayers || cord2 in effLayers || (dim - 1 - cord2) in effLayers;
-					materials[0].opacity = hit || colorVisible ? 1 : 0;
+					materials[0].color.setHex(hit || colorVisible ? cubeOptions.faceColors[faceIndex] : 0x7f7f7f);
 					if (hit || borderVisible) {
 						materials[1] = twisty.borderMaterial;
 					} else {
