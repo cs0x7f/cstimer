@@ -47,7 +47,7 @@ var EXPORT_ACCOUNT = 'Eksportuj konto';
 var EXPORT_LOGINGGL = 'Zaloguj się przy użyciu konta Google';
 var EXPORT_LOGINWCA = 'Zaloguj się przy użyciu konta WCA';
 var EXPORT_LOGOUTCFM = 'Czy na pewno chcesz się wylogować?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_LOGINAUTHED = 'Autoryzowano<br>Pobierania danych...';
 var IMPORT_FINAL_CONFIRM = 'To spowoduje to nadpisanie wszystkich lokalnych danych! Zmodyfikuje to sesje %d, doda %a i usunie %r rozwiązań. Potwierdzasz importowanie danych?';
 var BUTTON_SCRAMBLE = 'POMIE-<br>SZAJ';
 var BUTTON_TOOLS = 'NARZĘDZIA';
@@ -98,7 +98,7 @@ var PROPERTY_ENTERING_STR = 'timer|wprowadź czas|stackmat|MoYuTimer|virtual|blu
 var PROPERTY_INTUNIT = 'Jednostka przy wstawaniu liczby całkowitej';
 var PROPERTY_INTUNIT_STR = 'sekundy|setne sekundy|milisekundy';
 var PROPERTY_COLOR = 'wybierz kolor motywu';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
+var PROPERTY_COLORS = 'kolor tekstu|kolor tła|kolor tablicy|kolor przycisków|kolor odnośników|kolor logo|kolor tła logo';
 var PROPERTY_VIEW = 'Styl interfejsu';
 var PROPERTY_VIEW_STR = 'Automatyczny|Mobilny|Komputer';
 var PROPERTY_UIDESIGN = 'Styl interfejsu użytkownika: ';
@@ -125,8 +125,8 @@ var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Pokaż wirtualną kostkę bluetooth';
 var PROPERTY_GIISOK_DELAY = 'Oznacz jako pomieszany po bezruchu';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Nigdy|Prawidłowo pomieszany';
-var PROPERTY_GIISOK_KEY = 'Oznacz jako ułożone po wciśnięciu spacji';
-var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
+var PROPERTY_GIISOK_KEY = 'Oznacz jako pomieszane po wciśnięciu spacji';
+var PROPERTY_GIISOK_MOVE = 'Oznacz jako pomieszane, po wykonaniu ruchu';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, itp|(U U\')2, (U\' U)2, itp|Nigdy';
 var PROPERTY_GIISBEEP = 'Sygnał dźwiękowy, kiedy pomieszano';
 var PROPERTY_GIIRST = 'Zresetuj kostkę bluetooth podczas podłączenia';
@@ -170,6 +170,7 @@ var scrdata = [
 		['ostatnia warstwa', "ll", 0],
 		['zb ostatnia warstwa', "zbll", 0],
 		['narożniki ostatniej warstwy', "cll", 0],
+		['COLL', "coll", 0],
 		['krawędzie ostatniej warstwy', "ell", 0],
 		['ostatnie sześć krawędzi', "lse", 0],
 		['ostatnie sześć krawędzi&ltM,U&gt', "lsemu", 0],
@@ -178,6 +179,7 @@ var scrdata = [
 		['ostatni para + ostatnia warstwa', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
+		['WVLS', "wvls", 0],
 		['ZZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
@@ -404,7 +406,7 @@ var STATS_DATE = 'Data';
 var STATS_SSSTAT = 'statystyka 1 rozwiązania';
 var STATS_CURROUND = 'Aktualne statystyki';
 var STATS_CURSESSION = 'Statystyki bieżącej sesji';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
+var STATS_CURSPLIT = 'Faza %d bieżących statystyk sesji';
 var STATS_EXPORTCSV = 'Eksportuj do CSV';
 var STATS_SSMGR_TITLE = 'Zarządzanie sesją';
 var STATS_SSMGR_NAME = 'Nazwa';
@@ -414,8 +416,8 @@ var STATS_SSMGR_ORDER = 'Sortuj według scrambla';
 var STATS_SSMGR_ODCFM = 'Sortować wszystkie sesje według scrambla?';
 var STATS_SSMGR_SORTCFM = '%d rozwiązań zostanie zmienionych, potwierdzasz?';
 var STATS_ALERTMG = 'Dołączyć wszystkie czasy z sesji [%f] do sesji [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_PROMPTSPL = 'Ile ostatnich czasów odłączyć od sesji [%s]?';
+var STATS_ALERTSPL = 'Powinien rozdzielić lub zostawić co najmniej 1 czas.';
 var STATS_AVG = 'średnia';
 var STATS_SOLVE = 'Ułożenie ';
 var STATS_TIME = 'czas';
@@ -439,13 +441,13 @@ var PROPERTY_SUMMARY = 'pokaż podsumowanie przed listą czasu';
 var PROPERTY_IMRENAME = 'zmień nazwę sesji po utworzeniu';
 var PROPERTY_SCR2SS = 'utwórz nową sesję po przełączaniu typu scrambla';
 var PROPERTY_SS2SCR = 'przywróć typ scrambla po przełączaniu sesji';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
+var PROPERTY_SS2PHASES = 'przywróć wielofazowy czas podczas przełączania sesji';
 var PROPERTY_STATINV = 'Odwrotna kolejność na liście czasów ';
 var PROPERTY_STATAL = 'Wskaźniki statystyczne';
 var PROPERTY_STATALU = 'Niestandardowy wskaźnik statystyczny';
 var PROPERTY_DELMUL = 'Włącz usuwanie wielu wierszy';
 var PROPERTY_TOOLSFUNC = 'Wybrane funkcje';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
+var PROPERTY_TRIM = 'Liczba ułożeń niebranych pod uwagę';
 var PROPERTY_TRIM_MED = 'Mediana';
 var PROPERTY_STKHEAD = 'Użyj informacji o stanie Stackmat';
 var PROPERTY_HIDEFULLSOL = 'Pokaż stopniowo rozwiązanie';

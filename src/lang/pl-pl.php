@@ -44,7 +44,7 @@
 <h2>Opis opcji</h2>
 <ul>
 <li><strong data="opt_ahide">Ukryj wszystkie elementy podczas układania</strong>. Ukryj logo i wszystkie panele w czasie układania</li>
-<li><strong data="opt_useMilli">użyj milisekund</strong>. Wyświetlanie cyfry milisekundowej, bez względu na to, czy jest ona zaznaczona, wewnętrzna dokładność czasowa csTimer wynosi 1 milisekundę.</li>
+<li><strong data="opt_useMilli">użyj milisekund</strong>. Wyświetlanie cyfry milisekundowej, bez względu na to, czy jest ona znacząca, wewnętrzna dokładność czasowa csTimer wynosi 1 milisekundę.</li>
 <li><strong data="opt_timeFormat">format czasu</strong>. Format wyświetlenia czasu.</li>
 <li><strong data="opt_atexpa">Automatyczny eksport (co 100 rozwiązań)</strong>. Jeśli zaznaczone, csTimer automatycznie wyeksportuje rozwiązania co 100 rozwiązań do określonego miejsca, lokalnego pliku, serwera csTimer lub Google Storage.</li>
 <li><strong data="opt_expp">Importuj starsze dane</strong>. Jeśli przesłałeś wiele kopii zapasowych, możesz zaimportować jedną z maksymalnie 10 ostatnio przesłanych kopii zapasowych, jeśli przypadkowo wgrasz pustą kopię zapasową, ta opcja pomoże Ci odzyskać swoje rozwiązania.</li>
@@ -80,15 +80,15 @@
 <li><strong data="opt_scrFast">Używanie szybkiego algorytmu mieszającego dla 4x4x4 (nieoficjalny)</strong>. Oficjalny scramble 4x4x4 WCA wymaga ogromnych zasobów obliczeniowych, wybierz tę opcję, aby scramble używał losowych ruchów</li>
 <li><strong data="opt_scrKeyM">Oznacz kluczowe ruchy w scramble&#x27;u</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Akcja po kliknięciu na scramble</strong>. Zachowanie po kliknięciu na scramble'a, skopiuj scramble lub wygeneruj następne scramble.</li>
-<li><strong data="opt_trim">Number of solves trimmed at each side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
+<li><strong data="opt_trim">Liczba ułożeń niebranych pod uwagę</strong>. Liczba ułożeń z każdej strony (najlepszych i najgorszych), które nie są uwzględniane podczas obliczania średniej z ułożeń.</li>
 <li><strong data="opt_statsum">pokaż podsumowanie przed listą czasu</strong>. Pokaż tabelę statystyk przed listą czasów.</li>
-<li><strong data="opt_printScr">Dołącz algorytmy mieszania do statystyk </strong>. Pokaż scrambla w oknie statystyk rundy.</li>
+<li><strong data="opt_printScr">Dołącz algorytmy mieszania do statystyk </strong>. Pokaż scrambla w oknie statystyk ułożenia.</li>
 <li><strong data="opt_printDate">Dołącz datę ułożenia do statystyk</strong>. Pokaż datę rozwiązania w oknie statystyk rundy.</li>
 <li><strong data="opt_imrename">zmień nazwę sesji po utworzeniu</strong>. Natychmiast zmień nazwę sesji po jej utworzeniu.</li>
 <li><strong data="opt_scr2ss">utwórz nową sesję po przełączaniu typu scrambla</strong>. Po przełączeniu typu scrambla zostanie utworzona nowa sesja.</li>
 <li><strong data="opt_statinv">Odwrotna kolejność na liście czasów </strong>. Odwróć listę czasu, tym samym najnowsze rozwiązania znajdą się na dole listy czasu.</li>
 <li><strong data="opt_statclr">Włącz opróżnianie sesji</strong>. Po wyłączeniu, przycisk '+' (do tworzenia sesji) zastąpi przycisk 'X' obok selektora sesji, więc po kliknięciu zostanie utworzona nowa pusta sesja zamiast czyszczenia całej sesji.</li>
-<li><strong data="opt_absidx">Pokaż indeks bezwzględny w raporcie statystycznym</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
+<li><strong data="opt_absidx">Pokaż indeks bezwzględny w raporcie statystycznym</strong>. Pokaż indeks bezwzględny w sesji zamiast od 1 do liczby rozwiązań (np. 1/2/3 dla mo3) w statystykach rundy.</li>
 <li><strong data="opt_rsfor1s">Pokaż statystykę po kliknięciu numeru rozwiązania</strong>. Po kliknięciu pierwszego wiersza listy czasów pokaż statystyki rundy dla pojedynczego rozwiązania.</li>
 <li><strong data="opt_statal">Wskaźniki statystyczne</strong>. Wskaźniki statystyczne dla tabeli, pokazywane, jeżeli jest możliwość wyliczenia.</li>
 <li><strong data="opt_delmul">Włącz usuwanie wielu wierszy</strong>. Pozwól na usunięcie wielu wyników. Dla uniknięcia przypadkowego usunięcia.</li>
@@ -101,8 +101,8 @@
 <li><strong data="opt_vrcMP">wielofazowe</strong>. Automatyczny wielofazowy podział dla wirtualnej kostki Rubika i kostki bluetooth.</li>
 <li><strong data="opt_giiVRC">Pokaż wirtualną kostkę bluetooth</strong>. Pokaż wirtualną kostkę Rubika w głównym timerze podczas łączenia się z kostką bluetooth.</li>
 <li><strong data="opt_giiSD">Oznacz jako pomieszany po bezruchu</strong>. Dla kostek bluetooth csTimer nie może wiedzieć, czy ruch jest w celu scrambingu czy rozwiązania.</li>
-<li><strong data="opt_giiSK">Oznacz jako ułożone po wciśnięciu spacji</strong>. Po naciśnięciu spacji kostka bluetooth jest pomieszana, obrót będzie traktowany jako rozpoczęcie liczenia czasu.</li>
-<li><strong data="opt_giiSM">Mark scrambled by doing</strong>. Użyj określonych sekwencji ruchów na kostce bluetooth, aby powiadomić, że kostka jest pomieszana.</li>
+<li><strong data="opt_giiSK">Oznacz jako pomieszane po wciśnięciu spacji</strong>. Po naciśnięciu spacji kostka bluetooth jest pomieszana, obrót będzie traktowany jako rozpoczęcie liczenia czasu.</li>
+<li><strong data="opt_giiSM">Oznacz jako pomieszane, po wykonaniu ruchu</strong>. Użyj określonych sekwencji ruchów na kostce bluetooth, aby powiadomić, że kostka jest pomieszana.</li>
 <li><strong data="opt_giiBS">Sygnał dźwiękowy, kiedy pomieszano</strong>. Sygnał dźwiękowy, kiedy kostka jest ułożona.</li>
 <li><strong data="opt_giiRST">Zresetuj kostkę bluetooth podczas podłączenia</strong>. Podczas łączenia się z kostką bluetooth csTimer wykryje, czy jest ułożona, jeśli nie, mogą pojawić się pewne problemy ze sprzętem lub kostka jest naprawdę nierozwiązana.</li>
 <li><strong data="opt_giiAED">Automatyczne wykrywanie błędów sprzętowych</strong>. Niektóre układanki bluetooth mogą tracić połączenie, csTimer spróbuje wykryć taki przypadek.</li>
@@ -128,10 +128,10 @@
 <li><strong data="tool_sq1cs">Rozwiązujący &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
 <li><strong data="tool_pyrv">Rozwiązujący &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
 <li><strong data="tool_skbl1">Rozwiązujący &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">Kostka Bluetooth</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_mtrnm">Metronom</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Pospolity Scramble</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_giikerutil">Kostka Bluetooth</strong>. Pomocnicze narzędzie dla kostki Bluetooth, które może pokazywać aktualny stan urządzenia, poziom naładowania baterii, widok w czasie rzeczywistym itp.</li>
+<li><strong data="tool_mtrnm">Metronom</strong>. Metronom, oprócz dzwaniania z określoną częstotliwością, wywołuje dźwięk w określonym czasie po rozpoczęciu rozwiązywania.</li>
+<li><strong data="tool_syncseed">Pospolity Scramble</strong>. Używaj tych samych scrambli z przyjaciółmi, ustawiając ten sam seed.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Narzędzie pomocnicze dla Stackmat, które jest w stanie wyświetlić stan, moc sygnału i poziom szumów.</li>
 </ul>
 <h2>Linki</h2>
 <ul>

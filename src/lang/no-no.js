@@ -9,7 +9,7 @@ var BUTTON_EXPORT = 'Last Opp';
 var BUTTON_DONATE = 'Doner';
 var PROPERTY_SR = 'Med økt';
 var PROPERTY_USEINS = 'bruk WCA inspeksjon';
-var PROPERTY_USEINS_STR = 'Altid|Bortsett fra BLD|Aldri';
+var PROPERTY_USEINS_STR = 'Alltid|Bortsett fra BLD|Aldri';
 var PROPERTY_VOICEINS = 'stemmealarm på WCA inspeksjonstid';
 var PROPERTY_VOICEINS_STR = 'ingen|mannestemme|kvinnestemme';
 var PROPERTY_VOICEVOL = 'Talevolum';
@@ -70,7 +70,7 @@ var TOOLS_SYNCSEED = 'Vanlig blanding';
 var TOOLS_SYNCSEED_SEED = 'Hovednøkkel';
 var TOOLS_SYNCSEED_INPUT = 'putt inn løsningsnøkkel';
 var TOOLS_SYNCSEED_30S = 'Bruk 30s løsningsnøkkel';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
+var TOOLS_SYNCSEED_HELP = 'Hvis aktivert vil blanding bare avhenge av hovednøkkelen og blandings-innstillinger.';
 var TOOLS_SYNCSEED_DISABLE = 'Deaktiver nåværende hovednøkkel?';
 var TOOLS_SYNCSEED_INPUTA = 'Putt ';
 var OLCOMP_UPDATELIST = 'Oppdater konkurranselisten';
@@ -91,7 +91,7 @@ var TIMER_INSPECT = 'inspeksjon';
 var TIMER_SOLVE = 'løs';
 var PROPERTY_USEMOUSE = 'Bruk mus som tidtaker';
 var PROPERTY_TIMEU = 'Timer oppdatering er';
-var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
+var PROPERTY_TIMEU_STR = 'oppdater|0.1s|sekunder|inspeksjon|ingen';
 var PROPERTY_PRETIME = 'tid å holde mellomromstasten nede(sekund(er))';
 var PROPERTY_ENTERING = 'Skriv inn tider med';
 var PROPERTY_ENTERING_STR = 'Tidtaker|Skrive|Stackmat|MoYuTidtaker|virtuell|bluetooth|qCube|GanTimer';
@@ -170,6 +170,7 @@ var scrdata = [
 		['Siste rad', "ll", 0],
 		['zb siste rad', "zbll", 0],
 		['Hjørner på siste rad', "cll", 0],
+		['COLL', "coll", 0],
 		['Kantene på siste rad', "ell", 0],
 		['Siste seks kanter', "lse", 0],
 		['sist seks kanter', "lsemu", 0],
@@ -178,6 +179,7 @@ var scrdata = [
 		['Siste F2L plass + Siste rad', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
+		['WVLS', "wvls", 0],
 		['ZLL', "zzll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
@@ -428,7 +430,7 @@ var STATS_PREC_STR = 'auto|0,1s|0,2s|0,5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Aktiver tømming av økt';
 var STATS_ABSIDX = 'Vis absolutt indeks i statistikk rapport';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
+var STATS_XSESSION_DATE = 'hvilken som helst dato|siste 24 timer|siste 7 dager|siste 30 dager|siste 365 dager';
 var STATS_XSESSION_NAME = 'hvilket som helst navn';
 var STATS_XSESSION_SCR = 'hvilken som helst blanding';
 var STATS_XSESSION_CALC = 'Calc';
@@ -467,7 +469,7 @@ var BGIMAGE_URL = 'skriv inn bildets URL';
 var BGIMAGE_INVALID = 'Ugyldig url';
 var BGIMAGE_OPACITY = 'bakgrunnsbilde opasitet';
 var BGIMAGE_IMAGE = 'Bakgrunnsbilde';
-var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
+var BGIMAGE_IMAGE_STR = 'ingen|manuelt|CCT';
 var SHOW_AVG_LABEL = 'Vis snitt etikett';
 var USE_LOGOHINT = 'Hint meldinger i logo';
 var TOOLS_SCRGEN = 'Blandingsgenerator';

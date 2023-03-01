@@ -550,6 +550,10 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, cmll_map[scrMgr.fixCase(cases, cmprobs)], presuff, aufsuff) + rlappsuff[rnd4];
 	}
 
+	function getCOLLScramble(type, length, cases) {
+		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x7654ffff, cmll_map[scrMgr.fixCase(cases, cmprobs)], aufsuff, aufsuff);
+	}
+
 	function getCLLScramble() {
 		return getAnyScramble(0xba9876543210, 0x000000000000, 0x7654ffff, 0x0000ffff);
 	}
@@ -706,6 +710,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('lse', getLSEScramble)
 		('cmll', getCMLLScramble, [cmfilter, cmprobs])
 		('cll', getCLLScramble)
+		('coll', getCOLLScramble, [cmfilter, cmprobs])
 		('ell', getELLScramble)
 		('pll', getPLLScramble, [pllfilter, pllprobs])
 		('oll', getOLLScramble, [ollfilter, ollprobs])
