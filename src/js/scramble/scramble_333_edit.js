@@ -415,7 +415,47 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		var eo = 0xf ^ (caze >> 4 & 1);
 		var cp = Math.pow(16, caze >> 8 & 0xf);
 		var co = 0xf ^ (caze >> 12 & 3);
-		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000f0000ffff - eo * ep, 0x765fffff - 0xb * cp, 0x000fffff - co * cp);
+		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000f0000ffff - eo * ep, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, aufsuff);
+	}
+
+	var wvls_map = [
+		0x0000,
+		0x0001,
+		0x0002,
+		0x0100,
+		0x0101,
+		0x0102,
+		0x0200,
+		0x0201,
+		0x0202,
+		0x1000,
+		0x1001,
+		0x1002,
+		0x1100,
+		0x1101,
+		0x1102,
+		0x1200,
+		0x1201,
+		0x1202,
+		0x2000,
+		0x2001,
+		0x2002,
+		0x2100,
+		0x2101,
+		0x2102,
+		0x2200,
+		0x2201,
+		0x2202
+	];
+
+	var wvlsprobs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+	var wvlsfilter = [
+		'Oriented', 'Rectangle-1', 'Rectangle-2', 'Tank-1', 'Bowtie-1', 'Bowtie-3', 'Tank-2', 'Bowtie-2', 'Bowtie-4', 'Snake-1', 'Adjacent-1', 'Adjacent-2', 'Gun-Far', 'Sune-1', 'Pi-Near', 'Gun-Back', 'Pi-Front', 'H-Side', 'Snake-2', 'Adjacent-3', 'Adjacent-4', 'Gun-Sides', 'H-Front', 'Pi-Back', 'Gun-Near', 'Pi-Far', 'Sune-2'
+	];
+
+	function getWVLSScramble(type, length, cases) {
+		var caze = wvls_map[scrMgr.fixCase(cases, wvlsprobs)];
+		return getAnyScramble(0xba9f7654ff8f, 0x000000000000, 0x765fff4f, 0x000f0020 | caze);
 	}
 
 	function getF2LScramble() {
@@ -662,6 +702,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('zbll', getZBLLScramble, [zbfilter, zbprobs])
 		('zzll', getZZLLScramble)
 		('zbls', getZBLSScramble)
+		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs])
 		('lse', getLSEScramble)
 		('cmll', getCMLLScramble, [cmfilter, cmprobs])
 		('cll', getCLLScramble)
