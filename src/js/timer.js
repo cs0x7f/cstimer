@@ -1343,11 +1343,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					giikerutil.setCallBack(giikerCallback);
 					var ret = giikerutil.init();
 					if (ret) {
-						ret.then($.noop, function(error) {
+						ret.catch(function(error) {
 							if (error.code == error.SECURITY_ERR) {
 								kernel.showDialog([$('<div>Press OK To Connect To Giiker Cube</div>'), function() {
-									giikerutil.init().then($.noop, console.log);
+									giikerutil.init().catch(function(error) {
+										DEBUG && console.log('[giiker] init failed', error);
+									});
 								}, 0, 0], 'share', 'Giiker Connect');
+							} else {
+								DEBUG && console.log('[giiker] init0 failed', error);
 							}
 						});
 					}

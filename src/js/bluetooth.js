@@ -7,7 +7,7 @@ var GiikerCube = execMain(function() {
 
 	var GiikerCube = (function() {
 
-		var _server = null;
+		var _gatt = null;
 		var _chrct = null;
 
 		var UUID_SUFFIX = '-0000-1000-8000-00805f9b34fb';
@@ -23,9 +23,9 @@ var GiikerCube = execMain(function() {
 
 		function init(device) {
 			deviceName = device.name.startsWith('Gi') ? 'Giiker' : 'Mi Smart';
-			return device.gatt.connect().then(function(server) {
-				_server = server;
-				return server.getPrimaryService(SERVICE_UUID_DATA);
+			return device.gatt.connect().then(function(gatt) {
+				_gatt = gatt;
+				return gatt.getPrimaryService(SERVICE_UUID_DATA);
 			}).then(function(service) {
 				return service.getCharacteristic(CHRCT_UUID_DATA);
 			}).then(function(chrct) {
@@ -147,7 +147,7 @@ var GiikerCube = execMain(function() {
 				_read.removeEventListener('characteristicvaluechanged', listener);
 				_read.stopNotifications();
 			};
-			return _server.getPrimaryService(SERVICE_UUID_RW).then(function(service) {
+			return _gatt.getPrimaryService(SERVICE_UUID_RW).then(function(service) {
 				_service = service;
 				return service.getCharacteristic(CHRCT_UUID_READ);
 			}).then(function(chrct) {
@@ -174,7 +174,7 @@ var GiikerCube = execMain(function() {
 
 	var GanCube = (function() {
 
-		var _server;
+		var _gatt;
 		var _service_data;
 		var _service_meta;
 		var _chrct_f2;
@@ -193,11 +193,21 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_F6 = '0000fff6' + UUID_SUFFIX; // move counter, time offsets between premoves
 		var CHRCT_UUID_F7 = '0000fff7' + UUID_SUFFIX;
 
+		var _service_v2data;
+		var _chrct_v2read;
+		var _chrct_v2w;
+		var SERVICE_UUID_V2DATA = '6e400001-b5a3-f393-e0a9-e50e24dc4179';
+		var CHRCT_UUID_V2READ = '28be4cb6-cd67-11e9-a32f-2a2ae2dbcce4';
+		var CHRCT_UUID_V2WRITE = '28be4a4a-cd67-11e9-a32f-2a2ae2dbcce4';
+
 		var decoder = null;
+		var version = null;
 
 		var KEYS = [
 			"NoRgnAHANATADDWJYwMxQOxiiEcfYgSK6Hpr4TYCs0IG1OEAbDszALpA",
-			"NoNg7ANATFIQnARmogLBRUCs0oAYN8U5J45EQBmFADg0oJAOSlUQF0g"
+			"NoNg7ANATFIQnARmogLBRUCs0oAYN8U5J45EQBmFADg0oJAOSlUQF0g",
+			"NoRgNATGBs1gLABgQTjCeBWSUDsYBmKbCeMADjNnXxHIoIF0g",
+			"NoRg7ANAzBCsAMEAsioxBEIAc0Cc0ATJkgSIYhXIjhMQGxgC6QA"
 		];
 
 		function getKey(version, value) {
@@ -212,6 +222,18 @@ var GiikerCube = execMain(function() {
 			return key;
 		}
 
+		function getKeyV2(version, value) {
+			var key = KEYS[2];
+			var iv = KEYS[3];
+			key = JSON.parse(LZString.decompressFromEncodedURIComponent(key));
+			iv = JSON.parse(LZString.decompressFromEncodedURIComponent(iv));
+			for (var i = 0; i < 6; i++) {
+				key[i] = (key[i] + value[5 - i]) % 255;
+				iv[i] = (iv[i] + value[5 - i]) % 255;
+			}
+			return [key, iv];
+		}
+
 		function decode(value) {
 			var ret = [];
 			for (var i = 0; i < value.byteLength; i++) {
@@ -220,23 +242,50 @@ var GiikerCube = execMain(function() {
 			if (decoder == null) {
 				return ret;
 			}
+			iv = decoder.iv || [];
 			if (ret.length > 16) {
-				ret = ret.slice(0, ret.length - 16).concat(
-					decoder.decrypt(ret.slice(ret.length - 16))
-				);
+				var offset = ret.length - 16;
+				var block = decoder.decrypt(ret.slice(offset));
+				for (var i = 0; i < 16; i++) {
+					ret[i + offset] = block[i] ^ (~~iv[i]);
+				}
 			}
 			decoder.decrypt(ret);
+			for (var i = 0; i < 16; i++) {
+				ret[i] ^= (~~iv[i]);
+			}
 			return ret;
 		}
 
-		function checkHardware(server) {
-			return server.getPrimaryService(SERVICE_UUID_META).then(function(service_meta) {
-				_service_meta = service_meta;
-				return service_meta.getCharacteristic(CHRCT_UUID_VERSION);
-			}).then(function(chrct) {
+		function checkHardware(gatt) {
+			console.log('[gancube] checkHardware start');
+			return gatt.getPrimaryServices().then(function(services) {
+				for (var i = 0; i < services.length; i++) {
+					var service = services[i];
+					DEBUG && console.log('[gancube] v1init find service', service.uuid);
+					if (service.uuid == SERVICE_UUID_META) {
+						_service_meta = service;
+					} else if (service.uuid == SERVICE_UUID_DATA) {
+						_service_data = service;
+					} else if (service.uuid == SERVICE_UUID_V2DATA) {
+						_service_v2data = service;
+					}
+				}
+				if (_service_v2data) {
+					return v2init();
+				}
+				if (_service_data && service_meta) {
+					return v1init();
+				}
+				logohint.push('Not support your Gan cube');
+			});
+		}
+
+		function v1init() {
+			return _service_meta.getCharacteristic(CHRCT_UUID_VERSION).then(function(chrct) {
 				return chrct.readValue();
 			}).then(function(value) {
-				var version = value.getUint8(0) << 16 | value.getUint8(1) << 8 | value.getUint8(2);
+				version = value.getUint8(0) << 16 | value.getUint8(1) << 8 | value.getUint8(2);
 				DEBUG && console.log('[gancube] version', JSON.stringify(version));
 				decoder = null;
 				if (version > 0x010007 && (version & 0xfffe00) == 0x010000) {
@@ -249,35 +298,76 @@ var GiikerCube = execMain(function() {
 							return;
 						}
 						DEBUG && console.log('[gancube] key', JSON.stringify(key));
-						decoder = new aes128(key);
+						decoder = $.aes128(key);
 					});
 				} else { //not support
 					logohint.push('Not support your Gan cube');
 				}
+			}).then(function() {
+				return _service_data.getCharacteristics();
+			}).then(function(chrcts) {
+				for (var i = 0; i < chrcts.length; i++) {
+					var chrct = chrcts[i]
+					DEBUG && console.log('[gancube] v1init find chrct', chrct.uuid);
+					if (chrct.uuid == CHRCT_UUID_F2) {
+						_chrct_f2 = chrct;
+					} else if (chrct.uuid = CHRCT_UUID_F5) {
+						_chrct_f5 = chrct;
+					} else if (chrct.uuid = CHRCT_UUID_F6) {
+						_chrct_f6 = chrct;
+					} else if (chrct.uuid = CHRCT_UUID_F7) {
+						_chrct_f7 = chrct;
+					}
+				}
+			}).then(loopRead);
+		}
+
+		function v2initKey() {
+			var mac = prompt('MAC address (xx:xx:xx:xx:xx:xx) of your cube, can be found in CubeStation or about://bluetooth-internals/#devices',
+				'xx:xx:xx:xx:xx:xx');
+			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
+			if (!m) {
+				logohint.push('Not a valid mac address, cannot connect to your Gan cube');
+				return;
+			}
+			var value = [];
+			for (var i = 0; i < 6; i++) {
+				value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
+			}
+			var keyiv = getKeyV2(version, value);
+			DEBUG && console.log('[gancube] key', JSON.stringify(keyiv));
+			decoder = $.aes128(keyiv[0]);
+			decoder.iv = keyiv[1];
+		}
+
+		function v2init() {
+			console.log('[gancube] v2init start');
+			v2initKey();
+			return _service_data.getCharacteristics().then(function(chrcts) {
+				for (var i = 0; i < chrcts.length; i++) {
+					var chrct = chrcts[i]
+					DEBUG && console.log('[gancube] v2init find chrct', chrct.uuid);
+					if (chrct.uuid == CHRCT_UUID_V2READ) {
+						_chrct_v2read = chrct;
+					} else if (chrct.uuid = CHRCT_UUID_V2WRITE) {
+						_chrct_v2w = chrct;
+					}
+				}
+				if (!_chrct_v2read) {
+					console.log('[gancube] v2init cannot find v2read chrct');
+				}
+			}).then(function() {
+				return _chrct_v2read.startNotifications();
+			}).then(function() {
+				return _chrct_v2read.addEventListener('characteristicvaluechanged', parseV2Data);
 			});
 		}
 
 		function init(device) {
-			return device.gatt.connect().then(function(server) {
-				_server = server;
-				return checkHardware(server);
-			}).then(function() {
-				return _server.getPrimaryService(SERVICE_UUID_DATA);
-			}).then(function(service_data) {
-				_service_data = service_data;
-				return _service_data.getCharacteristic(CHRCT_UUID_F2);
-			}).then(function(chrct) {
-				_chrct_f2 = chrct;
-				return _service_data.getCharacteristic(CHRCT_UUID_F5);
-			}).then(function(chrct) {
-				_chrct_f5 = chrct;
-				return _service_data.getCharacteristic(CHRCT_UUID_F6);
-			}).then(function(chrct) {
-				_chrct_f6 = chrct;
-				return _service_data.getCharacteristic(CHRCT_UUID_F7);
-			}).then(function(chrct) {
-				_chrct_f7 = chrct;
-			}).then(loopRead);
+			return device.gatt.connect().then(function(gatt) {
+				_gatt = gatt;
+				return checkHardware(gatt);
+			});
 		}
 
 		var prevMoves;
@@ -402,95 +492,23 @@ var GiikerCube = execMain(function() {
 			});
 		}
 
-		var aes128 = (function() {
-			var Sbox = [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210, 205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115, 96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224, 50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231, 200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186, 120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112, 62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225, 248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140, 161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22];
-			var SboxI = [];
-			var ShiftTabI = [0, 13, 10, 7, 4, 1, 14, 11, 8, 5, 2, 15, 12, 9, 6, 3];
-			var xtime = [];
-
-			function addRoundKey(state, rkey) {
-				for (var i = 0; i < 16; i++) {
-					state[i] ^= rkey[i];
-				}
-			}
-
-			function shiftSubAdd(state, rkey) {
-				var state0 = state.slice();
-				for (var i = 0; i < 16; i++) {
-					state[i] = SboxI[state0[ShiftTabI[i]]] ^ rkey[i];
-				}
-			}
-
-			function mixColumnsInv(state) {
-				for (var i = 0; i < 16; i += 4) {
-					var s0 = state[i + 0];
-					var s1 = state[i + 1];
-					var s2 = state[i + 2];
-					var s3 = state[i + 3];
-					var h = s0 ^ s1 ^ s2 ^ s3;
-					var xh = xtime[h];
-					var h1 = xtime[xtime[xh ^ s0 ^ s2]] ^ h;
-					var h2 = xtime[xtime[xh ^ s1 ^ s3]] ^ h;
-					state[i + 0] ^= h1 ^ xtime[s0 ^ s1];
-					state[i + 1] ^= h2 ^ xtime[s1 ^ s2];
-					state[i + 2] ^= h1 ^ xtime[s2 ^ s3];
-					state[i + 3] ^= h2 ^ xtime[s3 ^ s0];
-				}
-			}
-
-			function init() {
-				if (xtime.length != 0) {
-					return;
-				}
-				for (var i = 0; i < 256; i++) {
-					SboxI[Sbox[i]] = i;
-				}
-				for (var i = 0; i < 128; i++) {
-					xtime[i] = i << 1;
-					xtime[128 + i] = (i << 1) ^ 0x1b;
-				}
-			}
-
-			function AES128(key) {
-				init();
-				var exKey = key.slice();
-				var Rcon = 1;
-				for (var i = 16; i < 176; i += 4) {
-					var tmp = exKey.slice(i - 4, i);
-					if (i % 16 == 0) {
-						tmp = [Sbox[tmp[1]] ^ Rcon, Sbox[tmp[2]], Sbox[tmp[3]], Sbox[tmp[0]]];
-						Rcon = xtime[Rcon];
-					}
-					for (var j = 0; j < 4; j++) {
-						exKey[i + j] = exKey[i + j - 16] ^ tmp[j];
-					}
-				}
-				this.key = exKey;
-			}
-
-			AES128.prototype.decrypt = function(block) {
-				addRoundKey(block, this.key.slice(160, 176));
-				for (var i = 144; i >= 16; i -= 16) {
-					shiftSubAdd(block, this.key.slice(i, i + 16));
-					mixColumnsInv(block);
-				}
-				shiftSubAdd(block, this.key.slice(0, 16));
-				return block;
-			};
-
-			return AES128;
-		})();
+		function parseV2Data(value) {
+			DEBUG && console.log('[gancube]', 'v2 raw value', value);
+			value = decode(value);
+			DEBUG && console.log('[gancube]', 'v2 dec value', value);
+			return;
+		}
 
 		return {
 			init: init,
-			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META],
+			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META, SERVICE_UUID_V2DATA],
 			getBatteryLevel: getBatteryLevel
 		}
 	})();
 
 	var GoCube = (function() {
 
-		var _server;
+		var _gatt;
 		var _service;
 		var _read;
 		var _write;
@@ -505,9 +523,9 @@ var GiikerCube = execMain(function() {
 
 		function init(device) {
 			_deviceName = device.name.startsWith('GoCube') ? 'GoCube' : 'Rubiks Connected'
-			return device.gatt.connect().then(function(server) {
-				_server = server;
-				return server.getPrimaryService(SERVICE_UUID);
+			return device.gatt.connect().then(function(gatt) {
+				_gatt = gatt;
+				return gatt.getPrimaryService(SERVICE_UUID);
 			}).then(function(service) {
 				_service = service;
 				return _service.getCharacteristic(CHRCT_UUID_WRITE);
@@ -626,23 +644,28 @@ var GiikerCube = execMain(function() {
 			return Promise.resolve();
 		}
 
-		return window.navigator.bluetooth.requestDevice({
-			filters: [{
-				namePrefix: 'Gi'
-			}, {
-				namePrefix: 'Mi Smart Magic Cube'
-			}, {
-				namePrefix: 'GAN'
-			}, {
-				namePrefix: 'GoCube'
-			}, {
-				namePrefix: 'Rubiks'
-			},{
-				services: ['0000fe95-0000-1000-8000-00805f9b34fb']
-			}, {
-				services: [GiikerCube.opservs[0]]
-			}],
-			optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
+        return window.navigator.bluetooth.getAvailability().then(function(available) {
+            if (!available) {
+                return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
+			}
+			return window.navigator.bluetooth.requestDevice({
+				filters: [{
+					namePrefix: 'Gi'
+				}, {
+					namePrefix: 'Mi Smart Magic Cube'
+				}, {
+					namePrefix: 'GAN'
+				}, {
+					namePrefix: 'GoCube'
+				}, {
+					namePrefix: 'Rubiks'
+				},{
+					services: ['0000fe95-0000-1000-8000-00805f9b34fb']
+				}, {
+					services: [GiikerCube.opservs[0]]
+				}],
+				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
+			});
 		}).then(function(device) {
 			console.log(device);
 			_device = device;
@@ -656,7 +679,7 @@ var GiikerCube = execMain(function() {
 				cube = GoCube;
 				return GoCube.init(device);
 			} else {
-				return Promise.resolve();
+				return Promise.reject('Cannot detect device type');
 			}
 		});
 	}
