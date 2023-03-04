@@ -202,8 +202,10 @@ var giikerutil = execMain(function(CubieCube) {
 		CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
 		currentState = currentCubie.toFaceCube();
 
-		movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
-		movesTimestamp.push(timer.getCurTime(lastTimestamp));
+		if (prevMoves.length > 0) {
+			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
+			movesTimestamp.push(timer.getCurTime(lastTimestamp));
+		}
 
 		var moveCount = movesAfterSolved.length;
 		if (moveCount > 20) {
