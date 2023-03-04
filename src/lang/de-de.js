@@ -337,7 +337,7 @@ var scrdata = [
 		['Jaap Stil', "ufo", 25]
 	]],
 	['Andere', [
-		['FTO (Face-Turning Octahedron)', "fto", 25]
+		['FTO (Face-Turning Octahedron)', "fto", 30]
 	]],
 	['===Spezial===', [
 		['--', "blank", 0]

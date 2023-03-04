@@ -337,7 +337,7 @@ var scrdata = [
 		['Jaap stílus', "ufo", 25]
 	]],
 	['Egyéb', [
-		['FTO (Oldalain forduló oktaéder)', "fto", 25]
+		['FTO (Oldalain forduló oktaéder)', "fto", 30]
 	]],
 	['===KÜLÖNLEGES===', [
 		['--', "blank", 0]

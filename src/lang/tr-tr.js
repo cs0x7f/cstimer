@@ -337,7 +337,7 @@ var scrdata = [
 		['Jaap Stili', "ufo", 25]
 	]],
 	['diğer', [
-		['FTO (Yüz-Döndüren-Octahedron)', "fto", 25]
+		['FTO (Yüz-Döndüren-Octahedron)', "fto", 30]
 	]],
 	['===ÖZEL===', [
 		['--', "blank", 0]
