@@ -345,13 +345,20 @@ var GiikerCube = execMain(function() {
 			}).then(loopRead);
 		}
 
-		function v2initKey() {
-			var mac = prompt('MAC address (xx:xx:xx:xx:xx:xx) of your cube, can be found in CubeStation or about://bluetooth-internals/#devices',
-				'xx:xx:xx:xx:xx:xx');
+		function v2initKey(forcePrompt) {
+			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
+			var mac = savedMacMap[deviceName];
+			if (!mac || forcePrompt) {
+				mac = prompt('MAC address (xx:xx:xx:xx:xx:xx) of your cube, can be found in CubeStation or about://bluetooth-internals/#devices', mac || 'xx:xx:xx:xx:xx:xx');
+			}
 			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
 			if (!m) {
 				logohint.push('Not a valid mac address, cannot connect to your Gan cube');
 				return;
+			}
+			if (mac != savedMacMap[deviceName]) {
+				savedMacMap[deviceName] = mac;
+				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 			}
 			var value = [];
 			for (var i = 0; i < 6; i++) {
@@ -365,7 +372,7 @@ var GiikerCube = execMain(function() {
 
 		function v2init() {
 			DEBUG && console.log('[gancube] v2init start');
-			v2initKey();
+			v2initKey(true);
 			return _service_v2data.getCharacteristics().then(function(chrcts) {
 				DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
