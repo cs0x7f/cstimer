@@ -33,6 +33,9 @@ execWorker(function() {
 
 execMain(function() {
 	window.onerror = function(msg, url, line, col, error) {
+		if (!line && !col) {
+			return;
+		}
 		if (error == undefined) {
 			error = {};
 		}
