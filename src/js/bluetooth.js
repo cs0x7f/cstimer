@@ -597,7 +597,7 @@ var GiikerCube = execMain(function() {
 				}
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
-				var cchk = 0xc80;
+				var cchk = 0xf00;
 				for (var i = 0; i < 7; i++) {
 					var perm = parseInt(value.slice(12 + i * 3, 15 + i * 3), 2);
 					var ori = parseInt(value.slice(33 + i * 2, 35 + i * 2), 2);
@@ -605,7 +605,7 @@ var GiikerCube = execMain(function() {
 					cchk ^= perm;
 					cc.ca[i] = ori << 3 | perm;
 				}
-				cc.ca[7] = (cchk & 0xf80) % 24 | cchk & 0x7;
+				cc.ca[7] = (cchk & 0xff8) % 24 | cchk & 0x7;
 				for (var i = 0; i < 11; i++) {
 					var perm = parseInt(value.slice(47 + i * 4, 51 + i * 4), 2);
 					var ori = parseInt(value.slice(91 + i, 92 + i), 2);
