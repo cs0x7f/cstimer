@@ -284,7 +284,7 @@ var GiikerCube = execMain(function() {
 			return gatt.getPrimaryServices().then(function(services) {
 				for (var i = 0; i < services.length; i++) {
 					var service = services[i];
-					DEBUG && console.log('[gancube] v1init find service', service.uuid);
+					DEBUG && console.log('[gancube] checkHardware find service', service.uuid);
 					if (service.uuid == SERVICE_UUID_META) {
 						_service_meta = service;
 					} else if (service.uuid == SERVICE_UUID_DATA) {
@@ -296,7 +296,7 @@ var GiikerCube = execMain(function() {
 				if (_service_v2data) {
 					return v2init();
 				}
-				if (_service_data && service_meta) {
+				if (_service_data && _service_meta) {
 					return v1init();
 				}
 				logohint.push('Not support your Gan cube');
@@ -309,7 +309,7 @@ var GiikerCube = execMain(function() {
 				return chrct.readValue();
 			}).then(function(value) {
 				var version = value.getUint8(0) << 16 | value.getUint8(1) << 8 | value.getUint8(2);
-				DEBUG && console.log('[gancube] version', JSON.stringify(version));
+				DEBUG && console.log('[gancube] version', version.toString(16));
 				decoder = null;
 				if (version > 0x010007 && (version & 0xfffe00) == 0x010000) {
 					return _service_meta.getCharacteristic(CHRCT_UUID_HARDWARE).then(function(chrct) {
@@ -334,11 +334,11 @@ var GiikerCube = execMain(function() {
 					DEBUG && console.log('[gancube] v1init find chrct', chrct.uuid);
 					if (chrct.uuid == CHRCT_UUID_F2) {
 						_chrct_f2 = chrct;
-					} else if (chrct.uuid = CHRCT_UUID_F5) {
+					} else if (chrct.uuid == CHRCT_UUID_F5) {
 						_chrct_f5 = chrct;
-					} else if (chrct.uuid = CHRCT_UUID_F6) {
+					} else if (chrct.uuid == CHRCT_UUID_F6) {
 						_chrct_f6 = chrct;
-					} else if (chrct.uuid = CHRCT_UUID_F7) {
+					} else if (chrct.uuid == CHRCT_UUID_F7) {
 						_chrct_f7 = chrct;
 					}
 				}

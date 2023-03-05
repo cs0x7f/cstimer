@@ -187,7 +187,7 @@ var scrdata = [
 		['EOLine', "eoline", 0],
 		['łatwy krzyż', "easyc", 3],
 		['3x3x3 stopami', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Własny', "333custom", 0]
 	]],
 	['2x2x2', [
 		["stan losowy (WCA)", "222so", 0],

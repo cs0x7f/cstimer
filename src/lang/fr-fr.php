@@ -54,16 +54,16 @@
 <li><strong data="opt_font">Police du chronomètre</strong>. Police de caractères du chronomètre</li>
 <li><strong data="opt_uidesign">L&#x27;interface utilisateur est</strong>. Cette option permet d'afficher l'interface en "material design", ou d'en masquer les ombres.</li>
 <li><strong data="opt_view">Le style de l&#x27;interface est</strong>. Basculer entre l'affichage bureau et mobile.</li>
-<li><strong data="opt_wndScr">Style du panneau de mélange</strong>. Incruster le mélange dans l'arrière-plan.</li>
-<li><strong data="opt_wndStat">Style du panneau statistique</strong>. Incruster la liste des temps dans l'arrière-plan.</li>
-<li><strong data="opt_wndTool">Style du panneau outils</strong>. Incruster la boîte à outils dans l'arrière-plan.</li>
+<li><strong data="opt_wndScr">Style du panneau Mélange</strong>. Incruster le mélange dans l'arrière-plan.</li>
+<li><strong data="opt_wndStat">Style du panneau Statistiques</strong>. Incruster la liste des temps dans l'arrière-plan.</li>
+<li><strong data="opt_wndTool">Style du panneau Outils</strong>. Incruster la boîte à outils dans l'arrière-plan.</li>
 <li><strong data="opt_bgImgO">Opacité de l&#x27;image de fond</strong>. Opacité de l'image d'arrière-plan.</li>
 <li><strong data="opt_bgImgS">Image de fond</strong>. Vous pouvez afficher votre propre image en arrière-plan mais seules les urls en https fonctionnent à cause des contraintes de sécurité du navigateur.</li>
 <li><strong data="opt_timerSize">Taille du chronomètre</strong>. Définir la taille du chronomètre principal.</li>
-<li><strong data="opt_smallADP">Utiliser une petite police après la virgule des décimales</strong>. Utiliser une police plus petite pour les décimales du chronomètre principal.</li>
+<li><strong data="opt_smallADP">Utiliser une petite police pour les décimales</strong>. Utiliser une police plus petite pour les décimales du chronomètre principal.</li>
 <li><strong data="opt_useMouse">Lancer le chonomètre avec la souris</strong>. Utiliser la souris pour démarrer le chronomètre. Le clavier sera toujours utilisable.</li>
 <li><strong data="opt_useIns">Utiliser l&#x27;inspection WCA</strong>. Activer la procédure d'inspection WCA ce qui correspond à un compte-à-rebours de 15 secondes et des pénalités +2/DNF automatiques si vous dépassez.</li>
-<li><strong data="opt_voiceIns">Voix d&#x27;alerte de l&#x27;inspection WCA</strong>. Alerte vocale à 8 et 12 secondes, pour simuler le comportement des juges en compétitions WCA.</li>
+<li><strong data="opt_voiceIns">Alerte vocale de l&#x27;inspection WCA</strong>. Alerte vocale à 8 et 12 secondes, pour simuler le comportement des juges en compétitions WCA.</li>
 <li><strong data="opt_voiceVol">Volume de la voix d&#x27;inspection</strong>. Volume de l'alerte vocale.</li>
 <li><strong data="opt_input">Entrer les temps avec</strong>. csTimer est capable d'ajouter des résolutions de différentes façons. En plus du chronométrage au clavier, il prend en charge la saisie manuelle, l'enregistrement automatique depuis un timer Stackmat, la connection à un cube Bluetooth, ou l'utilisation d'un Rubik's Cube virtuel.</li>
 <li><strong data="opt_intUN">Unité de la saisie de nombre</strong>. Quand vous entrer un entier XXX dans le champ de saisie, cela correspond-il à des secondes, des centièmes ou des millièmes ?</li>
@@ -78,7 +78,7 @@
 <li><strong data="opt_scrAlign">Alignement de la zone de mélange</strong>. Alignement de toute la zone de mélange, y compris le sélecteur du type de mélange.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Mouvements préparatoires avant le mélange - utilisé pour le Rubik's cube virtuel et l'aperçu du mélange.</li>
 <li><strong data="opt_scrFast">Utiliser des mélanges rapides pour 4x4x4 (non officiel)</strong>. Les mélanges 4x4x4 officiels de la WCA requièrent d'énormes ressources de calcul. Sélectionnez cette option pour utiliser un mélange 4x4x4 aléatoire à la place.</li>
-<li><strong data="opt_scrKeyM">Indiquer le(s) mouvement(s) clé(s) dans mélange</strong>. Marquer un mouvement clé dans le mélange, par exemple le mouvement qui fait quitter la forme carrée dans les mélanges SQ1.</li>
+<li><strong data="opt_scrKeyM">Indiquer le(s) mouvement(s) clé(s) dans Mélange</strong>. Marquer un mouvement clé dans le mélange, par exemple le mouvement qui fait quitter la forme carrée dans les mélanges SQ1.</li>
 <li><strong data="opt_scrClk">Quand le mélange est cliqué</strong>. Action lorsque vous cliquez sur le mélange : copier le mélange ou générer un nouveau mélange.</li>
 <li><strong data="opt_trim">Nombre de résolutions coupés de chaque côté</strong>. Nombre de résolutions élaguées lors du calcul de la moyenne (moins bonnes et meilleures)</li>
 <li><strong data="opt_statsum">Montrer le résumé avant la liste de temps</strong>. Afficher le tableau des statistiques avant la liste des temps.</li>
@@ -88,7 +88,7 @@
 <li><strong data="opt_scr2ss">Créer une nouvelle session lors du changement de type de mélange</strong>. Modifier le type de mélange démarre une nouvelle session.</li>
 <li><strong data="opt_statinv">Inverser la liste des temps</strong>. Inverser la liste de temps ; les résolutions les plus récentes s'affichent alors en bas de la liste.</li>
 <li><strong data="opt_statclr">Autoriser la suppression de tous les temps d&#x27;une session</strong>. Quand cette option est désactivée, le bouton 'X' à côté du sélecteur de session est remplacé par un bouton "+".  Un clic sur le + crée une nouvelle session au lieu d'effacer la session en cours.</li>
-<li><strong data="opt_absidx">Montrer les indices absolus dans les reports statistiques</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
+<li><strong data="opt_absidx">Montrer les indices absolus dans les reports statistiques</strong>. Affiche le numéro dans la session au lieu du numéro dans le round (par exemple 1/2/3 pour la Moyenne des 3).</li>
 <li><strong data="opt_rsfor1s">Afficher les statistiques. Quand le numéro de résolution est cliqué</strong>. Affiche les statistiques d'une résolution en cliquant sur un numéro de résolution dans la liste.</li>
 <li><strong data="opt_statal">Indicateurs statistiques</strong>. Indicateur pour le tableau de statistiques, lors de la personnalisation, aoX et moX sont disponibles.</li>
 <li><strong data="opt_delmul">Activer la suppression multiple</strong>. Possibilité de supprimer plusieurs résolutions à partir d'une résolution. La résolution sélectionnée sera la plus ancienne résolution supprimée.</li>
@@ -129,9 +129,9 @@
 <li><strong data="tool_pyrv">Solveurs &gt; Pyraminx V</strong>. Solveur Pyraminx V.  Résout trois coins et deux arêtes pour former un motif en V.</li>
 <li><strong data="tool_skbl1">Solveurs &gt; Skewb Face</strong>. Solveur d'une face de Skewb ; résout un étage du Skewb, plus spécifiquement 1 centre et les 4 coins adjacents.</li>
 <li><strong data="tool_giikerutil">Giiker Cube</strong>. Outil auxiliaire pour cubes Bluetooth. Affiche l'état actuel, le niveau de batterie, la résolution en temps réel, etc.</li>
-<li><strong data="tool_mtrnm">Métronome</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Mélange classique</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_mtrnm">Métronome</strong>. En plus de bipper à une fréquence spécifique, le métronome peut également être réglé pour bipper à un moment précis après le début de la résolution.</li>
+<li><strong data="tool_syncseed">Mélange classique</strong>. Utiliser les mêmes mélanges que vos amis en définissant une graine commune.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Outil auxiliaire pour Stackmat. Affiche l'état, le niveau de batterie, le volume du signal sonore, etc.</li>
 </ul>
 <h2>Liens</h2>
 <ul>

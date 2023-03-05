@@ -4,42 +4,42 @@ var RESET_LANG = 'Réinitialiser';
 var ABOUT_LANG = 'À propos';
 var ZOOM_LANG = 'Zoom';
 var BUTTON_TIME_LIST = 'LISTE<br>TEMPS';
-var BUTTON_OPTIONS = 'Options';
+var BUTTON_OPTIONS = 'OPTIONS';
 var BUTTON_EXPORT = 'Exporter';
 var BUTTON_DONATE = 'Faire une donation';
 var PROPERTY_SR = 'Avec la session';
 var PROPERTY_USEINS = 'Utiliser l\'inspection WCA';
 var PROPERTY_USEINS_STR = 'Toujours|Sauf BLD|Jamais';
-var PROPERTY_VOICEINS = 'Voix d\'alerte de l\'inspection WCA';
+var PROPERTY_VOICEINS = 'Alerte vocale de l\'inspection WCA';
 var PROPERTY_VOICEINS_STR = 'Aucune|Voix masculine|Voix féminine';
 var PROPERTY_VOICEVOL = 'Volume de la voix d\'inspection';
 var PROPERTY_PHASES = 'Multi-phase';
 var PROPERTY_TIMERSIZE = 'Taille du chronomètre';
 var PROPERTY_USEMILLI = 'Utiliser les millisecondes';
-var PROPERTY_SMALLADP = 'Utiliser une petite police après la virgule des décimales';
+var PROPERTY_SMALLADP = 'Utiliser une petite police pour les décimales';
 var PROPERTY_SCRSIZE = 'Taille du mélange';
 var PROPERTY_SCRMONO = 'Mélange à espacement fixe';
 var PROPERTY_SCRLIM = 'Limiter la taille de la zone de mélange';
 var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange';
 var PROPERTY_SCRALIGN_STR = 'Centre|Gauche|Droite';
 var PROPERTY_SCRFAST = 'Utiliser des mélanges rapides pour 4x4x4 (non officiel)';
-var PROPERTY_SCRKEYM = 'Indiquer le(s) mouvement(s) clé(s) dans mélange';
+var PROPERTY_SCRKEYM = 'Indiquer le(s) mouvement(s) clé(s) dans Mélange';
 var PROPERTY_SCRCLK = 'Quand le mélange est cliqué';
 var PROPERTY_SCRCLK_STR = 'Rien|Copier|Prochain mélange';
-var PROPERTY_WNDSCR = 'Style du panneau de mélange';
-var PROPERTY_WNDSTAT = 'Style du panneau statistique';
-var PROPERTY_WNDTOOL = 'Style du panneau outils';
-var PROPERTY_WND_STR = 'Normal|plat';
-var EXPORT_DATAEXPORT = 'Importer/Exporter des données';
+var PROPERTY_WNDSCR = 'Style du panneau Mélange';
+var PROPERTY_WNDSTAT = 'Style du panneau Statistiques';
+var PROPERTY_WNDTOOL = 'Style du panneau Outils';
+var PROPERTY_WND_STR = 'Normal|Plat';
+var EXPORT_DATAEXPORT = 'Import/Export des données';
 var EXPORT_TOFILE = 'Exporter vers';
 var EXPORT_FROMFILE = 'Importer de';
 var EXPORT_TOSERV = 'Exporter vers un serveur';
 var EXPORT_FROMSERV = 'Importer d\'un serveur';
 var EXPORT_FROMOTHER = 'Importer d\'un autre chronomètre';
-var EXPORT_USERID = 'S\'il vous plaît, rentrez votre compte (seulement des chiffres ou des lettres)';
-var EXPORT_INVID = 'Chiffres ou lettres seulement!';
+var EXPORT_USERID = 'Veuillez saisir votre compte (uniquement chiffres ou lettres)';
+var EXPORT_INVID = 'Lettres ou chiffres uniquement !';
 var EXPORT_ERROR = 'Des erreurs se sont produites...';
-var EXPORT_NODATA = 'Aucune donnée n\'a été trouvée sur votre compte';
+var EXPORT_NODATA = 'Aucune donnée trouvée pour votre compte';
 var EXPORT_UPLOADED = 'Envoyé avec succès';
 var EXPORT_CODEPROMPT = 'Notez se code, ou entrez le code enregistré à importer';
 var EXPORT_ONLYOPT = 'Exporter/Importer seulement la configuration';
@@ -70,7 +70,7 @@ var TOOLS_SYNCSEED = 'Mélange classique';
 var TOOLS_SYNCSEED_SEED = 'Seed';
 var TOOLS_SYNCSEED_INPUT = 'Entrer un Seed';
 var TOOLS_SYNCSEED_30S = 'Utiliser un Seed de 30 sec';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
+var TOOLS_SYNCSEED_HELP = 'Si activé, le mélange dépendra uniquement des paramètres de mélange et de graine. ';
 var TOOLS_SYNCSEED_DISABLE = 'Désactiver le seed actuel ?';
 var TOOLS_SYNCSEED_INPUTA = 'Entrez une valeur (a-zA-Z0-9) en tant que seed';
 var OLCOMP_UPDATELIST = 'Mettre à jour la liste de compétition';
@@ -187,7 +187,7 @@ var scrdata = [
 		['EOLine', "eoline", 0],
 		['Croix facile', "easyc", 3],
 		['3x3 ft', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Personnalisé', "333custom", 0]
 	]],
 	['2x2x2', [
 		["état aléatoire (WCA)", "222so", 0],
