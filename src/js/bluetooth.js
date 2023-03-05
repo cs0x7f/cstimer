@@ -635,6 +635,8 @@ var GiikerCube = execMain(function() {
 			_service_v2data = null;
 			if (_chrct_v2read) {
 				_chrct_v2read.removeEventListener('characteristicvaluechanged', onStateChangedV2);
+				_chrct_v2read.stopNotifications();
+				_chrct_v2read = null;
 			}
 			prevMoves = [];
 			timeOffs = [];
@@ -786,6 +788,16 @@ var GiikerCube = execMain(function() {
 		};
 	})();
 
+	function onHardwareEvent(info, event) {
+		if (info == 'disconnect') {
+			logohint.push('Bluetooth disconnected!');
+			stop();
+		}
+		evtCallback && evtCallback(info, event);
+	}
+
+	var onDisconnect = onHardwareEvent.bind(null, 'disconnect');
+
 	function init(timer) {
 
 		if (!window.navigator || !window.navigator.bluetooth) {
@@ -818,6 +830,7 @@ var GiikerCube = execMain(function() {
 		}).then(function(device) {
 			DEBUG && console.log('[bluetooth]', device);
 			_device = device;
+			device.addEventListener('gattserverdisconnected', onDisconnect);
 			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube')) {
 				cube = GiikerCube;
 				return GiikerCube.init(device);
@@ -838,6 +851,7 @@ var GiikerCube = execMain(function() {
 			return;
 		}
 		cube && cube.clear();
+		_device.removeEventListener('gattserverdisconnected', onDisconnect);
 		_device.gatt.disconnect();
 		_device = null;
 	}
@@ -851,10 +865,10 @@ var GiikerCube = execMain(function() {
 		isConnected: function() {
 			return _device != null;
 		},
-		setCallBack: function(func) {
+		setCallback: function(func) {
 			callback = func;
 		},
-		setEventCallBack: function(func) {
+		setEventCallback: function(func) {
 			evtCallback = func;
 		},
 		getCube: function() {

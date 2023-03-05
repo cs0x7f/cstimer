@@ -1340,7 +1340,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			setEnable: function(input) { //s: stackmat, m: moyu
 				enable = input == 'g';
 				if (enable) {
-					giikerutil.setCallBack(giikerCallback);
+					giikerutil.setCallback(giikerCallback);
 					var ret = giikerutil.init();
 					if (ret) {
 						ret.catch(function(error) {

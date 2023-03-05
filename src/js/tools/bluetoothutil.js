@@ -244,11 +244,21 @@ var giikerutil = execMain(function(CubieCube) {
 		updateAlgClick(lastSolveClick, "Ready", curScramble, solve)
 	}
 
+	function evtCallback(info, event) {
+		if (info == 'disconnect') {
+			connectClick.html(connectedStr).removeClass('click').unbind('click');
+			if (!GiikerCube.isConnected()) {
+				connectClick.html('Bluetooth: Connect').addClass('click').click(init);
+			}
+		}
+	}
+
 	function init() {
 		currentRawState = kernel.getProp('giiSolved', mathlib.SOLVED_FACELET);
 		currentRawCubie.fromFacelet(currentRawState);
 		solvedStateInv.invFrom(currentRawCubie);
-		GiikerCube.setCallBack(giikerCallback);
+		GiikerCube.setCallback(giikerCallback);
+		GiikerCube.setEventCallback(evtCallback);
 		if (!GiikerCube.isConnected()) {
 			return GiikerCube.init();
 		} else {
@@ -301,7 +311,7 @@ var giikerutil = execMain(function(CubieCube) {
 	});
 
 	return {
-		setCallBack: function(func) {
+		setCallback: function(func) {
 			callback = func;
 		},
 		markSolved: markSolved,
