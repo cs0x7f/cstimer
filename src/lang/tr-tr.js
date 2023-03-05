@@ -181,6 +181,7 @@ var scrdata = [
 		['ZBLS', "zbls", 0],
 		['WVLS', "wvls", 0],
 		['ZZLL', "zzll", 0],
+		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['son katmanın permütasyonu', "pll", 0],
 		['EO Çizgisi', "eoline", 0],

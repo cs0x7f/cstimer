@@ -519,6 +519,10 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, aufsuff);
 	}
 
+	function getTTLLScramble() {
+		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x765fffff, 0x00000000);
+	}
+
 	function getZBLSScramble() {
 		return getAnyScramble(0xba9f7654ffff, 0x000000000000, 0x765fffff, 0x000fffff);
 	}
@@ -705,6 +709,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [zbfilter, zbprobs])
 		('zzll', getZZLLScramble)
+		('ttll', getTTLLScramble)
 		('zbls', getZBLSScramble)
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs])
 		('lse', getLSEScramble)
@@ -729,6 +734,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		getLSLLScramble: getLSLLScramble,
 		getZBLLScramble: getZBLLScramble,
 		getZZLLScramble: getZZLLScramble,
+		getTTLLScramble: getTTLLScramble,
 		getF2LScramble: getF2LScramble,
 		getLSEScramble: getLSEScramble,
 		getCMLLScramble: getCMLLScramble,
