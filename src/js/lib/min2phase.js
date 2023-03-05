@@ -998,174 +998,172 @@ var min2phase = (function() {
 	}
 
 	function initBasic() {
-		{ //init sym cubes
-			var c = new CubieCube();
-			var d = new CubieCube();
-			var t;
+		//init sym cubes
+		var c = new CubieCube();
+		var d = new CubieCube();
+		var t;
 
-			var f2 = new CubieCube().initCoord(28783, 0, 259268407, 0);
-			var u4 = new CubieCube().initCoord(15138, 0, 119765538, 7);
-			var lr2 = new CubieCube().initCoord(5167, 0, 83473207, 0);
-			for (var i = 0; i < 8; i++) {
-				lr2.ca[i] |= 3 << 3;
-			}
-			for (var i = 0; i < 16; i++) {
-				SymCube[i] = new CubieCube().init(c.ca, c.ea);
-				CubieCube.CornMultFull(c, u4, d);
-				CubieCube.EdgeMult(c, u4, d);
+		var f2 = new CubieCube().initCoord(28783, 0, 259268407, 0);
+		var u4 = new CubieCube().initCoord(15138, 0, 119765538, 7);
+		var lr2 = new CubieCube().initCoord(5167, 0, 83473207, 0);
+		for (var i = 0; i < 8; i++) {
+			lr2.ca[i] |= 3 << 3;
+		}
+		for (var i = 0; i < 16; i++) {
+			SymCube[i] = new CubieCube().init(c.ca, c.ea);
+			CubieCube.CornMultFull(c, u4, d);
+			CubieCube.EdgeMult(c, u4, d);
+			c.init(d.ca, d.ea);
+			if (i % 4 == 3) {
+				CubieCube.CornMultFull(c, lr2, d);
+				CubieCube.EdgeMult(c, lr2, d);
 				c.init(d.ca, d.ea);
-				if (i % 4 == 3) {
-					CubieCube.CornMultFull(c, lr2, d);
-					CubieCube.EdgeMult(c, lr2, d);
-					c.init(d.ca, d.ea);
-				}
-				if (i % 8 == 7) {
-					CubieCube.CornMultFull(c, f2, d);
-					CubieCube.EdgeMult(c, f2, d);
-					c.init(d.ca, d.ea);
-				}
 			}
-		} { // gen sym tables
-
-
-			for (var i = 0; i < 16; i++) {
-				SymMult[i] = [];
-				SymMultInv[i] = [];
-				SymMove[i] = [];
-				Sym8Move[i] = [];
-				SymMoveUD[i] = [];
+			if (i % 8 == 7) {
+				CubieCube.CornMultFull(c, f2, d);
+				CubieCube.EdgeMult(c, f2, d);
+				c.init(d.ca, d.ea);
 			}
-			for (var i = 0; i < 16; i++) {
-				for (var j = 0; j < 16; j++) {
-					SymMult[i][j] = i ^ j ^ (0x14ab4 >> j & i << 1 & 2); // SymMult[i][j] = (i ^ j ^ (0x14ab4 >> j & i << 1 & 2)));
-					SymMultInv[SymMult[i][j]][j] = i;
-				}
-			}
+		}
 
-			var c = new CubieCube();
-			for (var s = 0; s < 16; s++) {
-				for (var j = 0; j < 18; j++) {
-					CubieCube.CornConjugate(moveCube[j], SymMultInv[0][s], c);
-					outloop: for (var m = 0; m < 18; m++) {
-						for (var t = 0; t < 8; t++) {
-							if (moveCube[m].ca[t] != c.ca[t]) {
-								continue outloop;
-							}
+		// gen sym tables
+		for (var i = 0; i < 16; i++) {
+			SymMult[i] = [];
+			SymMultInv[i] = [];
+			SymMove[i] = [];
+			Sym8Move[i] = [];
+			SymMoveUD[i] = [];
+		}
+		for (var i = 0; i < 16; i++) {
+			for (var j = 0; j < 16; j++) {
+				SymMult[i][j] = i ^ j ^ (0x14ab4 >> j & i << 1 & 2); // SymMult[i][j] = (i ^ j ^ (0x14ab4 >> j & i << 1 & 2)));
+				SymMultInv[SymMult[i][j]][j] = i;
+			}
+		}
+
+		c = new CubieCube();
+		for (var s = 0; s < 16; s++) {
+			for (var j = 0; j < 18; j++) {
+				CubieCube.CornConjugate(moveCube[j], SymMultInv[0][s], c);
+				outloop: for (var m = 0; m < 18; m++) {
+					for (var t = 0; t < 8; t++) {
+						if (moveCube[m].ca[t] != c.ca[t]) {
+							continue outloop;
 						}
-						SymMove[s][j] = m;
-						SymMoveUD[s][std2ud[j]] = std2ud[m];
-						break;
 					}
-					if (s % 2 == 0) {
-						Sym8Move[j << 3 | s >> 1] = SymMove[s][j];
-					}
+					SymMove[s][j] = m;
+					SymMoveUD[s][std2ud[j]] = std2ud[m];
+					break;
+				}
+				if (s % 2 == 0) {
+					Sym8Move[j << 3 | s >> 1] = SymMove[s][j];
 				}
 			}
-		} { // init sym 2 raw tables
-			function initSym2Raw(N_RAW, Sym2Raw, Raw2Sym, SymState, coord, setFunc, getFunc) {
-				var N_RAW_HALF = (N_RAW + 1) >> 1;
-				var c = new CubieCube();
-				var d = new CubieCube();
-				var count = 0;
-				var sym_inc = coord >= 2 ? 1 : 2;
-				var conjFunc = coord != 1 ? CubieCube.EdgeConjugate : CubieCube.CornConjugate;
+		}
 
-				for (var i = 0; i < N_RAW; i++) {
-					if (Raw2Sym[i] !== undefined) {
-						continue;
-					}
-					setFunc.call(c, i);
-					for (var s = 0; s < 16; s += sym_inc) {
-						conjFunc(c, s, d);
-						var idx = getFunc.call(d);
-						if (USE_TWIST_FLIP_PRUN && coord == 0) {
-							FlipS2RF[count << 3 | s >> 1] = idx;
-						}
-						if (idx == i) {
-							SymState[count] |= 1 << (s / sym_inc);
-						}
-						Raw2Sym[idx] = (count << 4 | s) / sym_inc;
-					}
-					Sym2Raw[count++] = i;
-				}
-				return count;
-			}
-
-			initSym2Raw(N_FLIP, FlipS2R, FlipR2S, SymStateFlip, 0, CubieCube.prototype.setFlip, CubieCube.prototype.getFlip);
-			initSym2Raw(N_TWIST, TwistS2R, TwistR2S, SymStateTwist, 1, CubieCube.prototype.setTwist, CubieCube.prototype.getTwist);
-			initSym2Raw(N_PERM, EPermS2R, EPermR2S, SymStatePerm, 2, CubieCube.prototype.setEPerm, CubieCube.prototype.getEPerm);
-			var cc = new CubieCube();
-			for (var i = 0; i < N_PERM_SYM; i++) {
-				setNPerm(cc.ea, EPermS2R[i], 8, true);
-				Perm2CombP[i] = getComb(cc.ea, 0, true) + (USE_COMBP_PRUN ? getNParity(EPermS2R[i], 8) * 70 : 0);
-				c.invFrom(cc);
-				PermInvEdgeSym[i] = EPermR2S[c.getEPerm()];
-			}
-		} { // init coord tables
-
+		// init sym 2 raw tables
+		function initSym2Raw(N_RAW, Sym2Raw, Raw2Sym, SymState, coord, setFunc, getFunc) {
+			var N_RAW_HALF = (N_RAW + 1) >> 1;
 			var c = new CubieCube();
 			var d = new CubieCube();
+			var count = 0;
+			var sym_inc = coord >= 2 ? 1 : 2;
+			var conjFunc = coord != 1 ? CubieCube.EdgeConjugate : CubieCube.CornConjugate;
 
-			function initSymMoveTable(moveTable, SymS2R, N_SIZE, N_MOVES, setFunc, getFunc, multFunc, ud2std) {
-				for (var i = 0; i < N_SIZE; i++) {
-					moveTable[i] = [];
-					setFunc.call(c, SymS2R[i]);
-					for (var j = 0; j < N_MOVES; j++) {
-						multFunc(c, moveCube[ud2std ? ud2std[j] : j], d);
-						moveTable[i][j] = getFunc.call(d);
+			for (var i = 0; i < N_RAW; i++) {
+				if (Raw2Sym[i] !== undefined) {
+					continue;
+				}
+				setFunc.call(c, i);
+				for (var s = 0; s < 16; s += sym_inc) {
+					conjFunc(c, s, d);
+					var idx = getFunc.call(d);
+					if (USE_TWIST_FLIP_PRUN && coord == 0) {
+						FlipS2RF[count << 3 | s >> 1] = idx;
 					}
+					if (idx == i) {
+						SymState[count] |= 1 << (s / sym_inc);
+					}
+					Raw2Sym[idx] = (count << 4 | s) / sym_inc;
 				}
+				Sym2Raw[count++] = i;
 			}
+			return count;
+		}
 
-			initSymMoveTable(FlipMove, FlipS2R, N_FLIP_SYM, N_MOVES,
-				CubieCube.prototype.setFlip, CubieCube.prototype.getFlipSym, CubieCube.EdgeMult);
-			initSymMoveTable(TwistMove, TwistS2R, N_TWIST_SYM, N_MOVES,
-				CubieCube.prototype.setTwist, CubieCube.prototype.getTwistSym, CubieCube.CornMult);
-			initSymMoveTable(EPermMove, EPermS2R, N_PERM_SYM, N_MOVES2,
-				CubieCube.prototype.setEPerm, CubieCube.prototype.getEPermSym, CubieCube.EdgeMult, ud2std);
-			initSymMoveTable(CPermMove, EPermS2R, N_PERM_SYM, N_MOVES2,
-				CubieCube.prototype.setCPerm, CubieCube.prototype.getCPermSym, CubieCube.CornMult, ud2std);
+		initSym2Raw(N_FLIP, FlipS2R, FlipR2S, SymStateFlip, 0, CubieCube.prototype.setFlip, CubieCube.prototype.getFlip);
+		initSym2Raw(N_TWIST, TwistS2R, TwistR2S, SymStateTwist, 1, CubieCube.prototype.setTwist, CubieCube.prototype.getTwist);
+		initSym2Raw(N_PERM, EPermS2R, EPermR2S, SymStatePerm, 2, CubieCube.prototype.setEPerm, CubieCube.prototype.getEPerm);
+		var cc = new CubieCube();
+		for (var i = 0; i < N_PERM_SYM; i++) {
+			setNPerm(cc.ea, EPermS2R[i], 8, true);
+			Perm2CombP[i] = getComb(cc.ea, 0, true) + (USE_COMBP_PRUN ? getNParity(EPermS2R[i], 8) * 70 : 0);
+			c.invFrom(cc);
+			PermInvEdgeSym[i] = EPermR2S[c.getEPerm()];
+		}
 
-			for (var i = 0; i < N_SLICE; i++) {
-				UDSliceMove[i] = [];
-				UDSliceConj[i] = [];
-				c.setUDSlice(i);
+		// init coord tables
+		c = new CubieCube();
+		d = new CubieCube();
+		function initSymMoveTable(moveTable, SymS2R, N_SIZE, N_MOVES, setFunc, getFunc, multFunc, ud2std) {
+			for (var i = 0; i < N_SIZE; i++) {
+				moveTable[i] = [];
+				setFunc.call(c, SymS2R[i]);
 				for (var j = 0; j < N_MOVES; j++) {
-					CubieCube.EdgeMult(c, moveCube[j], d);
-					UDSliceMove[i][j] = d.getUDSlice();
-				}
-				for (var j = 0; j < 16; j += 2) {
-					CubieCube.EdgeConjugate(c, SymMultInv[0][j], d);
-					UDSliceConj[i][j >> 1] = d.getUDSlice();
+					multFunc(c, moveCube[ud2std ? ud2std[j] : j], d);
+					moveTable[i][j] = getFunc.call(d);
 				}
 			}
+		}
 
-			for (var i = 0; i < N_MPERM; i++) {
-				MPermMove[i] = [];
-				MPermConj[i] = [];
-				c.setMPerm(i);
-				for (var j = 0; j < N_MOVES2; j++) {
-					CubieCube.EdgeMult(c, moveCube[ud2std[j]], d);
-					MPermMove[i][j] = d.getMPerm();
-				}
-				for (var j = 0; j < 16; j++) {
-					CubieCube.EdgeConjugate(c, SymMultInv[0][j], d);
-					MPermConj[i][j] = d.getMPerm();
-				}
+		initSymMoveTable(FlipMove, FlipS2R, N_FLIP_SYM, N_MOVES,
+			CubieCube.prototype.setFlip, CubieCube.prototype.getFlipSym, CubieCube.EdgeMult);
+		initSymMoveTable(TwistMove, TwistS2R, N_TWIST_SYM, N_MOVES,
+			CubieCube.prototype.setTwist, CubieCube.prototype.getTwistSym, CubieCube.CornMult);
+		initSymMoveTable(EPermMove, EPermS2R, N_PERM_SYM, N_MOVES2,
+			CubieCube.prototype.setEPerm, CubieCube.prototype.getEPermSym, CubieCube.EdgeMult, ud2std);
+		initSymMoveTable(CPermMove, EPermS2R, N_PERM_SYM, N_MOVES2,
+			CubieCube.prototype.setCPerm, CubieCube.prototype.getCPermSym, CubieCube.CornMult, ud2std);
+
+		for (var i = 0; i < N_SLICE; i++) {
+			UDSliceMove[i] = [];
+			UDSliceConj[i] = [];
+			c.setUDSlice(i);
+			for (var j = 0; j < N_MOVES; j++) {
+				CubieCube.EdgeMult(c, moveCube[j], d);
+				UDSliceMove[i][j] = d.getUDSlice();
 			}
+			for (var j = 0; j < 16; j += 2) {
+				CubieCube.EdgeConjugate(c, SymMultInv[0][j], d);
+				UDSliceConj[i][j >> 1] = d.getUDSlice();
+			}
+		}
 
-			for (var i = 0; i < N_COMB; i++) {
-				CCombPMove[i] = [];
-				CCombPConj[i] = [];
-				c.setCComb(i % 70);
-				for (var j = 0; j < N_MOVES2; j++) {
-					CubieCube.CornMult(c, moveCube[ud2std[j]], d);
-					CCombPMove[i][j] = d.getCComb() + 70 * ((P2_PARITY_MOVE >> j & 1) ^ ~~(i / 70));
-				}
-				for (var j = 0; j < 16; j++) {
-					CubieCube.CornConjugate(c, SymMultInv[0][j], d);
-					CCombPConj[i][j] = d.getCComb() + 70 * ~~(i / 70);
-				}
+		for (var i = 0; i < N_MPERM; i++) {
+			MPermMove[i] = [];
+			MPermConj[i] = [];
+			c.setMPerm(i);
+			for (var j = 0; j < N_MOVES2; j++) {
+				CubieCube.EdgeMult(c, moveCube[ud2std[j]], d);
+				MPermMove[i][j] = d.getMPerm();
+			}
+			for (var j = 0; j < 16; j++) {
+				CubieCube.EdgeConjugate(c, SymMultInv[0][j], d);
+				MPermConj[i][j] = d.getMPerm();
+			}
+		}
+
+		for (var i = 0; i < N_COMB; i++) {
+			CCombPMove[i] = [];
+			CCombPConj[i] = [];
+			c.setCComb(i % 70);
+			for (var j = 0; j < N_MOVES2; j++) {
+				CubieCube.CornMult(c, moveCube[ud2std[j]], d);
+				CCombPMove[i][j] = d.getCComb() + 70 * ((P2_PARITY_MOVE >> j & 1) ^ ~~(i / 70));
+			}
+			for (var j = 0; j < 16; j++) {
+				CubieCube.CornConjugate(c, SymMultInv[0][j], d);
+				CCombPConj[i][j] = d.getCComb() + 70 * ~~(i / 70);
 			}
 		}
 	}

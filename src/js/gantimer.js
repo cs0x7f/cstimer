@@ -31,7 +31,7 @@ var GanTimerDriver = execMain(function () {
     function hexdump(dataView) {
         var hexdata = [];
         if (dataView) {
-            for (let i = 0; i < dataView.byteLength; i++) {
+            for (var i = 0; i < dataView.byteLength; i++) {
                 hexdata.push(dataView.getUint8(i).toString(16).padStart(2, '0'));
             }
         }
