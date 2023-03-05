@@ -186,7 +186,8 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Nemt kryds', "easyc", 3],
-		['3x3 FT', "333ft", 0]
+		['3x3 FT', "333ft", 0],
+		['Custom', "333custom", 0]
 	]],
 	['2x2x2', [
 		["tilfældig tilstand (WCA)", "222so", 0],

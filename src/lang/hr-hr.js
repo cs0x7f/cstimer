@@ -186,7 +186,8 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['lagani križ', "easyc", 3],
-		['3x3 s nogama', "333ft", 0]
+		['3x3 s nogama', "333ft", 0],
+		['Custom', "333custom", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],

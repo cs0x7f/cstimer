@@ -186,7 +186,8 @@ var scrdata = [
 		['son katmanın permütasyonu', "pll", 0],
 		['EO Çizgisi', "eoline", 0],
 		['kolay cross', "easyc", 3],
-		['3x3 ayakla', "333ft", 0]
+		['3x3 ayakla', "333ft", 0],
+		['Custom', "333custom", 0]
 	]],
 	['2x2x2', [
 		["Rastgele Durum (WCA)", "222so", 0],

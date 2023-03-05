@@ -186,7 +186,8 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['簡單的十字', "easyc", 3],
-		['3x3x3腳解', "333ft", 0]
+		['3x3x3腳解', "333ft", 0],
+		['Custom', "333custom", 0]
 	]],
 	['2x2x2', [
 		["隨機狀態 (WCA)", "222so", 0],

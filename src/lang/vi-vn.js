@@ -186,7 +186,8 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['Edge Orientation Line', "eoline", 0],
 		['solve dởm', "easyc", 3],
-		['3x3 FT', "333ft", 0]
+		['3x3 FT', "333ft", 0],
+		['Custom', "333custom", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],

@@ -99,6 +99,9 @@ var scrMgr = (function(rn, rndEl) {
 		if (filter == undefined) {
 			filter = ret;
 		}
+		if (probs[0] == 0) {
+			return filter.slice();
+		}
 		for (var i = 0; i < filter.length; i++) {
 			if (!filter[i]) {
 				ret[i] = 0;

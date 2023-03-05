@@ -186,7 +186,8 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['간단한 십자', "easyc", 3],
-		['3x3 발', "333ft", 0]
+		['3x3 발', "333ft", 0],
+		['Custom', "333custom", 0]
 	]],
 	['2x2x2', [
 		["무작위 상태 (WCA)", "222so", 0],

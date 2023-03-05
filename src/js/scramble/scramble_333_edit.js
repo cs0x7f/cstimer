@@ -303,6 +303,14 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 			var nep, ncp;
 			var ue = cntU(ep);
 			var uc = cntU(cp);
+			if (ue == 1) {
+				fixPerm(ep, ue, -1);
+				ue = 0;
+			}
+			if (uc == 1) {
+				fixPerm(cp, uc, -1);
+				uc = 0;
+			}
 			if (ue == 0 && uc == 0) {
 				nep = getNPerm(ep, 12);
 				ncp = getNPerm(cp, 8);
@@ -687,6 +695,37 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xffff7f5fffff, 0x000000000000, 0xffffffff, 0xffffffff);
 	}
 
+	var customfilter = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'RF', 'LF', 'LB', 'RB', 'URF', 'UFL', 'ULB', 'UBR', 'DFR', 'DLF', 'DBL', 'DRB'];
+	for (var i = 0; i < 20; i++) {
+		var piece = customfilter[i];
+		customfilter[i + 20] = (piece.length == 2 ? 'OriE-' : 'OriC-') + piece;
+		customfilter[i] = (piece.length == 2 ? 'PermE-' : 'PermC-') + piece;
+	}
+	var customprobs = mathlib.valuedArray(40, 0);
+
+	function getCustomScramble(type, length, cases) {
+		var ep = 0;
+		var eo = 0;
+		var cp = 0;
+		var co = 0;
+		var chk = 0x1100; //ep+cp|ep+1|cp+1|eo|co
+		cases = cases || mathlib.valuedArray(40, 1);
+		for (var i = 0; i < 12; i++) {
+			chk += (cases[i] ? 0x11000 : 0) + (cases[i + 20] ? 0x10 : 0);
+			ep += (cases[i] ? 0xf : i) * Math.pow(16, i);
+			eo += (cases[i + 20] ? 0xf : 0) * Math.pow(16, i);
+		}
+		for (var i = 0; i < 8; i++) {
+			chk += (cases[i + 12] ? 0x10100 : 0) + (cases[i + 32] ? 0x1 : 0);
+			cp += (cases[i + 12] ? 0xf : i) * Math.pow(16, i);
+			co += (cases[i + 32] ? 0xf : 0) * Math.pow(16, i);
+		}
+		if ((chk & 0x1cccee) == 0) {
+			return "U' U ";
+		}
+		return getAnyScramble(ep, eo, cp, co);
+	}
+
 	function getEasyCrossScramble(type, length) {
 		var cases = cross.getEasyCross(length);
 		return getAnyScramble(cases[0], cases[1], 0xffffffff, 0xffffffff);
@@ -704,6 +743,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('333fm', getFMCScramble)
 		('edges', getEdgeScramble)
 		('corners', getCornerScramble)
+		('333custom', getCustomScramble, [customfilter, customprobs])
 		('ll', getLLScramble)
 		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs])
 		('f2l', getF2LScramble)

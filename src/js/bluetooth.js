@@ -817,6 +817,8 @@ var GiikerCube = execMain(function() {
 				}, {
 					namePrefix: 'GAN'
 				}, {
+					namePrefix: 'MG'
+				}, {
 					namePrefix: 'GoCube'
 				}, {
 					namePrefix: 'Rubiks'
@@ -824,6 +826,8 @@ var GiikerCube = execMain(function() {
 					services: ['0000fe95-0000-1000-8000-00805f9b34fb']
 				}, {
 					services: [GiikerCube.opservs[0]]
+				}, {
+					services: [GanCube.opservs[2]]
 				}],
 				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
 			});
@@ -834,7 +838,7 @@ var GiikerCube = execMain(function() {
 			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube')) {
 				cube = GiikerCube;
 				return GiikerCube.init(device);
-			} else if (device.name.startsWith('GAN')) {
+			} else if (device.name.startsWith('GAN') || device.name.startsWith('MG')) {
 				cube = GanCube;
 				return GanCube.init(device);
 			} else if (device.name.startsWith('GoCube') || device.name.startsWith('Rubiks')) {
