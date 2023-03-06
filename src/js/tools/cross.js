@@ -386,13 +386,16 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 
 	function getEasyCross(length) {
 		fullInit();
-		if (length > 8) {
-			length = 8;
-		}
-		var cases = mathlib.rn([1, 16, 174, 1568, 11377, 57758, 155012, 189978, 190080][length]) + 1;
+		var lenA = Math.min(length % 10, 8);
+		var lenB = Math.min(~~(length / 10), 8);
+		var minLen = Math.min(lenA, lenB);
+		var maxLen = Math.max(lenA, lenB);
+		var ncase = [0, 1, 16, 174, 1568, 11377, 57758, 155012, 189978, 190080];
+		var cases = mathlib.rn(ncase[maxLen + 1] - ncase[minLen]) + 1;
 		var i;
 		for (i = 0; i < 190080; i++) {
-			if (getPruning(fullPrun, i) <= length && --cases == 0) {
+			var prun = getPruning(fullPrun, i);
+			if (prun <= maxLen && prun >= minLen && --cases == 0) {
 				break;
 			}
 		}
