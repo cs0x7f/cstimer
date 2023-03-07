@@ -50,7 +50,12 @@ var scrMgr = (function(rn, rndEl) {
 	var probs = {};
 
 	/**
-	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN]]
+	 *	{type: imgGen(case, canvas)}
+	 */
+	var imgGens = {};
+
+	/**
+	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN], imgGen]
 	 */
 	function regScrambler(type, callback, filter_and_probs) {
 		DEBUG && console.log('[regscr]', type);
@@ -63,6 +68,7 @@ var scrMgr = (function(rn, rndEl) {
 			if (filter_and_probs != undefined) {
 				filters[type] = filter_and_probs[0];
 				probs[type] = filter_and_probs[1];
+				imgGens[type] = filter_and_probs[2]; // may be undefined
 			}
 		}
 		return regScrambler;
@@ -119,6 +125,7 @@ var scrMgr = (function(rn, rndEl) {
 		scramblers: scramblers,
 		filters: filters,
 		probs: probs,
+		imgGens: imgGens,
 		mega: mega,
 		formatScramble: formatScramble,
 		rndState: rndState,
@@ -131,6 +138,7 @@ var scramble = execMain(function(rn, rndEl) {
 	var scramblers = scrMgr.scramblers;
 	var filters = scrMgr.filters;
 	var probs = scrMgr.probs;
+	var imgGens = scrMgr.imgGens;
 
 	var div = $('<div id="scrambleDiv"/>');
 	var title = $('<div />').addClass('title');
@@ -479,6 +487,7 @@ var scramble = execMain(function(rn, rndEl) {
 		var modified = false;
 		if (type in filters) {
 			var data = filters[type];
+			var imgGen = imgGens[type];
 			var curData = data;
 			if (scrFlt[0] == type) {
 				curData = scrFlt[1] || data;
@@ -502,7 +511,16 @@ var scramble = execMain(function(rn, rndEl) {
 					chkBox[0].checked = true;
 				}
 				chkBoxList.push(chkBox);
-				chkLabelList.push($('<label>').append(chkBox, data[i]));
+				var label = $('<label>').append(chkBox, data[i]);
+				if (imgGen) {
+					var canvas = $('<canvas>');
+					canvas.width(5 + 'em');
+					canvas.height(5 + 'em');
+					label.append('<br>', canvas);
+					imgGen(i, canvas);
+					label.addClass('bimg');
+				}
+				chkLabelList.push(label);
 			}
 
 			var cntSel = function(g) {
@@ -523,31 +541,32 @@ var scramble = execMain(function(rn, rndEl) {
 					continue;
 				}
 				scrFltDiv.append($('<div>').attr('data', g).append(
-					$('<span>').html(g + ' ' + cntSel(g)), ' | ',
-					$('<span class="click">').html('All').click(function() {
-						var g = $(this).parent().attr('data');
-						$.each(dataGroup[g], function(idx, val) {
-							chkBoxList[val][0].checked = true;
-						});
-						$(this).parent().children().first().html(g + ' ' + cntSel(g));
-					}), ' | ',
-					$('<span class="click">').html('None').click(function() {
-						var g = $(this).parent().attr('data');
-						$.each(dataGroup[g], function(idx, val) {
-							chkBoxList[val][0].checked = false;
-						});
-						$(this).parent().children().first().html(g + ' ' + cntSel(g));
-					}), ' | ',
-					$('<span class="click">[+]</span>').click(function() {
-						$(this).next().toggle();
-					}),
+					$('<div class="sgrp">').append(
+						$('<span>').html(g + ' ' + cntSel(g)), ' | ',
+						$('<span class="click">').html('All').click(function() {
+							var g = $(this).parent().parent().attr('data');
+							$.each(dataGroup[g], function(idx, val) {
+								chkBoxList[val][0].checked = true;
+							});
+							$(this).parent().children().first().html(g + ' ' + cntSel(g));
+						}), ' | ',
+						$('<span class="click">').html('None').click(function() {
+							var g = $(this).parent().parent().attr('data');
+							$.each(dataGroup[g], function(idx, val) {
+								chkBoxList[val][0].checked = false;
+							});
+							$(this).parent().children().first().html(g + ' ' + cntSel(g));
+						}), ' | ',
+						$('<span class="click">[+]</span>').click(function() {
+							$(this).parent().next().toggle();
+						})),
 					$('<div>').append($.map(dataGroup[g], function(val) {
 						chkBoxList[val].change(function() {
 							var g = $(this).parent().parent().parent().attr('data');
-							$(this).parent().parent().parent().children().first().html(g + ' ' + cntSel(g));
+							$(this).parent().parent().parent().find('span:first').html(g + ' ' + cntSel(g));
 						});
 						return chkLabelList[val];
-					})).hide())
+					})))
 				);
 			}
 

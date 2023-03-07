@@ -471,47 +471,47 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	var zbll_map = [
-		[0x3210, 0x2121], // H-BBFF
-		[0x3012, 0x2121], // H-FBFB
-		[0x3120, 0x2121], // H-RFLF
-		[0x3201, 0x2121], // H-RLFF
-		[0x3012, 0x1020], // L-FBRL
-		[0x3021, 0x1020], // L-LBFF
-		[0x3201, 0x1020], // L-LFFB
-		[0x3102, 0x1020], // L-LFFR
-		[0x3210, 0x1020], // L-LRFF
-		[0x3120, 0x1020], // L-RFBL
-		[0x3102, 0x1122], // Pi-BFFB
-		[0x3120, 0x1122], // Pi-FBFB
-		[0x3012, 0x1122], // Pi-FRFL
-		[0x3021, 0x1122], // Pi-FRLF
-		[0x3210, 0x1122], // Pi-LFRF
-		[0x3201, 0x1122], // Pi-RFFL
-		[0x3120, 0x2220], // S-FBBF
-		[0x3102, 0x2220], // S-FBFB
-		[0x3210, 0x2220], // S-FLFR
-		[0x3201, 0x2220], // S-FLRF
-		[0x3021, 0x2220], // S-LFFR
-		[0x3012, 0x2220], // S-LFRF
-		[0x3210, 0x2100], // T-BBFF
-		[0x3012, 0x2100], // T-FBFB
-		[0x3201, 0x2100], // T-FFLR
-		[0x3120, 0x2100], // T-FLFR
-		[0x3102, 0x2100], // T-RFLF
-		[0x3021, 0x2100], // T-RLFF
-		[0x3021, 0x1200], // U-BBFF
-		[0x3201, 0x1200], // U-BFFB
-		[0x3012, 0x1200], // U-FFLR
-		[0x3120, 0x1200], // U-FRLF
-		[0x3102, 0x1200], // U-LFFR
-		[0x3210, 0x1200], // U-LRFF
-		[0x3102, 0x1101], // aS-FBBF
-		[0x3120, 0x1101], // aS-FBFB
-		[0x3012, 0x1101], // aS-FRFL
-		[0x3021, 0x1101], // aS-FRLF
-		[0x3210, 0x1101], // aS-LFRF
-		[0x3201, 0x1101], // aS-RFFL
-		[0xffff, 0x0000] // PLL
+		[0x3210, 0x2121, 'FDFDDDBDBLGRDGDRGLDGD'], // H-BBFF
+		[0x3012, 0x2121, 'RDLDDDRDLBGBDGDFGFDGD'], // H-FBFB
+		[0x3120, 0x2121, 'RDBDDDLDBFGRDGDLGFDGD'], // H-RFLF
+		[0x3201, 0x2121, 'LDRDDDFDFRGLDGDBGBDGD'], // H-RLFF
+		[0x3012, 0x1020, 'DDBDDDLDDFGRFGRDGLBGD'], // L-FBRL
+		[0x3021, 0x1020, 'DDLDDDRDDBGRFGBDGFLGD'], // L-LBFF
+		[0x3201, 0x1020, 'DDRDDDRDDBGLBGFDGFLGD'], // L-LFFB
+		[0x3102, 0x1020, 'DDLDDDLDDFGBRGBDGRFGD'], // L-LFFR
+		[0x3210, 0x1020, 'DDLDDDFDDRGFLGBDGBRGD'], // L-LRFF
+		[0x3120, 0x1020, 'DDRDDDLDDFDBRDFDGLBGD'], // L-RFBL
+		[0x3102, 0x1122, 'BDFDDDFDBRGDLGLDGRDGD'], // Pi-BFFB
+		[0x3120, 0x1122, 'RDLDDDRDLBGDFGBDGFDGD'], // Pi-FBFB
+		[0x3012, 0x1122, 'FDLDDDFDRRGDBGBDGLDGD'], // Pi-FRFL
+		[0x3021, 0x1122, 'BDRDDDLDBFGDLGFDGRDGD'], // Pi-FRLF
+		[0x3210, 0x1122, 'LDFDDDRDFBGDRGLDGBDGD'], // Pi-LFRF
+		[0x3201, 0x1122, 'BDLDDDLDFFGDRGBDGRDGD'], // Pi-RFFL
+		[0x3120, 0x2220, 'LDRDDDFDDRGLBGDBGDFGD'], // S-FBBF
+		[0x3102, 0x2220, 'FDBDDDLDDFGBRGDLGDRGD'], // S-FBFB
+		[0x3210, 0x2220, 'RDBDDDFDDRGFLGDLGDBGD'], // S-FLFR
+		[0x3201, 0x2220, 'RDBDDDLDDFGRFGDLGDBGD'], // S-FLRF
+		[0x3021, 0x2220, 'BDRDDDFDDRGFLGDBGDLGD'], // S-LFFR
+		[0x3012, 0x2220, 'BDRDDDLDDFGRFGDBGDLGD'], // S-LFRF
+		[0x3210, 0x2100, 'FDFDDDDDDBGBRGDRGLDGL'], // T-BBFF
+		[0x3012, 0x2100, 'BDFDDDDDDBGFLGDRGRDGL'], // T-FBFB
+		[0x3201, 0x2100, 'BDBDDDDDDLGRFGDLGRDGF'], // T-FFLR
+		[0x3120, 0x2100, 'BDLDDDDDDBGRFGDFGRDGL'], // T-FLFR
+		[0x3102, 0x2100, 'RDBDDDDDDLGBRGDLGFDGF'], // T-RFLF
+		[0x3021, 0x2100, 'FDBDDDDDDRGRFGDLGLDGB'], // T-RLFF
+		[0x3021, 0x1200, 'FDFDDDDDDBGBRGLDGDRGL'], // D-BBFF
+		[0x3201, 0x1200, 'BDFDDDDDDFGBRGLDGDLGR'], // D-BFFB
+		[0x3012, 0x1200, 'LDLDDDDDDFGBRGBDGDFGR'], // D-FFLR
+		[0x3120, 0x1200, 'RDFDDDDDDBGRFGLDGDBGL'], // D-FRLF
+		[0x3102, 0x1200, 'LDBDDDDDDBGRFGRDGDFGL'], // D-LFFR
+		[0x3210, 0x1200, 'LDRDDDDDDBGBRGFDGDFGL'], // D-LRFF
+		[0x3102, 0x1101, 'FDBDDDDDRBGFDGRDGLDGL'], // aS-FBBF
+		[0x3120, 0x1101, 'FDBDDDDDLFGBDGRDGLDGR'], // aS-FBFB
+		[0x3012, 0x1101, 'RDFDDDDDLRGBDGLDGFDGB'], // aS-FRFL
+		[0x3021, 0x1101, 'LDBDDDDDFFGLDGRDGBDGR'], // aS-FRLF
+		[0x3210, 0x1101, 'LDFDDDDDRRGFDGLDGBDGB'], // aS-LFRF
+		[0x3201, 0x1101, 'LDFDDDDDBFGRDGLDGBDGR'], // aS-RFFL
+		[0xffff, 0x0000, 'DDDDDDDDDGGGGGGGGGGGG'] // PLL
 	];
 
 	var zbprobs = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3];
@@ -521,6 +521,11 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	function getZBLLScramble(type, length, cases) {
 		var zbcase = zbll_map[scrMgr.fixCase(cases, zbprobs)];
 		return getAnyScramble(0xba987654ffff, 0, zbcase[0] + 0x76540000, zbcase[1], aufsuff, aufsuff);
+	}
+
+	function getZBLLImage(cases, canvas) {
+		var face = zbll_map[cases][2];
+		image.llImage(face, null, canvas);
 	}
 
 	function getZZLLScramble() {
@@ -618,9 +623,41 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		'Ra', 'Rb', 'T', 'V', 'Y'
 	];
 
+	var pllImgParam = [
+		['BFBRLRFBFLRL', [1, 7], [3, 5]],
+		['BRBRLRFFFLBL', [3, 7], [7, 5], [5, 3]],
+		['BLBRBRFFFLRL', [3, 5], [5, 7], [7, 3]],
+		['LFLBRBRBRFLF', [1, 5], [3, 7]],
+		['LBBRRLBFRFLF', [0, 2], [2, 6], [6, 0]],
+		['RBFLRRFFLBLB', [0, 6], [6, 8], [8, 0]],
+		['LBRFRBRFLBLF', [0, 6], [2, 8]],
+		['BFRFRBRBFLLL', [1, 7], [2, 8]],
+		['BRRFLBRBFLFL'],
+		['BFRFBBRLFLRL'],
+		['BFRFLBRRFLBL'],
+		['BLRFFBRBFLRL'],
+		['BBRFFBRRFLLL', [1, 5], [2, 8]],
+		['LBBRLLBRRFFF', [2, 8], [5, 7]],
+		['FBBRLLBFFLRR', [2, 6], [3, 5]],
+		['BBFLLRFFBRRL', [0, 8], [3, 5]],
+		['LLBRBLBFRFRF', [1, 3], [2, 8]],
+		['RBFLFRFLLBRB', [2, 8], [3, 7]],
+		['BBRFLBRFFLRL', [2, 8], [3, 5]],
+		['BBFLFRFRBRLL', [0, 8], [1, 5]],
+		['BBFLRRFLBRFL', [0, 8], [1, 3]]
+	];
+
 	function getPLLScramble(type, length, cases) {
 		var pllcase = pll_map[scrMgr.fixCase(cases, pllprobs)];
 		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, aufsuff, aufsuff);
+	}
+
+	function getPLLImage(cases, canvas) {
+		var arrows = pllImgParam[cases].slice(1);
+		if (arrows.length == 2) {
+			arrows = arrows.concat([[arrows[0][1], arrows[0][0]], [arrows[1][1], arrows[1][0]]])
+		}
+		image.llImage('DDDDDDDDD' + pllImgParam[cases][0], arrows, canvas);
 	}
 
 	var oll_map = [
@@ -685,10 +722,25 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	];
 	var ollprobs = [1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2];
 	var ollfilter = ['PLL', 'Point-1', 'Point-2', 'Point-3', 'Point-4', 'Square-5', 'Square-6', 'SLBS-7', 'SLBS-8', 'Fish-9', 'Fish-10', 'SLBS-11', 'SLBS-12', 'Knight-13', 'Knight-14', 'Knight-15', 'Knight-16', 'Point-17', 'Point-18', 'Point-19', 'CO-20', 'OCLL-21', 'OCLL-22', 'OCLL-23', 'OCLL-24', 'OCLL-25', 'OCLL-26', 'OCLL-27', 'CO-28', 'Awkward-29', 'Awkward-30', 'P-31', 'P-32', 'T-33', 'C-34', 'Fish-35', 'W-36', 'Fish-37', 'W-38', 'BLBS-39', 'BLBS-40', 'Awkward-41', 'Awkward-42', 'P-43', 'P-44', 'T-45', 'C-46', 'L-47', 'L-48', 'L-49', 'L-50', 'I-51', 'I-52', 'L-53', 'L-54', 'I-55', 'I-56', 'CO-57'];
+	var ollImgParam = [0x000ff, 0xeba00, 0xdda00, 0x5b620, 0x6d380, 0x8360b, 0x60b16, 0x1362a, 0x64392, 0x2538a, 0x9944c, 0x9160e, 0x44b13, 0x1a638, 0x2c398, 0x8a619, 0x28b1c, 0x4b381, 0x49705, 0xc9a05, 0x492a5, 0x1455a, 0xa445a, 0x140fa, 0x101de, 0x2047e, 0x2095e, 0x1247a, 0x012af, 0x1138e, 0x232aa, 0x50396, 0x0562b, 0x1839c, 0x2a2b8, 0x4a1d1, 0xc4293, 0x0338b, 0x11a2e, 0x18a3c, 0x8c299, 0x152aa, 0x0954d, 0xe0296, 0x03a2b, 0xa829c, 0x43863, 0x52b12, 0xa560a, 0xe4612, 0xec450, 0x1ab18, 0x53942, 0x54712, 0x1570a, 0x1c718, 0xaaa18, 0x082bd];
 
 	function getOLLScramble(type, length, cases) {
 		var ollcase = oll_map[scrMgr.fixCase(cases, ollprobs)];
 		return getAnyScramble(0xba987654ffff, ollcase[0], 0x7654ffff, ollcase[1], aufsuff, aufsuff);
+	}
+
+	function getOLLImage(cases, canvas) {
+		var face = '';
+		var val = ollImgParam[cases];
+		for (var i = 0; i < 21; i++) {
+			if (i == 4) {
+				face += 'D';
+			} else {
+				face += (val & 1) ? 'D' : 'G';
+				val >>= 1;
+			}
+		}
+		image.llImage(face, null, canvas);
 	}
 
 	function getEOLineScramble() {
@@ -747,7 +799,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('ll', getLLScramble)
 		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs])
 		('f2l', getF2LScramble)
-		('zbll', getZBLLScramble, [zbfilter, zbprobs])
+		('zbll', getZBLLScramble, [zbfilter, zbprobs, getZBLLImage])
 		('zzll', getZZLLScramble)
 		('ttll', getTTLLScramble)
 		('zbls', getZBLSScramble)
@@ -757,8 +809,8 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('cll', getCLLScramble)
 		('coll', getCOLLScramble, [cmfilter, cmprobs])
 		('ell', getELLScramble)
-		('pll', getPLLScramble, [pllfilter, pllprobs])
-		('oll', getOLLScramble, [ollfilter, ollprobs])
+		('pll', getPLLScramble, [pllfilter, pllprobs, getPLLImage])
+		('oll', getOLLScramble, [ollfilter, ollprobs, getOLLImage])
 		('2gll', get2GLLScramble)
 		('easyc', getEasyCrossScramble)
 		('eoline', getEOLineScramble);

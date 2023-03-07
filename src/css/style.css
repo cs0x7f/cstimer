@@ -749,7 +749,7 @@ div.helptable ul {
 	white-space: normal;
 }
 
-.dialogscropt .sflt label, .dialogscropt .sflt > div > span:first-child {
+.dialogscropt .sflt label, .dialogscropt .sflt > div > div.sgrp > span:first-child {
 	display: inline-block;
 	min-width: 45%;
 	text-align: left;
@@ -758,6 +758,12 @@ div.helptable ul {
 
 .dialogscropt .sflt label {
 	min-width: 24%;
+}
+
+.dialogscropt .bimg {
+	border: 1px dashed;
+	border-radius: 3px;
+	border-radius: 0.2rem;
 }
 
 select, input[type='button'], input[type='text'] {

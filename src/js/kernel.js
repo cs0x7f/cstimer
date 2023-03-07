@@ -572,11 +572,11 @@ var kernel = execMain(function() {
 			"#logo{color:?;border-color:?;background-color:?}" +
 			".mybutton,.tab,.cntbar{border-color:?}" +
 			"html:not(.m) .mybutton:hover,.mybutton:active,.tab:active,.mywindow,.popup,.dialog{background-color:?}" +
-			".mybutton.enable,.tab.enable,.cntbar,.selected,table.opttable tr th:first-child,div.helptable h2,div.helptable h3{background-color:?}" +
+			".mybutton.enable,.tab.enable,.cntbar,.selected,table.opttable tr th:first-child,div.helptable h2,div.helptable h3,.sflt div.sgrp{background-color:?}" +
 			"#gray{background-color:?}" +
 			"html:not(.m) .times:hover,html:not(.m) .click:hover,.times:active,.click:active,textarea{background-color:?}" +
 			".click{color:?}" +
-			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr{border-color:?}" +
+			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr,.sflt .bimg{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
 			"input:disabled,table.opttable tr:nth-child(odd) td:first-child,div.helptable li:nth-child(odd){background:?}" +

@@ -640,8 +640,7 @@ posit:
 			}
 		}
 
-		return function(size, moveseq) {
-			colors = kernel.getProp('colcube').match(colre);
+		function genPosit(size, moveseq) {
 			var cnt = 0;
 			for (var i = 0; i < 6; i++) {
 				for (var f = 0; f < size * size; f++) {
@@ -660,6 +659,11 @@ posit:
 					doslice((moves[s][0] + 3) % 6, 0, moves[s][2] + 4, size);
 				}
 			}
+			return posit;
+		}
+
+		return function(size, moveseq) {
+			genPosit(size, moveseq);
 
 			var imgSize = kernel.getProp('imgSize') / 50;
 			canvas.width(39 * imgSize + 'em');
@@ -668,10 +672,61 @@ posit:
 			canvas.attr('width', 39 * size / 9 * width + 1);
 			canvas.attr('height', 29 * size / 9 * width + 1);
 
+			colors = kernel.getProp('colcube').match(colre);
 			for (var i = 0; i < 6; i++) {
 				face(i, size);
 			}
 		}
+	})();
+
+	/**
+	 *	last layer image
+	 *	pieces = U1U2...U9F1..F3R1..L3
+	 *	   B3 B2 B1
+	 *	L1 U1 U2 U3 R3
+	 *	L2 U4 U5 U6 R2
+	 *	L3 U7 U8 U9 R1
+	 *	   F1 F2 F3
+	 */
+	var llImage = (function() {
+		function drawImage(pieces, arrows, _canvas) {
+			var canvas = $(_canvas);
+			var colors = kernel.getProp('colcube').match(colre);
+			var ctx = canvas[0].getContext('2d');
+			var width = 50;
+			canvas.attr('width', 4 * width + 1);
+			canvas.attr('height', 4 * width + 1);
+			for (var i = 0; i < 9; i++) {
+				var x = i % 3 + 0.5;
+				var y = ~~(i / 3) + 0.5;
+				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i])] || '#888', [
+					[x, x + 1, x + 1, x],
+					[y, y, y + 1, y + 1]
+				], [width, 0, 0]);
+			}
+			for (var i = 0; i < 12; i++) {
+				var x = i % 3;
+				var rot = ~~(i / 3);
+				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i + 9])] || '#888', Rotate([
+					[x - 1.5, x - 0.5, (x - 0.5) * 0.8, (x - 1.5) * 0.8],
+					[1.55, 1.55, 2, 2]
+				], -rot * PI / 2), [width, 2, 2]);
+			}
+			arrows = arrows || [];
+			for (var i = 0; i < arrows.length; i++) {
+				var arrow = arrows[i];
+				var x1 = arrow[0] % 3 + 1;
+				var y1 = ~~(arrow[0] / 3) + 1;
+				var x2 = arrow[1] % 3 + 1;
+				var y2 = ~~(arrow[1] / 3) + 1;
+				var length = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+				drawPolygon(ctx, '#000', Rotate([
+					[0.2, length - 0.4, length - 0.4, length - 0.1, length - 0.4, length - 0.4, 0.2],
+					[0.05, 0.05, 0.15, 0, -0.15, -0.05, -0.05]
+				], Math.atan2(y2 - y1, x2 - x1)), [width, x1, y1]);
+			}
+		}
+		return drawImage;
 	})();
 
 	var ftoImage = (function() {
@@ -1079,6 +1134,7 @@ posit:
 	});
 
 	return {
-		draw: genImage
+		draw: genImage,
+		llImage: llImage
 	}
 });
