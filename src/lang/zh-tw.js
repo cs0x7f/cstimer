@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['轉動前面', '轉動後面']
 ];
 var SCRAMBLE_NOOBSS = ' 順時針九十度,| 逆時針九十度,| 一百八十度,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = '是否重置階段中的所有時間?';
 var STATS_CFM_DELSS = '刪除階段 [%s]?';
 var STATS_CFM_DELMUL = '從本索引值刪除幾個成績?';

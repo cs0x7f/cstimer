@@ -147,8 +147,8 @@ var scramble = execMain(function(rn, rndEl) {
 	var scrOpt = $('<input type="button" class="icon">').val('\ue994');
 	var scrOptDiv = $('<div>');
 	var scrFltDiv = $('<div class="sflt">');
-	var scrFltSelAll = $('<input type="button">').val('Select All');
-	var scrFltSelNon = $('<input type="button">').val('Select None');
+	var scrFltSelAll = $('<input type="button">').val(SCROPT_BTNALL);
+	var scrFltSelNon = $('<input type="button">').val(SCROPT_BTNNONE);
 	var scrLen = $('<input type="text" maxlength="3">');
 	var sdiv = $('<div>');
 	var ssdiv = $('<div id="scrambleTxt"/>');
@@ -543,14 +543,14 @@ var scramble = execMain(function(rn, rndEl) {
 				scrFltDiv.append($('<div>').attr('data', g).append(
 					$('<div class="sgrp">').append(
 						$('<span>').html(g + ' ' + cntSel(g)), ' | ',
-						$('<span class="click">').html('All').click(function() {
+						$('<span class="click">').html(SCROPT_BTNALL).click(function() {
 							var g = $(this).parent().parent().attr('data');
 							$.each(dataGroup[g], function(idx, val) {
 								chkBoxList[val][0].checked = true;
 							});
 							$(this).parent().children().first().html(g + ' ' + cntSel(g));
 						}), ' | ',
-						$('<span class="click">').html('None').click(function() {
+						$('<span class="click">').html(SCROPT_BTNNONE).click(function() {
 							var g = $(this).parent().parent().attr('data');
 							$.each(dataGroup[g], function(idx, val) {
 								chkBoxList[val][0].checked = false;
@@ -600,7 +600,7 @@ var scramble = execMain(function(rn, rndEl) {
 					}
 				}
 				if (!hasVal) {
-					alert('Should Select At Least One Case');
+					alert(SCROPT_EMPTYALT);
 				} else {
 					scrFlt = [type, data];
 					var scrFltStr = JSON.stringify(scrFlt);
@@ -614,7 +614,7 @@ var scramble = execMain(function(rn, rndEl) {
 				}
 			}
 		}
-		kernel.showDialog([scrOptDiv, procDialog, null, procDialog], 'scropt', 'Scramble Options');
+		kernel.showDialog([scrOptDiv, procDialog, null, procDialog], 'scropt', SCROPT_TITLE);
 	}
 
 	var isEn = false;

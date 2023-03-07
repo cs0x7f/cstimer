@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['turn the front face', 'turn the back face']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'reset all times in this session?';
 var STATS_CFM_DELSS = 'delete session [%s]?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';

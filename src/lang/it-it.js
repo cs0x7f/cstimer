@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['ruota la faccia frontale', 'ruota la faccia posteriore']
 ];
 var SCRAMBLE_NOOBSS = ' ruota orario 90 gradi,| ruota antiorario 90 gradi,| ruota 180 gradi,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Azzera tutti i tempi in questa sessione?';
 var STATS_CFM_DELSS = 'eliminare la sessione [%s]?';
 var STATS_CFM_DELMUL = 'Quanti tempi eliminare a partire dall\'indice corrente?';

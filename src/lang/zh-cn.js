@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['前面', '后面']
 ];
 var SCRAMBLE_NOOBSS = '顺时针转90度,|逆时针转90度,|转180度,';
+var SCROPT_TITLE = '打乱选项';
+var SCROPT_BTNALL = '全选';
+var SCROPT_BTNNONE = '清空';
+var SCROPT_EMPTYALT = '请至少选择一个情况';
 var STATS_CFM_RESET = '确认清空该组所有数据？';
 var STATS_CFM_DELSS = '确认删除分组[%s]？';
 var STATS_CFM_DELMUL = '从当前位置开始删除几个成绩？';

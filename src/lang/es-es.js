@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['gira la capa frontal', 'gira la capa trasera']
 ];
 var SCRAMBLE_NOOBSS = ' en sentido horario 90 grados,| en sentido antihorario 90 grados,| 180 grados,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = '¿Desea reiniciar todos los tiempos de la sesión?';
 var STATS_CFM_DELSS = '¿Seguro que quieres eliminar la sesión [%s]?';
 var STATS_CFM_DELMUL = '¿Cuántos valores quieres eliminar desde este tiempo?';

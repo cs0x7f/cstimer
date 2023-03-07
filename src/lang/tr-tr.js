@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['ön yüzü', 'arka yüzü']
 ];
 var SCRAMBLE_NOOBSS = ' saat yönüne 90 derece çevir,| saatin tersi yönüne 90 derece çevir,| 180 derece çevir,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'bu sezondaki tüm süreleri sıfırla?';
 var STATS_CFM_DELSS = 'Oturumu sil [%s]';
 var STATS_CFM_DELMUL = 'buradan silinen değer sayısı?';

@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['vend front siden', 'vend bagsiden']
 ];
 var SCRAMBLE_NOOBSS = 'med uret af 90 grader,| mod uret af 90 grader,| af 180 degrees,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Nulstil alle tider i denne session??';
 var STATS_CFM_DELSS = 'slet session [%s]?';
 var STATS_CFM_DELMUL = 'Antallet af slettede værdier fra nuværende indeks?';

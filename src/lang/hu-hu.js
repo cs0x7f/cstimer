@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['fordítsd az első oldalt', 'fordítsd a hátsó oldalt']
 ];
 var SCRAMBLE_NOOBSS = ' 90 fokkal óramutató járásval megegyezően,| 90 fokkal óramutató járásával ellenkezően,| 180 fokot,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Időszak eredményeinek törlése??';
 var STATS_CFM_DELSS = 'Törlöd [%s] időszakot?';
 var STATS_CFM_DELMUL = 'Hány értéket szeretnél törölni a jelenlegi időszakból?';

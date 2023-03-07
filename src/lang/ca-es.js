@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['Giri la cara frontal', 'Giri la cara posterior']
 ];
 var SCRAMBLE_NOOBSS = 'En sentit horari 90 graus,| En sentit anti-horari 90 graus| 180 graus';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Reiniciar tots els els temps en aquesta sessió?';
 var STATS_CFM_DELSS = 'Eliminar sessió [%s]?';
 var STATS_CFM_DELMUL = 'El nombre de valors eliminats de l\'índex actual?';

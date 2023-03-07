@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['okreni prednju stranu', 'okreni stražnju stranu']
 ];
 var SCRAMBLE_NOOBSS = ' u smjeru kazaljke na satu za 90°,| suprotno smjeru kazaljke na satu za 90°,| za 180°,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'resetiraj sva vremena u ovoj sesiji?';
 var STATS_CFM_DELSS = 'obriši sesiju [%s]?';
 var STATS_CFM_DELMUL = 'Broj izbrisanih vrijednosti iz trenutnog indeksa?';

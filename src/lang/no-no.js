@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['Roter fronten', 'Roter baksiden ']
 ];
 var SCRAMBLE_NOOBSS = 'Med klokken 90 grader,| mot klokken 90 grader,| 180 grader,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Resett alle tidene i denne økten';
 var STATS_CFM_DELSS = 'slett økten [%s]?';
 var STATS_CFM_DELMUL = 'Antall slettede verdier fra gjeldende indeks?';

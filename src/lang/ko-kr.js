@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['앞면을', '뒷면을']
 ];
 var SCRAMBLE_NOOBSS = ' 시계 방향으로 90도 돌리기,| 반시계 방향으로 90도 돌리기,| 180도 돌리기,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = '이 모둠의 시간목록을 초기화할까요?';
 var STATS_CFM_DELSS = '[%s] 모둠을 삭제하시겠습니까?';
 var STATS_CFM_DELMUL = '해당 위치에서 몇 개의 값을 지울까요?';

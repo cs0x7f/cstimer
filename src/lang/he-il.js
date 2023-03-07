@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['סובב את הפאה הקדמית', 'סובב את הפאה האחורית']
 ];
 var SCRAMBLE_NOOBSS = 'בכיוון השעון 90°,| נגד כיוון השעון 90°,| ב-180°';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'אפס את כל הזמנית בסשן הזה?';
 var STATS_CFM_DELSS = 'מחק סשן [%s]?';
 var STATS_CFM_DELMUL = 'כמות הערכים המחוקים מהאינדקס הנוכחי?';

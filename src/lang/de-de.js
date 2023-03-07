@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['drehe die vordere Fläche', 'drehe die hintere Fläche']
 ];
 var SCRAMBLE_NOOBSS = 'um 90° im Uhrzeigersinn, |um 90° gegen den Uhrzeigersinn, | um 180°';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'alle zeiten in dieser Sitzung zurück setzen?';
 var STATS_CFM_DELSS = 'Sitzung [%s] löschen?';
 var STATS_CFM_DELMUL = 'Anzahl der zu löschenden Einträge ab aktuellem Index?';

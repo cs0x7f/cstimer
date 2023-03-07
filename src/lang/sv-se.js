@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['vrid den främsta sidan', 'vrid den bakre sidan']
 ];
 var SCRAMBLE_NOOBSS = ' medurs med 90 grader,| moturs med 90 grader,| med 180 grader';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Återställ alla tider i den här sessionen?';
 var STATS_CFM_DELSS = 'Ta bort sessioner [%s]?';
 var STATS_CFM_DELMUL = 'Antalet borttagna värden från nuvarande Index?';

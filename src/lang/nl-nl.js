@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['Draai de voorkant', 'Draai de achterkant']
 ];
 var SCRAMBLE_NOOBSS = ' 90 graden met de klok mee,| 90 graden tegen de klok in,| 180 graden,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Herstel alle tijden van deze sessie?';
 var STATS_CFM_DELSS = 'sessie [%s] verwijderen?';
 var STATS_CFM_DELMUL = 'Het aantal verwijderde waarden van de huidige index?';

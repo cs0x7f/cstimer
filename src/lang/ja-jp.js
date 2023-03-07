@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['turn the front face', 'turn the back face']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'このセッションの全タイムをリセットしますか？';
 var STATS_CFM_DELSS = 'セッション [%s] を削除しますか？';
 var STATS_CFM_DELMUL = '現在のインデックスから削除する値の個数は？';

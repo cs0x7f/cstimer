@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['Tourne la face de devant', 'Tourne la face de derrière']
 ];
 var SCRAMBLE_NOOBSS = ' de 90 degrés dans le sens des aiguilles d\'une montre,| de 90 degrés dans le sens inverse des aiguilles d\'une montre,| de 180 degrés,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'Effacer tous les temps de cette session ?';
 var STATS_CFM_DELSS = 'Effacer la session [%s]?';
 var STATS_CFM_DELMUL = 'Nombre de valeurs effacées de l\'index en cours ?';

@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['gire a face da frente', 'gire a face de trás']
 ];
 var SCRAMBLE_NOOBSS = ' 90 graus no sentido horário,| 90 graus no sentido anti-horário,|  180 graus,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'apagar todos os tempos desta sessão??????';
 var STATS_CFM_DELSS = 'Deletar a sessão [%s]????';
 var STATS_CFM_DELMUL = 'Deletar quantas solves a partir do índice atual?';

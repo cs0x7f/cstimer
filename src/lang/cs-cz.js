@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['otočit přední stranu', 'otočit zadní stranu']
 ];
 var SCRAMBLE_NOOBSS = ' po směru hodin po 90 stupních,| proti směru hodin po 90 stupních,| po 180 supních,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'resetovat všechny časy v této relaci?';
 var STATS_CFM_DELSS = 'smazat relaci [%s]?';
 var STATS_CFM_DELMUL = 'Číslo Smazaných Hodnot Z Aktuálního Indexu?';

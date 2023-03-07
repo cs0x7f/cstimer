@@ -398,6 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['повернуть заднюю грань', 'повернуть заднюю грань']
 ];
 var SCRAMBLE_NOOBSS = ' по часовой стрелке на 90 градусов,| против часовой стрелки на 90 градусов,| на 180 градусов,';
+var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNNONE = 'Clear';
+var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'перезагрузить все время в этой сессии?';
 var STATS_CFM_DELSS = 'удалить сессию[%s]?';
 var STATS_CFM_DELMUL = 'Количество Удаленных Величин В Текущем Индексе?';
