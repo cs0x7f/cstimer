@@ -587,6 +587,9 @@ var GiikerCube = execMain(function() {
 					var m = parseInt(value.slice(12 + i * 5, 17 + i * 5), 2);
 					timeOffs[i] = parseInt(value.slice(47 + i * 16, 63 + i * 16), 2);
 					prevMoves[i] = "URFDLB".charAt(m >> 1) + " '".charAt(m & 1);
+					if (m >= 12) { // invalid data
+						prevMoves[i] = "U ";
+					}
 				}
 				updateMoveTimes(timestamp, 1);
 
