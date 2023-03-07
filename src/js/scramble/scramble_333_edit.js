@@ -470,61 +470,73 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xffff7654ffff, 0xffff0000ffff, 0xffffffff, 0xffffffff);
 	}
 
-	var zbll_map = [
-		[0x3210, 0x2121, 'FDFDDDBDBLGRDGDRGLDGD'], // H-BBFF
-		[0x3012, 0x2121, 'RDLDDDRDLBGBDGDFGFDGD'], // H-FBFB
-		[0x3120, 0x2121, 'RDBDDDLDBFGRDGDLGFDGD'], // H-RFLF
-		[0x3201, 0x2121, 'LDRDDDFDFRGLDGDBGBDGD'], // H-RLFF
-		[0x3012, 0x1020, 'DDBDDDLDDFGRFGRDGLBGD'], // L-FBRL
-		[0x3021, 0x1020, 'DDLDDDRDDBGRFGBDGFLGD'], // L-LBFF
-		[0x3201, 0x1020, 'DDRDDDRDDBGLBGFDGFLGD'], // L-LFFB
-		[0x3102, 0x1020, 'DDLDDDLDDFGBRGBDGRFGD'], // L-LFFR
-		[0x3210, 0x1020, 'DDLDDDFDDRGFLGBDGBRGD'], // L-LRFF
-		[0x3120, 0x1020, 'DDRDDDLDDFDBRDFDGLBGD'], // L-RFBL
-		[0x3102, 0x1122, 'BDFDDDFDBRGDLGLDGRDGD'], // Pi-BFFB
-		[0x3120, 0x1122, 'RDLDDDRDLBGDFGBDGFDGD'], // Pi-FBFB
-		[0x3012, 0x1122, 'FDLDDDFDRRGDBGBDGLDGD'], // Pi-FRFL
-		[0x3021, 0x1122, 'BDRDDDLDBFGDLGFDGRDGD'], // Pi-FRLF
-		[0x3210, 0x1122, 'LDFDDDRDFBGDRGLDGBDGD'], // Pi-LFRF
-		[0x3201, 0x1122, 'BDLDDDLDFFGDRGBDGRDGD'], // Pi-RFFL
-		[0x3120, 0x2220, 'LDRDDDFDDRGLBGDBGDFGD'], // S-FBBF
-		[0x3102, 0x2220, 'FDBDDDLDDFGBRGDLGDRGD'], // S-FBFB
-		[0x3210, 0x2220, 'RDBDDDFDDRGFLGDLGDBGD'], // S-FLFR
-		[0x3201, 0x2220, 'RDBDDDLDDFGRFGDLGDBGD'], // S-FLRF
-		[0x3021, 0x2220, 'BDRDDDFDDRGFLGDBGDLGD'], // S-LFFR
-		[0x3012, 0x2220, 'BDRDDDLDDFGRFGDBGDLGD'], // S-LFRF
-		[0x3210, 0x2100, 'FDFDDDDDDBGBRGDRGLDGL'], // T-BBFF
-		[0x3012, 0x2100, 'BDFDDDDDDBGFLGDRGRDGL'], // T-FBFB
-		[0x3201, 0x2100, 'BDBDDDDDDLGRFGDLGRDGF'], // T-FFLR
-		[0x3120, 0x2100, 'BDLDDDDDDBGRFGDFGRDGL'], // T-FLFR
-		[0x3102, 0x2100, 'RDBDDDDDDLGBRGDLGFDGF'], // T-RFLF
-		[0x3021, 0x2100, 'FDBDDDDDDRGRFGDLGLDGB'], // T-RLFF
-		[0x3021, 0x1200, 'FDFDDDDDDBGBRGLDGDRGL'], // D-BBFF
-		[0x3201, 0x1200, 'BDFDDDDDDFGBRGLDGDLGR'], // D-BFFB
-		[0x3012, 0x1200, 'LDLDDDDDDFGBRGBDGDFGR'], // D-FFLR
-		[0x3120, 0x1200, 'RDFDDDDDDBGRFGLDGDBGL'], // D-FRLF
-		[0x3102, 0x1200, 'LDBDDDDDDBGRFGRDGDFGL'], // D-LFFR
-		[0x3210, 0x1200, 'LDRDDDDDDBGBRGFDGDFGL'], // D-LRFF
-		[0x3102, 0x1101, 'FDBDDDDDRBGFDGRDGLDGL'], // aS-FBBF
-		[0x3120, 0x1101, 'FDBDDDDDLFGBDGRDGLDGR'], // aS-FBFB
-		[0x3012, 0x1101, 'RDFDDDDDLRGBDGLDGFDGB'], // aS-FRFL
-		[0x3021, 0x1101, 'LDBDDDDDFFGLDGRDGBDGR'], // aS-FRLF
-		[0x3210, 0x1101, 'LDFDDDDDRRGFDGLDGBDGB'], // aS-LFRF
-		[0x3201, 0x1101, 'LDFDDDDDBFGRDGLDGBDGR'], // aS-RFFL
-		[0xffff, 0x0000, 'DDDDDDDDDGGGGGGGGGGGG'] // PLL
+	var coll_map = [
+		[0x3210, 0x2121, 'FeFeeeBeBLGRDGDRGLDGD'], // H-BBFF
+		[0x3012, 0x2121, 'ReLeeeReLBGBDGDFGFDGD'], // H-FBFB
+		[0x3120, 0x2121, 'ReBeeeLeBFGRDGDLGFDGD'], // H-RFLF
+		[0x3201, 0x2121, 'LeReeeFeFRGLDGDBGBDGD'], // H-RLFF
+		[0x3012, 0x1020, 'DeBeeeLeDFGRFGRDGLBGD'], // L-FBRL
+		[0x3021, 0x1020, 'DeLeeeReDBGRFGBDGFLGD'], // L-LBFF
+		[0x3201, 0x1020, 'DeReeeReDBGLBGFDGFLGD'], // L-LFFB
+		[0x3102, 0x1020, 'DeLeeeLeDFGBRGBDGRFGD'], // L-LFFR
+		[0x3210, 0x1020, 'DeLeeeFeDRGFLGBDGBRGD'], // L-LRFF
+		[0x3120, 0x1020, 'DeReeeLeDFDBRDFDGLBGD'], // L-RFBL
+		[0x3102, 0x1122, 'BeFeeeFeBRGDLGLDGRDGD'], // Pi-BFFB
+		[0x3120, 0x1122, 'ReLeeeReLBGDFGBDGFDGD'], // Pi-FBFB
+		[0x3012, 0x1122, 'FeLeeeFeRRGDBGBDGLDGD'], // Pi-FRFL
+		[0x3021, 0x1122, 'BeReeeLeBFGDLGFDGRDGD'], // Pi-FRLF
+		[0x3210, 0x1122, 'LeFeeeReFBGDRGLDGBDGD'], // Pi-LFRF
+		[0x3201, 0x1122, 'BeLeeeLeFFGDRGBDGRDGD'], // Pi-RFFL
+		[0x3120, 0x2220, 'LeReeeFeDRGLBGDBGDFGD'], // S-FBBF
+		[0x3102, 0x2220, 'FeBeeeLeDFGBRGDLGDRGD'], // S-FBFB
+		[0x3210, 0x2220, 'ReBeeeFeDRGFLGDLGDBGD'], // S-FLFR
+		[0x3201, 0x2220, 'ReBeeeLeDFGRFGDLGDBGD'], // S-FLRF
+		[0x3021, 0x2220, 'BeReeeFeDRGFLGDBGDLGD'], // S-LFFR
+		[0x3012, 0x2220, 'BeReeeLeDFGRFGDBGDLGD'], // S-LFRF
+		[0x3210, 0x2100, 'FeFeeeDeDBGBRGDRGLDGL'], // T-BBFF
+		[0x3012, 0x2100, 'BeFeeeDeDBGFLGDRGRDGL'], // T-FBFB
+		[0x3201, 0x2100, 'BeBeeeDeDLGRFGDLGRDGF'], // T-FFLR
+		[0x3120, 0x2100, 'BeLeeeDeDBGRFGDFGRDGL'], // T-FLFR
+		[0x3102, 0x2100, 'ReBeeeDeDLGBRGDLGFDGF'], // T-RFLF
+		[0x3021, 0x2100, 'FeBeeeDeDRGRFGDLGLDGB'], // T-RLFF
+		[0x3021, 0x1200, 'FeFeeeDeDBGBRGLDGDRGL'], // D-BBFF
+		[0x3201, 0x1200, 'BeFeeeDeDFGBRGLDGDLGR'], // D-BFFB
+		[0x3012, 0x1200, 'LeLeeeDeDFGBRGBDGDFGR'], // D-FFLR
+		[0x3120, 0x1200, 'ReFeeeDeDBGRFGLDGDBGL'], // D-FRLF
+		[0x3102, 0x1200, 'LeBeeeDeDBGRFGRDGDFGL'], // D-LFFR
+		[0x3210, 0x1200, 'LeReeeDeDBGBRGFDGDFGL'], // D-LRFF
+		[0x3102, 0x1101, 'FeBeeeDeRBGFDGRDGLDGL'], // aS-FBBF
+		[0x3120, 0x1101, 'FeBeeeDeLFGBDGRDGLDGR'], // aS-FBFB
+		[0x3012, 0x1101, 'ReFeeeDeLRGBDGLDGFDGB'], // aS-FRFL
+		[0x3021, 0x1101, 'LeBeeeDeFFGLDGRDGBDGR'], // aS-FRLF
+		[0x3210, 0x1101, 'LeFeeeDeRRGFDGLDGBDGB'], // aS-LFRF
+		[0x3201, 0x1101, 'LeFeeeDeBFGRDGLDGBDGR'], // aS-RFFL
+		[0x3021, 0x0000, 'DeDeeeDeDBGRFGBRGFLGL'], // O-Adj
+		[0x3012, 0x0000, 'DeDeeeDeDBGFLGRFGBRGL'], // O-Diag
+		[0x3210, 0x0000, 'DeDeeeDeDBGBRGRFGFLGL']  // O-AUF
 	];
 
-	var zbprobs = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3];
+	var coprobs = [2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1];
 
-	var zbfilter = ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'PLL'];
+	var cofilter = ['H-BBFF', 'H-FBFB', 'H-RFLF', 'H-RLFF', 'L-FBRL', 'L-LBFF', 'L-LFFB', 'L-LFFR', 'L-LRFF', 'L-RFBL', 'Pi-BFFB', 'Pi-FBFB', 'Pi-FRFL', 'Pi-FRLF', 'Pi-LFRF', 'Pi-RFFL', 'S-FBBF', 'S-FBFB', 'S-FLFR', 'S-FLRF', 'S-LFFR', 'S-LFRF', 'T-BBFF', 'T-FBFB', 'T-FFLR', 'T-FLFR', 'T-RFLF', 'T-RLFF', 'U-BBFF', 'U-BFFB', 'U-FFLR', 'U-FRLF', 'U-LFFR', 'U-LRFF', 'aS-FBBF', 'aS-FBFB', 'aS-FRFL', 'aS-FRLF', 'aS-LFRF', 'aS-RFFL', 'O-Adj', 'O-Diag', 'O-AUF'];
 
 	function getZBLLScramble(type, length, cases) {
-		var zbcase = zbll_map[scrMgr.fixCase(cases, zbprobs)];
-		return getAnyScramble(0xba987654ffff, 0, zbcase[0] + 0x76540000, zbcase[1], aufsuff, aufsuff);
+		var cocase = coll_map[scrMgr.fixCase(cases, coprobs)];
+		return getAnyScramble(0xba987654ffff, 0, cocase[0] + 0x76540000, cocase[1], aufsuff, aufsuff);
 	}
 
-	function getZBLLImage(cases, canvas) {
-		var face = zbll_map[cases][2];
+	function getCMLLScramble(type, length, cases) {
+		var cocase = coll_map[scrMgr.fixCase(cases, coprobs)];
+		var rnd4 = rn(4);
+		var presuff = [];
+		for (var i = 0; i < aufsuff.length; i++) {
+			presuff.push(aufsuff[i].concat(rlpresuff[rnd4]));
+		}
+		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, cocase[0] + 0x76540000, cocase[1], presuff, aufsuff) + rlappsuff[rnd4];
+	}
+
+	function getCOLLImage(efill, cases, canvas) {
+		var face = coll_map[cases][2].replaceAll('e', efill || 'U');
 		image.llImage(face, null, canvas);
 	}
 
@@ -543,32 +555,6 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	function getLSEScramble() {
 		var rnd4 = rn(4);
 		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [rlpresuff[rnd4]], aufsuff) + rlappsuff[rnd4];
-	}
-
-	var cmll_map = [
-		0x0000, // O or solved
-		0x1212, // H
-		0x0102, // L
-		0x1122, // Pi
-		0x0222, // S
-		0x0021, // T
-		0x0012, // U
-		0x0111 // aS
-	];
-	var cmprobs = [6, 12, 24, 24, 24, 24, 24, 24];
-	var cmfilter = ['O', 'H', 'L', 'Pi', 'S', 'T', 'U', 'aS'];
-
-	function getCMLLScramble(type, length, cases) {
-		var rnd4 = rn(4);
-		var presuff = [];
-		for (var i = 0; i < aufsuff.length; i++) {
-			presuff.push(aufsuff[i].concat(rlpresuff[rnd4]));
-		}
-		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x7654ffff, cmll_map[scrMgr.fixCase(cases, cmprobs)], presuff, aufsuff) + rlappsuff[rnd4];
-	}
-
-	function getCOLLScramble(type, length, cases) {
-		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x7654ffff, cmll_map[scrMgr.fixCase(cases, cmprobs)], aufsuff, aufsuff);
 	}
 
 	function getCLLScramble() {
@@ -799,15 +785,15 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('ll', getLLScramble)
 		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs])
 		('f2l', getF2LScramble)
-		('zbll', getZBLLScramble, [zbfilter, zbprobs, getZBLLImage])
+		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('zzll', getZZLLScramble)
 		('ttll', getTTLLScramble)
 		('zbls', getZBLSScramble)
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs])
 		('lse', getLSEScramble)
-		('cmll', getCMLLScramble, [cmfilter, cmprobs])
+		('cmll', getCMLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])
 		('cll', getCLLScramble)
-		('coll', getCOLLScramble, [cmfilter, cmprobs])
+		('coll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('ell', getELLScramble)
 		('pll', getPLLScramble, [pllfilter, pllprobs, getPLLImage])
 		('oll', getOLLScramble, [ollfilter, ollprobs, getOLLImage])
