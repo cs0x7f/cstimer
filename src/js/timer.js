@@ -430,7 +430,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function parseInput() {
 			//                          |1st     |2nd    |3rd    |4th        |5th        |6th              |7th                    |8th              |9th
-			var reg = /^(?:[\d]+\. )?\(?(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?(?:=([\d:.+]+?))?(?:\[([^\]]+)\])?\)?\s*(?:   ([^@].*?))?(?:   @(.*?))?$/;
+			var reg = /^\s*(?:[\d]+\. )?\(?(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?(?:=([\d:.+]+?))?(?:\[([^\]]+)\])?\)?\s*(?:   ([^@].*?))?(?:   @(.*?))?\s*$/;
 			var timeRe = /^(\d*?):?(\d*?):?(\d*\.?\d*?)$/;
 			var arr = input.val();
 			var now = $.now();
