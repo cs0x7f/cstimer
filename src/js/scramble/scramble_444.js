@@ -1772,7 +1772,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
   }
 
   function $getMoveString(this$static) {
-    var finishSym, fixedMoves, i_0, idx, move, rot, sb, sym;
+    var finishSym, fixedMoves, i_0, i_1, idx, move, rot, ret, sym, axis, pows;
     fixedMoves = new Array(this$static.moveLength - (this$static.add1 ? 2 : 0));
     idx = 0;
     for (i_0 = 0; i_0 < this$static.length1; ++i_0) {
@@ -1789,20 +1789,43 @@ var scramble_444 = (function(rn, Cnk, circle) {
       }
     }
     finishSym = symmult[syminv[sym]][getSolvedSym($getCenter(this$static))];
-    sb = "";
+    ret = [];
     sym = finishSym;
     for (i_0 = idx - 1; i_0 >= 0; --i_0) {
       move = fixedMoves[i_0];
       move = ~~(move / 3) * 3 + (2 - move % 3);
       if (symmove[sym][move] >= 27) {
-        sb = sb + move2str_1[symmove[sym][move] - 9] + ' ';
+        ret.push(symmove[sym][move] - 9);
         rot = move2rot[symmove[sym][move] - 27];
         sym = symmult[sym][rot];
       } else {
-        sb = sb + move2str_1[symmove[sym][move]] + ' ';
+        ret.push(symmove[sym][move]);
       }
     }
-    return sb;
+    axis = -1;
+    idx = 0;
+    pows = [0, 0, 0];
+    for (i_0 = 0; i_0 < ret.length; ++i_0) {
+      move = ret[i_0];
+      if (axis != ~~(move / 3) % 3) {
+        for (i_1 = 0; i_1 < 3; i_1++) {
+          if (pows[i_1] % 4) {
+            ret[idx++] = move2str_1[i_1 * 9 + axis * 3 + pows[i_1] - 1] + ' ';
+            pows[i_1] = 0;
+          }
+        }
+        axis = ~~(move / 3) % 3;
+      }
+      pows[~~(move / 9)] += move % 3 + 1;
+    }
+    for (i_1 = 0; i_1 < 3; i_1++) {
+      if (pows[i_1] % 4) {
+        ret[idx++] = move2str_1[i_1 * 9 + axis * 3 + pows[i_1] - 1] + ' ';
+        pows[i_1] = 0;
+      }
+    }
+    ret = ret.slice(0, idx).join('');
+    return ret;
   }
 
   function $move_6(this$static, m_0) {
