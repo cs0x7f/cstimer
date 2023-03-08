@@ -74,6 +74,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
+	function updateMulPhase(totPhases, curProgress, now) {
+		if (curProgress < status) {
+			for (var i = status; i > curProgress; i--) {
+				curTime[i] = now - startTime;
+			}
+		}
+		status = Math.min(curProgress, status) || 1;
+		lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
+	}
+
 	var lcd = (function() {
 
 		var div;
@@ -858,6 +868,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					rawMoves[status] = inspectionMoves;
 					totPhases = status;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
+					updateMulPhase(totPhases, puzzleObj.isSolved(getProp('vrcMP', 'n')), now);
+					fixRelayCounter();
 					lcd.setRunning(true, true);
 					ui.setAutoShow(false);
 				}
@@ -869,19 +881,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (mstep == 0) {
 					rawMoves[status - 1].push([puzzleObj.move2str(move), now - startTime]);
 				}
+				var curProgress;
 				if (mstep == 2) {
-					var curProgress = puzzleObj.isSolved(getProp('vrcMP', 'n'));
-					if (curProgress < status) {
-						for (var i = status; i > curProgress; i--) {
-							curTime[i] = now - startTime;
-						}
-					}
-					status = Math.min(curProgress, status) || 1;
-					if (totPhases > 1) {
-						lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
-					}
+					curProgress = puzzleObj.isSolved(getProp('vrcMP', 'n'));
+					updateMulPhase(totPhases, curProgress, now);
+					fixRelayCounter();
 				}
-				if (curProgress == 0 && mstep == 2) {
+				if (mstep == 2 && curProgress == 0) {
 					moveCnt += puzzleObj.moveCnt();
 					if (curScrType.match(/^r\d+$/) && curScramble.length != 0) {
 						if (curScrType != "r3") {
@@ -967,13 +973,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			});
 		}
 
+		function fixRelayCounter() {
+			if (curScrType.match(/^r\d+$/)) {
+				lcd.setStaticAppend("<br>" + (curScramble.length + 1) + "/" + curScramble.len);
+			}
+		}
 
 		function scrambleIt() {
 			reset();
 			var scramble = curScramble;
 			if (curScrType.match(/^r\d+$/)) {
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
-				lcd.setStaticAppend("<br>" + (curScramble.length + 1) + "/" + curScramble.len);
+				fixRelayCounter();
 			}
 			scramble = puzzleObj.parseScramble(scramble);
 			isReseted = false;
@@ -1262,15 +1273,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			if (status >= 1) {
 				rawMoves[status - 1].push([prevMoves[0], now - startTime]);
-
 				var curProgress = cubeutil.getProgress(facelet, kernel.getProp('vrcMP', 'n'));
-				if (curProgress < status) {
-					for (var i = status; i > curProgress; i--) {
-						curTime[i] = now - startTime;
-					}
-				}
-				status = Math.min(curProgress, status) || 1;
-				lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
+				updateMulPhase(totPhases, curProgress, now);
+
 				if (facelet == mathlib.SOLVED_FACELET) {
 					rawMoves.reverse();
 					var prettyMoves = cubeutil.getPrettyMoves(rawMoves);
