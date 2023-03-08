@@ -708,7 +708,7 @@ posit:
 				var x = i % 3;
 				var rot = ~~(i / 3);
 				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i + 9])] || '#888', Rotate([
-					[x - 1.5, x - 0.5, (x - 0.5) * 0.8, (x - 1.5) * 0.8],
+					[x - 1.5, x - 0.5, (x - 0.5) * 0.9, (x - 1.5) * 0.9],
 					[1.55, 1.55, 2, 2]
 				], -rot * PI / 2), [width, 2, 2]);
 			}
@@ -724,6 +724,40 @@ posit:
 					[0.2, length - 0.4, length - 0.4, length - 0.1, length - 0.4, length - 0.4, 0.2],
 					[0.05, 0.05, 0.15, 0, -0.15, -0.05, -0.05]
 				], Math.atan2(y2 - y1, x2 - x1)), [width, x1, y1]);
+			}
+		}
+		return drawImage;
+	})();
+
+	/**
+	 *	cube image of URF faces
+	 *	pieces = U1U2...U9R1..R9F1..F9
+	 *	U1 U3 R3 R9
+	 *	U7 U9 R1 R7
+	 *	F1 F3
+	 * 	F7 F9
+	 */
+	var face3Image = (function() {
+		var width = 20;
+		var gap = 1;
+		var ftrans = [
+			[width * hsq3, -width * hsq3, (width * 3 + gap) * hsq3, width / 2, width / 2, 0],
+			[width * hsq3, 0, (width * 3 + gap * 2) * hsq3, -width / 2, width, width * 3 + gap * 1.5],
+			[width * hsq3, 0, 0, width / 2, width, width * 1.5 + gap * 1.5],
+		]
+		function drawImage(pieces, _canvas) {
+			var canvas = $(_canvas);
+			var colors = kernel.getProp('colcube').match(colre);
+			var ctx = canvas[0].getContext('2d');
+			canvas.attr('width', (6 * width + gap * 2) * hsq3 + 1);
+			canvas.attr('height', (6 * width + gap * 1.5) + 1);
+			for (var i = 0; i < 27; i++) {
+				var x = i % 3;
+				var y = ~~(i / 3) % 3;
+				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i])] || '#888', [
+					[x, x + 1, x + 1, x],
+					[y, y, y + 1, y + 1]
+				], ftrans[~~(i / 9)]);
 			}
 		}
 		return drawImage;
@@ -1135,6 +1169,7 @@ posit:
 
 	return {
 		draw: genImage,
-		llImage: llImage
+		llImage: llImage,
+		face3Image: face3Image
 	}
 });
