@@ -123,7 +123,7 @@ var GanTimerDriver = execMain(function () {
         if (!navigator.bluetooth)
             return Promise.reject("Bluetooth API is not supported by this browser. Try fresh Chrome version!");
 
-        return navigator.bluetooth.getAvailability().then(available => {
+        return navigator.bluetooth.getAvailability().then(function(available) {
             if (!available)
                 return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
         }).then(function () {
