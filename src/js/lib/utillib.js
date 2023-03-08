@@ -33,7 +33,7 @@ execWorker(function() {
 
 execMain(function() {
 	window.onerror = function(msg, url, line, col, error) {
-		if (!line && !col) {
+		if (!line && !col || /^chrome-extension/i.exec(url)) {
 			return;
 		}
 		if (error == undefined) {
@@ -42,10 +42,6 @@ execMain(function() {
 		var fingerprint = '';
 		try {
 			fingerprint = $.fingerprint();
-		} catch (e) {}
-		var prop = '';
-		try {
-			prop = LZString.compressToEncodedURIComponent(localStorage['properties']);
 		} catch (e) {}
 		$.post('bug.php', {
 			'version': CSTIMER_VERSION,

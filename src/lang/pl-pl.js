@@ -398,10 +398,10 @@ var SCRAMBLE_NOOBST = [
 	['przekręć przednią ściankę', 'przekręć tylnią ściankę']
 ];
 var SCRAMBLE_NOOBSS = ' w kierunku zgodnym z ruchem wskazówek zegara o 90 stopni,| w kierunku przeciwnym do ruchu wskazówek zegara o 90 stopni,| o 180 stopni';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_TITLE = 'Opcje scrambla';
+var SCROPT_BTNALL = 'Wszystkie';
+var SCROPT_BTNNONE = 'Wyczyść';
+var SCROPT_EMPTYALT = 'Proszę wybrać co najmniej jeden';
 var STATS_CFM_RESET = 'usunąć wszystkie czasy w tej sesji?';
 var STATS_CFM_DELSS = 'usunąć sesję?';
 var STATS_CFM_DELMUL = 'Liczba usuniętych wartości z bieżącego indeksu?';

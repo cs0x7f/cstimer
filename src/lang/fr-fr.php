@@ -1,7 +1,7 @@
 <h1>csTimer version <?php echo $version;?> - Chronomètre Professionnel de Speedcubing</h1>
 <?php include('lang.php') ?>
 <h2>Introduction</h2>
-<p>csTimer est un programme professionnel de chronométrage conçu pour les speedcubers. Il permet de :</p>
+<p>csTimer est un chronomètre professionnel conçu pour les speedcubers. Il permet de :</p>
 <ul>
 <li>Générer des mélanges pour <strong>toutes les épreuves officielles de la WCA</strong> ainsi que pour d'autres puzzles non officiels. Il permet aussi de générer des <strong>mélanges pour s'entraîner</strong> sur des étapes spécifiques (par ex. <strong>F2L, OLL, PLL, ZBLL</strong>, avec filtre des différents cas), etc.</li>
 <li>Accéder à de nombreuses fonctions statistiques : enregistrer les <strong>temps de passage</strong>; <strong>un nombre illimité de sessions</strong>, fusion/séparation de session, etc.</li>
@@ -48,52 +48,52 @@
 <li><strong data="opt_timeFormat">Format du temps</strong>. Format du temps à afficher.</li>
 <li><strong data="opt_atexpa">Exportation automatique (par 100 résolutions)</strong>. Si la fonction est activée, csTimer exporte automatiquement vos temps toutes les 100 résolutions vers l'endroit spécifié (fichier local, server de csTimer ou stockage Google).</li>
 <li><strong data="opt_expp">Importer d&#x27;anciennes données</strong>. Si vous avez chargé plusieurs backups, vous pouvez importer de 1 à plus de 10 des backups les plus récent. Si vous avez accidentellement chargé un backup vide, cette option vous aide à récupérer vos résolutions.</li>
-<li><strong data="opt_useLogo">Afficher des messages dans le logo</strong>. Le panneau du logo de « csTimer » peut afficher des informations qui vous intéressent, par exemple le fait que vous venez de battre votre PB.</li>
+<li><strong data="opt_useLogo">Afficher des messages dans le bloc du logo</strong>. Le panneau du logo de « csTimer » peut afficher des informations qui vous intéressent, par exemple le fait que vous venez de battre votre PB.</li>
 <li><strong data="opt_showAvg">Afficher les moyennes en cours</strong>. Vos moyennes en cours s'affichent sous le chronomètre principal : ao5 (Average of 5) et ao12 (Average of 12).</li>
 <li><strong data="opt_zoom">Zoom</strong>. Cette option vous permet d'ajuster la taille de tous les éléments.</li>
 <li><strong data="opt_font">Police du chronomètre</strong>. Police de caractères du chronomètre</li>
 <li><strong data="opt_uidesign">L&#x27;interface utilisateur est</strong>. Cette option permet d'afficher l'interface en "material design", ou d'en masquer les ombres.</li>
-<li><strong data="opt_view">Le style de l&#x27;interface est</strong>. Basculer entre l'affichage bureau et mobile.</li>
+<li><strong data="opt_view">Type d&#x27;interface</strong>. Basculer entre l'affichage bureau et mobile.</li>
 <li><strong data="opt_wndScr">Style du panneau Mélange</strong>. Incruster le mélange dans l'arrière-plan.</li>
 <li><strong data="opt_wndStat">Style du panneau Statistiques</strong>. Incruster la liste des temps dans l'arrière-plan.</li>
 <li><strong data="opt_wndTool">Style du panneau Outils</strong>. Incruster la boîte à outils dans l'arrière-plan.</li>
-<li><strong data="opt_bgImgO">Opacité de l&#x27;image de fond</strong>. Opacité de l'image d'arrière-plan.</li>
+<li><strong data="opt_bgImgO">Opacité du fond </strong>. Opacité de l'image d'arrière-plan.</li>
 <li><strong data="opt_bgImgS">Image de fond</strong>. Vous pouvez afficher votre propre image en arrière-plan mais seules les urls en https fonctionnent à cause des contraintes de sécurité du navigateur.</li>
 <li><strong data="opt_timerSize">Taille du chronomètre</strong>. Définir la taille du chronomètre principal.</li>
 <li><strong data="opt_smallADP">Utiliser une petite police pour les décimales</strong>. Utiliser une police plus petite pour les décimales du chronomètre principal.</li>
 <li><strong data="opt_useMouse">Lancer le chonomètre avec la souris</strong>. Utiliser la souris pour démarrer le chronomètre. Le clavier sera toujours utilisable.</li>
 <li><strong data="opt_useIns">Utiliser l&#x27;inspection WCA</strong>. Activer la procédure d'inspection WCA ce qui correspond à un compte-à-rebours de 15 secondes et des pénalités +2/DNF automatiques si vous dépassez.</li>
-<li><strong data="opt_voiceIns">Alerte vocale de l&#x27;inspection WCA</strong>. Alerte vocale à 8 et 12 secondes, pour simuler le comportement des juges en compétitions WCA.</li>
+<li><strong data="opt_voiceIns">Voix de l&#x27;inspection WCA</strong>. Alerte vocale à 8 et 12 secondes, pour simuler le comportement des juges en compétitions WCA.</li>
 <li><strong data="opt_voiceVol">Volume de la voix d&#x27;inspection</strong>. Volume de l'alerte vocale.</li>
 <li><strong data="opt_input">Entrer les temps avec</strong>. csTimer est capable d'ajouter des résolutions de différentes façons. En plus du chronométrage au clavier, il prend en charge la saisie manuelle, l'enregistrement automatique depuis un timer Stackmat, la connection à un cube Bluetooth, ou l'utilisation d'un Rubik's Cube virtuel.</li>
-<li><strong data="opt_intUN">Unité de la saisie de nombre</strong>. Quand vous entrer un entier XXX dans le champ de saisie, cela correspond-il à des secondes, des centièmes ou des millièmes ?</li>
+<li><strong data="opt_intUN">Unité de saisie des nombres</strong>. Quand vous entrer un entier XXX dans le champ de saisie, cela correspond-il à des secondes, des centièmes ou des millièmes ?</li>
 <li><strong data="opt_timeU">Rafraîchissement du chronomètre</strong>. Rafraîchissement du temps lors du chronométrage.</li>
 <li><strong data="opt_preTime">Tenir la barre d&#x27;espace appuyée pendant (en secondes)</strong>. Durée pendant laquelle la barre d'espace doit être maintenue enfoncée avant que le chronomètre passe au vert.</li>
 <li><strong data="opt_phases">Multi-phase</strong>. Nombre de phases, tapez sur n'importe quelle touche pour marquer un point de scission lors du chronométrage.</li>
-<li><strong data="opt_stkHead">Utiliser les informations sur l&#x27;état du stackmat</strong>. Le Stackmat communiquera son état ; par exemple si le capteur gauche ou droit est activé, alors csTimer sera capable d'utiliser cette information. Cependant une erreur de donnée peut arriver et créer un comportement inattendu.</li>
+<li><strong data="opt_stkHead">Utiliser les informations d&#x27;état du Stackmat</strong>. Le Stackmat rapportera son état. Ainsi, csTimer pourra par ex. savoir que le capteur gauche ou droit a été activé. Notez que des erreurs peuvent survenir et causer un comportement inattendu.</li>
 <li><strong data="opt_scrSize">Taille du mélange</strong>. Taille de texte du mélange.</li>
 <li><strong data="opt_scrASize">Taille du mélange automatique</strong>. La taille du texte s'ajuste automatiquement à la longueur du mélange (fonctionne avec l'option précédente).</li>
 <li><strong data="opt_scrMono">Mélange à espacement fixe</strong>. Utilisez une police à espacement unique pour le mélange.</li>
 <li><strong data="opt_scrLim">Limiter la taille de la zone de mélange</strong>. Permet de scroller dans le panneau du mélange pour éviter qu'il s'étire en hauteur et cache le chronomètre.</li>
 <li><strong data="opt_scrAlign">Alignement de la zone de mélange</strong>. Alignement de toute la zone de mélange, y compris le sélecteur du type de mélange.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Mouvements préparatoires avant le mélange - utilisé pour le Rubik's cube virtuel et l'aperçu du mélange.</li>
-<li><strong data="opt_scrFast">Utiliser des mélanges rapides pour 4x4x4 (non officiel)</strong>. Les mélanges 4x4x4 officiels de la WCA requièrent d'énormes ressources de calcul. Sélectionnez cette option pour utiliser un mélange 4x4x4 aléatoire à la place.</li>
+<li><strong data="opt_scrFast">Utiliser des mélanges rapides pour 4x4x4 (non officiel)</strong>. Les mélanges 4x4x4 officiels de la WCA requièrent d'énormes ressources de calcul. Sélectionnez cette option pour utiliser plutôt un mélange 4x4x4 aléatoire.</li>
 <li><strong data="opt_scrKeyM">Indiquer le(s) mouvement(s) clé(s) dans Mélange</strong>. Marquer un mouvement clé dans le mélange, par exemple le mouvement qui fait quitter la forme carrée dans les mélanges SQ1.</li>
 <li><strong data="opt_scrClk">Quand le mélange est cliqué</strong>. Action lorsque vous cliquez sur le mélange : copier le mélange ou générer un nouveau mélange.</li>
-<li><strong data="opt_trim">Nombre de résolutions coupés de chaque côté</strong>. Nombre de résolutions élaguées lors du calcul de la moyenne (moins bonnes et meilleures)</li>
+<li><strong data="opt_trim">Nombre de résolutions élaguées à chaque extrémité.</strong>. Nombre de résolutions élaguées lors du calcul de la moyenne (moins bonnes et meilleures)</li>
 <li><strong data="opt_statsum">Montrer le résumé avant la liste de temps</strong>. Afficher le tableau des statistiques avant la liste des temps.</li>
 <li><strong data="opt_printScr">Montrer les mélanges dans les statistiques</strong>. Afficher le mélange dans les popups de statistiques.</li>
-<li><strong data="opt_printDate">Montrer la date des résolutions dans les statistiques</strong>. Afficher la date de résolution dans les popups de statistiques.</li>
+<li><strong data="opt_printDate">Afficher la date des résolutions dans les stats</strong>. Afficher la date de résolution dans les popups de statistiques.</li>
 <li><strong data="opt_imrename">Renommer la session immédiatement après création</strong>. Renommer une session juste après sa création.</li>
 <li><strong data="opt_scr2ss">Créer une nouvelle session lors du changement de type de mélange</strong>. Modifier le type de mélange démarre une nouvelle session.</li>
 <li><strong data="opt_statinv">Inverser la liste des temps</strong>. Inverser la liste de temps ; les résolutions les plus récentes s'affichent alors en bas de la liste.</li>
 <li><strong data="opt_statclr">Autoriser la suppression de tous les temps d&#x27;une session</strong>. Quand cette option est désactivée, le bouton 'X' à côté du sélecteur de session est remplacé par un bouton "+".  Un clic sur le + crée une nouvelle session au lieu d'effacer la session en cours.</li>
 <li><strong data="opt_absidx">Montrer les indices absolus dans les reports statistiques</strong>. Affiche le numéro dans la session au lieu du numéro dans le round (par exemple 1/2/3 pour la Moyenne des 3).</li>
-<li><strong data="opt_rsfor1s">Afficher les statistiques. Quand le numéro de résolution est cliqué</strong>. Affiche les statistiques d'une résolution en cliquant sur un numéro de résolution dans la liste.</li>
+<li><strong data="opt_rsfor1s">Afficher les stats en cliquant sur le numéro d&#x27;une résolution</strong>. Affiche les statistiques d'une résolution en cliquant sur un numéro de résolution dans la liste.</li>
 <li><strong data="opt_statal">Indicateurs statistiques</strong>. Indicateur pour le tableau de statistiques, lors de la personnalisation, aoX et moX sont disponibles.</li>
 <li><strong data="opt_delmul">Activer la suppression multiple</strong>. Possibilité de supprimer plusieurs résolutions à partir d'une résolution. La résolution sélectionnée sera la plus ancienne résolution supprimée.</li>
 <li><strong data="opt_disPrec">Précision de la répartition des temps</strong>. Intervalle de temps pour l'outil de distribution des temps.</li>
-<li><strong data="opt_solSpl">Montrer progressivement la solution</strong>. Si sélectionné, seule la longueur de la solution du solveur sera montrée et vous pourrez voir la solution mouvement par mouvement. Sinon la solution complète sera affichée.</li>
+<li><strong data="opt_solSpl">Afficher la solution progressivement</strong>. Si sélectionné, seule la longueur de la solution du solveur sera montrée et vous pourrez voir la solution mouvement par mouvement. Sinon la solution complète sera affichée.</li>
 <li><strong data="opt_imgSize">Taille de l&#x27;image du mélange</strong>. Définit la taille de l'aperçu du mélange.</li>
 <li><strong data="opt_NTools">Nombre d&#x27;outils</strong>. csTimer peut afficher jusqu'à 4 outils simultanément.</li>
 <li><strong data="opt_useKSC">Utiliser les raccourcis clavier</strong>. Utilisez les raccourci clavier pour changer le type de mélange, générer un nouveau mélange, basculer d'une session à une autre, etc.</li>
@@ -110,7 +110,7 @@
 <h2>Descriptions des outils</h2>
 <ul>
 <li><strong data="tool_scrgen">Générateur de mélange</strong>. Cet outil vous permet de générer jusqu'à 999 mélanges en un seul clic.</li>
-<li><strong data="tool_cfm">Confirmer le temps</strong>. Outil pour voir les résolutions actuelles avec leurs commentaires, mélanges, dates de résolution et reconstructions si disponible ; c'est également la boîte de dialogue qui s'ouvre lorsque vous cliquez sur une résolution.</li>
+<li><strong data="tool_cfm">Confirmation du temps</strong>. Outil pour voir les résolutions actuelles avec leurs commentaires, mélanges, dates de résolution et reconstructions si disponible ; c'est également la boîte de dialogue qui s'ouvre lorsque vous cliquez sur une résolution.</li>
 <li><strong data="tool_hugestats">Stats sur plusieurs sessions</strong>. Cet outil consolide les statistiques de plusieurs sessions.</li>
 <li><strong data="tool_stats">Statistiques</strong>. Tableau statistique similaire à celui du panneau des temps.</li>
 <li><strong data="tool_distribution">Répartition des temps</strong>. Analyse de la distribution des temps et de la stabilité, &lt;X Y/Z signifient que Y résolutions sont en-dessous de X secondes, et que les Z dernières résolutions de la session sont en-dessous de X secondes.</li>
