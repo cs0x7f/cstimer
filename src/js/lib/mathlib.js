@@ -365,6 +365,26 @@ var mathlib = (function() {
 		return this;
 	}
 
+	CubieCube.prototype.verify = function() {
+		var mask = 0;
+		var sum = 0;
+		for (var e = 0; e < 12; e++) {
+			mask |= 1 << 8 << (this.ea[e] >> 1);
+			sum ^= this.ea[e] & 1;
+		}
+		var cp = [];
+		for (var c = 0; c < 8; c++) {
+			mask |= 1 << (this.ca[c] & 7);
+			sum += this.ca[c] >> 3 << 1;
+			cp.push(this.ca[c] & 0x7);
+		}
+		if (mask != 0xfffff || sum % 6 != 0
+				|| getNParity(getNPerm(this.ea, 12), 12) != getNParity(getNPerm(cp, 8), 8)) {
+			return -1;
+		}
+		return 0;
+	}
+
 	var moveCube = [];
 	for (var i = 0; i < 18; i++) {
 		moveCube[i] = new CubieCube();

@@ -345,15 +345,16 @@ var GiikerCube = execMain(function() {
 			}).then(loopRead);
 		}
 
-		function v2initKey(forcePrompt) {
+		function v2initKey(forcePrompt, isWrongKey) {
 			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 			var mac = savedMacMap[deviceName];
 			if (!mac || forcePrompt) {
-				mac = prompt('MAC address (xx:xx:xx:xx:xx:xx) of your cube, can be found in CubeStation or about://bluetooth-internals/#devices', mac || 'xx:xx:xx:xx:xx:xx');
+				mac = prompt((isWrongKey ? 'The key provided might be wrong. ' : '') + 'MAC address (xx:xx:xx:xx:xx:xx) of your cube, can be found in CubeStation or about://bluetooth-internals/#devices', mac || 'xx:xx:xx:xx:xx:xx');
 			}
 			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
 			if (!m) {
 				logohint.push('Not a valid mac address, cannot connect to your Gan cube');
+				decoder = null;
 				return;
 			}
 			if (mac != savedMacMap[deviceName]) {
@@ -372,6 +373,7 @@ var GiikerCube = execMain(function() {
 
 		function v2init() {
 			DEBUG && console.log('[gancube] v2init start');
+			keyCheck = 0;
 			v2initKey(true);
 			return _service_v2data.getCharacteristics().then(function(chrcts) {
 				DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
@@ -554,25 +556,32 @@ var GiikerCube = execMain(function() {
 			}
 		}
 
+		var keyCheck = 0;
+
 		function onStateChangedV2(event) {
 			var value = event.target.value;
+			if (decoder == null) {
+				return;
+			} else if (keyCheck > 5) {
+				v2initKey(true, true);
+				keyCheck = 0;
+			}
 			parseV2Data(value);
 		}
 
 		function parseV2Data(value) {
 			timestamp = $.now();
-
-			var value = event.target.value;
 			// DEBUG && console.log('[gancube]', 'dec v2', value);
 			value = decode(value);
-
 			for (var i = 0; i < value.length; i++) {
 				value[i] = (value[i] + 256).toString(2).slice(1);
 			}
 			value = value.join('');
 			var mode = parseInt(value.slice(0, 4), 2);
 			if (mode == 1) { // gyro
-				// pass
+				if (value.slice(value.length - 4) != '1010') {
+					keyCheck++;
+				}
 			} else if (mode == 2) { // cube move
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				if (moveCnt == prevMoveCnt) {
@@ -583,16 +592,20 @@ var GiikerCube = execMain(function() {
 				}
 				timeOffs = [];
 				prevMoves = [];
+				var keyChkInc = 0;
 				for (var i = 0; i < 7; i++) {
 					var m = parseInt(value.slice(12 + i * 5, 17 + i * 5), 2);
 					timeOffs[i] = parseInt(value.slice(47 + i * 16, 63 + i * 16), 2);
 					prevMoves[i] = "URFDLB".charAt(m >> 1) + " '".charAt(m & 1);
 					if (m >= 12) { // invalid data
 						prevMoves[i] = "U ";
+						keyChkInc = 1;
 					}
 				}
-				updateMoveTimes(timestamp, 1);
-
+				keyCheck += keyChkInc;
+				if (keyChkInc == 0) {
+					updateMoveTimes(timestamp, 1);
+				}
 			} else if (mode == 4) { // cube state
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				if (moveCnt != prevMoveCnt && prevMoveCnt != -1) {
@@ -616,6 +629,10 @@ var GiikerCube = execMain(function() {
 					cc.ea[i] = perm << 1 | ori;
 				}
 				cc.ea[11] = echk;
+				if (cc.verify() != 0) {
+					keyCheck++;
+					return;
+				}
 				latestFacelet = cc.toFaceCube();
 				if (prevMoveCnt == -1) {
 					initCubeState();
@@ -627,10 +644,13 @@ var GiikerCube = execMain(function() {
 					callback(latestFacelet, prevMoves, timestamp, deviceName);
 				}
 				prevMoveCnt = moveCnt;
-			} else if (mode == 7) { // battery
+			} else if (mode == 9) { // battery
 				batteryLevel = parseInt(value.slice(8, 16), 2);
 			}
+			keyCheck && console.log(keyCheck);
 		}
+
+		$.parseV2Data = parseV2Data; // for debug
 
 		function clear() {
 			_service_data = null;
