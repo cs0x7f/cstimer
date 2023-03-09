@@ -36,7 +36,9 @@ var help = execMain(function(regProp, setProp, getProp) {
 
 	function updateRight(val1, val2) {
 		setTimeout(function() {
-			rightDiv.scrollTop(rightDiv.scrollTop() + docs[val1].position().top - 3);
+			if (docs[val1]) {
+				rightDiv.scrollTop(rightDiv.scrollTop() + docs[val1].position().top - 3);
+			}
 		}, 0);
 		return true;
 	}

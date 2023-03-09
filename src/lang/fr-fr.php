@@ -68,7 +68,7 @@
 <li><strong data="opt_input">Entrer les temps avec</strong>. csTimer est capable d'ajouter des résolutions de différentes façons. En plus du chronométrage au clavier, il prend en charge la saisie manuelle, l'enregistrement automatique depuis un timer Stackmat, la connection à un cube Bluetooth, ou l'utilisation d'un Rubik's Cube virtuel.</li>
 <li><strong data="opt_intUN">Unité de saisie des nombres</strong>. Quand vous entrer un entier XXX dans le champ de saisie, cela correspond-il à des secondes, des centièmes ou des millièmes ?</li>
 <li><strong data="opt_timeU">Rafraîchissement du chronomètre</strong>. Rafraîchissement du temps lors du chronométrage.</li>
-<li><strong data="opt_preTime">Tenir la barre d&#x27;espace appuyée pendant (en secondes)</strong>. Durée pendant laquelle la barre d'espace doit être maintenue enfoncée avant que le chronomètre passe au vert.</li>
+<li><strong data="opt_preTime">Presser la barre d&#x27;espace pendant (en secondes)</strong>. Durée pendant laquelle la barre d'espace doit être maintenue enfoncée avant que le chronomètre passe au vert.</li>
 <li><strong data="opt_phases">Multi-phase</strong>. Nombre de phases, tapez sur n'importe quelle touche pour marquer un point de scission lors du chronométrage.</li>
 <li><strong data="opt_stkHead">Utiliser les informations d&#x27;état du Stackmat</strong>. Le Stackmat rapportera son état. Ainsi, csTimer pourra par ex. savoir que le capteur gauche ou droit a été activé. Notez que des erreurs peuvent survenir et causer un comportement inattendu.</li>
 <li><strong data="opt_scrSize">Taille du mélange</strong>. Taille de texte du mélange.</li>
@@ -82,7 +82,7 @@
 <li><strong data="opt_scrClk">Quand le mélange est cliqué</strong>. Action lorsque vous cliquez sur le mélange : copier le mélange ou générer un nouveau mélange.</li>
 <li><strong data="opt_trim">Nombre de résolutions élaguées à chaque extrémité.</strong>. Nombre de résolutions élaguées lors du calcul de la moyenne (moins bonnes et meilleures)</li>
 <li><strong data="opt_statsum">Montrer le résumé avant la liste de temps</strong>. Afficher le tableau des statistiques avant la liste des temps.</li>
-<li><strong data="opt_printScr">Montrer les mélanges dans les statistiques</strong>. Afficher le mélange dans les popups de statistiques.</li>
+<li><strong data="opt_printScr">Afficher les mélanges dans les stats</strong>. Afficher le mélange dans les popups de statistiques.</li>
 <li><strong data="opt_printDate">Afficher la date des résolutions dans les stats</strong>. Afficher la date de résolution dans les popups de statistiques.</li>
 <li><strong data="opt_imrename">Renommer la session immédiatement après création</strong>. Renommer une session juste après sa création.</li>
 <li><strong data="opt_scr2ss">Créer une nouvelle session lors du changement de type de mélange</strong>. Modifier le type de mélange démarre une nouvelle session.</li>
