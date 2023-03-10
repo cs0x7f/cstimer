@@ -226,7 +226,7 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 	}
 
-	function scrStd(type, scramble, len, forDisplay) {
+	function scrStd(type, scramble, len, forDisplay, forceKeyM) {
 		scramble = scramble || '';
 		len = len || 0;
 		var m = /^\$T([a-zA-Z0-9]+)(-[0-9]+)?\$\s*(.*)$/.exec(scramble);
@@ -236,13 +236,14 @@ var scramble = execMain(function(rn, rndEl) {
 			len = ~~m[2];
 		}
 		if (forDisplay) {
-			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scramble.length, 10), 0.30) * 20) / 20) : 1;
+			var scrTxtLen = scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1').length;
+			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scrTxtLen, 10), 0.30) * 20) / 20) : 1;
 			sdiv.css('font-size', fontSize + 'em');
 			DEBUG && console.log('[scrFontSize]', fontSize);
 			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
-				.replace(/`([^']*)`/g, kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
+				.replace(/`([^`]*)`/g, forceKeyM || kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 		} else {
-			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^']*)`/g, '$1'), len];
+			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1'), len];
 		}
 	}
 
@@ -675,6 +676,11 @@ var scramble = execMain(function(rn, rndEl) {
 			} else if (value[1] == 'next') {
 				procNextClick();
 			}
+		} else if (signal == 'scrfix') {
+			if (!value) {
+				return;
+			}
+			sdiv.html(scrStd(type, value, len, true, true));
 		}
 	}
 
@@ -750,6 +756,7 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
+		kernel.regListener('scramble', 'scrfix', procSignal);
 		kernel.regProp('scramble', 'scrSize', 2, PROPERTY_SCRSIZE, [15, 5, 50], 1);
 		kernel.regProp('scramble', 'scrASize', 0, PROPERTY_SCRASIZE, [true], 1);
 		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true], 1);

@@ -151,7 +151,7 @@ var GanTimerDriver = execMain(function () {
         if (stateCharacteristic) {
             stateCharacteristic.service.device.removeEventListener('gattserverdisconnected', handleUnexpectedDisconnection);
             stateCharacteristic.removeEventListener('characteristicvaluechanged', handleStateCharacteristicUpdate);
-            return stateCharacteristic.stopNotifications().then(() => {
+            return stateCharacteristic.stopNotifications().then(function() {
                 stateCharacteristic.service.device.gatt.disconnect();
                 stateCharacteristic = undefined;
             });

@@ -56,6 +56,7 @@ window.twistyjs = (function() {
 		var camera, scene, renderer;
 		var twistyCanvas;
 		var cameraTheta = 0;
+		var cameraPhi = 6;
 
 		/*
 		 * Initialization Methods
@@ -109,10 +110,6 @@ window.twistyjs = (function() {
 
 			twistyContainer.appendChild(twistyCanvas);
 
-
-			//TODO: figure out keybindings, shortcuts, touches, and mouse presses.
-			//TODO: 20110905 bug: after pressing esc, cube dragging doesn't work.
-
 			if (twistyType.allowDragging) {
 				$(twistyContainer).css('cursor', 'move');
 				twistyContainer.addEventListener('mousedown', onDocumentMouseDown, false);
@@ -129,13 +126,11 @@ window.twistyjs = (function() {
 			// to the desired size.
 			var min = Math.min($(twistyContainer).width(), $(twistyContainer).height());
 			camera = new THREE.Camera(30, 1, 0, 1000);
-			moveCameraPure(0);
+			var ori = kernel.getProp('vrcOri', '6,12');
+			ori = ori.split(',');
+			moveCamera(~~ori[0] - 6, ~~ori[1] - 6);
 			camera.target.position = new THREE.Vector3(0, -0.075, 0);
 			renderer.setSize(min, min);
-			//    $(twistyCanvas).css('position', 'absolute');
-			//    $(twistyCanvas).css('top', ($(twistyContainer).height()-min)/2);
-			//    $(twistyCanvas).css('left', ($(twistyContainer).width()-min)/2);
-
 			render();
 		};
 
@@ -145,11 +140,19 @@ window.twistyjs = (function() {
 
 			switch (keyCode) {
 				case 37:
-					moveCameraDelta(Math.TAU / 48);
+					moveCameraDelta(1, 0);
+					e.preventDefault && e.preventDefault();
+					break;
+				case 38:
+					moveCameraDelta(0, 1);
 					e.preventDefault && e.preventDefault();
 					break;
 				case 39:
-					moveCameraDelta(-Math.TAU / 48);
+					moveCameraDelta(-1, 0);
+					e.preventDefault && e.preventDefault();
+					break;
+				case 40:
+					moveCameraDelta(0, -1);
 					e.preventDefault && e.preventDefault();
 					break;
 				default:
@@ -157,13 +160,11 @@ window.twistyjs = (function() {
 			}
 		};
 
-		var theta = 0;
 		var mouseX = 0;
 		var mouseXLast = 0;
 
 		this.cam = function(deltaTheta) {
-			theta += deltaTheta;
-			moveCamera(theta);
+			moveCameraDelta(deltaTheta, 0);
 		}
 
 		function onDocumentMouseDown(event) {
@@ -212,20 +213,23 @@ window.twistyjs = (function() {
 			renderer.render(scene, camera);
 		}
 
-		function moveCameraPure(theta) {
-			cameraTheta = theta;
-			camera.position = new THREE.Vector3(2 * Math.sin(theta), 2, 2 * Math.cos(theta));
-		}
-
-		function moveCameraDelta(deltaTheta) {
+		function moveCameraDelta(deltaTheta, deltaPhi) {
 			cameraTheta += deltaTheta;
-			moveCameraPure(cameraTheta);
-			render();
+			cameraTheta = Math.max(Math.min(cameraTheta, 6), -6);
+			cameraPhi += deltaPhi;
+			cameraPhi = Math.max(Math.min(cameraPhi, 6), -6);
+			moveCamera(cameraTheta, cameraPhi, true);
 		}
 
-		function moveCamera(theta) {
-			moveCameraPure(theta);
-			render();
+		function moveCamera(theta, phi, doRender) {
+			cameraTheta = theta;
+			cameraPhi = phi;
+			var z = 2 * Math.sqrt(2) * Math.sin(phi * Math.TAU / 48);
+			var xy = 2 * Math.sqrt(2) * Math.cos(phi * Math.TAU / 48);
+			camera.position = new THREE.Vector3(xy * Math.sin(theta * Math.TAU / 48), z, xy * Math.cos(theta * Math.TAU / 48));
+			if (doRender) {
+				render();
+			}
 		}
 
 		//callback(move, step), step: 0 move added, 1 move animation started, 2 move animation finished
