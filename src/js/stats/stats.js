@@ -556,9 +556,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 			return;
 		}
 		updateSumTable();
-		assistant.update();
-		distribution.update();
-		trend.update();
+		for (var util in statUtils) {
+			statUtils[util]();
+		}
 		periodStats.update();
 		genAvgSignal(times.length - 1);
 	}
@@ -881,72 +881,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	})();
 
-	var assistant = (function() {
-
-		var infoDiv = $('<div />').css('text-align', 'center').css('font-size', '0.7em');
-
-		function updateInfo() {
-			if (!isEnable) {
-				return;
-			}
-
-			var theStats = times_stats_table.getAllStats();
-			var numdnf = theStats[0];
-			var sessionmean = theStats[1];
-
-			var totalTime = 0;
-			for (var i = 0; i < times.length; i++) {
-				totalTime += times[i][0][1];
-			}
-			var s = [];
-			s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats_table.timesLen - numdnf) + "/" + times_stats_table.timesLen) + ', ' + hlstr[9].replace("%v", kpround(sessionmean)) + '</span>\n');
-			s.push('<span>' + hlstr[12].replace("%d", kpretty(totalTime)) + '</span>\n');
-			s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + kpretty(times_stats_table.bestTime) + '</span>');
-			s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + kpretty(times_stats_table.worstTime) + "</span>\n");
-			var hasTable = false;
-			var tableHead = '<table class="table"><tr><td></td><td>' + hlstr[1] + '</td><td>' + hlstr[0] + '</td></tr>';
-			for (var j = 0; j < avgSizes.length; j++) {
-				var size = Math.abs(avgSizes[j]);
-				if (times_stats_table.timesLen >= size) {
-					hasTable || (hasTable = true, s.push(tableHead));
-					s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
-					s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.lastAvg[j][0]) + " (σ=" + trim(times_stats_table.lastAvg[j][1], 2) +
-						')</span></td>');
-					s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg[j][0]) + " (σ=" + trim(times_stats_table.bestAvg[j][1], 2) +
-						')</span></td></tr>');
-				}
-			}
-			hasTable && s.push('</table>');
-			s = s.join("");
-			infoDiv.html(s.replace(/\n/g, '<br>'));
-		}
-
-		var isEnable = false;
-
-		function execFunc(fdiv, signal) {
-			if (!(isEnable = (fdiv != undefined))) {
-				return;
-			}
-			if (/^scr/.exec(signal)) {
-				return;
-			}
-			fdiv.empty().append(infoDiv.unbind('click').click(function(e) {
-				infoClick(times_stats_table, timesAt, e);
-			}));
-			updateInfo();
-		}
-
-		$(function() {
-			if (typeof tools != "undefined") {
-				tools.regTool('stats', TOOLS_STATS, execFunc);
-			}
-		});
-
-		return {
-			update: updateInfo
-		}
-	})();
-
 	function timeAtDim(dim, idx) {
 		var curTime = times[idx][0];
 		if (curTime[0] == -1 || curTime.length <= dim) {
@@ -979,241 +913,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 		return sorted;
 	}
-
-	var distribution = (function() {
-		var div = $('<div />');
-
-		var isEnable = false;
-
-		function updateDistribution() {
-			if (!isEnable) {
-				return;
-			}
-			div.empty();
-			var data = times_stats_list.getMinMaxInt();
-			if (!data) {
-				return;
-			}
-			var max = data[0],
-				min = data[1],
-				diff = data[2];
-			max = ~~(max / diff);
-			min = ~~(min / diff);
-			var dis = {};
-			var keep = {};
-			var cntmax = 0;
-			keep[max + 1] = 0;
-			for (var i = 0; i < times.length; i++) {
-				var value = timeAt(i);
-				if (value != -1) {
-					var cur = ~~(value / diff);
-					dis[cur] = (dis[cur] || 0) + 1;
-					cntmax = Math.max(dis[cur], cntmax);
-					keep[cur] = i + 1;
-				} else {
-					keep[max + 1] = i + 1;
-				}
-			}
-			for (var i = max; i > min; i--) {
-				keep[i] = Math.max(keep[i + 1], keep[i] || 0);
-			}
-			var str = [];
-			var cumDis = 0;
-			var pattern = diff >= 1000 ? /[^\.]+(?=\.)/ : /[^\.]+\.[\d]/;
-			var lablen = kpretty(max * diff).match(pattern)[0].length;
-			for (var i = min; i <= max; i++) {
-				var label = kpretty(i * diff).match(pattern)[0];
-				var label2 = kpretty((i + 1) * diff).match(pattern)[0];
-				dis[i] = dis[i] || 0;
-				cumDis += dis[i];
-				label = mathlib.valuedArray(lablen - label.length, '&nbsp;').join('') + label;
-				label2 = mathlib.valuedArray(lablen - label2.length, '&nbsp;').join('') + label2;
-				str.push('<tr><td>' + label + '+</td><td><span class="cntbar" style="width: ' + dis[i] / cntmax * 5 + 'em;">' + dis[i] + '</span></td><td>&nbsp;&lt;' + label2 + '</td><td><span class="cntbar" style="width: ' + cumDis / times.length * 5 + 'em; white-space: nowrap;">' + (times.length - keep[i + 1]) + '/' + cumDis + '</span></td></tr>');
-			}
-			div.html('<table style="border:none;">' + str.join('') + '</table>');
-		}
-
-		function execFunc(fdiv, signal) {
-			if (!(isEnable = (fdiv != undefined))) {
-				return;
-			}
-			if (/^scr/.exec(signal)) {
-				return;
-			}
-			fdiv.empty().append(div);
-			updateDistribution();
-		}
-
-		$(function() {
-			if (typeof tools != "undefined") {
-				kernel.regListener('distribution', 'property', function(signal, value) {
-					if (value[0] == 'disPrec') {
-						updateDistribution();
-					}
-				}, /^disPrec$/);
-				kernel.regProp('tools', 'disPrec', 1, STATS_PREC, ['a', ['a', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], STATS_PREC_STR.split('|')], 1);
-				tools.regTool('distribution', TOOLS_DISTRIBUTION, execFunc);
-			}
-		});
-
-		return {
-			update: updateDistribution
-		}
-	})();
-
-	var trend = (function() {
-		var canvas = $('<canvas />'), ctx;
-
-		var isEnable = false;
-
-		var offx = 35,
-			offy = 25;
-		var width, height;
-
-		function updateTrend() {
-			if (!isEnable) {
-				return;
-			}
-			if (!canvas[0].getContext) {
-				return;
-			}
-			ctx = canvas[0].getContext('2d');
-			var imgSize = kernel.getProp('imgSize') / 10;
-			width = 50;
-			canvas.width(10 * imgSize * 1.2 + 'em');
-			canvas.height(5 * imgSize * 1.2 + 'em');
-
-			canvas.attr('width', 10 * width + 1);
-			canvas.attr('height', 5 * width + 5);
-
-			height = 5 * width;
-			width = 10 * width;
-
-			ctx.lineWidth = 2;
-
-			ctx.font = '12pt Arial';
-			ctx.fillStyle = kernel.getProp('col-font');
-			ctx.fillText("time", 50, 13);
-			ctx.strokeStyle = '#888'; ctx.beginPath(); ctx.moveTo(90, 7); ctx.lineTo(150, 7); ctx.stroke();
-			ctx.fillText((stat1 > 0 ? "ao" : "mo") + len1, 200, 13);
-			ctx.strokeStyle = '#f00'; ctx.beginPath(); ctx.moveTo(240, 7); ctx.lineTo(300, 7); ctx.stroke();
-			ctx.fillText((stat2 > 0 ? "ao" : "mo") + len2, 350, 13);
-			ctx.strokeStyle = '#00f'; ctx.beginPath(); ctx.moveTo(390, 7); ctx.lineTo(450, 7); ctx.stroke();
-
-			var data = times_stats_list.getMinMaxInt();
-			if (!data) {
-				return;
-			}
-
-			var diff = data[2];
-			var plotmax = Math.ceil(data[0] / diff) * diff;
-			var plotmin = ~~(data[1] / diff) * diff;
-			var ploth = plotmax - plotmin;
-			var pattern = diff >= 1000 ? /[^\.]+(?=\.)/ : /[^\.]+\.[\d]/;
-
-			fill([0, 1, 1, 0, 0], [0, 0, 1, 1, 0], '#fff');
-
-			ctx.fillStyle = kernel.getProp('col-font');
-			ctx.strokeStyle = '#ccc';
-			ctx.lineWidth = 1;
-			ctx.textAlign = 'right';
-			for (var i = plotmin; i <= plotmax; i += diff) {
-				plot([0, 1], [(i - plotmin) / ploth, (i - plotmin) / ploth], '#ccc');
-
-				var label = kpretty(i).match(pattern)[0];
-				ctx.fillText(label, offx - 5, (plotmax - i) / ploth * (height - offy) + offy + 5);
-			}
-
-			ctx.lineWidth = 2;
-			var x, y;
-			if (times.length > 1) {
-				x = []; y = [];
-				for (var i = 0; i < times.length; i++) {
-					var t = timeAt(i);
-					if (t != -1) {
-						x.push(i / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (t - plotmin) / ploth)));
-					}
-				}
-				plot(x, y, '#888');
-			}
-			if (times.length > len1) {
-				x = []; y = [];
-				var ao5 = times_stats_list.runAvgMean(0, times.length, len1, stat1 > 0 ? undefined : 0);
-				for (var i = 0; i < ao5.length; i++) {
-					if (ao5[i][0] != -1) {
-						x.push((i + len1 - 1) / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (ao5[i][0] - plotmin) / ploth)));
-					}
-				}
-				plot(x, y, '#f00');
-			}
-			if (times.length > len2) {
-				x = []; y = [];
-				var ao12 = times_stats_list.runAvgMean(0, times.length, len2, stat2 > 0 ? undefined : 0);
-				for (var i = 0; i < ao12.length; i++) {
-					if (ao12[i][0] != -1) {
-						x.push((i + len2 - 1) / (times.length - 1));
-						y.push(Math.max(0, Math.min(1, (ao12[i][0] - plotmin) / ploth)));
-					}
-				}
-				plot(x, y, '#00f');
-			}
-
-			plot([0, 1, 1, 0, 0], [0, 0, 1, 1, 0], '#000');
-		}
-
-		function plot(x, y, color) {
-			ctx.strokeStyle = color;
-			ctx.beginPath();
-			ctx.moveTo(x[0] * (width - offx) + offx, (1 - y[0]) * (height - offy) + offy);
-			for (var i = 1; i < x.length; i++) {
-				ctx.lineTo(x[i] * (width - offx) + offx, (1 - y[i]) * (height - offy) + offy);
-			}
-			ctx.stroke();
-			ctx.closePath();
-		}
-
-		function fill(x, y, color) {
-			ctx.fillStyle = color;
-			ctx.beginPath();
-			ctx.moveTo(x[0] * (width - offx) + offx, (1 - y[0]) * (height - offy) + offy);
-			for (var i = 1; i < x.length; i++) {
-				ctx.lineTo(x[i] * (width - offx) + offx, (1 - y[i]) * (height - offy) + offy);
-			}
-			ctx.fill();
-			ctx.closePath();
-		}
-
-		function execFunc(fdiv, signal) {
-			if (!(isEnable = (fdiv != undefined))) {
-				return;
-			}
-			if (/^scr/.exec(signal)) {
-				return;
-			}
-			fdiv.empty().append(canvas);
-			updateTrend();
-		}
-
-		$(function() {
-			if (typeof tools != "undefined") {
-				kernel.regListener('trend', 'property', function(signal, value) {
-					if (value[0] == 'disPrec') {
-						updateTrend();
-					}
-				}, /^disPrec|col-font$/);
-				if (canvas[0].getContext) {
-					tools.regTool('trend', TOOLS_TREND, execFunc);;
-				}
-			}
-		});
-
-		return {
-			update: updateTrend
-		}
-	})();
-
 
 	var sessionManager = (function() {
 
@@ -2236,9 +1935,27 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.setProp('sr_statalu', kernel.getProp('sr_statal'));
 	});
 
+	var statUtils = {};
+	function regUtil(name, callback) {
+		statUtils[name] = callback;
+	}
+
 	return {
 		importSessions: sessionManager.importSessions,
 		getReviewUrl: getReviewUrl,
-		pretty: pretty
+		pretty: pretty,
+		getStat12: function() {
+			return [stat1, stat2, len1, len2];
+		},
+		getTimesStatsList: function() {
+			return times_stats_list;
+		},
+		getTimesStatsTable: function() {
+			return times_stats_table;
+		},
+		trim: trim,
+		timesAt: timesAt,
+		infoClick: infoClick,
+		regUtil: regUtil
 	}
 }, [kernel.pretty, kernel.round, kernel.pround]);

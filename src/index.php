@@ -42,6 +42,9 @@
   <script type="text/javascript" src="js/lib/storage.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
   <script type="text/javascript" src="js/stats/stats.js"></script>
+  <script type="text/javascript" src="js/stats/stattool.js"></script>
+  <script type="text/javascript" src="js/stats/trend.js"></script>
+  <script type="text/javascript" src="js/stats/distribution.js"></script>
   <script type="text/javascript" src="js/tools/tools.js"></script>
   <script type="text/javascript" src="js/tools/image.js"></script>
   <script type="text/javascript" src="js/tools/cross.js"></script>

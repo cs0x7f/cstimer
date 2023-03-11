@@ -42,6 +42,9 @@ scramble/utilscramble.js \
 lib/storage.js \
 stats/timestat.js \
 stats/stats.js \
+stats/stattool.js \
+stats/trend.js \
+stats/distribution.js \
 tools/tools.js \
 tools/image.js \
 tools/cross.js \
