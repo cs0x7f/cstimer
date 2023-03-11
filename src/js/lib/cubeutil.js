@@ -223,6 +223,22 @@ var cubeutil = (function() {
 					return getProgressNAxis(facelet, solvedProgress, 1);
 			}
 		},
+		getStepNames: function(progress) {
+			switch (progress) {
+				case 'cfop':
+					return ['pll', 'oll', 'f2l', 'cross'];
+				case 'fp':
+					return ['op', 'cf'];
+				case 'cf4op':
+					return ['pll', 'oll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
+				case 'roux':
+					return ['l6e', 'cmll', 'sb', 'fb'];
+				case 'cf4o2p2':
+					return ['pll', 'cpll', 'oll', 'eoll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
+				case 'n':
+					return ['solve'];
+			}
+		},
 		getPrettyMoves: getPrettyMoves,
 		moveSeq2str: moveSeq2str
 	}

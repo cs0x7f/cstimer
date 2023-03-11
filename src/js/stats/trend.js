@@ -148,7 +148,7 @@ var trend = execMain(function(kpretty) {
 				}
 			}, /^disPrec|col-font$/);
 			if (canvas[0].getContext) {
-				tools.regTool('trend', TOOLS_TREND, execFunc);;
+				tools.regTool('trend', TOOLS_TREND, execFunc);
 			}
 		}
 		stats.regUtil('trend', updateTrend);

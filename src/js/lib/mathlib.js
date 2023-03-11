@@ -248,6 +248,14 @@ var mathlib = (function() {
 		return this;
 	};
 
+	CubieCube.prototype.hashCode = function() {
+		var ret = 0;
+		for (var i = 0; i < 20; i++) {
+			ret = 0 | (ret * 31 + (i < 12 ? this.ea[i] : this.ca[i - 12]));
+		}
+		return ret;
+	}
+
 	CubieCube.prototype.isEqual = function(c) {
 		for (var i = 0; i < 8; i++) {
 			if (this.ca[i] != c.ca[i]) {
@@ -385,24 +393,89 @@ var mathlib = (function() {
 		return 0;
 	}
 
-	var moveCube = [];
-	for (var i = 0; i < 18; i++) {
-		moveCube[i] = new CubieCube();
-	}
-	moveCube[0].init([3, 0, 1, 2, 4, 5, 6, 7], [6, 0, 2, 4, 8, 10, 12, 14, 16, 18, 20, 22]);
-	moveCube[3].init([20, 1, 2, 8, 15, 5, 6, 19], [16, 2, 4, 6, 22, 10, 12, 14, 8, 18, 20, 0]);
-	moveCube[6].init([9, 21, 2, 3, 16, 12, 6, 7], [0, 19, 4, 6, 8, 17, 12, 14, 3, 11, 20, 22]);
-	moveCube[9].init([0, 1, 2, 3, 5, 6, 7, 4], [0, 2, 4, 6, 10, 12, 14, 8, 16, 18, 20, 22]);
-	moveCube[12].init([0, 10, 22, 3, 4, 17, 13, 7], [0, 2, 20, 6, 8, 10, 18, 14, 16, 4, 12, 22]);
-	moveCube[15].init([0, 1, 11, 23, 4, 5, 18, 14], [0, 2, 4, 23, 8, 10, 12, 21, 16, 18, 7, 15]);
-	for (var a = 0; a < 18; a += 3) {
-		for (var p = 0; p < 2; p++) {
-			CubieCube.EdgeMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
-			CubieCube.CornMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
+	CubieCube.moveCube = (function() {
+		var moveCube = [];
+		for (var i = 0; i < 18; i++) {
+			moveCube[i] = new CubieCube();
 		}
-	}
+		moveCube[0].init([3, 0, 1, 2, 4, 5, 6, 7], [6, 0, 2, 4, 8, 10, 12, 14, 16, 18, 20, 22]);
+		moveCube[3].init([20, 1, 2, 8, 15, 5, 6, 19], [16, 2, 4, 6, 22, 10, 12, 14, 8, 18, 20, 0]);
+		moveCube[6].init([9, 21, 2, 3, 16, 12, 6, 7], [0, 19, 4, 6, 8, 17, 12, 14, 3, 11, 20, 22]);
+		moveCube[9].init([0, 1, 2, 3, 5, 6, 7, 4], [0, 2, 4, 6, 10, 12, 14, 8, 16, 18, 20, 22]);
+		moveCube[12].init([0, 10, 22, 3, 4, 17, 13, 7], [0, 2, 20, 6, 8, 10, 18, 14, 16, 4, 12, 22]);
+		moveCube[15].init([0, 1, 11, 23, 4, 5, 18, 14], [0, 2, 4, 23, 8, 10, 12, 21, 16, 18, 7, 15]);
+		for (var a = 0; a < 18; a += 3) {
+			for (var p = 0; p < 2; p++) {
+				CubieCube.EdgeMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
+				CubieCube.CornMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
+			}
+		}
+		return moveCube;
+	})();
 
-	CubieCube.moveCube = moveCube;
+	CubieCube.rotCube = (function() {
+		var u4 = new CubieCube().init([3, 0, 1, 2, 7, 4, 5, 6], [6, 0, 2, 4, 14, 8, 10, 12, 23, 17, 19, 21]);
+		var f2 = new CubieCube().init([5, 4, 7, 6, 1, 0, 3, 2], [12, 10, 8, 14, 4, 2, 0, 6, 18, 16, 22, 20]);
+		var urf = new CubieCube().init([8, 20, 13, 17, 19, 15, 22, 10], [3, 16, 11, 18, 7, 22, 15, 20, 1, 9, 13, 5]);
+		var c = new CubieCube();
+		var d = new CubieCube();
+		var rotCube = [];
+		for (var i = 0; i < 24; i++) {
+			rotCube[i] = new CubieCube().init(c.ca, c.ea);
+			CubieCube.CornMult(c, u4, d);
+			CubieCube.EdgeMult(c, u4, d);
+			c.init(d.ca, d.ea);
+			if (i % 4 == 3) {
+				CubieCube.CornMult(c, f2, d);
+				CubieCube.EdgeMult(c, f2, d);
+				c.init(d.ca, d.ea);
+			}
+			if (i % 8 == 7) {
+				CubieCube.CornMult(c, urf, d);
+				CubieCube.EdgeMult(c, urf, d);
+				c.init(d.ca, d.ea);
+			}
+		}
+
+		var movHash = [];
+		var rotHash = [];
+		var rotMult = [];
+		var rotMulI = [];
+		var rotMulM = [];
+		for (var i = 0; i < 24; i++) {
+			rotHash[i] = rotCube[i].hashCode();
+			rotMult[i] = [];
+			rotMulI[i] = [];
+			rotMulM[i] = [];
+		}
+		for (var i = 0; i < 18; i++) {
+			movHash[i] = CubieCube.moveCube[i].hashCode();
+		}
+		for (var i = 0; i < 24; i++) {
+			for (var j = 0; j < 24; j++) {
+				CubieCube.CornMult(rotCube[i], rotCube[j], c);
+				CubieCube.EdgeMult(rotCube[i], rotCube[j], c);
+				var k = rotHash.indexOf(c.hashCode());
+				rotMult[i][j] = k;
+				rotMulI[k][j] = i;
+			}
+		}
+		for (var i = 0; i < 24; i++) {
+			for (var j = 0; j < 18; j++) {
+				CubieCube.CornMult(rotCube[rotMulI[0][i]], CubieCube.moveCube[j], c);
+				CubieCube.EdgeMult(rotCube[rotMulI[0][i]], CubieCube.moveCube[j], c);
+				CubieCube.CornMult(c, rotCube[i], d);
+				CubieCube.EdgeMult(c, rotCube[i], d);
+				var k = movHash.indexOf(d.hashCode());
+				rotMulM[i][j] = k;
+			}
+		}
+
+		CubieCube.rotMult = rotMult;
+		CubieCube.rotMulI = rotMulI;
+		CubieCube.rotMulM = rotMulM;
+		return rotCube;
+	})();
 
 	CubieCube.prototype.edgeCycles = function() {
 		var visited = [];

@@ -352,10 +352,17 @@ var stats = execMain(function(kpretty, round, kpround) {
 			cfmIdxRow = target.parent();
 			genDiv();
 			cfmDiv.css('font-size', '1.2em');
-			kernel.showDialog([cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function() {
+			var params = [cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function() {
 				hideToTools();
 				setHighlight(times_stats_table, timesAt, idx, 1, 10, true);
-			}]], 'cfm', 'Solves No.' + (idx + 1));
+			}]];
+			if (timesAt(idx)[4]) {
+				params.push(['Recons', function() {
+					hideToTools();
+					kernel.pushSignal('reqrec', [timesAt(idx), idx]);
+				}]);
+			}
+			kernel.showDialog(params, 'cfm', 'Solves No.' + (idx + 1));
 		}
 
 		function setPenalty(value, idx, idxRow) {
