@@ -45,6 +45,8 @@ stats/stats.js \
 stats/stattool.js \
 stats/trend.js \
 stats/distribution.js \
+stats/hugestat.js \
+stats/dlystat.js \
 tools/tools.js \
 tools/image.js \
 tools/cross.js \

@@ -45,6 +45,8 @@
   <script type="text/javascript" src="js/stats/stattool.js"></script>
   <script type="text/javascript" src="js/stats/trend.js"></script>
   <script type="text/javascript" src="js/stats/distribution.js"></script>
+  <script type="text/javascript" src="js/stats/hugestat.js"></script>
+  <script type="text/javascript" src="js/stats/dlystat.js"></script>
   <script type="text/javascript" src="js/tools/tools.js"></script>
   <script type="text/javascript" src="js/tools/image.js"></script>
   <script type="text/javascript" src="js/tools/cross.js"></script>
