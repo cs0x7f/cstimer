@@ -36,6 +36,12 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 		[9 * 12 + 8, permMove, 132]
 	]);
 
+	var solv2 = new mathlib.Solver(6, 3, [
+		[0, [edgeMove, 'o', 12, -2], 2048],
+		[9 * 12 + 8, permMove, 132],
+		[10 * 12 + 9, permMove, 132]
+	]);
+
 	var faceStr = ["D(LR)", "D(FB)", "U(LR)", "U(FB)", "L(UD)", "L(FB)", "R(UD)", "R(FB)", "F(LR)", "F(UD)", "B(LR)", "B(UD)"];
 	var moveIdx = ["FRUBLD", "RBULFD", "FLDBRU", "LBDRFU", "FDRBUL", "DBRUFL", "FULBDR", "UBLDFR", "URBDLF", "RDBLUF", "DRFULB", "RUFLDB"];
 	var rotIdx = ["&nbsp;&nbsp;&nbsp;", "&nbsp;y&nbsp;", "z2&nbsp;", "z2y", "z'&nbsp;", "z'y", "&nbsp;z&nbsp;", "z&nbsp;y", "x'&nbsp;", "x'y", "&nbsp;x&nbsp;", "x&nbsp;y"];
@@ -64,20 +70,51 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 		}
 	}
 
-	function execFunc(fdiv) {
+	function solve_eocross(scramble, fdiv) {
+		init();
+		var moves = kernel.parseScramble(scramble, "FRUBLD");
+		fdiv.empty();
+		for (var face = 0; face < 12; face++) {
+			var flip = 0;
+			var perm1 = 9 * 12 + 8;
+			var perm2 = 10 * 12 + 9;
+			for (var i = 0; i < moves.length; i++) {
+				var m = moveIdx[face].indexOf("FRUBLD".charAt(moves[i][0]));
+				var p = moves[i][2];
+				for (var j = 0; j < p; j++) {
+					flip = fmv[m][flip];
+					perm1 = pmv[m][perm1];
+					perm2 = pmv[m][perm2];
+				}
+			}
+			var sol = solv2.search([flip, perm1, perm2], 0);
+			for (var i = 0; i < sol.length; i++) {
+				sol[i] = "FRUBLD".charAt(sol[i][0]) + " 2'".charAt(sol[i][1]);
+			}
+
+			fdiv.append($('<span class="sol">').append(faceStr[face] + ": " + rotIdx[face], tools.getSolutionSpan(sol)), '<br>');
+		}
+	}
+
+	function execFunc(type, fdiv) {
 		if (!fdiv) {
 			return;
 		}
 		if (tools.isPuzzle('333')) {
 			var scramble = tools.getCurScramble();
-			solve_eoline(scramble[1], fdiv);
+			if (type == 'eocross') {
+				solve_eocross(scramble[1], fdiv);
+			} else {
+				solve_eoline(scramble[1], fdiv);
+			}
 		} else {
 			fdiv.html(IMAGE_UNAVAILABLE);
 		}
 	}
 
 	$(function() {
-		tools.regTool('eoline', TOOLS_SOLVERS + '>' + TOOLS_EOLINE, execFunc);
+		tools.regTool('eoline', TOOLS_SOLVERS + '>' + TOOLS_EOLINE, execFunc.bind(null, 'eoline'));
+		tools.regTool('eocross', TOOLS_SOLVERS + '>' + 'EOCross', execFunc.bind(null, 'eocross'));
 	});
 
 	return {
