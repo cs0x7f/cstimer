@@ -125,10 +125,13 @@ var recons = execMain(function() {
 	}
 
 	// data = [[name, insp, exec, turn], ...]
-	function renderResult(stepData, tidx) {
+	function renderResult(stepData, tidx, isPercent) {
 		var maxSubt = 0;
+		var sumSubt = 0;
 		for (var i = 0; i < stepData.length; i++) {
-			maxSubt = Math.max(stepData[i][1] + stepData[i][2], maxSubt);
+			var subt = stepData[i][1] + stepData[i][2];
+			maxSubt = Math.max(subt, maxSubt);
+			sumSubt += subt;
 		}
 		var str = [];
 		var totIns = 0;
@@ -139,19 +142,19 @@ var recons = execMain(function() {
 			totIns += val[1];
 			totExec += val[2];
 			totMov += val[3];
-			str.push('<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">' + val[0] + '</td><td colspan=4 style="font-size:0.2em;text-align:left;padding:0;">' +
-				'<span class="cntbar sty2" style="border:none;width: ' + val[1] / maxSubt * 100 + '%;">&nbsp;</span>' +
-				'<span class="cntbar" style="border:none;width: ' + val[2] / maxSubt * 100 + '%;">&nbsp;</span></td></tr>' +
+			str.push('<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">' + val[0] + '</td><td colspan=4 style="padding:0;">' +
+				'<span class="cntbar sty2" style="height:0.2em;float:left;border:none;width: ' + val[1] / maxSubt * 100 + '%;">&nbsp;</span>' +
+				'<span class="cntbar" style="height:0.2em;float:left;border:none;width: ' + val[2] / maxSubt * 100 + '%;">&nbsp;</span></td></tr>' +
 				'<tr style="">' +
-				'<td style="padding-bottom:0;padding-top:0;">' + kernel.pretty(val[1]) + '</td>' +
-				'<td style="padding-bottom:0;padding-top:0;">' + kernel.pretty(val[2]) + '</td>' +
+				'<td style="padding-bottom:0;padding-top:0;">' + (isPercent ? Math.round(val[1] / sumSubt * 1000) / 10 + '%' : kernel.pretty(val[1])) + '</td>' +
+				'<td style="padding-bottom:0;padding-top:0;">' + (isPercent ? Math.round(val[2] / sumSubt * 1000) / 10 + '%' :     kernel.pretty(val[2])) + '</td>' +
 				'<td style="padding-bottom:0;padding-top:0;">' + Math.round(val[3] * 10) / 10 + '</td>' +
 				'<td style="padding-bottom:0;padding-top:0;">' + (val[3] > 0 && val[1] + val[2] > 0 ? Math.round(val[3] / (val[1] + val[2]) * 10000 ) / 10 : 'N/A') + '</td>' +
 				'</tr>');
 		}
 		var endTr = $('<tr>').append(tidx ? $('<td>').append(requestBack) : $('<td style="padding:0;">').append(rangeSelect),
-			'<td>' + kernel.pretty(totIns) + '</td>' +
-			'<td>' + kernel.pretty(totExec) + '</td>' +
+			'<td>' + (isPercent ? Math.round(totIns / sumSubt * 1000) / 10 + '%' : kernel.pretty(totIns)) + '</td>' +
+			'<td>' + (isPercent ? Math.round(totExec / sumSubt * 1000) / 10 + '%' : kernel.pretty(totExec)) + '</td>' +
 			'<td>' + Math.round(totMov * 10) / 10 + '</td>' +
 			'<td>' + (totMov > 0 && totIns + totExec > 0 ? Math.round(totMov / (totIns + totExec) * 10000 ) / 10 : 'N/A') + '</td>');
 		table.empty().append(tableTh);
@@ -185,7 +188,12 @@ var recons = execMain(function() {
 	}
 
 	function reqRecons(signal, value) {
+		if (!isEnable) {
+			return;
+		}
 		var method = methodSelect.val();
+		var isPercent = method.endsWith('%');
+		method = method.replace('%', '');
 		var times = value[0];
 		var data = calcRecons(times, method);
 		if (!data) {
@@ -198,10 +206,13 @@ var recons = execMain(function() {
 			var curData = data[i] || [0, 0, 0, 0];
 			stepData.push([steps[i], curData[1] - curData[0], curData[2] - curData[1], curData[3]]);
 		}
-		renderResult(stepData, value[1] + 1);
+		renderResult(stepData, value[1] + 1, isPercent);
 	}
 
 	function update() {
+		if (!isEnable) {
+			return;
+		}
 		var nsolv = stats.getTimesStatsList().timesLen;
 		var nrec = rangeSelect.val();
 		if (nrec == 'single') {
@@ -218,6 +229,8 @@ var recons = execMain(function() {
 			return;
 		}
 		var method = methodSelect.val();
+		var isPercent = method.endsWith('%');
+		method = method.replace('%', '');
 		var steps = cubeutil.getStepNames(method);
 		var nvalid = 0;
 		var stepData = [];
@@ -246,7 +259,7 @@ var recons = execMain(function() {
 			stepData[i][2] /= nvalid;
 			stepData[i][3] /= nvalid;
 		}
-		renderResult(stepData);
+		renderResult(stepData, null, isPercent);
 	}
 
 	function procClick(e) {
@@ -266,6 +279,7 @@ var recons = execMain(function() {
 		var methods = ['cf4op', 'roux'];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
+			methodSelect.append('<option value="' + methods[i] + '%">' + methods[i] + '%</option>');
 		}
 	});
 });
