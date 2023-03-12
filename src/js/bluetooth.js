@@ -562,9 +562,6 @@ var GiikerCube = execMain(function() {
 			var value = event.target.value;
 			if (decoder == null) {
 				return;
-			} else if (keyCheck > 5) {
-				v2initKey(true, true);
-				keyCheck = 0;
 			}
 			parseV2Data(value);
 		}
