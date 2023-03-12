@@ -446,7 +446,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000000000000, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, aufsuff);
 	}
 
-	function getF2LImage(stmap, stprobs, cases, canvas) {
+	function getF2LImage(piece0, stmap, stprobs, cases, canvas) {
 		var emap = [[5, 10], [7, 19], [3, -1], [1, -1], null, null, null, null, [23, 12]];
 		var cmap = [[8, 20, 9], [6, -1, 18], [0, -1, -1], [2, 11, -1], [-1, 15, 26]];
 		var caze = stmap[scrMgr.fixCase(cases, stprobs)];
@@ -454,7 +454,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		var eo = caze >> 4 & 1;
 		var cp = cmap[caze >> 8 & 0xf];
 		var co = caze >> 12 & 3;
-		var pieces = 'GGGGDGGGGGGGGRRGRRGGGBBGBBG'.split('');
+		var pieces = piece0.split('');
 		for (var i1 = 0; i1 < 3; i1++) {
 			if (i1 < 2 && ep[i1] >= 0) {
 				pieces[ep[i1]] = 'BR'.charAt(eo ^ i1);
@@ -833,12 +833,12 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('corners', getCornerScramble)
 		('333custom', getCustomScramble, [customfilter, customprobs])
 		('ll', getLLScramble)
-		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, f2l_map, f2lprobs)])
+		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, 'GGGGDGGGGGGGGRRGRRGGGBBGBBG', f2l_map, f2lprobs)])
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('zzll', getZZLLScramble)
 		('ttll', getTTLLScramble)
-		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, eols_map, eolsprobs)])
+		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, 'GDGDDDGDGGGGGRRGRRGGGBBDBBG', eols_map, eolsprobs)])
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs, getWVLSImage])
 		('lse', getLSEScramble)
 		('cmll', getCMLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])
