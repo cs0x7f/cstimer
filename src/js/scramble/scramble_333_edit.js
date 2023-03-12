@@ -426,10 +426,30 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000f0000ffff - eo * ep, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, aufsuff);
 	}
 
-	function getF2LImage(cases, canvas) {
+	var eols_map = [];
+	var eolsprobs = [];
+	var eolsfilter = [];
+	for (var i = 0; i < f2l_map.length; i++) {
+		if (f2l_map[i] & 0xf0) {
+			continue;
+		}
+		eols_map.push(f2l_map[i]);
+		eolsprobs.push(f2lprobs[i]);
+		eolsfilter.push(f2lfilter[i]);
+	}
+
+	function getEOLSScramble(type, length, cases) {
+		var caze = eols_map[scrMgr.fixCase(cases, eolsprobs)];
+		var ep = Math.pow(16, caze & 0xf);
+		var cp = Math.pow(16, caze >> 8 & 0xf);
+		var co = 0xf ^ (caze >> 12 & 3);
+		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000000000000, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, aufsuff);
+	}
+
+	function getF2LImage(stmap, stprobs, cases, canvas) {
 		var emap = [[5, 10], [7, 19], [3, -1], [1, -1], null, null, null, null, [23, 12]];
 		var cmap = [[8, 20, 9], [6, -1, 18], [0, -1, -1], [2, 11, -1], [-1, 15, 26]];
-		var caze = f2l_map[scrMgr.fixCase(cases, f2lprobs)];
+		var caze = stmap[scrMgr.fixCase(cases, stprobs)];
 		var ep = emap[caze & 0xf];
 		var eo = caze >> 4 & 1;
 		var cp = cmap[caze >> 8 & 0xf];
@@ -813,12 +833,12 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('corners', getCornerScramble)
 		('333custom', getCustomScramble, [customfilter, customprobs])
 		('ll', getLLScramble)
-		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage])
+		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, f2l_map, f2lprobs)])
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('zzll', getZZLLScramble)
 		('ttll', getTTLLScramble)
-		('zbls', getZBLSScramble)
+		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, eols_map, eolsprobs)])
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs, getWVLSImage])
 		('lse', getLSEScramble)
 		('cmll', getCMLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])

@@ -181,6 +181,7 @@ var scrdata = [
 		['utolsó pár + utolsó réteg', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
+		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['ZZLL', "zzll", 0],
 		['TTLL', "ttll", 0],

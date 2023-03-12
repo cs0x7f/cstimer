@@ -181,6 +181,7 @@ var scrdata = [
 		['Siste F2L plass + Siste rad', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
+		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['ZLL', "zzll", 0],
 		['TTLL', "ttll", 0],
