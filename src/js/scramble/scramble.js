@@ -364,15 +364,7 @@ var scramble = execMain(function(rn, rndEl) {
 				return ret;
 			}
 			if (type == 'remoteComp') {
-				if (!onlinecomp) {
-					remoteFail();
-				}
-				ret = onlinecomp.getScrambles();
-				if (!parseInput(ret)) {
-					remoteFail();
-				} else {
-					requestAnimFrame(doScrambleIt);
-				}
+				remoteFail();
 			} else if (type == 'remoteURL') {
 				$.getJSON(remoteURL, function(ret) {
 					if (!parseInput(ret)) {
