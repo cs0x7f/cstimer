@@ -14,6 +14,7 @@ var cubeutil = (function() {
 	var roux1Mask = "---------------------F--F--D--D--D-----LLLLLL-----B--B";
 	var roux2Mask = "------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B";
 	var roux3Mask = "U-U---U-Ur-rRRRRRRf-fF-FF-FD-DD-DD-Dl-lLLLLLLb-bB-BB-B";
+	var LLPattern = "012345678cdeRRRRRR9abFFFFFFDDDDDDDDDijkLLLLLLfghBBBBBB";
 
 	var cubeRots = (function genRots() {
 
@@ -221,6 +222,34 @@ var cubeutil = (function() {
 		});
 	}
 
+	var identPLL = (function() {
+		var pllPattern = [];
+		return function(facelet) {
+			if (pllPattern.length == 0) {
+				for (var i = 0; i < 22; i++) {
+					var param = i == 21 ? 'UUUUUUUUUFFFRRRBBBLLL' : scramble_333.getPLLImage(i)[0];
+					pllPattern.push(LLPattern.replaceAll(/[0-9a-z]/g, function(v) {
+						return param[parseInt(v, 36)].toLowerCase();
+					}));
+				}
+			}
+			var chkList = [];
+			for (var a = 0; a < 24; a++) {
+				if (solvedProgress([facelet, a], ollMask) == 0) {
+					chkList.push(a);
+				}
+			}
+			for (var i = 0; i < 22; i++) {
+				for (var j = 0; j < chkList.length; j++) {
+					if (solvedProgress([facelet, chkList[j]], pllPattern[i]) == 0) {
+						return i;
+					}
+				}
+			}
+			return -1;
+		}
+	})();
+
 	return {
 		getProgress: function(facelet, progress) {
 			switch (progress) {
@@ -255,7 +284,8 @@ var cubeutil = (function() {
 			}
 		},
 		getPrettyMoves: getPrettyMoves,
-		moveSeq2str: moveSeq2str
+		moveSeq2str: moveSeq2str,
+		identPLL: identPLL
 	}
 
 })();

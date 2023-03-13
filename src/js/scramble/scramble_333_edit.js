@@ -693,7 +693,11 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		if (arrows.length == 2) {
 			arrows = arrows.concat([[arrows[0][1], arrows[0][0]], [arrows[1][1], arrows[1][0]]])
 		}
-		image.llImage('DDDDDDDDD' + pllImgParam[cases][0], arrows, canvas);
+		var llParam = ['DDDDDDDDD' + pllImgParam[cases][0], arrows]
+		if (!canvas) {
+			return llParam.concat([pllfilter[cases]]);
+		}
+		image.llImage(llParam[0], llParam[1], canvas);
 	}
 
 	var oll_map = [
@@ -869,6 +873,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		getCLLScramble: getCLLScramble,
 		getELLScramble: getELLScramble,
 		getAnyScramble: getAnyScramble,
+		getPLLImage: getPLLImage,
 		genFacelet: genFacelet,
 		solvFacelet: solvFacelet
 	};
