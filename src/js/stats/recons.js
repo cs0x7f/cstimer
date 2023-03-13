@@ -88,6 +88,7 @@ var recons = execMain(function() {
 		var lastMove = -3;
 		var lastPow = 0;
 		var startCubieI = new mathlib.CubieCube();
+		startCubieI.invFrom(c);
 		var tsStart = 0;
 		var tsFirst = 0;
 		var moveCnt = 0;
