@@ -119,8 +119,8 @@ var image = execMain(function() {
 			ctx.fill();
 
 			ctx.beginPath();
-			ctx.fillStyle = '#ff0';
-			ctx.strokeStyle = '#f00';
+			ctx.fillStyle = colors[3];
+			ctx.strokeStyle = colors[0];
 			ctx.moveTo(x[0], y[0]);
 			ctx.bezierCurveTo(x[1], y[1], x[1], y[1], x[2], y[2]);
 			ctx.bezierCurveTo(x[3], y[3], x[3], y[3], x[4], y[4]);
@@ -149,8 +149,10 @@ var image = execMain(function() {
 		var width = 3;
 		var movere = /([UD][RL]|ALL|[UDRLy])(\d[+-]?)?/
 		var movestr = ['UR', 'DR', 'DL', 'UL', 'U', 'R', 'D', 'L', 'ALL']
+		var colors = ['#f00', '#37b', '#5cf', '#ff0', '#850'];
 
 		return function(moveseq) {
+			colors = kernel.getProp('colclk').match(colre);
 			var moves = moveseq.split(/\s+/);
 			var moveArr = clock.moveArr;
 			var flip = 9;
@@ -190,13 +192,13 @@ var image = execMain(function() {
 			var y = [10, 30, 50];
 			var x = [10, 30, 50, 75, 95, 115];
 			for (var i = 0; i < 18; i++) {
-				drawClock(['#37b', '#5cf'][~~(i / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[i]);
+				drawClock([colors[1], colors[2]][~~(i / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[i]);
 			}
 
 			var y = [20, 40];
 			var x = [20, 40, 85, 105];
 			for (var i = 0; i < 8; i++) {
-				drawButton(['#850', '#ff0'][buttons[i]], [width, x[~~(i / 2)], y[i % 2]]);
+				drawButton([colors[4], colors[3]][buttons[i]], [width, x[~~(i / 2)], y[i % 2]]);
 			}
 		};
 	})();
