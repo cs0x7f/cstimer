@@ -7,7 +7,7 @@
 <li>Accéder à de nombreuses fonctions statistiques : enregistrer les <strong>temps de passage</strong>; <strong>un nombre illimité de sessions</strong>, fusion/séparation de session, etc.</li>
 <li>Utiliser des solveurs pour différentes étapes : <strong>Croix, Croix étendue, Face 2x2x2, Face Skewb, Forme du SQ1</strong>, aussi bien pour apprendre que pour s'entraîner.</li>
 <li>Utiliser des outils annexes : affichage du mélange sous forme d'aperçu, alerte vocale aux 8 secondes d'inspection, métronome, génération de mélanges par lot, etc.</li>
-<li>Sauvegarder vos sessions. Vous pouvez sauvegarder vos temps localement, sur le serveur du WCA, de csTimer ou sur le stockage de Google.</li>
+<li>Sauvegarder vos résolutions sur le serveur de csTimer ou sur Google Storage, ou les exporter sous forme de fichier.</li>
 </ul>
 <p>csTimer fonctionne avec la plupart des navigateurs modernes sur ordinateurs, smartphones et tablettes. Vous pouvez ajouter csTimer à votre écran d'accueil, il se lancera alors comme une application native.</p>
 <p>Parce qu'il utilise le cache de votre navigateur, csTimer ne sollicite votre bande passante que lorsque vous chargez la page pour la première fois. csTimer peut ensuite fonctionner hors connexion internet (sauf pour les fonctionnalités telles que la sauvegarde)</p>
@@ -18,10 +18,10 @@
 <h2>Fonctionnalités de base</h2>
 <ul>
 <li><strong>Comment chronométrer</strong> - Pressez la barre d'espace  / ou les deux touches Ctrl gauche et droite (ou touchez l'écran sur les appareils mobiles). Attendez que le chronomètre passe au vert. Il démarre dès que vous relâchez la barre d'espace. Pour arrêter le chronomètre, tapez sur n'importe quelle touche ; votre temps de résolution est alors enregistré.</li>
-<li><strong>Description de l'interface</strong> - Il y a 6 boutons près du logo de csTimer : Options, Exporter, Mélange, Liste temps, Faire une donation, Outils. Cliquez sur <strong>Mélange</strong>, <strong>Liste temps</strong> ou <strong>Outils</strong> pour ouvrir le panneau de fonctions correspondant.</li>
+<li><strong>Description de l'interface</strong> - Il y a 6 boutons près du logo csTimer : Options, Exporter, Mélange, Mes Temps, Faire un don, Outils. Cliquez sur <strong>Mélange</strong>, <strong>Mes Temps</strong> ou <strong>Outils</strong> pour ouvrir le panneau de fonctions correspondant.</li>
 <li><strong>Panneau de mélange</strong> - Dans le panneau Mélange, vous pouvez sélectionner le type de mélange, définir la longueur du mélange, filtrer par cas (si disponible), revoir le mélange précédent, générer le mélange suivant.</li>
-<li><strong>Panneau de liste des temps</strong> - Dans le panneau Liste des temps, cliquez sur "Session" pour afficher le gestionnaire de sessions. Vous pouvez sélectionner/ajouter/supprimer des sessions. Vous pouvez afficher le single/moyenne actuelle, le meilleur single/la meilleure moyenne et la liste de tous les temps. Le bouton"X" à droite du sélecteur de session permet de remettre une session à zéro.</li>
-<li><strong>Panneau d'outils</strong> - Dans le panneau d'outils, vous pouvez sélectionner des fonctions auxiliaires spécifiques, telles que l'aperçu du mélange, le générateur de mélanges, des solvers et d'autres types de statistiques.</li>
+<li><strong>Panneau Mes Temps</strong> - Dans le panneau Mes Temps, cliquez sur "Session" pour afficher le gestionnaire de sessions. Vous pouvez sélectionner/ajouter/supprimer des sessions. Vous pouvez afficher le single/la moyenne actuelle, le meilleur single/la meilleure moyenne et la liste de tous vos temps. Le bouton"X" à droite du sélecteur de session permet de remettre une session à zéro.</li>
+<li><strong>Panneau Outils</strong> - Dans ce panneau, vous pouvez sélectionner des fonctions auxiliaires spécifiques telles que l'aperçu du mélange, le générateur de mélanges, des solvers et d'autres types de statistiques.</li>
 </ul>
 <h2>Raccourcis clavier</h2>
 <table class="table" style="display: inline-block;">
@@ -29,7 +29,7 @@
 <tr><th>Alt + 1</th><td>Afficher les mélanges de Square-1.</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Afficher les mélanges de 2x2x2~7x7x7.</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>Afficher les mélanges de pyraminx/megaminx/clock/skewb.</td></tr>
-<tr><th>Alt + i</th><td>Mélanges à entrer soi-même.</td></tr>
+<tr><th>Alt + i</th><td>Mélanges à saisir soi-même.</td></tr>
 <tr><th>Alt + d</th><td>Supprimer tous les temps de la session en cours.</td></tr>
 <tr><th>Alt + z</th><td>Supprimer le dernier temps.</td></tr>
 <tr><th>Alt + haut/bas</th><td>Aller à la session précédente /suivante.</td></tr>
@@ -44,11 +44,11 @@
 <h2>Descriptions des options</h2>
 <ul>
 <li><strong data="opt_ahide">Cacher tous les éléments lors du chronométrage</strong>. Cacher le logo et tous les panneaux lors du chronométrage.</li>
-<li><strong data="opt_useMilli">Utiliser les millisecondes</strong>. Afficher le chiffre des millisecondes. Même si la fonction est désactivée, la précision de csTimer reste de l'ordre de la milliseconde.</li>
+<li><strong data="opt_useMilli">Utiliser les millisecondes</strong>. Afficher les millisecondes. Si cette fonction est désactivée, la précision du chronométrage reste néanmoins de 1 milliseconde.</li>
 <li><strong data="opt_timeFormat">Format du temps</strong>. Format du temps à afficher.</li>
 <li><strong data="opt_atexpa">Exportation automatique (par 100 résolutions)</strong>. Si la fonction est activée, csTimer exporte automatiquement vos temps toutes les 100 résolutions vers l'endroit spécifié (fichier local, server de csTimer ou stockage Google).</li>
-<li><strong data="opt_expp">Importer d&#x27;anciennes données</strong>. Si vous avez chargé plusieurs backups, vous pouvez importer de 1 à plus de 10 des backups les plus récent. Si vous avez accidentellement chargé un backup vide, cette option vous aide à récupérer vos résolutions.</li>
-<li><strong data="opt_useLogo">Afficher des messages dans le bloc du logo</strong>. Le panneau du logo de « csTimer » peut afficher des informations qui vous intéressent, par exemple le fait que vous venez de battre votre PB.</li>
+<li><strong data="opt_expp">Importer d&#x27;anciennes données</strong>. Si vous avez chargé plusieurs sauvegardes, vous pouvez importer 1 à 10 des sauvegardes les plus récemment chargées. Si vous avez accidentellement chargé une sauvegarde vide, cette option vous aidera à récupérer vos résolutions.</li>
+<li><strong data="opt_useLogo">Afficher des messages dans le bloc du logo</strong>. Le panneau du logo csTimer peut afficher des informations pertinentes pour vous ; par exemple le fait que vous venez de battre votre PB.</li>
 <li><strong data="opt_showAvg">Afficher les moyennes en cours</strong>. Vos moyennes en cours s'affichent sous le chronomètre principal : ao5 (Average of 5) et ao12 (Average of 12).</li>
 <li><strong data="opt_zoom">Zoom</strong>. Cette option vous permet d'ajuster la taille de tous les éléments.</li>
 <li><strong data="opt_font">Police du chronomètre</strong>. Police de caractères du chronomètre</li>
@@ -94,7 +94,7 @@
 <li><strong data="opt_delmul">Activer la suppression multiple</strong>. Possibilité de supprimer plusieurs résolutions à partir d'une résolution. La résolution sélectionnée sera la plus ancienne résolution supprimée.</li>
 <li><strong data="opt_disPrec">Précision de la répartition des temps</strong>. Intervalle de temps pour l'outil de distribution des temps.</li>
 <li><strong data="opt_solSpl">Afficher la solution progressivement</strong>. Si sélectionné, seule la longueur de la solution du solveur sera montrée et vous pourrez voir la solution mouvement par mouvement. Sinon la solution complète sera affichée.</li>
-<li><strong data="opt_imgSize">Taille de l&#x27;image du mélange</strong>. Définit la taille de l'aperçu du mélange.</li>
+<li><strong data="opt_imgSize">Taille de l&#x27;aperçu du mélange</strong>. Définit la taille de l'aperçu du mélange.</li>
 <li><strong data="opt_NTools">Nombre d&#x27;outils</strong>. csTimer peut afficher jusqu'à 4 outils simultanément.</li>
 <li><strong data="opt_useKSC">Utiliser les raccourcis clavier</strong>. Utilisez les raccourci clavier pour changer le type de mélange, générer un nouveau mélange, basculer d'une session à une autre, etc.</li>
 <li><strong data="opt_vrcSpeed">Vitesse de base du cube virtuel (tps)</strong>. Vitesse de base des mouvements du Rubik's Cube virtuel ; la vitesse sera accélérée s'il y a plusieurs mouvements à effectuer.</li>
@@ -116,7 +116,7 @@
 <li><strong data="tool_distribution">Répartition des temps</strong>. Analyse de la distribution des temps et de la stabilité, &lt;X Y/Z signifient que Y résolutions sont en-dessous de X secondes, et que les Z dernières résolutions de la session sont en-dessous de X secondes.</li>
 <li><strong data="tool_trend">Tendance des temps</strong>. Affiche une courbe de tendance pour les résolutions de la session en cours.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Nombre de résolutions par jour /semaine /mois /année.</li>
-<li><strong data="tool_image">Image du mélange</strong>. Aperçu permettant de vérifier un mélange. Disponible pour tous les puzzles WCA.</li>
+<li><strong data="tool_image">aperçu du mélange</strong>. Aperçu permettant de vérifier un mélange. Disponible pour tous les puzzles WCA.</li>
 <li><strong data="tool_roux1">Solveurs &gt; Résoudre 1er bloc Roux</strong>. Solveur Roux 1ère étape ; résout un bloc 1x2x3.</li>
 <li><strong data="tool_eoline">Solveurs &gt; Résoudre l&#x27;EOLine</strong>. Solveur EO line : résout l'orientation des 12 arêtes, et la position des arêtes DF et DB.</li>
 <li><strong data="tool_cross">Solveurs &gt; Résoudre la croix</strong>. Solveur de croix ; résolution des arêtes DF, DL, DR, DB.</li>
