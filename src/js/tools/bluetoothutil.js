@@ -27,13 +27,15 @@ var scrHinter = execMain(function(CubieCube) {
 		if (c.isEqual(state)) {
 			next = 0;
 		}
+		var pow;
 		for (var i = 0; i < seq.length; i++) {
 			var a = seq[i][0] * 3;
-			for (var p = 0; p < 3; p++) {
-				CubieCube.EdgeMult(c, CubieCube.moveCube[a + p], d);
-				CubieCube.CornMult(c, CubieCube.moveCube[a + p], d);
+			for (pow = 0; pow < 3; pow++) {
+				CubieCube.EdgeMult(c, CubieCube.moveCube[a + pow], d);
+				CubieCube.CornMult(c, CubieCube.moveCube[a + pow], d);
 				if (d.isEqual(state)) {
-					next = (p == seq[i][2] - 1) ? i + 1 : i;
+					next = (pow == seq[i][2] - 1) ? i + 1 : i;
+					break;
 				}
 			}
 			if (next == i) {
@@ -50,6 +52,9 @@ var scrHinter = execMain(function(CubieCube) {
 		var ret = [];
 		for (var i = 0; i < seq.length; i++) {
 			var m = seq[i];
+			if (next == 0 && i == 0) {
+				m = [m[0], m[1], (m[2] - pow + 7) % 4];
+			}
 			ret.push((i == next ? '`' : '') + 'URFDLB'.charAt(m[0]) + [null, "", "2", "'"][m[2]]);
 		}
 		ret = ret.join(' ');
@@ -320,7 +325,7 @@ var giikerutil = execMain(function(CubieCube) {
 		batId == 0 && updateBattery();
 		giikerErrorDetect();
 		callback(currentState, prevMoves, lastTimestamp);
-		if (curScramble && kernel.getProp('input') == 'g') {
+		if (curScramble && kernel.getProp('input') == 'g' && timer.getCurTime() == 0) {
 			scrHinter.checkState(currentCubie);
 		}
 	}

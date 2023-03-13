@@ -42,7 +42,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		} else {
 			table_ctrl.appendRow(times.length - 1);
 		}
-		updateUtil();
+		updateUtil(['push']);
 		kernel.pushSignal('timestd', times[times.length - 1]);
 	}
 
@@ -147,7 +147,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			filterTh.unbind('click').click(changePattern);
 			updateAvgRow(curDim);
-			updateUtil();
+			updateUtil(['table']);
 			scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
 		}
 
@@ -374,7 +374,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times_stats_list.reset(times.length);
 			sessionManager.save(idx);
 			table_ctrl.updateFrom(idxRow);
-			updateUtil();
+			updateUtil(['penalty', idx]);
 			if (idx == cfmIdx) {
 				genDiv();
 			}
@@ -558,13 +558,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 		resultsHeight();
 	}
 
-	function updateUtil() {
+	function updateUtil(msg) {
 		if (isInit) {
 			return;
 		}
 		updateSumTable();
 		for (var util in statUtils) {
-			statUtils[util]();
+			statUtils[util](msg);
 		}
 		genAvgSignal(times.length - 1);
 	}
@@ -1457,7 +1457,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
 		times_stats_list = new TimeStat([], times.length, timeAt);
 		crossSessionStats.updateStatal(avgSizes);
-		updateUtil();
+		updateUtil(['statal', statal]);
 	}
 
 	var curScramble = "";
@@ -1496,7 +1496,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				times_stats_table.reset(times.length);
 				times_stats_list.reset(times.length);
 				crossSessionStats.updateStatal(avgSizes);
-				updateUtil();
+				updateUtil(['trim']);
 			} else if (value[0] == 'view') {
 				resultsHeight();
 			} else if (value[0] == 'statHide') {
@@ -1507,7 +1507,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 			} else if (value[0] == 'statsrc') {
 				times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
-				updateUtil();
+				updateUtil(['statsrc']);
 			} else if (value[0] == 'wndStat') {
 				resultsHeight();
 			} else if (value[0] == 'sr_statal') {

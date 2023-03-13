@@ -1,7 +1,7 @@
 var recons = execMain(function() {
 	var isEnable;
 
-	var div = $('<div style="font-size:0.65em;" />');
+	var div = $('<div style="font-size:0.9em;" />');
 	var table = $('<table class="table">');
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
@@ -128,29 +128,82 @@ var recons = execMain(function() {
 	function renderResult(stepData, tidx, isPercent) {
 		var maxSubt = 0;
 		var sumSubt = 0;
+		var stepSData = [];
+		var sDataIdx = [];
 		for (var i = 0; i < stepData.length; i++) {
 			var subt = stepData[i][1] + stepData[i][2];
-			maxSubt = Math.max(subt, maxSubt);
 			sumSubt += subt;
+			var names = stepData[i][0].split('-');
+			if (stepSData.length == 0 || stepSData[stepSData.length - 1][0] != names[0]) {
+				stepSData.push([names[0], 0, 0, 0]);
+			}
+			sDataIdx[i] = stepSData.length - 1;
+			var lData = stepSData[stepSData.length - 1];
+			for (var j = 1; j < 4; j++) {
+				lData[j] += stepData[i][j];
+			}
+			maxSubt = Math.max(lData[1] + lData[2], maxSubt);
 		}
+
+		var trTpl =
+			'<tr style="$0" data="$1"><td rowspan=2 class="$8" style="padding-bottom:0;padding-top:0;">$1</td><td colspan=4 style="padding:0;">' +
+			'<span class="cntbar sty2" style="height:0.2em;float:left;border:none;width:$2%;">&nbsp;</span>' +
+			'<span class="cntbar" style="height:0.2em;float:left;border:none;width:$3%;">&nbsp;</span></td></tr>' +
+			'<tr style="$0" data="$1">' +
+			'<td style="padding-bottom:0;padding-top:0;">$4</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">$5</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">$6</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">$7</td>' +
+			'</tr>';
+
 		var str = [];
 		var totIns = 0;
 		var totExec = 0;
 		var totMov = 0;
+		var curSIdx = -1;
 		for (var i = 0; i < stepData.length; i++) {
 			var val = stepData[i];
 			totIns += val[1];
 			totExec += val[2];
 			totMov += val[3];
-			str.push('<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">' + val[0] + '</td><td colspan=4 style="padding:0;">' +
-				'<span class="cntbar sty2" style="height:0.2em;float:left;border:none;width: ' + val[1] / maxSubt * 100 + '%;">&nbsp;</span>' +
-				'<span class="cntbar" style="height:0.2em;float:left;border:none;width: ' + val[2] / maxSubt * 100 + '%;">&nbsp;</span></td></tr>' +
-				'<tr style="">' +
-				'<td style="padding-bottom:0;padding-top:0;">' + (isPercent ? Math.round(val[1] / sumSubt * 1000) / 10 + '%' : kernel.pretty(val[1])) + '</td>' +
-				'<td style="padding-bottom:0;padding-top:0;">' + (isPercent ? Math.round(val[2] / sumSubt * 1000) / 10 + '%' :     kernel.pretty(val[2])) + '</td>' +
-				'<td style="padding-bottom:0;padding-top:0;">' + Math.round(val[3] * 10) / 10 + '</td>' +
-				'<td style="padding-bottom:0;padding-top:0;">' + (val[3] > 0 && val[1] + val[2] > 0 ? Math.round(val[3] / (val[1] + val[2]) * 10000 ) / 10 : 'N/A') + '</td>' +
-				'</tr>');
+			var isSuperStep = sDataIdx[i] == sDataIdx[i + 1] && sDataIdx[i] != sDataIdx[i - 1];
+			if (isSuperStep) {
+				curSIdx = sDataIdx[i];
+				var sval = stepSData[curSIdx];
+				var trsdata = [
+					'',
+					sval[0],
+					sval[1] / maxSubt * 100,
+					sval[2] / maxSubt * 100,
+					isPercent ? Math.round(sval[1] / sumSubt * 1000) / 10 + '%' : kernel.pretty(sval[1]),
+					isPercent ? Math.round(sval[2] / sumSubt * 1000) / 10 + '%' : kernel.pretty(sval[2]),
+					Math.round(sval[3] * 10) / 10,
+					sval[3] > 0 && sval[1] + sval[2] > 0 ? Math.round(sval[3] / (sval[1] + sval[2]) * 10000 ) / 10 : 'N/A',
+					'click sstep'
+				];
+				var curTr = trTpl;
+				for (var j = 0; j < 9; j++) {
+					curTr = curTr.replaceAll('$' + j, trsdata[j]);
+				}
+				str.push(curTr);
+			}
+
+			var trdata = [
+				sDataIdx[i] == curSIdx ? 'display:none;' : '',
+				val[0],
+				val[1] / maxSubt * 100,
+				val[2] / maxSubt * 100,
+				isPercent ? Math.round(val[1] / sumSubt * 1000) / 10 + '%' : kernel.pretty(val[1]),
+				isPercent ? Math.round(val[2] / sumSubt * 1000) / 10 + '%' : kernel.pretty(val[2]),
+				Math.round(val[3] * 10) / 10,
+				val[3] > 0 && val[1] + val[2] > 0 ? Math.round(val[3] / (val[1] + val[2]) * 10000 ) / 10 : 'N/A',
+				''
+			];
+			var curTr = trTpl;
+			for (var j = 0; j < 9; j++) {
+				curTr = curTr.replaceAll('$' + j, trdata[j]);
+			}
+			str.push(curTr);
 		}
 		var endTr = $('<tr>').append(tidx ? $('<td>').append(requestBack) : $('<td style="padding:0;">').append(rangeSelect),
 			'<td>' + (isPercent ? Math.round(totIns / sumSubt * 1000) / 10 + '%' : kernel.pretty(totIns)) + '</td>' +
@@ -161,7 +214,8 @@ var recons = execMain(function() {
 		tableTh.after(str.join(''), endTr);
 		rangeSelect.unbind('change').change(procClick);
 		methodSelect.unbind('change').change(procClick);
-		requestBack.text('No.' + tidx).unbind('click').click(procClick);
+		table.unbind('click').click(procClick);
+		requestBack.text('No.' + tidx);
 	}
 
 	function renderEmpty(isRequest) {
@@ -173,7 +227,7 @@ var recons = execMain(function() {
 		);
 		rangeSelect.unbind('change').change(procClick);
 		methodSelect.unbind('change').change(procClick);
-		requestBack.unbind('click').click(procClick);
+		table.unbind('click').click(procClick);
 	}
 
 	function execFunc(fdiv, signal) {
@@ -221,6 +275,8 @@ var recons = execMain(function() {
 			nrec = Math.min(5, nsolv);
 		} else if (nrec == 'mo12') {
 			nrec = Math.min(12, nsolv);
+		} else if (nrec == 'mo100') {
+			nrec = Math.min(100, nsolv);
 		} else {
 			nrec = nsolv;
 		}
@@ -263,7 +319,25 @@ var recons = execMain(function() {
 	}
 
 	function procClick(e) {
-		update();
+		if (e.type == 'change') {
+			update();
+			return;
+		}
+		var target = $(e.target);
+		if (!target.is('.click')) {
+			return;
+		}
+		if (!target.is('.sstep')) {
+			update();
+			return;
+		}
+		var obj = target.parent();
+		var prefix = obj.attr('data') + '-';
+		obj = obj.next().next();
+		while (obj && obj.attr('data').startsWith(prefix)) {
+			obj.toggle();
+			obj = obj.next();
+		}
 	}
 
 	$(function() {
@@ -272,14 +346,14 @@ var recons = execMain(function() {
 		}
 		stats.regUtil('recons', update);
 		kernel.regListener('recons', 'reqrec', reqRecons);
-		var ranges = ['single', 'mo5', 'mo12', 'all'];
+		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
 		for (var i = 0; i < ranges.length; i++) {
 			rangeSelect.append('<option value="' + ranges[i] + '">' + ranges[i] + '</option>');
 		}
-		var methods = ['cf4op', 'roux'];
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux']];
 		for (var i = 0; i < methods.length; i++) {
-			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
-			methodSelect.append('<option value="' + methods[i] + '%">' + methods[i] + '%</option>');
+			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
+			methodSelect.append('<option value="' + methods[i][0] + '%">' + methods[i][1] + '%</option>');
 		}
 	});
 });
