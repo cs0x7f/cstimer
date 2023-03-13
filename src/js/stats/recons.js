@@ -382,6 +382,7 @@ var caseStat = execMain(function() {
 		var method = 'cf4op';
 		var nvalid = 0;
 		var caseCnts = [];
+		var c = new mathlib.CubieCube();
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
 			var times = stats.timesAt(s);
 			var data = recons.calcRecons(times, method);
@@ -389,7 +390,8 @@ var caseStat = execMain(function() {
 				continue;
 			}
 			nvalid++;
-			var cur = cubeutil.identPLL(data[0][4].toFaceCube());
+			c.invFrom(data[0][4]);
+			var cur = cubeutil.identPLL(c.toFaceCube());
 			caseCnts[cur] = caseCnts[cur] || [0, 0, 0, 0];
 			var cumData = [1, data[0][1] - data[0][0], data[0][2] - data[0][1], data[0][3]];
 			for (var i = 0; i < 4; i++) {
