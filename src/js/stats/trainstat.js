@@ -23,16 +23,13 @@ var trainStat = execMain(function() {
 		}[methodSelect.val()];
 		var nvalid = 0;
 		var caseCnts = [];
-		var c = new mathlib.CubieCube();
-		var times_stats_list = stats.getTimesStatsList();
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
 			var times = stats.timesAt(s);
 			var data = cubeutil.getScrambledState([null, times[1]]);
 			if (!data) {
 				continue;
 			}
-			c.invFrom(data);
-			var cur = ident[0](c.toFaceCube());
+			var cur = ident[0](data.toFaceCube());
 			caseCnts[cur] = caseCnts[cur] || [];
 			caseCnts[cur].push(s);
 		}
