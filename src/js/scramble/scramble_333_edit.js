@@ -844,6 +844,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('zzll', getZZLLScramble)
+		('zbls', getZBLSScramble)
 		('ttll', getTTLLScramble)
 		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, 'GDGDDDGDGGGGGRRGRRGGGBBDBBG', eols_map, eolsprobs)])
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs, getWVLSImage])
