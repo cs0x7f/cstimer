@@ -250,6 +250,34 @@ var cubeutil = (function() {
 		}
 	})();
 
+	var identOLL = (function() {
+		var ollPattern = [];
+		return function(facelet) {
+			if (ollPattern.length == 0) {
+				for (var i = 0; i < 58; i++) {
+					var param = scramble_333.getOLLImage(i)[0].replaceAll('G', '-');
+					ollPattern.push(LLPattern.replaceAll(/[0-9a-z]/g, function(v) {
+						return param[parseInt(v, 36)].toLowerCase();
+					}));
+				}
+			}
+			var chkList = [];
+			for (var a = 0; a < 24; a++) {
+				if (solvedProgress([facelet, a], f2lMask) == 0) {
+					chkList.push(a);
+				}
+			}
+			for (var i = 0; i < 58; i++) {
+				for (var j = 0; j < chkList.length; j++) {
+					if (solvedProgress([facelet, chkList[j]], ollPattern[i]) == 0) {
+						return i;
+					}
+				}
+			}
+			return -1;
+		}
+	})();
+
 	return {
 		getProgress: function(facelet, progress) {
 			switch (progress) {
@@ -285,6 +313,7 @@ var cubeutil = (function() {
 		},
 		getPrettyMoves: getPrettyMoves,
 		moveSeq2str: moveSeq2str,
+		identOLL: identOLL,
 		identPLL: identPLL
 	}
 

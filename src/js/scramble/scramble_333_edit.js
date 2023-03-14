@@ -780,6 +780,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 				val >>= 1;
 			}
 		}
+		if (!canvas) {
+			return [face, null, ollfilter[cases]];
+		}
 		image.llImage(face, null, canvas);
 	}
 
@@ -874,6 +877,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		getELLScramble: getELLScramble,
 		getAnyScramble: getAnyScramble,
 		getPLLImage: getPLLImage,
+		getOLLImage: getOLLImage,
 		genFacelet: genFacelet,
 		solvFacelet: solvFacelet
 	};

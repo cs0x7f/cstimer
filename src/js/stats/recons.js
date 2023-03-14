@@ -380,6 +380,11 @@ var caseStat = execMain(function() {
 		var nsolv = stats.getTimesStatsList().timesLen;
 		var nrec = nsolv;
 		var method = 'cf4op';
+		var ident = {
+			//name: [ident, genImg, startIdx, endIdx, stageIdx]
+			'PLL': [cubeutil.identPLL, scramble_333.getPLLImage, 0, 21, 0],
+			'OLL': [cubeutil.identOLL, scramble_333.getOLLImage, 1, 58, 1]
+		}[methodSelect.val()];
 		var nvalid = 0;
 		var caseCnts = [];
 		var c = new mathlib.CubieCube();
@@ -390,8 +395,8 @@ var caseStat = execMain(function() {
 				continue;
 			}
 			nvalid++;
-			c.invFrom(data[0][4]);
-			var cur = cubeutil.identPLL(c.toFaceCube());
+			c.invFrom(data[ident[4]][4]);
+			var cur = ident[0](c.toFaceCube());
 			caseCnts[cur] = caseCnts[cur] || [0, 0, 0, 0];
 			var cumData = [1, data[0][1] - data[0][0], data[0][2] - data[0][1], data[0][3]];
 			for (var i = 0; i < 4; i++) {
@@ -416,20 +421,20 @@ var caseStat = execMain(function() {
 		table.empty().append(tableTh);
 
 		var maxSubt = 0;
-		for (var i = 0; i < 21; i++) {
+		for (var i = ident[2]; i < ident[3]; i++) {
 			if (!caseCnts[i]) {
 				continue;
 			}
 			maxSubt = Math.max(maxSubt, (caseCnts[i][1] + caseCnts[i][2]) / caseCnts[i][0]);
 		}
 
-		for (var i = 0; i < 21; i++) {
+		for (var i = ident[2]; i < ident[3]; i++) {
 			if (!caseCnts[i]) {
 				continue;
 			}
 			var caseCnt = caseCnts[i];
 			var tr = $('<tr>');
-			var param = scramble_333.getPLLImage(i);
+			var param = ident[1](i);
 
 			var trdata = [
 				param[2],
@@ -453,11 +458,19 @@ var caseStat = execMain(function() {
 				'height': '2em',
 				'display': 'block'
 			});
-			scramble_333.getPLLImage(i, canvas);
+			ident[1](i, canvas);
 			table.append(curTr);
 		}
+		methodSelect.unbind('change').change(procClick);
 		if (nvalid == 0) {
 			tableTh.after('<tr><td colspan=7>' + TOOLS_RECONS_NODATA + '</td></tr>');
+			return;
+		}
+	}
+
+	function procClick(e) {
+		if (e.type == 'change') {
+			update();
 			return;
 		}
 	}
@@ -478,7 +491,7 @@ var caseStat = execMain(function() {
 			tools.regTool('casestat', TOOLS_RECONS + '>' + 'cases', execFunc);
 		}
 		stats.regUtil('casestat', update);
-		var methods = ['PLL'];
+		var methods = ['PLL', 'OLL'];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
 		}
