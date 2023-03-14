@@ -110,7 +110,7 @@
 
 	function getEGScramble(type, length, cases) {
 		var egcase = egll_map[scrMgr.fixCase(cases, egllprobs)];
-		var perm = [0, 0, 0, 0];
+		var perm = [0, 1, 2, 3];
 		var ori = [0, 0, 0, 0, 0, 0, 0];
 		if (type == '222eg0') {
 			perm = perm.concat(egperms[0]);
@@ -119,8 +119,13 @@
 		} else {
 			perm = perm.concat(egperms[1]);
 		}
+		var rndA = rn(4);
+		while (rndA-- > 0) {
+			doPermMove(perm, 0);
+		}
+		var perm0 = perm.slice();
 		for (var i = 0; i < 4; i++) {
-			perm[i] = egcase[0] >> (i * 4) & 0xf;
+			perm[i] = perm0[egcase[0] >> (i * 4) & 0xf];
 			ori[i] = egcase[1] >> (i * 4) & 0xf;
 		}
 		var rndU = rn(4);
