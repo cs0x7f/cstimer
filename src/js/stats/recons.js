@@ -395,10 +395,11 @@ var caseStat = execMain(function() {
 				continue;
 			}
 			nvalid++;
-			c.invFrom(data[ident[4]][4]);
+			var sdata = data[ident[4]];
+			c.invFrom(sdata[4]);
 			var cur = ident[0](c.toFaceCube());
 			caseCnts[cur] = caseCnts[cur] || [0, 0, 0, 0];
-			var cumData = [1, data[0][1] - data[0][0], data[0][2] - data[0][1], data[0][3]];
+			var cumData = [1, sdata[1] - sdata[0], sdata[2] - sdata[1], sdata[3]];
 			for (var i = 0; i < 4; i++) {
 				caseCnts[cur][i] += cumData[i];
 			}
