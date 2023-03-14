@@ -49,7 +49,7 @@
 <li><strong data="opt_atexpa">Automatisk exportering (per 100 lösningar)</strong>. Om markerad så kommer csTimer exportera lösningarna automatiskt per 100 lösningar till den angivna platsen, lokal fil, csTimers server eller Google Storage.</li>
 <li><strong data="opt_expp">Importera icke-senaste data</strong>. Om du har laddat upp flera säkerhetskopior så kan du importera från en av de upp till 10 senast uppladdade säkerhetskopiorna. Om du av misstag laddar upp en tom säkerhetskopia så kommer detta alternativ att hjälpa dig att hämta dina lösningar.</li>
 <li><strong data="opt_useLogo">Tipsmeddelanden i logotypen</strong>. csTimers logotyp kommer att fungera som en informationspanel som uppmanar en mängd information som du kan vara intresserad av, såsom att bryta PB.</li>
-<li><strong data="opt_showAvg">Visa average markering</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
+<li><strong data="opt_showAvg">Visa average markering</strong>. Två rader etiketter visas under huvudtimern, de nuvarande två medelvärden, ao5 och ao12 som standard.</li>
 <li><strong data="opt_zoom">Zooma</strong>. Du kan justera storleken på alla element genom detta alternativ.</li>
 <li><strong data="opt_font">Timerns teckensnitt</strong>. Font of the main timer.</li>
 <li><strong data="opt_uidesign">UI design är</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>

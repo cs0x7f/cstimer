@@ -66,6 +66,7 @@ var TOOLS_TREND = 'اتجاه الوقت';
 var TOOLS_METRONOME = 'إيقاع';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'تأكيد الوقت';
 var TOOLS_SOLVERS = 'Solvers';
 var TOOLS_SYNCSEED = 'Common Scramble';

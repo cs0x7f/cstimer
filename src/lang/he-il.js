@@ -66,6 +66,7 @@ var TOOLS_TREND = 'מגמת זמן';
 var TOOLS_METRONOME = 'מטרונום';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'אשר זמן';
 var TOOLS_SOLVERS = 'פותרים';
 var TOOLS_SYNCSEED = 'ערבוב נפוץ';

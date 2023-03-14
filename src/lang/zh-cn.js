@@ -66,6 +66,7 @@ var TOOLS_TREND = '时间趋势';
 var TOOLS_METRONOME = '节拍器';
 var TOOLS_RECONS = '解法复盘';
 var TOOLS_RECONS_NODATA = '未找到解法。';
+var TOOLS_TRAINSTAT = '训练统计';
 var TOOLS_CFMTIME = '确认成绩';
 var TOOLS_SOLVERS = '求解器';
 var TOOLS_SYNCSEED = '公共打乱';

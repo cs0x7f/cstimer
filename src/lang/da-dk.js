@@ -66,6 +66,7 @@ var TOOLS_TREND = 'Tidsudvikling';
 var TOOLS_METRONOME = 'metronom';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'Bekræft tid';
 var TOOLS_SOLVERS = 'Løsere';
 var TOOLS_SYNCSEED = 'Regulær blanding';

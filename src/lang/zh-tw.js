@@ -66,6 +66,7 @@ var TOOLS_TREND = '時間趨勢';
 var TOOLS_METRONOME = '節拍器';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = '確認時間';
 var TOOLS_SOLVERS = '速解小幫手';
 var TOOLS_SYNCSEED = '共同打亂';

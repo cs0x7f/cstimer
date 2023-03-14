@@ -66,6 +66,7 @@ var TOOLS_TREND = 'タイムトレンド';
 var TOOLS_METRONOME = 'メトロノーム';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'タイム確認';
 var TOOLS_SOLVERS = 'ソルバー';
 var TOOLS_SYNCSEED = '共通スクランブル';

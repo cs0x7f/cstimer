@@ -66,6 +66,7 @@ var TOOLS_TREND = 'tijd trend';
 var TOOLS_METRONOME = 'metronoom';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'Bevestig tijd';
 var TOOLS_SOLVERS = 'Oplossers';
 var TOOLS_SYNCSEED = 'Common Scramble';

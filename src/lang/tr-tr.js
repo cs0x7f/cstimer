@@ -66,6 +66,7 @@ var TOOLS_TREND = 'Süre grafiği';
 var TOOLS_METRONOME = 'Metronom';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'Süreyi doğrula';
 var TOOLS_SOLVERS = 'Çözücüler';
 var TOOLS_SYNCSEED = 'Yaygın Karışım';

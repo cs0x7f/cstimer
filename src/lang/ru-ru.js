@@ -66,6 +66,7 @@ var TOOLS_TREND = 'тенденция времени';
 var TOOLS_METRONOME = 'метроном';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'Подтвердить время';
 var TOOLS_SOLVERS = 'Cборщики';
 var TOOLS_SYNCSEED = 'Обычный скрамбл';

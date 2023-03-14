@@ -1615,6 +1615,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		getSortedTimesByDate: getSortedTimesByDate,
 		trim: trim,
 		timesAt: timesAt,
+		timeAt: timeAt,
 		infoClick: infoClick,
 		regUtil: regUtil
 	}

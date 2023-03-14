@@ -278,6 +278,27 @@ var cubeutil = (function() {
 		}
 	})();
 
+	function getScrambledState(scramble, reqFace) {
+		var scrType = scramble[0];
+		var scrSeq = scramble[1];
+		if (!tools.isPuzzle('333', scramble)) {
+			return;
+		}
+		var scr = kernel.parseScramble(scrSeq, "URFDLB");
+		var c = new mathlib.CubieCube();
+		var d = new mathlib.CubieCube();
+		for (var i = 0; i < scr.length; i++) {
+			var m = scr[i][0] * 3 + scr[i][2] - 1;
+			if (m < 0 || m >= 18) {
+				continue;
+			}
+			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m], d);
+			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m], d);
+			c.init(d.ca, d.ea);
+		}
+		return reqFace ? c.toFaceCube() : c;
+	}
+
 	return {
 		getProgress: function(facelet, progress) {
 			switch (progress) {
@@ -313,6 +334,7 @@ var cubeutil = (function() {
 		},
 		getPrettyMoves: getPrettyMoves,
 		moveSeq2str: moveSeq2str,
+		getScrambledState: getScrambledState,
 		identOLL: identOLL,
 		identPLL: identPLL
 	}

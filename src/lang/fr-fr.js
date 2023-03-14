@@ -66,6 +66,7 @@ var TOOLS_TREND = 'Tendance des temps';
 var TOOLS_METRONOME = 'Métronome';
 var TOOLS_RECONS = 'Reconstruction';
 var TOOLS_RECONS_NODATA = 'Aucune solution trouvée.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'Confirmation du temps';
 var TOOLS_SOLVERS = 'Solveurs';
 var TOOLS_SYNCSEED = 'Mélange classique';

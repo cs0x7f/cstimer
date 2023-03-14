@@ -66,6 +66,7 @@ var TOOLS_TREND = 'idő trend';
 var TOOLS_METRONOME = 'metronóm';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_TRAINSTAT = 'Train Stat.';
 var TOOLS_CFMTIME = 'Idő megerősítése';
 var TOOLS_SOLVERS = 'Kirakók';
 var TOOLS_SYNCSEED = 'Közös keverés';
