@@ -905,6 +905,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append(
 						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
+					$('#lcd').css({'visibility': 'unset'});
 					rawMoves.reverse();
 					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
 				}
@@ -1013,6 +1014,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						lcd.val(0, true);
 						status = -2; //ready
 					}
+					$('#lcd').css({'visibility': 'hidden'});
 					ui.setAutoShow(false);
 				}
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
@@ -1023,6 +1025,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					reset();
 					status = -1;
+					$('#lcd').css({'visibility': 'unset'});
 				} else {
 					var mappedCode = help.getMappedCode(keyCode);
 					var a = {

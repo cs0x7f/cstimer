@@ -419,6 +419,58 @@
 			return ret;
 		}
 
+		// return [[move1, tag1, vec1], [move2, tag2, vec2], ...]
+		function getRaycastMoves(twisty, intObjs) {
+			if (intObjs.length == 0) {
+				return [];
+			}
+			var dimension = twisty.options.dimension;
+			var coord = [];
+			var xyXchg = [1, 0, 0, 1, 0, 0];
+			var xInv = [1, -1, -1, -1, -1, -1];
+			var yInv = [1, -1, 1, 1, 1, -1];
+			var sticker = intObjs[0].object.parent;
+			coord.push(Math.round(matrixVector3Dot(sticker.matrix, sidesNorm['U'])));
+			coord.push(Math.round(matrixVector3Dot(sticker.matrix, sidesNorm['R'])));
+			coord.push(Math.round(matrixVector3Dot(sticker.matrix, sidesNorm['F'])));
+			var idx = coord.indexOf(dimension) + coord.indexOf(-dimension) + 1;
+			var axis = idx + (coord[idx] > 0 ? 0 : 3);
+			coord.splice(idx, 1);
+			var xy = xyXchg[axis];
+			var x = (coord[xy] * xInv[axis] + dimension - 1) / 2;
+			var y = (coord[1 - xy] * yInv[axis] + dimension - 1) / 2;
+			var axisNorm = sidesNorm[index_side[axis]];
+
+			var ret = [];
+			var move;
+			for (var i = 0; i < 3; i++) {
+				if (i == axis % 3) {
+					continue;
+				}
+				var dvec3 = new THREE.Vector3().cross(sidesNorm[index_side[i]], intObjs[0].point);
+				var ddot = dvec3.dot(axisNorm);
+				dvec3.subSelf(axisNorm.clone().multiplyScalar(ddot));
+				var xo = dimension - 1 - x;
+				var yo = dimension - 1 - y;
+				if (xo == x && yo == y) { // cube rotate
+					move = [1, iSi, index_side[i], -1];
+					ret.push([move, move2str(move), dvec3]);
+					continue;
+				}
+				xy ^= 1;
+				var d1 = xy ? x : y;
+				var d2 = xy ? xo : yo;
+				var opp = d1 > d2 ? -1 : 1;
+				opp *= xy ? xInv[axis] : yInv[axis];
+				move = [1, Math.min(d1, d2) + 1, index_side[opp < 0 ? i : (i + 3)], opp];
+				if (d1 == d2) {
+					move[0] = d1 + 1;
+				}
+				ret.push([move, move2str(move), dvec3]);
+			}
+			return ret;
+		}
+
 		//return 0 if solved
 		//return n if n step remained
 		function isSolved(twisty) {
@@ -475,7 +527,7 @@
 					coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['R'])));
 					coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['F'])));
 					var idx = coord.indexOf(dimension) + coord.indexOf(-dimension) + 1;
-					var axis = (dimension - coord[idx]) / 2 + idx;
+					var axis = idx + (coord[idx] > 0 ? 0 : 3);
 					coord.splice(idx, 1);
 					var xy = xyXchg[axis];
 					x = (coord[xy] * xInv[axis] + dimension - 1) / 2;
@@ -536,10 +588,10 @@
 			if (nlayer == iSi) {
 				return "yxz".charAt("URFDLB".indexOf(move[2]) % 3) +
 					" 2'".charAt("URF".indexOf(move[2]) == -1 ? (2 - pow) : pow);
-			} else if (move[0] == 2) { //M or M'
-				return '2-2' + move[2] + 'w' + " 2'".charAt(pow);
-			} else {
+			} else if (move[0] == 1) {
 				return (nlayer > 2 ? nlayer : '') + axis + (nlayer >= 2 ? 'w' : '') + " 2'".charAt(pow);
+			} else {
+				return move[0] + '-' + move[1] + move[2] + 'w' + " 2'".charAt(pow);
 			}
 		}
 
@@ -553,6 +605,7 @@
 			advanceMoveCallback: advanceMoveCallback,
 			toggleColorVisible: toggleColorVisible,
 			keydownCallback: keydownCallback,
+			getRaycastMoves: getRaycastMoves,
 			isSolved: isSolved,
 			isInspectionLegalMove: isInspectionLegalMove,
 			isParallelMove: isParallelMove,

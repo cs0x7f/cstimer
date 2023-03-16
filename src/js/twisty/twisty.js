@@ -110,12 +110,12 @@ window.twistyjs = (function() {
 
 			twistyContainer.appendChild(twistyCanvas);
 
-			if (twistyType.allowDragging) {
-				$(twistyContainer).css('cursor', 'move');
-				twistyContainer.addEventListener('mousedown', onDocumentMouseDown, false);
-				twistyContainer.addEventListener('touchstart', onDocumentTouchStart, false);
-				twistyContainer.addEventListener('touchmove', onDocumentTouchMove, false);
-			}
+			twistyCanvas.addEventListener('mousedown', onCanvasDown);
+			twistyCanvas.addEventListener('mousemove', onCanvasMove);
+			twistyCanvas.addEventListener('mouseup', onCanvasUp);
+			twistyCanvas.addEventListener('touchstart', onCanvasDown);
+			twistyCanvas.addEventListener('touchmove', onCanvasMove);
+			twistyCanvas.addEventListener('touchend', onCanvasUp);
 
 			// resize creates the camera and calls render()
 			that.resize();
@@ -160,53 +160,104 @@ window.twistyjs = (function() {
 			}
 		};
 
-		var mouseX = 0;
-		var mouseXLast = 0;
+		var clkPoint = null;
+
+		function onCanvasDown(event) {
+			if (!twisty.getRaycastMoves || !that.isMoveFinished()) {
+				return;
+			}
+			fixTouchOffsets(event);
+			var intObjs = getRaycastObjects(event, twistyCanvas);
+			if (intObjs.length == 0) {
+				return;
+			}
+			var moves = twisty.getRaycastMoves(twisty, intObjs);
+			if (moves.length == 0) {
+				return;
+			}
+			clkPoint = [event.offsetX, event.offsetY, moves];
+			var projMatrix4 = new THREE.Matrix4().multiply(camera.projectionMatrix, camera.matrixWorldInverse);
+			for (var i = 0; i < moves.length; i++) {
+				var targetPoint = new THREE.Vector3().add(intObjs[0].point, moves[i][2]);
+				projMatrix4.multiplyVector3(targetPoint);
+				var x = (targetPoint.x + 1) / 2 * twistyCanvas.width;
+				var y = -(targetPoint.y - 1) / 2 * twistyCanvas.height;
+				var dx = x - event.offsetX;
+				var dy = y - event.offsetY;
+				var norm = Math.sqrt(dx * dx + dy * dy);
+				moves[i][2] = [dx / norm, dy / norm];
+			}
+			return;
+		}
+
+		function fixTouchOffsets(event) {
+			if (event.type.startsWith('touch')) {
+				var rect = event.target.getBoundingClientRect();
+				event.offsetX = (event.changedTouches[0].clientX - window.pageXOffset - rect.left);
+				event.offsetY = (event.changedTouches[0].clientY - window.pageYOffset - rect.top);
+			}
+		}
+
+		function onCanvasMove(event) {
+			if (!clkPoint) {
+				return;
+			}
+			fixTouchOffsets(event);
+			var dx = event.offsetX - clkPoint[0];
+			var dy = event.offsetY - clkPoint[1];
+			if (Math.sqrt(dx * dx + dy * dy) < twistyCanvas.width * 0.05) {
+				return;
+			}
+			triggerMove(dx, dy, clkPoint[2]);
+		}
+
+		function onCanvasUp(event) {
+			if (!clkPoint) {
+				return;
+			}
+			fixTouchOffsets(event);
+			var dx = event.offsetX - clkPoint[0];
+			var dy = event.offsetY - clkPoint[1];
+			clkPoint = null;
+			if (Math.sqrt(dx * dx + dy * dy) < twistyCanvas.width * 0.05) {
+				return;
+			}
+			triggerMove(dx, dy);
+		}
+
+		function triggerMove(dx, dy) {
+			var chk = [];
+			var curMoves = clkPoint[2];
+			for (var i = 0; i < curMoves.length; i++) {
+				var moveXY = curMoves[i][2];
+				var val = dx * moveXY[0] + dy * moveXY[1];
+				var move = curMoves[i][0].slice();
+				if (val < 0) {
+					move[3] *= -1;
+					val *= -1;
+				}
+				chk.push([val, move]);
+			}
+			chk.sort(function(a, b) {
+				return b[0] - a[0];
+			});
+			that.addMoves([chk[0][1]]);
+			clkPoint = null;
+		}
+
+		function getRaycastObjects(event, canvas) {
+			var x = (event.offsetX / canvas.width) * 2 - 1;
+			var y = -(event.offsetY / canvas.height) * 2 + 1;
+			var origin = camera.position;
+			var direction = new THREE.Vector3(x, y, 0);
+			THREE.Matrix4.makeInvert(camera.projectionMatrix).multiplyVector3(direction);
+			camera.matrixWorld.multiplyVector3(direction);
+			direction.subSelf(origin).normalize();
+			return new THREE.Ray(origin, direction).intersectScene(scene);
+		}
 
 		this.cam = function(deltaTheta) {
 			moveCameraDelta(deltaTheta, 0);
-		}
-
-		function onDocumentMouseDown(event) {
-			e.preventDefault && e.preventDefault();
-			twistyContainer.addEventListener('mousemove', onDocumentMouseMove, false);
-			twistyContainer.addEventListener('mouseup', onDocumentMouseUp, false);
-			twistyContainer.addEventListener('mouseout', onDocumentMouseOut, false);
-			mouseXLast = event.clientX;
-		}
-
-		function onDocumentMouseMove(event) {
-			mouseX = event.clientX;
-			that.cam((mouseXLast - mouseX) / 256);
-			mouseXLast = mouseX;
-		}
-
-		function onDocumentMouseUp(event) {
-			twistyContainer.removeEventListener('mousemove', onDocumentMouseMove, false);
-			twistyContainer.removeEventListener('mouseup', onDocumentMouseUp, false);
-			twistyContainer.removeEventListener('mouseout', onDocumentMouseOut, false);
-		}
-
-		function onDocumentMouseOut(event) {
-			twistyContainer.removeEventListener('mousemove', onDocumentMouseMove, false);
-			twistyContainer.removeEventListener('mouseup', onDocumentMouseUp, false);
-			twistyContainer.removeEventListener('mouseout', onDocumentMouseOut, false);
-		}
-
-		function onDocumentTouchStart(event) {
-			if (event.touches.length == 1) {
-				event.preventDefault && event.preventDefault();
-				mouseXLast = event.touches[0].pageX;
-			}
-		}
-
-		function onDocumentTouchMove(event) {
-			if (event.touches.length == 1) {
-				event.preventDefault && event.preventDefault();
-				mouseX = event.touches[0].pageX;
-				that.cam((mouseXLast - mouseX) / 256);
-				mouseXLast = mouseX;
-			}
 		}
 
 		function render() {
