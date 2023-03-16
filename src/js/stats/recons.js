@@ -440,12 +440,12 @@ var caseStat = execMain(function() {
 			var trdata = [
 				param[2],
 				caseCnt[0],
-				caseCnts[i][1] / caseCnts[i][0] / maxSubt * 100,
-				caseCnts[i][2] / caseCnts[i][0] / maxSubt * 100,
-				kernel.pretty(caseCnts[i][1] / caseCnts[i][0]),
-				kernel.pretty(caseCnts[i][2] / caseCnts[i][0]),
-				Math.round(caseCnts[i][3] / caseCnts[i][0] * 10) / 10,
-				Math.round(caseCnts[i][3] / (caseCnts[i][1] + caseCnts[i][2]) * 10000) / 10
+				caseCnt[1] / caseCnt[0] / maxSubt * 100,
+				caseCnt[2] / caseCnt[0] / maxSubt * 100,
+				kernel.pretty(caseCnt[1] / caseCnt[0]),
+				kernel.pretty(caseCnt[2] / caseCnt[0]),
+				Math.round(caseCnt[3] / caseCnt[0] * 10) / 10,
+				Math.round(caseCnt[3] / (caseCnt[1] + caseCnt[2]) * 10000) / 10
 			];
 			var curTr = trTpl;
 			for (var j = 0; j < 8; j++) {

@@ -824,8 +824,13 @@ var GiikerCube = execMain(function() {
 			alert("Bluetooth API is not available. Ensure https access, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled");
 			return Promise.resolve();
 		}
+		var chkAvail = Promise.resolve(true);
+		if (window.navigator.bluetooth.getAvailability) {
+			chkAvail = window.navigator.bluetooth.getAvailability();
+		}
 
-        return window.navigator.bluetooth.getAvailability().then(function(available) {
+        return chkAvail.then(function(available) {
+			console.log(available);
             if (!available) {
                 return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
 			}
