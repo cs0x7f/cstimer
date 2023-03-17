@@ -139,9 +139,11 @@
 <li><a class="click" href="/new/" title="">csTimer 測試板</a></li>
 <li><a class="click" href="/src/" title="">沒有壓縮檔的csTimer</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer的原始碼</a></li>
-<li><a class="click" href="/old3/" title="">csTimer 2015.12.12版</a></li>
-<li><a class="click" href="/old2/" title="">csTimer 2012.3.15版</a></li>
-<li><a class="click" href="/old/" title="">csTimer 2012.2.29版</a></li>
+<li><a class="click" href="/2019.12.24/" title="">csTimer version 2019.12.24</a></li>
+<li><a class="click" href="/2018.11.05/" title="">csTimer version 2018.11.05</a></li>
+<li><a class="click" href="/2015.12.12/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/2012.03.15/" title="">csTimer version 2012.03.15</a></li>
+<li><a class="click" href="/2012.02.29/" title="">csTimer version 2012.02.29</a></li>
 </ul>
 <h2>配色方案</h2>
 <?php include('color.php') ?>

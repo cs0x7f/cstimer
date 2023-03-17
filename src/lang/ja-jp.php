@@ -139,9 +139,11 @@
 <li><a class="click" href="/new/" title="">csTimer ベータ版</a></li>
 <li><a class="click" href="/src/" title="">csTimer ベータ版(未圧縮)</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer ソースコード</a></li>
-<li><a class="click" href="/old3/" title="">csTimer version 2015.12.12</a></li>
-<li><a class="click" href="/old2/" title="">csTimer version 2012.3.15</a></li>
-<li><a class="click" href="/old/" title="">csTimer version 2012.2.29</a></li>
+<li><a class="click" href="/2019.12.24/" title="">csTimer version 2019.12.24</a></li>
+<li><a class="click" href="/2018.11.05/" title="">csTimer version 2018.11.05</a></li>
+<li><a class="click" href="/2015.12.12/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/2012.03.15/" title="">csTimer version 2012.03.15</a></li>
+<li><a class="click" href="/2012.02.29/" title="">csTimer version 2012.02.29</a></li>
 </ul>
 <h2>配色</h2>
 <?php include('color.php') ?>

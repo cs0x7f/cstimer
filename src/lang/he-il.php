@@ -113,7 +113,7 @@
 <li><strong data="tool_cfm">אשר זמן</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">סטטיסטיקות רשימת פלוס</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">סטטיסטיקות</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">חלוקת זמן</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
+<li><strong data="tool_distribution">חלוקת זמן</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
 <li><strong data="tool_trend">מגמת זמן</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">בלגון חדש</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
@@ -139,9 +139,11 @@
 <li><a class="click" href="/new/" title="">csTimer גרסת בטא</a></li>
 <li><a class="click" href="/src/" title="">csTimer beta version with uncompressed files</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer קוד מקור</a></li>
-<li><a class="click" href="/old3/" title="">csTimer גרסה 2015.12.12</a></li>
-<li><a class="click" href="/old2/" title="">csTimer גרסה 2012.3.15</a></li>
-<li><a class="click" href="/old/" title="">csTimer גרסה 2012.2.29</a></li>
+<li><a class="click" href="/2019.12.24/" title="">csTimer version 2019.12.24</a></li>
+<li><a class="click" href="/2018.11.05/" title="">csTimer version 2018.11.05</a></li>
+<li><a class="click" href="/2015.12.12/" title="">csTimer version 2015.12.12</a></li>
+<li><a class="click" href="/2012.03.15/" title="">csTimer version 2012.03.15</a></li>
+<li><a class="click" href="/2012.02.29/" title="">csTimer version 2012.02.29</a></li>
 </ul>
 <h2>סכימת הצבעים</h2>
 <?php include('color.php') ?>
