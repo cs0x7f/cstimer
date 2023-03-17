@@ -1,4 +1,4 @@
-(function(rn) {
+var scramble_222 = (function(rn) {
 	var solv = new mathlib.Solver(3, 3, [[0, [doPermMove, 'p', 7], 5040], [0, [doOriMove, 'o', 7, -3], 729]]);
 
 	var movePieces = [
@@ -140,6 +140,9 @@
 
 	function getEGLLImage(cases, canvas) {
 		var egcase = egll_map[cases];
+		if (!canvas) {
+			return [egcase[2], null, egllfilter[cases]];
+		}
 		image.llImage(egcase[2], null, canvas);
 	}
 
@@ -181,4 +184,7 @@
 		('222eg2', getEGScramble, [egllfilter, egllprobs, getEGLLImage])
 		('222eg', getScramble, [egfilter, egprobs]);
 
+	return {
+		getEGLLImage: getEGLLImage
+	}
 })(mathlib.rn);

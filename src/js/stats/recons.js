@@ -248,7 +248,7 @@ var recons = execMain(function() {
 		if (!isEnable) {
 			return;
 		}
-		var method = methodSelect.val();
+		var method = methodSelect.val() || 'cf4op';
 		var isPercent = method.endsWith('%');
 		method = method.replace('%', '');
 		var times = value[0];
@@ -287,7 +287,7 @@ var recons = execMain(function() {
 			renderEmpty(false);
 			return;
 		}
-		var method = methodSelect.val();
+		var method = methodSelect.val() || 'cf4op';
 		var isPercent = method.endsWith('%');
 		method = method.replace('%', '');
 		var steps = cubeutil.getStepNames(method);
@@ -382,9 +382,9 @@ var caseStat = execMain(function() {
 		var method = 'cf4op';
 		var ident = {
 			//name: [ident, genImg, startIdx, endIdx, stageIdx]
-			'PLL': [cubeutil.identPLL, scramble_333.getPLLImage, 0, 21, 0],
-			'OLL': [cubeutil.identOLL, scramble_333.getOLLImage, 1, 58, 1]
-		}[methodSelect.val()];
+			'PLL': [cubeutil.identStep.bind(null, 'PLL'), scramble_333.getPLLImage, 0, 21, 0],
+			'OLL': [cubeutil.identStep.bind(null, 'OLL'), scramble_333.getOLLImage, 1, 58, 1]
+		}[methodSelect.val() || 'PLL'];
 		var nvalid = 0;
 		var caseCnts = [];
 		var c = new mathlib.CubieCube();

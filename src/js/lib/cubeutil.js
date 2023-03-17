@@ -15,6 +15,8 @@ var cubeutil = (function() {
 	var roux2Mask = "------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B";
 	var roux3Mask = "U-U---U-Ur-rRRRRRRf-fF-FF-FD-DD-DD-Dl-lLLLLLLb-bB-BB-B";
 	var LLPattern = "012345678cdeRRRRRR9abFFFFFFDDDDDDDDDijkLLLLLLfghBBBBBB";
+	var c2LLPattern = "0-1---2-36-7---R-R4-5---F-FD-D---D-Da-b---L-L8-9---B-B";
+	var c2LLMask = "---------------R-R------F-FD-D---D-D------L-L------B-B";
 
 	var cubeRots = (function genRots() {
 
@@ -233,20 +235,7 @@ var cubeutil = (function() {
 					}));
 				}
 			}
-			var chkList = [];
-			for (var a = 0; a < 24; a++) {
-				if (solvedProgress([facelet, a], ollMask) == 0) {
-					chkList.push(a);
-				}
-			}
-			for (var i = 0; i < 22; i++) {
-				for (var j = 0; j < chkList.length; j++) {
-					if (solvedProgress([facelet, chkList[j]], pllPattern[i]) == 0) {
-						return i;
-					}
-				}
-			}
-			return -1;
+			return searchCaseByPattern(facelet, ollMask, pllPattern);
 		}
 	})();
 
@@ -261,22 +250,52 @@ var cubeutil = (function() {
 					}));
 				}
 			}
-			var chkList = [];
-			for (var a = 0; a < 24; a++) {
-				if (solvedProgress([facelet, a], f2lMask) == 0) {
-					chkList.push(a);
-				}
-			}
-			for (var i = 0; i < 58; i++) {
-				for (var j = 0; j < chkList.length; j++) {
-					if (solvedProgress([facelet, chkList[j]], ollPattern[i]) == 0) {
-						return i;
-					}
-				}
-			}
-			return -1;
+			return searchCaseByPattern(facelet, f2lMask, ollPattern);
 		}
 	})();
+
+	var identC2CLL = (function() {
+		var cllPattern = [];
+		return function(facelet) {
+			if (cllPattern.length == 0) {
+				for (var i = 0; i < 40; i++) {
+					var param = scramble_222.getEGLLImage(i)[0].replaceAll('G', '-');
+					cllPattern.push(c2LLPattern.replaceAll(/[0-9a-z]/g, function(v) {
+						return param[parseInt(v, 36)].toLowerCase();
+					}));
+				}
+			}
+			return searchCaseByPattern(facelet, c2LLMask, cllPattern);
+		}
+	})();
+
+	function searchCaseByPattern(facelet, baseMask, patterns) {
+		var chkList = [];
+		for (var a = 0; a < 24; a++) {
+			if (solvedProgress([facelet, a], baseMask) == 0) {
+				chkList.push(a);
+			}
+		}
+		for (var i = 0; i < patterns.length; i++) {
+			for (var j = 0; j < chkList.length; j++) {
+				if (solvedProgress([facelet, chkList[j]], patterns[i]) == 0) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	function identStep(step, facelet) {
+		switch (step) {
+			case 'PLL':
+				return identPLL(facelet);
+			case 'OLL':
+				return identOLL(facelet);
+			case 'C2CLL':
+				return identC2CLL(facelet);
+		}
+	}
 
 	function getScrambledState(scramble, reqFace) {
 		var scrType = scramble[0];
@@ -335,8 +354,7 @@ var cubeutil = (function() {
 		getPrettyMoves: getPrettyMoves,
 		moveSeq2str: moveSeq2str,
 		getScrambledState: getScrambledState,
-		identOLL: identOLL,
-		identPLL: identPLL
+		identStep: identStep
 	}
 
 })();

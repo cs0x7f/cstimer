@@ -18,9 +18,10 @@ var trainStat = execMain(function() {
 		var nrec = nsolv;
 		var ident = {
 			//name: [ident, genImg, startIdx, endIdx, stageIdx]
-			'PLL': [cubeutil.identPLL, scramble_333.getPLLImage, 0, 21, 0],
-			'OLL': [cubeutil.identOLL, scramble_333.getOLLImage, 1, 58, 1]
-		}[methodSelect.val()];
+			'PLL': [cubeutil.identStep.bind(null, 'PLL'), scramble_333.getPLLImage, 0, 21, 0],
+			'OLL': [cubeutil.identStep.bind(null, 'OLL'), scramble_333.getOLLImage, 1, 58, 1],
+			'CLL': [cubeutil.identStep.bind(null, 'C2CLL'), scramble_222.getEGLLImage, 0, 40, 1]
+		}[methodSelect.val() || 'PLL'];
 		var nvalid = 0;
 		var caseCnts = [];
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
@@ -127,7 +128,7 @@ var trainStat = execMain(function() {
 			tools.regTool('trainstat', TOOLS_TRAINSTAT, execFunc);
 		}
 		stats.regUtil('trainstat', update);
-		var methods = ['PLL', 'OLL'];
+		var methods = ['PLL', 'OLL', 'CLL'];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
 		}
