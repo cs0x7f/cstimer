@@ -434,7 +434,7 @@ var STATS_TIME = 'tempo';
 var STATS_SESSION = 'Sessão';
 var STATS_SESSION_NAME = 'Editar nome da sessão';
 var STATS_SESSION_NAMEC = 'Nome da nova sessão';
-var STATS_STRING = 'melhor|atual|pior|Gerado pelo csTimer em %Y-%M-%D|solves/total: %d|single|média de %mk|média de %mk|Média: %v{ (s = %sgm)}|Média: %v|Lista de Tempos:|solving from %s to %e|Totally spent: %d';
+var STATS_STRING = 'melhor|atual|pior|Gerado pelo csTimer em %Y-%M-%D|solves/total: %d|single|média de %mk|média de %mk|Média: %v{ (s = %sgm)}|Média: %v|Lista de Tempos:|solving from %s to %e|Totally spent: %d|target';
 var STATS_PREC = 'precisão da distribuição de tempos';
 var STATS_PREC_STR = 'automático|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'tipo da lista %d|tamanho da lista %d|average|média';
@@ -453,6 +453,7 @@ var PROPERTY_SCR2SS = 'criar uma nova sessão quando mudar o tipo de embaralhame
 var PROPERTY_SS2SCR = 'restaurar o tipo de embaralhamento quando mudar de sessão';
 var PROPERTY_SS2PHASES = 'restaurar modadlidade de múltiplas fases quando mudar de sessão';
 var PROPERTY_STATINV = 'Lista de tempos ao contrário';
+var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'Indicadores estatísticos';
 var PROPERTY_STATALU = 'Indicador estatístico personalizado';
 var PROPERTY_DELMUL = 'Ativar deleção múltipla';

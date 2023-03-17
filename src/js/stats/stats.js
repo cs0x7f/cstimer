@@ -544,17 +544,30 @@ var stats = execMain(function(kpretty, round, kpround) {
 			shead.push('<td><span>-</span></td>');
 		}
 		var s = [];
+		var thres = times_stats_table.getThres();
+		var showThres = kernel.getProp('statthres', false);
 		for (var j = 0; j < avgSizes.length; j++) {
 			var size = Math.abs(avgSizes[j]);
 			if (times.length >= size) {
 				s.push('<tr><th>' + 'am' [avgSizes[j] >>> 31] + 'o' + size + '</th>');
 				s.push('<td class="times click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.lastAvg[j][0]) + '</td>');
 				s.push('<td class="times click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg[j][0]) + '</td>');
+				if (showThres) {
+					s.push('<td class="times">' + (thres[j] < 0 ? ['N/A', '\u221E'][-1 - thres[j]] : kpround(thres[j])) + '</td>');
+				}
 			}
 		}
-		// s = s.join("");
-		sumtable.empty().append($('<tr>').append('<th></th><th>' + hlstr[1] + '</th><th>' + hlstr[0] + '</th>'),
-			$('<tr>').append(validOpt.length == 1 ? '<th>time</th>' : $('<th>').append(statSrcSelect), shead.join("")), s.join(""));
+		var curTh = $('<tr>').append('<th></th><th>' + hlstr[1] + '</th><th>' + hlstr[0] + '</th>');
+		if (showThres) {
+			curTh.append('<th>' + hlstr[13] + '</th>');
+		}
+		sumtable.empty().append(curTh,
+			$('<tr>').append(
+				validOpt.length == 1 ? '<th>time</th>' : $('<th>').append(statSrcSelect),
+				shead.join("")
+			),
+			s.join("")
+		);
 		resultsHeight();
 	}
 
@@ -1481,7 +1494,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				len1 = Math.abs(stat1);
 				len2 = Math.abs(stat2);
 				table_ctrl.updateTable(false);
-			} else if (value[0] == 'statsum') {
+			} else if (value[0] == 'statsum' || value[0] == 'statthres') {
 				updateSumTable();
 			} else if (value[0] == 'statal') {
 				var statal = value[1];
@@ -1544,13 +1557,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|[12][tl]|alu?|inv|Hide|src)|session(:?Data)?|scrType|phases|trim|view|wndStat|sr_.*)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src)|session(:?Data)?|scrType|phases|trim|view|wndStat|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
 
 		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]], 1);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true], 1);
+		kernel.regProp('stats', 'statthres', 0, PROPERTY_STATTHRES, [false], 1);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true], 1);
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false], 1);
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false], 1);

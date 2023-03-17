@@ -434,7 +434,7 @@ var STATS_TIME = 'タイム';
 var STATS_SESSION = 'セッション';
 var STATS_SESSION_NAME = 'セッション名の編集';
 var STATS_SESSION_NAMEC = '新しいセッションの名前';
-var STATS_STRING = 'ベスト|現在|ワースト|csTimerによって %Y-%M-%D に生成|ソルブ数/合計: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|タイム一覧:|%s から %e までのソルブ|総経過時間: %d';
+var STATS_STRING = 'ベスト|現在|ワースト|csTimerによって %Y-%M-%D に生成|ソルブ数/合計: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|タイム一覧:|%s から %e までのソルブ|総経過時間: %d|target';
 var STATS_PREC = 'タイム分布の精度';
 var STATS_PREC_STR = '自動|0.1秒|0.2秒|0.5秒|1秒|2秒|5秒|10秒|20秒|50秒|100秒';
 var STATS_TYPELEN = 'リスト %d の種類|リスト %d の長さ|average|mean';
@@ -453,6 +453,7 @@ var PROPERTY_SCR2SS = 'スクランブルのタイプを変更したとき新し
 var PROPERTY_SS2SCR = 'セッションを切り替えたときスクランブルを元に戻す';
 var PROPERTY_SS2PHASES = 'セッションを切り替えたときマルチフェイズの記録を元に戻す';
 var PROPERTY_STATINV = '逆順のタイム一覧';
+var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = '統計指標';
 var PROPERTY_STATALU = 'カスタム統計指標';
 var PROPERTY_DELMUL = '複数削除を有効にする';

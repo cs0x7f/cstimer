@@ -105,7 +105,7 @@
 <li><strong data="opt_giiSM">Ende des Scrambles anzeigen mit</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
 <li><strong data="opt_giiBS">Beep am Ende des Scrambles</strong>. Beep when some of scramble-finish signal is triggered.</li>
 <li><strong data="opt_giiRST">Giiker Cube bei Verbindung zurück setzen</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Automatische Hardware-Fehler-Erkennung</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_giiAED">Automatische Hardware-Fehler-Erkennung</strong>. Einige Bluetooth-Würfel verlieren einige Schritte aufgrund von Hardware-Fehlern, csTimer wird versuchen, solche Fälle zu erkennen.</li>
 </ul>
 <h2>Tools detail</h2>
 <ul>

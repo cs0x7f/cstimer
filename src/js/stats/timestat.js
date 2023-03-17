@@ -119,6 +119,50 @@ var TimeStat = execMain(function() {
 		}
 	}
 
+	// threshold to break best, -1 => never, -2 => always
+	TimeStat.prototype.getThres = function() {
+		var thres = [];
+		for (var j = 0; j < this.avgSizes.length; j++) {
+			var size = Math.abs(this.avgSizes[j]);
+			if (this.timesLen < size) {
+				break;
+			}
+			var trim = this.avgSizes[j] < 0 ? 0 : getNTrim(size);
+			var neff = size - 2 * trim;
+			var rbt = this.treesAvg[j] || sbtree.tree(this.timeSort);
+			var toRemove = this.timeAt(this.timesLen - size);
+			var left = trim;
+			var right = size - trim - 1;
+			if (this.timeSort(toRemove, rbt.rank(left)) < 0) {
+				left += 1;
+				toRemove = 0;
+			} else if (this.timeSort(rbt.rank(right), toRemove) < 0) {
+				right -= 1;
+				toRemove = 0;
+			}
+			var tgtAvg = this.bestAvg[j][0];
+			if (rbt.rankOf(-1) < right) { //next avg is always DNF
+				thres[j] = -1;
+				continue;
+			} else if (tgtAvg == -1) {
+				thres[j] = -2;
+				continue;
+			}
+			var sum = rbt.cumSum(right + 1) - rbt.cumSum(left) - toRemove;
+			var tgt = tgtAvg * neff - sum;
+			var minVal = left == 0 ? 0 : rbt.rank(left - 1);
+			var maxVal = right == size - 1 ? -1 : rbt.rank(right + 1);
+			if (tgt <= 0 || this.timeSort(tgt, minVal) < 0) {
+				thres[j] = -1;
+			} else if (this.timeSort(maxVal, tgt) < 0) {
+				thres[j] = -2;
+			} else {
+				thres[j] = tgt;
+			}
+		}
+		return thres;
+	}
+
 	TimeStat.prototype.getMinMaxInt = function() {
 		var theStats = this.getAllStats();
 		if (theStats[0] == this.timesLen) {

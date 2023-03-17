@@ -434,7 +434,7 @@ var STATS_TIME = 'tempo';
 var STATS_SESSION = 'Sessione';
 var STATS_SESSION_NAME = 'Rinomina sessione';
 var STATS_SESSION_NAMEC = 'Nome della nuova sessione';
-var STATS_STRING = 'migliore|corrente|peggiore|Generato Da csTimer il %Y-%M-%D|risoluzioni/totale: %d|singolo|media di %mk|avg su %mk|Avg   : %v{ (σ = %sgm)}|Media : %v|Lista Tempi:|solving from %s to %e|Totally spent: %d';
+var STATS_STRING = 'migliore|corrente|peggiore|Generato Da csTimer il %Y-%M-%D|risoluzioni/totale: %d|singolo|media di %mk|avg su %mk|Avg   : %v{ (σ = %sgm)}|Media : %v|Lista Tempi:|solving from %s to %e|Totally spent: %d|target';
 var STATS_PREC = 'Precisione distribuzione temporale';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'lista %d tipo|lista %d lunghezza|average|mean';
@@ -453,6 +453,7 @@ var PROPERTY_SCR2SS = 'crea una nuova sessione quando si cambia tipo di scramble
 var PROPERTY_SS2SCR = 'ripristina il tipo di scramble quando si cambia la sessione';
 var PROPERTY_SS2PHASES = 'ripristina multi-fase al cambio di sessione';
 var PROPERTY_STATINV = 'Lista tempi invertita';
+var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'Indicatori statistici';
 var PROPERTY_STATALU = 'Indicatore statistico personalizzato';
 var PROPERTY_DELMUL = 'Abilita eliminazione multipla';

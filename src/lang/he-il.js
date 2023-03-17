@@ -434,7 +434,7 @@ var STATS_TIME = 'זמן';
 var STATS_SESSION = 'סשן';
 var STATS_SESSION_NAME = 'ערוך שם סשן';
 var STATS_SESSION_NAMEC = 'שם הסשן החדש';
-var STATS_STRING = 'הכי טוב|עכשווי|הכי גרוע|יוצר על ידי csTimer ב%Y-%M-%D|פתירות/סך הכל: %d|סינגל|ממוצע של %mk| ממוצע של %mk| ממוצע: Average: %v{ (σ = %sgm)}|ממוצע: %v|רשימת זמנים:|פתירות מ%s עד %e|זמן סך הכל: %d';
+var STATS_STRING = 'הכי טוב|עכשווי|הכי גרוע|יוצר על ידי csTimer ב%Y-%M-%D|פתירות/סך הכל: %d|סינגל|ממוצע של %mk| ממוצע של %mk| ממוצע: Average: %v{ (σ = %sgm)}|ממוצע: %v|רשימת זמנים:|פתירות מ%s עד %e|זמן סך הכל: %d|target';
 var STATS_PREC = 'דיוק פריסת זמנים';
 var STATS_PREC_STR = 'אוטומטי|0.1ש|0.2ש|0.5ש|1ש|2ש|5ש|10ש|20ש|50ש|100ש';
 var STATS_TYPELEN = 'רשימה %d סוג| רשימה %d אורך|ממוצע (בלי צדדים)|ממוצע';
@@ -453,6 +453,7 @@ var PROPERTY_SCR2SS = 'תיצור סשן חדש כשמחליפים סוג ערב
 var PROPERTY_SS2SCR = 'לשמר סוג ערבוב כשמחליפים סשן';
 var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
 var PROPERTY_STATINV = 'להפוך רשימת זמנים';
+var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'אינדקטורים סטטיסטיים';
 var PROPERTY_STATALU = 'אינדקטור סטטיסטי מותאם אישית';
 var PROPERTY_DELMUL = 'להפעיל מחיקה מרובה';
