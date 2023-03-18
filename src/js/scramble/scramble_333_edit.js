@@ -585,7 +585,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	function getCOLLImage(efill, cases, canvas) {
-		var face = coll_map[cases][2].replaceAll('e', efill || 'U');
+		var face = coll_map[cases][2].replace(/e/g, efill || 'U');
 		image.llImage(face, null, canvas);
 	}
 

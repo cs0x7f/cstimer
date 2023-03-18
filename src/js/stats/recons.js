@@ -186,7 +186,7 @@ var recons = execMain(function() {
 				];
 				var curTr = trTpl;
 				for (var j = 0; j < 9; j++) {
-					curTr = curTr.replaceAll('$' + j, trsdata[j]);
+					curTr = curTr.replace(new RegExp('\\$' + j, 'g'), trsdata[j]);
 				}
 				str.push(curTr);
 			}
@@ -204,7 +204,7 @@ var recons = execMain(function() {
 			];
 			var curTr = trTpl;
 			for (var j = 0; j < 9; j++) {
-				curTr = curTr.replaceAll('$' + j, trdata[j]);
+				curTr = curTr.replace(new RegExp('\\$' + j, 'g'),  trdata[j]);
 			}
 			str.push(curTr);
 		}
@@ -449,7 +449,7 @@ var caseStat = execMain(function() {
 			];
 			var curTr = trTpl;
 			for (var j = 0; j < 8; j++) {
-				curTr = curTr.replaceAll('$' + j, trdata[j]);
+				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), trdata[j]);
 			}
 
 			curTr = $(curTr);

@@ -230,7 +230,7 @@ var cubeutil = (function() {
 			if (pllPattern.length == 0) {
 				for (var i = 0; i < 22; i++) {
 					var param = i == 21 ? 'UUUUUUUUUFFFRRRBBBLLL' : scramble_333.getPLLImage(i)[0];
-					pllPattern.push(LLPattern.replaceAll(/[0-9a-z]/g, function(v) {
+					pllPattern.push(LLPattern.replace(/[0-9a-z]/g, function(v) {
 						return param[parseInt(v, 36)].toLowerCase();
 					}));
 				}
@@ -244,8 +244,8 @@ var cubeutil = (function() {
 		return function(facelet) {
 			if (ollPattern.length == 0) {
 				for (var i = 0; i < 58; i++) {
-					var param = scramble_333.getOLLImage(i)[0].replaceAll('G', '-');
-					ollPattern.push(LLPattern.replaceAll(/[0-9a-z]/g, function(v) {
+					var param = scramble_333.getOLLImage(i)[0].replace(/G/g, '-');
+					ollPattern.push(LLPattern.replace(/[0-9a-z]/g, function(v) {
 						return param[parseInt(v, 36)].toLowerCase();
 					}));
 				}
@@ -259,8 +259,8 @@ var cubeutil = (function() {
 		return function(facelet) {
 			if (cllPattern.length == 0) {
 				for (var i = 0; i < 40; i++) {
-					var param = scramble_222.getEGLLImage(i)[0].replaceAll('G', '-');
-					cllPattern.push(c2LLPattern.replaceAll(/[0-9a-z]/g, function(v) {
+					var param = scramble_222.getEGLLImage(i)[0].replace(/G/g, '-');
+					cllPattern.push(c2LLPattern.replace(/[0-9a-z]/g, function(v) {
 						return param[parseInt(v, 36)].toLowerCase();
 					}));
 				}

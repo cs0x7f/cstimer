@@ -85,7 +85,7 @@ var trainStat = execMain(function() {
 			];
 			var curTr = trTpl;
 			for (var j = 0; j < 6; j++) {
-				curTr = curTr.replaceAll('$' + j, trdata[j]);
+				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), trdata[j]);
 			}
 			curTr = $(curTr);
 			var canvas = curTr.find('canvas');
