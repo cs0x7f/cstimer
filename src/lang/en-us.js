@@ -402,7 +402,7 @@ var SCRAMBLE_NOOBST = [
 	['turn the front face', 'turn the back face']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var SCROPT_TITLE = 'Options de mélange';
+var SCROPT_TITLE = 'Scramble Options';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
