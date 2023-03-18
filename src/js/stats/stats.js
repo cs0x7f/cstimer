@@ -356,7 +356,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				hideToTools();
 				setHighlight(times_stats_table, timesAt, idx, 1, 10, true);
 			}]];
-			if (timesAt(idx)[4]) {
+			var curTime = timesAt(idx);
+			if (curTime && curTime[4]) {
 				params.push([TOOLS_RECONS, function() {
 					hideToTools();
 					kernel.pushSignal('reqrec', [timesAt(idx), idx]);
