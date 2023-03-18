@@ -367,7 +367,7 @@
 		}
 
 		function parseScramble(scramble) {
-			if (scramble.match(/^\s*$/)) {
+			if (!scramble || /^\s*$/.exec(scramble)) {
 				return generateScramble(this);
 			} else {
 				var moves = scramble.match(/[RD](?:\+\+|--)|U'?/g);

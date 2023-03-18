@@ -547,7 +547,7 @@
 		}
 
 		function parseScramble(scramble) {
-			if (scramble.match(/^\s*$/)) {
+			if (!scramble || /^\s*$/.exec(scramble)) {
 				return generateScramble(this);
 			} else {
 				var moves = kernel.parseScramble(scramble, "URFDLB");

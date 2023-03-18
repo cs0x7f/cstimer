@@ -889,7 +889,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				if (mstep == 2 && curProgress == 0) {
 					moveCnt += puzzleObj.moveCnt();
-					if (curScrType.match(/^r\d+$/) && curScramble.length != 0) {
+					if (/^r\d+$/.exec(curScrType) && curScramble.length != 0) {
 						if (curScrType != "r3") {
 							curScrSize++;
 						}
@@ -975,7 +975,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function fixRelayCounter() {
-			if (curScrType.match(/^r\d+$/)) {
+			if (/^r\d+$/.exec(curScrType)) {
 				lcd.setStaticAppend("<br>" + (curScramble.length + 1) + "/" + curScramble.len);
 			}
 		}
@@ -983,7 +983,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function scrambleIt() {
 			reset();
 			var scramble = curScramble;
-			if (curScrType.match(/^r\d+$/)) {
+			if (/^r\d+$/.exec(curScrType)) {
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
 				fixRelayCounter();
 			}

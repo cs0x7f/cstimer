@@ -467,7 +467,9 @@
 		}
 
 		function parseScramble(scramble) {
-			// console.log(scramble);
+			if (!scramble || /^\s*$/.exec(scramble)) {
+				return generateScramble(this);
+			}
 			scramble = scramble.split('/');
 			var sqre = /\s*\((-?\d+), *(-?\d+)\)\s*/;
 			ret = [];
