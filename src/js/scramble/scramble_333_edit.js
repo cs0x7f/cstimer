@@ -170,21 +170,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	function getFMCScramble() {
-		var scramble = "",
-			axis1, axis2, axisl1, axisl2;
-		do {
-			scramble = getRandomScramble();
-			var moveseq = scramble.split(' ');
-			if (moveseq.length < 3) {
-				continue;
-			}
-			axis1 = moveseq[0][0];
-			axis2 = moveseq[1][0];
-			axisl1 = moveseq[moveseq.length - 2][0];
-			axisl2 = moveseq[moveseq.length - 3][0];
-		} while (
-			axis1 == 'F' || axis1 == 'B' && axis2 == 'F' ||
-			axisl1 == 'R' || axisl1 == 'L' && axisl2 == 'R');
+		var scramble = getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff, undefined, undefined, 2, 1);
 		return "R' U' F " + scramble + "R' U' F";
 	}
 
@@ -284,7 +270,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		[]
 	];
 
-	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp, _rndpre) {
+	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp, _rndpre, firstAxisFilter, lastAxisFilter) {
 		initMove();
 		_rndapp = _rndapp || emptysuff;
 		_rndpre = _rndpre || emptysuff;
@@ -347,7 +333,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 			}
 			var posit = toFaceCube(cc);
 			var search0 = new min2phase.Search();
-			solution = search0.solution(posit, 21, 1e9, 50, 2);
+			solution = search0.solution(posit, 21, 1e9, 50, 2, lastAxisFilter, firstAxisFilter);
 		} while (solution.length <= 3);
 		return solution.replace(/ +/g, ' ');
 	}

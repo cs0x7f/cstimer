@@ -588,7 +588,7 @@ var min2phase = (function() {
 		return getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
 			(this.twistc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twistc & 7)]);
 	}
-	Search.prototype.solution = function(facelets, maxDepth, probeMax, probeMin, verbose) {
+	Search.prototype.solution = function(facelets, maxDepth, probeMax, probeMin, verbose, firstAxisFilter, lastAxisFilter) {
 		initPrunTables();
 		var check = this.verify(facelets);
 		if (check != 0) {
@@ -613,6 +613,18 @@ var min2phase = (function() {
 		this.verbose = verbose;
 		this.moveSol = null;
 		this.isRec = false;
+		this.firstFilters = [0, 0, 0, 0, 0, 0];
+		this.lastFilters = [0, 0, 0, 0, 0, 0];
+		for (var i = 0; i < 3; i++) {
+			if (firstAxisFilter !== undefined) {
+				this.firstFilters[i] |= 0xe07 << (~~(urfMove[(3 - i) % 3][firstAxisFilter * 3] / 3)) * 3;
+				this.lastFilters[i + 3] |= 0xe07 << (~~(urfMove[(3 - i) % 3][firstAxisFilter * 3] / 3)) * 3;
+			}
+			if (lastAxisFilter !== undefined) {
+				this.lastFilters[i] |= 0xe07 << (~~(urfMove[(3 - i) % 3][lastAxisFilter * 3] / 3)) * 3;
+				this.firstFilters[i + 3] |= 0xe07 << (~~(urfMove[(3 - i) % 3][lastAxisFilter * 3] / 3)) * 3;
+			}
+		}
 		this.initSearch();
 		return this.search();
 	}
@@ -677,6 +689,9 @@ var min2phase = (function() {
 	}
 
 	Search.prototype.phase1PreMoves = function(maxl, lm, cc) {
+		if (maxl == this.maxPreMoves - 1 && (this.lastFilter >> lm & 1) != 0) {
+			return 1;
+		}
 		this.preMoveLen = this.maxPreMoves - maxl;
 		if (this.isRec ? (this.depth1 == this.length1 - this.preMoveLen) :
 			(this.preMoveLen == 0 || (0x36FB7 >> lm & 1) == 0)) {
@@ -725,6 +740,8 @@ var min2phase = (function() {
 				if ((this.conjMask & 1 << this.urfIdx) != 0) {
 					continue;
 				}
+				this.firstFilter = this.firstFilters[this.urfIdx];
+				this.lastFilter = this.lastFilters[this.urfIdx];
 				if (this.phase1PreMoves(this.maxPreMoves, -30, this.urfCubieCube[this.urfIdx], 0) == 0) {
 					return this.moveSol == null ? "Error 8" : this.moveSol;
 				}
@@ -801,6 +818,9 @@ var min2phase = (function() {
 		}
 	}
 	Search.prototype.phase1 = function(node, maxl, lm) {
+		if (maxl == this.depth1 - 1 && (this.firstFilter >> lm & 1) != 0) {
+			return 1;
+		}
 		if (node.prun == 0 && maxl < 5) {
 			if (this.allowShorter || maxl == 0) {
 				this.depth1 -= maxl;
@@ -880,7 +900,10 @@ var min2phase = (function() {
 		this.moveSol.push(curMove);
 	}
 	Search.prototype.phase2 = function(edge, esym, corn, csym, mid, maxl, depth, lm) {
-		if (edge == 0 && corn == 0 && mid == 0) {
+		if (this.depth1 == 0 && depth == 1 && (this.firstFilter >> ud2std[lm] & 1) != 0) {
+			return -1;
+		}
+		if (edge == 0 && corn == 0 && mid == 0 && (this.preMoveLen > 0 || (this.lastFilter >> ud2std[lm] & 1) == 0)) {
 			return maxl;
 		}
 		var moveMask = ckmv2bit[lm];
