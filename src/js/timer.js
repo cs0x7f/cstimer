@@ -1270,6 +1270,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				totPhases = status;
 				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
+				lcd.reset(enableVRC);
 				lcd.fixDisplay(false, true);
 				lcd.setRunning(true, enableVRC);
 				ui.setAutoShow(false);
@@ -1321,6 +1322,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				status = -2;
 				startTime = now;
+				lcd.reset(enableVRC);
 				lcd.fixDisplay(true, true);
 				if (checkUseIns()) {
 					lcd.setRunning(true, enableVRC);
