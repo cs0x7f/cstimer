@@ -155,6 +155,8 @@ var bldhelper = execMain(function() {
 			var cur = pieces.slice(32 + i * 3, 32 + i * 3 + 2);
 			bufEdgeSelect.append('<option value="' + i + '">' + cur + '</option>');
 		}
+		bufCornSelect.val(bufs[0]);
+		bufEdgeSelect.val(bufs[1]);
 		tools.regTool('bldhelper', 'BLD Helper', execFunc);
 	});
 });
