@@ -306,10 +306,20 @@ var cubeutil = (function() {
 		var scr = kernel.parseScramble(scrSeq, "URFDLB");
 		var c = new mathlib.CubieCube();
 		var d = new mathlib.CubieCube();
+		c.ori = 0;
 		for (var i = 0; i < scr.length; i++) {
-			var m = scr[i][0] * 3 + scr[i][2] - 1;
+			var axis = scr[i][0];
+			var pow = scr[i][2];
+			var m = axis * 3 + pow - 1;
 			if (m < 0 || m >= 18) {
 				continue;
+			}
+			if (scr[i][1] == 2) { //Xw
+				var rot = [3, 15, 17, 1, 11, 23][axis];
+				for (var j = 0; j < pow; j++) {
+					c.ori = mathlib.CubieCube.rotMult[rot][c.ori];
+				}
+				m = mathlib.CubieCube.rotMulM[c.ori][(axis + 3) % 6 * 3 + pow - 1];
 			}
 			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m], d);
 			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m], d);

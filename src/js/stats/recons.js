@@ -394,8 +394,11 @@ var caseStat = execMain(function() {
 			if (!data) {
 				continue;
 			}
-			nvalid++;
 			var sdata = data[ident[4]];
+			if (!sdata) {
+				continue;
+			}
+			nvalid++;
 			c.invFrom(sdata[4]);
 			var cur = ident[0](c.toFaceCube());
 			caseCnts[cur] = caseCnts[cur] || [0, 0, 0, 0];

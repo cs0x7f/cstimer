@@ -58,6 +58,7 @@ tools/gsolver.js \
 tools/bluetoothutil.js \
 tools/metronome.js \
 tools/syncseed.js \
+tools/bldhelper.js \
 shortcut.js \
 help.js \
 stackmat.js \
