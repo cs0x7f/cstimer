@@ -579,8 +579,107 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, aufsuff);
 	}
 
-	function getTTLLScramble() {
-		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x765fffff, 0x00000000);
+	var ttll_map = [
+		[0x32410, 0x3210, 'FBar-1'],
+		[0x32410, 0x3102, 'FBar-2'],
+		[0x32410, 0x3021, 'FBar-3'],
+		[0x32410, 0x2301, 'FBar-4'],
+		[0x32410, 0x2130, 'FBar-5'],
+		[0x32410, 0x2013, 'FBar-6'],
+		[0x32410, 0x1320, 'FBar-7'],
+		[0x32410, 0x1203, 'FBar-8'],
+		[0x32410, 0x1032, 'FBar-9'],
+		[0x32410, 0x0312, 'FBar-10'],
+		[0x32410, 0x0231, 'FBar-11'],
+		[0x32410, 0x0123, 'FBar-12'],
+		[0x32401, 0x3201, '2Opp-1'],
+		[0x32401, 0x3120, '2Opp-2'],
+		[0x32401, 0x3012, '2Opp-3'],
+		[0x32401, 0x2310, '2Opp-4'],
+		[0x32401, 0x2103, '2Opp-5'],
+		[0x32401, 0x2031, '2Opp-6'],
+		[0x32401, 0x1302, '2Opp-7'],
+		[0x32401, 0x1230, '2Opp-8'],
+		[0x32401, 0x1023, '2Opp-9'],
+		[0x32401, 0x0321, '2Opp-10'],
+		[0x32401, 0x0213, '2Opp-11'],
+		[0x32401, 0x0132, '2Opp-12'],
+		[0x31420, 0x3201, 'ROpp-1'],
+		[0x31420, 0x3120, 'ROpp-2'],
+		[0x31420, 0x3012, 'ROpp-3'],
+		[0x31420, 0x2310, 'ROpp-4'],
+		[0x31420, 0x2103, 'ROpp-5'],
+		[0x31420, 0x2031, 'ROpp-6'],
+		[0x31420, 0x1302, 'ROpp-7'],
+		[0x31420, 0x1230, 'ROpp-8'],
+		[0x31420, 0x1023, 'ROpp-9'],
+		[0x31420, 0x0321, 'ROpp-10'],
+		[0x31420, 0x0213, 'ROpp-11'],
+		[0x31420, 0x0132, 'ROpp-12'],
+		[0x31402, 0x3210, 'RBar-1'],
+		[0x31402, 0x3102, 'RBar-2'],
+		[0x31402, 0x3021, 'RBar-3'],
+		[0x31402, 0x2301, 'RBar-4'],
+		[0x31402, 0x2130, 'RBar-5'],
+		[0x31402, 0x2013, 'RBar-6'],
+		[0x31402, 0x1320, 'RBar-7'],
+		[0x31402, 0x1203, 'RBar-8'],
+		[0x31402, 0x1032, 'RBar-9'],
+		[0x31402, 0x0312, 'RBar-10'],
+		[0x31402, 0x0231, 'RBar-11'],
+		[0x31402, 0x0123, 'RBar-12'],
+		[0x30421, 0x3210, '2Bar-1'],
+		[0x30421, 0x3102, '2Bar-2'],
+		[0x30421, 0x3021, '2Bar-3'],
+		[0x30421, 0x2301, '2Bar-4'],
+		[0x30421, 0x2130, '2Bar-5'],
+		[0x30421, 0x2013, '2Bar-6'],
+		[0x30421, 0x1320, '2Bar-7'],
+		[0x30421, 0x1203, '2Bar-8'],
+		[0x30421, 0x1032, '2Bar-9'],
+		[0x30421, 0x0312, '2Bar-10'],
+		[0x30421, 0x0231, '2Bar-11'],
+		[0x30421, 0x0123, '2Bar-12'],
+		[0x30412, 0x3201, 'FOpp-1'],
+		[0x30412, 0x3120, 'FOpp-2'],
+		[0x30412, 0x3012, 'FOpp-3'],
+		[0x30412, 0x2310, 'FOpp-4'],
+		[0x30412, 0x2103, 'FOpp-5'],
+		[0x30412, 0x2031, 'FOpp-6'],
+		[0x30412, 0x1302, 'FOpp-7'],
+		[0x30412, 0x1230, 'FOpp-8'],
+		[0x30412, 0x1023, 'FOpp-9'],
+		[0x30412, 0x0321, 'FOpp-10'],
+		[0x30412, 0x0213, 'FOpp-11'],
+		[0x30412, 0x0132, 'FOpp-12']
+	];
+
+	var ttllprobs = [];
+	var ttllfilter = [];
+	for (var i = 0; i < ttll_map.length; i++) {
+		ttllprobs[i] = 1;
+		ttllfilter[i] = ttll_map[i][2];
+	}
+
+	function getTTLLScramble(type, length, cases) {
+		var ttllcase = ttll_map[scrMgr.fixCase(cases, ttllprobs)];
+		return getAnyScramble(0xba9876540000 + ttllcase[1], 0x000000000000, 0x76500000 + ttllcase[0], 0x00000000, aufsuff, aufsuff);
+	}
+
+	function getTTLLImage(cases, canvas) {
+		var ret = [];
+		var ttllcase = ttll_map[cases];
+		for (var i = 3; i >= 0; i--) {
+			ret.push(["FR", "LF", "BL", "RB", "GG"][ttllcase[0] >> (i * 4) & 0xf]);
+			ret.push("RFLB".charAt(ttllcase[1] >> (i * 4) & 0xf));
+		}
+		ret = ret.join('');
+		ret = ret.slice(7) + ret.slice(0, 7);
+		var llParam = ['GDDDDDDDD' + ret, null]
+		if (!canvas) {
+			return llParam.concat([ttllfilter[cases]]);
+		}
+		image.llImage(llParam[0], llParam[1], canvas);
 	}
 
 	function getZBLSScramble() {
@@ -831,7 +930,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('zzll', getZZLLScramble)
 		('zbls', getZBLSScramble)
-		('ttll', getTTLLScramble)
+		('ttll', getTTLLScramble, [ttllfilter, ttllprobs, getTTLLImage])
 		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, 'GDGDDDGDGGGGGRRGRRGGGBBDBBG', eols_map, eolsprobs)])
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs, getWVLSImage])
 		('lse', getLSEScramble)
