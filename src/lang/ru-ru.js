@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'метроном';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Подтвердить время';
 var TOOLS_SOLVERS = 'Cборщики';
 var TOOLS_SYNCSEED = 'Обычный скрамбл';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['легкий крест', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3х3 ногами', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

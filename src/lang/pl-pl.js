@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'Metronom';
 var TOOLS_RECONS = 'Rekonstrukcja';
 var TOOLS_RECONS_NODATA = 'Nie znaleziono rozwiązania.';
 var TOOLS_TRAINSTAT = 'Statystyki treningowe';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Potwierdź czas';
 var TOOLS_SOLVERS = 'Rozwiązujący';
 var TOOLS_SYNCSEED = 'Pospolity Scramble';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['łatwy krzyż', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3x3 stopami', "333ft", 0],
 		['Własny', "333custom", 0]
 	]],

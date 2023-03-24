@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'Métronome';
 var TOOLS_RECONS = 'Reconstruction';
 var TOOLS_RECONS_NODATA = 'Aucune solution trouvée.';
 var TOOLS_TRAINSTAT = 'Stats des entraînements';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Confirmation du temps';
 var TOOLS_SOLVERS = 'Solveurs';
 var TOOLS_SYNCSEED = 'Mélange classique';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Croix facile', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Personnalisé', "333custom", 0]
 	]],

@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'מטרונום';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'אשר זמן';
 var TOOLS_SOLVERS = 'פותרים';
 var TOOLS_SYNCSEED = 'ערבוב נפוץ';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['פלוס קל', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3×3 רגליים', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

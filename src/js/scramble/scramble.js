@@ -265,7 +265,7 @@ var scramble = execMain(function(rn, rndEl) {
 	var cacheTid = 0;
 
 	function genCachedScramble(args, detailType, isPredict) {
-		if (!enableCache) {
+		if (!enableCache || args[0].startsWith('nocache_')) {
 			return;
 		}
 		if (csTimerWorker && csTimerWorker.getScramble) {
@@ -331,7 +331,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (realType in scramblers) {
 			var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
 			var detailType = JSON.stringify([realType, len, scrFlt[1]]);
-			if (enableCache && detailType in cachedScr) {
+			if (enableCache && detailType in cachedScr && !realType.startsWith('nocache_')) {
 				scramble = cachedScr[detailType];
 				delete cachedScr[detailType];
 				localStorage['cachedScr'] = JSON.stringify(cachedScr);
@@ -754,8 +754,9 @@ var scramble = execMain(function(rn, rndEl) {
 		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true], 1);
 		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [false], 1);
 		kernel.regProp('scramble', 'scrAlign', 1, PROPERTY_SCRALIGN, ['c', ['c', 'l', 'r'], PROPERTY_SCRALIGN_STR.split('|')], 1);
-		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['', ['', 'z2', "z'", 'z', "x'", 'x'],
-			['', 'z2', "z'", 'z', "x'", 'x']
+		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['',
+			["", "y", "y2", "y'", "z2", "z2 y", "z2 y2", "z2 y'", "z'", "z' y", "z' y2", "z' y'", "z", "z y", "z y2", "z y'", "x'", "x' y", "x' y2", "x' y'", "x", "x y", "x y2", "x y'"],
+			["(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
 		], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);

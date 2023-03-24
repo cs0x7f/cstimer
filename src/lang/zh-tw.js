@@ -67,6 +67,7 @@ var TOOLS_METRONOME = '節拍器';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = '確認時間';
 var TOOLS_SOLVERS = '速解小幫手';
 var TOOLS_SYNCSEED = '共同打亂';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['簡單的十字', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3x3腳解', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

@@ -67,6 +67,7 @@ var TOOLS_METRONOME = '节拍器';
 var TOOLS_RECONS = '解法复盘';
 var TOOLS_RECONS_NODATA = '未找到解法。';
 var TOOLS_TRAINSTAT = '训练统计';
+var TOOLS_BLDHELPER = '盲拧助手';
 var TOOLS_CFMTIME = '确认成绩';
 var TOOLS_SOLVERS = '求解器';
 var TOOLS_SYNCSEED = '公共打乱';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['简单十字', "easyc", 3],
+		['盲拧助手', "nocache_333bldspec", 0],
 		['三阶脚拧', "333ft", 0],
 		['自定义', "333custom", 0]
 	]],

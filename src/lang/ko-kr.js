@@ -67,6 +67,7 @@ var TOOLS_METRONOME = '메트로놈';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = '시간 확인';
 var TOOLS_SOLVERS = '해법';
 var TOOLS_SYNCSEED = '공통 섞기';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['간단한 십자', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 발', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

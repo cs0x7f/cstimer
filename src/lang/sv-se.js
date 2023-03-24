@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'Metronom';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Bekräfta tid';
 var TOOLS_SOLVERS = 'Lösare';
 var TOOLS_SYNCSEED = 'Vanlig blandning';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['enkelt kors', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

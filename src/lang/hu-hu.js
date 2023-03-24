@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'metronóm';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Idő megerősítése';
 var TOOLS_SOLVERS = 'Kirakók';
 var TOOLS_SYNCSEED = 'Közös keverés';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['könnyű kereszt', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft (lábbal)', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

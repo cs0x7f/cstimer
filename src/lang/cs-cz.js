@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'metronom';
 var TOOLS_RECONS = 'Rekonstruovat';
 var TOOLS_RECONS_NODATA = 'Nebylo nalezeno žádné řešení.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Potvrďte čas';
 var TOOLS_SOLVERS = 'Solvery';
 var TOOLS_SYNCSEED = 'Společné zamíchání';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['jednoduchý kříž', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

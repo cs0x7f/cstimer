@@ -1271,6 +1271,10 @@ var mathlib = (function() {
 		return ~~(randGen.random() * n)
 	}
 
+	function rndHit(prob) {
+		return randGen.random() < prob;
+	}
+
 	function rndPerm(n) {
 		var arr = [];
 		for (var i = 0; i < n; i++) {
@@ -1376,6 +1380,7 @@ var mathlib = (function() {
 		rn: rn,
 		rndEl: rndEl,
 		rndProb: rndProb,
+		rndHit: rndHit,
 		time2str: time2str,
 		str2time: str2time,
 		obj2str: obj2str,

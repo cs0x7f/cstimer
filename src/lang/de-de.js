@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'Metronom';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'Keine Lösung gefunden.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Zeit bestätigen';
 var TOOLS_SOLVERS = 'Löser';
 var TOOLS_SYNCSEED = 'Gemeinsamen Scramble';
@@ -190,6 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['einfaches Kreuz', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 mit Füßen', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

@@ -67,6 +67,7 @@ var TOOLS_METRONOME = 'Metronom';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Süreyi doğrula';
 var TOOLS_SOLVERS = 'Çözücüler';
 var TOOLS_SYNCSEED = 'Yaygın Karışım';
@@ -190,6 +191,7 @@ var scrdata = [
 		['son katmanın permütasyonu', "pll", 0],
 		['EO Çizgisi', "eoline", 0],
 		['kolay cross', "easyc", 3],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ayakla', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],
