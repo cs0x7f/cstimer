@@ -773,7 +773,7 @@ posit:
 		var posit = [];
 		// Based on LanLan's FTO color scheme, with white top, red front, green right
 		// Order is    U       L          F       R       B       BR         D       BL
-		var colors = ['#fff', '#800080', '#f00', '#0d0', '#00f', '#bebebe', '#ff0', '#fa0'];
+		var colors = ['#fff', '#808', '#f00', '#0d0', '#00f', '#bbb', '#ff0', '#fa0'];
 
 		function doMove(move) {
 			if (move == 'U') {
@@ -998,6 +998,7 @@ posit:
 		}
 
 		return function(moveseq) {
+			colors = kernel.getProp('colfto').match(colre);
 			var cnt = 0;
 			var faceSize = 9;
 			for (var i = 0; i < 8; i++) {
