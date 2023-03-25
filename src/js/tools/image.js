@@ -769,6 +769,39 @@ posit:
 		return drawImage;
 	})();
 
+	/**
+	 *  F1 R1 L1 F2 F3 F4 R L F5..
+	 */
+	var pyrllImage = (function() {
+		var width = 20;
+
+		function drawImage(pieces, _canvas) {
+			var canvas = $(_canvas);
+			canvas.attr('width', 6 * hsq3 * width + 1);
+			canvas.attr('height', 6 * hsq3 * width + 1);
+			var colors = kernel.getProp('colpyr').match(colre);
+			var ctx = canvas[0].getContext('2d');
+			var idx = 0;
+			for (var i = 0; i < 3; i++) {
+				for (var f = 0; f < 3; f++) {
+					for (var j = 0; j < (i * 2 + 1); j++) {
+						var piece;
+						var x = -hsq3 * i + hsq3 * j;
+						var y = i / 2;
+						if (j % 2 == 0) {
+							piece = [[x, x - hsq3, x + hsq3], [y, y + 0.5, y + 0.5]];
+						} else {
+							piece = [[x - hsq3, x, x + hsq3], [y, y + 0.5, y]];
+						}
+						drawPolygon(ctx, colors["FLRD".indexOf(pieces[idx])] || '#888', Rotate(piece, PI / 3 * 4 * f), [width, 3 * hsq3, 3 + (6 * hsq3 - 4.5) / 2]);
+						idx++;
+					}
+				}
+			}
+		}
+		return drawImage;
+	})();
+
 	var ftoImage = (function() {
 		var posit = [];
 		// Based on LanLan's FTO color scheme, with white top, red front, green right
@@ -1177,6 +1210,7 @@ posit:
 	return {
 		draw: genImage,
 		llImage: llImage,
+		pyrllImage: pyrllImage,
 		face3Image: face3Image
 	}
 });

@@ -79,6 +79,97 @@
 		return cocoord.get(cornOri) << 5 | eocoord.get(edgeOri);
 	}
 
+	function pyrMult(state0, state1) {
+		var ep0 = epcoord.set([], state0[0]);
+		var eo0 = eocoord.set([], state0[1] & 0x1f);
+		var co0 = cocoord.set([], state0[1] >> 5);
+		var ep1 = epcoord.set([], state1[0]);
+		var eo1 = eocoord.set([], state1[1] & 0x1f);
+		var co1 = cocoord.set([], state1[1] >> 5);
+		var ep2 = [];
+		var eo2 = [];
+		var co2 = [];
+		for (var i = 0; i < 6; i++) {
+			ep2[i] = ep0[ep1[i]];
+			eo2[i] = eo0[ep1[i]] ^ eo1[i];
+		}
+		for (var i = 0; i < 4; i++) {
+			co2[i] = co0[i] + co1[i];
+		}
+		return [epcoord.get(ep2), cocoord.get(co2) << 5 | eocoord.get(eo2)];
+	}
+
+	var aufs = [[0, 0], [183, 869], [87, 1729]];
+
+	var l4e_map = [
+		//[ 0, 1, '1'],
+		[ 1, 3, 'L3Bar-1', 'LLDGFFRRG'],
+		[59, 3, 'L3Bar-2', 'DLLGFFRRG'],
+		[25, 3, 'L3Bar-3', 'FFGDRRLLG'],
+		[35, 3, 'L3Bar-4', 'GRRGLLFFD'],
+		[12, 3, 'LL-1',    'LLGFFGGGG'],
+		[10, 3, 'LL-2',    'GLLGGGGRR'],
+		[ 2, 1, 'LL-3',    'RLRLFLFRF'],
+		[ 4, 1, 'LL-4',    'FLFRFRLRL'],
+		[ 3, 3, 'L4NB-1',  'FGGGGDGFGGGF'],
+		[57, 3, 'L4NB-2',  'GGRGRGDGGGGR'],
+		[53, 3, 'L4NB-3',  'GGDGRGGGRGGR'],
+		[45, 3, 'L4NB-4',  'DGGFGGGFGGGF'],
+		[33, 3, 'L4NB-5',  'GGDGGGGRGGGR'],
+		[27, 3, 'L4NB-6',  'DGGGFGGGGGGF'],
+		[49, 3, 'L3NB-1',  'RRGGGDGFF'],
+		[43, 3, 'L3NB-2',  'GFFRRGDGG'],
+		[41, 3, 'L3NB-3',  'GGGDLLFFG'],
+		[51, 3, 'L3NB-4',  'GGGGRRLLD'],
+		[ 8, 3, 'Flip-1',  'RLFLFFRRL'],
+		[16, 3, 'Flip-2',  'LFFRRRLLFGGD'],
+		[56, 1, 'Flip-3',  'RLFLFRFRLGGD'],
+		[21, 3, 'L4Blk-1', 'GGDGGGLLL'],
+		[13, 3, 'L4Blk-2', 'DGGLLLGGG'],
+		[29, 3, 'L4Bar-1', 'GGGDGGGRR'],
+		[37, 3, 'L4Bar-2', 'GGGFFGGGD'],
+		[61, 3, 'L4Bar-3', 'GGGDGGLLG'],
+		[ 5, 3, 'L4Bar-4', 'GGGGLLGGD'],
+		[17, 3, 'L4Bar-5', 'GGGLLDGGG'],
+		[11, 3, 'L4Bar-6', 'GGGGGGDLL'],
+		[ 9, 3, 'L4Bar-7', 'RRGDGGGGG'],
+		[19, 3, 'L4Bar-8', 'GFFGGGGGD'],
+		[20, 3, 'DFlip-1', 'GGGRRGGGGGGD'],
+		[18, 3, 'DFlip-2', 'GGGGGGGFFGGD'],
+		[60, 1, 'DFlip-3', 'FFGRRGLLGGGD'],
+		[58, 1, 'DFlip-4', 'GRRGLLGFFGGD']
+	];
+
+	var l4eprobs = [];
+	var l4efilter = [];
+	for (var i = 0; i < l4e_map.length; i++) {
+		l4eprobs.push(l4e_map[i][1]);
+		l4efilter.push(l4e_map[i][2]);
+	}
+
+	function getL4EScramble(type, length, cases) {
+		var l4ecase = l4e_map[scrMgr.fixCase(cases, l4eprobs)][0];
+		var perm = mathlib.get8Perm(mathlib.set8Perm([], l4ecase & 1, 4, -1).concat([4, 5]), 6, -1);
+		var ori = (l4ecase >> 1 & 0x3) * 864 + (l4ecase >> 3);
+		var state = pyrMult(mathlib.rndEl(aufs), pyrMult([perm, ori], mathlib.rndEl(aufs)));
+		var sol = solv.toStr(solv.search(state, 8).reverse(), "ULRB", ["'", ""]) + ' ';
+		for (var i = 0; i < 4; i++) {
+			var r = mathlib.rn(3);
+			if (r < 2) {
+				sol += "lrbu".charAt(i) + [" ", "' "][r];
+			}
+		}
+		return sol;
+	}
+
+	function getL4EImage(cases, canvas) {
+		var l4ecase = l4e_map[cases];
+		if (!canvas) {
+			return ['GGG' + l4ecase[3], null, l4ecase[2]];
+		}
+		image.pyrllImage('GGG' + l4ecase[3], canvas);
+	}
+
 	function getScramble(type) {
 		var minl = type == 'pyro' ? 0 : 8;
 		var limit = type == 'pyrl4e' ? 2 : 7;
@@ -111,5 +202,6 @@
 		} while (len < limit);
 		return sol;
 	}
-	scrMgr.reg(['pyro', 'pyrso', 'pyrl4e', 'pyrnb', 'pyr4c'], getScramble);
+	scrMgr.reg(['pyro', 'pyrso', 'pyrnb', 'pyr4c'], getScramble)
+		('pyrl4e', getL4EScramble, [l4efilter, l4eprobs, getL4EImage]);
 })();
