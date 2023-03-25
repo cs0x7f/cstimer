@@ -576,9 +576,6 @@ var GiikerCube = execMain(function() {
 			value = value.join('');
 			var mode = parseInt(value.slice(0, 4), 2);
 			if (mode == 1) { // gyro
-				if (value.slice(value.length - 4) != '1010') {
-					keyCheck++;
-				}
 			} else if (mode == 2) { // cube move
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				if (moveCnt == prevMoveCnt) {
@@ -644,7 +641,6 @@ var GiikerCube = execMain(function() {
 			} else if (mode == 9) { // battery
 				batteryLevel = parseInt(value.slice(8, 16), 2);
 			}
-			keyCheck && console.log(keyCheck);
 		}
 
 		$.parseV2Data = parseV2Data; // for debug

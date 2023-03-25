@@ -367,7 +367,7 @@ var bldhelper = execMain(function() {
 		var eNScTxt = $('<input id="escycLR" type="text" style="width:4em" value=""> pattern="\d{1,2}-\d{1,2}"').val(s2r('escycLR'));
 		var eNCoTxt = $('<input id="encodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('encodeLR'));
 		var parityFlt = $('<select id="ceparity">');
-		var bflts = [['any', 0x7], ['ok', 0x1], ['flip', 0x2], ['move', 0x4], ['not ok', 0x6], ['ok/flip', 0x3], ['ok/other', 0x5]];
+		var bflts = [['any', 0x7], ['ok', 0x1], ['flip', 0x2], ['move', 0x4], ['not ok', 0x6], ['ok/flip', 0x3], ['ok/move', 0x5]];
 		for (var i = 0; i < bflts.length; i++) {
 			cbufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
 			ebufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
