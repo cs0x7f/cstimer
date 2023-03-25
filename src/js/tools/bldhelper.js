@@ -105,7 +105,7 @@ var bldhelper = execMain(function() {
 	// buff: buffer cubie status bitmask (0 - done, 1 - flip, 2 - in cycles)
 	// fixdone: num of fix-solved cubies (exclude buffer)
 	// fixerr: num of fix-flipped cubies (exclude buffer)
-	// nerrLR: total num of flipped cubies (include buffer and fixed)
+	// nerrLR: total num of flipped cubies (include fixed, exclude buffer)
 	// scycle: num of cycles without the buffer cubie
 	// ncodeLR: num of encoded words without flips
 	// return [cntValid, rndState]
@@ -136,9 +136,10 @@ var bldhelper = execMain(function() {
 					|| ncode < ncodeLR[0] || ncode > ncodeLR[1]) {
 				continue
 			}
-			var fixErr1 = fixErr + (i == 1 ? 1 : 0);
+			var bufErr = i == 1 ? 1 : 0;
+			var fixErr1 = fixErr + bufErr;
 			var fixInp = fixDone + fixErr + (i < 2 ? 1 : 0);
-			if (inpCnt < Math.max(fixInp, nerrLR[0]) || fixErr1 > nerrLR[1]) {
+			if (inpCnt < Math.max(fixInp, nerrLR[0] + bufErr) || fixErr > nerrLR[1]) {
 				continue;
 			}
 
@@ -147,7 +148,7 @@ var bldhelper = execMain(function() {
 			var cntFlip = 0;
 			var flips = null;
 			var anySamp = 0;
-			for (var j = Math.max(nerrLR[0] - fixErr1, 0); j <= Math.min(nerrLR[1] - fixErr1, anyInp); j++) {
+			for (var j = Math.max(nerrLR[0] - fixErr, 0); j <= Math.min(nerrLR[1] - fixErr, anyInp); j++) {
 				var cur = cntOris(cycCnt + inpCnt, base, inpCnt - fixErr1 - j, fixErr1 + j);
 				var curCnt = cur[0] * mathlib.Cnk[anyInp][j];
 				cntFlip += curCnt;
@@ -264,12 +265,12 @@ var bldhelper = execMain(function() {
 	var bldSets = {
 		'cbuff': [0, 0x7],
 		'cfix': "",
-		'cnerrLR': [0, 8],
+		'cnerrLR': [0, 7],
 		'cscycLR': [0, 3],
 		'cncodeLR': [0, 10],
 		'ebuff': [1, 0x7],
 		'efix': "",
-		'enerrLR': [0, 12],
+		'enerrLR': [0, 11],
 		'escycLR': [0, 5],
 		'encodeLR': [0, 16],
 		'ceparity': 0x3
@@ -320,12 +321,12 @@ var bldhelper = execMain(function() {
 			bldSets = {
 				'cbuff': [0, 0x7],
 				'cfix': "",
-				'cnerrLR': [0, 8],
+				'cnerrLR': [0, 7],
 				'cscycLR': [0, 3],
 				'cncodeLR': [0, 10],
 				'ebuff': [1, 0x7],
 				'efix': "",
-				'enerrLR': [0, 12],
+				'enerrLR': [0, 11],
 				'escycLR': [0, 5],
 				'encodeLR': [0, 16],
 				'ceparity': 0x3
@@ -334,12 +335,12 @@ var bldhelper = execMain(function() {
 			bldSets = {
 				'cbuff': [0, 0x7],
 				'cfix': "ULB DFR+",
-				'cnerrLR': [0, 8],
+				'cnerrLR': [0, 7],
 				'cscycLR': [0, 3],
 				'cncodeLR': [0, 10],
 				'ebuff': [1, 0x7],
 				'efix': "DR DF+",
-				'enerrLR': [0, 12],
+				'enerrLR': [0, 11],
 				'escycLR': [0, 5],
 				'encodeLR': [0, 16],
 				'ceparity': 0x1
@@ -450,7 +451,7 @@ var bldhelper = execMain(function() {
 			if ((parityMask >> parity & 1) == 0) {
 				continue;
 			}
-			var ret = getRandState(bldSets['cbuff'][1], cfixDones.length, cfixErrs.length, 
+			var ret = getRandState(bldSets['cbuff'][1], cfixDones.length, cfixErrs.length,
 				bldSets['cnerrLR'], bldSets['cscycLR'], bldSets['cncodeLR'], 3, enum8[i]);
 			cvalid[parity] += ret[0];
 			if (mathlib.rndHit(ret[0] / cvalid[parity])) {
@@ -466,7 +467,7 @@ var bldhelper = execMain(function() {
 			if ((parityMask >> parity & 1) == 0) {
 				continue;
 			}
-			var ret = getRandState(bldSets['ebuff'][1], efixDones.length, efixErrs.length, 
+			var ret = getRandState(bldSets['ebuff'][1], efixDones.length, efixErrs.length,
 				bldSets['enerrLR'], bldSets['escycLR'], bldSets['encodeLR'], 2, enum12[i]);
 			evalid[parity] += ret[0];
 			if (mathlib.rndHit(ret[0] / evalid[parity])) {
