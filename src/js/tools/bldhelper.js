@@ -305,7 +305,7 @@ var bldhelper = execMain(function() {
 			var val = [];
 			var fixRe = /^(UR|UF|UL|UB|DR|DF|DL|DB|FR|FL|BL|BR)(\+?)$/;
 			if (key == 'cfix') {
-				var fixRe = /^(URF|UFL|ULB|UBR|DFR|DLF|DBL|DRB)(\+?)$/;
+				var fixRe = /^(UFR|UFL|UBL|UBR|DFR|DFL|DBL|DBR)(\+?)$/;
 			}
 			for (var i = 0; i < fixs.length; i++) {
 				var m = fixRe.exec(fixs[i]);
@@ -334,7 +334,7 @@ var bldhelper = execMain(function() {
 		} else if (key == 'bldsEg') {
 			bldSets = {
 				'cbuff': [0, 0x7],
-				'cfix': "ULB DFR+",
+				'cfix': "UBL DFR+",
 				'cnerrLR': [0, 7],
 				'cscycLR': [0, 3],
 				'cncodeLR': [0, 10],
@@ -410,7 +410,7 @@ var bldhelper = execMain(function() {
 		var cfixs = bldSets['cfix'].split(' ');
 		var cfixDones = [];
 		var cfixErrs = [];
-		var fixRe = /^(URF|UFL|ULB|UBR|DFR|DLF|DBL|DRB)(\+?)$/i;
+		var fixRe = /^(UFR|UFL|UBL|UBR|DFR|DFL|DBL|DBR)(\+?)$/i;
 		var cubies = pieces.split(' ');
 		for (var i = 0; i < cfixs.length; i++) {
 			var m = fixRe.exec(cfixs[i]);
@@ -520,9 +520,9 @@ var bldhelper = execMain(function() {
 	});
 
 	// bld encoder
-	var pieces = 'URF UFL ULB UBR DFR DLF DBL DRB UR UF UL UB DR DF DL DB FR FL BL BR';
-	var ChiChu = 'JKL ABC DEF GHI XYZ WMN OPQ RST GH AB CD EF OP IJ KL MN QR ST WX YZ';
-	var Speffz = 'CMJ DIF AER BQN VKP UGL XSH WOT BM CI DE AQ VO UK XG WS JP LF RH TN';
+	var pieces = 'UFR UFL UBL UBR DFR DFL DBL DBR UR UF UL UB DR DF DL DB FR FL BL BR';
+	var ChiChu = 'JLK ABC DFE GHI XYZ WNM OPQ RTS GH AB CD EF OP IJ KL MN QR ST WX YZ';
+	var Speffz = 'CJM DIF ARE BQN VKP ULG XSH WTO BM CI DE AQ VO UK XG WS JP LF RH TN';
 	var schemeSelect;
 
 	function getBLDcode(c, scheme, cbuf, ebuf) {
