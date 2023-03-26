@@ -826,7 +826,7 @@ var GiikerCube = execMain(function() {
 		}
 
         return chkAvail.then(function(available) {
-			console.log(available);
+			DEBUG && console.log('[bluetooth]', 'is available', available);
             if (!available) {
                 return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
 			}

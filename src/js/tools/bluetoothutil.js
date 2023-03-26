@@ -100,7 +100,7 @@ var giikerutil = execMain(function(CubieCube) {
 	var connectClick = $('<span></span>');
 	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
 	var algCubingClick = $('<a target="_blank">0 move(s)</a>').addClass('click');
-	var lastSolveClick = $('<a target="_blank"></a>').addClass('click');
+	var lastSolveClick = $('<a target="_blank">N/A</a>').addClass('click');
 	var canvas = $('<canvas>');
 	var connectedStr = 'Connected | ??%';
 	var drawState = (function() {
@@ -139,6 +139,7 @@ var giikerutil = execMain(function(CubieCube) {
 			canvas.height(29 * imgSize + 'em');
 			canvas.attr('width', 39 * 3 / 9 * width + 1);
 			canvas.attr('height', 29 * 3 / 9 * width + 1);
+			canvas.css('margin', '0.5em 0 0 0');
 			for (var i = 0; i < 6; i++) {
 				face(i, currentState);
 			}
@@ -154,11 +155,16 @@ var giikerutil = execMain(function(CubieCube) {
 		if (!GiikerCube.isConnected()) {
 			connectClick.html('Bluetooth: Connect').addClass('click').click(init);
 		}
-		fdiv.empty().append(connectClick, '<br>')
+		var content = $('<div></div>');
+		if (!kernel.getProp('giiVRC')) {
+			content.css('font-size', 'calc(100% / 1.5)');
+		}
+		content.append(connectClick, '<br>')
 			.append(resetClick.unbind('click').click(markSolved), '<br>')
 			.append('Raw Data: ', algCubingClick, '<br>')
 			.append('Last Solve: ', lastSolveClick, '<br>')
-			.append(canvas);
+			.append($('<div>').append(canvas).css('text-align', 'center'));
+		fdiv.empty().append(content);
 		drawState();
 	}
 
@@ -301,20 +307,8 @@ var giikerutil = execMain(function(CubieCube) {
 			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
 			movesTimestamp.push(timer.getCurTime(lastTimestamp));
 		}
-
-		var moveCount = movesAfterSolved.length;
-		if (moveCount > 20) {
-			var scrambleStr = "";
-			for (var i = 0; i < scrambleLength; i++) {
-				var move = movesAfterSolved[i];
-				scrambleStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3); // + "/*" + movesTimestamp[i] + "*/";
-			}
-			var solveStr = "";
-			for (var i = scrambleLength; i < movesAfterSolved.length; i++) {
-				var move = movesAfterSolved[i];
-				solveStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3) + "/*" + movesTimestamp[i] + "*/";
-			}
-			updateAlgClick(algCubingClick, moveCount + ' move(s)', scrambleStr, solveStr)
+		if (scrambleLength > 0) {
+			updateRawMovesClick();
 		}
 		if (currentState == mathlib.SOLVED_FACELET) {
 			movesAfterSolved = [];
@@ -330,11 +324,30 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 	}
 
+	function updateRawMovesClick() {
+		var moveCount = movesAfterSolved.length;
+		var scrambleStr = "";
+		for (var i = 0; i < scrambleLength; i++) {
+			var move = movesAfterSolved[i];
+			scrambleStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3); // + "/*" + movesTimestamp[i] + "*/";
+		}
+		var solveStr = "";
+		for (var i = scrambleLength; i < movesAfterSolved.length; i++) {
+			var move = movesAfterSolved[i];
+			solveStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3) + "/*" + movesTimestamp[i] + "*/";
+		}
+		updateAlgClick(algCubingClick, moveCount + ' move(s)', scrambleStr, solveStr)
+	}
+
 	function updateAlgClick(click, text, setup, alg) {
-		click.attr('href',
-			'https://alg.cubing.net/?alg=' + alg +
-			'&setup=' + setup
-		);
+		if (setup || alg) {
+			click.attr('href',
+				'https://alg.cubing.net/?alg=' + alg +
+				'&setup=' + setup
+			);
+		} else {
+			click.removeAttr('href');
+		}
 		click.html(text);
 	}
 
@@ -404,6 +417,8 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function markScrambled() {
 		scrambleLength = movesAfterSolved.length;
+		updateRawMovesClick();
+		updateAlgClick(lastSolveClick, "In Progress");
 	}
 
 	$(function() {
