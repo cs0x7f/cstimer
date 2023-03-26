@@ -128,7 +128,7 @@
 <li><strong data="tool_sq1cs">Solveurs &gt; SQ1 S1 + S2</strong>. Solveur 1ère et 2ème étapes du Square-1 ; résolution de la forme du Square-1 puis séparation des pièces sur les faces U et D.</li>
 <li><strong data="tool_pyrv">Solveurs &gt; Pyraminx V</strong>. Solveur Pyraminx V.  Résout trois coins et deux arêtes pour former un motif en V.</li>
 <li><strong data="tool_skbl1">Solveurs &gt; Skewb Face</strong>. Solveur d'une face de Skewb ; résout un étage du Skewb, plus spécifiquement 1 centre et les 4 coins adjacents.</li>
-<li><strong data="tool_giikerutil">Giiker Cube</strong>. Outil auxiliaire pour cubes Bluetooth. Affiche l'état actuel, le niveau de batterie, la résolution en temps réel, etc.</li>
+<li><strong data="tool_giikerutil">Cube Bluetooth</strong>. Outil auxiliaire pour cubes Bluetooth. Affiche l'état actuel, le niveau de batterie, la résolution en temps réel, etc.</li>
 <li><strong data="tool_mtrnm">Métronome</strong>. En plus de bipper à une fréquence spécifique, le métronome peut également être réglé pour bipper à un moment précis après le début de la résolution.</li>
 <li><strong data="tool_syncseed">Mélange classique</strong>. Utiliser les mêmes mélanges que vos amis en définissant une graine commune.</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. Outil auxiliaire pour Stackmat. Affiche l'état, le niveau de batterie, le volume du signal sonore, etc.</li>

@@ -43,11 +43,11 @@ var EXPORT_NODATA = 'không tìm thấy thông tin từ mã của bạn';
 var EXPORT_UPLOADED = 'thu thập thành công';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_ACCOUNT = 'Xuất Tài Khoản';
+var EXPORT_LOGINGGL = 'Đăng Nhập Bằng Tài Khoản Google';
+var EXPORT_LOGINWCA = 'Đăng Nhập Bằng Tài Khoản WCA';
+var EXPORT_LOGOUTCFM = 'Xác nhận đăng xuất?';
+var EXPORT_LOGINAUTHED = 'Đã Xác Thực<br>Đang Lấy Dữ Liệu...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'Xáo<br>trộn';
 var BUTTON_TOOLS = 'Công cụ';
@@ -65,14 +65,14 @@ var TOOLS_DISTRIBUTION = 'Thành tích ( kiểu 2)';
 var TOOLS_TREND = 'Thành tích ( kiểu 3)';
 var TOOLS_METRONOME = 'Đếm nhịp';
 var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_RECONS_NODATA = 'Không tìm thấy cách giải.';
 var TOOLS_TRAINSTAT = 'Training Stat.';
 var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Xác nhận';
-var TOOLS_SOLVERS = 'Solvers';
+var TOOLS_SOLVERS = 'Công cụ giải';
 var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
-var TOOLS_SYNCSEED_INPUT = 'Input Seed';
+var TOOLS_SYNCSEED_SEED = 'Hạt giống ';
+var TOOLS_SYNCSEED_INPUT = 'Nhập Hạt Giống';
 var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
@@ -80,14 +80,14 @@ var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
 var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
+var OLCOMP_START = 'Bắt đầu!';
+var OLCOMP_SUBMIT = 'Gửi!';
+var OLCOMP_SUBMITAS = 'Gửi Như:';
+var OLCOMP_WCANOTICE = 'Gửi Bằng Tài Khoản WCA? (Đăng nhập lại nếu không được nhận sau khi gửi) ';
+var OLCOMP_OLCOMP = 'Cuộc Thi Trực Tuyến';
 var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_WCAACCOUNT = 'Tài Khoản WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'kích cớ hình vẽ scramble';
@@ -431,24 +431,24 @@ var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'mean';
-var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
+var STATS_SOLVE = 'lượt giải';
+var STATS_TIME = 'thời gian';
 var STATS_SESSION = 'Session';
 var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_SESSION_NAMEC = 'Tên của lượt mới';
 var STATS_STRING = 'best|vừa xong|worst|tạo ra bởi csTimer on %Y-%M-%D|solves/tổng: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Thành tích:|solving from %s to %e|Totally spent: %d|target';
 var STATS_PREC = 'time distribution precision';
 var STATS_PREC_STR = 'tự động|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
+var STATS_ABSIDX = 'Hiển thị chỉ số tuyệt đối trong thống kê';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
 var STATS_XSESSION_NAME = 'any name';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'In scramble trong thành tích';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
+var PROPERTY_PRINTDATE = 'in ngày giải trong thống kê';
 var PROPERTY_SUMMARY = 'cho xem bảng thành tích	';
 var PROPERTY_IMRENAME = 'yêu cầu đặt tên ngay sau khi tạo 1 mục';
 var PROPERTY_SCR2SS = 'tạo ngay 1 mục khi chuyển sang scramble khác';
@@ -459,24 +459,24 @@ var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'Statistical indicators';
 var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_DELMUL = 'cho phép xóa thời gian cùng 1 lúc';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_TOOLSFUNC = 'Chức Năng Được Chọn';
 var PROPERTY_TRIM = 'Number of solves trimmed at each side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
+var PROPERTY_AUTOEXP = 'Tự Động Xuất (mỗi 100 lượt giải)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
-	"kernel": 'global',
+	"kernel": 'toàn cầu',
 	"ui": 'màn hình chính ',
 	"color": 'màu',
-	"timer": 'timer',
-	"scramble": 'scramble',
+	"timer": 'đồng hồ đếm giờ',
+	"scramble": 'xáo trộn',
 	"stats": 'thành tích',
 	"tools": 'công cụ',
-	"vrc": 'virtual&<br>bluetooth'
+	"vrc": 'ảo&<br>bluetooth'
 };
 var BGIMAGE_URL = 'Yêu cầu nhập URL của ảnh';
 var BGIMAGE_INVALID = 'URL không hợp lệ';
@@ -488,4 +488,4 @@ var USE_LOGOHINT = 'Hint messages in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'số scrambles';
 var SCRGEN_PRE = 'prefix';
-var SCRGEN_GEN = 'Generate Scrambles!';
+var SCRGEN_GEN = 'Tạo Xáo Trộn';

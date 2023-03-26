@@ -57,7 +57,7 @@ var TOOLS_CROSS = 'Résoudre la croix';
 var TOOLS_EOLINE = 'Résoudre l\'EOLine';
 var TOOLS_ROUX1 = 'Résoudre 1er bloc Roux';
 var TOOLS_222FACE = 'Face de 2x2x2';
-var TOOLS_GIIKER = 'Giiker Cube';
+var TOOLS_GIIKER = 'Cube Bluetooth';
 var TOOLS_IMAGE = 'aperçu du mélange';
 var TOOLS_STATS = 'Statistiques';
 var TOOLS_HUGESTATS = 'Stats sur plusieurs sessions';
@@ -65,9 +65,9 @@ var TOOLS_DISTRIBUTION = 'Répartition des temps';
 var TOOLS_TREND = 'Tendance des temps';
 var TOOLS_METRONOME = 'Métronome';
 var TOOLS_RECONS = 'Reconstruction';
-var TOOLS_RECONS_NODATA = 'Aucune solution trouvée.';
+var TOOLS_RECONS_NODATA = 'Il n\'existe pas de solution.';
 var TOOLS_TRAINSTAT = 'Stats des entraînements';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_BLDHELPER = 'Assistant BLD';
 var TOOLS_CFMTIME = 'Confirmation du temps';
 var TOOLS_SOLVERS = 'Solveurs';
 var TOOLS_SYNCSEED = 'Mélange classique';
@@ -191,7 +191,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Croix facile', "easyc", 3],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['Assistant BLD', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Personnalisé', "333custom", 0]
 	]],

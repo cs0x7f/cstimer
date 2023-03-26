@@ -1188,7 +1188,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					todoMoves = todoMoves.reverse().join(' ');
 				}
 				var scramble;
-				if (todoMoves.match(/^\s*$/)) {
+				if (todoMoves.match(/^\s*$/) || !twisty) {
 					scramble = [];
 				} else {
 					scramble = twisty.parseScramble(todoMoves);

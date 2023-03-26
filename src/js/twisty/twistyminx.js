@@ -371,6 +371,9 @@
 				return generateScramble(this);
 			} else {
 				var moves = scramble.match(/[RD](?:\+\+|--)|U'?/g);
+				if (!moves) {
+					return generateScramble(this);
+				}
 				scramble = [];
 				for (var i = 0; i < moves.length; i++) {
 					switch (moves[i]) {

@@ -227,7 +227,7 @@ var kernel = execMain(function() {
 						proSet[0] = $('<input type="color" name="' + key + '">').val(curVal).change(procClick);
 						valTd.append(proSet[2], ': ', proSet[0]);
 					} else if (type == 4) { //multiple colors
-						var val = curVal.match(/#[0-9a-fA-F]{3}/g);
+						var val = curVal.match(/#[0-9a-fA-F]{3}/g) || [];
 						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(curVal);
 						var colorsInput = [];
 						for (var i = 0; i < val.length; i++) {
@@ -783,6 +783,7 @@ var kernel = execMain(function() {
 		}
 
 		$(function() {
+			gray = $('#gray');
 			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view|uidesign|wnd(?:Scr|Stat|Tool))/);
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']]);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5', 'Roboto'], PROPERTY_FONT_STR.split('|').concat('Roboto')]);
@@ -810,8 +811,6 @@ var kernel = execMain(function() {
 			regProp('ui', 'wndScr', 1, PROPERTY_WNDSCR, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
 			regProp('ui', 'wndStat', 1, PROPERTY_WNDSTAT, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
 			regProp('ui', 'wndTool', 1, PROPERTY_WNDTOOL, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
-
-			gray = $('#gray');
 
 			$('.donate').appendTo(donateDiv);
 			addButton('donate', BUTTON_DONATE, function() {
@@ -927,7 +926,8 @@ var kernel = execMain(function() {
 
 		_.getSelected = function() {
 			var idx = this.getSelIdx();
-			return idx.length == 1 ? (this.data[idx[0]] || [])[1] : this.data[idx[0]][1][idx[1]][1];
+			var data = (this.data[idx[0]] || [])[1];
+			return idx.length == 1 ? data : (data && data[idx[1]] || [])[1];
 		};
 
 		_.reset = function(val) {
