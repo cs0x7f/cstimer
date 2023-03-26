@@ -579,7 +579,7 @@ var kernel = execMain(function() {
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr,.sflt .bimg{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
-			"input:disabled,table.opttable tr:nth-child(odd) td:first-child,div.helptable li:nth-child(odd),.cntbar.sty2{background:?}" +
+			"input:disabled,table.opttable tr:nth-child(odd) td:first-child,div.helptable li:nth-child(odd){background:?}" +
 			".mywindow::before,.popup,.dialog,#leftbar::before";
 		csstmp = [
 			csstmp + "{box-shadow:0 0 .6em ?}",
