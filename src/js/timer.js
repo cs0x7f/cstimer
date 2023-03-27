@@ -907,7 +907,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
 					$('#lcd').css({'visibility': 'unset'});
 					rawMoves.reverse();
-					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
+					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 				}
 			}
 		}
@@ -1021,7 +1021,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (keyCode == 27) { //ESC
 					ui.setAutoShow(true);
 					if (status >= 1) {
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 					}
 					reset();
 					status = -1;
@@ -1222,6 +1222,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function giikerCallback(facelet, prevMoves, now) {
+			var prevFacelet = currentFacelet;
 			currentFacelet = facelet;
 			if (!enable) {
 				return;
@@ -1274,6 +1275,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.fixDisplay(false, true);
 				lcd.setRunning(true, enableVRC);
 				ui.setAutoShow(false);
+				var initialProgress = cubeutil.getProgress(prevFacelet, kernel.getProp('vrcMP', 'n'));
+				updateMulPhase(totPhases, initialProgress, now);
 			}
 			if (status >= 1) {
 				rawMoves[status - 1].push([prevMoves[0], now - startTime]);
@@ -1282,6 +1285,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 				if (facelet == mathlib.SOLVED_FACELET) {
 					rawMoves.reverse();
+					rawMoveCnt = rawMoves.flat().length;
 					var prettyMoves = cubeutil.getPrettyMoves(rawMoves);
 					var solve = "";
 					var stepName = phaseNames[kernel.getProp('vrcMP', 'n')];
@@ -1299,10 +1303,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.fixDisplay(false, true);
 					lcd.val(curTime[1], enableVRC);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
-					lcd.append('<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
+					lcd.append(
+						'<div style="font-family: Arial; font-size: 0.4em">' +
+						moveCnt + " stm, " + (~~(100000 * moveCnt / curTime[1]) / 100.0) + " tps" +
+						'<br>' +
+						rawMoveCnt + " rqtm, " + (~~(100000 * rawMoveCnt / curTime[1]) / 100.0) + " tps" +
+						'</div>'
+					);
 
 					if (curTime[1] != 0) {
-						var ext = [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')];
+						var ext = [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')];
 						ext[prettyMoves.length] = prettyMoves[0][1];
 						for (var i = 1; i < prettyMoves.length; i++) {
 							ext[prettyMoves.length - i] = ext[prettyMoves.length - i + 1] + prettyMoves[i][1];
@@ -1374,7 +1384,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var now = $.now();
 				if (keyCode == 27) {
 					if (status >= 1) {
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 					}
 					clearReadyTid();
 					status = -1;
