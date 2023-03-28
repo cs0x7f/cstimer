@@ -25,6 +25,8 @@ Currently, csTimer is able to work as a native app on mobile devices owing to [P
 
 # Translation
 
+[![Crowdin](https://badges.crowdin.net/cstimer/localized.svg)](https://crowdin.com/project/cstimer)
+
 If you are willing to help translating cstimer into your native language, please go to [this](https://crowdin.com/project/cstimer) page and select your language. If your native language is not on the list, just contact me and I'll add it.
 
 
@@ -36,7 +38,7 @@ Therefore, all data will be lost if you clear browser cache. For avoiding data l
 
 # Data Imported to csTimer's Server / Google Storage
 
-After https://github.com/cs0x7f/cstimer/commit/8280fdab9628c605c9abc1bc4a127e3e84016542, you are able to download data that is uploaded before the latest one from csTimer's Server / Google Storage, which might be useful for a mis-uploading. For Google Storage, csTimer will keep 10 latest uploaded data. For csTimer's server, 10 or more latest uploaded data will be kept. More specificently, I'll keep 10 latest uploaded data while others might be deleted due to our limited disk resource.
+After [8280fda](https://github.com/cs0x7f/cstimer/commit/8280fdab9628c605c9abc1bc4a127e3e84016542), you are able to download data that is uploaded before the latest one from csTimer's Server / Google Storage, which might be useful for a mis-uploading. For Google Storage, csTimer will keep 10 latest uploaded data. For csTimer's server, 10 or more latest uploaded data will be kept. More specificently, I'll keep 10 latest uploaded data while others might be deleted due to our limited disk resource.
 
 
 # Third-party Deployment

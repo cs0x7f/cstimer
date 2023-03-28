@@ -7,12 +7,12 @@ var BUTTON_TIME_LIST = 'IZLISTAJ<br>VREMENA';
 var BUTTON_OPTIONS = 'OPCIJE';
 var BUTTON_EXPORT = 'IZVEZI';
 var BUTTON_DONATE = 'DONIRAJ';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Unutar sesije';
 var PROPERTY_USEINS = 'koristi WCA inspekciju';
 var PROPERTY_USEINS_STR = 'Uvijek|Osim BLD-a|Nikad';
 var PROPERTY_VOICEINS = 'glasovno upozorenje za WCA inspekciju';
 var PROPERTY_VOICEINS_STR = 'bez glasa|muški glas|ženski glas';
-var PROPERTY_VOICEVOL = 'Voice volume';
+var PROPERTY_VOICEVOL = 'Glasnoća glasa';
 var PROPERTY_PHASES = 'višefazno';
 var PROPERTY_TIMERSIZE = 'veličina štoperice';
 var PROPERTY_USEMILLI = 'koristi milisekunde';
@@ -24,8 +24,8 @@ var PROPERTY_SCRALIGN = 'Poravnanje okvira za scramble';
 var PROPERTY_SCRALIGN_STR = 'centrirano|lijevo|desno';
 var PROPERTY_SCRFAST = 'Korištenje brzog rastavljanja za 4x4x4 (nije sluzbeno)';
 var PROPERTY_SCRKEYM = 'Označi ključne poteze u scrambleu';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Akcija prilikom klika na scramble';
+var PROPERTY_SCRCLK_STR = 'Ništa|Kopiraj|Sljedeći scramble';
 var PROPERTY_WNDSCR = 'Stil prikaza scramble panela';
 var PROPERTY_WNDSTAT = 'Stil prikaza panela statistike';
 var PROPERTY_WNDTOOL = 'Stil prikaza panela alata';
@@ -41,14 +41,14 @@ var EXPORT_INVID = 'Dozvoljena su samo slova ili brojevi!';
 var EXPORT_ERROR = 'Dogodile su se neke greške...';
 var EXPORT_NODATA = 'Nema pronađenih podataka za navedeni korisnički račun';
 var EXPORT_UPLOADED = 'Uspješno preneseno';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
+var EXPORT_CODEPROMPT = 'Spremi ovaj kod ili utipkaj spremljeni kod za uvoz';
+var EXPORT_ONLYOPT = 'Uvezi/Izvezi samo Postavke';
+var EXPORT_ACCOUNT = 'Izvezi račune';
+var EXPORT_LOGINGGL = 'Prijavi se putem Google računa';
+var EXPORT_LOGINWCA = 'Prijavi se putem WCA Računa';
+var EXPORT_LOGOUTCFM = 'Potvrđuješ odjavu?';
+var EXPORT_LOGINAUTHED = 'Authorizirano<br>Povlačenje podataka...';
+var IMPORT_FINAL_CONFIRM = 'Ovo će obrisati sve lokalne podatke! Modificirat će %d sesije, dodati %a i obrisati barem %r slaganja. Potvrđuješ uvoz podataka?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'ALATI';
 var IMAGE_UNAVAILABLE = 'Nedostupno za ovaj tip scramble-a';
@@ -56,7 +56,7 @@ var TOOLS_SELECTFUNC = 'Funkcija';
 var TOOLS_CROSS = 'složi križ';
 var TOOLS_EOLINE = 'složi EOLine';
 var TOOLS_ROUX1 = 'složi Roux S1';
-var TOOLS_222FACE = '2x2x2 face';
+var TOOLS_222FACE = '2x2x2 strana';
 var TOOLS_GIIKER = 'Giiker Kocka';
 var TOOLS_IMAGE = 'prikaži scramble';
 var TOOLS_STATS = 'Statistika';
@@ -64,32 +64,32 @@ var TOOLS_HUGESTATS = 'statistika međusesija';
 var TOOLS_DISTRIBUTION = 'distribucija vremena';
 var TOOLS_TREND = 'trend vremena';
 var TOOLS_METRONOME = 'metronom';
-var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_RECONS = 'Rekonstruiraj';
+var TOOLS_RECONS_NODATA = 'Nema pronađenog rješenja.';
+var TOOLS_TRAINSTAT = 'Statistike treninga';
+var TOOLS_BLDHELPER = 'BLD pomoćnik';
 var TOOLS_CFMTIME = 'Potvrdi vrijeme';
-var TOOLS_SOLVERS = 'Solvers';
-var TOOLS_SYNCSEED = 'Common Scramble';
+var TOOLS_SOLVERS = 'Solveri';
+var TOOLS_SYNCSEED = 'Učestali scrambleovi';
 var TOOLS_SYNCSEED_SEED = 'Seed';
 var TOOLS_SYNCSEED_INPUT = 'Input Seed';
-var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
-var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var OLCOMP_UPDATELIST = 'Update Competition List';
-var OLCOMP_VIEWRESULT = 'View Result';
-var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
-var OLCOMP_SUBMIT = 'Submit!';
-var OLCOMP_SUBMITAS = 'Submit As: ';
-var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
-var OLCOMP_OLCOMP = 'Online Competition';
-var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
-var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var TOOLS_SYNCSEED_30S = 'Koristi 30s Seed';
+var TOOLS_SYNCSEED_HELP = 'Ukoliko je uključeno, scramble će ovisiti samo o seedu i postavkama scramblea.';
+var TOOLS_SYNCSEED_DISABLE = 'Onemogući trenutni seed?';
+var TOOLS_SYNCSEED_INPUTA = 'Unesi vrijednost (a-zA-Z0-9) kao seed';
+var OLCOMP_UPDATELIST = 'Ažuriraj listu natjecanja';
+var OLCOMP_VIEWRESULT = 'Vidi rezultate';
+var OLCOMP_VIEWMYRESULT = 'Moja povijest';
+var OLCOMP_START = 'Započni!';
+var OLCOMP_SUBMIT = 'Pošalji!';
+var OLCOMP_SUBMITAS = 'Pošalji kao:';
+var OLCOMP_WCANOTICE = 'Pošalji kao svoj WCA Račun? (Ponovno se prijavi ako nije prepoznato prilikom slanja)';
+var OLCOMP_OLCOMP = 'Online natjecanje';
+var OLCOMP_ANONYM = 'Anonimno';
+var OLCOMP_ME = 'Ja';
+var OLCOMP_WCAACCOUNT = 'WCA Račun';
+var OLCOMP_ABORT = 'Prekini natjecanje i prikaži rezultate?';
+var OLCOMP_WITHANONYM = 'S anonimnim';
 var PROPERTY_IMGSIZE = 'Veličina prikaza scramble-a';
 var TIMER_INSPECT = 'inspekcija';
 var TIMER_SOLVE = 'slaganje';
@@ -99,14 +99,14 @@ var PROPERTY_TIMEU_STR = 'normalan|0.1s|sekunde|inspekcija|bez prikaza';
 var PROPERTY_PRETIME = 'vrijeme držanja tipke space" (sekunda/e)"';
 var PROPERTY_ENTERING = 'unošenje vremena s/sa';
 var PROPERTY_ENTERING_STR = 'štopericom|utipkavanjem|stackmat štoperica|MoYuTimer|virtualno|Bluetooth|qCube|GanTimer';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT = 'Mjera prilikom unosa brojčanog tipa podatka';
+var PROPERTY_INTUNIT_STR = 'sekunda|stotinka|milisekunda';
 var PROPERTY_COLOR = 'odaberi temu';
 var PROPERTY_COLORS = 'boja fonta|boja pozadine|boja ploče|boja gumba|boja veze|boja logotipa|boja pozadine logotipa';
 var PROPERTY_VIEW = 'stil korisničkog sučelja je';
 var PROPERTY_VIEW_STR = 'Automatski|Mobilni|Desktop';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
+var PROPERTY_UIDESIGN = 'UI dizajn je';
+var PROPERTY_UIDESIGN_STR = 'Normalan|Material dizajn|Normalan bez sjene|Material dizajn bez sjene';
 var COLOR_EXPORT = 'Spremi string za uvoz';
 var COLOR_IMPORT = 'Unesi izvezeni string';
 var COLOR_FAIL = 'Netočni podatci, uvoz neuspješan';
@@ -119,7 +119,7 @@ var PROPERTY_USEKSC = 'koristi prečace s tipkovnice';
 var PROPERTY_NTOOLS = 'broj alata';
 var PROPERTY_AHIDE = 'Sakrij sve elemente dok štoperica mjeri vrijeme';
 var SCRAMBLE_LAST = 'prethodni';
-var SCRAMBLE_NEXT = 'slijedeći';
+var SCRAMBLE_NEXT = 'sljedeći';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_LENGTH = 'dužina';
 var SCRAMBLE_INPUT = 'Unesi scramble/ove)';
@@ -159,15 +159,15 @@ var scrdata = [
 	]],
 	['Ulaz', [
 		['Eksterno', "input", 0],
-		['Competition', "remoteComp", 0],
+		['Natjecanje', "remoteComp", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3', [
-		["random state (WCA)", "333", 0],
-		['random move', "333o", 25],
+		["nasumično stanje (WCA)", "333", 0],
+		['nasumični potez', "333o", 25],
 		['3x3x3 za noob-ove', "333noob", 25],
 		['samo rubni dijelovi', "edges", 0],
 		['samo korneri', "corners", 0],
@@ -191,19 +191,19 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['lagani križ', "easyc", 3],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['BLD pomoćnik', "nocache_333bldspec", 0],
 		['3x3 s nogama', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Prilagođeno', "333custom", 0]
 	]],
 	['2x2x2', [
-		["random state (WCA)", "222so", 0],
-		['optimal', "222o", 0],
+		["nasumično stanje (WCA)", "222so", 0],
+		['optimalno', "222o", 0],
 		['3-gen', "2223", 25],
 		['EG', "222eg", 0],
 		['EG0', "222eg0", 0],
 		['EG1', "222eg1", 0],
 		['EG2', "222eg2", 0],
-		['No Bar', "222nb", 0]
+		['Bez Bar-a', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -235,7 +235,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['Scramble_podatci_sat_', "clkwca", 0],
-		['optimal', "clko", 0],
+		['optimalno', "clko", 0],
 		['sažet', "clkc", 0],
 		['efektivan red pin-ova', "clke", 0]
 	]],
@@ -245,40 +245,40 @@ var scrdata = [
 		['stari stil', "mgmo", 70]
 	]],
 	['Pyraminx', [
-		["random state (WCA)", "pyrso", 10],
-		['optimal', "pyro", 0],
-		['random move', "pyrm", 25],
+		["nasumično stanje (WCA)", "pyrso", 10],
+		['optimalno', "pyro", 0],
+		['nasumični potez', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
 	['Skewb', [
-		["random state (WCA)", "skbso", 0],
-		['optimal', "skbo", 0],
-		['random move', "skb", 25],
+		["nasumično stanje (WCA)", "skbso", 0],
+		['optimalno', "skbo", 0],
+		['nasumični potez', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
 	['Square-1', [
-		["random state (WCA)", "sqrs", 0],
+		["nasumično stanje (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
-		['face turn metric', "sq1h", 40],
-		['twist metric', "sq1t", 20]
+		['face-turn metrika', "sq1h", 40],
+		['twist metrika', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===OSTALO===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
-		['random state URLD', "15prp", 0],
-		['random state ^<>v', "15prap", 0],
-		['random state Blank', "15prmp", 0],
-		['random move URLD', "15p", 80],
-		['random move ^<>v', "15pat", 80],
-		['random move Blank', "15pm", 80]
+		['nasumično stanje URLD', "15prp", 0],
+		['nasumično stanje ^<>v', "15prap", 0],
+		['nasumično stanje Blank', "15prmp", 0],
+		['nasumični potez URLD', "15p", 80],
+		['nasumični potez ^<>v', "15pat", 80],
+		['nasumični potez Blank', "15pm", 80]
 	]],
 	['8 puzzle', [
-		['random state URLD', "8prp", 0],
-		['random state ^<>v', "8prap", 0],
-		['random state Blank', "8prmp", 0]
+		['nasumično stanje URLD', "8prp", 0],
+		['nasumično stanje ^<>v', "8prap", 0],
+		['nasumično stanje Blank', "8prmp", 0]
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
@@ -295,9 +295,9 @@ var scrdata = [
 		['NxNxN', "cubennn", 12]
 	]],
 	['Gear Cube', [
-		['random state', "gearso", 0],
-		['optimal', "gearo", 0],
-		['random move', "gear", 10]
+		['nasumično stanje', "gearso", 0],
+		['optimalno', "gearo", 0],
+		['nasumični potez', "gear", 10]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -315,10 +315,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['old', "redi", 20]
 	]],
-	['Ivy cube', [
-		['random state', "ivyso", 0],
-		['optimal', "ivyo", 0],
-		['random move', "ivy", 10]
+	['Ivy kocka', [
+		['nasumično stanje', "ivyso", 0],
+		['optimalno', "ivyo", 0],
+		['nasumični potez', "ivy", 10]
 	]],
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
@@ -328,9 +328,9 @@ var scrdata = [
 		['stari stil', "prco", 70]
 	]],
 	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+		['1x1x3 blok', "sia113", 25],
+		['1x2x3 blok', "sia123", 25],
+		['2x2x2 blok', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -339,15 +339,15 @@ var scrdata = [
 		[' ', "sfl", 25]
 	]],
 	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
+		['twist metrika', "ssq1t", 20]
 	]],
 	['UFO', [
-		['Jaap style', "ufo", 25]
+		['Jaap stil', "ufo", 25]
 	]],
-	['Other', [
+	['Ostalo', [
 		['FTO (Face-Turning Octahedron)', "fto", 30]
 	]],
-	['===SPECIAL===', [
+	['===SPECIJALNO===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subset-ovi', [
@@ -364,11 +364,11 @@ var scrdata = [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
-	['Megaminx subsets', [
+	['Megaminx subsetovi', [
 		['2-generator R,U', "minx2g", 30],
 		['zadnji slot + zadnji sloj', "mlsll", 20]
 	]],
-	['Relays', [
+	['Maratoni', [
 		['puno 3x3x3 kocaka', "r3", 5],
 		['234 maraton', "r234", 0],
 		['2345 maraton', "r2345", 0],
@@ -379,7 +379,7 @@ var scrdata = [
 		['23456 maraton (WCA)', "r23456w", 0],
 		['234567 maraton (WCA)', "r234567w", 0]
 	]],
-	['===JOKES===', [
+	['===ŠALE===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -404,18 +404,18 @@ var SCRAMBLE_NOOBST = [
 	['okreni prednju stranu', 'okreni stražnju stranu']
 ];
 var SCRAMBLE_NOOBSS = ' u smjeru kazaljke na satu za 90°,| suprotno smjeru kazaljke na satu za 90°,| za 180°,';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_TITLE = 'Opcije scramblea';
+var SCROPT_BTNALL = 'Potpuni';
+var SCROPT_BTNNONE = 'Očisti';
+var SCROPT_EMPTYALT = 'Molimo odaberite najmanje jedan case';
 var STATS_CFM_RESET = 'resetiraj sva vremena u ovoj sesiji?';
 var STATS_CFM_DELSS = 'obriši sesiju [%s]?';
 var STATS_CFM_DELMUL = 'Broj izbrisanih vrijednosti iz trenutnog indeksa?';
 var STATS_CFM_DELETE = 'obrisati ovo vrijeme?';
 var STATS_COMMENT = 'Komentar';
-var STATS_REVIEW = 'Review';
+var STATS_REVIEW = 'Recenzija';
 var STATS_DATE = 'Datum';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_SSSTAT = 'Statistika jednog slaganja';
 var STATS_CURROUND = 'Trenutna statistika runde';
 var STATS_CURSESSION = 'Trenutna statistika sesije';
 var STATS_CURSPLIT = 'Faza %d trenutne statistike sesije';
@@ -426,7 +426,7 @@ var STATS_SSMGR_DETAIL = 'Detalji sesije';
 var STATS_SSMGR_OPS = 'Preimenuj|Kreiraj|Razdvoji|Spoji|Obriši|Sortiraj';
 var STATS_SSMGR_ORDER = 'Poredaj po scrambleu';
 var STATS_SSMGR_ODCFM = 'Sortiraj sve sesije po scrambleu?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_SORTCFM = '%d slaganje/a će biti obrisano, sigurno?';
 var STATS_ALERTMG = 'Spoji sva vremena u sesiji  [%f] s krajem sesije [%t]?';
 var STATS_PROMPTSPL = 'Broj posljednjih vremena razdjeljenih iz sesije [%s]?';
 var STATS_ALERTSPL = 'Potrebno razdvojiti ili ostaviti barem jedno vrijeme';
@@ -440,43 +440,43 @@ var STATS_STRING = 'najbolje|trenutno|najgore|Generirao csTimer %Y-%M-%D|slaganj
 var STATS_PREC = 'preciznost raspona vremena';
 var STATS_PREC_STR = 'automatska|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'izlistaj %d tip|izlistaj %d dužinu|prosjek|srednju vrijednost';
-var STATS_STATCLR = 'Enable session emptying';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_STATCLR = 'Omogući brisanje sesije';
+var STATS_ABSIDX = 'Prikaži apsolutni index u statističkom izvješću';
+var STATS_XSESSION_DATE = 'bilo koji datum|zadnja 24 sata|zadnjih 7 dana|zadnjih 30 dana|zadnjih 365 dana';
+var STATS_XSESSION_NAME = 'bilo koje ime';
+var STATS_XSESSION_SCR = 'bilo koji scramble';
+var STATS_XSESSION_CALC = 'Izračun';
+var STATS_RSFORSS = 'Prikaži statistiku prilikom klika na broj slaganja';
 var PROPERTY_PRINTSCR = 'ispiši scramble/ove u statistici';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
+var PROPERTY_PRINTDATE = 'ispiši podatke o slaganju u statistici';
 var PROPERTY_SUMMARY = 'prikaži sažetak prije liste vremena';
 var PROPERTY_IMRENAME = 'preimenuj sesiju odmah nakon kreiranja';
 var PROPERTY_SCR2SS = 'kreiraj novu sesiju kada se promijeni tip scramble-a';
 var PROPERTY_SS2SCR = 'vrati tip scramble-a nakon prebacivanja sesije';
-var PROPERTY_SS2PHASES = 'restore multi-phase timing when switching session';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATTHRES = 'Show target time for session best';
+var PROPERTY_SS2PHASES = 'vrati multi-phase štopanje prilikom promjene sesije';
+var PROPERTY_STATINV = 'Obrnuta lista vremena';
+var PROPERTY_STATTHRES = 'Prikaži ciljano vrijeme za najbolje vrijeme sesije';
 var PROPERTY_STATAL = 'Statistički indikatori';
-var PROPERTY_STATALU = 'Customized statistical indicator';
+var PROPERTY_STATALU = 'Personalizirani statistički indikator';
 var PROPERTY_DELMUL = 'Omogući višestruko brisanje';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
-var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
-var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
-var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
-var PROPERTY_SCRASIZE = 'Auto scramble size';
+var PROPERTY_TOOLSFUNC = 'Odabrane funkcije';
+var PROPERTY_TRIM = 'Broj slaganja "odrezanih" sa svake strane';
+var PROPERTY_TRIM_MED = 'Medijan';
+var PROPERTY_STKHEAD = 'Koristi informacije Stackmat statusa';
+var PROPERTY_HIDEFULLSOL = 'Prikaži progresivno rješenje';
+var PROPERTY_IMPPREV = 'Uvezi ne najnovije podatke';
+var PROPERTY_AUTOEXP = 'Automatsko izvezivanje (po 100 slaganja)';
+var PROPERTY_AUTOEXP_OPT = 'Nikad|U datoteku|S csTimer IDjem|S WCA Računom';
+var PROPERTY_SCRASIZE = 'Automatska veličina scramblea';
 var MODULE_NAMES = {
 	"kernel": 'globalno',
-	"ui": 'display',
+	"ui": 'zaslon',
 	"color": 'boja',
 	"timer": 'štoperica',
 	"scramble": 'scramble',
 	"stats": 'statistika',
 	"tools": 'alati',
-	"vrc": 'virtual&<br>bluetooth'
+	"vrc": 'virtualno&<br>bluetooth'
 };
 var BGIMAGE_URL = 'unesi url slike';
 var BGIMAGE_INVALID = 'nevažeći url';
@@ -484,7 +484,7 @@ var BGIMAGE_OPACITY = 'providnost pozadinske slike';
 var BGIMAGE_IMAGE = 'pozadinska slika';
 var BGIMAGE_IMAGE_STR = 'ništa|ručno|CCT';
 var SHOW_AVG_LABEL = 'Prikaži oznaku prosjeka';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'Poruke savjeta u logotipu';
 var TOOLS_SCRGEN = 'Generator scramble-ova';
 var SCRGEN_NSCR = 'Broj scramble-ova';
 var SCRGEN_PRE = 'prefiks';

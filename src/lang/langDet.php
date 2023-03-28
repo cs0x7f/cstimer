@@ -1,5 +1,5 @@
 <?php
-$version = "2023.03.26";
+$version = "2023.03.28";
 
 function prefered_language($available_languages, $req_lang) {
   if ($req_lang == "auto" && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -69,7 +69,7 @@ if ($lang == "en-us") { ?>
   <meta name="keywords" content="טיימר, cstimer, טיימר קיובינג, טיימר אונליין, טיימר באינטרנט">
   <title> csTimer - טיימר קיובינג מקצועי </title>
 <?php } else if ($lang == "hr-hr") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <meta name="keywords" content="štoperica, cstimer, štoperica rubikove kocke, online štoperica, web štoperica">
   <title> csTimer - Profesionalna štoperica za brzo slaganje Rubikove kocke </title>
 <?php } else if ($lang == "hu-hu") { ?>
   <meta name="keywords" content="időmérő, cstimer, Rubik kocka időmérő, online időmérő, webes időmérő">
