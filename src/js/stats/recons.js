@@ -2,15 +2,24 @@ var recons = execMain(function() {
 	var isEnable;
 
 	var div = $('<div style="font-size:0.9em;" />');
+	var reconsClick = $('<div>')
+		.css('font-size', 'calc(100% / 1.5)')
+		.css('margin-bottom', '0.5em')
+		.css('text-align', 'right')
+		.append($('<a target="_blank">Open Review</a>').addClass('click'));
 	var table = $('<table class="table">');
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
 	var requestBack = $('<span class="click" />');
 	var tableTh = $('<tr>').append($('<th style="padding:0;">').append(methodSelect), '<th>insp</th><th>exec</th><th>htm</th><th>tps</th>');
 
-	function doMove(c, d, moveStr, isInv) {
+	function parseMove(moveStr) {
 		var movere = /^([URFDLB]w?|[EMSyxz]|2-2[URFDLB]w)(['2]?)@(\d+)$/;
-		var m = movere.exec(moveStr);
+		return movere.exec(moveStr);
+	}
+
+	function doMove(c, d, moveStr, isInv) {
+		var m = parseMove(moveStr);
 		if (!m) {
 			return;
 		}
@@ -71,6 +80,19 @@ var recons = execMain(function() {
 		}
 	}
 
+	function addMoveToRaw(rawMoves, progress, moveStr) {
+		var m = parseMove(moveStr);
+		if (m) {
+			var idx = progress - 1;
+			if (!rawMoves[idx]) {
+				rawMoves[idx] = [];
+			}
+			var face = m[1] + (m[2] || ' ');
+			var ts = ~~m[3];
+			rawMoves[idx].push([face, ts]);
+		}
+	}
+
 	function calcRecons(times, method) {
 		if (!times || !times[4] || times[0][0] < 0) {
 			return;
@@ -84,6 +106,7 @@ var recons = execMain(function() {
 			doMove(c, d, solution[i], true);
 		}
 		var facelet = c.toFaceCube();
+		var rawMoves = [];
 		var data = []; //[[start, firstMove, end, moveCnt], [start, firstMove, end, moveCnt], ...]
 		var lastMove = -3;
 		var lastPow = 0;
@@ -96,6 +119,7 @@ var recons = execMain(function() {
 		for (var i = 0; i < solution.length; i++) {
 			var effMove = doMove(c, d, solution[i], false);
 			if (effMove != undefined) {
+				addMoveToRaw(rawMoves, progress, solution[i]);
 				tsFirst = Math.min(tsFirst, c.tstamp);
 				var axis = ~~(effMove / 3);
 				var amask = 1 << axis;
@@ -124,11 +148,19 @@ var recons = execMain(function() {
 				tsFirst = 1e9;
 			}
 		}
-		return data;
+		var stepCount = cubeutil.getStepCount(method);
+		for (var i = 0; i < stepCount; i++) {
+			if (!rawMoves[i])
+				rawMoves[i] = [];
+		}
+		return {
+			data: data,
+			rawMoves: rawMoves.reverse()
+		}
 	}
 
 	// data = [[name, insp, exec, turn], ...]
-	function renderResult(stepData, tidx, isPercent) {
+	function renderResult(stepData, tidx, isPercent, scramble, solve) {
 		var maxSubt = 0;
 		var sumSubt = 0;
 		var stepSData = [];
@@ -219,9 +251,15 @@ var recons = execMain(function() {
 		methodSelect.unbind('change').change(procClick);
 		table.unbind('click').click(procClick);
 		requestBack.text('No.' + tidx);
+		reconsClick.hide();
+		if (scramble || solve) {
+			reconsClick.children('a').attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent(solve) + '&setup=' + encodeURIComponent(scramble));
+			reconsClick.show();
+		}
 	}
 
 	function renderEmpty(isRequest) {
+		reconsClick.hide();
 		table.empty().append(tableTh);
 		tableTh.after(
 			$('<tr>').append(
@@ -231,6 +269,7 @@ var recons = execMain(function() {
 		rangeSelect.unbind('change').change(procClick);
 		methodSelect.unbind('change').change(procClick);
 		table.unbind('click').click(procClick);
+		requestBack.text('---');
 	}
 
 	function execFunc(fdiv, signal) {
@@ -240,7 +279,7 @@ var recons = execMain(function() {
 		if (/^scr/.exec(signal)) {
 			return;
 		}
-		fdiv.empty().append(div.append(table));
+		fdiv.empty().append(reconsClick, div.append(table));
 		update();
 	}
 
@@ -252,18 +291,20 @@ var recons = execMain(function() {
 		var isPercent = method.endsWith('%');
 		method = method.replace('%', '');
 		var times = value[0];
-		var data = calcRecons(times, method);
-		if (!data) {
+		var rec = calcRecons(times, method);
+		if (!rec) {
 			renderEmpty(true);
 			return;
 		}
+		var data = rec.data;
 		var steps = cubeutil.getStepNames(method);
 		var stepData = [];
 		for (var i = steps.length - 1; i >= 0; i--) {
 			var curData = data[i] || [0, 0, 0, 0];
 			stepData.push([steps[i], curData[1] - curData[0], curData[2] - curData[1], curData[3]]);
 		}
-		renderResult(stepData, value[1] + 1, isPercent);
+		var solve = cubeutil.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
+		renderResult(stepData, value[1] + 1, isPercent, times[1], solve);
 	}
 
 	function update() {
@@ -295,10 +336,11 @@ var recons = execMain(function() {
 		var stepData = [];
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
 			var times = stats.timesAt(s);
-			var data = calcRecons(times, method);
-			if (!data) {
+			var rec = calcRecons(times, method);
+			if (!rec) {
 				continue;
 			}
+			var data = rec.data;
 			nvalid++;
 			for (var i = steps.length - 1; i >= 0; i--) {
 				var curData = data[i] || [0, 0, 0, 0];
@@ -318,7 +360,12 @@ var recons = execMain(function() {
 			stepData[i][2] /= nvalid;
 			stepData[i][3] /= nvalid;
 		}
-		renderResult(stepData, null, isPercent);
+		if (nrec == 1) {
+			var solve = cubeutil.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
+			renderResult(stepData, null, isPercent, times[1], solve);
+		} else {
+			renderResult(stepData, null, isPercent);
+		}
 	}
 
 	function procClick(e) {
@@ -390,10 +437,11 @@ var caseStat = execMain(function() {
 		var c = new mathlib.CubieCube();
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
 			var times = stats.timesAt(s);
-			var data = recons.calcRecons(times, method);
-			if (!data) {
+			var rec = recons.calcRecons(times, method);
+			if (!rec) {
 				continue;
 			}
+			var data = rec.data;
 			var sdata = data[ident[4]];
 			if (!sdata) {
 				continue;
