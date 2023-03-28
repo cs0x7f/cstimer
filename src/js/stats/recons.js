@@ -6,7 +6,7 @@ var recons = execMain(function() {
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
 	var requestBack = $('<span class="click" />');
-	var tableTh = $('<tr>').append($('<th style="padding:0;">').append(methodSelect), '<th>insp</th><th>exec</th><th>turn</th><th>fps</th>');
+	var tableTh = $('<tr>').append($('<th style="padding:0;">').append(methodSelect), '<th>insp</th><th>exec</th><th>htm</th><th>tps</th>');
 
 	function doMove(c, d, moveStr, isInv) {
 		var movere = /^([URFDLB]w?|[EMSyxz]|2-2[URFDLB]w)(['2]?)@(\d+)$/;
@@ -99,7 +99,7 @@ var recons = execMain(function() {
 				tsFirst = Math.min(tsFirst, c.tstamp);
 				var axis = ~~(effMove / 3);
 				var amask = 1 << axis;
-				if (axis % 3 != lastMove) {
+				if (axis % 3 != lastMove % 3) {
 					moveCnt++;
 					lastMove = axis;
 					lastPow = 0;
@@ -108,7 +108,7 @@ var recons = execMain(function() {
 				}
 				lastPow |= amask;
 			}
-			curProg = cubeutil.getProgress(c.toFaceCube(), method);
+			var curProg = cubeutil.getProgress(c.toFaceCube(), method);
 			if (curProg < progress) {
 				var transCubie = new mathlib.CubieCube();
 				mathlib.CubieCube.EdgeMult(startCubieI, c, transCubie);
@@ -371,7 +371,7 @@ var caseStat = execMain(function() {
 	var div = $('<div style="font-size:0.9em;" />');
 	var table = $('<table class="table">');
 	var methodSelect = $('<select>');
-	var tableTh = $('<tr>').append($('<th colspan=2 style="padding:0;">').append(methodSelect), '<th>N</th><th>insp</th><th>exec</th><th>turn</th><th>fps</th>');
+	var tableTh = $('<tr>').append($('<th colspan=2 style="padding:0;">').append(methodSelect), '<th>N</th><th>insp</th><th>exec</th><th>htm</th><th>tps</th>');
 
 	function update() {
 		if (!isEnable) {
