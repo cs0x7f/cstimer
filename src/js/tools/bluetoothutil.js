@@ -342,8 +342,8 @@ var giikerutil = execMain(function(CubieCube) {
 	function updateAlgClick(click, text, setup, alg) {
 		if (setup || alg) {
 			click.attr('href',
-				'https://alg.cubing.net/?alg=' + alg +
-				'&setup=' + setup
+				'https://alg.cubing.net/?alg=' + encodeURIComponent(alg) +
+				'&setup=' + encodeURIComponent(setup)
 			);
 		} else {
 			click.removeAttr('href');

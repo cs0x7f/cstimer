@@ -1096,3 +1096,14 @@ html.m .mhide, html:not(.m) .mshow {
 	top: -0.15rem;
 	left: -0.15rem;
 }
+
+.instruction {
+	margin: 2em;
+	text-align: left;
+}
+
+.instruction ul {
+	margin: 1em;
+	padding-left: 1.5em;
+	list-style: disc;
+}

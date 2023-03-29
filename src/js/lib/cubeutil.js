@@ -328,40 +328,66 @@ var cubeutil = (function() {
 		return reqFace ? c.toFaceCube() : c;
 	}
 
+	function getProgress(facelet, method) {
+		switch (method) {
+			case 'cfop':
+				return getProgressNAxis(facelet, getCFOPProgress, 6);
+			case 'fp':
+				return getProgressNAxis(facelet, getFPProgress, 6);
+			case 'cf4op':
+				return getProgressNAxis(facelet, getCF4OPProgress, 6);
+			case 'roux':
+				return getProgressNAxis(facelet, getRouxProgress, 24);
+			case 'cf4o2p2':
+				return getProgressNAxis(facelet, getCF4O2P2Progress, 6);
+			case 'n':
+				return getProgressNAxis(facelet, solvedProgress, 1);
+		}
+	}
+
+	function getStepNames(method) {
+		switch (method) {
+			case 'cfop':
+				return ['pll', 'oll', 'f2l', 'cross'];
+			case 'fp':
+				return ['op', 'cf'];
+			case 'cf4op':
+				return ['pll', 'oll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
+			case 'roux':
+				return ['l6e', 'cmll', 'sb', 'fb'];
+			case 'cf4o2p2':
+				return ['pll', 'cpll', 'oll', 'eoll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
+			case 'n':
+				return ['solve'];
+		}
+	}
+
+	function getStepCount(method) {
+		var stepNames = getStepNames(method);
+		return stepNames ? stepNames.length : 0;
+	}
+
+	function getPrettyReconstruction(rawMoves, method) {
+		var prettySolve = "";
+		var prettyMoves = getPrettyMoves(rawMoves);
+		var stepNames = getStepNames(method).reverse();
+		var totalMoves = 0;
+		for (var i = 0; i < prettyMoves.length; i++) {
+			totalMoves += prettyMoves[i][1];
+			prettySolve += prettyMoves[i][0].replaceAll(' ', '') + (stepNames[i] ? " // " + stepNames[i] + " " + prettyMoves[i][1] + " move(s)" : "") + "\n";
+		}
+		return {
+			prettySolve: prettySolve,
+			totalMoves: totalMoves
+		};
+	}
+
 	return {
-		getProgress: function(facelet, progress) {
-			switch (progress) {
-				case 'cfop':
-					return getProgressNAxis(facelet, getCFOPProgress, 6);
-				case 'fp':
-					return getProgressNAxis(facelet, getFPProgress, 6);
-				case 'cf4op':
-					return getProgressNAxis(facelet, getCF4OPProgress, 6);
-				case 'roux':
-					return getProgressNAxis(facelet, getRouxProgress, 24);
-				case 'cf4o2p2':
-					return getProgressNAxis(facelet, getCF4O2P2Progress, 6);
-				case 'n':
-					return getProgressNAxis(facelet, solvedProgress, 1);
-			}
-		},
-		getStepNames: function(progress) {
-			switch (progress) {
-				case 'cfop':
-					return ['pll', 'oll', 'f2l', 'cross'];
-				case 'fp':
-					return ['op', 'cf'];
-				case 'cf4op':
-					return ['pll', 'oll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
-				case 'roux':
-					return ['l6e', 'cmll', 'sb', 'fb'];
-				case 'cf4o2p2':
-					return ['pll', 'cpll', 'oll', 'eoll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
-				case 'n':
-					return ['solve'];
-			}
-		},
+		getProgress: getProgress,
+		getStepNames: getStepNames,
+		getStepCount: getStepCount,
 		getPrettyMoves: getPrettyMoves,
+		getPrettyReconstruction: getPrettyReconstruction,
 		moveSeq2str: moveSeq2str,
 		getScrambledState: getScrambledState,
 		identStep: identStep

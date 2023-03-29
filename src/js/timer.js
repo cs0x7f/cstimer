@@ -45,23 +45,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		voicef12s = new Audio("data:audio/mp3;base64,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");
 	}
 
-	var nPhases = {
-		'n': 1,
-		'cfop': 4,
-		'fp': 2,
-		'roux': 4,
-		'cf4op': 7,
-		'cf4o2p2': 9
-	}
-
-	var phaseNames = {
-		'n': [],
-		'cfop': ['cross', 'F2L', 'OLL', 'PLL'],
-		'fp': ['F2L', 'LL'],
-		'roux': ['1st block', '2nd block', 'CMLL', 'L6E'],
-		'cf4op': ['cross', '1st F2L', '2nd F2L', '3rd F2L', '4th F2L', 'OLL', 'PLL'],
-		'cf4o2p2': ['cross', '1st F2L', '2nd F2L', '3rd F2L', '4th F2L', 'EOLL', 'COLL', 'CPLL', 'EPLL'],
-	}
+	// this text eventually should be moved to i18n
+	var BLUETOOTH_INSTRUCT = "<p><strong>In case of faulure check that Bluetooth is enabled on your system!</strong><br><br>Browser you are using must support Web Bluetooth API.<br>Consider using compatible browser, the best choice is:<ul><li>Chrome on macOS, Linux, Android or Windows</li><li>Bluefy on iOS</li></ul>Also you can check <a class='click' target='_blank' href='https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md'>Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>";
+	var bluetoothInstructDiv = $('<div>').addClass('instruction').append(BLUETOOTH_INSTRUCT);
 
 	function checkUseIns() {
 		var ret = getProp('useIns');
@@ -718,7 +704,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			enable = input == 'b';
 			if (enable) {
 				setTimeout(lcd.val, 100);
-				kernel.showDialog([$('<div><br><br><b>Press OK to connect to GAN Smart Timer</b><br><br>If you have enabled WCA inspections in settings, use GAN Smart Timer RESET button to start/cancel inspection timer.</div>'), function () {
+				kernel.showDialog([$('<div><br><br><b>Press OK to connect to GAN Smart Timer</b><br><br>If you have enabled WCA inspections in settings, use GAN Smart Timer RESET button to start/cancel inspection timer.</div>').append(bluetoothInstructDiv), function () {
 					GanTimerDriver.connect().then(function () {
 						GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
 						lcd.reset(0);
@@ -859,7 +845,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					startTime = now;
 					moveCnt = 0;
-					status = curScrSize == 3 && curScrType != "r3" ? nPhases[getProp('vrcMP', 'n')] : 1;
+					status = curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(getProp('vrcMP', 'n')) : 1;
 					var inspectionMoves = rawMoves[0];
 					rawMoves = [];
 					for (var i = 0; i < status; i++) {
@@ -907,7 +893,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
 					$('#lcd').css({'visibility': 'unset'});
 					rawMoves.reverse();
-					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
+					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 				}
 			}
 		}
@@ -1021,7 +1007,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (keyCode == 27) { //ESC
 					ui.setAutoShow(true);
 					if (status >= 1) {
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 					}
 					reset();
 					status = -1;
@@ -1222,6 +1208,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function giikerCallback(facelet, prevMoves, now) {
+			var prevFacelet = currentFacelet;
 			currentFacelet = facelet;
 			if (!enable) {
 				return;
@@ -1230,6 +1217,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				giikerVRC.setState(facelet, prevMoves, false);
 			}
 			clearReadyTid();
+			var solvingMethod = getProp('vrcMP', 'n');
 			if (status == -1) {
 				if (facelet != mathlib.SOLVED_FACELET) {
 					var delayStart = getProp('giiSD');
@@ -1263,7 +1251,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					insTime = 0;
 				}
 				startTime = now;
-				status = nPhases[getProp('vrcMP', 'n')];
+				status = cubeutil.getStepCount(solvingMethod);
 				rawMoves = [];
 				for (var i = 0; i < status; i++) {
 					rawMoves[i] = [];
@@ -1274,23 +1262,20 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.fixDisplay(false, true);
 				lcd.setRunning(true, enableVRC);
 				ui.setAutoShow(false);
+				var initialProgress = cubeutil.getProgress(prevFacelet, solvingMethod);
+				updateMulPhase(totPhases, initialProgress, now);
 			}
 			if (status >= 1) {
 				rawMoves[status - 1].push([prevMoves[0], now - startTime]);
-				var curProgress = cubeutil.getProgress(facelet, kernel.getProp('vrcMP', 'n'));
+				var curProgress = cubeutil.getProgress(facelet, solvingMethod);
 				updateMulPhase(totPhases, curProgress, now);
 
 				if (facelet == mathlib.SOLVED_FACELET) {
 					rawMoves.reverse();
-					var prettyMoves = cubeutil.getPrettyMoves(rawMoves);
-					var solve = "";
-					var stepName = phaseNames[kernel.getProp('vrcMP', 'n')];
-					var moveCnt = 0;
-					for (var i = 0; i < prettyMoves.length; i++) {
-						moveCnt += prettyMoves[i][1];
-						solve += prettyMoves[i][0] + (stepName[i] ? " //" + stepName[i] + " " + prettyMoves[i][1] + " move(s)%0A" : "")
-					}
-					giikerutil.setLastSolve(solve);
+					rawMoveCnt = rawMoves.flat().length;
+					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
+					var moveCnt = pretty.totalMoves;
+					giikerutil.setLastSolve(pretty.prettySolve);
 					status = -1;
 					curTime[1] = now - startTime;
 					ui.setAutoShow(true);
@@ -1299,14 +1284,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.fixDisplay(false, true);
 					lcd.val(curTime[1], enableVRC);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
-					lcd.append('<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
-
+					lcd.append(
+						'<div style="font-family: Arial; font-size: 0.4em">' +
+						moveCnt + " stm, " + (~~(100000 * moveCnt / curTime[1]) / 100.0) + " tps" +
+						'<br>' +
+						rawMoveCnt + " rqtm, " + (~~(100000 * rawMoveCnt / curTime[1]) / 100.0) + " tps" +
+						'</div>'
+					);
 					if (curTime[1] != 0) {
-						var ext = [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')];
-						ext[prettyMoves.length] = prettyMoves[0][1];
-						for (var i = 1; i < prettyMoves.length; i++) {
-							ext[prettyMoves.length - i] = ext[prettyMoves.length - i + 1] + prettyMoves[i][1];
-						}
+						var ext = [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')];
 						pushSignal('time', ["", 0, curTime, 0, ext]);
 					}
 				}
@@ -1355,11 +1341,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					if (ret) {
 						ret.catch(function(error) {
 							if (error.code == error.SECURITY_ERR) {
-								kernel.showDialog([$('<div>Press OK To Connect To Giiker Cube</div>'), function() {
+								kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(bluetoothInstructDiv), function () {
 									giikerutil.init().catch(function(error) {
 										DEBUG && console.log('[giiker] init failed', error);
 									});
-								}, 0, 0], 'share', 'Giiker Connect');
+								}, 0, 0], 'share', 'Bluetooth Connect');
 							} else {
 								DEBUG && console.log('[giiker] init0 failed', error);
 							}
@@ -1374,7 +1360,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var now = $.now();
 				if (keyCode == 27) {
 					if (status >= 1) {
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).join(' ')]]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 					}
 					clearReadyTid();
 					status = -1;
