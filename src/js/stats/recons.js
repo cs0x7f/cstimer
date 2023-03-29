@@ -68,7 +68,7 @@ var recons = execMain(function() {
 			for (var i = 0; i < pow; i++) {
 				c.ori = mathlib.CubieCube.rotMult[rot][c.ori];
 			}
-			return axis % 3 * 3 + 18 + pow % 4 - 1;
+			return m1 + 18;
 		}
 		axis = 'yxz'.indexOf(face);
 		if (axis != -1) {
@@ -77,15 +77,6 @@ var recons = execMain(function() {
 				c.ori = mathlib.CubieCube.rotMult[rot][c.ori];
 			}
 			return;
-		}
-	}
-
-	function addMoveToRaw(rawMoves, moveStr) {
-		var m = parseMove(moveStr);
-		if (m) {
-			var face = m[1] + (m[2] || ' ');
-			var ts = ~~m[3];
-			rawMoves.push([face, ts]);
 		}
 	}
 
@@ -100,6 +91,13 @@ var recons = execMain(function() {
 		solution = solution[0].split(/ +/);
 		for (var i = solution.length - 1; i >= 0; i--) {
 			doMove(c, d, solution[i], true);
+		}
+		if (c.ori != 0) {
+			mathlib.CubieCube.CornMult(mathlib.CubieCube.rotCube[c.ori], c, d);
+			mathlib.CubieCube.EdgeMult(mathlib.CubieCube.rotCube[c.ori], c, d);
+			mathlib.CubieCube.CornMult(d, mathlib.CubieCube.rotCube[mathlib.CubieCube.rotMulI[0][c.ori]], c);
+			mathlib.CubieCube.EdgeMult(d, mathlib.CubieCube.rotCube[mathlib.CubieCube.rotMulI[0][c.ori]], c);
+			c.ori = 0;
 		}
 		var facelet = c.toFaceCube();
 		var data = []; //[[start, firstMove, end, moveCnt], [start, firstMove, end, moveCnt], ...]
@@ -126,8 +124,11 @@ var recons = execMain(function() {
 					moveCnt += (lastPow & amask) == amask ? 0 : 1;
 				}
 				lastPow |= amask;
+				stepMoves.push(["URFDLB".charAt(axis % 6) + " 2'".charAt(effMove % 3), c.tstamp]);
+				if (axis >= 6) { // slice move
+					stepMoves.push(["DLBURF".charAt(axis % 6) + "'2 ".charAt(effMove % 3), c.tstamp]);
+				}
 			}
-			addMoveToRaw(stepMoves, solution[i]);
 			var curProg = cubeutil.getProgress(c.toFaceCube(), method);
 			if (curProg < progress) {
 				var transCubie = new mathlib.CubieCube();
