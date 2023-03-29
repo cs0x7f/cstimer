@@ -2,11 +2,7 @@ var recons = execMain(function() {
 	var isEnable;
 
 	var div = $('<div style="font-size:0.9em;" />');
-	var reconsClick = $('<div>')
-		.css('font-size', 'calc(100% / 1.5)')
-		.css('margin-bottom', '0.5em')
-		.css('text-align', 'right')
-		.append($('<a target="_blank">Open Review</a>').addClass('click'));
+	var reconsClick = $('<div>').append('<a target="_blank" class="click"></a>');
 	var table = $('<table class="table">');
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
@@ -240,8 +236,8 @@ var recons = execMain(function() {
 		}
 		var endTr = $('<tr>').append(tidx ? $('<td>').append(requestBack) : $('<td style="padding:0;">').append(rangeSelect),
 			'<td>' + (isPercent ? Math.round(totIns / sumSubt * 1000) / 10 + '%' : kernel.pretty(totIns)) + '</td>' +
-			'<td>' + (isPercent ? Math.round(totExec / sumSubt * 1000) / 10 + '%' : kernel.pretty(totExec)) + '</td>' +
-			'<td>' + Math.round(totMov * 10) / 10 + '</td>' +
+			'<td>' + (isPercent ? Math.round(totExec / sumSubt * 1000) / 10 + '%' : kernel.pretty(totExec)) + '</td>',
+			$('<td>').append((scramble || solve) ? reconsClick : Math.round(totMov * 10) / 10),
 			'<td>' + (totMov > 0 && totIns + totExec > 0 ? Math.round(totMov / (totIns + totExec) * 10000 ) / 10 : 'N/A') + '</td>');
 		table.empty().append(tableTh);
 		tableTh.after(str.join(''), endTr);
@@ -249,15 +245,12 @@ var recons = execMain(function() {
 		methodSelect.unbind('change').change(procClick);
 		table.unbind('click').click(procClick);
 		requestBack.text('No.' + tidx);
-		reconsClick.hide();
 		if (scramble || solve) {
-			reconsClick.children('a').attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent(solve) + '&setup=' + encodeURIComponent(scramble));
-			reconsClick.show();
+			reconsClick.children('a').attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent(solve) + '&setup=' + encodeURIComponent(scramble)).text(Math.round(totMov * 10) / 10);
 		}
 	}
 
 	function renderEmpty(isRequest) {
-		reconsClick.hide();
 		table.empty().append(tableTh);
 		tableTh.after(
 			$('<tr>').append(
@@ -277,7 +270,7 @@ var recons = execMain(function() {
 		if (/^scr/.exec(signal)) {
 			return;
 		}
-		fdiv.empty().append(reconsClick, div.append(table));
+		fdiv.empty().append(div.append(table));
 		update();
 	}
 
