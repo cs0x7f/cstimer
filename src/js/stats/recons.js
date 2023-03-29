@@ -14,68 +14,6 @@ var recons = execMain(function() {
 		return movere.exec(moveStr);
 	}
 
-	function doMove(c, d, moveStr, isInv) {
-		var m = parseMove(moveStr);
-		if (!m) {
-			return;
-		}
-		var face = m[1];
-		var pow = "2'".indexOf(m[2] || '-') + 2;
-		if (isInv) {
-			pow = 4 - pow;
-		}
-		c.tstamp = ~~m[3];
-		var axis = 'URFDLB'.indexOf(face);
-		if (axis != -1) {
-			var m = axis * 3 + pow % 4 - 1
-			m = mathlib.CubieCube.rotMulM[c.ori][m];
-			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m], d);
-			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m], d);
-			c.init(d.ca, d.ea);
-			return m;
-		}
-		axis = 'UwRwFwDwLwBw'.indexOf(face);
-		if (axis != -1) {
-			axis >>= 1;
-			var m = (axis + 3) % 6 * 3 + pow % 4 - 1
-			m = mathlib.CubieCube.rotMulM[c.ori][m];
-			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m], d);
-			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m], d);
-			c.init(d.ca, d.ea);
-			var rot = [3, 15, 17, 1, 11, 23][axis];
-			for (var i = 0; i < pow; i++) {
-				c.ori = mathlib.CubieCube.rotMult[rot][c.ori];
-			}
-			return m;
-		}
-		axis = ['2-2Uw', '2-2Rw', '2-2Fw', '2-2Dw', '2-2Lw', '2-2Bw'].indexOf(face);
-		if (axis != -1) {
-			var m1 = axis * 3 + (4 - pow) % 4 - 1;
-			var m2 = (axis + 3) % 6 * 3 + pow % 4 - 1;
-			m1 = mathlib.CubieCube.rotMulM[c.ori][m1];
-			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m1], d);
-			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m1], d);
-			c.init(d.ca, d.ea);
-			m2 = mathlib.CubieCube.rotMulM[c.ori][m2];
-			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m2], d);
-			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m2], d);
-			c.init(d.ca, d.ea);
-			var rot = [3, 15, 17, 1, 11, 23][axis];
-			for (var i = 0; i < pow; i++) {
-				c.ori = mathlib.CubieCube.rotMult[rot][c.ori];
-			}
-			return m1 + 18;
-		}
-		axis = 'yxz'.indexOf(face);
-		if (axis != -1) {
-			var rot = [3, 15, 17][axis];
-			for (var i = 0; i < pow; i++) {
-				c.ori = mathlib.CubieCube.rotMult[rot][c.ori];
-			}
-			return;
-		}
-	}
-
 	function calcRecons(times, method) {
 		if (!times || !times[4] || times[0][0] < 0) {
 			return;
@@ -86,15 +24,9 @@ var recons = execMain(function() {
 		c.ori = 0;
 		solution = solution[0].split(/ +/);
 		for (var i = solution.length - 1; i >= 0; i--) {
-			doMove(c, d, solution[i], true);
+			c.selfMoveStr(solution[i], true);
 		}
-		if (c.ori != 0) {
-			mathlib.CubieCube.CornMult(mathlib.CubieCube.rotCube[c.ori], c, d);
-			mathlib.CubieCube.EdgeMult(mathlib.CubieCube.rotCube[c.ori], c, d);
-			mathlib.CubieCube.CornMult(d, mathlib.CubieCube.rotCube[mathlib.CubieCube.rotMulI[0][c.ori]], c);
-			mathlib.CubieCube.EdgeMult(d, mathlib.CubieCube.rotCube[mathlib.CubieCube.rotMulI[0][c.ori]], c);
-			c.ori = 0;
-		}
+		c.selfConj();
 		var facelet = c.toFaceCube();
 		var data = []; //[[start, firstMove, end, moveCnt], [start, firstMove, end, moveCnt], ...]
 		var lastMove = -3;
@@ -107,7 +39,7 @@ var recons = execMain(function() {
 		var stepMoves = [];
 		var progress = cubeutil.getProgress(facelet, method);
 		for (var i = 0; i < solution.length; i++) {
-			var effMove = doMove(c, d, solution[i], false);
+			var effMove = c.selfMoveStr(solution[i], false);
 			if (effMove != undefined) {
 				tsFirst = Math.min(tsFirst, c.tstamp);
 				var axis = ~~(effMove / 3);

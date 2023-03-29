@@ -766,8 +766,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			moveCnt: function(clr) {
 				return twisty.moveCnt(clr);
 			},
-			parseScramble: function(scramble) {
-				return twisty.parseScramble(scramble);
+			parseScramble: function(scramble, addPreScr) {
+				return twisty.parseScramble(scramble, addPreScr);
 			}
 		};
 
@@ -971,7 +971,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
 				fixRelayCounter();
 			}
-			scramble = puzzleObj.parseScramble(scramble);
+			scramble = puzzleObj.parseScramble(scramble, true);
 			isReseted = false;
 
 			puzzleObj.applyMoves(scramble);
@@ -1118,6 +1118,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				});
 				curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
 				twisty = twistyScene.getTwisty();
+				twistyScene.applyMoves(twisty.parseScramble('U2 U2', true)); // process pre scramble (cube orientation)
+				isReseted = false;
 				if (!temp) {
 					setSize(getProp('timerSize'));
 				}

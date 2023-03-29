@@ -520,6 +520,73 @@ var mathlib = (function() {
 		return cycles - parity;
 	};
 
+	var CubeMoveRE = /^([URFDLB]w?|[EMSyxz]|2-2[URFDLB]w)(['2]?)(@\d+)?$/;
+	var tmpCubie = new CubieCube();
+	CubieCube.prototype.selfMoveStr = function(moveStr, isInv) {
+		var m = CubeMoveRE.exec(moveStr);
+		if (!m) {
+			return;
+		}
+		var face = m[1];
+		var pow = "2'".indexOf(m[2] || '-') + 2;
+		if (isInv) {
+			pow = 4 - pow;
+		}
+		if (m[3]) {
+			this.tstamp = ~~m[3].slice(1);
+		}
+		this.ori = this.ori || 0;
+		var axis = 'URFDLB'.indexOf(face);
+		if (axis != -1) {
+			var m = axis * 3 + pow % 4 - 1
+			m = CubieCube.rotMulM[this.ori][m];
+			CubieCube.EdgeMult(this, CubieCube.moveCube[m], tmpCubie);
+			CubieCube.CornMult(this, CubieCube.moveCube[m], tmpCubie);
+			this.init(tmpCubie.ca, tmpCubie.ea);
+			return m;
+		}
+		axis = 'UwRwFwDwLwBw'.indexOf(face);
+		if (axis != -1) {
+			axis >>= 1;
+			var m = (axis + 3) % 6 * 3 + pow % 4 - 1
+			m = CubieCube.rotMulM[this.ori][m];
+			CubieCube.EdgeMult(this, CubieCube.moveCube[m], tmpCubie);
+			CubieCube.CornMult(this, CubieCube.moveCube[m], tmpCubie);
+			this.init(tmpCubie.ca, tmpCubie.ea);
+			var rot = [3, 15, 17, 1, 11, 23][axis];
+			for (var i = 0; i < pow; i++) {
+				this.ori = CubieCube.rotMult[rot][this.ori];
+			}
+			return m;
+		}
+		axis = ['2-2Uw', '2-2Rw', '2-2Fw', '2-2Dw', '2-2Lw', '2-2Bw'].indexOf(face);
+		if (axis != -1) {
+			var m1 = axis * 3 + (4 - pow) % 4 - 1;
+			var m2 = (axis + 3) % 6 * 3 + pow % 4 - 1;
+			m1 = CubieCube.rotMulM[this.ori][m1];
+			CubieCube.EdgeMult(this, CubieCube.moveCube[m1], tmpCubie);
+			CubieCube.CornMult(this, CubieCube.moveCube[m1], tmpCubie);
+			this.init(tmpCubie.ca, tmpCubie.ea);
+			m2 = CubieCube.rotMulM[this.ori][m2];
+			CubieCube.EdgeMult(this, CubieCube.moveCube[m2], tmpCubie);
+			CubieCube.CornMult(this, CubieCube.moveCube[m2], tmpCubie);
+			this.init(tmpCubie.ca, tmpCubie.ea);
+			var rot = [3, 15, 17, 1, 11, 23][axis];
+			for (var i = 0; i < pow; i++) {
+				this.ori = CubieCube.rotMult[rot][this.ori];
+			}
+			return m1 + 18;
+		}
+		axis = 'yxz'.indexOf(face);
+		if (axis != -1) {
+			var rot = [3, 15, 17][axis];
+			for (var i = 0; i < pow; i++) {
+				this.ori = CubieCube.rotMult[rot][this.ori];
+			}
+			return;
+		}
+	}
+
 	function schreierSims(gen, shuffle) {
 		this.sgs = [];
 		this.sgsi = [];
@@ -542,6 +609,19 @@ var mathlib = (function() {
 				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
 			}
 			this.knutha(n - 1, g);
+		}
+	}
+
+	CubieCube.prototype.selfConj = function(conj) {
+		if (conj === undefined) {
+			conj = this.ori;
+		}
+		if (conj != 0) {
+			CubieCube.CornMult(CubieCube.rotCube[conj], this, tmpCubie);
+			CubieCube.EdgeMult(CubieCube.rotCube[conj], this, tmpCubie);
+			CubieCube.CornMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
+			CubieCube.EdgeMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
+			this.ori = CubieCube.rotMulI[this.ori][conj] || 0;
 		}
 	}
 

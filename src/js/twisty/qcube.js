@@ -316,11 +316,11 @@ window.twistyjs.qcube = (function() {
 		return newMoves;
 	}
 
-	function parseScramble(scramble) {
+	function parseScramble(scramble, addPreScr) {
 		if (!scramble || /^\s*$/.exec(scramble)) {
 			return generateScramble(this);
 		} else {
-			var moves = kernel.parseScramble(scramble, "URFDLB");
+			var moves = kernel.parseScramble(scramble, "URFDLB", addPreScr);
 			scramble = [];
 			for (var i = 0; i < moves.length; i++) {
 				if (moves[i][1] > 0) {

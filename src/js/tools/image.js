@@ -649,7 +649,7 @@ posit:
 					posit[cnt++] = i;
 				}
 			}
-			var moves = kernel.parseScramble(moveseq, "DLBURF");
+			var moves = kernel.parseScramble(moveseq, "DLBURF", true);
 			for (var s = 0; s < moves.length; s++) {
 				for (var d = 0; d < moves[s][1]; d++) {
 					doslice(moves[s][0], d, moves[s][2], size)

@@ -1065,9 +1065,12 @@ var kernel = execMain(function() {
 
 	var scrambleReg = /^([\d]+)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
 
-	function parseScramble(scramble, moveMap) {
+	function parseScramble(scramble, moveMap, addPreScr) {
+		if (addPreScr) {
+			scramble = getProp('preScr') + ' ' + scramble;
+		}
 		var moveseq = [];
-		var moves = (getProp('preScr') + ' ' + scramble).split(' ');
+		var moves = scramble.split(' ');
 		var m, w, f, p;
 		for (var s=0; s<moves.length; s++) {
 			m = scrambleReg.exec(moves[s]);
