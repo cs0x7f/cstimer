@@ -159,3 +159,12 @@
 <p><img style="display:inline-block; width:10em; height:10em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAIAAAAABMCaAAABoklEQVR42u3aUY6DMAwFQO5/6e0JViq1XwjO5LOqIAxSHJ5z/RnlcSGACHEk4hUY/974i/9/83vlXl3PBREixPmIpYX25oNVrl95GV3PBREixLMQ05OuXD9RoG5fByJEiBCfnDREiBAhDkashAulTTJEiBAhbhJAJIKM41IciBAhLkOMNHQ2+P313T6IECEuQ9z60FBTcYjMDSJEiCMRKx//K4tMYvNcOkwAESLEoxBXNukTwW1XKAsRIsRzEZ9CqUAkClQpxYEIEeIYxApo1+b2qeK2xRcLRIgQH0dMLPaVSVeg080piBAhzkdMB59dQWn6BTxWnSFChLgtYrqAlCYdPmwVCWUhQoQ4HjFRZBIHCBIbeIgQIUJs/WhPLPDhxhlEiBDPQkyPdIFKo99OtiFChPhqxHRzZ+Xho3SwAhEixLMQ0wt/2wOEN+dtoSxEiBDHIO7QhFrZtLr94iFChAgx1AzqKmgrwwiIECFC7ERMh69dG2yIECFCXBFAVIpAegP/mhQHIkSIUcSVjar0hjkeJEOECHEkovFjIUUAEeKU8QE0apeVMce/LwAAAABJRU5ErkJggg=="></p>
 <p>再次感谢您的捐赠！</p>
 </div>
+<div class="instruction">
+<p><strong>如果失败，请检查你的系统是否支持蓝牙功能。</strong></p>
+<p>同时，你用的浏览器必须支持 Web Bluetooth API。 目前兼容性比较好的浏览器是：</p>
+<ul>
+<li>Chrome（谷歌浏览器）用于Windows、macOS、Linux、Android</li>
+<li>Bluefy用于iOS</li>
+</ul>
+<p>你可以看一下这个链接<a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a>，这里有完整的Web Bluetooth API及浏览器支持情况。</p>
+</div>

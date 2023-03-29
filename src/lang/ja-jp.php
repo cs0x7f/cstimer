@@ -159,3 +159,12 @@
 <p><img style="display:inline-block; width:10em; height:10em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAIAAAAABMCaAAABoklEQVR42u3aUY6DMAwFQO5/6e0JViq1XwjO5LOqIAxSHJ5z/RnlcSGACHEk4hUY/974i/9/83vlXl3PBREixPmIpYX25oNVrl95GV3PBREixLMQ05OuXD9RoG5fByJEiBCfnDREiBAhDkashAulTTJEiBAhbhJAJIKM41IciBAhLkOMNHQ2+P313T6IECEuQ9z60FBTcYjMDSJEiCMRKx//K4tMYvNcOkwAESLEoxBXNukTwW1XKAsRIsRzEZ9CqUAkClQpxYEIEeIYxApo1+b2qeK2xRcLRIgQH0dMLPaVSVeg080piBAhzkdMB59dQWn6BTxWnSFChLgtYrqAlCYdPmwVCWUhQoQ4HjFRZBIHCBIbeIgQIUJs/WhPLPDhxhlEiBDPQkyPdIFKo99OtiFChPhqxHRzZ+Xho3SwAhEixLMQ0wt/2wOEN+dtoSxEiBDHIO7QhFrZtLr94iFChAgx1AzqKmgrwwiIECFC7ERMh69dG2yIECFCXBFAVIpAegP/mhQHIkSIUcSVjar0hjkeJEOECHEkovFjIUUAEeKU8QE0apeVMce/LwAAAABJRU5ErkJggg=="></p>
 <p>ご寄付いただきありがとうございます！</p>
 </div>
+<div class="instruction">
+<p><strong>In case of faulure check that Bluetooth is enabled on your system!</strong></p>
+<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<ul>
+<li>Chrome on macOS, Linux, Android or Windows</li>
+<li>Bluefy on iOS</li>
+</ul>
+<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+</div>
