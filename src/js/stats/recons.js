@@ -80,16 +80,12 @@ var recons = execMain(function() {
 		}
 	}
 
-	function addMoveToRaw(rawMoves, progress, moveStr) {
+	function addMoveToRaw(rawMoves, moveStr) {
 		var m = parseMove(moveStr);
 		if (m) {
-			var idx = progress - 1;
-			if (!rawMoves[idx]) {
-				rawMoves[idx] = [];
-			}
 			var face = m[1] + (m[2] || ' ');
 			var ts = ~~m[3];
-			rawMoves[idx].push([face, ts]);
+			rawMoves.push([face, ts]);
 		}
 	}
 
@@ -106,7 +102,6 @@ var recons = execMain(function() {
 			doMove(c, d, solution[i], true);
 		}
 		var facelet = c.toFaceCube();
-		var rawMoves = [];
 		var data = []; //[[start, firstMove, end, moveCnt], [start, firstMove, end, moveCnt], ...]
 		var lastMove = -3;
 		var lastPow = 0;
@@ -115,11 +110,11 @@ var recons = execMain(function() {
 		var tsStart = 0;
 		var tsFirst = 0;
 		var moveCnt = 0;
+		var stepMoves = [];
 		var progress = cubeutil.getProgress(facelet, method);
 		for (var i = 0; i < solution.length; i++) {
 			var effMove = doMove(c, d, solution[i], false);
 			if (effMove != undefined) {
-				addMoveToRaw(rawMoves, progress, solution[i]);
 				tsFirst = Math.min(tsFirst, c.tstamp);
 				var axis = ~~(effMove / 3);
 				var amask = 1 << axis;
@@ -132,26 +127,28 @@ var recons = execMain(function() {
 				}
 				lastPow |= amask;
 			}
+			addMoveToRaw(stepMoves, solution[i]);
 			var curProg = cubeutil.getProgress(c.toFaceCube(), method);
 			if (curProg < progress) {
 				var transCubie = new mathlib.CubieCube();
 				mathlib.CubieCube.EdgeMult(startCubieI, c, transCubie);
 				mathlib.CubieCube.CornMult(startCubieI, c, transCubie);
-				data[--progress] = [tsStart, tsFirst, c.tstamp, moveCnt, transCubie];
+				data[--progress] = [tsStart, tsFirst, c.tstamp, moveCnt, transCubie, stepMoves];
 				while (progress > curProg) {
-					data[--progress] = [c.tstamp, c.tstamp, c.tstamp, 0, new mathlib.CubieCube()];
+					data[--progress] = [c.tstamp, c.tstamp, c.tstamp, 0, new mathlib.CubieCube(), []];
 				}
 				startCubieI.invFrom(c);
 				tsStart = c.tstamp;
 				moveCnt = 0;
+				stepMoves = [];
 				lastMove = -3;
 				tsFirst = 1e9;
 			}
 		}
 		var stepCount = cubeutil.getStepCount(method);
+		var rawMoves = [];
 		for (var i = 0; i < stepCount; i++) {
-			if (!rawMoves[i])
-				rawMoves[i] = [];
+			rawMoves[i] = (data[i] || [])[5] || [];
 		}
 		return {
 			data: data,

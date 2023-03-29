@@ -1270,7 +1270,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 				if (facelet == mathlib.SOLVED_FACELET) {
 					rawMoves.reverse();
-					rawMoveCnt = rawMoves.flat().length;
+					var rawMoveCnt = rawMoves.flat().length;
 					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
 					var moveCnt = pretty.totalMoves;
 					giikerutil.setLastSolve(pretty.prettySolve);
