@@ -2,7 +2,7 @@ var recons = execMain(function() {
 	var isEnable;
 
 	var div = $('<div style="font-size:0.9em;" />');
-	var reconsClick = $('<div>').append('<a target="_blank" class="click"></a>');
+	var reconsClick = $('<div>').append('<a target="_blank" class="exturl click"></a>');
 	var table = $('<table class="table">');
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
@@ -297,7 +297,7 @@ var recons = execMain(function() {
 			return;
 		}
 		var target = $(e.target);
-		if (!target.is('.click')) {
+		if (!target.is('.click') || target.is('.exturl')) {
 			return;
 		}
 		if (!target.is('.sstep')) {
