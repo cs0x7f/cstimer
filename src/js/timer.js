@@ -1219,7 +1219,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			clearReadyTid();
 			var solvingMethod = getProp('vrcMP', 'n');
 			if (status == -1) {
-				if (facelet != mathlib.SOLVED_FACELET) {
+				if (facelet != mathlib.SOLVED_FACELET || kernel.getProp('giiMode') != 'n') {
 					var delayStart = getProp('giiSD');
 					if (delayStart == 's') {
 						//according to scramble
@@ -1278,6 +1278,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					giikerutil.setLastSolve(pretty.prettySolve);
 					status = -1;
 					curTime[1] = now - startTime;
+					giikerutil.reSync();
 					ui.setAutoShow(true);
 					lcd.setRunning(false, enableVRC);
 					lcd.setStaticAppend('');
@@ -1302,9 +1303,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function markScrambled(now) {
 			clearReadyTid();
 			if (status == -1) {
-				giikerutil.markScrambled();
-				if (!giikerutil.checkScramble()) {
-					pushSignal('scramble', ['333', scramble_333.genFacelet(currentFacelet), 0]);
+				if (kernel.getProp('giiMode') == 'n') {
+					giikerutil.markScrambled();
+					if (!giikerutil.checkScramble()) {
+						pushSignal('scramble', ['333', scramble_333.genFacelet(currentFacelet), 0]);
+					}
+				} else {
+					giikerutil.markScrambled(true);
 				}
 				status = -2;
 				startTime = now;
@@ -1364,13 +1369,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					clearReadyTid();
 					status = -1;
+					giikerutil.reSync();
 					ui.setAutoShow(true);
 					lcd.val(0, enableVRC);
 					lcd.setRunning(false, enableVRC);
 					lcd.fixDisplay(false, true);
-				} else if (keyCode == 32 && getProp('giiSK') && currentFacelet != mathlib.SOLVED_FACELET) {
-					if (status == -1) {
-						markScrambled($.now());
+				} else if (keyCode == 32 && getProp('giiSK')) {
+					if (currentFacelet != mathlib.SOLVED_FACELET || getProp('giiMode') != 'n') {
+						if (status == -1) {
+							markScrambled($.now());
+						}
 					}
 				}
 			},
@@ -1491,6 +1499,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
 		regProp('vrc', 'vrcAH', 1, 'Useless pieces in huge cube', ['01', ['00', '01', '10', '11'], ['Hide', 'Border', 'Color', 'Show']], 1);
+		regProp('vrc', 'giiMode', 1, 'Bluetooth Cube Mode', ['n', ['n', 't'], ['Normal', 'Training']], 1);
 		regProp('vrc', 'giiVRC', 0, PROPERTY_GIIKERVRC, [true], 1);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')], 1);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true], 1);

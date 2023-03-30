@@ -108,8 +108,13 @@ var scrHinter = execMain(function(CubieCube) {
 		return scrState.isEqual(curCubie);
 	}
 
+	function getScrCubie() {
+		return scrState;
+	}
+
 	return {
 		setScramble: setScramble,
+		getScrCubie: getScrCubie,
 		checkScramble: checkScramble,
 		checkState: checkState
 	}
@@ -337,7 +342,13 @@ var giikerutil = execMain(function(CubieCube) {
 		drawState();
 		batId == 0 && updateBattery();
 		giikerErrorDetect();
-		callback(currentState, prevMoves, lastTimestamp);
+		var retState = currentState;
+		if (hackedSolvedCubieInv) {
+			CubieCube.EdgeMult(hackedSolvedCubieInv, currentCubie, hackedCubie);
+			CubieCube.CornMult(hackedSolvedCubieInv, currentCubie, hackedCubie);
+			retState = hackedCubie.toFaceCube();
+		}
+		callback(retState, prevMoves, lastTimestamp);
 		if (curScramble && kernel.getProp('input') == 'g' && timer.getCurTime() == 0) {
 			scrHinter.checkState(currentCubie);
 		}
@@ -416,10 +427,38 @@ var giikerutil = execMain(function(CubieCube) {
 
 	var scrambleLength = 0;
 
-	function markScrambled() {
+	function markScrambled(virtual) {
+		var targetCubie = currentCubie;
+		if (virtual) {
+			targetCubie = scrHinter.getScrCubie();
+		}
+		if (!targetCubie.isEqual(currentCubie)) {
+			DEBUG && console.log('[bluetooth] scramble equal, start hack!');
+			hackedSolvedCubieInv = new mathlib.CubieCube();
+			hackedCubie.invFrom(currentCubie);
+			CubieCube.EdgeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
+			CubieCube.CornMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
+			movesAfterSolved = [];
+			callback(targetCubie.toFaceCube(), ['U '], $.now());
+		}
 		scrambleLength = movesAfterSolved.length;
 		updateRawMovesClick();
 		updateAlgClick(lastSolveClick, "In Progress");
+	}
+
+	var hackedSolvedCubieInv = null;
+	var hackedCubie = new CubieCube();
+
+	function isSync() {
+		return hackedSolvedCubieInv == null;
+	}
+
+	function reSync() {
+		if (!hackedSolvedCubieInv) {
+			return;
+		}
+		hackedSolvedCubieInv = null;
+		callback(currentState, ['U '], lastTimestamp);
 	}
 
 	$(function() {
@@ -436,6 +475,8 @@ var giikerutil = execMain(function(CubieCube) {
 		checkScramble: checkScramble,
 		markScrambled: markScrambled,
 		init: init,
+		isSync: isSync,
+		reSync: reSync,
 		setLastSolve: setLastSolve
 	}
 }, [mathlib.CubieCube]);
