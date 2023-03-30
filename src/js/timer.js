@@ -1150,6 +1150,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 
 			function setState(state, prevMoves, isFast) {
+				if (twistyScene == undefined || !enableVRC) {
+					return;
+				}
 				tmpCubie1.fromFacelet(state);
 				var todoMoves = [];
 				var shouldReset = true;
