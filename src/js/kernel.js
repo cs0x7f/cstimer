@@ -1116,6 +1116,29 @@ var kernel = execMain(function() {
 		return cc.ori || 0;
 	}
 
+	var longTouch = (function() {
+		var longTouchTid = 0;
+
+		function startLongTouch() {
+			clearLongTouch();
+			longTouchTid = setTimeout(longTouchCallback, 2000);
+		}
+
+		function clearLongTouch() {
+			longTouchTid && clearTimeout(longTouchTid);
+		}
+
+		function longTouchCallback() {
+			clearLongTouch();
+			timer.onkeydown({which: 28});
+		}
+
+		return {
+			startLongTouch: startLongTouch,
+			clearLongTouch: clearLongTouch
+		};
+	})();
+
 	var keyback = true;
 
 	$(function() {
@@ -1141,11 +1164,13 @@ var kernel = execMain(function() {
 			if ($(e.target).is('.click')) {
 				return;
 			}
+			longTouch.startLongTouch();
 			refocus();
 			timer.onkeydown({which: 32});
 			e.preventDefault && e.preventDefault();
 		});
 		$('#container').bind('touchend', function(e) {
+			longTouch.clearLongTouch();
 			if ($(e.target).is('.click')) {
 				return;
 			}

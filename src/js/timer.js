@@ -409,6 +409,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		return {
 			onkeydown: function(keyCode, e) {
+				if (keyCode == 28) {
+					return;
+				}
 				return onkeydown(keyCode, detectTrigger(keyCode, 0, e));
 			},
 			onkeyup: function(keyCode, e) {
@@ -1002,7 +1005,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					ui.setAutoShow(false);
 				}
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
-				if (keyCode == 27) { //ESC
+				if (keyCode == 27 || keyCode == 28) { //ESC
 					ui.setAutoShow(true);
 					if (status >= 1) {
 						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
@@ -1354,7 +1357,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			},
 			onkeydown: function(keyCode) {
 				var now = $.now();
-				if (keyCode == 27) {
+				if (keyCode == 27 || keyCode == 28) {
 					if (status >= 1) {
 						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 					}
