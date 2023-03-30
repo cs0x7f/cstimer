@@ -1092,6 +1092,29 @@ var kernel = execMain(function() {
 		return moveseq;
 	}
 
+	function getConjMoves(moves, inv, conj) {
+		if (!moves) {
+			return moves;
+		}
+		if (conj === undefined) {
+			conj = getPreConj();
+		}
+		if (inv) {
+			conj = mathlib.CubieCube.rotMulI[0][conj || 0];
+		}
+		return moves.replace(/[URFDLB]/g, function(face) {
+			return "URFDLB".charAt(mathlib.CubieCube.rotMulM[conj]["URFDLB".indexOf(face) * 3] / 3);
+		});
+	}
+
+	function getPreConj() { // TODO 24 cases, use map insetad of calculation
+		var preScr = getProp('preScr', '').split(' ');
+		var cc = new mathlib.CubieCube();
+		for (var i = 0; i < preScr.length; i++) {
+			cc.selfMoveStr(preScr[i]);
+		}
+		return cc.ori || 0;
+	}
 
 	var keyback = true;
 
@@ -1240,6 +1263,7 @@ var kernel = execMain(function() {
 		reprop: property.reload,
 		loadProp: property.load,
 		parseScramble: parseScramble,
+		getConjMoves: getConjMoves,
 		blur: refocus,
 		ui: ui,
 		TwoLvMenu: TwoLvMenu,

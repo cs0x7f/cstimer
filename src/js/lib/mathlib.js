@@ -520,7 +520,7 @@ var mathlib = (function() {
 		return cycles - parity;
 	};
 
-	var CubeMoveRE = /^([URFDLB]w?|[EMSyxz]|2-2[URFDLB]w)(['2]?)(@\d+)?$/;
+	var CubeMoveRE = /^\s*([URFDLB]w?|[EMSyxz]|2-2[URFDLB]w)(['2]?)(@\d+)?\s*$/;
 	var tmpCubie = new CubieCube();
 	CubieCube.prototype.selfMoveStr = function(moveStr, isInv) {
 		var m = CubeMoveRE.exec(moveStr);

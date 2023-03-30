@@ -6,15 +6,26 @@ var scrHinter = execMain(function(CubieCube) {
 	var genState = null;
 	var genScr = null;
 	var scrState = new CubieCube();
+	var preConj = 0;
 
-	function setScramble(scramble, state) {
+	function setScramble(scramble) {
+		rawScrTxt = scramble;
+
+		scramble = kernel.getConjMoves(scramble);
+
 		var scr = kernel.parseScramble(scramble, "URFDLB");
 		rawScr = scr.slice();
-		rawScrTxt = scramble;
-		scrState.init(state.ca, state.ea);
 		genState = null;
 		genScr = null;
-		//TODO wide move convert
+
+		scrState = new mathlib.CubieCube();
+		for (var i = 0; i < scr.length; i++) {
+			var m = scr[i][0] * 3 + scr[i][2] - 1;
+			if (m < 0 || m >= 18) { //TODO wide move convert
+				continue;
+			}
+			scrState.selfMoveStr('URFDLB'.charAt(scr[i][0]) + " 2'".charAt(scr[i][2] - 1));
+		}
 	}
 
 	function checkInSeq(state, gen, seq) {
@@ -61,6 +72,7 @@ var scrHinter = execMain(function(CubieCube) {
 		if (next != seq.length) {
 			ret += '`';
 		}
+		ret = kernel.getConjMoves(ret, true);
 		return ret;
 	}
 
@@ -89,8 +101,16 @@ var scrHinter = execMain(function(CubieCube) {
 		kernel.pushSignal('scrfix', toMoveFix ? (rawScrTxt + '\n=> ' + toMoveFix) : toMoveRaw);
 	}
 
+	function checkScramble(curCubie) {
+		if (rawScrTxt == "") {
+			return false;
+		}
+		return scrState.isEqual(curCubie);
+	}
+
 	return {
 		setScramble: setScramble,
+		checkScramble: checkScramble,
 		checkState: checkState
 	}
 }, [mathlib.CubieCube]);
@@ -191,7 +211,6 @@ var giikerutil = execMain(function(CubieCube) {
 	var currentCubie = new CubieCube();
 	var currentState = currentRawState;
 	var solvedStateInv = new CubieCube();
-	var scrambledCubie = new CubieCube();
 
 	var lastTimestamp = $.now();
 	var detectTid = 0;
@@ -378,10 +397,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function checkScramble() {
-		if (curScramble == "") {
-			return false;
-		}
-		return scrambledCubie.isEqual(currentCubie);
+		return scrHinter.checkScramble(currentCubie);
 	}
 
 	var curScramble;
@@ -391,23 +407,8 @@ var giikerutil = execMain(function(CubieCube) {
 		curScramble = value[1];
 		if (tools.puzzleType(scrType) != '333') {
 			curScramble = "";
-			return;
 		}
-		var scr = kernel.parseScramble(curScramble, "URFDLB");
-		var cd = new CubieCube();
-		scrambledCubie.init(cd.ca, cd.ea);
-		for (var i = 0; i < scr.length; i++) {
-			var m = scr[i][0] * 3 + scr[i][2] - 1;
-			if (m < 0 || m >= 18) {
-				continue;
-			}
-			CubieCube.EdgeMult(scrambledCubie, CubieCube.moveCube[m], cd);
-			CubieCube.CornMult(scrambledCubie, CubieCube.moveCube[m], cd);
-			var tmp = scrambledCubie;
-			scrambledCubie = cd;
-			cd = tmp;
-		}
-		scrHinter.setScramble(curScramble, scrambledCubie);
+		scrHinter.setScramble(curScramble);
 		if (curScramble && kernel.getProp('input') == 'g') {
 			scrHinter.checkState(currentCubie);
 		}

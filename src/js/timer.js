@@ -1177,7 +1177,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (todoMoves.match(/^\s*$/) || !twisty) {
 					scramble = [];
 				} else {
-					scramble = twisty.parseScramble(todoMoves);
+					scramble = twisty.parseScramble(kernel.getConjMoves(todoMoves, true));
 				}
 				if (scramble.length < 5) {
 					twistyScene.addMoves(scramble);
