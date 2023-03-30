@@ -1342,20 +1342,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				enable = input == 'g';
 				if (enable) {
 					giikerutil.setCallback(giikerCallback);
-					var ret = giikerutil.init();
-					if (ret) {
-						ret.catch(function(error) {
-							if (error.code == error.SECURITY_ERR) {
-								kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(bluetoothInstructDiv), function () {
-									giikerutil.init().catch(function(error) {
-										DEBUG && console.log('[giiker] init failed', error);
-									});
-								}, 0, 0], 'share', 'Bluetooth Connect');
-							} else {
-								DEBUG && console.log('[giiker] init0 failed', error);
-							}
+					kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(bluetoothInstructDiv), function () {
+						giikerutil.init().catch(function(error) {
+							DEBUG && console.log('[giiker] init failed', error);
 						});
-					}
+					}, 0, 0], 'share', 'Bluetooth Connect');
 				} else {
 					GiikerCube.stop();
 				}
