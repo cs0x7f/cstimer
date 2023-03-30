@@ -1107,8 +1107,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			var tmpCubie1 = new mathlib.CubieCube();
 			var tmpCubie2 = new mathlib.CubieCube();
 
-			function resetVRC(temp) {
-				if (twistyScene == undefined || isReseted || !enableVRC) {
+			function resetVRC(temp, force) {
+				if (twistyScene == undefined || (isReseted && !force) || !enableVRC) {
 					return;
 				}
 				isReseted = true;
@@ -1296,8 +1296,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						'</div>'
 					);
 					if (curTime[1] != 0) {
-						var ext = [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')];
-						pushSignal('time', ["", 0, curTime, 0, ext]);
+						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
+						sol = kernel.getConjMoves(sol, true);
+						pushSignal('time', ["", 0, curTime, 0, [sol]]);
 					}
 				}
 			}
@@ -1307,10 +1308,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			clearReadyTid();
 			if (status == -1) {
 				if (kernel.getProp('giiMode') == 'n') {
-					giikerutil.markScrambled();
 					if (!giikerutil.checkScramble()) {
-						pushSignal('scramble', ['333', scramble_333.genFacelet(currentFacelet), 0]);
+						var gen = scramble_333.genFacelet(currentFacelet);
+						pushSignal('scramble', ['333', kernel.getConjMoves(gen, true), 0]);
 					}
+					giikerutil.markScrambled();
 				} else {
 					giikerutil.markScrambled(true);
 				}
@@ -1338,6 +1340,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		$(function() {
 			div.appendTo("#container");
+			regListener('giikerVRC', 'property', function(signal, value) {
+				if (enableVRC) {
+					giikerVRC.resetVRC(true, true);
+					giikerVRC.setState(currentFacelet, ['U2', 'U2'], false);
+				}
+			}, /^(?:preScr)$/);
 		});
 
 		return {

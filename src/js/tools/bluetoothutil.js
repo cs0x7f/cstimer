@@ -10,9 +10,7 @@ var scrHinter = execMain(function(CubieCube) {
 
 	function setScramble(scramble) {
 		rawScrTxt = scramble;
-
 		scramble = kernel.getConjMoves(scramble);
-
 		var scr = kernel.parseScramble(scramble, "URFDLB");
 		rawScr = scr.slice();
 		genState = null;
@@ -166,7 +164,7 @@ var giikerutil = execMain(function(CubieCube) {
 			canvas.attr('height', 29 * 3 / 9 * width + 1);
 			canvas.css('margin', '0.5em 0 0 0');
 			for (var i = 0; i < 6; i++) {
-				face(i, currentState);
+				face(i, curState);
 			}
 		}
 		return drawState;
@@ -211,10 +209,10 @@ var giikerutil = execMain(function(CubieCube) {
 
 	var callback = $.noop;
 
-	var currentRawState = mathlib.SOLVED_FACELET;
-	var currentRawCubie = new CubieCube();
-	var currentCubie = new CubieCube();
-	var currentState = currentRawState;
+	var curRawState = mathlib.SOLVED_FACELET;
+	var curRawCubie = new CubieCube();
+	var curCubie = new CubieCube();
+	var curState = curRawState;
 	var solvedStateInv = new CubieCube();
 
 	var lastTimestamp = $.now();
@@ -230,14 +228,14 @@ var giikerutil = execMain(function(CubieCube) {
 				if (checkMoves(movesAfterSolved) == 99) {
 					return;
 				}
-				// if (!simpleErrorDetect(currentCubie)) {
+				// if (!simpleErrorDetect(curCubie)) {
 				// 	return;
 				// }
-				var facelet = currentCubie.toFaceCube();
+				var facelet = curCubie.toFaceCube();
 				if (cubeutil.getProgress(facelet, 'cfop') <= 2) { // all unsolved pieces is on same face
 					return;
 				}
-				var gen = scramble_333.genFacelet(currentCubie.toFaceCube());
+				var gen = scramble_333.genFacelet(curCubie.toFaceCube());
 				if (gen.length / 3 < 10) {
 					DEBUG && console.log('[giiker]', 'Possible error, gen=' + gen.replace(/ /g, '') + ', ignore');
 					return;
@@ -304,14 +302,14 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function markSolved() {
 		//mark current state as solved
-		solvedStateInv.invFrom(currentRawCubie);
-		currentState = mathlib.SOLVED_FACELET;
-		kernel.setProp('giiSolved', currentRawState);
+		solvedStateInv.invFrom(curRawCubie);
+		curState = mathlib.SOLVED_FACELET;
+		kernel.setProp('giiSolved', curRawState);
 		movesAfterSolved = [];
 		movesTimestamp = [];
 		scrambleLength = 0;
 		drawState();
-		callback(currentState, ['U '], lastTimestamp);
+		callback(curState, ['U '], lastTimestamp);
 	}
 
 	var movesAfterSolved = [];
@@ -321,11 +319,11 @@ var giikerutil = execMain(function(CubieCube) {
 		lastTimestamp = lastTimestamp || $.now();
 		connectedStr = hardware + ': Connected | ' + (batValue || '??') + '%';
 		connectClick.html(connectedStr).removeClass('click').unbind('click');
-		currentRawState = facelet;
-		currentRawCubie.fromFacelet(currentRawState);
-		CubieCube.EdgeMult(solvedStateInv, currentRawCubie, currentCubie);
-		CubieCube.CornMult(solvedStateInv, currentRawCubie, currentCubie);
-		currentState = currentCubie.toFaceCube();
+		curRawState = facelet;
+		curRawCubie.fromFacelet(curRawState);
+		CubieCube.EdgeMult(solvedStateInv, curRawCubie, curCubie);
+		CubieCube.CornMult(solvedStateInv, curRawCubie, curCubie);
+		curState = curCubie.toFaceCube();
 
 		if (prevMoves.length > 0) {
 			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
@@ -334,7 +332,7 @@ var giikerutil = execMain(function(CubieCube) {
 		if (scrambleLength > 0) {
 			updateRawMovesClick();
 		}
-		if (currentState == mathlib.SOLVED_FACELET) {
+		if (curState == mathlib.SOLVED_FACELET) {
 			movesAfterSolved = [];
 			movesTimestamp = [];
 			scrambleLength = 0;
@@ -342,15 +340,15 @@ var giikerutil = execMain(function(CubieCube) {
 		drawState();
 		batId == 0 && updateBattery();
 		giikerErrorDetect();
-		var retState = currentState;
+		var retState = curState;
 		if (hackedSolvedCubieInv) {
-			CubieCube.EdgeMult(hackedSolvedCubieInv, currentCubie, hackedCubie);
-			CubieCube.CornMult(hackedSolvedCubieInv, currentCubie, hackedCubie);
+			CubieCube.EdgeMult(hackedSolvedCubieInv, curCubie, hackedCubie);
+			CubieCube.CornMult(hackedSolvedCubieInv, curCubie, hackedCubie);
 			retState = hackedCubie.toFaceCube();
 		}
 		callback(retState, prevMoves, lastTimestamp);
 		if (curScramble && kernel.getProp('input') == 'g' && timer.getCurTime() == 0) {
-			scrHinter.checkState(currentCubie);
+			scrHinter.checkState(curCubie);
 		}
 	}
 
@@ -382,7 +380,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function setLastSolve(solve) {
-		updateAlgClick(lastSolveClick, "Ready", curScramble, solve)
+		updateAlgClick(lastSolveClick, "Ready", kernel.getConjMoves(curScramble), solve)
 	}
 
 	function evtCallback(info, event) {
@@ -395,9 +393,9 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function init() {
-		currentRawState = kernel.getProp('giiSolved', mathlib.SOLVED_FACELET);
-		currentRawCubie.fromFacelet(currentRawState);
-		solvedStateInv.invFrom(currentRawCubie);
+		curRawState = kernel.getProp('giiSolved', mathlib.SOLVED_FACELET);
+		curRawCubie.fromFacelet(curRawState);
+		solvedStateInv.invFrom(curRawCubie);
 		GiikerCube.setCallback(giikerCallback);
 		GiikerCube.setEventCallback(evtCallback);
 		if (!GiikerCube.isConnected()) {
@@ -408,7 +406,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function checkScramble() {
-		return scrHinter.checkScramble(currentCubie);
+		return scrHinter.checkScramble(curCubie);
 	}
 
 	var curScramble;
@@ -421,21 +419,21 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		scrHinter.setScramble(curScramble);
 		if (curScramble && kernel.getProp('input') == 'g') {
-			scrHinter.checkState(currentCubie);
+			scrHinter.checkState(curCubie);
 		}
 	}
 
 	var scrambleLength = 0;
 
 	function markScrambled(virtual) {
-		var targetCubie = currentCubie;
+		var targetCubie = curCubie;
 		if (virtual) {
 			targetCubie = scrHinter.getScrCubie();
 		}
-		if (!targetCubie.isEqual(currentCubie)) {
+		if (!targetCubie.isEqual(curCubie)) {
 			DEBUG && console.log('[bluetooth] scramble equal, start hack!');
 			hackedSolvedCubieInv = new mathlib.CubieCube();
-			hackedCubie.invFrom(currentCubie);
+			hackedCubie.invFrom(curCubie);
 			CubieCube.EdgeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			CubieCube.CornMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			movesAfterSolved = [];
@@ -458,7 +456,7 @@ var giikerutil = execMain(function(CubieCube) {
 			return;
 		}
 		hackedSolvedCubieInv = null;
-		callback(currentState, ['U '], lastTimestamp);
+		callback(curState, ['U '], lastTimestamp);
 	}
 
 	$(function() {
