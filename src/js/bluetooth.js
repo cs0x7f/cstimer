@@ -409,6 +409,7 @@ var GiikerCube = execMain(function() {
 		}
 
 		function init(device) {
+			clear();
 			deviceName = device.name;
 			return device.gatt.connect().then(function(gatt) {
 				_gatt = gatt;
@@ -471,8 +472,14 @@ var GiikerCube = execMain(function() {
 			});
 		}
 
+		function wasMoveSeqExecuted(moveSeq) {
+			var prevMoveSeq = prevMoves.slice().reverse().join('').replaceAll(' ', '');
+			return prevMoveSeq.endsWith(moveSeq);
+		}
+
 		function updateMoveTimes(timestamp, isV2) {
 			var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
+			DEBUG && moveDiff > 1 && console.log('[gancube]', 'bluetooth event was lost, moveDiff = ' + moveDiff);
 			prevMoveCnt = moveCnt;
 			movesFromLastCheck += moveDiff;
 			if (moveDiff > prevMoves.length) {
@@ -483,7 +490,9 @@ var GiikerCube = execMain(function() {
 			for (var i = moveDiff - 1; i >= 0; i--) {
 				_timestamp += timeOffs[i];
 			}
-			if (Math.abs(_timestamp - timestamp) > 2000) {
+			DEBUG && console.log('[gancube] time skew', timestamp - _timestamp);
+			// forcely adjust time base once upon init, if time skew > 2000ms, or if magic sequence on cube executed
+			if (!prevTimestamp || Math.abs(_timestamp - timestamp) > 2000 || wasMoveSeqExecuted("UU'UU'UU'")) {
 				DEBUG && console.log('[gancube]', 'time adjust', timestamp - _timestamp, '@', timestamp);
 				prevTimestamp += timestamp - _timestamp;
 			}

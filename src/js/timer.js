@@ -100,7 +100,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (status == -3 || (status == -2 && checkUseIns())) {
 				setHtml(runningDiv, (getProp('timeU') != 'n' ? ((time > 17000) ? 'DNF' : (time > 15000) ? '+2' : 15 - ~~(time / 1000)) : TIMER_INSPECT) + curAppend);
 			} else { //>0
-				var pret = pretty(time, true);
+				var pret = pretty(time > 0 ? time : 0, true);
 				setHtml(runningDiv, {
 					'u': pret,
 					'c': pret.replace(/([.>])(\d)\d+(<|$)/, "$1$2$3"),
