@@ -150,7 +150,7 @@ var giikerutil = execMain(function(CubieCube) {
 			if (!canvas) {
 				return;
 			}
-			if (kernel.getProp('giiVRC')) {
+			if (kernel.getProp('giiVRC') != 'n') {
 				canvas.hide();
 				return;
 			}
@@ -179,7 +179,7 @@ var giikerutil = execMain(function(CubieCube) {
 			connectClick.html('Bluetooth: Connect').addClass('click').click(init);
 		}
 		var content = $('<div></div>');
-		if (!kernel.getProp('giiVRC')) {
+		if (!(kernel.getProp('giiVRC') != 'n')) {
 			content.css('font-size', 'calc(100% / 1.5)');
 		}
 		content.append(connectClick, '<br>')

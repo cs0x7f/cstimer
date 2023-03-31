@@ -24,7 +24,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		virtual333.setEnable(type == 'v' || type == 'q');
 		virtual333.reset();
 		lcd.setEnable(type != 'i');
-		lcd.reset(type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC'));
+		lcd.reset(type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC') != 'n');
 		keyboardTimer.reset();
 		inputTimer.setEnable(type == 'i');
 		ui.setAutoShow(true);
@@ -789,7 +789,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				return;
 			}
-			if (getProp('input') != 'q') {
+			if (options['style'] != 'q') {
 				var isInit = twistyScene == undefined;
 				if (isInit) {
 					twistyScene = new twistyjs.TwistyScene();
@@ -947,6 +947,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					scale: 0.9
 				};
 			}
+			options['style'] = getProp('input');
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
 				puzzleObj = ret;
 				if (isInit && !puzzleObj) {
@@ -1099,58 +1100,50 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var currentFacelet = mathlib.SOLVED_FACELET;
 
 		var giikerVRC = (function() {
-			var twistyScene;
-			var twisty;
 			var isReseted = false;
-			var isLoading = false;
 			var curVRCCubie = new mathlib.CubieCube();
 			var tmpCubie1 = new mathlib.CubieCube();
-			var tmpCubie2 = new mathlib.CubieCube();
+			var puzzleObj;
 
 			function resetVRC(temp, force) {
-				if (twistyScene == undefined || (isReseted && !force) || !enableVRC) {
+				if ((isReseted && !force) || !enableVRC) {
 					return;
 				}
-				isReseted = true;
-				twistyScene.initializeTwisty({
+				var options = {
 					type: "cube",
 					faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
 					dimension: 3,
 					stickerWidth: 1.7,
 					scale: 0.9
+				};
+				options['style'] = getProp('giiVRC');
+				puzzleFactory.init(options, $.noop, div, function(ret, isInit) {
+					puzzleObj = ret;
+					if (isInit && !puzzleObj) {
+						div.css('height', '');
+						div.html('--:--');
+					}
+					if (!puzzleObj) {
+						return;
+					}
+					if (!temp || isInit) {
+						lcd.setRunning(false, true);
+						lcd.setStaticAppend('');
+						setSize(getProp('timerSize'));
+					}
+					curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
+					puzzleObj.applyMoves(puzzleObj.parseScramble('U2 U2', true)); // process pre scramble (cube orientation)
 				});
-				curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
-				twisty = twistyScene.getTwisty();
-				twistyScene.applyMoves(twisty.parseScramble('U2 U2', true)); // process pre scramble (cube orientation)
-				isReseted = false;
-				if (!temp) {
-					setSize(getProp('timerSize'));
-				}
+				isReseted = true;
 			}
 
 			function setSize(value) {
 				div.css('height', value * $('#logo').width() / 9 + 'px');
-				twistyScene && twistyScene.resize();
-			}
-
-			function initVRC() {
-				if (twistyScene != undefined) {} else if (window.twistyjs != undefined) {
-					twistyScene = new twistyjs.TwistyScene();
-					div.empty().append(twistyScene.getDomElement());
-					resetVRC();
-					twistyScene.resize();
-					isLoading = false;
-				} else if (!isLoading && document.createElement('canvas').getContext) {
-					$.getScript("js/twisty.js", initVRC);
-					isLoading = true;
-				} else {
-					div.css('height', '');
-					div.html('--:--');
-				}
+				puzzleObj && puzzleObj.resize();
 			}
 
 			function setState(state, prevMoves, isFast) {
-				if (twistyScene == undefined || !enableVRC) {
+				if (puzzleObj == undefined || !enableVRC) {
 					return;
 				}
 				tmpCubie1.fromFacelet(state);
@@ -1158,15 +1151,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var shouldReset = true;
 				for (var i = 0; i < prevMoves.length; i++) {
 					todoMoves.push(prevMoves[i]);
-					var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + "'2 ".indexOf(prevMoves[i][1]);
-					if (!(m >= 0 && m < 18)) {
-						continue;
-					}
-					mathlib.CubieCube.EdgeMult(tmpCubie1, mathlib.CubieCube.moveCube[m], tmpCubie2);
-					mathlib.CubieCube.CornMult(tmpCubie1, mathlib.CubieCube.moveCube[m], tmpCubie2);
-					var tmp = tmpCubie1;
-					tmpCubie1 = tmpCubie2;
-					tmpCubie2 = tmp;
+					tmpCubie1.selfMoveStr(prevMoves[i], true);
 					if (tmpCubie1.isEqual(curVRCCubie)) {
 						shouldReset = false;
 						break;
@@ -1180,15 +1165,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					todoMoves = todoMoves.reverse().join(' ');
 				}
 				var scramble;
-				if (todoMoves.match(/^\s*$/) || !twisty) {
+				if (todoMoves.match(/^\s*$/) || !puzzleObj) {
 					scramble = [];
 				} else {
-					scramble = twisty.parseScramble(kernel.getConjMoves(todoMoves, true));
+					scramble = puzzleObj.parseScramble(kernel.getConjMoves(todoMoves, true));
 				}
 				if (scramble.length < 5) {
-					twistyScene.addMoves(scramble);
+					puzzleObj.addMoves(scramble);
 				} else {
-					twistyScene.applyMoves(scramble);
+					puzzleObj.applyMoves(scramble);
 				}
 				isReseted = false;
 				curVRCCubie.fromFacelet(state);
@@ -1196,7 +1181,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 			return {
 				resetVRC: resetVRC, //reset to solved
-				initVRC: initVRC,
 				setState: setState,
 				setSize: setSize
 			}
@@ -1337,7 +1321,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			enableVRC = enable;
 			enable ? div.show() : div.hide();
 			if (enable) {
-				giikerVRC.initVRC();
+				giikerVRC.resetVRC(true, true);
 			}
 		}
 
@@ -1364,7 +1348,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				} else {
 					GiikerCube.stop();
 				}
-				setVRC(enable && getProp('giiVRC'));
+				setVRC(enable && getProp('giiVRC') != 'n');
 			},
 			onkeydown: function(keyCode) {
 				var now = $.now();
@@ -1505,7 +1489,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
 		regProp('vrc', 'vrcAH', 1, 'Useless pieces in huge cube', ['01', ['00', '01', '10', '11'], ['Hide', 'Border', 'Color', 'Show']], 1);
 		regProp('vrc', 'giiMode', 1, 'Bluetooth Cube Mode', ['n', ['n', 't'], ['Normal', 'Training']], 1);
-		regProp('vrc', 'giiVRC', 0, PROPERTY_GIIKERVRC, [true], 1);
+		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q'], ['None', 'Virtual', 'qCube']], 1);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')], 1);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true], 1);
 		regProp('vrc', 'giiSM', 1, PROPERTY_GIISOK_MOVE, ['n', ['x4', 'xi2', 'n'], PROPERTY_GIISOK_MOVES.split('|')], 1);
