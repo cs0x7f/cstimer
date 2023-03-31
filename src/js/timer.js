@@ -1286,6 +1286,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
 						sol = kernel.getConjMoves(sol, true);
 						pushSignal('time', ["", 0, curTime, 0, [sol]]);
+					} else if (getProp('giiMode') == 't') {
+						kernel.pushSignal('ctrl', ['scramble', 'next']);
 					}
 				}
 			}
