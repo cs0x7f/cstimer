@@ -682,10 +682,6 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		image.llImage(llParam[0], llParam[1], canvas);
 	}
 
-	function getZBLSScramble() {
-		return getAnyScramble(0xba9f7654ffff, 0x000000000000, 0x765fffff, 0x000fffff);
-	}
-
 	function getLSEScramble() {
 		var rnd4 = rn(4);
 		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [rlpresuff[rnd4]], aufsuff) + rlappsuff[rnd4];
@@ -929,7 +925,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('zzll', getZZLLScramble)
-		('zbls', getZBLSScramble)
+		('zbls', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, 'GGGGDGGGGGGGGRRGRRGGGBBGBBG', f2l_map, f2lprobs)])
 		('ttll', getTTLLScramble, [ttllfilter, ttllprobs, getTTLLImage])
 		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, 'GDGDDDGDGGGGGRRGRRGGGBBDBBG', eols_map, eolsprobs)])
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs, getWVLSImage])
