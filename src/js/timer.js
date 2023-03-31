@@ -776,6 +776,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		var toInitCalls = null;
 
+		var prevParents = [];
+
 		function init(options, moveListener, parent, callback) {
 			if (window.twistyjs == undefined) {
 				toInitCalls = init.bind(null, options, moveListener, parent, callback);
@@ -790,22 +792,24 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				return;
 			}
 			if (options['style'] != 'q') {
-				var isInit = twistyScene == undefined;
+				var isInit = twistyScene == undefined || prevParents[0] != parent;
 				if (isInit) {
 					twistyScene = new twistyjs.TwistyScene();
 					twistyScene.addMoveListener(moveListener);
 					parent.empty().append(twistyScene.getDomElement());
+					prevParents[0] = parent;
 					qcubeObj = null;
 				}
 				twistyScene.initializeTwisty(options);
 				twisty = twistyScene.getTwisty();
 				callback(puzzle, isInit);
 			} else {
-				var isInit = qcubeObj == undefined;
+				var isInit = qcubeObj == undefined || prevParents[1] != parent;
 				if (isInit) {
-					qcubeObj = twistyjs.qcube;
+					qcubeObj = new twistyjs.qcube();
 					qcubeObj.addMoveListener(moveListener);
 					parent.empty().append(qcubeObj.getDomElement());
+					prevParents[1] = parent;
 					qcubeObj.resize();
 					twistyScene = null;
 				}
@@ -954,7 +958,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					div.css('height', '');
 					div.html('--:--');
 				}
-				if (!temp) {
+				if (!temp || isInit) {
 					lcd.setRunning(false, true);
 					lcd.setStaticAppend('');
 					setSize(getProp('timerSize'));
@@ -1067,7 +1071,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function setEnable(enable) {
 			isEnable = enable;
-			enable ? div.show() : div.hide();
+			if (enable) {
+				div.show();
+			} else {
+				div.hide();
+				isReseted = false;
+			}
 		}
 
 		function setSize(value) {
@@ -1123,16 +1132,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						div.css('height', '');
 						div.html('--:--');
 					}
-					if (!puzzleObj) {
-						return;
-					}
 					if (!temp || isInit) {
 						lcd.setRunning(false, true);
 						lcd.setStaticAppend('');
 						setSize(getProp('timerSize'));
 					}
 					curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
-					puzzleObj.applyMoves(puzzleObj.parseScramble('U2 U2', true)); // process pre scramble (cube orientation)
+					puzzleObj && puzzleObj.applyMoves(puzzleObj.parseScramble('U2 U2', true)); // process pre scramble (cube orientation)
 				});
 				isReseted = true;
 			}

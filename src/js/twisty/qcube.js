@@ -7,13 +7,12 @@
  */
 "use strict";
 
-window.twistyjs.qcube = (function() {
+window.twistyjs.qcube = function() {
 
 	var canvas;
 	var drawPolygon = $.ctxDrawPolygon;
 
 	var posit = [];
-	var colors = ['#ff0', '#fa0', '#00f', '#fff', '#f00', '#0d0'];
 
 	/**
 	 *  f: face, [ D L B U R F ]
@@ -96,6 +95,7 @@ window.twistyjs.qcube = (function() {
 	var width = 30;
 
 	function render() {
+		var colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
 		for (var i = 0; i < size; i++) {
 			var ii = size - 1 - i;
 			var piece = [[0, 0, 1, 1], [i, i + 1, i + 1, i]];
@@ -163,7 +163,7 @@ window.twistyjs.qcube = (function() {
 
 	var cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
 
-	function keydown(e) {
+	this.keydown = function(e) {
 		if (e.altKey || e.ctrlKey) {
 			return;
 		}
@@ -186,20 +186,20 @@ window.twistyjs.qcube = (function() {
 			ret = true;
 		}
 		if (keyCode in cubeKeyMapping) {
-			addMoves([cubeKeyMapping[keyCode]]);
+			this.addMoves([cubeKeyMapping[keyCode]]);
 		}
 		return ret;
 	}
 
-	function addMoveListener(listener) {
+	this.addMoveListener = function(listener) {
 		moveListeners.push(listener);
 	}
 
-	function getDomElement() {
+	this.getDomElement = function() {
 		return twistyContainer;
 	}
 
-	function resize() {
+	this.resize = function() {
 		if (!canvas) {
 			return;
 		}
@@ -216,11 +216,11 @@ window.twistyjs.qcube = (function() {
 		render();
 	}
 
-	function addMoves(args) {
-		return applyMoves(args);
+	this.addMoves = function(args) {
+		return this.applyMoves(args);
 	}
 
-	function applyMoves(args) {
+	this.applyMoves = function(args) {
 		for (var i = 0; i < args.length; i++) {
 			var move = args[i];
 			for (var j = 0; j < moveListeners.length; j++) {
@@ -237,7 +237,7 @@ window.twistyjs.qcube = (function() {
 			} else {
 				doslice(face, move[1] - 1, pow, size);
 			}
-			cntMove(move);
+			this.cntMove(move);
 			for (var j = 0; j < moveListeners.length; j++) {
 				moveListeners[j](move, 2);
 			}
@@ -245,11 +245,11 @@ window.twistyjs.qcube = (function() {
 		render();
 	}
 
-	function isRotation(move) {
+	this.isRotation = function(move) {
 		return move[0] == 1 && move[1] == size;
 	}
 
-	function move2str(move) {
+	this.move2str = function(move) {
 		var axis = move[2];
 		var nlayer = move[1];
 		var pow = (move[3] + 3) % 4;
@@ -263,11 +263,11 @@ window.twistyjs.qcube = (function() {
 		}
 	}
 
-	function toggleColorVisible(args) {
+	this.toggleColorVisible = function(args) {
 		return;
 	}
 
-	function isSolved(args) {
+	this.isSolved = function(args) {
 		if (size == 3) {
 			var facelet = [];
 			var s2 = size * size;
@@ -294,7 +294,7 @@ window.twistyjs.qcube = (function() {
 		return 0;
 	}
 
-	function moveCnt(clr) {
+	this.moveCnt = function(clr) {
 		if (clr) {
 			counter = 0;
 			lastMove = -1;
@@ -316,7 +316,7 @@ window.twistyjs.qcube = (function() {
 		return newMoves;
 	}
 
-	function parseScramble(scramble, addPreScr) {
+	this.parseScramble = function(scramble, addPreScr) {
 		if (!scramble || /^\s*$/.exec(scramble)) {
 			return generateScramble(this);
 		} else {
@@ -336,8 +336,8 @@ window.twistyjs.qcube = (function() {
 	var counter = 0;
 	var lastMove = -1;
 
-	function cntMove(move) {
-		if (!isRotation(move) && move[2] != lastMove) {
+	this.cntMove = function(move) {
+		if (!this.isRotation(move) && move[2] != lastMove) {
 			counter++;
 		}
 		lastMove = move[2];
@@ -347,7 +347,7 @@ window.twistyjs.qcube = (function() {
 	var canvas;
 	var ctx;
 
-	function init(options) {
+	this.init = function(options) {
 		if (!canvas) {
 			canvas = $('<canvas>');
 			if (!canvas[0].getContext) {
@@ -368,20 +368,4 @@ window.twistyjs.qcube = (function() {
 			}
 		}
 	}
-
-	return {
-		keydown: keydown,
-		addMoveListener: addMoveListener,
-		getDomElement: getDomElement,
-		resize: resize,
-		addMoves: addMoves,
-		applyMoves: applyMoves,
-		isRotation: isRotation,
-		move2str: move2str,
-		toggleColorVisible: toggleColorVisible,
-		isSolved: isSolved,
-		moveCnt: moveCnt,
-		parseScramble: parseScramble,
-		init: init
-	};
-})();
+};
