@@ -1,10 +1,3 @@
-/*
- * twisty.js
- *
- * Started by Lucas Garron, July 22, 2011 at WSOH
- * Made classy by Jeremy Fleischman, October 7, 2011 during the flight to worlds
- *
- */
 "use strict";
 
 window.twistyjs.qcube = function() {
@@ -92,10 +85,63 @@ window.twistyjs.qcube = function() {
 	var oSr = 1;
 	var iSi = size;
 	var gap = 0.1;
-	var width = 30;
+	var width = 50;
+	var colors = [];
 
 	function render() {
-		var colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
+		if (!canvas) {
+			return;
+		}
+		colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
+		if (style == 'q2') {
+			renderTopCube(true);
+		} else if (style == 'ql') {
+			renderTopCube(false);
+		} else {
+			renderQCube();
+		}
+	}
+
+	function fixSize(w, h) {
+		var min = Math.min($(twistyContainer).width() / w, $(twistyContainer).height() / h);
+		width = Math.max(50, min);
+		canvas.width(w * min);
+		canvas.height(h * min);
+		canvas.attr('width', w * width);
+		canvas.attr('height', h * width);
+	}
+
+	function renderTopCube(isTwoLook) {
+		gap = Math.sqrt(size / 3) * 0.1;
+		var offset = isTwoLook ? 0 : (gap + 1);
+		fixSize(size + 1 + gap * 3 + offset, size * 2 + gap * 3 - 1 + offset);
+		for (var i = 0; i < size; i++) {
+			var ii = size - 1 - i;
+			var piece = [[0, 0, 1, 1], [i, i + 1, i + 1, i]];
+			// R
+			drawPolygon(ctx, colors[posit[(4 * size + 0) * size + ii]], piece, [width, size + gap * 2 + offset, gap + offset]);
+			// B and L
+			if (!isTwoLook) {
+				drawPolygon(ctx, colors[posit[(1 * size + 0) * size + ii]], piece, [width, gap + 0, gap * 2 + 1]);
+				piece = [[i, i, i + 1, i + 1], [0, 1, 1, 0]];
+				drawPolygon(ctx, colors[posit[(2 * size + 0) * size + i]], piece, [width, 1 + gap * 2, gap]);
+			}
+			for (var j = 0; j < size; j++) { // U and F
+				piece = [[i, i, i + 1, i + 1], [j, j + 1, j + 1, j]];
+				drawPolygon(ctx, colors[posit[(3 * size + j) * size + i]], piece, [width, gap + offset, gap + offset]);
+				if (j < 2) {
+					drawPolygon(ctx, colors[posit[(5 * size + j) * size + i]], piece, [width, gap + offset, size + gap * 2 + offset]);
+				}
+			}
+		}
+		if (size > 5) {
+			drawPolygon(ctx, '#fff', [[-0.1, -0.1, 0.1, 0.1], [-0.1, 0.1, 0.1, -0.1]], [width, size * 0.5 + 1 + gap * 2, size * 0.5 + gap * 2 + 1]);
+		}
+	}
+
+	function renderQCube() {
+		gap = Math.sqrt(size / 3) * 0.1;
+		fixSize(size + 2 + gap * 4, size * 2 + gap * 3);
 		for (var i = 0; i < size; i++) {
 			var ii = size - 1 - i;
 			var piece = [[0, 0, 1, 1], [i, i + 1, i + 1, i]];
@@ -199,26 +245,7 @@ window.twistyjs.qcube = function() {
 		return twistyContainer;
 	}
 
-	this.resize = function() {
-		if (!canvas) {
-			return;
-		}
-		gap = Math.sqrt(size / 3) * 0.1;
-		var w = size + 2 + gap * 4;
-		var h = size * 2 + gap * 3;
-		var min = Math.min($(twistyContainer).width() / w, $(twistyContainer).height() / h);
-		width = Math.max(10, min);
-
-		canvas.width(w * min);
-		canvas.height(h * min);
-		canvas.attr('width', w * width);
-		canvas.attr('height', h * width);
-		render();
-	}
-
-	this.addMoves = function(args) {
-		return this.applyMoves(args);
-	}
+	this.resize = render;
 
 	this.applyMoves = function(args) {
 		for (var i = 0; i < args.length; i++) {
@@ -244,6 +271,8 @@ window.twistyjs.qcube = function() {
 		}
 		render();
 	}
+
+	this.addMoves = this.applyMoves;
 
 	this.isRotation = function(move) {
 		return move[0] == 1 && move[1] == size;
@@ -346,6 +375,7 @@ window.twistyjs.qcube = function() {
 	var twistyContainer = $('<div style="width:100%; height:100%;"/>');
 	var canvas;
 	var ctx;
+	var style;
 
 	this.init = function(options) {
 		if (!canvas) {
@@ -357,6 +387,7 @@ window.twistyjs.qcube = function() {
 			ctx = canvas[0].getContext('2d');
 		}
 		size = options.dimension;
+		style = options.style;
 		oSl = 1;
 		oSr = 1;
 		iSi = size;

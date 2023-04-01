@@ -791,7 +791,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				return;
 			}
-			if (options['style'] != 'q') {
+			if (!/^q[2l]?$/.exec(options['style'])) {
 				var isInit = twistyScene == undefined || prevParents[0] != parent;
 				if (isInit) {
 					twistyScene = new twistyjs.TwistyScene();
@@ -1518,7 +1518,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
 		regProp('vrc', 'vrcAH', 1, 'Useless pieces in huge cube', ['01', ['00', '01', '10', '11'], ['Hide', 'Border', 'Color', 'Show']], 1);
 		regProp('vrc', 'giiMode', 1, 'Bluetooth Cube Mode', ['n', ['n', 't'], ['Normal', 'Training']], 1);
-		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q'], ['None', 'Virtual', 'qCube']], 1);
+		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q', 'ql', 'q2'], ['None', 'Virtual', 'qCube', 'qLast', 'q2Look']], 1);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')], 1);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true], 1);
 		regProp('vrc', 'giiSM', 1, PROPERTY_GIISOK_MOVE, ['n', ['x4', 'xi2', 'n'], PROPERTY_GIISOK_MOVES.split('|')], 1);
