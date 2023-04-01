@@ -411,15 +411,26 @@ var giikerutil = execMain(function(CubieCube) {
 
 	var curScramble;
 
-	function procScramble(signal, value) {
-		var scrType = value[0];
-		curScramble = value[1];
-		if (tools.puzzleType(scrType) != '333') {
-			curScramble = "";
-		}
-		scrHinter.setScramble(curScramble);
-		if (curScramble && kernel.getProp('input') == 'g') {
-			scrHinter.checkState(curCubie);
+	function procSignal(signal, value) {
+		if (signal == 'scramble') {
+			var scrType = value[0];
+			curScramble = value[1];
+			if (tools.puzzleType(scrType) != '333') {
+				curScramble = "";
+			}
+			scrHinter.setScramble(curScramble);
+			if (curScramble && kernel.getProp('input') == 'g') {
+				scrHinter.checkState(curCubie);
+			}
+		} else if (signal == 'property') {
+			if (value[0] == 'giiVRC') {
+				drawState();
+			} else if (value[0] == 'preScr') {
+				scrHinter.setScramble(curScramble);
+				if (curScramble && kernel.getProp('input') == 'g') {
+					scrHinter.checkState(curCubie);
+				}
+			}
 		}
 	}
 
@@ -460,8 +471,8 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	$(function() {
-		kernel.regListener('giiker', 'scramble', procScramble);
-		kernel.regListener('tool', 'property', drawState, /^(?:giiVRC)$/);
+		kernel.regListener('giiker', 'scramble', procSignal);
+		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|preScr)$/);
 		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
 	});
 
