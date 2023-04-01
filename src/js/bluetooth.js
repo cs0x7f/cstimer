@@ -473,7 +473,7 @@ var GiikerCube = execMain(function() {
 		}
 
 		function wasMoveSeqExecuted(moveSeq) {
-			var prevMoveSeq = prevMoves.slice().reverse().join('').replaceAll(' ', '');
+			var prevMoveSeq = prevMoves.slice().reverse().join('').replace(/ /g, '');
 			return prevMoveSeq.endsWith(moveSeq);
 		}
 

@@ -401,7 +401,7 @@ var cubeutil = (function() {
 		var totalMoves = 0;
 		for (var i = 0; i < prettyMoves.length; i++) {
 			totalMoves += prettyMoves[i][1];
-			prettySolve += prettyMoves[i][0].replaceAll(' ', '') + (stepNames[i] ? " // " + stepNames[i] + " " + prettyMoves[i][1] + " move(s)" : "") + "\n";
+			prettySolve += prettyMoves[i][0].replace(/ /g, '') + (stepNames[i] ? " // " + stepNames[i] + " " + prettyMoves[i][1] + " move(s)" : "") + "\n";
 		}
 		return {
 			prettySolve: prettySolve,
