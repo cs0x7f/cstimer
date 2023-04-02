@@ -38,7 +38,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		times_stats_list.pushed();
 		sessionManager.save(times.length - 1);
 		if (time.length - 1 > curDim) {
-			table_ctrl.updateTable(true);
+			table_ctrl.updateTable(false);
 		} else {
 			table_ctrl.appendRow(times.length - 1);
 		}
@@ -53,6 +53,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (n_del == null || !/^\d+$/.exec(n_del) || ~~n_del == 0) {
 				return;
 			}
+			n_del = ~~n_del;
 		} else {
 			if (!confirm(STATS_CFM_DELETE)) {
 				return;
@@ -60,18 +61,19 @@ var stats = execMain(function(kpretty, round, kpround) {
 			n_del = 1;
 		}
 		if (index < 0.7 * times.length) {
-			times.splice(index, ~~n_del);
+			times.splice(index, n_del);
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
 		} else {
 			times_stats_table.toLength(index);
 			times_stats_list.toLength(index);
-			times.splice(index, ~~n_del);
+			times.splice(index, n_del);
 			times_stats_table.toLength(times.length);
 			times_stats_list.toLength(times.length);
 		}
 		sessionManager.save(index);
 		table_ctrl.updateTable(false);
+		updateUtil(['delete', index, n_del]);
 		return true;
 	}
 
@@ -134,7 +136,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				pattern.exec(mathlib.time2str(times[3]));
 		}
 
-		function updateTable(scroll) {
+		function updateTable(allUpdate) {
 			curDim = 1;
 			for (var i = 0; i < times.length; i++) {
 				curDim = Math.max(curDim, timesAt(i)[0].length - 1);
@@ -155,7 +157,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			filterTh.unbind('click').click(changePattern);
 			updateAvgRow(curDim);
-			updateUtil(['table']);
+			allUpdate && updateUtil(['table']);
 			scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
 		}
 
@@ -169,7 +171,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				patstr = (newpattern + '').replace(/[.\\+*?\[\^\]$(){}=!<>|:\-]/g, '\\$&').replace(/\\\*/g, '.*').replace(/\\\?/g, '.');
 			}
 			pattern = new RegExp(patstr, 'g');
-			updateTable(true);
+			updateTable(false);
 		}
 
 		function clearFilter() {
@@ -178,7 +180,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			patstr = '.*';
 			pattern = /.*/;
-			updateTable(true);
+			updateTable(false);
 		}
 
 		function updateTitleRow() {
@@ -955,7 +957,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times_stats_table.reset();
 			times_stats_list.reset();
 			save();
-			table_ctrl.updateTable(false);
+			table_ctrl.updateTable(true);
 			kernel.blur();
 		}
 
@@ -976,7 +978,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times = timesNew;
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
-			table_ctrl.updateTable(false);
+			table_ctrl.updateTable(true);
 			sessionData[sessionIdx] = sessionData[sessionIdx] || {
 				'name': sessionIdx,
 				'opt': {}
@@ -1511,6 +1513,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				len1 = Math.abs(stat1);
 				len2 = Math.abs(stat2);
 				table_ctrl.updateTable(false);
+				updateUtil(['property', value[0]]);
 			} else if (value[0] == 'statsum' || value[0] == 'statthres') {
 				updateSumTable();
 			} else if (value[0] == 'statal') {
@@ -1526,7 +1529,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				times_stats_table.reset(times.length);
 				times_stats_list.reset(times.length);
 				crossSessionStats.updateStatal(avgSizes);
-				updateUtil(['trim']);
+				updateUtil(['property', value[0]]);
 			} else if (value[0] == 'view') {
 				resultsHeight();
 			} else if (value[0] == 'statHide') {
@@ -1537,7 +1540,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 			} else if (value[0] == 'statsrc') {
 				times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
-				updateUtil(['statsrc']);
+				updateUtil(['property', value[0]]);
 			} else if (value[0] == 'wndStat') {
 				resultsHeight();
 			} else if (value[0] == 'sr_statal') {
