@@ -36,7 +36,7 @@ var stattool = execMain(function(kpretty, round, kpround) {
 				s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
 				s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.lastAvg[j][0]) + " (σ=" + stats.trim(times_stats_table.lastAvg[j][1], 2) +
 					')</span></td>');
-				s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg[j][0]) + " (σ=" + stats.trim(times_stats_table.bestAvg[j][1], 2) +
+				s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg(j, 0)) + " (σ=" + stats.trim(times_stats_table.bestAvg(j, 1), 2) +
 					')</span></td></tr>');
 			}
 		}

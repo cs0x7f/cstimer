@@ -42,9 +42,8 @@ var TimeStat = execMain(function() {
 		if (!this.shouldRecalc) {
 			return;
 		}
-		this.bestAvg = [];
+		this._bestAvg = [];
 		this.lastAvg = [];
-		this.bestAvgIndex = [];
 		this.treesAvg = [];
 		this.tree = sbtree.tree(this.timeSort);
 		this.bestTime = this.worstTime = -1;
@@ -52,15 +51,22 @@ var TimeStat = execMain(function() {
 
 		var curTimesLen = this.timesLen;
 		this.timesLen = 0;
-		while (this.timesLen < curTimesLen) {
-			this.doPushed(true, this.timesLen != curTimesLen - 1);
-		}
+		this.toLength(curTimesLen);
 		this.shouldRecalc = false;
 	}
 
 	TimeStat.prototype.pushed = function(silent) {
 		this.genStats(); // make sure all statistics are available, then update
 		this.doPushed(silent);
+	}
+
+	TimeStat.prototype.bestAvg = function(idx, subIdx) {
+		var arr = this._bestAvg[idx] || [];
+		var ret = arr[arr.length - 1] || [-1, 0, -1, -1, 0];
+		if (subIdx !== undefined) {
+			return ret[subIdx];
+		}
+		return ret;
 	}
 
 	TimeStat.prototype.doPushed = function(silent, next) {
@@ -95,21 +101,18 @@ var TimeStat = execMain(function() {
 				for (var k = 0; k < size; k++) {
 					rbt.insert(this.timeAt(k), k);
 				}
-				this.bestAvg[j] = [-1, 0, -1, -1];
-				this.bestAvgIndex[j] = 0;
-				this.lastAvg[j] = [-1, 0, -1, -1];
+				this._bestAvg[j] = [];
 			} else {
 				rbt.remove(this.timeAt(i - size)).insert(t, i);
 			}
 			var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
 			var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
 			var curVal = [(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
-			if (this.timeSort(curVal[0], this.bestAvg[j][0]) < 0) {
-				if (this.bestAvg[j][0] >= 0 && !next) {
+			if (this.timeSort(curVal[0], this.bestAvg(j, 0)) < 0) {
+				if (this.bestAvg(j, 0) >= 0 && !next) {
 					bestHintList.push((this.avgSizes[j] > 0 ? "ao" : "mo") + size);
 				}
-				this.bestAvg[j] = curVal;
-				this.bestAvgIndex[j] = i - size + 1;
+				this._bestAvg[j].push(curVal.concat([i - size + 1]));
 			}
 			this.lastAvg[j] = curVal;
 			this.treesAvg[j] = rbt;
@@ -117,6 +120,53 @@ var TimeStat = execMain(function() {
 		if (bestHintList.length != 0 && !silent) {
 			logohint.push("Session best " + bestHintList.join(" ") + "!");
 		}
+	}
+
+	// pop or push solves
+	TimeStat.prototype.toLength = function(target) {
+		while (this.timesLen > target) {
+			this.toPop(this.timesLen - 1 != target);
+		}
+		while (this.timesLen < target) {
+			this.doPushed(true, this.timesLen + 1 != target);
+		}
+	}
+
+	TimeStat.prototype.toPop = function(next) {
+		var i = this.timesLen - 1;
+		var t = this.timeAt(i);
+		this.tree.remove(t);
+		if (!next) {
+			this.bestTime = this.timesLen == 0 ? -1 : this.tree.rank(0);
+			this.bestTimeIndex = this.tree.find(this.bestTime);
+			this.worstTime = this.timesLen == 0 ? -1 : this.tree.rank(Math.max(0, this.tree.rankOf(-1) - 1));
+			this.worstTimeIndex = this.tree.find(this.worstTime);
+		}
+		for (var j = 0; j < this.avgSizes.length; j++) {
+			var size = Math.abs(this.avgSizes[j]);
+			if (this.timesLen < size) {
+				break;
+			} else if (this.timesLen == size) {
+				this.lastAvg[j] = null;
+				this.treesAvg[j] = null;
+				this._bestAvg[j] = null;
+				continue;
+			}
+			var rbt = this.treesAvg[j];
+			rbt.remove(t).insert(this.timeAt(i - size), i - size);
+			if (!next) {
+				var trim = this.avgSizes[j] < 0 ? 0 : getNTrim(size);
+				var neff = size - 2 * trim;
+				var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
+				var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
+				var curVal = [(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
+				this.lastAvg[j] = curVal;
+			}
+			if (this.bestAvg(j, 4) == i - size + 1) {
+				this._bestAvg[j].pop();
+			}
+		}
+		this.timesLen--;
 	}
 
 	// threshold to break best, -1 => never, -2 => always
@@ -140,7 +190,7 @@ var TimeStat = execMain(function() {
 				right -= 1;
 				toRemove = 0;
 			}
-			var tgtAvg = this.bestAvg[j][0];
+			var tgtAvg = this.bestAvg(j, 0);
 			if (rbt.rankOf(-1) < right) { //next avg is always DNF
 				thres[j] = -1;
 				continue;

@@ -59,9 +59,17 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			n_del = 1;
 		}
-		times.splice(index, ~~n_del);
-		times_stats_table.reset(times.length);
-		times_stats_list.reset(times.length);
+		if (index < 0.7 * times.length) {
+			times.splice(index, ~~n_del);
+			times_stats_table.reset(times.length);
+			times_stats_list.reset(times.length);
+		} else {
+			times_stats_table.toLength(index);
+			times_stats_list.toLength(index);
+			times.splice(index, ~~n_del);
+			times_stats_table.toLength(times.length);
+			times_stats_list.toLength(times.length);
+		}
 		sessionManager.save(index);
 		table_ctrl.updateTable(false);
 		return true;
@@ -370,9 +378,17 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (timesAt(idx)[0][0] == value) {
 				return;
 			}
-			timesAt(idx)[0][0] = value;
-			times_stats_table.reset(times.length);
-			times_stats_list.reset(times.length);
+			if (idx < 0.7 * times.length) {
+				timesAt(idx)[0][0] = value;
+				times_stats_table.reset(times.length);
+				times_stats_list.reset(times.length);
+			} else {
+				times_stats_table.toLength(idx);
+				times_stats_list.toLength(idx);
+				timesAt(idx)[0][0] = value;
+				times_stats_table.toLength(times.length);
+				times_stats_list.toLength(times.length);
+			}
 			sessionManager.save(idx);
 			table_ctrl.updateFrom(idxRow);
 			updateUtil(['penalty', idx]);
@@ -552,7 +568,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (times.length >= size) {
 				s.push('<tr><th>' + 'am' [avgSizes[j] >>> 31] + 'o' + size + '</th>');
 				s.push('<td class="times click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.lastAvg[j][0]) + '</td>');
-				s.push('<td class="times click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg[j][0]) + '</td>');
+				s.push('<td class="times click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg(j, 0)) + '</td>');
 				if (showThres) {
 					s.push('<td class="times">' + (thres[j] < 0 ? ['N/A', '\u221E'][-1 - thres[j]] : kpround(thres[j])) + '</td>');
 				}
@@ -720,9 +736,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 		case 'bs': setHighlight(times_stats, timesAt, times_stats.bestTimeIndex, 1, 10, true); break;
 		case 'cs': setHighlight(times_stats, timesAt, times_stats.timesLen - 1, 1, 10, true); break;
 		case 'ws': setHighlight(times_stats, timesAt, times_stats.worstTimeIndex, 1, 10, true); break;
-		case 'bm': setHighlight(times_stats, timesAt, times_stats.bestAvgIndex[idx], -avgSizes[idx], -avgSizes[idx] * 10, true); break;
+		case 'bm': setHighlight(times_stats, timesAt, times_stats.bestAvg(idx, 4), -avgSizes[idx], -avgSizes[idx] * 10, true); break;
 		case 'cm': setHighlight(times_stats, timesAt, times_stats.timesLen + avgSizes[idx], -avgSizes[idx], -avgSizes[idx] * 10, true); break;
-		case 'ba': setHighlight(times_stats, timesAt, times_stats.bestAvgIndex[idx], avgSizes[idx], avgSizes[idx] * 10, false); break;
+		case 'ba': setHighlight(times_stats, timesAt, times_stats.bestAvg(idx, 4), avgSizes[idx], avgSizes[idx] * 10, false); break;
 		case 'ca': setHighlight(times_stats, timesAt, times_stats.timesLen - avgSizes[idx], avgSizes[idx], avgSizes[idx] * 10, false); break;
 		case 'tt': getStats(times_stats, timesAt); break;
 		}
@@ -1392,7 +1408,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (length >= size) {
 				s.push(hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
 				s.push('    ' + hlstr[1] + ": " + kpround(times_stats.lastAvg[j][0]) + " (σ = " + trim(times_stats.lastAvg[j][1], 2) + ")");
-				s.push('    ' + hlstr[0] + ": " + kpround(times_stats.bestAvg[j][0]) + " (σ = " + trim(times_stats.bestAvg[j][1], 2) + ")\n");
+				s.push('    ' + hlstr[0] + ": " + kpround(times_stats.bestAvg(j, 0)) + " (σ = " + trim(times_stats.bestAvg(j, 1), 2) + ")\n");
 			}
 		}
 

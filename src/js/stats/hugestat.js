@@ -94,7 +94,7 @@ var crossSessionStats = execMain(function(kpretty, round, kpround) {
 				s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
 				s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(hugeStats.lastAvg[j][0]) + " (σ=" + stats.trim(hugeStats.lastAvg[j][1], 2) +
 					')</span></td>');
-				s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(hugeStats.bestAvg[j][0]) + " (σ=" + stats.trim(hugeStats.bestAvg[j][1], 2) +
+				s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(hugeStats.bestAvg(j, 0)) + " (σ=" + stats.trim(hugeStats.bestAvg(j, 1), 2) +
 					')</span></td></tr>');
 			}
 		}
