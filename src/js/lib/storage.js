@@ -42,14 +42,14 @@ var storage = execMain(function() {
 			request.onerror = logerr;
 			//id: session_XX_XX, val: times
 			request.onupgradeneeded = function(event) {
-				console.log("Update Data From LocalStorage");
+				DEBUG && console.log("Update Data From LocalStorage");
 				var curDB = event.target.result;
 				curDB.createObjectStore("sessions").transaction.oncomplete = function(event) {
-					importAll(localStorage, function() {}, curDB);
+					importAll(localStorage, curDB);
 				};
 			};
 			request.onsuccess = function(event) {
-				// console.log("Success opening DB");
+				DEBUG && console.log("Success opening DB");
 				db = event.target.result;
 			};
 		});

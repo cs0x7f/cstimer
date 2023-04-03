@@ -521,9 +521,7 @@ var GiikerCube = execMain(function() {
 
 		function checkState() {
 			if (movesFromLastCheck < 50) {
-				return new Promise(function(resolve) {
-					resolve(false);
-				});
+				return Promise.resolve(false);
 			}
 			return _chrct_f2.readValue().then(function(value) {
 				value = decode(value);
@@ -543,9 +541,7 @@ var GiikerCube = execMain(function() {
 					initCubeState();
 					return;
 				}
-				return new Promise(function(resolve) {
-					resolve(true);
-				});
+				return Promise.resolve(true);
 			});
 		}
 
@@ -635,9 +631,7 @@ var GiikerCube = execMain(function() {
 			} else {
 				return _chrct_f7.readValue().then(function(value) {
 					value = decode(value);
-					return new Promise(function(resolve) {
-						resolve([value[7], deviceName]);
-					});
+					return Promise.resolve([value[7], deviceName]);
 				});
 			}
 		}
@@ -896,9 +890,7 @@ var GiikerCube = execMain(function() {
 
 		function getBatteryLevel() {
 			_write.writeValue(new Uint8Array([WRITE_BATTERY]).buffer);
-			return new Promise(function(resolve) {
-				resolve([_batteryLevel, _deviceName])
-			});
+			return Promise.resolve([_batteryLevel, _deviceName]);
 		}
 
 		return {

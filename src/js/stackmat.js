@@ -11,9 +11,7 @@ var stackmat = execMain(function() {
 
 	function updateInputDevices() {
 		var devices = [];
-		var retobj = new Promise(function(resolve, reject) {
-			resolve(devices);
-		});
+		var retobj = Promise.resolve(devices);
 		if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
 			return retobj;
 		}
@@ -365,9 +363,7 @@ execMain(function() {
 				return Promise.resolve();
 			},
 			updateInputDevices: function() {
-				return new Promise(function(resolve, reject) {
-					resolve([[undefined, 'native']]);
-				});
+				return Promise.resolve([[undefined, 'native']]);
 			},
 			setCallBack: function(func) {
 				callback = func;
