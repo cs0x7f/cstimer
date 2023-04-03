@@ -203,6 +203,7 @@ var GiikerCube = execMain(function() {
 
 		var decoder = null;
 		var deviceName = null;
+		var deviceMac = null;
 
 		var KEYS = [
 			"NoRgnAHANATADDWJYwMxQOxiiEcfYgSK6Hpr4TYCs0IG1OEAbDszALpA",
@@ -279,30 +280,6 @@ var GiikerCube = execMain(function() {
 			return ret;
 		}
 
-		function checkHardware(gatt) {
-			DEBUG && console.log('[gancube] checkHardware start');
-			return gatt.getPrimaryServices().then(function(services) {
-				for (var i = 0; i < services.length; i++) {
-					var service = services[i];
-					DEBUG && console.log('[gancube] checkHardware find service', service.uuid);
-					if (service.uuid == SERVICE_UUID_META) {
-						_service_meta = service;
-					} else if (service.uuid == SERVICE_UUID_DATA) {
-						_service_data = service;
-					} else if (service.uuid == SERVICE_UUID_V2DATA) {
-						_service_v2data = service;
-					}
-				}
-				if (_service_v2data) {
-					return v2init();
-				}
-				if (_service_data && _service_meta) {
-					return v1init();
-				}
-				logohint.push('Not support your Gan cube');
-			});
-		}
-
 		function v1init() {
 			DEBUG && console.log('[gancube] v1init start');
 			return _service_meta.getCharacteristic(CHRCT_UUID_VERSION).then(function(chrct) {
@@ -345,10 +322,11 @@ var GiikerCube = execMain(function() {
 			}).then(loopRead);
 		}
 
-		function tryCalcKey() {
+		function waitForAdvs() {
 			if (!_device || !_device.watchAdvertisements) {
 				return Promise.reject(-1);
 			}
+			var abortController = new AbortController();
 			return new Promise(function(resolve, reject) {
 				_device.addEventListener('advertisementreceived', function(event) {
 					DEBUG && console.log('[gancube] receive adv event', event);
@@ -357,12 +335,13 @@ var GiikerCube = execMain(function() {
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 0; i < 6; i++) {
-							mac.push((dataView.getUint8(dataView.length - i - 1) + 0x100).toString(16).slice(1));
+							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
+						abortController.abort();
 						resolve(mac.join(':'));
 					}
 				});
-				_device.watchAdvertisements();
+				_device.watchAdvertisements({ signal: abortController.signal });
 				setTimeout(function() { // reject if no mac found
 					reject(-2);
 				}, 5000);
@@ -414,24 +393,21 @@ var GiikerCube = execMain(function() {
 		function v2init() {
 			DEBUG && console.log('[gancube] v2init start');
 			keyCheck = 0;
-			return tryCalcKey().then(function(mac) {
+			if (deviceMac) {
 				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 				var prevMac = savedMacMap[deviceName];
-				DEBUG && console.log('[gancube] v2init get mac= ' + mac);
-				if (prevMac && prevMac.toUpperCase() == mac.toUpperCase()) {
+				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
 					DEBUG && console.log('[gancube] v2init mac matched');
 				} else {
 					DEBUG && console.log('[gancube] v2init mac updated');
-					savedMacMap[deviceName] = mac;
+					savedMacMap[deviceName] = deviceMac;
 					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 				}
-				v2initDecoder(mac);
-			}, function(err) {
-				DEBUG && console.log('[gancube] v2init get mac failed, code=' + err);
+				v2initDecoder(deviceMac);
+			} else {
 				v2initKey(true);
-			}).then(function() {
-				return _service_v2data.getCharacteristics();
-			}).then(function(chrcts) {
+			}
+			return _service_v2data.getCharacteristics().then(function(chrcts) {
 				DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
@@ -459,9 +435,36 @@ var GiikerCube = execMain(function() {
 		function init(device) {
 			clear();
 			deviceName = device.name;
-			return device.gatt.connect().then(function(gatt) {
+			DEBUG && console.log('[gancube] init gan cube start');
+			return waitForAdvs().then(function(mac) {
+				DEBUG && console.log('[gancube] init gan adv get mac= ' + mac);
+				deviceMac = mac;
+			}, function(err) {
+				DEBUG && console.log('[gancube] init get adv failed, code=' + err);
+			}).then(function() {
+				return device.gatt.connect();
+			}).then(function(gatt) {
 				_gatt = gatt;
-				return checkHardware(gatt);
+				return gatt.getPrimaryServices();
+			}).then(function(services) {
+				for (var i = 0; i < services.length; i++) {
+					var service = services[i];
+					DEBUG && console.log('[gancube] checkHardware find service', service.uuid);
+					if (service.uuid == SERVICE_UUID_META) {
+						_service_meta = service;
+					} else if (service.uuid == SERVICE_UUID_DATA) {
+						_service_data = service;
+					} else if (service.uuid == SERVICE_UUID_V2DATA) {
+						_service_v2data = service;
+					}
+				}
+				if (_service_v2data) {
+					return v2init();
+				}
+				if (_service_data && _service_meta) {
+					return v1init();
+				}
+				logohint.push('Not support your Gan cube');
 			});
 		}
 
@@ -711,6 +714,7 @@ var GiikerCube = execMain(function() {
 				_chrct_v2read.stopNotifications();
 				_chrct_v2read = null;
 			}
+			deviceMac = null;
 			prevMoves = [];
 			timeOffs = [];
 			prevCubie = new mathlib.CubieCube();
