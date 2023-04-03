@@ -345,6 +345,30 @@ var GiikerCube = execMain(function() {
 			}).then(loopRead);
 		}
 
+		function tryCalcKey() {
+			if (!_device || !_device.watchAdvertisements) {
+				return Promise.reject(-1);
+			}
+			return new Promise(function(resolve, reject) {
+				_device.addEventListener('advertisementreceived', function(event) {
+					DEBUG && console.log('[gancube] receive adv event', event);
+					var mfData = event.manufacturerData;
+					var dataView = mfData instanceof DataView ? mfData : mfData.get(0x0001);
+					if (dataView && dataView.byteLength >= 6) {
+						var mac = [];
+						for (var i = 0; i < 6; i++) {
+							mac.push((dataView.getUint8(dataView.length - i - 1) + 0x100).toString(16).slice(1));
+						}
+						resolve(mac.join(':'));
+					}
+				});
+				_device.watchAdvertisements();
+				setTimeout(function() { // reject if no mac found
+					reject(-2);
+				}, 5000);
+			});
+		}
+
 		function v2initKey(forcePrompt, isWrongKey) {
 			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 			var mac = savedMacMap[deviceName];
@@ -361,6 +385,10 @@ var GiikerCube = execMain(function() {
 				savedMacMap[deviceName] = mac;
 				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 			}
+			v2initDecoder(mac);
+		}
+
+		function v2initDecoder(mac) {
 			var value = [];
 			for (var i = 0; i < 6; i++) {
 				value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
@@ -371,11 +399,39 @@ var GiikerCube = execMain(function() {
 			decoder.iv = keyiv[1];
 		}
 
+		function reqStateUpdate() {
+			if (!_chrct_v2write) {
+				DEBUG && console.log('[gancube] v2init cannot find v2write chrct');
+				return;
+			}
+			var buf = mathlib.valuedArray(20, 0);
+			buf[0] = 4;
+			encode(buf);
+			DEBUG && console.log('[gancube] v2init v2write', buf);
+			return _chrct_v2write.writeValue(new Uint8Array(buf).buffer);
+		}
+
 		function v2init() {
 			DEBUG && console.log('[gancube] v2init start');
 			keyCheck = 0;
-			v2initKey(true);
-			return _service_v2data.getCharacteristics().then(function(chrcts) {
+			return tryCalcKey().then(function(mac) {
+				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
+				var prevMac = savedMacMap[deviceName];
+				DEBUG && console.log('[gancube] v2init get mac= ' + mac);
+				if (prevMac && prevMac.toUpperCase() == mac.toUpperCase()) {
+					DEBUG && console.log('[gancube] v2init mac matched');
+				} else {
+					DEBUG && console.log('[gancube] v2init mac updated');
+					savedMacMap[deviceName] = mac;
+					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
+				}
+				v2initDecoder(mac);
+			}, function(err) {
+				DEBUG && console.log('[gancube] v2init get mac failed, code=' + err);
+				v2initKey(true);
+			}).then(function() {
+				return _service_v2data.getCharacteristics();
+			}).then(function(chrcts) {
 				DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
@@ -396,15 +452,7 @@ var GiikerCube = execMain(function() {
 				DEBUG && console.log('[gancube] v2init v2read notification started');
 				return _chrct_v2read.addEventListener('characteristicvaluechanged', onStateChangedV2);
 			}).then(function() {
-				if (!_chrct_v2write) {
-					DEBUG && console.log('[gancube] v2init cannot find v2write chrct');
-					return;
-				}
-				var buf = mathlib.valuedArray(20, 0);
-				buf[0] = 4;
-				encode(buf);
-				DEBUG && console.log('[gancube] v2init v2write', buf);
-				return _chrct_v2write.writeValue(new Uint8Array(buf).buffer);
+				return reqStateUpdate();
 			});
 		}
 
@@ -860,6 +908,7 @@ var GiikerCube = execMain(function() {
 					services: [GanCube.opservs[2]]
 				}],
 				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
+				optionalManufacturerData: [0x0001],
 			});
 		}).then(function(device) {
 			DEBUG && console.log('[bluetooth]', device);
