@@ -328,7 +328,7 @@ var GiikerCube = execMain(function() {
 			}
 			var abortController = new AbortController();
 			return new Promise(function(resolve, reject) {
-				_device.addEventListener('advertisementreceived', function(event) {
+				var onAdvEvent = function(event) {
 					DEBUG && console.log('[gancube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = mfData instanceof DataView ? mfData : mfData.get(0x0001);
@@ -337,10 +337,12 @@ var GiikerCube = execMain(function() {
 						for (var i = 0; i < 6; i++) {
 							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
+						_device.removeEventListener('advertisementreceived', onAdvEvent);
 						abortController.abort();
 						resolve(mac.join(':'));
 					}
-				});
+				};
+				_device.addEventListener('advertisementreceived', onAdvEvent);
 				_device.watchAdvertisements({ signal: abortController.signal });
 				setTimeout(function() { // reject if no mac found
 					reject(-2);
@@ -378,16 +380,36 @@ var GiikerCube = execMain(function() {
 			decoder.iv = keyiv[1];
 		}
 
-		function reqStateUpdate() {
+		function v2sendRequest(req) {
 			if (!_chrct_v2write) {
-				DEBUG && console.log('[gancube] v2init cannot find v2write chrct');
+				DEBUG && console.log('[gancube] v2sendRequest cannot find v2write chrct');
 				return;
 			}
-			var buf = mathlib.valuedArray(20, 0);
-			buf[0] = 4;
-			encode(buf);
-			DEBUG && console.log('[gancube] v2init v2write', buf);
-			return _chrct_v2write.writeValue(new Uint8Array(buf).buffer);
+			var encodedReq = encode(req.slice());
+			DEBUG && console.log('[gancube] v2sendRequest', req, encodedReq);
+			return _chrct_v2write.writeValue(new Uint8Array(encodedReq).buffer);
+		}
+
+		function v2sendSimpleRequest(opcode) {
+			var req = mathlib.valuedArray(20, 0);
+			req[0] = opcode;
+			return v2sendRequest(req);
+		}
+
+		function v2requestFacelets() {
+			return v2sendSimpleRequest(4);
+		}
+
+		function v2requestBattery() {
+			return v2sendSimpleRequest(9);
+		}
+
+		function v2requestHardwareInfo() {
+			return v2sendSimpleRequest(5);
+		}
+
+		function v2requestReset() {
+			return v2sendRequest([10, 5, 57, 119, 0, 0, 1, 35, 69, 103, 137, 171, 0, 0, 0, 0, 0, 0, 0, 0]);
 		}
 
 		function v2init() {
@@ -428,7 +450,11 @@ var GiikerCube = execMain(function() {
 				DEBUG && console.log('[gancube] v2init v2read notification started');
 				return _chrct_v2read.addEventListener('characteristicvaluechanged', onStateChangedV2);
 			}).then(function() {
-				return reqStateUpdate();
+				return v2requestHardwareInfo();
+			}).then(function() {
+				return v2requestFacelets();
+			}).then(function() {
+				return v2requestBattery();
 			});
 		}
 
@@ -637,6 +663,7 @@ var GiikerCube = execMain(function() {
 			var mode = parseInt(value.slice(0, 4), 2);
 			if (mode == 1) { // gyro
 			} else if (mode == 2) { // cube move
+				DEBUG && console.log('[gancube]', 'v2 received move event', value);
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				if (moveCnt == prevMoveCnt) {
 					return;
@@ -661,6 +688,7 @@ var GiikerCube = execMain(function() {
 					updateMoveTimes(timestamp, 1);
 				}
 			} else if (mode == 4) { // cube state
+				DEBUG && console.log('[gancube]', 'v2 received facelets event', value);
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				if (moveCnt != prevMoveCnt && prevMoveCnt != -1) {
 					return;
@@ -698,8 +726,24 @@ var GiikerCube = execMain(function() {
 					callback(latestFacelet, prevMoves, timestamp, deviceName);
 				}
 				prevMoveCnt = moveCnt;
+			} else if (mode == 5) { // hardware info
+				DEBUG && console.log('[gancube]', 'v2 received hardware info event', value);
+				var hardwareVersion = parseInt(value.slice(8, 16), 2) + "." + parseInt(value.slice(16, 24), 2);
+				var softwareVersion = parseInt(value.slice(24, 32), 2) + "." + parseInt(value.slice(32, 40), 2);
+				var devName = '';
+				for (var i = 0; i < 8; i++)
+					devName += String.fromCharCode(parseInt(value.slice(40 + i * 8, 48 + i * 8), 2));
+				var gyroEnabled = 1 === parseInt(value.slice(104, 105), 2);
+				DEBUG && console.log('[gancube]', 'Hardware Version', hardwareVersion);
+				DEBUG && console.log('[gancube]', 'Software Version', softwareVersion);
+				DEBUG && console.log('[gancube]', 'Device Name', devName);
+				DEBUG && console.log('[gancube]', 'Gyro Enabled', gyroEnabled);
 			} else if (mode == 9) { // battery
+				DEBUG && console.log('[gancube]', 'v2 received battery event', value);
 				batteryLevel = parseInt(value.slice(8, 16), 2);
+				giikerutil.updateBattery([batteryLevel, deviceName + '*']);
+			} else {
+				DEBUG && console.log('[gancube]', 'v2 received unknown event', value);
 			}
 		}
 

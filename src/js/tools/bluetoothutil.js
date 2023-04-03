@@ -194,14 +194,18 @@ var giikerutil = execMain(function(CubieCube) {
 	var batId = 0;
 	var batValue = 0;
 
-	function updateBattery() {
+	function updateBattery(value) {
+		batValue = value[0];
+		connectedStr = value[1] + ': Connected | ' + (batValue || '??') + '%';
+		connectClick.html(connectedStr);
+	}
+
+	function pollUpdateBattery() {
 		if (GiikerCube.isConnected()) {
 			GiikerCube.getCube().getBatteryLevel().then(function(value) {
-				batValue = value[0];
-				connectedStr = value[1] + ': Connected | ' + (batValue || '??') + '%';
-				connectClick.html(connectedStr);
+				updateBattery(value);
 			});
-			batId = setTimeout(updateBattery, 60000);
+			batId = setTimeout(pollUpdateBattery, 60000);
 		} else {
 			batId = 0;
 		}
@@ -338,7 +342,7 @@ var giikerutil = execMain(function(CubieCube) {
 			scrambleLength = 0;
 		}
 		drawState();
-		batId == 0 && updateBattery();
+		batId == 0 && pollUpdateBattery();
 		giikerErrorDetect();
 		var retState = curState;
 		if (hackedSolvedCubieInv) {
@@ -486,6 +490,7 @@ var giikerutil = execMain(function(CubieCube) {
 		init: init,
 		isSync: isSync,
 		reSync: reSync,
+		updateBattery: updateBattery,
 		setLastSolve: setLastSolve
 	}
 }, [mathlib.CubieCube]);
