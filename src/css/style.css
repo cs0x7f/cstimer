@@ -529,6 +529,10 @@ a {
 	z-index: 10;
 }
 
+#multiphase {
+	padding-right: 0.75rem;
+}
+
 #about {
 	line-height: 1.6em;
 	text-align: left;
