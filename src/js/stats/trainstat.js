@@ -16,21 +16,16 @@ var trainStat = execMain(function() {
 		}
 		var nsolv = stats.getTimesStatsList().timesLen;
 		var nrec = nsolv;
-		var ident = {
-			//name: [ident, genImg, startIdx, endIdx, stageIdx]
-			'PLL': [cubeutil.identStep.bind(null, 'PLL'), scramble_333.getPLLImage, 0, 21, 0],
-			'OLL': [cubeutil.identStep.bind(null, 'OLL'), scramble_333.getOLLImage, 1, 58, 1],
-			'CLL': [cubeutil.identStep.bind(null, 'C2CLL'), scramble_222.getEGLLImage, 0, 40, 1]
-		}[methodSelect.val() || 'PLL'];
+		var method = methodSelect.val() || 'PLL';
+		var ident = cubeutil.getIdentData(method);
 		var nvalid = 0;
 		var caseCnts = [];
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
-			var times = stats.timesAt(s);
-			var data = cubeutil.getScrambledState([null, times[1]]);
-			if (!data) {
+			var caseData = stats.getExtraInfo('scramcase_' + method, s)
+			if (!caseData) {
 				continue;
 			}
-			var cur = ident[0](data.toFaceCube());
+			var cur = caseData[0];
 			caseCnts[cur] = caseCnts[cur] || [];
 			caseCnts[cur].push(s);
 		}
@@ -123,6 +118,15 @@ var trainStat = execMain(function() {
 		update();
 	}
 
+	function calcCaseExtra(method, time, idx) {
+		var data = cubeutil.getScrambledState([null, time[1]]);
+		if (!data) {
+			return;
+		}
+		var cur = cubeutil.getIdentData(method)[0](data.toFaceCube());
+		return [cur];
+	}
+
 	$(function() {
 		if (typeof tools != "undefined") {
 			tools.regTool('trainstat', TOOLS_TRAINSTAT, execFunc);
@@ -131,6 +135,7 @@ var trainStat = execMain(function() {
 		var methods = ['PLL', 'OLL', 'CLL'];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
+			stats.regExtraInfo('scramcase_' + methods[i], calcCaseExtra.bind(null, methods[i]));
 		}
 	});
 });

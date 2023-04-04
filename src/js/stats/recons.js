@@ -258,8 +258,7 @@ var recons = execMain(function() {
 		var nvalid = 0;
 		var stepData = [];
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
-			var times = stats.timesAt(s);
-			var rec = calcRecons(times, method);
+			var rec = stats.getExtraInfo('recons_' + method, s);
 			if (!rec) {
 				continue;
 			}
@@ -285,7 +284,7 @@ var recons = execMain(function() {
 		}
 		if (nrec == 1) {
 			var solve = cubeutil.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
-			renderResult(stepData, null, isPercent, times[1], solve);
+			renderResult(stepData, null, isPercent, stats.timesAt(nsolv - 1)[1], solve);
 		} else {
 			renderResult(stepData, null, isPercent);
 		}
@@ -318,6 +317,12 @@ var recons = execMain(function() {
 			tools.regTool('recons', TOOLS_RECONS + '>' + 'step', execFunc);
 		}
 		stats.regUtil('recons', update);
+		stats.regExtraInfo('recons_cf4op', function(times) {
+			return calcRecons(times, 'cf4op');
+		});
+		stats.regExtraInfo('recons_roux', function(times) {
+			return calcRecons(times, 'roux');
+		});
 		kernel.regListener('recons', 'reqrec', reqRecons);
 		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
 		for (var i = 0; i < ranges.length; i++) {
@@ -349,31 +354,19 @@ var caseStat = execMain(function() {
 		}
 		var nsolv = stats.getTimesStatsList().timesLen;
 		var nrec = nsolv;
-		var method = 'cf4op';
-		var ident = {
-			//name: [ident, genImg, startIdx, endIdx, stageIdx]
-			'PLL': [cubeutil.identStep.bind(null, 'PLL'), scramble_333.getPLLImage, 0, 21, 0],
-			'OLL': [cubeutil.identStep.bind(null, 'OLL'), scramble_333.getOLLImage, 1, 58, 1]
-		}[methodSelect.val() || 'PLL'];
+		var method = methodSelect.val() || 'PLL';
+		var ident = cubeutil.getIdentData(method);
 		var nvalid = 0;
 		var caseCnts = [];
-		var c = new mathlib.CubieCube();
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
-			var times = stats.timesAt(s);
-			var rec = recons.calcRecons(times, method);
-			if (!rec) {
-				continue;
-			}
-			var data = rec.data;
-			var sdata = data[ident[4]];
-			if (!sdata) {
+			var caseData = stats.getExtraInfo('recons_cf4op_' + method, s);
+			if (!caseData) {
 				continue;
 			}
 			nvalid++;
-			c.invFrom(sdata[4]);
-			var cur = ident[0](c.toFaceCube());
+			var cur = caseData[0];
 			caseCnts[cur] = caseCnts[cur] || [0, 0, 0, 0];
-			var cumData = [1, sdata[1] - sdata[0], sdata[2] - sdata[1], sdata[3]];
+			var cumData = [1].concat(caseData.slice(1));
 			for (var i = 0; i < 4; i++) {
 				caseCnts[cur][i] += cumData[i];
 			}
@@ -461,6 +454,25 @@ var caseStat = execMain(function() {
 		update();
 	}
 
+	var c;
+
+	function calcCaseExtra(method, time, idx) {
+		var rec = stats.getExtraInfo('recons_cf4op', idx);
+		if (!rec) {
+			return;
+		}
+		var ident = cubeutil.getIdentData(method);
+		var data = rec.data;
+		var sdata = data[ident[4]];
+		if (!sdata) {
+			return;
+		}
+		c = c || new mathlib.CubieCube();
+		c.invFrom(sdata[4]);
+		var cur = ident[0](c.toFaceCube());
+		return [cur, sdata[1] - sdata[0], sdata[2] - sdata[1], sdata[3]];
+	}
+
 	$(function() {
 		if (typeof tools != "undefined") {
 			tools.regTool('casestat', TOOLS_RECONS + '>' + 'cases', execFunc);
@@ -469,6 +481,7 @@ var caseStat = execMain(function() {
 		var methods = ['PLL', 'OLL'];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
+			stats.regExtraInfo('recons_cf4op_' + methods[i], calcCaseExtra.bind(null, methods[i]));
 		}
 	});
 });

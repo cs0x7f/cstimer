@@ -34,6 +34,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		} else {
 			times.push([time, curScramble, "", Math.round((new Date().getTime() - time[1]) / 1000)]);
 		}
+		timesExtra.push(null);
 		times_stats_table.pushed();
 		times_stats_list.pushed();
 		sessionManager.save(times.length - 1);
@@ -71,6 +72,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			times_stats_table.toLength(times.length);
 			times_stats_list.toLength(times.length);
 		}
+		timesExtra.splice(index, n_del);
 		sessionManager.save(index);
 		table_ctrl.updateTable(false);
 		updateUtil(['delete', index, n_del]);
@@ -129,11 +131,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var hheadIdx = 0;
 
 		function filter(idx) {
-			var times = timesAt(idx);
-			return pattern.exec(pretty(times[0], true) + prettyMPA(times[0])) ||
-				pattern.exec(times[1]) ||
-				pattern.exec(times[2]) ||
-				pattern.exec(mathlib.time2str(times[3]));
+			var time = timesAt(idx);
+			return pattern.exec(pretty(time[0], true) + prettyMPA(time[0])) ||
+				pattern.exec(time[1]) ||
+				pattern.exec(time[2]) ||
+				pattern.exec(mathlib.time2str(time[3]));
 		}
 
 		function updateTable(allUpdate) {
@@ -391,6 +393,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				times_stats_table.toLength(times.length);
 				times_stats_list.toLength(times.length);
 			}
+			timesExtra[idx] = null;
 			sessionManager.save(idx);
 			table_ctrl.updateFrom(idxRow);
 			updateUtil(['penalty', idx]);
@@ -909,6 +912,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function createSession(rank, copy) {
 			initNewSession(rank, copy);
 			times = [];
+			timesExtra = [];
 			times_stats_list.reset(times.length);
 			times_stats_table.reset(times.length);
 			save();
@@ -954,6 +958,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			times = [];
+			timesExtra = [];
 			times_stats_table.reset();
 			times_stats_list.reset();
 			save();
@@ -976,6 +981,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function sessionLoaded(sessionIdx, timesNew) {
 			isInit = false;
 			times = timesNew;
+			timesExtra = [];
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
 			table_ctrl.updateTable(true);
@@ -1099,6 +1105,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			storage.set(sessionIdx, targetTimes).then(function() {
 				sessionIdx = curSessionIdx;
 				times = times.slice(0, -n_split);
+				timesExtra = [];
 				times_stats_table.reset();
 				times_stats_list.reset();
 				save();
@@ -1139,6 +1146,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return;
 			}
 			times = timesNew;
+			timesExtra = [];
 			times_stats_table.reset();
 			times_stats_list.reset();
 			save();
@@ -1337,6 +1345,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				};
 				kernel.setProp('sessionN', sessionIdxMax);
 				times = sessionDetail['times'];
+				timesExtra = [];
 				times_stats_table.reset(times.length);
 				times_stats_list.reset(times.length);
 				save();
@@ -1630,6 +1639,26 @@ var stats = execMain(function(kpretty, round, kpround) {
 		statUtils[name] = callback;
 	}
 
+	var timesExtra = [];
+	var extraFuncs = {};
+
+	function regExtraInfo(key, genFunc) {
+		extraFuncs[key] = genFunc;
+	}
+
+	function getExtraInfo(key, idx) {
+		if (idx >= times.length || !(key in extraFuncs)) {
+			return;
+		}
+		if (!timesExtra[idx]) {
+			timesExtra[idx] = {};
+		}
+		if (!(key in timesExtra[idx])) {
+			timesExtra[idx][key] = extraFuncs[key](timesAt(idx), idx);
+		}
+		return timesExtra[idx][key];
+	}
+
 	return {
 		importSessions: sessionManager.importSessions,
 		getReviewUrl: getReviewUrl,
@@ -1651,6 +1680,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 		timesAt: timesAt,
 		timeAt: timeAt,
 		infoClick: infoClick,
-		regUtil: regUtil
+		regUtil: regUtil,
+		regExtraInfo: regExtraInfo,
+		getExtraInfo: getExtraInfo
 	}
 }, [kernel.pretty, kernel.round, kernel.pround]);
