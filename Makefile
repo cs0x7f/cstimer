@@ -99,7 +99,7 @@ all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) $(dest)/cache.manifest $(d
 version: $(langPHP)
 	@echo "Build Version: $(version)"
 	@cp $(src)/lang/langDet.php $(dest)/lang/langDet.php
-	@sed -i 's#@@VERSION@@#$(version)#g' $(dest)/lang/langDet.php
+	@sed -i 's/\$$version = "[^"]*"/\$$version = "$(version)"/g' $(dest)/lang/langDet.php
 
 clean:
 	rm -f $(cstimer) $(twisty) $(css) $(langJS) $(langPHP)
