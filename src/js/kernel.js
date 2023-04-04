@@ -456,8 +456,8 @@ var kernel = execMain(function() {
 		var CAN = $('<input type="button" class="buttonOK">').val(CANCEL_LANG);
 		dialog.append(title, value, buttons);
 
-		var fullButton = $('<input type="button" value="\u2921" style="float:left;">');
-		var refreshButton = $('<input type="button" value="\u21bb" style="float:left;">');
+		var fullButton = $('<span style="position:absolute;left:0.5em" class="click">&nbsp;\u21f1&nbsp;</span>');
+		var refreshButton = $('<span style="float:left;" class="click">&nbsp;\u21bb&nbsp;</span>');
 
 		function toggleFullScreen() {
 			if (!document.fullscreenElement) {
