@@ -113,9 +113,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (status == -3 || status == -2) { //inspection alert
 				if (runningDiv !== rightDiv) {
 					if (time >= 12000) {
-						setHtml(rightDiv, '<div style="font-family: Arial;">Go!!!&nbsp;&nbsp;</div>');
+						setHtml(rightDiv, '<div style="font-family: Arial;">Go!!!</div>');
 					} else if (time >= 8000) {
-						setHtml(rightDiv, '<div style="font-family: Arial;">8s!&nbsp;&nbsp;</div>');
+						setHtml(rightDiv, '<div style="font-family: Arial;">8s!</div>');
 					}
 				}
 				if (getProp('voiceIns') != 'n') {
@@ -334,7 +334,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lastDown = now;
 				curTime[status] = lastDown - startTime;
 				getProp('phases') != status && lcd.append('+');
-				getProp('phases') != 1 && lcd.append(pretty(curTime[status] - ~~curTime[status + 1], true) + '&nbsp;<br>');
+				getProp('phases') != 1 && lcd.append(pretty(curTime[status] - ~~curTime[status + 1], true) + '<br>');
 				if (keyCode == 27) {
 					var times = [-1],
 						i = 1;
