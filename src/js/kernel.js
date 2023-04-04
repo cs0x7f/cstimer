@@ -456,10 +456,29 @@ var kernel = execMain(function() {
 		var CAN = $('<input type="button" class="buttonOK">').val(CANCEL_LANG);
 		dialog.append(title, value, buttons);
 
+		var fullButton = $('<input type="button" value="\u2921" style="float:left;">');
+		var refreshButton = $('<input type="button" value="\u21bb" style="float:left;">');
+
+		function toggleFullScreen() {
+			if (!document.fullscreenElement) {
+				var obj = $('body')[0];
+				obj.requestFullscreen && obj.requestFullscreen();
+			} else {
+				document.exitFullscreen && document.exitFullscreen();
+			}
+		}
+
 		function showDialog(values, diagclass, titlestr, callback) {
 			isPopup = true;
 			dialog.removeClass().addClass('dialog').addClass('dialog' + diagclass);
 			title.html(titlestr);
+			if (diagclass == 'option') {
+				title.prepend(fullButton.unbind('click').click(toggleFullScreen));
+			} else if (diagclass == 'logo') {
+				title.prepend(refreshButton.unbind('click').click(function() {
+					location.reload(true);
+				}));
+			}
 			value.children().appendTo(temp);
 			values[0].appendTo(value.empty());
 			buttons.empty();
