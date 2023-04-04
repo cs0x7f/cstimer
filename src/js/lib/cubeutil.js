@@ -2,21 +2,41 @@
 
 var cubeutil = (function() {
 
-	var crossMask = "----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-";
-	var f2l1Mask = "----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-";
-	var f2l2Mask = "----U--------R--R----FF-FF-DD-DDD-D-----LL-LL----B--B-";
-	var f2l3Mask = "----U--------RR-RR----F--F--D-DDD-DD----L--L----BB-BB-";
-	var f2l4Mask = "----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB";
-	var f2lMask = "----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
-	var ollMask = "UUUUUUUUU---RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
-	var eollMask = "-U-UUU-U----RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB";
-	var cpllMask = "UUUUUUUUUr-rRRRRRRf-fFFFFFFDDDDDDDDDl-lLLLLLLb-bBBBBBB";
-	var roux1Mask = "---------------------F--F--D--D--D-----LLLLLL-----B--B";
-	var roux2Mask = "------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B";
-	var roux3Mask = "U-U---U-Ur-rRRRRRRf-fF-FF-FD-DD-DD-Dl-lLLLLLLb-bB-BB-B";
+	function toEqus(facelet) {
+		var col2equ = {};
+		for (var i = 0; i < facelet.length; i++) {
+			var col = facelet[i];
+			if (col == '-') {
+				continue;
+			}
+			col2equ[col] = col2equ[col] || [];
+			col2equ[col].push(i);
+		}
+		var equs = [];
+		for (var col in col2equ) {
+			if (col2equ[col].length > 1) {
+				equs.push(col2equ[col]);
+			}
+		}
+		return equs;
+	}
+
+	var crossMask = toEqus("----U--------R--R-----F--F--D-DDD-D-----L--L-----B--B-");
+	var f2l1Mask = toEqus("----U-------RR-RR-----FF-FF-DDDDD-D-----L--L-----B--B-");
+	var f2l2Mask = toEqus("----U--------R--R----FF-FF-DD-DDD-D-----LL-LL----B--B-");
+	var f2l3Mask = toEqus("----U--------RR-RR----F--F--D-DDD-DD----L--L----BB-BB-");
+	var f2l4Mask = toEqus("----U--------R--R-----F--F--D-DDDDD----LL-LL-----BB-BB");
+	var f2lMask = toEqus("----U-------RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB");
+	var ollMask = toEqus("UUUUUUUUU---RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB");
+	var eollMask = toEqus("-U-UUU-U----RRRRRR---FFFFFFDDDDDDDDD---LLLLLL---BBBBBB");
+	var cpllMask = toEqus("UUUUUUUUUr-rRRRRRRf-fFFFFFFDDDDDDDDDl-lLLLLLLb-bBBBBBB");
+	var roux1Mask = toEqus("---------------------F--F--D--D--D-----LLLLLL-----B--B");
+	var roux2Mask = toEqus("------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B");
+	var roux3Mask = toEqus("U-U---U-Ur-rRRRRRRf-fF-FF-FD-DD-DD-Dl-lLLLLLLb-bB-BB-B");
 	var LLPattern = "012345678cdeRRRRRR9abFFFFFFDDDDDDDDDijkLLLLLLfghBBBBBB";
 	var c2LLPattern = "0-1---2-36-7---R-R4-5---F-FD-D---D-Da-b---L-L8-9---B-B";
-	var c2LLMask = "---------------R-R------F-FD-D---D-D------L-L------B-B";
+	var c2LLMask = toEqus("---------------R-R------F-FD-D---D-D------L-L------B-B");
+	var solvedMask = toEqus(mathlib.SOLVED_FACELET);
 
 	var cubeRots = (function genRots() {
 
@@ -55,15 +75,14 @@ var cubeutil = (function() {
 	function solvedProgress(param, mask) {
 		var cubeRot = cubeRots[param[1]];
 		var facelet = param[0];
-		mask = mask || mathlib.SOLVED_FACELET;
-		var colorMap = {};
-		for (var i = 0; i < 54; i++) {
-			if (mask[i] == '-') {
-				continue;
-			} else if (mask[i] in colorMap && colorMap[mask[i]] != facelet[cubeRot[i]]) {
-				return 1;
-			} else {
-				colorMap[mask[i]] = facelet[cubeRot[i]];
+		mask = mask || solvedMask;
+		for (var i = 0; i < mask.length; i++) {
+			var equ = mask[i];
+			var col = facelet[cubeRot[equ[0]]];
+			for (var j = 1; j < equ.length; j++) {
+				if (facelet[cubeRot[equ[j]]] != col) {
+					return 1;
+				}
 			}
 		}
 		return 0;
@@ -257,9 +276,9 @@ var cubeutil = (function() {
 			if (pllPattern.length == 0) {
 				for (var i = 0; i < 22; i++) {
 					var param = i == 21 ? 'UUUUUUUUUFFFRRRBBBLLL' : scramble_333.getPLLImage(i)[0];
-					pllPattern.push(LLPattern.replace(/[0-9a-z]/g, function(v) {
+					pllPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
 						return param[parseInt(v, 36)].toLowerCase();
-					}));
+					})));
 				}
 			}
 			return searchCaseByPattern(facelet, ollMask, pllPattern);
@@ -272,9 +291,9 @@ var cubeutil = (function() {
 			if (ollPattern.length == 0) {
 				for (var i = 0; i < 58; i++) {
 					var param = scramble_333.getOLLImage(i)[0].replace(/G/g, '-');
-					ollPattern.push(LLPattern.replace(/[0-9a-z]/g, function(v) {
+					ollPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
 						return param[parseInt(v, 36)].toLowerCase();
-					}));
+					})));
 				}
 			}
 			return searchCaseByPattern(facelet, f2lMask, ollPattern);
@@ -287,9 +306,9 @@ var cubeutil = (function() {
 			if (cllPattern.length == 0) {
 				for (var i = 0; i < 40; i++) {
 					var param = scramble_222.getEGLLImage(i)[0].replace(/G/g, '-');
-					cllPattern.push(c2LLPattern.replace(/[0-9a-z]/g, function(v) {
+					cllPattern.push(toEqus(c2LLPattern.replace(/[0-9a-z]/g, function(v) {
 						return param[parseInt(v, 36)].toLowerCase();
-					}));
+					})));
 				}
 			}
 			return searchCaseByPattern(facelet, c2LLMask, cllPattern);
