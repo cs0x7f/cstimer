@@ -92,7 +92,14 @@ css = $(addprefix $(dest)/css/, $(shell ls $(src)/css))
 langJS = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.js))
 langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))
 
-all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) $(dest)/cache.manifest $(dest)/sw.js
+version := $(shell git describe --tags --always 2>/dev/null || echo Unspecified)
+
+all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) $(dest)/cache.manifest $(dest)/sw.js version
+
+version: $(langPHP)
+	@echo "Build Version: $(version)"
+	@cp $(src)/lang/langDet.php $(dest)/lang/langDet.php
+	@sed -i 's#@@VERSION@@#$(version)#g' $(dest)/lang/langDet.php
 
 clean:
 	rm -f $(cstimer) $(twisty) $(css) $(langJS) $(langPHP)
