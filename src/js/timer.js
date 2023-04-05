@@ -1517,8 +1517,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'vrcSpeed', 1, PROPERTY_VRCSPEED, [100, [0, 50, 100, 200, 500, 1000], '\u221E|20|10|5|2|1'.split('|')], 1);
 		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
-		regProp('vrc', 'vrcAH', 1, 'Useless pieces in huge cube', ['01', ['00', '01', '10', '11'], ['Hide', 'Border', 'Color', 'Show']], 1);
-		regProp('vrc', 'giiMode', 1, 'Bluetooth Cube Mode', ['n', ['n', 't'], ['Normal', 'Training']], 1);
+		regProp('vrc', 'vrcAH', 1, PROPERTY_VRCAH, ['01', ['00', '01', '10', '11'], PROPERTY_VRCAHS.split('|')], 1);
+		regProp('vrc', 'giiMode', 1, PROPERTY_GIIMODE, ['n', ['n', 't'], PROPERTY_GIIMODES.split('|')], 1);
 		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q', 'ql', 'q2'], ['None', 'Virtual', 'qCube', 'qLast', 'q2Look']], 1);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')], 1);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true], 1);

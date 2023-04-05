@@ -1,5 +1,6 @@
 var recons = execMain(function() {
 	var isEnable;
+	var titleStr = TOOLS_RECONS_TITLE.split('|');
 
 	var div = $('<div style="font-size:0.9em;" />');
 	var reconsClick = $('<div>').append('<a target="_blank" class="exturl click"></a>');
@@ -7,7 +8,8 @@ var recons = execMain(function() {
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
 	var requestBack = $('<span class="click" />');
-	var tableTh = $('<tr>').append($('<th style="padding:0;">').append(methodSelect), '<th>insp</th><th>exec</th><th>htm</th><th>tps</th>');
+	var tableTh = $('<tr>').append($('<th style="padding:0;">').append(methodSelect),
+		'<th>' + titleStr[0] + '</th><th>' + titleStr[1] + '</th><th>' + titleStr[2] + '</th><th>' + titleStr[3] + '</th>');
 
 	function parseMove(moveStr) {
 		var movere = /^([URFDLB]w?|[EMSyxz]|2-2[URFDLB]w)(['2]?)@(\d+)$/;
@@ -322,6 +324,19 @@ var recons = execMain(function() {
 		return endTime - startTime;
 	}
 
+	function cumStepMetric(method, isInsp, times, idx) {
+		var rec = stats.getExtraInfo('recons_' + method, idx);
+		if (!rec) {
+			return -1;
+		}
+		var ret = 0;
+		for (var i = 0; i < rec.data.length; i++) {
+			var stepData = rec.data[i] || [0, 0, 0, 0];
+			ret += isInsp ? stepData[1] - stepData[0] : stepData[2] - stepData[1];
+		}
+		return ret;
+	}
+
 	$(function() {
 		if (typeof tools != "undefined") {
 			tools.regTool('recons', TOOLS_RECONS + '>' + 'step', execFunc);
@@ -345,6 +360,12 @@ var recons = execMain(function() {
 		stats.regExtraInfo('recons_cfop_pt',
 			substepMetric.bind(null, 'cf4op', [0, 0], [0, 2]),
 			['PLL ' + STATS_TIME, kernel.pretty]);
+		stats.regExtraInfo('recons_cfop_it',
+			cumStepMetric.bind(null, 'cf4op', true),
+			['CFOP ' + titleStr[0], kernel.pretty]);
+		stats.regExtraInfo('recons_cfop_et',
+			cumStepMetric.bind(null, 'cf4op', false),
+			['CFOP ' + titleStr[1], kernel.pretty]);
 		kernel.regListener('recons', 'reqrec', reqRecons);
 		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
 		for (var i = 0; i < ranges.length; i++) {
@@ -364,11 +385,13 @@ var recons = execMain(function() {
 
 var caseStat = execMain(function() {
 	var isEnable;
+	var titleStr = TOOLS_RECONS_TITLE.split('|');
 
 	var div = $('<div style="font-size:0.9em;" />');
 	var table = $('<table class="table">');
 	var methodSelect = $('<select>');
-	var tableTh = $('<tr>').append($('<th colspan=2 style="padding:0;">').append(methodSelect), '<th>N</th><th>insp</th><th>exec</th><th>htm</th><th>tps</th>');
+	var tableTh = $('<tr>').append($('<th colspan=2 style="padding:0;">').append(methodSelect),
+		'<th>N</th><th>' + titleStr[0] + '</th><th>' + titleStr[1] + '</th><th>' + titleStr[2] + '</th><th>' + titleStr[3] + '</th>');
 
 	function update() {
 		if (!isEnable) {

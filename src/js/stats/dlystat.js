@@ -1,11 +1,12 @@
 "use strict";
 
 var periodStats = execMain(function() {
+	var dlyOStr1 = TOOLS_DLYSTAT_OPT1.split('|');
 	var dateSelect = $('<select>').append(
-		$('<option>').val('d').html('day'),
-		$('<option>').val('w').html('week'),
-		$('<option>').val('m').html('month'),
-		$('<option>').val('y').html('year')
+		$('<option>').val('d').html(dlyOStr1[0]),
+		$('<option>').val('w').html(dlyOStr1[1]),
+		$('<option>').val('m').html(dlyOStr1[2]),
+		$('<option>').val('y').html(dlyOStr1[3])
 	).val('d');
 
 	var sodSelect = $('<select>');
@@ -14,14 +15,15 @@ var periodStats = execMain(function() {
 		sodSelect.append($('<option>').val(i).html(hh));
 	}
 
+	var dlyOStr2 = TOOLS_DLYSTAT_OPT2.split('|');
 	var sowSelect = $('<select>').append(
-		$('<option>').val(3).html('Sun'),
-		$('<option>').val(4).html('Mon'),
-		$('<option>').val(5).html('Tue'),
-		$('<option>').val(6).html('Wed'),
-		$('<option>').val(0).html('Thu'),
-		$('<option>').val(1).html('Fri'),
-		$('<option>').val(2).html('Sat')
+		$('<option>').val(3).html(dlyOStr2[0]),
+		$('<option>').val(4).html(dlyOStr2[1]),
+		$('<option>').val(5).html(dlyOStr2[2]),
+		$('<option>').val(6).html(dlyOStr2[3]),
+		$('<option>').val(0).html(dlyOStr2[4]),
+		$('<option>').val(1).html(dlyOStr2[5]),
+		$('<option>').val(2).html(dlyOStr2[6])
 	).val(3);
 
 	var statResult = [];
@@ -112,10 +114,11 @@ var periodStats = execMain(function() {
 			return;
 		}
 		var table = $('<table class="table">');
+		var dlyStr = TOOLS_DLYSTAT1.split('|');
 		toolDiv.empty().append(
-			'Period', dateSelect.unbind('change').change(update),
-			' Start of day', sodSelect.unbind('change').change(update),
-			' week', sowSelect.unbind('change').change(update),
+			dlyStr[0], dateSelect.unbind('change').change(update),
+			' ' + dlyStr[1], sodSelect.unbind('change').change(update),
+			' ' + dlyStr[2], sowSelect.unbind('change').change(update),
 			'<br>', table);
 		var sessionData = JSON.parse(kernel.getProp('sessionData'));
 		var sessionN = ~~kernel.getProp('sessionN');
@@ -168,7 +171,7 @@ var periodStats = execMain(function() {
 
 	$(function() {
 		if (typeof tools != "undefined") {
-			tools.regTool('dlystat', 'Daily Statistics', execFunc);
+			tools.regTool('dlystat', TOOLS_DLYSTAT, execFunc);
 		}
 		kernel.regListener('dlystat', 'property', genDiv, /^sessionData$/);
 		stats.regUtil('dlystat', update);
