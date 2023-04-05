@@ -9,7 +9,7 @@ var distribution = execMain(function(kpretty) {
 			return;
 		}
 		div.empty();
-		var times_stats_list = stats.getTimesStatsList();
+		var times_stats_list = stats.getTimesStatsTable();
 		var data = times_stats_list.getMinMaxInt();
 		if (!data) {
 			return;

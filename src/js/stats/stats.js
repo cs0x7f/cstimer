@@ -536,27 +536,34 @@ var stats = execMain(function(kpretty, round, kpround) {
 			sumtableDiv.css('display', 'inline-block');
 		}
 		times_stats_table.getAllStats();
-		var statSrcSelect = $('<select>').change(function(e) {
+		var statSrcSelect = $('<select style="max-width:4em;">').change(function(e) {
 			kernel.setProp('statsrc', $(e.target).val());
 		});
-		statSrcSelect.append($('<option>').val('t').html('time'));
-		var validOpt = ['t'];
+		var statSrc = kernel.getProp('statsrc', 't');
+		var validOpt = [['t', STATS_TIME]];
 		if (curDim != 1) {
 			for (var i = 0; i < curDim; i++) {
-				statSrcSelect.append($('<option>').val('p' + (i + 1)).html('P.' + (i + 1)));
-				validOpt.push('p' + (i + 1));
+				validOpt.push(['p' + (i + 1), 'P.' + (i + 1)]);
 			}
 		}
-		var statSrc = kernel.getProp('statsrc', 't');
-		if (validOpt.indexOf(statSrc) == -1) {
-			statSrcSelect.append($('<option>').val('n').html('select'));
-			statSrcSelect.val('n');
-			validOpt.push('n');
-		} else {
-			statSrcSelect.val(statSrc);
+		var metrics = getValidMetrics();
+		for (var metric in metrics) {
+			validOpt.push(['m' + metric, metrics[metric][0]]);
 		}
+		var isHit = false;
+		for (var i = 0; i < validOpt.length; i++) {
+			statSrcSelect.append($('<option>').val(validOpt[i][0]).html(validOpt[i][1]));
+			if (validOpt[i][0] == statSrc) {
+				isHit = true;
+			}
+		}
+		if (!isHit) {
+			statSrcSelect.append($('<option>').val('n').html('select'));
+			validOpt.push(['n', 'select']);
+			statSrc = 'n';
+		}
+		statSrcSelect.val(statSrc);
 		var shead = [];
-		// s.push('<tr><th></th>');
 		if (times.length > 0) {
 			var idx = times.length - 1;
 			shead.push('<td class="times click" data="cs">' + kpretty(times_stats_table.timeAt(idx)) + '</td>');
@@ -614,9 +621,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 			return timeAt;
 		} else if (statSrc[0] == 'p') {
 			return timeAtDim.bind(undefined, ~~statSrc.slice(1));
-		} else {
-			return timeAt;
+		} else if (statSrc[0] == 'm') {
+			var metric = statSrc.slice(1);
+			return getExtraInfo.bind(null, metric);
 		}
+		return timeAt;
 	}
 
 	function detailTimeLine(idx, time, trimList) {
@@ -1641,9 +1650,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	var timesExtra = [];
 	var extraFuncs = {};
+	var metricsExtra = {};
 
-	function regExtraInfo(key, genFunc) {
+	// metricInfo = [name, prettySingle, prettyAverage]
+	function regExtraInfo(key, genFunc, metricInfo) {
 		extraFuncs[key] = genFunc;
+		if (metricInfo) {
+			metricsExtra[key] = [genFunc, metricInfo];
+		}
 	}
 
 	function getExtraInfo(key, idx) {
@@ -1657,6 +1671,21 @@ var stats = execMain(function(kpretty, round, kpround) {
 			timesExtra[idx][key] = extraFuncs[key](timesAt(idx), idx);
 		}
 		return timesExtra[idx][key];
+	}
+
+	function getValidMetrics() {
+		var metricsValid = {};
+		// check 10 solves at most
+		for (var metric in metricsExtra) {
+			for (var i = Math.max(times.length - 10, 0); i < times.length; i++) {
+				var val = getExtraInfo(metric, i);
+				if (val != -1) {
+					metricsValid[metric] = metricsExtra[metric][1];
+					break;
+				}
+			}
+		}
+		return metricsValid;
 	}
 
 	return {

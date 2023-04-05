@@ -234,7 +234,7 @@ var recons = execMain(function() {
 		if (!isEnable) {
 			return;
 		}
-		var nsolv = stats.getTimesStatsList().timesLen;
+		var nsolv = stats.getTimesStatsTable().timesLen;
 		var nrec = rangeSelect.val();
 		if (nrec == 'single') {
 			nrec = Math.min(1, nsolv);
@@ -312,6 +312,16 @@ var recons = execMain(function() {
 		}
 	}
 
+	function substepMetric(method, start, end, times, idx) {
+		var rec = stats.getExtraInfo('recons_' + method, idx);
+		if (!rec) {
+			return -1;
+		}
+		var startTime = (rec.data[start[0]] || [0, 0, 0, 0])[start[1]];
+		var endTime = (rec.data[end[0]] || [0, 0, 0, 0])[end[1]];
+		return endTime - startTime;
+	}
+
 	$(function() {
 		if (typeof tools != "undefined") {
 			tools.regTool('recons', TOOLS_RECONS + '>' + 'step', execFunc);
@@ -323,6 +333,18 @@ var recons = execMain(function() {
 		stats.regExtraInfo('recons_roux', function(times) {
 			return calcRecons(times, 'roux');
 		});
+		stats.regExtraInfo('recons_cfop_ct',
+			substepMetric.bind(null, 'cf4op', [6, 0], [6, 2]),
+			['cross ' + STATS_TIME, kernel.pretty]);
+		stats.regExtraInfo('recons_cfop_ft',
+			substepMetric.bind(null, 'cf4op', [5, 0], [2, 2]),
+			['F2L ' + STATS_TIME, kernel.pretty]);
+		stats.regExtraInfo('recons_cfop_ot',
+			substepMetric.bind(null, 'cf4op', [1, 0], [1, 2]),
+			['OLL ' + STATS_TIME, kernel.pretty]);
+		stats.regExtraInfo('recons_cfop_pt',
+			substepMetric.bind(null, 'cf4op', [0, 0], [0, 2]),
+			['PLL ' + STATS_TIME, kernel.pretty]);
 		kernel.regListener('recons', 'reqrec', reqRecons);
 		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
 		for (var i = 0; i < ranges.length; i++) {
@@ -352,7 +374,7 @@ var caseStat = execMain(function() {
 		if (!isEnable) {
 			return;
 		}
-		var nsolv = stats.getTimesStatsList().timesLen;
+		var nsolv = stats.getTimesStatsTable().timesLen;
 		var nrec = nsolv;
 		var method = methodSelect.val() || 'PLL';
 		var ident = cubeutil.getIdentData(method);

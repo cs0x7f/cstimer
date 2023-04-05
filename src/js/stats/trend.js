@@ -42,7 +42,7 @@ var trend = execMain(function(kpretty) {
 		ctx.fillText((stat2 > 0 ? "ao" : "mo") + len2, 350, 13);
 		ctx.strokeStyle = '#00f'; ctx.beginPath(); ctx.moveTo(390, 7); ctx.lineTo(450, 7); ctx.stroke();
 
-		var times_stats_list = stats.getTimesStatsList();
+		var times_stats_list = stats.getTimesStatsTable();
 		var data = times_stats_list.getMinMaxInt();
 		if (!data) {
 			return;

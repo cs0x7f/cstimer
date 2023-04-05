@@ -14,7 +14,7 @@ var trainStat = execMain(function() {
 		if (!isEnable) {
 			return;
 		}
-		var nsolv = stats.getTimesStatsList().timesLen;
+		var nsolv = stats.getTimesStatsTable().timesLen;
 		var nrec = nsolv;
 		var method = methodSelect.val() || 'PLL';
 		var ident = cubeutil.getIdentData(method);
