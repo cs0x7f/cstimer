@@ -313,13 +313,13 @@ var GiikerCube = execMain(function() {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
 					DEBUG && console.log('[gancube] v1init find chrct', chrct.uuid);
-					if (chrct.uuid == CHRCT_UUID_F2) {
+					if (matchUUID(chrct.uuid, CHRCT_UUID_F2)) {
 						_chrct_f2 = chrct;
-					} else if (chrct.uuid == CHRCT_UUID_F5) {
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_F5)) {
 						_chrct_f5 = chrct;
-					} else if (chrct.uuid == CHRCT_UUID_F6) {
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_F6)) {
 						_chrct_f6 = chrct;
-					} else if (chrct.uuid == CHRCT_UUID_F7) {
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_F7)) {
 						_chrct_f7 = chrct;
 					}
 				}
@@ -905,6 +905,123 @@ var GiikerCube = execMain(function() {
 		};
 	})();
 
+	var MoyuCube = (function() {
+
+		var _gatt;
+		var _service;
+		var _deviceName;
+		var _chrct_write;
+		var _chrct_read;
+		var _chrct_turn;
+		var _chrct_gyro;
+		var UUID_SUFFIX = '-0000-1000-8000-00805f9b34fb';
+		var SERVICE_UUID = '00001000' + UUID_SUFFIX;
+		var CHRCT_UUID_WRITE = '00001001' + UUID_SUFFIX;
+		var CHRCT_UUID_READ = '00001002' + UUID_SUFFIX;
+		var CHRCT_UUID_TURN = '00001003' + UUID_SUFFIX;
+		var CHRCT_UUID_GYRO = '00001004' + UUID_SUFFIX;
+
+		function init(device) {
+			_deviceName = device.name;
+			return device.gatt.connect().then(function(gatt) {
+				_gatt = gatt;
+				return gatt.getPrimaryService(SERVICE_UUID);
+			}).then(function(service) {
+				_service = service;
+				return _service_data.getCharacteristics();
+			}).then(function(chrcts) {
+				for (var i = 0; i < chrcts.length; i++) {
+					var chrct = chrcts[i]
+					DEBUG && console.log('[moyucube] init find chrct', chrct.uuid);
+					if (matchUUID(chrct.uuid, CHRCT_UUID_WRITE)) {
+						_chrct_write = chrct;
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_READ)) {
+						_chrct_read = chrct;
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_TURN)) {
+						_chrct_turn = chrct;
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_GYRO)) {
+						_chrct_gyro = chrct;
+					}
+				}
+			}).then(function() {
+				_chrct_read.addEventListener('characteristicvaluechanged', onStateChanged.bind(null, 'read'));
+				_chrct_turn.addEventListener('characteristicvaluechanged', onStateChanged.bind(null, 'turn'));
+				_chrct_gyro.addEventListener('characteristicvaluechanged', onStateChanged.bind(null, 'gyro'));
+				_chrct_read.startNotifications();
+				_chrct_turn.startNotifications();
+				_chrct_gyro.startNotifications();
+			});
+		}
+
+		var faceStatus = [0, 0, 0, 0, 0, 0];
+		var curFacelet = mathlib.SOLVED_FACELET;
+		var curCubie = new mathlib.CubieCube();
+		var prevCubie = new mathlib.CubieCube();
+		var timeOffset = 0;
+
+		function onStateChanged(key, event) {
+			if (key != 'turn') {
+				return;
+			}
+			var value = event.target.value;
+			parseTurn(data);
+		}
+
+		function parseTurn(data) {
+			var timestamp = $.now();
+			if (data.byteLength < 1) {
+				return;
+			}
+			var n_moves = data.getUint8(0);
+			if (data.byteLength < 1 + n_moves * 6) {
+				return;
+			}
+			for (var i = 0; i < n_moves; i++) {
+				var offset = 1 + i * 6;
+				var ts =  data.getUint8(offset + 1) << 24
+						| data.getUint8(offset + 0) << 16
+						| data.getUint8(offset + 3) << 8
+						| data.getUint8(offset + 2);
+				ts = Math.round(ts / 65536 * 1000);
+				var face = data.getUint8(offset + 4);
+				var dir = Math.round(data.getUint8(offset + 5) / 36);
+				var prevRot = faceStatus[face];
+				var curRot = faceStatus[face] + dir;
+				faceStatus[face] = (curRot + 9) % 9;
+				var axis = [3, 4, 5, 1, 2, 0][face];
+				var pow = 0;
+				if (prevRot >= 5 && curRot <= 4) {
+					pow = 2;
+				} else if (prevRot <= 4 && curRot >= 5) {
+					pow = 0;
+				} else {
+					continue;
+				}
+				var calcTs = ts + timeOffset;
+				if (timeOffset == 0 || Math.abs(timestamp - calcTs) > 2000) {
+					timeOffset = timestamp - ts;
+					calcTs = timestamp;
+				}
+				var m = axis * 3 + power;
+				DEBUG && console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(power));
+				mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+				mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+				curFacelet = curCubie.toFaceCube();
+				callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(power)], calcTs, _deviceName);
+				var tmp = curCubie;
+				curCubie = prevCubie;
+				prevCubie = tmp;
+			}
+		}
+
+		return {
+			init: init,
+			opservs: [SERVICE_UUID],
+			getBatteryLevel: $.noop,
+			clear: $.noop
+		}
+	})();
+
 	function onHardwareEvent(info, event) {
 		if (info == 'disconnect') {
 			logohint.push('Bluetooth disconnected!');
@@ -944,8 +1061,10 @@ var GiikerCube = execMain(function() {
 					namePrefix: 'GoCube'
 				}, {
 					namePrefix: 'Rubiks'
+				}, {
+					namePrefix: 'MHC'
 				}],
-				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
+				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs),
 				optionalManufacturerData: [0x0001],
 			});
 		}).then(function(device) {
@@ -961,6 +1080,9 @@ var GiikerCube = execMain(function() {
 			} else if (device.name.startsWith('GoCube') || device.name.startsWith('Rubiks')) {
 				cube = GoCube;
 				return GoCube.init(device);
+			} else if (device.name.startsWith('MHC')) {
+				cube = MoyuCube;
+				return MoyuCube.init(device);
 			} else {
 				return Promise.reject('Cannot detect device type');
 			}
