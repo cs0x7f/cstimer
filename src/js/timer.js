@@ -1039,7 +1039,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var isReseted = false;
 
 		function procSignal(signal, value) {
-			if (signal == 'scramble') {
+			if (signal == 'scramble' || signal == 'scrambleX') {
 				curScrType = value[0];
 				curScramble = value[1];
 				var puzzle = tools.puzzleType(curScrType);
@@ -1086,6 +1086,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		$(function() {
 			regListener('timer', 'scramble', procSignal);
+			regListener('timer', 'scrambleX', procSignal);
 			div.appendTo("#container");
 		});
 		return {
