@@ -5,6 +5,10 @@ var GiikerCube = execMain(function() {
 	var cube = undefined;
 	var _device = null;
 
+	function matchUUID(uuid1, uuid2) {
+		return uuid1.toUpperCase() == uuid2.toUpperCase();
+	}
+
 	var GiikerCube = (function() {
 
 		var _gatt = null;
@@ -434,9 +438,9 @@ var GiikerCube = execMain(function() {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
 					DEBUG && console.log('[gancube] v2init find chrct', chrct.uuid);
-					if (chrct.uuid == CHRCT_UUID_V2READ) {
+					if (matchUUID(chrct.uuid, CHRCT_UUID_V2READ)) {
 						_chrct_v2read = chrct;
-					} else if (chrct.uuid == CHRCT_UUID_V2WRITE) {
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_V2WRITE)) {
 						_chrct_v2write = chrct;
 					}
 				}
@@ -476,11 +480,11 @@ var GiikerCube = execMain(function() {
 				for (var i = 0; i < services.length; i++) {
 					var service = services[i];
 					DEBUG && console.log('[gancube] checkHardware find service', service.uuid);
-					if (service.uuid == SERVICE_UUID_META) {
+					if (matchUUID(service.uuid, SERVICE_UUID_META)) {
 						_service_meta = service;
-					} else if (service.uuid == SERVICE_UUID_DATA) {
+					} else if (matchUUID(service.uuid, SERVICE_UUID_DATA)) {
 						_service_data = service;
-					} else if (service.uuid == SERVICE_UUID_V2DATA) {
+					} else if (matchUUID(service.uuid, SERVICE_UUID_V2DATA)) {
 						_service_v2data = service;
 					}
 				}
@@ -931,7 +935,7 @@ var GiikerCube = execMain(function() {
 				filters: [{
 					namePrefix: 'Gi'
 				}, {
-					namePrefix: 'Mi Smart Magic Cube'
+					namePrefix: 'Mi Smart'
 				}, {
 					namePrefix: 'GAN'
 				}, {
@@ -940,12 +944,6 @@ var GiikerCube = execMain(function() {
 					namePrefix: 'GoCube'
 				}, {
 					namePrefix: 'Rubiks'
-				},{
-					services: ['0000fe95-0000-1000-8000-00805f9b34fb']
-				}, {
-					services: [GiikerCube.opservs[0]]
-				}, {
-					services: [GanCube.opservs[2]]
 				}],
 				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs),
 				optionalManufacturerData: [0x0001],
