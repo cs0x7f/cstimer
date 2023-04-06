@@ -751,9 +751,10 @@ var GiikerCube = execMain(function() {
 			_service_data = null;
 			_service_meta = null;
 			_service_v2data = null;
+			var result = Promise.resolve();
 			if (_chrct_v2read) {
 				_chrct_v2read.removeEventListener('characteristicvaluechanged', onStateChangedV2);
-				_chrct_v2read.stopNotifications();
+				result = _chrct_v2read.stopNotifications();
 				_chrct_v2read = null;
 			}
 			deviceMac = null;
@@ -765,6 +766,7 @@ var GiikerCube = execMain(function() {
 			prevTimestamp = 0;
 			prevMoveCnt = -1;
 			batteryLevel = 100;
+			return result;
 		}
 
 		return {
@@ -1091,12 +1093,13 @@ var GiikerCube = execMain(function() {
 
 	function stop() {
 		if (!_device) {
-			return;
+			return Promise.resolve();
 		}
-		cube && cube.clear();
-		_device.removeEventListener('gattserverdisconnected', onDisconnect);
-		_device.gatt.disconnect();
-		_device = null;
+		return Promise.resolve(cube && cube.clear()).then(function () {
+			_device.removeEventListener('gattserverdisconnected', onDisconnect);
+			_device.gatt.disconnect();
+			_device = null;
+		});
 	}
 
 	var callback = $.noop;

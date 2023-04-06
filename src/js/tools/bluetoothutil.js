@@ -322,7 +322,7 @@ var giikerutil = execMain(function(CubieCube) {
 	function giikerCallback(facelet, prevMoves, lastTimestamp, hardware) {
 		lastTimestamp = lastTimestamp || $.now();
 		connectedStr = hardware + ': Connected | ' + (batValue || '??') + '%';
-		connectClick.html(connectedStr).removeClass('click').unbind('click');
+		connectClick.html(connectedStr).addClass('click').unbind('click').click(disconnect);
 		curRawState = facelet;
 		curRawCubie.fromFacelet(curRawState);
 		CubieCube.EdgeMult(solvedStateInv, curRawCubie, curCubie);
@@ -406,6 +406,14 @@ var giikerutil = execMain(function(CubieCube) {
 			return GiikerCube.init();
 		} else {
 			return Promise.resolve();
+		}
+	}
+
+	function disconnect() {
+		if (GiikerCube.isConnected() && confirm("Disconnect?")) {
+			GiikerCube.stop().then(function () {
+				evtCallback('disconnect');
+			});
 		}
 	}
 
