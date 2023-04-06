@@ -224,6 +224,8 @@ var mathlib = (function() {
 		this.ea = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
 	}
 
+	CubieCube.SOLVED = new CubieCube();
+
 	CubieCube.EdgeMult = function(a, b, prod) {
 		for (var ed = 0; ed < 12; ed++) {
 			prod.ea[ed] = a.ea[b.ea[ed] >> 1] ^ (b.ea[ed] & 1);
@@ -257,6 +259,7 @@ var mathlib = (function() {
 	}
 
 	CubieCube.prototype.isEqual = function(c) {
+		c = c || CubieCube.SOLVED;
 		for (var i = 0; i < 8; i++) {
 			if (this.ca[i] != c.ca[i]) {
 				return false;

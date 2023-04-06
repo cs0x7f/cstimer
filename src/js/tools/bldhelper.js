@@ -353,7 +353,7 @@ var bldhelper = execMain(function() {
 		var s2r = function(key) {
 			return bldSets[key][0] + '-' + bldSets[key][1];
 		};
-		setDiv = setDiv && setDiv.empty() || $('<table style="border-spacing:0">');
+		setDiv.empty();
 		var cbufSel = $('<select data="bufcorn" id="cbuff0">');
 		var cbufFlt = $('<select id="cbuff1" style="width:2em">');
 		var cFixTxt = $('<input id="cfix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">').val(bldSets['cfix']);
@@ -390,8 +390,12 @@ var bldhelper = execMain(function() {
 		ebufFlt.val(bldSets['ebuff'][1]);
 		parityFlt.val(bldSets['ceparity']);
 		var ret = genBLDRndState(bldSets);
+		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schemeSelect)));
+		setDiv.append($('<tr>').append($('<td colspan=3 style="width:0;">').append(codeDiv)));
+		setDiv.append($('<tr>').append($('<td colspan=3 style="height:0.2em;border:none;">')));
+		//Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
 		setDiv.append($('<tr>').append('<th colspan=3>Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
-		setDiv.append($('<tr>').append(parityFlt, '<th>Corner</th><th>Edge</th>'));
+		setDiv.append($('<tr>').append($('<td>').append(parityFlt), '<th>Corner</th><th>Edge</th>'));
 		setDiv.append($('<tr>').append('<td>buffer</td>', $('<td>').append(cbufSel, cbufFlt), $('<td>').append(ebufSel, ebufFlt)));
 		setDiv.append($('<tr>').append('<td>fixed</td>', $('<td>').append(cFixTxt), $('<td>').append(eFixTxt)));
 		setDiv.append($('<tr>').append('<td>flip</td>', $('<td>').append(cErrTxt), $('<td>').append(eErrTxt)));
@@ -402,6 +406,7 @@ var bldhelper = execMain(function() {
 		)));
 		setDiv.find('input,select').css({'padding':0}).unbind('change').change(procBLDSetEvent);
 		setDiv.find('span.click').unbind('click').click(procBLDSetEvent);
+		schemeSelect.unbind('change').change(procSchemeChange);
 		setDiv.find('td,th').css({'padding':0});
 		return setDiv;
 	}
@@ -510,9 +515,24 @@ var bldhelper = execMain(function() {
 			ea[edgeMap[i]] = edgeMap[ret[2][i][0]] << 1 | ret[2][i][1];
 		}
 		var cc = new mathlib.CubieCube();
+		var rndX = mathlib.rndEl(["", "Rw", "Rw2", "Rw'", "Fw", "Fw'"]);
+		var rndY = mathlib.rndEl(["", "Uw", "Uw2", "Uw'"]);
+		var move1 = cc.selfMoveStr(rndX);
+		var move2 = cc.selfMoveStr(rndY);
 		cc.init(ca, ea);
+		cc.ori = 0;
+		if (cc.isEqual()) {
+			return "U U'";
+		}
+		//state = toGen * rotX * rotY => toGen = state * rotY^-1 * rotX^-1
+		if (move2 != null) {
+			cc.selfMoveStr("URFDLB".charAt(~~(move2 / 3)) + " 2'".charAt(move2 % 3), true);
+		}
+		if (move1 != null) {
+			cc.selfMoveStr("URFDLB".charAt(~~(move1 / 3)) + " 2'".charAt(move1 % 3), true);
+		}
 		var facelet = cc.toFaceCube();
-		return scramble_333.genFacelet(facelet).replace(/ +/g, ' ') || "U U'";
+		return (scramble_333.genFacelet(facelet) + ' ' + rndX + ' ' + rndY).replace(/ +/g, ' ') || "U U'";
 	}
 
 	scrMgr.reg('nocache_333bldspec', function() {
@@ -642,8 +662,8 @@ var bldhelper = execMain(function() {
 	}
 
 	var scheme = Speffz;
-	var codeDiv = $('<div>');
-	var setDiv = $('<table style="border-spacing:0" class="table">');
+	var codeDiv = $('<div style="text-align:left;">');
+	var setDiv = $('<table style="border-spacing:0; border:none;" class="table">');
 
 	function calcResult() {
 		var scramble = tools.getCurScramble();
@@ -660,8 +680,7 @@ var bldhelper = execMain(function() {
 			fdiv.html(IMAGE_UNAVAILABLE);
 			return;
 		}
-		fdiv.empty().append(schemeSelect, codeDiv, setDiv);
-		schemeSelect.unbind('change').change(procSchemeChange);
+		fdiv.empty().append(setDiv);
 		genBLDSetTable(bldSets, setDiv);
 		calcResult();
 	}
