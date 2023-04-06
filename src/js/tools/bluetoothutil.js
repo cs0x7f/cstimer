@@ -174,9 +174,10 @@ var giikerutil = execMain(function(CubieCube) {
 		if (!fdiv) {
 			return;
 		}
-		connectClick.html(connectedStr).removeClass('click').unbind('click');
-		if (!GiikerCube.isConnected()) {
-			connectClick.html('Bluetooth: Connect').addClass('click').click(init);
+		if (GiikerCube.isConnected()) {
+			connectClick.html(connectedStr).addClass('click').unbind('click').click(disconnect);
+		} else {
+			connectClick.html('Bluetooth: Connect').addClass('click').unbind('click').click(init);
 		}
 		var content = $('<div></div>');
 		if (!(kernel.getProp('giiVRC') != 'n')) {
