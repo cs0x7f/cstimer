@@ -583,8 +583,12 @@ var bldhelper = execMain(function() {
 		}
 		var ret = [[], []];
 		for (var i = 0; i < ccode.length; i++) {
-			var val = ccode[i];
-			ret[0].push(corns[val & 0x7].charAt((3 - (val >> 3)) % 3));
+			var val = ccode[i] & 0x7;
+			var ori = ccode[i] >> 3;
+			if (0xa5 >> val & 0x1) {
+				ori = (3 - ori) % 3;
+			}
+			ret[0].push(corns[val].charAt((3 - ori) % 3));
 			if (i % 2 == 1) {
 				ret[0].push(' ');
 			}
@@ -599,29 +603,41 @@ var bldhelper = execMain(function() {
 		return ret;
 	}
 
+	function updateSchemeSelect() {
+		if (scheme == Speffz) {
+			schemeSelect.val('speffz');
+		} else if (scheme == ChiChu) {
+			schemeSelect.val('chichu');
+		} else {
+			schemeSelect.val('customed');
+		}
+	}
+
 	function procSchemeChange(e) {
 		var target = $(e.target);
 		kernel.blur();
 		var val = target.val();
 		var data = target.attr('data');
 		if (data == 'scheme') {
-			target.val('Scheme');
 			if (val == 'speffz') {
 				scheme = Speffz;
 			} else if (val == 'chichu') {
 				scheme = ChiChu;
-			} else if (val == 'custom') {
+			} else if (val == 'custom' || val == 'customed') {
 				var ret = prompt('Code for ' + pieces, scheme);
 				if (!ret) {
+					updateSchemeSelect();
 					return;
 				}
-				if (!/^([0-9A-Z]{3} ){8}([0-9A-Z]{2} ){11}[0-9A-Z]{2}$/i.exec(ret)) {
+				if (!/^([^\s]{3} ){8}([^\s]{2} ){11}[^\s]{2}$/i.exec(ret)) {
 					alert('Invalid Scheme!');
+					updateSchemeSelect();
 					return;
 				}
 				scheme = ret.toUpperCase();
 			}
 		}
+		updateSchemeSelect();
 		calcResult();
 	}
 
@@ -644,7 +660,7 @@ var bldhelper = execMain(function() {
 			fdiv.html(IMAGE_UNAVAILABLE);
 			return;
 		}
-		fdiv.empty().append(setDiv, schemeSelect, codeDiv);
+		fdiv.empty().append(schemeSelect, codeDiv, setDiv);
 		schemeSelect.unbind('change').change(procSchemeChange);
 		genBLDSetTable(bldSets, setDiv);
 		calcResult();
@@ -652,10 +668,11 @@ var bldhelper = execMain(function() {
 
 	$(function() {
 		schemeSelect = $('<select data="scheme">');
-		var schemes = [['', 'Scheme'], ['speffz', 'Speffz'], ['chichu', 'ChiChu'], ['custom', 'Custom']];
+		var schemes = [['customed', 'Customed'], ['speffz', 'Speffz'], ['chichu', 'ChiChu'], ['custom', 'Custom']];
 		for (var i = 0; i < schemes.length; i++) {
 			schemeSelect.append('<option value="' + schemes[i][0] + '">' + schemes[i][1] + '</option>');
 		}
+		updateSchemeSelect();
 		tools.regTool('bldhelper', TOOLS_BLDHELPER, execFunc);
 	});
 });
