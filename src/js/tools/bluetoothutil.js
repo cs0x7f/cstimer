@@ -390,6 +390,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function evtCallback(info, event) {
 		if (info == 'disconnect') {
+			logohint.push('Bluetooth disconnected!');
 			connectClick.html(connectedStr).removeClass('click').unbind('click');
 			if (!GiikerCube.isConnected()) {
 				connectClick.html('Bluetooth: Connect').addClass('click').click(init);
@@ -404,7 +405,9 @@ var giikerutil = execMain(function(CubieCube) {
 		GiikerCube.setCallback(giikerCallback);
 		GiikerCube.setEventCallback(evtCallback);
 		if (!GiikerCube.isConnected()) {
-			return GiikerCube.init();
+			return GiikerCube.init().then(function () {
+				logohint.push('Bluetooth successfully connected!');
+			});
 		} else {
 			return Promise.resolve();
 		}
