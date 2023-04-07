@@ -345,6 +345,22 @@ var bldhelper = execMain(function() {
 				'encodeLR': [0, 16],
 				'ceparity': 0x1
 			};
+		} else if (key == 'bldsEdge' || key == 'bldsCorn') {
+			var val = ~~obj.val();
+			var pre = key == 'bldsEdge' ? 'e' : 'c';
+			if (val == 1) { // solved
+				bldSets[pre + 'buff'] = [bldSets[pre + 'buff'][0], 0x1];
+				bldSets[pre + 'fix'] = "";
+				bldSets[pre + 'nerrLR'] = [0, 0];
+				bldSets[pre + 'scycLR'] = pre == 'e' ? [0, 5] : [0, 3];
+				bldSets[pre + 'ncodeLR'] = [0, 0];
+			} else if (val == 2) { // any
+				bldSets[pre + 'buff'] = [bldSets[pre + 'buff'][0], 0x7];
+				bldSets[pre + 'fix'] = "";
+				bldSets[pre + 'nerrLR'] = pre == 'e' ? [0, 11] : [0, 7];
+				bldSets[pre + 'scycLR'] = pre == 'e' ? [0, 5] : [0, 3];
+				bldSets[pre + 'ncodeLR'] = pre == 'e' ? [0, 16] : [0, 10];
+			}
 		}
 		genBLDSetTable(bldSets, setDiv);
 	}
@@ -354,12 +370,14 @@ var bldhelper = execMain(function() {
 			return bldSets[key][0] + '-' + bldSets[key][1];
 		};
 		setDiv.empty();
+		var cPreSel = $('<select id="bldsCorn">');
 		var cbufSel = $('<select data="bufcorn" id="cbuff0">');
 		var cbufFlt = $('<select id="cbuff1" style="width:2em">');
 		var cFixTxt = $('<input id="cfix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">').val(bldSets['cfix']);
 		var cErrTxt = $('<input id="cnerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('cnerrLR'));
 		var cNScTxt = $('<input id="cscycLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('cscycLR'));
 		var cNCoTxt = $('<input id="cncodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('cncodeLR'));
+		var ePreSel = $('<select id="bldsEdge">');
 		var ebufSel = $('<select data="bufedge" id="ebuff0">');
 		var ebufFlt = $('<select id="ebuff1" style="width:2em">');
 		var eFixTxt = $('<input id="efix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">').val(bldSets['efix']);
@@ -384,6 +402,13 @@ var bldhelper = execMain(function() {
 			var cur = pieces.slice(32 + i * 3, 32 + i * 3 + 2);
 			ebufSel.append('<option value="' + i + '">' + cur + '</option>');
 		}
+		var pres = [['$', 0], ['solved', 1], ['any', 2]];
+		for (var i = 0; i < pres.length; i++) {
+			cPreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Corner') + '</option>');
+			ePreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Edge') + '</option>');
+		}
+		cPreSel.val(0);
+		ePreSel.val(0);
 		cbufSel.val(bldSets['cbuff'][0]);
 		ebufSel.val(bldSets['ebuff'][0]);
 		cbufFlt.val(bldSets['cbuff'][1]);
@@ -395,14 +420,16 @@ var bldhelper = execMain(function() {
 		setDiv.append($('<tr>').append($('<td colspan=3 style="height:0.2em;border:none;">')));
 		//Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
 		setDiv.append($('<tr>').append('<th colspan=3>Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
-		setDiv.append($('<tr>').append($('<td>').append(parityFlt), '<th>Corner</th><th>Edge</th>'));
+		setDiv.append($('<tr>').append($('<td>').append(parityFlt), $('<td>').append(cPreSel), $('<td>').append(ePreSel)));
 		setDiv.append($('<tr>').append('<td>buffer</td>', $('<td>').append(cbufSel, cbufFlt), $('<td>').append(ebufSel, ebufFlt)));
 		setDiv.append($('<tr>').append('<td>fixed</td>', $('<td>').append(cFixTxt), $('<td>').append(eFixTxt)));
 		setDiv.append($('<tr>').append('<td>flip</td>', $('<td>').append(cErrTxt), $('<td>').append(eErrTxt)));
 		setDiv.append($('<tr>').append('<td>ex-cyc</td>', $('<td>').append(cNScTxt), $('<td>').append(eNScTxt)));
 		setDiv.append($('<tr>').append('<td>#codes</td>', $('<td>').append(cNCoTxt), $('<td>').append(eNCoTxt)));
+		var prob = ret[0] / 43252003274489856000;
 		setDiv.append($('<tr>').append('<td>probs</td>', $('<td colspan=2>').append(
-			ret[0] < 432520032744 ? ret[0] : (Math.round(ret[0] / 43252003274489856000 * 100000000) / 1000000 + '%')
+			(ret[0] == 0 ? 0 : prob < 1e-3 ? prob.toExponential(3) : Math.round(prob * 1000000) / 10000 + '%') +
+			(prob < 1e-8 ? ('<br>N=' + (ret[0] > 1e8 ? ret[0].toExponential(3) : ret[0])) : '')
 		)));
 		setDiv.find('input,select').css({'padding':0}).unbind('change').change(procBLDSetEvent);
 		setDiv.find('span.click').unbind('click').click(procBLDSetEvent);
