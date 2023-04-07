@@ -1026,7 +1026,6 @@ var GiikerCube = execMain(function() {
 
 	function onHardwareEvent(info, event) {
 		if (info == 'disconnect') {
-			logohint.push('Bluetooth disconnected!');
 			stop();
 		}
 		evtCallback && evtCallback(info, event);
