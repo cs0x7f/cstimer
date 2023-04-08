@@ -262,180 +262,82 @@ var bldhelper = execMain(function() {
 		return p & 1;
 	}
 
-	var bldSets = {
-		'cbuff': [0, 0x7],
-		'cfix': "",
-		'cnerrLR': [0, 7],
-		'cscycLR': [0, 3],
-		'cncodeLR': [0, 10],
-		'ebuff': [1, 0x7],
-		'efix': "",
-		'enerrLR': [0, 11],
-		'escycLR': [0, 5],
-		'encodeLR': [0, 16],
-		'ceparity': 0x3
-	};
-
-	function procBLDSetEvent(e) {
-		var obj = $(e.target);
-		var key = obj.attr('id')
-		if (!key) {
-			return;
-		}
-		if (/^[ce]buff[01]$/.exec(key)) {
-			bldSets[key.slice(0, 5)][~~key[5]] = ~~obj.val();
-			calcResult();
-		} else if (key.endsWith('LR')) {
-			var m = /^(\d{1,2})-(\d{1,2})$/.exec(obj.val());
-			if (!m) {
-				m = /^((\d{1,2}))$/.exec(obj.val());
-			}
-			if (!m) {
-				return;
-			}
-			var v1 = ~~m[1];
-			var v2 = ~~m[2];
-			bldSets[key] = [Math.min(v1, v2), Math.max(v1, v2)];
-		} else if (key == 'ceparity') {
-			bldSets[key] = ~~obj.val();
-		} else if (key.endsWith('fix')){
-			var cubies = pieces.split(' ');
-			var fixs = obj.val().toUpperCase().split(' ');
-			var fixMap = {};
-			var val = [];
-			var fixRe = /^(UR|UF|UL|UB|DR|DF|DL|DB|FR|FL|BL|BR)(\+?)$/;
-			if (key == 'cfix') {
-				var fixRe = /^(UFR|UFL|UBL|UBR|DFR|DFL|DBL|DBR)(\+?)$/;
-			}
-			for (var i = 0; i < fixs.length; i++) {
-				var m = fixRe.exec(fixs[i]);
-				if (m) {
-					fixMap[m[1]] = m[2]
-				}
-			}
-			for (var cubie in fixMap) {
-				val.push(cubie + fixMap[cubie]);
-			}
-			bldSets[key] = val.join(' ');
-		} else if (key == 'bldsClr') {
-			bldSets = {
-				'cbuff': [0, 0x7],
-				'cfix': "",
-				'cnerrLR': [0, 7],
-				'cscycLR': [0, 3],
-				'cncodeLR': [0, 10],
-				'ebuff': [1, 0x7],
-				'efix': "",
-				'enerrLR': [0, 11],
-				'escycLR': [0, 5],
-				'encodeLR': [0, 16],
-				'ceparity': 0x3
-			};
-		} else if (key == 'bldsEg') {
-			bldSets = {
-				'cbuff': [0, 0x7],
-				'cfix': "UBL DFR+",
-				'cnerrLR': [0, 7],
-				'cscycLR': [0, 3],
-				'cncodeLR': [0, 10],
-				'ebuff': [1, 0x7],
-				'efix': "DR DF+",
-				'enerrLR': [0, 11],
-				'escycLR': [0, 5],
-				'encodeLR': [0, 16],
-				'ceparity': 0x1
-			};
-		} else if (key == 'bldsEdge' || key == 'bldsCorn') {
-			var val = ~~obj.val();
-			var pre = key == 'bldsEdge' ? 'e' : 'c';
-			if (val == 1) { // solved
-				bldSets[pre + 'buff'] = [bldSets[pre + 'buff'][0], 0x1];
-				bldSets[pre + 'fix'] = "";
-				bldSets[pre + 'nerrLR'] = [0, 0];
-				bldSets[pre + 'scycLR'] = pre == 'e' ? [0, 5] : [0, 3];
-				bldSets[pre + 'ncodeLR'] = [0, 0];
-			} else if (val == 2) { // any
-				bldSets[pre + 'buff'] = [bldSets[pre + 'buff'][0], 0x7];
-				bldSets[pre + 'fix'] = "";
-				bldSets[pre + 'nerrLR'] = pre == 'e' ? [0, 11] : [0, 7];
-				bldSets[pre + 'scycLR'] = pre == 'e' ? [0, 5] : [0, 3];
-				bldSets[pre + 'ncodeLR'] = pre == 'e' ? [0, 16] : [0, 10];
-			}
-		}
-		genBLDSetTable(bldSets, setDiv);
-	}
-
-	function genBLDSetTable(bldSets, setDiv) {
-		var s2r = function(key) {
-			return bldSets[key][0] + '-' + bldSets[key][1];
-		};
-		setDiv.empty();
-		var cPreSel = $('<select id="bldsCorn">');
-		var cbufSel = $('<select data="bufcorn" id="cbuff0">');
-		var cbufFlt = $('<select id="cbuff1" style="width:2em">');
-		var cFixTxt = $('<input id="cfix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">').val(bldSets['cfix']);
-		var cErrTxt = $('<input id="cnerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('cnerrLR'));
-		var cNScTxt = $('<input id="cscycLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('cscycLR'));
-		var cNCoTxt = $('<input id="cncodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('cncodeLR'));
-		var ePreSel = $('<select id="bldsEdge">');
-		var ebufSel = $('<select data="bufedge" id="ebuff0">');
-		var ebufFlt = $('<select id="ebuff1" style="width:2em">');
-		var eFixTxt = $('<input id="efix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">').val(bldSets['efix']);
-		var eErrTxt = $('<input id="enerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('enerrLR'));
-		var eNScTxt = $('<input id="escycLR" type="text" style="width:4em" value=""> pattern="\d{1,2}-\d{1,2}"').val(s2r('escycLR'));
-		var eNCoTxt = $('<input id="encodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">').val(s2r('encodeLR'));
-		var parityFlt = $('<select id="ceparity">');
-		var bflts = [['any', 0x7], ['ok', 0x1], ['flip', 0x2], ['move', 0x4], ['not ok', 0x6], ['ok/flip', 0x3], ['ok/move', 0x5]];
-		for (var i = 0; i < bflts.length; i++) {
-			cbufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
-			ebufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
-		}
-		var pflts = [['e/o any', 0x3], ['even', 0x1], ['odd', 0x2]];
-		for (var i = 0; i < pflts.length; i++) {
-			parityFlt.append('<option value="' + pflts[i][1] + '">' + pflts[i][0] + '</option>');
-		}
+	function getBLDcode(c, scheme, cbuf, ebuf) {
+		var corns = [];
 		for (var i = 0; i < 8; i++) {
-			var cur = pieces.slice(i * 4, i * 4 + 3);
-			cbufSel.append('<option value="' + i + '">' + cur + '</option>');
+			corns[i] = scheme.slice(i * 4, i * 4 + 3);
 		}
+		var edges = [];
 		for (var i = 0; i < 12; i++) {
-			var cur = pieces.slice(32 + i * 3, 32 + i * 3 + 2);
-			ebufSel.append('<option value="' + i + '">' + cur + '</option>');
+			edges[i] = scheme.slice(32 + i * 3, 32 + i * 3 + 2);
 		}
-		var pres = [['$', 0], ['solved', 1], ['any', 2]];
-		for (var i = 0; i < pres.length; i++) {
-			cPreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Corner') + '</option>');
-			ePreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Edge') + '</option>');
+
+		var ccode = [];
+		var ecode = [];
+		var cc = new mathlib.CubieCube();
+		cc.init(c.ca, c.ea);
+
+		var done = 1 << cbuf;
+		for (var i = 0; i < 8; i++) {
+			if (cc.ca[i] == i) {
+				done |= 1 << i;
+			}
 		}
-		cPreSel.val(0);
-		ePreSel.val(0);
-		cbufSel.val(bldSets['cbuff'][0]);
-		ebufSel.val(bldSets['ebuff'][0]);
-		cbufFlt.val(bldSets['cbuff'][1]);
-		ebufFlt.val(bldSets['ebuff'][1]);
-		parityFlt.val(bldSets['ceparity']);
-		var ret = genBLDRndState(bldSets);
-		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schemeSelect)));
-		setDiv.append($('<tr>').append($('<td colspan=3 style="width:0;">').append(codeDiv)));
-		setDiv.append($('<tr>').append($('<td colspan=3 style="height:0.2em;border:none;">')));
-		//Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
-		setDiv.append($('<tr>').append('<th colspan=3>Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
-		setDiv.append($('<tr>').append($('<td>').append(parityFlt), $('<td>').append(cPreSel), $('<td>').append(ePreSel)));
-		setDiv.append($('<tr>').append('<td>buffer</td>', $('<td>').append(cbufSel, cbufFlt), $('<td>').append(ebufSel, ebufFlt)));
-		setDiv.append($('<tr>').append('<td>fixed</td>', $('<td>').append(cFixTxt), $('<td>').append(eFixTxt)));
-		setDiv.append($('<tr>').append('<td>flip</td>', $('<td>').append(cErrTxt), $('<td>').append(eErrTxt)));
-		setDiv.append($('<tr>').append('<td>ex-cyc</td>', $('<td>').append(cNScTxt), $('<td>').append(eNScTxt)));
-		setDiv.append($('<tr>').append('<td>#codes</td>', $('<td>').append(cNCoTxt), $('<td>').append(eNCoTxt)));
-		var prob = ret[0] / 43252003274489856000;
-		setDiv.append($('<tr>').append('<td>probs</td>', $('<td colspan=2>').append(
-			(ret[0] == 0 ? 0 : prob < 1e-3 ? prob.toExponential(3) : Math.round(prob * 1000000) / 10000 + '%') +
-			(prob < 1e-8 ? ('<br>N=' + (ret[0] > 1e8 ? ret[0].toExponential(3) : ret[0])) : '')
-		)));
-		setDiv.find('input,select').css({'padding':0}).unbind('change').change(procBLDSetEvent);
-		setDiv.find('span.click').unbind('click').click(procBLDSetEvent);
-		schemeSelect.unbind('change').change(procSchemeChange);
-		setDiv.find('td,th').css({'padding':0});
-		return setDiv;
+		while (done != 0xff) {
+			var target = cc.ca[cbuf] & 0x7;
+			if (target == cbuf) { // buffer in place, swap with any unsolved
+				var i = -1;
+				while (done >> ++i & 1) {}
+				mathlib.circle(cc.ca, i, cbuf);
+				ccode.push(i);
+				continue;
+			}
+			ccode.push(cc.ca[cbuf]);
+			cc.ca[cbuf] = (cc.ca[target] + (cc.ca[cbuf] & 0xf8)) % 24;
+			cc.ca[target] = target;
+			done |= 1 << target;
+		}
+
+		done = 1 << ebuf;
+		for (var i = 0; i < 12; i++) {
+			if (cc.ea[i] == i * 2) {
+				done |= 1 << i;
+			}
+		}
+		while (done != 0xfff) {
+			var target = cc.ea[ebuf] >> 1;
+			if (target == ebuf) { // buffer in place, swap with any unsolved
+				var i = -1;
+				while (done >> ++i & 1) {}
+				mathlib.circle(cc.ea, i, ebuf);
+				ecode.push(i * 2);
+				continue;
+			}
+			ecode.push(cc.ea[ebuf]);
+			cc.ea[ebuf] = cc.ea[target] ^ (cc.ea[ebuf] & 1);
+			cc.ea[target] = target << 1;
+			done |= 1 << target;
+		}
+		var ret = [[], []];
+		for (var i = 0; i < ccode.length; i++) {
+			var val = ccode[i] & 0x7;
+			var ori = ccode[i] >> 3;
+			if (0xa5 >> val & 0x1) {
+				ori = (3 - ori) % 3;
+			}
+			ret[0].push(corns[val].charAt((3 - ori) % 3));
+			if (i % 2 == 1) {
+				ret[0].push(' ');
+			}
+		}
+		for (var i = 0; i < ecode.length; i++) {
+			var val = ecode[i];
+			ret[1].push(edges[val >> 1].charAt(val & 1));
+			if (i % 2 == 1) {
+				ret[1].push(' ');
+			}
+		}
+		return ret;
 	}
 
 	function genBLDRndState(bldSets, doScramble) {
@@ -566,112 +468,101 @@ var bldhelper = execMain(function() {
 		return genBLDRndState(bldSets, true);
 	});
 
-	// bld encoder
 	var pieces = 'UFR UFL UBL UBR DFR DFL DBL DBR UR UF UL UB DR DF DL DB FR FL BL BR';
 	var ChiChu = 'JLK ABC DFE GHI XYZ WNM OPQ RTS GH AB CD EF OP IJ KL MN QR ST WX YZ';
 	var Speffz = 'CJM DIF ARE BQN VKP ULG XSH WTO BM CI DE AQ VO UK XG WS JP LF RH TN';
-	var schemeSelect;
+	var bldSets = {
+		'cbuff': [0, 0x7],
+		'cfix': "",
+		'cnerrLR': [0, 7],
+		'cscycLR': [0, 3],
+		'cncodeLR': [0, 10],
+		'ebuff': [1, 0x7],
+		'efix': "",
+		'enerrLR': [0, 11],
+		'escycLR': [0, 5],
+		'encodeLR': [0, 16],
+		'ceparity': 0x3,
+		'scheme': Speffz
+	};
 
-	function getBLDcode(c, scheme, cbuf, ebuf) {
-		var corns = [];
-		for (var i = 0; i < 8; i++) {
-			corns[i] = scheme.slice(i * 4, i * 4 + 3);
+	function procBLDSetEvent(e) {
+		var obj = $(e.target);
+		var key = obj.attr('id')
+		if (!key) {
+			return;
 		}
-		var edges = [];
-		for (var i = 0; i < 12; i++) {
-			edges[i] = scheme.slice(32 + i * 3, 32 + i * 3 + 2);
-		}
-
-		var ccode = [];
-		var ecode = [];
-		var cc = new mathlib.CubieCube();
-		cc.init(c.ca, c.ea);
-
-		var done = 1 << cbuf;
-		for (var i = 0; i < 8; i++) {
-			if (cc.ca[i] == i) {
-				done |= 1 << i;
+		if (/^[ce]buff[01]$/.exec(key)) {
+			bldSets[key.slice(0, 5)][~~key[5]] = ~~obj.val();
+			calcResult();
+		} else if (key.endsWith('LR')) {
+			var m = /^(\d{1,2})-(\d{1,2})$/.exec(obj.val()) || /^((\d{1,2}))$/.exec(obj.val());
+			if (!m) {
+				return;
 			}
-		}
-		while (done != 0xff) {
-			var target = cc.ca[cbuf] & 0x7;
-			if (target == cbuf) { // buffer in place, swap with any unsolved
-				var i = -1;
-				while (done >> ++i & 1) {}
-				mathlib.circle(cc.ca, i, cbuf);
-				ccode.push(i);
-				continue;
+			var v1 = ~~m[1];
+			var v2 = ~~m[2];
+			bldSets[key] = [Math.min(v1, v2), Math.max(v1, v2)];
+		} else if (key == 'ceparity') {
+			bldSets[key] = ~~obj.val();
+		} else if (key.endsWith('fix')){
+			var fixs = obj.val().toUpperCase().split(' ');
+			var fixMap = {};
+			var fixRe = key == 'cfix' ? (/^(UFR|UFL|UBL|UBR|DFR|DFL|DBL|DBR)(\+?)$/) : (/^(UR|UF|UL|UB|DR|DF|DL|DB|FR|FL|BL|BR)(\+?)$/);
+			for (var i = 0; i < fixs.length; i++) {
+				var m = fixRe.exec(fixs[i]);
+				if (m) {
+					fixMap[m[1]] = m[2]
+				}
 			}
-			ccode.push(cc.ca[cbuf]);
-			cc.ca[cbuf] = (cc.ca[target] + (cc.ca[cbuf] & 0xf8)) % 24;
-			cc.ca[target] = target;
-			done |= 1 << target;
-		}
-
-		done = 1 << ebuf;
-		for (var i = 0; i < 12; i++) {
-			if (cc.ea[i] == i * 2) {
-				done |= 1 << i;
+			var val = [];
+			for (var cubie in fixMap) {
+				val.push(cubie + fixMap[cubie]);
 			}
-		}
-		while (done != 0xfff) {
-			var target = cc.ea[ebuf] >> 1;
-			if (target == ebuf) { // buffer in place, swap with any unsolved
-				var i = -1;
-				while (done >> ++i & 1) {}
-				mathlib.circle(cc.ea, i, ebuf);
-				ecode.push(i * 2);
-				continue;
+			bldSets[key] = val.join(' ');
+		} else if (key == 'bldsClr' || key == 'bldsEg') {
+			var updates = {
+				'cnerrLR': [0, 7],
+				'cscycLR': [0, 3],
+				'cncodeLR': [0, 10],
+				'enerrLR': [0, 11],
+				'escycLR': [0, 5],
+				'encodeLR': [0, 16]
 			}
-			ecode.push(cc.ea[ebuf]);
-			cc.ea[ebuf] = cc.ea[target] ^ (cc.ea[ebuf] & 1);
-			cc.ea[target] = target << 1;
-			done |= 1 << target;
-		}
-		var ret = [[], []];
-		for (var i = 0; i < ccode.length; i++) {
-			var val = ccode[i] & 0x7;
-			var ori = ccode[i] >> 3;
-			if (0xa5 >> val & 0x1) {
-				ori = (3 - ori) % 3;
+			if (key == 'bldsClr') {
+				updates['cfix'] = "",
+				updates['efix'] = "",
+				updates['ceparity'] = 0x3
+			} else {
+				updates['cfix'] = "UBL DFR+",
+				updates['efix'] = "DR DF+",
+				updates['ceparity'] = 0x1
 			}
-			ret[0].push(corns[val].charAt((3 - ori) % 3));
-			if (i % 2 == 1) {
-				ret[0].push(' ');
+			for (var k in updates) {
+				bldSets[k] = updates[k];
 			}
-		}
-		for (var i = 0; i < ecode.length; i++) {
-			var val = ecode[i];
-			ret[1].push(edges[val >> 1].charAt(val & 1));
-			if (i % 2 == 1) {
-				ret[1].push(' ');
+		} else if (key == 'bldsEdge' || key == 'bldsCorn') {
+			var val = ~~obj.val();
+			var pre = key == 'bldsEdge' ? 'e' : 'c';
+			bldSets[pre + 'fix'] = "";
+			bldSets[pre + 'scycLR'] = pre == 'e' ? [0, 5] : [0, 3];
+			if (val == 1) { // solved
+				bldSets[pre + 'buff'] = [bldSets[pre + 'buff'][0], 0x1];
+				bldSets[pre + 'nerrLR'] = [0, 0];
+				bldSets[pre + 'ncodeLR'] = [0, 0];
+			} else if (val == 2) { // any
+				bldSets[pre + 'buff'] = [bldSets[pre + 'buff'][0], 0x7];
+				bldSets[pre + 'nerrLR'] = pre == 'e' ? [0, 11] : [0, 7];
+				bldSets[pre + 'ncodeLR'] = pre == 'e' ? [0, 16] : [0, 10];
 			}
-		}
-		return ret;
-	}
-
-	function updateSchemeSelect() {
-		if (scheme == Speffz) {
-			schemeSelect.val('speffz');
-		} else if (scheme == ChiChu) {
-			schemeSelect.val('chichu');
-		} else {
-			schemeSelect.val('customed');
-		}
-	}
-
-	function procSchemeChange(e) {
-		var target = $(e.target);
-		kernel.blur();
-		var val = target.val();
-		var data = target.attr('data');
-		if (data == 'scheme') {
+		} else if (key == 'scheme') {
+			var val = obj.val();
 			if (val == 'speffz') {
-				scheme = Speffz;
+				bldSets['scheme'] = Speffz;
 			} else if (val == 'chichu') {
-				scheme = ChiChu;
+				bldSets['scheme'] = ChiChu;
 			} else if (val == 'custom' || val == 'customed') {
-				var ret = prompt('Code for ' + pieces, scheme);
+				var ret = prompt('Code for ' + pieces, bldSets['scheme']);
 				if (!ret) {
 					updateSchemeSelect();
 					return;
@@ -681,21 +572,93 @@ var bldhelper = execMain(function() {
 					updateSchemeSelect();
 					return;
 				}
-				scheme = ret.toUpperCase();
+				bldSets['scheme'] = ret;
 			}
+			calcResult();
 		}
-		updateSchemeSelect();
-		calcResult();
+		kernel.setProp('bldSets', JSON.stringify(bldSets));
+		genBLDSetTable(bldSets, setDiv);
 	}
 
-	var scheme = Speffz;
+	var schSel;
+	var cPreSel;
+	var cbufSel;
+	var cbufFlt;
+	var cFixTxt;
+	var cErrTxt;
+	var cNScTxt;
+	var cNCoTxt;
+	var ePreSel;
+	var ebufSel;
+	var ebufFlt;
+	var eFixTxt;
+	var eErrTxt;
+	var eNScTxt;
+	var eNCoTxt;
+	var parityFlt;
+
+	function key2Range(bldSets, key) {
+		return bldSets[key][0] + '-' + bldSets[key][1];
+	};
+
+	function genBLDSetTable(bldSets, setDiv) {
+		setDiv.empty();
+		cFixTxt.val(bldSets['cfix']);
+		cErrTxt.val(key2Range(bldSets, 'cnerrLR'));
+		cNScTxt.val(key2Range(bldSets, 'cscycLR'));
+		cNCoTxt.val(key2Range(bldSets, 'cncodeLR'));
+		eFixTxt.val(bldSets['efix']);
+		eErrTxt.val(key2Range(bldSets, 'enerrLR'));
+		eNScTxt.val(key2Range(bldSets, 'escycLR'));
+		eNCoTxt.val(key2Range(bldSets, 'encodeLR'));
+		cPreSel.val(0);
+		ePreSel.val(0);
+		cbufSel.val(bldSets['cbuff'][0]);
+		ebufSel.val(bldSets['ebuff'][0]);
+		cbufFlt.val(bldSets['cbuff'][1]);
+		ebufFlt.val(bldSets['ebuff'][1]);
+		parityFlt.val(bldSets['ceparity']);
+		var ret = genBLDRndState(bldSets);
+		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schSel)));
+		setDiv.append($('<tr>').append($('<td colspan=3 style="width:0;">').append(codeDiv)));
+		setDiv.append($('<tr>').append($('<td colspan=3 style="height:0.2em;border:none;">')));
+		setDiv.append($('<tr>').append('<th colspan=3>Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
+		setDiv.append($('<tr>').append($('<td>').append(parityFlt), $('<td>').append(cPreSel), $('<td>').append(ePreSel)));
+		setDiv.append($('<tr>').append('<td>buffer</td>', $('<td>').append(cbufSel, cbufFlt), $('<td>').append(ebufSel, ebufFlt)));
+		setDiv.append($('<tr>').append('<td>fixed</td>', $('<td>').append(cFixTxt), $('<td>').append(eFixTxt)));
+		setDiv.append($('<tr>').append('<td>flip</td>', $('<td>').append(cErrTxt), $('<td>').append(eErrTxt)));
+		setDiv.append($('<tr>').append('<td>ex-cyc</td>', $('<td>').append(cNScTxt), $('<td>').append(eNScTxt)));
+		setDiv.append($('<tr>').append('<td>#codes</td>', $('<td>').append(cNCoTxt), $('<td>').append(eNCoTxt)));
+		var prob = ret[0] / 43252003274489856000;
+		setDiv.append($('<tr>').append('<td>probs</td>', $('<td colspan=2>').append(
+			(ret[0] == 0 ? 0 : prob < 1e-3 ? prob.toExponential(3) : Math.round(prob * 1000000) / 10000 + '%') +
+			(prob < 1e-8 ? ('<br>N=' + (ret[0] > 1e8 ? ret[0].toExponential(3) : ret[0])) : '')
+		)));
+		setDiv.find('input,select').css({'padding':0}).unbind('change').change(procBLDSetEvent);
+		setDiv.find('span.click').unbind('click').click(procBLDSetEvent);
+		setDiv.find('td,th').css({'padding':0});
+		updateSchemeSelect();
+		return setDiv;
+	}
+
+	function updateSchemeSelect() {
+		var scheme = bldSets['scheme'];
+		if (scheme == Speffz) {
+			schSel.val('speffz');
+		} else if (scheme == ChiChu) {
+			schSel.val('chichu');
+		} else {
+			schSel.val('customed');
+		}
+	}
+
 	var codeDiv = $('<div style="text-align:left;">');
 	var setDiv = $('<table style="border-spacing:0; border:none;" class="table">');
 
 	function calcResult() {
 		var scramble = tools.getCurScramble();
 		var state = cubeutil.getScrambledState(scramble);
-		var codes = getBLDcode(state, scheme, bldSets['cbuff'][0], bldSets['ebuff'][0]);
+		var codes = getBLDcode(state, bldSets['scheme'], bldSets['cbuff'][0], bldSets['ebuff'][0]);
 		codeDiv.html('C: ' + codes[0].join('') + '<br>' + 'E: ' + codes[1].join(''));
 	}
 
@@ -713,12 +676,54 @@ var bldhelper = execMain(function() {
 	}
 
 	$(function() {
-		schemeSelect = $('<select data="scheme">');
+		var savedSets = JSON.parse(kernel.getProp('bldSets', '{}'));
+		for (var key in bldSets) {
+			if (key in savedSets) {
+				bldSets[key] = savedSets[key];
+			}
+		}
+		schSel = $('<select id="scheme">');
 		var schemes = [['customed', 'Customed'], ['speffz', 'Speffz'], ['chichu', 'ChiChu'], ['custom', 'Custom']];
 		for (var i = 0; i < schemes.length; i++) {
-			schemeSelect.append('<option value="' + schemes[i][0] + '">' + schemes[i][1] + '</option>');
+			schSel.append('<option value="' + schemes[i][0] + '">' + schemes[i][1] + '</option>');
 		}
-		updateSchemeSelect();
+		cPreSel = $('<select id="bldsCorn">');
+		cbufSel = $('<select data="bufcorn" id="cbuff0">');
+		cbufFlt = $('<select id="cbuff1" style="width:2em">');
+		cFixTxt = $('<input id="cfix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">');
+		cErrTxt = $('<input id="cnerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		cNScTxt = $('<input id="cscycLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		cNCoTxt = $('<input id="cncodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		ePreSel = $('<select id="bldsEdge">');
+		ebufSel = $('<select data="bufedge" id="ebuff0">');
+		ebufFlt = $('<select id="ebuff1" style="width:2em">');
+		eFixTxt = $('<input id="efix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">');
+		eErrTxt = $('<input id="enerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		eNScTxt = $('<input id="escycLR" type="text" style="width:4em" value=""> pattern="\d{1,2}-\d{1,2}"');
+		eNCoTxt = $('<input id="encodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		parityFlt = $('<select id="ceparity">');
+		var bflts = [['any', 0x7], ['ok', 0x1], ['flip', 0x2], ['move', 0x4], ['not ok', 0x6], ['ok/flip', 0x3], ['ok/move', 0x5]];
+		for (var i = 0; i < bflts.length; i++) {
+			cbufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
+			ebufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
+		}
+		var pflts = [['e/o any', 0x3], ['even', 0x1], ['odd', 0x2]];
+		for (var i = 0; i < pflts.length; i++) {
+			parityFlt.append('<option value="' + pflts[i][1] + '">' + pflts[i][0] + '</option>');
+		}
+		for (var i = 0; i < 8; i++) {
+			var cur = pieces.slice(i * 4, i * 4 + 3);
+			cbufSel.append('<option value="' + i + '">' + cur + '</option>');
+		}
+		for (var i = 0; i < 12; i++) {
+			var cur = pieces.slice(32 + i * 3, 32 + i * 3 + 2);
+			ebufSel.append('<option value="' + i + '">' + cur + '</option>');
+		}
+		var pres = [['$', 0], ['solved', 1], ['any', 2]];
+		for (var i = 0; i < pres.length; i++) {
+			cPreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Corner') + '</option>');
+			ePreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Edge') + '</option>');
+		}
 		tools.regTool('bldhelper', TOOLS_BLDHELPER, execFunc);
 	});
 });

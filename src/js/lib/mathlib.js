@@ -563,6 +563,9 @@ var mathlib = (function() {
 			return m;
 		}
 		axis = ['2-2Uw', '2-2Rw', '2-2Fw', '2-2Dw', '2-2Lw', '2-2Bw'].indexOf(face);
+		if (axis == -1) {
+			axis = [null, null, 'S', 'E', 'M', null].indexOf(face);
+		}
 		if (axis != -1) {
 			var m1 = axis * 3 + (4 - pow) % 4 - 1;
 			var m2 = (axis + 3) % 6 * 3 + pow % 4 - 1;
