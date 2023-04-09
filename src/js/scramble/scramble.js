@@ -364,7 +364,17 @@ var scramble = execMain(function(rn, rndEl) {
 				return ret;
 			}
 			if (type == 'remoteComp') {
-				remoteFail();
+				if (!window['onlinecomp']) {
+					remoteFail();
+				} else {
+					onlinecomp.getScrambles().then(function(ret) {
+						if (!parseInput(ret)) {
+							remoteFail();
+						} else {
+							requestAnimFrame(doScrambleIt);
+						}
+					}, remoteFail);
+				}
 			} else if (type == 'remoteURL') {
 				$.getJSON(remoteURL, function(ret) {
 					if (!parseInput(ret)) {
