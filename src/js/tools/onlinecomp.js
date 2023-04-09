@@ -253,9 +253,15 @@ var onlinecomp = execMain(function() {
 			var curSolveId = roomInfo['cur'][0];
 			for (var i = 0; i < players.length; i++) {
 				var player = players[i];
+				var account = player['accountId'];
+				if (account.indexOf('|') != -1) {
+					account = '<b>' + account.split('|')[1] + '</b>';
+				} else if (account.length > 10) {
+					account = account.slice(0, 4) + '...' + account.slice(account.length - 3);
+				}
 				var curTime = (solveDict[player['accountId']] || {})[curSolveId];
 				var lastTime = (solveDict[player['accountId']] || {})[curSolveId - 1];
-				roomTable.append('<tr><td>' + player['accountId'] + '</td><td>' + colorStatus(player['status']) +
+				roomTable.append('<tr><td>' + account + '</td><td>' + colorStatus(player['status']) +
 					'</td><td>' + (curTime ? stats.pretty(curTime[0], true) : 'N/A') +
 					'</td><td>' + (lastTime ? stats.pretty(lastTime[0], true) : 'N/A') + '</td></tr>');
 			}
