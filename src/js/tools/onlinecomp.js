@@ -177,11 +177,12 @@ var onlinecomp = execMain(function() {
 			console.log('scramble not match, skip');
 			return;
 		}
+		var solveId = solvScr == roomInfo['cur'][1] ? roomInfo['cur'][0] : roomInfo['last'][0];
 		conn.remoteCall({
 			'action': 'uploadSolve',
 			'roomId': roomId,
 			'accountId': uid,
-			'solveId': isLast ? roomInfo['last'][0] : roomInfo['cur'][0],
+			'solveId': solveId,
 			'time': time,
 			'scramble': scramble_333.getRandomScramble().trim()
 		}).then(function(ret) {
