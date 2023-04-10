@@ -4,7 +4,7 @@ var onlinecomp = execMain(function() {
 	var accountDiv = $('<div>');
 	var wcaSpan = $('<span class="click">');
 	var uidSpan = $('<span class="click">');
-	var addRoomSpan = $('<span class="click">').html('Add Room');
+	var addRoomSpan = $('<span class="click">').html('Join Room');
 
 	var conn = (function() {
 		
@@ -164,7 +164,7 @@ var onlinecomp = execMain(function() {
 	}
 
 	function submitSolve(time, isLast) {
-		if (localLastSolve && localLastSolve[1] == time[1]) {
+		if (localLastSolve && localLastSolve[1] == time[1] && !isLast) {
 			return;
 		}
 		localLastSolve = time;
@@ -181,7 +181,7 @@ var onlinecomp = execMain(function() {
 			'action': 'uploadSolve',
 			'roomId': roomId,
 			'accountId': uid,
-			'solveId': roomInfo['cur'][0],
+			'solveId': isLast ? roomInfo['last'][0] : roomInfo['cur'][0],
 			'time': time,
 			'scramble': scramble_333.getRandomScramble().trim()
 		}).then(function(ret) {
@@ -233,23 +233,30 @@ var onlinecomp = execMain(function() {
 			accountDiv.show();
 		}
 		roomTable.empty();
-		roomTable.append($('<tr>').append($('<td colspan=4>').append('Room: ', addRoomSpan)));
-		roomTable.append('<tr><td>Player</td><td>Status</td><td>current</td><td>last</td></tr>');
+		roomTable.append($('<tr>').append($('<td colspan=5>').append('Room: ', addRoomSpan)));
+		roomTable.append('<tr><td colspan=2>Rank</td><td>ELO</td><td>Status</td><td>time</td></tr>');
 		addRoomSpan.unbind('click');
 		if (!roomInfo) {
-			roomTable.append('<tr><td colspan=4>Not in a room</td></tr>');
-			addRoomSpan.addClass('click').html('Add Room').click(addRoom.bind(null, true));
+			roomTable.append('<tr><td colspan=5>Not in a room</td></tr>');
+			addRoomSpan.addClass('click').html('Join Room').click(addRoom.bind(null, true));
 		} else {
 			addRoomSpan.removeClass('click').html(roomInfo['roomId']);
 			var players = roomInfo['players'];
 			var solves = roomInfo['solves'];
 			var solveDict = {};
+			var hasSolved = false;
 			for (var i = 0; i < solves.length; i++) {
 				var solveObj = solves[i];
 				var accountId = solveObj['accountId'];
 				solveDict[accountId] = solveDict[accountId] || {};
 				solveDict[accountId][solveObj['solveId']] = [solveObj['time'], solveObj['soltime']];
+				if (solveObj['solveId'] == roomInfo['cur'][0]) {
+					hasSolved = true;
+				}
 			}
+			players.sort(function(a, b) {
+				return b['elo'] - a['elo'];
+			});
 			var curSolveId = roomInfo['cur'][0];
 			for (var i = 0; i < players.length; i++) {
 				var player = players[i];
@@ -260,10 +267,15 @@ var onlinecomp = execMain(function() {
 					account = account.slice(0, 4) + '...' + account.slice(account.length - 3);
 				}
 				var curTime = (solveDict[player['accountId']] || {})[curSolveId];
+				var isSolved = player['status'] == 'SOLVED';
 				var lastTime = (solveDict[player['accountId']] || {})[curSolveId - 1];
-				roomTable.append('<tr><td>' + account + '</td><td>' + colorStatus(player['status']) +
-					'</td><td>' + (curTime ? stats.pretty(curTime[0], true) : 'N/A') +
-					'</td><td>' + (lastTime ? stats.pretty(lastTime[0], true) : 'N/A') + '</td></tr>');
+				lastTime = isSolved ? curTime : lastTime;
+				lastTime = lastTime ? stats.pretty(lastTime[0], true) : 'N/A';
+				if (hasSolved && !isSolved) {
+					lastTime = '<span style="color:#888">' + lastTime + '</span>';
+				}
+				roomTable.append('<tr><td>' + (i + 1) + '</td><td>' + account + '</td><td>' + player['elo'] + '</td><td>' + colorStatus(player['status']) +
+					'</td><td>' + lastTime + '</td></tr>');
 			}
 		}
 	}
@@ -331,7 +343,7 @@ var onlinecomp = execMain(function() {
 			return;
 		}
 		fdiv.empty().append($('<div style="font-size: 0.75em; text-align: center;">')
-			.append(accountDiv, '<br>', roomTable));
+			.append(accountDiv, roomTable));
 		updateAccountDiv();
 		renderRoom();
 		isInit = true;
