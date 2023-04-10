@@ -7,7 +7,6 @@ var tools = execMain(function() {
 	var divs = [];
 
 	function execFunc(idx, signal) {
-		updateStyles();
 		if (idx == -1) {
 			for (var i = 0; i < kernel.getProp('NTools'); i++) {
 				execFunc(i, signal);
@@ -27,23 +26,6 @@ var tools = execMain(function() {
 				toolBox[tool](fdivs[idx], signal);
 			}
 		}
-	}
-
-	function updateStyles() {
-		// invoke async to ensure animation was finished and state is updated
-		setTimeout(function () {
-			$('#toolsDiv').css('font-size', kernel.getProp('toolScale') + '%');
-			if (kernel.getProp('toolPos') == 't') {
-				var scrambleHeight = $('#scrambleDiv').is(':visible') ? ($('#scrambleDiv').outerHeight() - 1) : 0;
-				$('#toolsDiv')
-					.css('top', scrambleHeight)
-					.css('bottom', 'auto');
-			} else {
-				$('#toolsDiv')
-					.css('top', '')
-					.css('bottom', '');
-			}
-		}, 0);
 	}
 
 	function disableFunc(idx, signal) {
@@ -201,8 +183,6 @@ var tools = execMain(function() {
 					funcMenu[i].loadVal(newfuncs[i]);
 				}
 				onFuncSelected();
-			} else if (value[0] == 'toolPos' || value[0] == 'toolScale' || value[0] == 'scrHide') {
-				updateStyles();
 			}
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value;
@@ -218,8 +198,6 @@ var tools = execMain(function() {
 					execFunc(i, signal);
 				}
 			}
-		} else if (signal == 'scrfix' || (signal == 'button' && value[0] == 'scramble')) {
-			updateStyles();
 		}
 	}
 
@@ -241,28 +219,20 @@ var tools = execMain(function() {
 	}
 
 	$(function() {
-		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|toolPos|toolScale|col(?:cube|pyr|skb|sq1|mgm)|toolHide|scrHide)$/);
+		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm)|toolHide)$/);
 		kernel.regListener('tools', 'scramble', procSignal);
 		kernel.regListener('tools', 'scrambleX', procSignal);
-		kernel.regListener('tools', 'scrfix', procSignal);
-		kernel.regListener('tools', 'button', procSignal, /^(?:tools|scramble)$/);
+		kernel.regListener('tools', 'button', procSignal, /^tools$/);
 
 		var mainDiv = $('<div id="toolsDiv"/>');
 		for (var i = 0; i < 4; i++) {
 			fdivs[i].click(showFuncSpan);
 			funcSpan[i].append("<br>", TOOLS_SELECTFUNC, funcMenu[i].select1, funcMenu[i].select2);
 			divs[i].append(fdivs[i], funcSpan[i]).appendTo(mainDiv);
-			if (!kernel.getProp('toolRow') && i == 1) {
+			if (i == 1) {
 				mainDiv.append('<br>');
 			}
 		}
-
-		// TODO: i18n
-		kernel.regProp('ui', 'toolRow', 0, "Display Tools in row", [false]);
-		// TODO: i18n
-		kernel.regProp('ui', 'toolPos', 1, "Tools panel position", ['b', ['b', 't'], ['Bottom', 'Top']]);
-		// TODO: i18n
-		kernel.regProp('ui', 'toolScale', 2, "Tools panel display scale %", [100, 1, 200]);
 
 		kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false]);
 		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50]);

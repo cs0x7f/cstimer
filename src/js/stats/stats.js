@@ -1559,7 +1559,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			} else if (value[0] == 'statsrc') {
 				times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
 				updateUtil(['property', value[0]]);
-			} else if (value[0] == 'wndStat' || value[0] == 'statScale') {
+			} else if (value[0] == 'wndStat') {
 				resultsHeight();
 			} else if (value[0] == 'sr_statal') {
 				kernel.setProp('sr_statalu', value[1]);
@@ -1584,7 +1584,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function resultsHeight() {
-		div.css('font-size', kernel.getProp('statScale') + '%');
 		if ($('html').hasClass('m')) {
 			scrollDiv.height(Math.max(sumtableDiv.height(), avgRow.height() + title.height() * 2));
 		} else if (scrollDiv[0].offsetParent != null) {
@@ -1596,12 +1595,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src)|session(:?Data)?|scrType|phases|trim|view|wndStat|statScale|sr_.*)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src)|session(:?Data)?|scrType|phases|trim|view|wndStat|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
-		// TODO: i18n
-		kernel.regProp('ui', 'statScale', 2, "Statistics panel display scale %", [100, 1, 200]);
 
 		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]], 1);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true], 1);
