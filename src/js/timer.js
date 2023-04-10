@@ -1526,6 +1526,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				virtual333.setSize(value[1]);
 				giikerTimer.setSize(value[1]);
 			}
+			if (value[0] == 'timerYOffset') {
+				$('#container').closest('table').css('top', value[1] + '%');
+				$('#multiphase').closest('table').css('top', value[1] + '%');
+			}
 			if (value[0] == 'timerSize' || value[0] == 'phases') {
 				$('#multiphase').css('font-size', getProp('timerSize') / Math.max(getProp('phases'), 4) + 'em')
 			}
@@ -1543,7 +1547,17 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC)$/);
+		}, /^(?:input|phases|scrType|preScr|timerSize|timerYOffset|showAvg|useMilli|smallADP|giiVRC)$/);
+		regListener('timer', 'ashow', function (signal, value) {
+			var timerYOffset = kernel.getProp('timerYOffset');
+			if (value) {
+				$('#container').closest('table').css('top', timerYOffset + '%');
+				$('#multiphase').closest('table').css('top', timerYOffset + '%');
+			} else {
+				$('#container').closest('table').css('top', '0');
+				$('#multiphase').closest('table').css('top', '0');
+			}
+		});
 		regProp('vrc', 'vrcSpeed', 1, PROPERTY_VRCSPEED, [100, [0, 50, 100, 200, 500, 1000], '\u221E|20|10|5|2|1'.split('|')], 1);
 		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
@@ -1567,6 +1581,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10], 3);
 		regProp('kernel', 'showAvg', 0, SHOW_AVG_LABEL, [true], 1);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100], 1);
+		// TODO: i18n
+		regProp('ui', 'timerYOffset', 2, 'timer vertical offset %', [0, -50, 50]);
 		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true], 1);
 	});
 
