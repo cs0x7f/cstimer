@@ -4,10 +4,11 @@ var onlinecomp = execMain(function() {
 	var accountDiv = $('<div>');
 	var wcaSpan = $('<span class="click">');
 	var uidSpan = $('<span class="click">');
-	var addRoomSpan = $('<span class="click">').html('Join Room');
+	var joinRoomSpan = $('<span class="click">').html('Join Room');
+	var leaveRoomSpan = $('<span class="click">').html('[X]');
 
 	var conn = (function() {
-		
+
 		var socket;
 		var isOpen = false;
 		var idseq = 1;
@@ -110,7 +111,27 @@ var onlinecomp = execMain(function() {
 		}
 	})();
 
-	function addRoom(rstRoomId) {
+	var heartBeatTid = 0;
+
+	function resetHeartBeat(isTimeout) {
+		if (!roomId || !compId || !conn.isConnected()) {
+			return;
+		}
+		if (!isTimeout && heartBeatTid) {
+			clearTimeout(heartBeatTid);
+			heartBeatTid = 0;
+		}
+		if (isTimeout) {
+			conn.pushMsg({
+				'action': 'heartBeat',
+				'roomId': roomId,
+				'accountId': compId
+			});
+		}
+		heartBeatTid = setTimeout(resetHeartBeat.bind(null, true), 15000);
+	}
+
+	function joinRoom(rstRoomId) {
 		if (rstRoomId || !roomId) {
 			var val = prompt('Input a room ID [a-zA-Z0-9]', roomId || (100 + mathlib.rn(900)));
 			if (!/^[0-9a-zA-Z]{3,20}$/.exec(val)) {
@@ -119,47 +140,64 @@ var onlinecomp = execMain(function() {
 			}
 			roomId = val;
 		}
-		var uid = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
-		if (!uid) {
+		if (!conn.isConnected()) {
+			conn.connect().then(joinRoom.bind(null, false));
 			return;
 		}
-		if (!conn.isConnected()) {
-			conn.connect().then(addRoom.bind(null, false));
+		if (!checkConnState()) {
 			return;
 		}
 		conn.remoteCall({
 			'action': 'joinRoom',
 			'roomId': roomId,
-			'accountId': uid,
+			'accountId': compId,
 			'scramble': scramble_333.getRandomScramble().trim()
 		}).then(function(ret) {
-			console.log('joinRoom ret=', JSON.stringify(ret));
+			DEBUG && console.log('[battle] joinRoom ret=', JSON.stringify(ret));
+			resetHeartBeat();
 		});
 	}
 
-	function checkConnState() {
-		if (!roomInfo || !conn.isConnected()) {
-			return null;
+	function leaveRoom(direct) {
+		if (!checkConnState()) {
+			return;
 		}
-		var uid = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
-		if (!uid) {
-			return null;
+		if (!direct) {
+			if (!confirm('Leave current battle room?')) {
+				return;
+			}
 		}
-		return uid;
+		conn.remoteCall({
+			'action': 'leaveRoom',
+			'roomId': roomId,
+			'accountId': compId
+		}).then(conn.close, conn.close);
+		roomInfo = null;
+		renderRoom();
+		resetHeartBeat();
+	}
+
+	function checkConnState(checkRoom) {
+		if ((!roomInfo && checkRoom) || !conn.isConnected()) {
+			compId = null;
+			return compId;
+		}
+		compId = exportFunc.getDataId('wcaData', 'cstimer_token') || exportFunc.getDataId('locData', 'compid') || setCompId();
+		return compId;
 	}
 
 	function submitStatus(status) {
-		var uid = checkConnState();
-		if (!uid) {
+		if (!checkConnState()) {
 			return;
 		}
 		conn.remoteCall({
 			'action': 'updateStatus',
 			'roomId': roomId,
-			'accountId': uid,
+			'accountId': compId,
 			'status': status
 		}).then(function(ret) {
-			console.log('update status ret=', ret);
+			DEBUG && console.log('[battle] update status ret=', ret);
+			resetHeartBeat();
 		});
 	}
 
@@ -168,36 +206,33 @@ var onlinecomp = execMain(function() {
 			return;
 		}
 		localLastSolve = time;
-		var uid = checkConnState();
-		if (!uid) {
+		if (!checkConnState()) {
 			return;
 		}
 		var solvScr = time[1];
 		if (solvScr != roomInfo['cur'][1] && (!isLast || solvScr != roomInfo['last'][1])) {
-			console.log('scramble not match, skip');
+			DEBUG && console.log('[battle] scramble not match, skip');
 			return;
 		}
 		var solveId = solvScr == roomInfo['cur'][1] ? roomInfo['cur'][0] : roomInfo['last'][0];
 		conn.remoteCall({
 			'action': 'uploadSolve',
 			'roomId': roomId,
-			'accountId': uid,
+			'accountId': compId,
 			'solveId': solveId,
 			'time': time,
 			'scramble': scramble_333.getRandomScramble().trim()
 		}).then(function(ret) {
-			console.log('upload solve ret=', ret);
+			DEBUG && console.log('[battle] upload solve ret=', ret);
+			resetHeartBeat();
 		});
 	}
 
 	var roomId;
+	var compId;
 	var roomInfo;
 	var toStart = false;
 	var localLastSolve = [[-1, 1], null];
-
-	window['conn'] = conn;
-	window['addRoom'] = addRoom;
-
 
 	function onNotify(event, obj) {
 		if (event == 'msg') {
@@ -207,9 +242,14 @@ var onlinecomp = execMain(function() {
 			}
 		} else {
 			roomInfo = null;
+			if (kernel.getProp('scrType') == 'remoteComp') {
+				kernel.pushSignal('ctrl', ['scramble', 'next']);
+			}
 		}
 		renderRoom();
 	}
+
+	conn.setCallback(onNotify);
 
 	function onRoomInfo() {
 		if (!roomInfo) {
@@ -227,21 +267,24 @@ var onlinecomp = execMain(function() {
 	var roomTable;
 
 	function renderRoom() {
-		console.log('render room', roomInfo);
+		DEBUG && console.log('[battle] render room', roomInfo);
 		if (roomInfo) {
 			accountDiv.hide();
 		} else {
 			accountDiv.show();
 		}
 		roomTable.empty();
-		roomTable.append($('<tr>').append($('<td colspan=5>').append('Room: ', addRoomSpan)));
+		roomTable.append($('<tr>').append($('<td colspan=5>').append('Room: ', joinRoomSpan, '&nbsp;', leaveRoomSpan)));
 		roomTable.append('<tr><td colspan=2>Rank</td><td>ELO</td><td>Status</td><td>time</td></tr>');
-		addRoomSpan.unbind('click');
+		joinRoomSpan.unbind('click');
+		leaveRoomSpan.unbind('click');
 		if (!roomInfo) {
-			roomTable.append('<tr><td colspan=5>Not in a room</td></tr>');
-			addRoomSpan.addClass('click').html('Join Room').click(addRoom.bind(null, true));
+			roomTable.append('<tr><td colspan=5>Not in a battle room</td></tr>');
+			joinRoomSpan.addClass('click').html('Join Room').click(joinRoom.bind(null, true));
+			leaveRoomSpan.hide();
 		} else {
-			addRoomSpan.removeClass('click').html(roomInfo['roomId']);
+			joinRoomSpan.removeClass('click').html(roomInfo['roomId']);
+			leaveRoomSpan.click(leaveRoom.bind(null, false)).show();
 			var players = roomInfo['players'];
 			var solves = roomInfo['solves'];
 			var solveDict = {};
@@ -275,25 +318,13 @@ var onlinecomp = execMain(function() {
 				if (hasSolved && !isSolved) {
 					lastTime = '<span style="color:#888">' + lastTime + '</span>';
 				}
-				roomTable.append('<tr><td>' + (i + 1) + '</td><td>' + account + '</td><td>' + player['elo'] + '</td><td>' + colorStatus(player['status']) +
+				roomTable.append('<tr><td>' + (i + 1) + '</td><td>' + account +
+					'</td><td>' + player['elo'] +
+					'</td><td>' + player['status'] +
 					'</td><td>' + lastTime + '</td></tr>');
 			}
 		}
 	}
-
-	function colorStatus(status) {
-		var col = kernel.getProp('col-font');
-		if (status == 'SOLVED') {
-			col = '#0f0';
-		} else if (status == 'SOLVING') {
-			col = '#8f0';
-		} else if (status == 'INSPECT') {
-			col = '#ff0';
-		}
-		return '<span style="color:' + col + '">' + status + '</span>';
-	}
-	
-	conn.setCallback(onNotify);
 
 	function updateAccountDiv() {
 		accountDiv.empty().append('ID: ');
