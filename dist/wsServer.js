@@ -1,8 +1,6 @@
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 
-
-
 function BattleRoom(roomId) {
 	this.roomId = roomId;
 	this.changed = true;
@@ -36,7 +34,7 @@ BattleRoom.prototype.reqJoin = function(accountId, nextScramble, ws) {
 	if (accountObj) { // already in the room
 		return 1;
 	}
-	if (this.players.length > 2) {
+	if (this.players.length > 6) {
 		return -403;
 	}
 	this.players.push({
@@ -65,6 +63,10 @@ BattleRoom.prototype.getAccount = function(accountId, ws) {
 			if (ws) {
 				accountObj['active'] = +new Date;
 				accountObj['ws'] = ws;
+				if (accountObj['status'] == 'LOSS') {
+					accountObj['status'] = accountObj['p_status'] || 'READY';
+					this.changed = true;
+				}
 			}
 			break;
 		}
@@ -95,13 +97,27 @@ BattleRoom.prototype.uploadSolve = function(accountId, solveId, time, nextScramb
 		return -403;
 	}
 	solveId = ~~solveId;
-	this.solves.push({
-		"accountId": accountId,
-		"solveId": solveId,
-		"time": time[0],
-		"soltime": +new Date,
-	});
+	var isUpdated = false;
+	for (var i = 0; i < this.solves.length; i++) {
+		var solveObj = this.solves[i];
+		if (solveObj['accountId'] == accountId && solveObj['solveId'] == solveId) {
+			solveObj['time'] = time[0];
+			solveObj['soltime'] = +new Date;
+			isUpdated = true;
+		}
+	}
+	if (!isUpdated) {
+		this.solves.push({
+			"accountId": accountId,
+			"solveId": solveId,
+			"time": time[0],
+			"soltime": +new Date,
+		});
+	}
 	if (solveId != this.cur[0]) {
+		if (solveId == this.last[0]) {
+			this.updateScore();
+		}
 		this.changed = true;
 		return 1;
 	}
@@ -144,6 +160,57 @@ BattleRoom.prototype.updateSolve = function() {
 	for (var i = 0; i < this.players.length; i++) {
 		var accountObj = this.players[i];
 		accountObj["status"] = 'READY';
+		accountObj["p_wins"] = accountObj["wins"];
+		accountObj["p_elo"] = accountObj["elo"];
+	}
+	this.updateScore();
+}
+
+BattleRoom.prototype.timeSort = function(a, b) {
+	var ta = a[0] == -1 ? -1 : a[0] + a[1];
+	var tb = b[0] == -1 ? -1 : b[0] + b[1];
+	if (ta == tb) {
+		return 0;
+	} else if (ta == -1 || tb == -1) {
+		return ta == -1 ? 1 : -1;
+	} else {
+		return ta > tb ? 1 : -1;
+	}
+}
+
+BattleRoom.prototype.updateScore = function() {
+	//update scores (pre to cur) by last solve (not current solve)
+	var playerTimes = [];
+	var best = [-1, 0];
+	for (var i = 0; i < this.solves.length; i++) {
+		var solveObj = this.solves[i];
+		if (solveObj['solveId'] == this.last[0]) {
+			playerTimes.push([solveObj['accountId'], solveObj['time']]);
+		}
+	}
+	var that = this;
+	playerTimes.sort(function(a, b) {
+		return that.timeSort(a[1], b[1]);
+	});
+	for (var i = 0; i < playerTimes.length; i++) {
+		var selfObj = this.getAccount(playerTimes[i][0]);
+		var time = playerTimes[i][1];
+		if (this.timeSort(time, best) == 0 && this.timeSort(best, playerTimes[playerTimes.length - 1][1]) != 0) {
+			selfObj['wins'] = selfObj['p_wins'] + 1;
+		} else {
+			selfObj['wins'] = selfObj['p_wins'];
+		}
+		var eloChange = 0;
+		for (var j = 0; j < playerTimes.length; j++) {
+			if (i == j) {
+				continue;
+			}
+			var otherObj = this.getAccount(playerTimes[j][0]);
+			var s = (this.timeSort(playerTimes[j][1], time) + 1) / 2;
+			var ea = 1 / (1 + Math.pow(10, (otherObj['p_elo'] - selfObj['p_elo']) / 400));
+			eloChange += Math.round((s - ea) * 32 / (playerTimes.length - 1));
+		}
+		selfObj['elo'] = selfObj['p_elo'] + eloChange;
 	}
 }
 
@@ -151,10 +218,16 @@ BattleRoom.prototype.updateSolve = function() {
 BattleRoom.prototype.checkPlayers = function() {
 	var ts = +new Date;
 	var toLeave = [];
+	var toLoss = [];
 	for (var i = 0; i < this.players.length; i++) {
 		var accountObj = this.players[i];
 		if (ts - accountObj['active'] > 60000) {
 			toLeave.push(accountObj['accountId']);
+		} else if (ts - accountObj['active'] > 35000 && accountObj['status'] != 'LOSS') {
+			logger.info('loss roomId: ', this.roomId, accountObj['accountId']);
+			accountObj['p_status'] = accountObj['status'];
+			accountObj['status'] = 'LOSS';
+			this.changed = true;
 		}
 	}
 	if (toLeave.length == 0) {
@@ -163,6 +236,7 @@ BattleRoom.prototype.checkPlayers = function() {
 	for (var i = 0; i < toLeave.length; i++) {
 		this.leaveRoom(toLeave[i]);
 	}
+	this.updateSolve();
 	this.changed = true;
 	return 0;
 }
@@ -183,6 +257,7 @@ BattleRoom.prototype.kickPlayer = function(accountId, toKick, ws) {
 }
 
 BattleRoom.prototype.leaveRoom = function(accountId) {
+	logger.info('leave roomId: ', this.roomId, accountId);
 	var accountObj = null;
 	var idx = -1;
 	for (var i = 0; i < this.players.length; i++) {
@@ -221,6 +296,7 @@ BattleRoom.prototype.getInfo = function() {
 		player['status'] = accountObj['status'];
 		player['active'] = accountObj['active'];
 		player['wins'] = accountObj['wins'];
+		player['elo'] = accountObj['elo'];
 		players.push(player);
 	}
 	ret['players'] = players;
@@ -255,9 +331,12 @@ function onMessage(ws, data) {
 		logger.info('error', e);
 		return;
 	}
-	logger.info('receive', JSON.stringify(req));
 	var action = req['action'];
-	var accountId = req['accountId'];
+	var accountId = mapAccount(req['accountId']);
+	if (accountId != req['accountId']) {
+		req['mappedId'] = accountId;
+	}
+	logger.info('receive', JSON.stringify(req));
 	if (!action || !accountId) {
 		logger.info('no action or accountId', action, accountId);
 		return;
@@ -304,6 +383,7 @@ function onMessage(ws, data) {
 	} else if (action == 'leaveRoom') {
 		ret['code'] = roomObj.leaveRoom(accountId);
 		ws.send(JSON.stringify(ret));
+		roomObj.updateSolve();
 	} else if (action == 'kickPlayer') {
 		ret['code'] = roomObj.kickPlayer(accountId, req['toKick'], ws);
 		ws.send(JSON.stringify(ret));
@@ -344,9 +424,24 @@ function intervalCheck() {
 	}
 }
 
+function mapAccount(accountId) {
+	if (!/[0-9a-f]{32}/.exec(accountId)) {
+		return accountId;
+	}
+	var wca_id = wcaMap[accountId];
+	if (wca_id) {
+		return accountId.slice(0, 12) + '|' + wca_id;
+	}
+	return accountId.slice(0, 12) + '|WCA(' + accountId.slice(0, 4) + ')';
+}
+
+var wcaMap = {};
+
 var ws = require('ws');
 
 const wss = new ws.WebSocketServer({ port: 7999 });
+
+logger.info('Start Server');
 
 wss.on('connection', function connection(ws) {
 	ws.on('error', logger.info);
