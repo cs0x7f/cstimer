@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Brug 30s Frø';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Deaktivér nuværende frø?';
 var TOOLS_SYNCSEED_INPUTA = 'Indtast en værdi ([a-z][A-Z][0-9]) som frø';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Opdater konkurrenceliste';
 var OLCOMP_VIEWRESULT = 'Vis Resultat';
 var OLCOMP_VIEWMYRESULT = 'Min Historik';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Gem alle elementer når du tager tid';
 var SCRAMBLE_LAST = 'sidste';
 var SCRAMBLE_NEXT = 'næste';
 var SCRAMBLE_SCRAMBLE = 'blanding';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'længde';
 var SCRAMBLE_INPUT = 'input blanding(er)';
 var PROPERTY_VRCSPEED = 'VRC base hastighed (TPS)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Input', [
 		['Ekstern', "input", 0],
 		['Konkurrence', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

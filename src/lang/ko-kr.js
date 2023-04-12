@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = '30초 시드 사용';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = '현재 시드를 사용하지 않을까요?';
 var TOOLS_SYNCSEED_INPUTA = '시드 값 입력 (a-zA-Z0-9)';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = '대회 목록 업데이트';
 var OLCOMP_VIEWRESULT = '결과 보기';
 var OLCOMP_VIEWMYRESULT = '내 기록';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = '시간 측정 중 모든 창 숨기기';
 var SCRAMBLE_LAST = '이전';
 var SCRAMBLE_NEXT = '다음';
 var SCRAMBLE_SCRAMBLE = ' 섞기';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = '길이';
 var SCRAMBLE_INPUT = '섞기 공식 입력';
 var PROPERTY_VRCSPEED = 'VRC 기본 속도(tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['입력', [
 		['직접 입력', "input", 0],
 		['대회', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

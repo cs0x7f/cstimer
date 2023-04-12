@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
 var OLCOMP_VIEWMYRESULT = 'Моја Историја';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Сакријте све елементе док се ме�
 var SCRAMBLE_LAST = 'Последње';
 var SCRAMBLE_NEXT = 'Следеће';
 var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'Дужина';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Unos', [
 		['Spoljni', "input", 0],
 		['Competition', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

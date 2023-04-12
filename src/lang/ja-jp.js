@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = '30秒シード値の利用';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = '現在のシード値を無効にしますか？';
 var TOOLS_SYNCSEED_INPUTA = 'シード値の値 (a-zA-Z0-9) を入力';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = '大会リストの更新';
 var OLCOMP_VIEWRESULT = '結果表示';
 var OLCOMP_VIEWMYRESULT = '履歴';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = '記録中はすべての要素を非表示にする';
 var SCRAMBLE_LAST = '前';
 var SCRAMBLE_NEXT = '次';
 var SCRAMBLE_SCRAMBLE = 'スクランブル';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = '長さ';
 var SCRAMBLE_INPUT = 'スクランブルの入力';
 var PROPERTY_VRCSPEED = 'VRCの基本速度(tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['入力', [
 		['外部', "input", 0],
 		['大会', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'השתמש בזרע חדש כל 30ש';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'כבה זרע נוכחי?';
 var TOOLS_SYNCSEED_INPUTA = 'הכנס ערך (a-zA-Z0-9) כזרע';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'עדכן רשימת תחרויות';
 var OLCOMP_VIEWRESULT = 'צפה בתוצאה';
 var OLCOMP_VIEWMYRESULT = 'My History';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'החבא את כל האלמנטים כאשר מודד זמ
 var SCRAMBLE_LAST = 'האחרון';
 var SCRAMBLE_NEXT = 'הבא';
 var SCRAMBLE_SCRAMBLE = 'בלגון';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'אורך';
 var SCRAMBLE_INPUT = 'הקלד בלגון(ים)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['קלט', [
 		['חיצוני', "input", 0],
 		['Competition', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

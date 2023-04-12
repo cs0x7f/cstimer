@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Använd 30s frö';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Inaktivera nuvarande frö?';
 var TOOLS_SYNCSEED_INPUTA = 'Ange ett värde (a-zA-Z0-9) som frö';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Uppdatera tävlingslista';
 var OLCOMP_VIEWRESULT = 'Visa resultat';
 var OLCOMP_VIEWMYRESULT = 'Min historik';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Göm allt när timern tar tid';
 var SCRAMBLE_LAST = 'senaste';
 var SCRAMBLE_NEXT = 'nästa';
 var SCRAMBLE_SCRAMBLE = ' blandning';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'längd';
 var SCRAMBLE_INPUT = 'Mata in Blandning(ar)';
 var PROPERTY_VRCSPEED = 'VRC bashastighet (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Mata in', [
 		['Extern', "input", 0],
 		['Tävling', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

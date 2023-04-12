@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
 var OLCOMP_VIEWMYRESULT = 'My History';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'إخفاء كل العناصر عند التوقيت';
 var SCRAMBLE_LAST = 'سابق';
 var SCRAMBLE_NEXT = 'تالي';
 var SCRAMBLE_SCRAMBLE = 'مزج';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'طول';
 var SCRAMBLE_INPUT = 'ادخل المزج';
 var PROPERTY_VRCSPEED = 'سرعة الدوران (دورة كل ثانية)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['الإدخال', [
 		['Extern', "input", 0],
 		['Competition', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

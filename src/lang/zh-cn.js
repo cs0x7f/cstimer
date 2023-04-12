@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = '使用30秒种子';
 var TOOLS_SYNCSEED_HELP = '如果启用，打乱将只取决于种子和打乱设置。';
 var TOOLS_SYNCSEED_DISABLE = '禁用当前种子？';
 var TOOLS_SYNCSEED_INPUTA = '输入一个值（a-zA-Z0-9）作为种子';
+var TOOLS_BATTLE = '在线对战';
+var TOOLS_BATTLE_HEAD = '房间|加入房间';
+var TOOLS_BATTLE_TITLE = '排名|状态|时间';
+var TOOLS_BATTLE_STATUS = '就绪|观察|还原|完成|掉线';
+var TOOLS_BATTLE_INFO = '和朋友们加入同一个房间，你们就可以进行对战。';
+var TOOLS_BATTLE_JOINALERT = '请输入房间ID';
+var TOOLS_BATTLE_LEAVEALERT = '离开当前房间';
 var OLCOMP_UPDATELIST = '更新比赛列表';
 var OLCOMP_VIEWRESULT = '查看结果';
 var OLCOMP_VIEWMYRESULT = '我的历史';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = '计时过程中隐藏所有元素';
 var SCRAMBLE_LAST = '上一条';
 var SCRAMBLE_NEXT = '下一条';
 var SCRAMBLE_SCRAMBLE = '打乱公式';
+var SCRAMBLE_SCRAMBLING = '打乱中';
 var SCRAMBLE_LENGTH = '长度';
 var SCRAMBLE_INPUT = '输入打乱公式';
 var PROPERTY_VRCSPEED = 'VRC基础速度 (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['输入', [
 		['手动输入', "input", 0],
 		['比赛', "remoteComp", 0],
+		['在线对战', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

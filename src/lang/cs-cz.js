@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Použít 30s seed';
 var TOOLS_SYNCSEED_HELP = 'Při zapnutí bude zamíchání závislé pouze na seedu a nastavení zamíchání.';
 var TOOLS_SYNCSEED_DISABLE = 'Vypnout aktuální seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Vložte hodnotu (a-zA-Z0-9) jako seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Aktualizovat seznam soutěží';
 var OLCOMP_VIEWRESULT = 'Zobrazit výsledek';
 var OLCOMP_VIEWMYRESULT = 'Moje historie';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Skrýt všechny prvky při časování';
 var SCRAMBLE_LAST = 'poslední';
 var SCRAMBLE_NEXT = 'další';
 var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'délka';
 var SCRAMBLE_INPUT = 'vstupní zamíchání';
 var PROPERTY_VRCSPEED = 'VRS základní rychlost (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Vstup', [
 		['Extern', "input", 0],
 		['Soutěž', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

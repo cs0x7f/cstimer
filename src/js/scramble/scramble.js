@@ -162,7 +162,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function genScramble() {
 		kernel.blur();
-		sdiv.html('Scrambling...');
+		sdiv.html(SCRAMBLE_SCRAMBLING + '...');
 		typeExIn = (!type || /^(remote|input$)/.exec(type)) ? typeExIn : type;
 		if (!isDisplayLast) {
 			lasttype = type;
@@ -252,7 +252,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (scramble) {
 			scrambleOK();
 		} else {
-			sdiv.html("Scrambling... ");
+			sdiv.html(SCRAMBLE_SCRAMBLING + "... ");
 		}
 	}
 
@@ -368,6 +368,18 @@ var scramble = execMain(function(rn, rndEl) {
 					remoteFail();
 				} else {
 					onlinecomp.getScrambles().then(function(ret) {
+						if (!parseInput(ret)) {
+							remoteFail();
+						} else {
+							requestAnimFrame(doScrambleIt);
+						}
+					}, remoteFail);
+				}
+			} else if (type == 'remoteBattle') {
+				if (!window['battle']) {
+					remoteFail();
+				} else {
+					battle.getScrambles().then(function(ret) {
 						if (!parseInput(ret)) {
 							remoteFail();
 						} else {

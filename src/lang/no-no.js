@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Bruk 30s løsningsnøkkel';
 var TOOLS_SYNCSEED_HELP = 'Hvis aktivert vil blanding bare avhenge av hovednøkkelen og blandings-innstillinger.';
 var TOOLS_SYNCSEED_DISABLE = 'Deaktiver nåværende hovednøkkel?';
 var TOOLS_SYNCSEED_INPUTA = 'Putt ';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Oppdater konkurranselisten';
 var OLCOMP_VIEWRESULT = 'Se resultater';
 var OLCOMP_VIEWMYRESULT = 'Min historikk';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Skjul alle elementer under kubeløsing';
 var SCRAMBLE_LAST = 'siste';
 var SCRAMBLE_NEXT = 'neste';
 var SCRAMBLE_SCRAMBLE = 'blanding';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'lengde';
 var SCRAMBLE_INPUT = 'Skriv inn Blanding(er)';
 var PROPERTY_VRCSPEED = 'VRC gjennomsnittshastighet (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Input', [
 		['Extern', "input", 0],
 		['Konkurranse', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

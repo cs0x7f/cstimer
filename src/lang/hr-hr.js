@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Koristi 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'Ukoliko je uključeno, scramble će ovisiti samo o seedu i postavkama scramblea.';
 var TOOLS_SYNCSEED_DISABLE = 'Onemogući trenutni seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Unesi vrijednost (a-zA-Z0-9) kao seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Ažuriraj listu natjecanja';
 var OLCOMP_VIEWRESULT = 'Vidi rezultate';
 var OLCOMP_VIEWMYRESULT = 'Moja povijest';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Sakrij sve elemente dok štoperica mjeri vrijeme';
 var SCRAMBLE_LAST = 'prethodni';
 var SCRAMBLE_NEXT = 'sljedeći';
 var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'dužina';
 var SCRAMBLE_INPUT = 'Unesi scramble/ove)';
 var PROPERTY_VRCSPEED = 'VRC bazna brzina (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Ulaz', [
 		['Eksterno', "input", 0],
 		['Natjecanje', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

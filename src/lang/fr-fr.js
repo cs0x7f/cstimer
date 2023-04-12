@@ -72,9 +72,9 @@ var TOOLS_BLDHELPER = 'Assistant BLD';
 var TOOLS_CFMTIME = 'Confirmation du temps';
 var TOOLS_SOLVERS = 'Solveurs';
 var TOOLS_DLYSTAT = 'Daily Statistics';
-var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT1 = 'Période|Début de journée|Semaine';
+var TOOLS_DLYSTAT_OPT1 = 'jour|semaine|mois|année';
+var TOOLS_DLYSTAT_OPT2 = 'Dim|Lun|Mar|Mer|Jeu|Ven|Sam';
 var TOOLS_SYNCSEED = 'Mélange classique';
 var TOOLS_SYNCSEED_SEED = 'Seed';
 var TOOLS_SYNCSEED_INPUT = 'Entrer un Seed';
@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Utiliser un Seed de 30 sec';
 var TOOLS_SYNCSEED_HELP = 'Si activé, le mélange dépendra uniquement du seed et des paramètres de mélange. ';
 var TOOLS_SYNCSEED_DISABLE = 'Désactiver le seed actuel ?';
 var TOOLS_SYNCSEED_INPUTA = 'Entrez une valeur (a-zA-Z0-9) en tant que seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Mettre à jour la liste des compétitions';
 var OLCOMP_VIEWRESULT = 'Voir le résultat';
 var OLCOMP_VIEWMYRESULT = 'Mon historique';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Cacher tous les éléments lors du chronométrage';
 var SCRAMBLE_LAST = 'dernier';
 var SCRAMBLE_NEXT = 'prochain';
 var SCRAMBLE_SCRAMBLE = ' mélange';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
 var PROPERTY_VRCSPEED = 'Vitesse de base du cube virtuel (tps)';
@@ -140,10 +148,10 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Jamais';
 var PROPERTY_GIISBEEP = 'Bip quand le cube est considéré comme mélangé';
 var PROPERTY_GIIRST = 'Remettre le Giiker Cube à zéro quand il se connecte';
 var PROPERTY_GIIRSTS = 'Toujours|Sur confirmation|Jamais';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
-var PROPERTY_GIIMODES = 'Normal|Training';
-var PROPERTY_VRCAH = 'Useless pieces in huge cube';
-var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
+var PROPERTY_GIIMODE = 'Mode Cube Bluetooth';
+var PROPERTY_GIIMODES = 'Normal|Entraînement';
+var PROPERTY_VRCAH = 'Pièces inutiles pour les gros cubes';
+var PROPERTY_VRCAHS = 'Masquer|Contour|Couleur|Afficher';
 var CONFIRM_GIIRST = 'Remettre le Giiker Cube à zéro (état résolu)?';
 var PROPERTY_GIIAED = 'Détection automatique d\'erreur hardware';
 var scrdata = [
@@ -169,6 +177,7 @@ var scrdata = [
 	['Entrer', [
 		['Externe', "input", 0],
 		['Compétition', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = '30s kezdőérték használata';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Kikapcsolod a jelenlegi kezdőértéket?';
 var TOOLS_SYNCSEED_INPUTA = 'Adj meg egy kezdőértéket (a-zA-Z0-9)';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Verseny lista frissítése';
 var OLCOMP_VIEWRESULT = 'Eredmény megtekintése';
 var OLCOMP_VIEWMYRESULT = 'Előzményeim';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Összes elem elrejtése mérés közben';
 var SCRAMBLE_LAST = 'utolsó';
 var SCRAMBLE_NEXT = 'következő';
 var SCRAMBLE_SCRAMBLE = ' keverés';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'hosszúság';
 var SCRAMBLE_INPUT = 'keverések bevitele';
 var PROPERTY_VRCSPEED = 'VRC alap sebessége (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Bevitel', [
 		['外部', "input", 0],
 		['Verseny', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

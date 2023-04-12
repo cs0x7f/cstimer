@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Użyj 30s seeda';
 var TOOLS_SYNCSEED_HELP = 'Jeśli włączone, scramble będzie zależeć tylko od ustawień seeda i scramble\'a.';
 var TOOLS_SYNCSEED_DISABLE = 'Wyłączyć bieżący seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Wprowadź seeda (a-zA-Z0-9)';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Zaktualizuj listę zawodów';
 var OLCOMP_VIEWRESULT = 'Pokaż wyniki';
 var OLCOMP_VIEWMYRESULT = 'Moja historia';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Ukryj wszystkie elementy podczas układania';
 var SCRAMBLE_LAST = 'ostatni';
 var SCRAMBLE_NEXT = 'następny';
 var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'długość';
 var SCRAMBLE_INPUT = 'Wprowadź algorytm(y) mieszania';
 var PROPERTY_VRCSPEED = 'Prędkość bazowa VRC (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Wprowadź', [
 		['Zewnętrzny', "input", 0],
 		['Zawody', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

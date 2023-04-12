@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'Se ativado, o embaralhamento dependerá apenas das configurações de chave e embaralhamento.';
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'Ver Resultado';
 var OLCOMP_VIEWMYRESULT = 'Meu Histórico';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Esconder TODOS os elementos enquanto se resolve';
 var SCRAMBLE_LAST = 'último';
 var SCRAMBLE_NEXT = 'próximo';
 var SCRAMBLE_SCRAMBLE = ' embaralhamento';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'tamanho';
 var SCRAMBLE_INPUT = 'colocar embaralhamento(s)';
 var PROPERTY_VRCSPEED = 'velocidade base do VRC (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Entrada', [
 		['??', "input", 0],
 		['Competição', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

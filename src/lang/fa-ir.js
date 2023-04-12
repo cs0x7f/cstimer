@@ -13,7 +13,7 @@ var PROPERTY_USEINS_STR = 'همیشه|به جز با چشمان بسته|هرگ�
 var PROPERTY_VOICEINS = 'هشدار صوتی زمان بازدید WCA';
 var PROPERTY_VOICEINS_STR = 'هیچ کدام|صدای مرد|صدای زن';
 var PROPERTY_VOICEVOL = 'Voice volume';
-var PROPERTY_PHASES = 'multi-phase';
+var PROPERTY_PHASES = 'چند فازی';
 var PROPERTY_TIMERSIZE = 'اندازه تایمر';
 var PROPERTY_USEMILLI = 'استفاده از میلی ثانیه';
 var PROPERTY_SMALLADP = 'استفاده از فونت کوچک تر بعد از ممیّز';
@@ -23,24 +23,24 @@ var PROPERTY_SCRLIM = 'محدود کردن ناحیه اسکرمبل';
 var PROPERTY_SCRALIGN = 'تعیین تراز اسکرمبل';
 var PROPERTY_SCRALIGN_STR = 'وسط|چپ|راست';
 var PROPERTY_SCRFAST = 'استفاده از اسکرمبل سریع تر برای 4x4x4 (غیر رسمی)';
-var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
+var PROPERTY_SCRKEYM = 'کلید برچسب در تقلا حرکت می کند';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
-var PROPERTY_WNDSCR = 'Scramble panel display style';
-var PROPERTY_WNDSTAT = 'Statistics panel display style';
-var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
-var EXPORT_FROMOTHER = 'Import session(s) from other timers';
-var EXPORT_USERID = 'Please input your account (only alphabet or number)';
-var EXPORT_INVID = 'Only alphabet or number is allowed!';
-var EXPORT_ERROR = 'Some errors occurred...';
-var EXPORT_NODATA = 'No data found for your account';
-var EXPORT_UPLOADED = 'Uploaded successfully';
+var PROPERTY_WNDSCR = 'استایل پنیل توی سفه';
+var PROPERTY_WNDSTAT = 'آمار استایل دنیل توی سفه';
+var PROPERTY_WNDTOOL = 'سبک نمایش پنل ابزار';
+var PROPERTY_WND_STR = 'آدّی| تخت';
+var EXPORT_DATAEXPORT = 'دانا وارد کردن /صادرات';
+var EXPORT_TOFILE = 'صادرات به فایل';
+var EXPORT_FROMFILE = 'وارد کردن از فایل';
+var EXPORT_TOSERV = 'صادرات به سرور ';
+var EXPORT_FROMSERV = 'وارد کردن از سرور ';
+var EXPORT_FROMOTHER = 'وارد کردن جسله ها از وقت های دیگر ';
+var EXPORT_USERID = 'لتفن ورودی آکاینت خود را بنویسید (فقط الفبا یا عددات)';
+var EXPORT_INVID = 'فقط الفبا و عددات مجاز است!';
+var EXPORT_ERROR = 'چند تا عرور رخ داده است...';
+var EXPORT_NODATA = 'هیچ داتایی در آکایت شما است.';
+var EXPORT_UPLOADED = 'فایل با موفقیت بارگذاری شد';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Export Accounts';
@@ -49,11 +49,11 @@ var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
-var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
-var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
-var TOOLS_SELECTFUNC = 'Function';
-var TOOLS_CROSS = 'cross';
+var BUTTON_SCRAMBLE = 'تقلب';
+var BUTTON_TOOLS = 'ابزار ها';
+var IMAGE_UNAVAILABLE = 'غیر قابل دسترسی برای این نوع تقلا ';
+var TOOLS_SELECTFUNC = 'تابع';
+var TOOLS_CROSS = 'صلیب';
 var TOOLS_EOLINE = 'EOLine';
 var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
@@ -82,6 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
+var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE_HEAD = 'Room|Join Room';
+var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
+var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
+var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
 var OLCOMP_VIEWMYRESULT = 'My History';
@@ -126,6 +133,7 @@ var PROPERTY_AHIDE = 'Hide All Elements When Timing';
 var SCRAMBLE_LAST = 'last';
 var SCRAMBLE_NEXT = 'next';
 var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
 var SCRAMBLE_LENGTH = 'length';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
@@ -169,6 +177,7 @@ var scrdata = [
 	['Input', [
 		['Extern', "input", 0],
 		['Competition', "remoteComp", 0],
+		['Online battle', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [

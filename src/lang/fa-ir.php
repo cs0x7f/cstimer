@@ -54,9 +54,9 @@
 <li><strong data="opt_font">select timer&#x27;s font</strong>. Font of the main timer.</li>
 <li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
 <li><strong data="opt_view">UI style is</strong>. Switch between desktop and mobile views.</li>
-<li><strong data="opt_wndScr">Scramble panel display style</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Statistics panel display style</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Tools panel display style</strong>. Make tool panel embedded into background.</li>
+<li><strong data="opt_wndScr">استایل پنیل توی سفه</strong>. Make scramble panel embedded into background.</li>
+<li><strong data="opt_wndStat">آمار استایل دنیل توی سفه</strong>. Make list times panel embedded into background.</li>
+<li><strong data="opt_wndTool">سبک نمایش پنل ابزار</strong>. Make tool panel embedded into background.</li>
 <li><strong data="opt_bgImgO">background image opacity</strong>. Opacity of the background image.</li>
 <li><strong data="opt_bgImgS">background image</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">اندازه تایمر</strong>. Set the size of main timer.</li>
@@ -69,7 +69,7 @@
 <li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
 <li><strong data="opt_timeU">timer update is</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">time of keeping space down(second(s))</strong>. How long the space bar should be held before the timer turns green.</li>
-<li><strong data="opt_phases">multi-phase</strong>. Number of phases, press any key to mark a split point when timing.</li>
+<li><strong data="opt_phases">چند فازی</strong>. Number of phases, press any key to mark a split point when timing.</li>
 <li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">اندازه اسکرمبل</strong>. Size of the scramble text.</li>
 <li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
@@ -78,7 +78,7 @@
 <li><strong data="opt_scrAlign">تعیین تراز اسکرمبل</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrFast">استفاده از اسکرمبل سریع تر برای 4x4x4 (غیر رسمی)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
-<li><strong data="opt_scrKeyM">Label key move(s) in scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
+<li><strong data="opt_scrKeyM">کلید برچسب در تقلا حرکت می کند</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
 <li><strong data="opt_trim">Number of solves trimmed at each side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">show summary before time list</strong>. Show the statistics table before time list.</li>
@@ -119,7 +119,7 @@
 <li><strong data="tool_image">draw scramble</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
 <li><strong data="tool_roux1">Solvers &gt; Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
 <li><strong data="tool_eoline">Solvers &gt; EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Solvers &gt; cross</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
+<li><strong data="tool_cross">Solvers &gt; صلیب</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
 <li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
 <li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
 <li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>

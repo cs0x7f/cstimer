@@ -1,10 +1,11 @@
 "use strict";
 
-var onlinecomp = execMain(function() {
+var battle = execMain(function() {
 	var accountDiv = $('<div>');
 	var wcaSpan = $('<span class="click">');
 	var uidSpan = $('<span class="click">');
-	var joinRoomSpan = $('<span class="click">').html('Join Room');
+	var headStr = TOOLS_BATTLE_HEAD.split('|');
+	var joinRoomSpan = $('<span class="click">').html(headStr[1]);
 	var leaveRoomSpan = $('<span class="click">').html('[X]');
 
 	var conn = (function() {
@@ -133,7 +134,7 @@ var onlinecomp = execMain(function() {
 
 	function joinRoom(rstRoomId) {
 		if (rstRoomId || !roomId) {
-			var val = prompt('Input a room ID [a-zA-Z0-9]', roomId || (100 + mathlib.rn(900)));
+			var val = prompt(TOOLS_BATTLE_JOINALERT + ' [a-zA-Z0-9]', roomId || (100 + mathlib.rn(900)));
 			if (!/^[0-9a-zA-Z]{3,20}$/.exec(val)) {
 				alert('invalid room ID');
 				return;
@@ -163,7 +164,7 @@ var onlinecomp = execMain(function() {
 			return;
 		}
 		if (!direct) {
-			if (!confirm('Leave current battle room?')) {
+			if (!confirm(TOOLS_BATTLE_LEAVEALERT + '?')) {
 				return;
 			}
 		}
@@ -202,18 +203,17 @@ var onlinecomp = execMain(function() {
 	}
 
 	function submitSolve(time, isLast) {
-		if (localLastSolve && localLastSolve[1] == time[1] && !isLast) {
-			return;
-		}
-		localLastSolve = time;
 		if (!checkConnState()) {
 			return;
 		}
 		var solvScr = time[1];
-		if (solvScr != roomInfo['cur'][1] && (!isLast || solvScr != roomInfo['last'][1])) {
-			DEBUG && console.log('[battle] scramble not match, skip');
+		if (solvScr != roomInfo['cur'][1] && solvScr != roomInfo['last'][1]) {
 			return;
 		}
+		if (localLastSolve && localLastSolve[1] == time[1] && (!isLast || time[0][1] != localLastSolve[0][1])) {
+			return;
+		}
+		localLastSolve = time;
 		var solveId = solvScr == roomInfo['cur'][1] ? roomInfo['cur'][0] : roomInfo['last'][0];
 		conn.remoteCall({
 			'action': 'uploadSolve',
@@ -242,7 +242,7 @@ var onlinecomp = execMain(function() {
 			}
 		} else {
 			roomInfo = null;
-			if (kernel.getProp('scrType') == 'remoteComp') {
+			if (kernel.getProp('scrType') == 'remoteBattle') {
 				kernel.pushSignal('ctrl', ['scramble', 'next']);
 			}
 		}
@@ -258,8 +258,8 @@ var onlinecomp = execMain(function() {
 		if (roomInfo['cur'][1] && roomInfo['cur'][1] != localLastSolve[1]) {
 			scrResolve && scrResolve([roomInfo['cur'][1]]);
 			scrResolve = null;
-			if (kernel.getProp('scrType') != 'remoteComp') {
-				kernel.setProp('scrType', 'remoteComp');
+			if (kernel.getProp('scrType') != 'remoteBattle') {
+				kernel.setProp('scrType', 'remoteBattle');
 			}
 		}
 	}
@@ -274,13 +274,16 @@ var onlinecomp = execMain(function() {
 			accountDiv.show();
 		}
 		roomTable.empty();
-		roomTable.append($('<tr>').append($('<td colspan=5>').append('Room: ', joinRoomSpan, '&nbsp;', leaveRoomSpan)));
-		roomTable.append('<tr><td colspan=2>Rank</td><td>ELO</td><td>Status</td><td>time</td></tr>');
+		var titles = TOOLS_BATTLE_TITLE.split('|').slice(0, 3);
+		titles.splice(1, 0, 'ELO');
+
+		roomTable.append($('<tr>').append($('<td colspan=5>').append(headStr[0] + ': ', joinRoomSpan, '&nbsp;', leaveRoomSpan)));
+		roomTable.append('<tr><td colspan=2>' + titles.join('</td><td>') + '</td></tr>');
 		joinRoomSpan.unbind('click');
 		leaveRoomSpan.unbind('click');
 		if (!roomInfo) {
-			roomTable.append('<tr><td colspan=5>Not in a battle room</td></tr>');
-			joinRoomSpan.addClass('click').html('Join Room').click(joinRoom.bind(null, true));
+			roomTable.append('<tr><td colspan=5 style="width:0;">' + TOOLS_BATTLE_INFO + '</td></tr>');
+			joinRoomSpan.addClass('click').html(headStr[1]).click(joinRoom.bind(null, true));
 			leaveRoomSpan.hide();
 		} else {
 			joinRoomSpan.removeClass('click').html(roomInfo['roomId']);
@@ -289,6 +292,7 @@ var onlinecomp = execMain(function() {
 			var solves = roomInfo['solves'];
 			var solveDict = {};
 			var hasSolved = false;
+			var statusMap = ('???|' + TOOLS_BATTLE_STATUS).split('|');
 			for (var i = 0; i < solves.length; i++) {
 				var solveObj = solves[i];
 				var accountId = solveObj['accountId'];
@@ -320,7 +324,7 @@ var onlinecomp = execMain(function() {
 				}
 				roomTable.append('<tr><td>' + (i + 1) + '</td><td>' + account +
 					'</td><td>' + player['elo'] +
-					'</td><td>' + player['status'] +
+					'</td><td>' + statusMap[['READY', 'INSPECT', 'SOLVING', 'SOLVED', 'LOSS'].indexOf(player['status']) + 1] +
 					'</td><td>' + lastTime + '</td></tr>');
 			}
 		}
@@ -430,11 +434,11 @@ var onlinecomp = execMain(function() {
 
 	$(function() {
 		roomTable = $('<table class="table">');
-		tools.regTool('onlinecomp', OLCOMP_OLCOMP, execFunc);
-		kernel.regListener('onlinecomp', 'timestd', procSignal);
-		kernel.regListener('onlinecomp', 'timepnt', procSignal);
-		kernel.regListener('onlinecomp', 'timerStatus', procSignal);
-		kernel.regListener('onlinecomp', 'export', procSignal, /^account$/);
+		tools.regTool('battle', TOOLS_BATTLE, execFunc);
+		kernel.regListener('battle', 'timestd', procSignal);
+		kernel.regListener('battle', 'timepnt', procSignal);
+		kernel.regListener('battle', 'timerStatus', procSignal);
+		kernel.regListener('battle', 'export', procSignal, /^account$/);
 	});
 
 	return {
