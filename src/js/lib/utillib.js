@@ -202,6 +202,19 @@ execMain(function() {
 		return ret;
 	}
 
+	$.delayExec = (function() {
+		var tids = {};
+
+		return function(key, func, timeout) {
+			if (tids[key]) {
+				clearTimeout(tids[key][0]);
+				delete tids[key];
+			}
+			var tid = setTimeout(func, timeout);
+			tids[key] = [tid, func];
+		}
+	})();
+
 	if ('serviceWorker' in navigator) {
 		$(function() {
 			navigator.serviceWorker.register('sw.js');

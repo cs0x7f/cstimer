@@ -921,11 +921,6 @@ html.m .mhide, html:not(.m) .mshow {
 	width: 100%;
 }
 
-.m #timer {
-	height: calc(100% - 59px);
-	height: calc(100% - 11.8vw);
-}
-
 .m #leftbar {
 	left: 0;
 	bottom: 0;
@@ -1038,6 +1033,36 @@ html.m .mhide, html:not(.m) .mshow {
 	overflow: hidden;
 }
 
+.m.toolf .mywindow, .m.toolt .mywindow {
+	position: relative;
+}
+
+.m.toolf #wndctn {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap-reverse;
+	align-content: end;
+}
+
+.m.toolf #toolsDiv {
+	margin-left: auto;
+}
+
+.m.toolt #toolsDiv {
+	margin-left: auto;
+	bottom: 0;
+}
+
+.m.toolf #scrambleDiv, .m.toolt #stats {
+	position: absolute;
+}
+
+.m.toolt #wndctn {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: start;
+}
 
 #vrckey {
 	table-layout: fixed;

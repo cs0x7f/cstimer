@@ -183,6 +183,11 @@ var tools = execMain(function() {
 					funcMenu[i].loadVal(newfuncs[i]);
 				}
 				onFuncSelected();
+			} else if (value[0] == 'toolPos') {
+				$('html').removeClass('toolf toolt');
+				if ('ft'.indexOf(value[1]) != -1) {
+					$('html').addClass('tool' + value[1]);
+				}
 			}
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value;
@@ -219,7 +224,7 @@ var tools = execMain(function() {
 	}
 
 	$(function() {
-		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm)|toolHide)$/);
+		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm)|toolHide|toolPos)$/);
 		kernel.regListener('tools', 'scramble', procSignal);
 		kernel.regListener('tools', 'scrambleX', procSignal);
 		kernel.regListener('tools', 'button', procSignal, /^tools$/);
@@ -234,6 +239,7 @@ var tools = execMain(function() {
 			}
 		}
 
+		kernel.regProp('tools', 'toolPos', 1, 'Tools panel position', ['b', ['b', 'f', 't'], ['Bottom', 'Float', 'Top']]);
 		kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false]);
 		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50]);
 		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4]);

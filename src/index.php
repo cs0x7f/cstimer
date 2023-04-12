@@ -98,7 +98,7 @@
 <div id="avgstr"></div>
 </td></tr>
 </tbody></table>
-<table border="0" style="position:absolute; right:0%; height:100%;"><tbody>
+<table id="rtimer" border="0" style="position:absolute; right:0%; height:100%;"><tbody>
 <tr><td id="multiphase"></td></tr>
 </tbody></table>
 </body></html>

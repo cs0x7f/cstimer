@@ -1436,6 +1436,31 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	})();
 
+	function updateTimerOffset(clear) {
+		DEBUG && console.log('[timer] update timer offset');
+		if ($('html').hasClass('m') && !clear) {
+			var isToolTop = $('html').hasClass('toolt');
+			var winHeight = $('body').height();
+			var calcTop = $('#scrambleDiv').outerHeight();
+			var calcBottom = $('#stats').offset().top || winHeight;
+			if (isToolTop) {
+				calcTop += $('#toolsDiv').outerHeight();
+			} else {
+				calcBottom = Math.min(calcBottom, $('#toolsDiv').offset().top || winHeight);
+			}
+			var offset = calcTop + calcBottom - winHeight;
+			$('#timer,#rtimer').css({
+				'padding-bottom': Math.max(-offset, 0),
+				'padding-top': Math.max(offset, 0)
+			});
+		} else {
+			$('#timer,#rtimer').css({
+				'padding-bottom': 0,
+				'padding-top': 0
+			});
+		}
+	}
+
 	function getKeyCode(e) {
 		// left Ctrl: 256
 		// right Ctrl: 257
@@ -1540,10 +1565,19 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (value[0] == 'giiVRC' && value[2] != 'set') {
 				giikerTimer.setEnable(getProp('input'));
 			}
+			if (value[0] == 'toolPos') {
+				$.delayExec('timer offset', updateTimerOffset.bind(null, false), 50);
+			}
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC)$/);
+		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos)$/);
+		regListener('timer', 'ashow', function(signal, value) {
+			$.delayExec('timer offset', updateTimerOffset.bind(null, !value), 50);
+		});
+		regListener('timer', 'button', function(signal, value) {
+			$.delayExec('timer offset', updateTimerOffset.bind(null, false), 50);
+		});
 		regProp('vrc', 'vrcSpeed', 1, PROPERTY_VRCSPEED, [100, [0, 50, 100, 200, 500, 1000], '\u221E|20|10|5|2|1'.split('|')], 1);
 		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
