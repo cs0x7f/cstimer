@@ -20,6 +20,7 @@ lib/tdconverter.js \
 lib/lzstring.js \
 lib/min2phase.js \
 lib/cubeutil.js \
+lib/grip.js \
 lib/json.min.js \
 kernel.js \
 export.js \
