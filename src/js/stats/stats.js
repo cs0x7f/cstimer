@@ -682,6 +682,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		s.push("\n\n" + hlstr[10] + "\n");
+		if (kernel.getProp('absidx')) {
+			for (var i = 0; i < trimList.length; i++) {
+				trimList[i] += start;
+			}
+		}
 		for (var i = 0; i < nsolves; i++) {
 			s.push(detailTimeLine(kernel.getProp('absidx') ? start + i : i, timesAt(start + i), trimList));
 		}
