@@ -218,10 +218,14 @@ var TimeStat = execMain(function() {
 		if (theStats[0] == this.timesLen) {
 			return null;
 		}
+		return [this.worstTime, this.bestTime, this.getBestDiff(this.worstTime - this.bestTime)];
+	}
+
+	TimeStat.prototype.getBestDiff = function(gap) {
 		var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
 		var diff;
 		if (kernel.getProp('disPrec') == 'a') {
-			diff = (this.worstTime - this.bestTime) / 10;
+			diff = gap / 10;
 			for (var i = 0; i < diffValues.length; i++) {
 				if (diff < diffValues[i]) {
 					diff = diffValues[i];
@@ -231,7 +235,7 @@ var TimeStat = execMain(function() {
 		} else {
 			diff = diffValues[kernel.getProp('disPrec')];
 		}
-		return [this.worstTime, this.bestTime, diff];
+		return diff;
 	}
 
 	//ret length: length - nsolves + 1
