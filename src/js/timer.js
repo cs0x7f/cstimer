@@ -1311,7 +1311,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(curTime[1], enableVRC);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append(
-						'<div style="font-family: Arial; font-size: 0.4em">' +
+						'<div style="font-family: Arial; font-size: 0.3em">' +
 						moveCnt + " stm, " + (~~(100000 * moveCnt / curTime[1]) / 100.0) + " tps" +
 						'<br>' +
 						rawMoveCnt + " rqtm, " + (~~(100000 * rawMoveCnt / curTime[1]) / 100.0) + " tps" +
@@ -1441,10 +1441,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		if ($('html').hasClass('m') && !clear) {
 			var isToolTop = $('html').hasClass('toolt');
 			var winHeight = $('body').height();
-			var calcTop = $('#scrambleDiv').outerHeight();
+			var calcTop = $('#scrambleDiv').is(':visible') ? $('#scrambleDiv').outerHeight() : 0;
 			var calcBottom = $('#stats').offset().top || winHeight;
 			if (isToolTop) {
-				calcTop += $('#toolsDiv').outerHeight();
+				calcTop += $('#toolsDiv').is(':visible') ? $('#toolsDiv').outerHeight() : 0;
 			} else {
 				calcBottom = Math.min(calcBottom, $('#toolsDiv').offset().top || winHeight);
 			}
@@ -1459,6 +1459,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				'padding-top': 0
 			});
 		}
+	}
+
+	function updateTimerOffsetAsync(clear) {
+		$.delayExec('timer_offset', updateTimerOffset.bind(null, clear), 50);
 	}
 
 	function getKeyCode(e) {
@@ -1565,19 +1569,20 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (value[0] == 'giiVRC' && value[2] != 'set') {
 				giikerTimer.setEnable(getProp('input'));
 			}
-			if (value[0] == 'toolPos') {
-				$.delayExec('timer offset', updateTimerOffset.bind(null, false), 50);
+			if (['toolPos', 'scrHide', 'toolHide', 'statHide'].indexOf(value[0]) >= 0) {
+				updateTimerOffsetAsync(false);
 			}
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos)$/);
-		regListener('timer', 'ashow', function(signal, value) {
-			$.delayExec('timer offset', updateTimerOffset.bind(null, !value), 50);
+		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide)$/);
+		regListener('timer', 'ashow', function (signal, value) {
+			updateTimerOffsetAsync(!value);
 		});
-		regListener('timer', 'button', function(signal, value) {
-			$.delayExec('timer offset', updateTimerOffset.bind(null, false), 50);
-		});
+		regListener('timer', 'button', updateTimerOffsetAsync.bind(null, false));
+		regListener('timer', 'session', updateTimerOffsetAsync.bind(null, false));
+		regListener('timer', 'scrfix', updateTimerOffsetAsync.bind(null, false));
+		$(window).bind('resize', updateTimerOffsetAsync.bind(null, false));
 		regProp('vrc', 'vrcSpeed', 1, PROPERTY_VRCSPEED, [100, [0, 50, 100, 200, 500, 1000], '\u221E|20|10|5|2|1'.split('|')], 1);
 		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);

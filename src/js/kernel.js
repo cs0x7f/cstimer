@@ -758,7 +758,7 @@ var kernel = execMain(function() {
 					setColor(col_props.indexOf(value[0].substring(4, value[0].length)), value[1]);
 					break;
 				case 'zoom':
-					$('html').attr('class', 'p' + ~~(value[1] * 100));
+					$('html').removeClass('p70 p80 p90 p100 p110 p125 p150').addClass('p' + ~~(value[1] * 100));
 					$(window).trigger('resize');
 					updateUIDesign();
 				case 'view':
