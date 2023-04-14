@@ -144,15 +144,28 @@ var trend = execMain(function(kpretty) {
 		ctx.closePath();
 	}
 
+	var curAdj = 'x';
+
 	function procClick(e) {
 		var target = $(e.target);
 		if (!target.hasClass('click')) {
 			return;
 		}
 		var key = target.attr('data');
-		var off = {'p': 1, 'm': -1}[key[1]] || 0;
-		var amp = {'l': Math.sqrt(0.5), 's': Math.sqrt(2)}[key[1]] || 1;
-		if (key[0] == 'x') {
+		if (key == 'x') {
+			curAdj = 'y';
+			target.attr('data', 'y');
+			target.html('&nbsp;\u2b65&nbsp;');
+			return;
+		} else if (key == 'y') {
+			curAdj = 'x';
+			target.attr('data', 'x');
+			target.html('&nbsp;\u2b64&nbsp;');
+			return;
+		}
+		var off = {'p': 1, 'm': -1}[key] || 0;
+		var amp = {'l': Math.sqrt(0.5), 's': Math.sqrt(2)}[key] || 1;
+		if (curAdj == 'x') {
 			offtx += off * amptx * 0.25 + amptx * (1 - amp);
 			amptx *= amp;
 			amptx = Math.min(Math.max(amptx, 0.1), 1.0);
@@ -173,17 +186,14 @@ var trend = execMain(function(kpretty) {
 		if (/^scr/.exec(signal)) {
 			return;
 		}
-		var span = '<span class="click" data="%">$</span>';
+		var span = '<span class="click" data="%">&nbsp;$&nbsp;</span>';
 		fdiv.empty().append(trendDiv.append(canvas, '<br>', [
-			span.replace('$', '&lt;').replace('%', 'xm'),
-			span.replace('$', '&gt;').replace('%', 'xp'),
-			span.replace('$', '+').replace('%', 'xl'),
-			span.replace('$', '-').replace('%', 'xs'), '|',
-			span.replace('$', '&lt;').replace('%', 'yp'),
-			span.replace('$', '&gt;').replace('%', 'ym'),
-			span.replace('$', '+').replace('%', 'yl'),
-			span.replace('$', '-').replace('%', 'ys')
-		].join(' ')
+			span.replace('$', '\u2b64').replace('%', 'x'),
+			span.replace('$', '&lt;').replace('%', 'p'),
+			span.replace('$', '&gt;').replace('%', 'm'),
+			span.replace('$', '+').replace('%', 'l'),
+			span.replace('$', '-').replace('%', 's')
+		].join('')
 		).unbind('click').click(procClick));
 		updateTrend();
 	}
