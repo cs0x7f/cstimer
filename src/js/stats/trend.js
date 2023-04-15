@@ -187,7 +187,7 @@ var trend = execMain(function(kpretty) {
 			return;
 		}
 		var span = '<span class="click" data="%">&nbsp;$&nbsp;</span>';
-		fdiv.empty().append(trendDiv.append(canvas, '<br>', [
+		fdiv.empty().append(trendDiv.empty().append(canvas, '<br>', [
 			span.replace('$', '\u2b64').replace('%', 'x'),
 			span.replace('$', '&lt;').replace('%', 'p'),
 			span.replace('$', '&gt;').replace('%', 'm'),
