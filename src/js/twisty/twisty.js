@@ -110,13 +110,14 @@ window.twistyjs = (function() {
 
 			twistyContainer.appendChild(twistyCanvas);
 
-			twistyCanvas.addEventListener('mousedown', onCanvasDown);
-			twistyCanvas.addEventListener('mousemove', onCanvasMove);
-			twistyCanvas.addEventListener('mouseup', onCanvasUp);
-			twistyCanvas.addEventListener('touchstart', onCanvasDown);
-			twistyCanvas.addEventListener('touchmove', onCanvasMove);
-			twistyCanvas.addEventListener('touchend', onCanvasUp);
-
+			if (twistyType.allowDragging) {
+				twistyCanvas.addEventListener('mousedown', onCanvasDown);
+				twistyCanvas.addEventListener('mousemove', onCanvasMove);
+				twistyCanvas.addEventListener('mouseup', onCanvasUp);
+				twistyCanvas.addEventListener('touchstart', onCanvasDown);
+				twistyCanvas.addEventListener('touchmove', onCanvasMove);
+				twistyCanvas.addEventListener('touchend', onCanvasUp);
+			}
 			// resize creates the camera and calls render()
 			that.resize();
 		}

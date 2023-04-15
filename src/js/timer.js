@@ -852,6 +852,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				type: "cube",
 				faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
 				dimension: size,
+				allowDragging: true,
 				stickerWidth: 1.7,
 				scale: 0.9
 			};
