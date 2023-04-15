@@ -20,6 +20,7 @@ lib/tdconverter.js \
 lib/lzstring.js \
 lib/min2phase.js \
 lib/cubeutil.js \
+lib/puzzlefactory.js \
 lib/grip.js \
 lib/json.min.js \
 kernel.js \
@@ -85,7 +86,8 @@ twisty/twistyskb.js \
 twisty/twistypyra.js \
 twisty/twistyminx.js \
 twisty/twistyclk.js \
-twisty/qcube.js)
+twisty/qcube.js \
+twisty/twistyreplay.js)
 
 
 cstimer = $(dest)/js/cstimer.js

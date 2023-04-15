@@ -20,6 +20,7 @@
   <script type="text/javascript" src="js/lib/lzstring.js"></script>
   <script type="text/javascript" src="js/lib/min2phase.js"></script>
   <script type="text/javascript" src="js/lib/cubeutil.js"></script>
+  <script type="text/javascript" src="js/lib/puzzlefactory.js"></script>
   <script type="text/javascript" src="js/lib/grip.js"></script>
   <script type="text/javascript" src="js/lib/json.min.js"></script>
   <script type="text/javascript" src="js/kernel.js"></script>
@@ -77,6 +78,7 @@
   <script type="text/javascript" src="js/twisty/twistyminx.js"></script>
   <script type="text/javascript" src="js/twisty/twistyclk.js"></script>
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
+  <script type="text/javascript" src="js/twisty/twistyreplay.js"></script>
 </head>
 <body>
 <div id="leftbar">
