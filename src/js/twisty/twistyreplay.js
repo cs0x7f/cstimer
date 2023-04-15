@@ -242,7 +242,7 @@ var replay = execMain(function() {
 		if (req) {
 			$.clearUrl('vrcreplay');
 			try {
-				req = JSON.parse(LZString.decompressFromEncodedURIComponent(req));
+				req = JSON.parse(LZString.decompressFromEncodedURIComponent(decodeURIComponent(req)));
 				setTimeout(function() {
 					popupReplay(req[0], req[1], req[2]);
 				}, 500);
