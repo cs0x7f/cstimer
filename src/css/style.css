@@ -677,6 +677,7 @@ div.helptable ul {
 	left: 190px;
 	left: 13.5rem;
 	top: 0;
+	width: 100%;
 }
 
 #scrambleDiv > .title {
@@ -1045,7 +1046,7 @@ html.m .mhide, html:not(.m) .mshow {
 }
 
 .m.toolf #toolsDiv {
-	margin-left: auto;
+	margin-left: 0;
 }
 
 .m.toolt #toolsDiv {
