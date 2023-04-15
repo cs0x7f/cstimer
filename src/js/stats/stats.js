@@ -309,6 +309,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 				if ($.clipboardCopy(pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "") + "   " + time[1] + "   @" + mathlib.time2str(time[3]))) {
 					logohint.push('solve copied');
 				}
+			} else if (which == 'r') {
+				var time = timesAt(cfmIdx);
+				replay.popupReplay(time[1], time[4][0]);
 			}
 		}
 
@@ -340,8 +343,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var time = timesAt(cfmIdx);
 			var reviewElem = '';
 			if (time[4]) {
-				reviewElem = $('<a target="_blank">' + STATS_REVIEW + '</a>').addClass('click');
-				reviewElem.attr('href', getReviewUrl(time));
+				// reviewElem = $('<a target="_blank">' + STATS_REVIEW + '</a>').addClass('click');
+				// reviewElem.attr('href', getReviewUrl(time));
+				reviewElem = $('<span class="click" data="r">' + STATS_REVIEW + '</span>');
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}
 			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')

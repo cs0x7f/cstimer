@@ -62,6 +62,7 @@
   <script type="text/javascript" src="js/tools/battle.js"></script>
   <script type="text/javascript" src="js/tools/syncseed.js"></script>
   <script type="text/javascript" src="js/tools/bldhelper.js"></script>
+  <script type="text/javascript" src="js/twisty/twistyreplay.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
   <script type="text/javascript" src="js/stackmat.js"></script>
@@ -78,7 +79,6 @@
   <script type="text/javascript" src="js/twisty/twistyminx.js"></script>
   <script type="text/javascript" src="js/twisty/twistyclk.js"></script>
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
-  <script type="text/javascript" src="js/twisty/twistyreplay.js"></script>
 </head>
 <body>
 <div id="leftbar">

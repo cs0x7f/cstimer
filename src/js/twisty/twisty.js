@@ -341,8 +341,13 @@ window.twistyjs = (function() {
 
 		this.applyMoves = function(moves) {
 			moveQueue = moveQueue.concat(moves);
+			while (cachedFireMoves.length != 0) {
+				twisty.advanceMoveCallback(twisty, cachedFireMoves.shift());
+			}
 			while (moveQueue.length > 0) {
-				startMove();
+				if (this.isAnimationFinished()) {
+					startMove();
+				}
 				twisty.advanceMoveCallback(twisty, currentMove.shift());
 				currentMoveStartTime.shift();
 				moveProgress.shift();
@@ -362,9 +367,6 @@ window.twistyjs = (function() {
 				}
 			} else {
 				cachedFireMoves.push(currentMove.shift());
-				//			twisty.advanceMoveCallback(twisty, currentMove.shift());
-
-				//			fireMoveEnded(currentMove.shift());
 				currentMoveStartTime.shift();
 				moveProgress.shift();
 				if (currentMove.length == 0) {
@@ -397,7 +399,7 @@ window.twistyjs = (function() {
 				startMove();
 				lastTimeStamp = $.now();
 				pendingAnimationLoop = requestAnimFrame(animateLoop, twistyCanvas);
-			} else if (twisty.isParallelMove(twisty, currentMove[0], moveQueue[0])) {
+			} else if (!currentMove[0] || twisty.isParallelMove(twisty, currentMove[0], moveQueue[0])) {
 				//			console.log('parallel');
 				startMove();
 			}

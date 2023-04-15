@@ -1098,7 +1098,7 @@ var kernel = execMain(function() {
 		return pretty(round(time), small);
 	}
 
-	var scrambleReg = /^([\d]+)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
+	var scrambleReg = /^([\d]+(?:-\d+)?)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
 
 	function parseScramble(scramble, moveMap, addPreScr) {
 		if (addPreScr) {
@@ -1120,9 +1120,11 @@ var kernel = execMain(function() {
 				moveseq.push([moveMap.indexOf("FRUBLD".charAt(f)), 1, 4-p]);
 				continue;
 			}
-			w = f < 12 ? (~~m[1] || ~~m[4] || ((m[3] == "w" || f > 5) && 2) || 1) : -1;
+			w = (m[1] || '').split('-');
+			var w2 = ~~w[1] || -1;
+			w = f < 12 ? (~~w[0] || ~~m[4] || ((m[3] == "w" || f > 5) && 2) || 1) : -1;
 			p = (f < 12 ? 1 : -1) * ("2'".indexOf(m[5] || 'X') + 2);
-			moveseq.push([moveMap.indexOf("FRUBLD".charAt(f % 6)), w, p]);
+			moveseq.push([moveMap.indexOf("FRUBLD".charAt(f % 6)), w, p, w2]);
 		}
 		return moveseq;
 	}

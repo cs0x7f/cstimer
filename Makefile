@@ -62,6 +62,7 @@ tools/metronome.js \
 tools/battle.js \
 tools/syncseed.js \
 tools/bldhelper.js \
+twisty/twistyreplay.js \
 shortcut.js \
 help.js \
 stackmat.js \
@@ -86,8 +87,7 @@ twisty/twistyskb.js \
 twisty/twistypyra.js \
 twisty/twistyminx.js \
 twisty/twistyclk.js \
-twisty/qcube.js \
-twisty/twistyreplay.js)
+twisty/qcube.js)
 
 
 cstimer = $(dest)/js/cstimer.js

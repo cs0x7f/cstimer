@@ -539,7 +539,7 @@
 		}
 
 		function isInspectionLegalMove(twisty, move) {
-			return move[0] == 1 && move[1] == twisty.options.dimension;
+			return move[0] <= 1 && move[1] >= twisty.options.dimension;
 		}
 
 		function isParallelMove(twisty, move1, move2) {
@@ -554,9 +554,11 @@
 				scramble = [];
 				for (var i = 0; i < moves.length; i++) {
 					if (moves[i][1] > 0) {
-						scramble.push([1, moves[i][1], "URFDLB".charAt(moves[i][0]), [1, 2, -1][moves[i][2] - 1]]);
+						var l1 = moves[i][1];
+						var l2 = moves[i][3] == -1 ? 1 : moves[i][3];
+						scramble.push([Math.min(l1, l2), Math.max(l1, l2), "URFDLB".charAt(moves[i][0]), [1, 2, -1][moves[i][2] - 1]]);
 					} else {
-						scramble.push([1, 3, "URFDLB".charAt(moves[i][0]), [1, 2, -1][-moves[i][2] - 1]]);
+						scramble.push([1, 100, "URFDLB".charAt(moves[i][0]), [1, 2, -1][-moves[i][2] - 1]]);
 					}
 				}
 				return scramble;
