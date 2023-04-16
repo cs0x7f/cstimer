@@ -3,6 +3,7 @@ var replay = execMain(function() {
 	var div;
 	var puzzleDiv;
 	var puzzleObj;
+	var puzzle;
 	var options = {};;
 	var rawRecons;
 	var autoOri = false;
@@ -203,8 +204,8 @@ var replay = execMain(function() {
 		startPlayMoves();
 	}
 
-	function popupReplay(scramble, recons, puzzle) {
-		puzzle = puzzle || tools.puzzleType(tools.getCurScramble()[0]);
+	function popupReplay(scramble, recons, _puzzle) {
+		puzzle = _puzzle || tools.puzzleType(tools.getCurScramble()[0]);
 		var size = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'].indexOf(puzzle);
 		if (!size) {
 			size = 3;
@@ -218,6 +219,8 @@ var replay = execMain(function() {
 			scale: 0.9
 		};
 		kernel.showDialog([div, function() {
+			status = 0;
+		}, undefined, function() {
 			status = 0;
 		}], 'share', 'Virtual Replay', function() {
 			puzzleFactory.init(options, $.noop, puzzleDiv, function(ret, isInit) {

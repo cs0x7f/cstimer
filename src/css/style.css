@@ -155,8 +155,16 @@ textarea {
 
 #avgstr {
 	font-family: Arial;
-	font-size: 0.2em;
 	position: relative;
+}
+
+#container > #avgstr {
+	font-size: 0.2em;
+}
+
+#multiphase > #avgstr {
+	font-size: 0.3em;
+	line-height: 1.5em;
 }
 
 #avgstr > span {

@@ -79,10 +79,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		var staticAppend = "";
 		var divDict = ["", ""];
+		var isRight = false;
 
 		var lasttime = 0;
 
-		function setRunning(run, right) {
+		function setRunning(run) {
 			if (run && runningId == undefined) {
 				requestAnimFrame(runningThread);
 				runningId = 1;
@@ -90,7 +91,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else if (!run && runningId != undefined) {
 				runningId = undefined;
 			}
-			runningDiv = right ? rightDiv : div;
+			runningDiv = isRight ? rightDiv : div;
 		}
 
 		function runningThread(timestamp) {
@@ -163,8 +164,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			rightDiv.css('color', val);
 		}
 
-		function setValue(val, right) {
-			setHtml(right ? rightDiv : div, val != undefined ? pretty(val, true) : '--:--');
+		function setValue(val) {
+			setHtml(isRight ? rightDiv : div, val != undefined ? pretty(val, true) : '--:--');
 		}
 
 		function setHtml(div, val) {
@@ -197,15 +198,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function reset(right) {
+			isRight = right;
 			div.empty();
 			rightDiv.empty();
 			divDict[0] = "";
 			divDict[1] = "";
-			setValue(0, right);
+			setValue(0, isRight);
 			setRunning(false);
 			staticAppend = "";
+			avgDiv.updatePos(isRight);
 		}
-
 
 		function getMulPhaseAppend(curProgress, totPhases) {
 			var ret = [];
@@ -236,13 +238,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	var avgDiv = (function() {
 		var avgDiv;
+		var avgDiv0 = $('<span class="click">Replay</span><br>');
 		var avgDiv1 = $('<span class="click">');
 		var avgDiv2 = $('<span class="click">');
 
 		var isShowAvgDiv = true;
+		var curValue;
 
 		function showAvgDiv(enable) {
-			if (enable && getProp('showAvg') && $.inArray(getProp('input'), ['s', 'm', 't', 'i', 'b']) != -1) {
+			if (enable && getProp('showAvg')) {
 				if (!isShowAvgDiv) {
 					avgDiv.show();
 					isShowAvgDiv = true;
@@ -255,7 +259,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function procSignal(signal, value) {
+		function setValue(value) {
 			avgDiv1.html(value[0]).unbind('click');
 			if (value[2] != undefined) {
 				avgDiv1.addClass('click').click(function() {
@@ -272,15 +276,36 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				avgDiv2.removeClass('click');
 			}
+			if (value[5] && value[5][4]) {
+				avgDiv0.show().unbind('click').click(function() {
+					replay.popupReplay(value[5][1], value[5][4][0]);
+				});
+			} else {
+				avgDiv0.hide();
+			}
+		}
+
+		function procSignal(signal, value) {
+			var curValue = value;
+			setValue(curValue);
+		}
+
+		function updatePos(isRight) {
+			if (isRight) {
+				avgDiv.appendTo('#multiphase');
+			} else {
+				avgDiv.appendTo('#container');
+			}
 		}
 
 		$(function() {
-			avgDiv = $('#avgstr').append(avgDiv1, '<br>', avgDiv2);
+			avgDiv = $('#avgstr').append(avgDiv0, avgDiv1, '<br>', avgDiv2);
 			regListener('timer', 'avg', procSignal);
 		})
 
 		return {
-			showAvgDiv: showAvgDiv
+			showAvgDiv: showAvgDiv,
+			updatePos: updatePos
 		}
 	})();
 
@@ -795,7 +820,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					updateMulPhase(totPhases, puzzleObj.isSolved(getProp('vrcMP', 'n')), now);
 					fixRelayCounter();
-					lcd.setRunning(true, true);
+					lcd.setRunning(true);
 					ui.setAutoShow(false);
 				}
 			}
@@ -827,7 +852,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					kernel.pushSignal('timerStatus', status);
 					lcd.setRunning(false);
 					lcd.setStaticAppend('');
-					lcd.val(curTime[1], true);
+					lcd.val(curTime[1]);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append(
 						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
@@ -895,7 +920,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					div.html('--:--');
 				}
 				if (!temp || isInit) {
-					lcd.setRunning(false, true);
+					lcd.setRunning(false);
 					lcd.setStaticAppend('');
 					setSize(getProp('timerSize'));
 				}
@@ -937,10 +962,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						status = -3; //inspection
 						kernel.pushSignal('timerStatus', status);
 						startTime = now;
-						lcd.setRunning(true, true);
+						lcd.setRunning(true);
 					} else {
-						lcd.setRunning(false, true);
-						lcd.val(0, true);
+						lcd.setRunning(false);
+						lcd.val(0);
 						status = -2; //ready
 						kernel.pushSignal('timerStatus', status);
 					}
@@ -1221,7 +1246,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.setRunning(false, enableVRC);
 					lcd.setStaticAppend('');
 					lcd.fixDisplay(false, true);
-					lcd.val(curTime[1], enableVRC);
+					lcd.val(curTime[1]);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					lcd.append(
 						'<div style="font-family: Arial; font-size: 0.3em">' +
@@ -1333,7 +1358,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					kernel.pushSignal('timerStatus', status);
 					giikerutil.reSync();
 					ui.setAutoShow(true);
-					lcd.val(0, enableVRC);
+					lcd.val(0);
 					lcd.setRunning(false, enableVRC);
 					lcd.fixDisplay(false, true);
 				} else if (keyCode == 32 && getProp('giiSK')) {
