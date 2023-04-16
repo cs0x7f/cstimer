@@ -474,9 +474,19 @@ var mathlib = (function() {
 			}
 		}
 
+		var rot2str = [
+			"", "y'", "y2", "y",
+			"z2", "y' z2", "y2 z2", "y z2",
+			"y' x'", "y2 x'", "y x'", "x'",
+			"y' x", "y2 x", "y x", "x",
+			"y z", "z", "y' z", "y2 z",
+			"y' z'", "y2 z'", "y z'", "z'"
+		];
+
 		CubieCube.rotMult = rotMult;
 		CubieCube.rotMulI = rotMulI;
 		CubieCube.rotMulM = rotMulM;
+		CubieCube.rot2str = rot2str;
 		return rotCube;
 	})();
 

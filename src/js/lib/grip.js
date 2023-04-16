@@ -195,7 +195,7 @@ var gripRecons = execBoth(function() {
 						continue;
 					}
 					for (var j = 0; j < 5; j++) {
-						ret.push([0, i << 3 | j, [0, 0, 'start ori ' + i + ' handPos ' + j]]);
+						ret.push([0, i << 3 | j, [0, 0, mathlib.CubieCube.rot2str[i]/*'start ori ' + i + ' handPos ' + j*/]]);
 					}
 				}
 				return ret;
@@ -205,7 +205,7 @@ var gripRecons = execBoth(function() {
 			var handPos = node & 0x7;
 			if (step == moveSeq.length) {
 				if (!(endOriMask >> ori & 1)) {
-					ret.push([0, -2, [0, 0, 'end ori ' + ori + ' handPos ' + handPos]]);
+					ret.push([0, -2, [0, 0, 'Gend ori=' + ori + ' hand=' + handPos]]);
 				}
 			}
 			for (var i = 0; i < transTable.length; i++) {
@@ -242,8 +242,6 @@ var gripRecons = execBoth(function() {
 			node = info[1];
 		}
 		ret.reverse();
-		ret.shift();
-		ret.pop();
 		return ret;
 	}
 
@@ -291,7 +289,7 @@ var gripRecons = execBoth(function() {
 			}
 			stepN.push(moves.length);
 		}
-		var bestAlg = getBestAlgorithm(moves, 0xfffffe);
+		var bestAlg = getBestAlgorithm(moves);
 		var sidx = 0;
 		var last = 0;
 		var stepNames = cubeutil.getStepNames(method).reverse();
@@ -309,10 +307,62 @@ var gripRecons = execBoth(function() {
 		};
 	}
 
+	//replace cube rotation in recons
+	function updateReconsOri(recons) {
+		var movets = recons.split(' ');
+		var moves = [];
+		var tstamp = [];
+		var c = new mathlib.CubieCube();
+		c.ori = 0;
+		for (var i = 0; i < movets.length; i++) {
+			var m = /^(.*)@(\d+)$/.exec(movets[i]);
+			if (!m) {
+				continue;
+			}
+			var effMove = c.selfMoveStr(m[1]);
+			if (effMove != undefined) {
+				moves.push(effMove);
+				tstamp.push(~~m[2]);
+			}
+		}
+		var bestAlg = getBestAlgorithm(moves);
+		var rets = [];
+		var rots = [];
+		var last = 0;
+		var lastt = 0;
+		for (var i = 0; i < bestAlg.length; i++) {
+			var info = bestAlg[i];
+			if (info[3][2][0] == 'G') {
+				continue;
+			}
+			var idx = info[2] >> 8;
+			if (idx == last) {
+				var cur = info[3][2].split(' ');
+				for (var j = 0; j < cur.length; j++) {
+					cur[j] && rots.push(cur[j]);
+				}
+				continue;
+			}
+			var curt = tstamp[idx - 1];
+			for (var j = 0; j < rots.length; j++) {
+				var calctt = lastt + Math.floor((curt - lastt) * (j + 1) / (rots.length + 1));
+				rets.push(rots[j].trim() + '@' + calctt);
+			}
+			rets.push(info[3][2].trim() + '@' + curt);
+			last = idx;
+			lastt = curt;
+			rots = [];
+		}
+		return rets.join(' ').replace(/[EMS]/g, function(ch) {
+			return ['2-2Dw', '2-2Lw', '2-2Fw']['EMS'.indexOf(ch)];
+		});
+	}
+
 	return {
 		getBestAlgorithmStr: getBestAlgorithmStr,
 		getBestAlgorithm: getBestAlgorithm,
-		getPrettyReconstruction: getPrettyReconstruction
+		getPrettyReconstruction: getPrettyReconstruction,
+		updateReconsOri: updateReconsOri
 	}
 });
 

@@ -4,6 +4,8 @@ var replay = execMain(function() {
 	var puzzleDiv;
 	var puzzleObj;
 	var options = {};;
+	var rawRecons;
+	var autoOri = false;
 
 	var rangeTime;
 	var txtTime;
@@ -121,6 +123,15 @@ var replay = execMain(function() {
 			if ($.clipboardCopy(shareURL)) {
 				logohint.push('share link copied');
 			}
+		} else if (key == 'o') {
+			autoOri = !autoOri;
+			if (autoOri) {
+				obj.html('auto ori');
+			} else {
+				obj.html('raw ori');
+			}
+			goToStep(0);
+			parseRecons(rawRecons);
 		}
 	}
 
@@ -158,6 +169,10 @@ var replay = execMain(function() {
 	}
 
 	function parseRecons(recons) {
+		rawRecons = recons;
+		if (autoOri && puzzle == '333') {
+			recons = gripRecons.updateReconsOri(recons);
+		}
 		var movets = recons.split(' ');
 		var moves = [];
 		var tstamp = [];
@@ -217,25 +232,35 @@ var replay = execMain(function() {
 		});
 	}
 
+	function bindDomElem(elem, scramble, recons, puzzle) {
+		if (!elem.hasClass('click')) {
+			elem.addClass('click');
+		}
+		elem.unbind('click').click(popupReplay.bind(null, scramble, recons, puzzle));
+	}
+
 	$(function() {
 		div = $('<table style="height:98%">');
 		puzzleDiv = $('<div style="height:100%;">');
-		var span = '<span class="click" data="%" style="display:inline-block; width:7%;">&nbsp;$&nbsp;</span>';
+		var span = '<span class="click" data="%" style="display:inline-block; min-width:7%;">&nbsp;$&nbsp;</span>';
 		rangeTime = $('<input type="range" style="width:50%;" data="r">');
-		txtTime = $('<span>');
-		txtSpeed = $('<span>1x</span>');
+		txtTime = $('<span style="user-select:none;"></span>');
+		txtSpeed = $('<span style="user-select:none;">1x</span>');
 		div.append(
+			$('<tr>').append($('<td>').append(
+				span.replace('$', '\u23eb').replace('%', 's+'),
+				span.replace('$', '\u23ec').replace('%', 's-'), '|',
+				span.replace('$', 'raw ori').replace('%', 'o'), '|',
+				span.replace('$', 'share link').replace('%', 'a')
+			)),
 			$('<tr>').append($('<td>').append(puzzleDiv)),
-			$('<tr>').append($('<td>').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
+			$('<tr>').append($('<td style="display:flex;justify-content:center;">').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
 			$('<tr>').append($('<td>').append(
 				span.replace('$', '\u23ee').replace('%', 's'),
 				span.replace('$', '&lt;').replace('%', 'l'),
 				span.replace('$', '\u23f5').replace('%', 'p'),
 				span.replace('$', '&gt;').replace('%', 'n'),
-				span.replace('$', '\u23ed').replace('%', 'e'),
-				span.replace('$', '\u23eb').replace('%', 's+'),
-				span.replace('$', '\u23ec').replace('%', 's-'),
-				span.replace('$', '&#128203;').replace('%', 'a')
+				span.replace('$', '\u23ed').replace('%', 'e')
 			))
 		);
 		var req = $.urlParam('vrcreplay');
@@ -253,6 +278,7 @@ var replay = execMain(function() {
 	});
 
 	return {
-		popupReplay: popupReplay
+		popupReplay: popupReplay,
+		bindDomElem: bindDomElem
 	}
 });
