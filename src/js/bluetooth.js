@@ -632,11 +632,13 @@ var GiikerCube = execMain(function() {
 		function getBatteryLevel() {
 			if (_service_v2data) {
 				return Promise.resolve([batteryLevel, deviceName + '*']);
-			} else {
+			} else if (_chrct_f7) {
 				return _chrct_f7.readValue().then(function(value) {
 					value = decode(value);
 					return Promise.resolve([value[7], deviceName]);
 				});
+			} else {
+				return Promise.resolve([batteryLevel, deviceName]);
 			}
 		}
 
