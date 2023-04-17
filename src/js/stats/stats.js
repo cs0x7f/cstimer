@@ -311,7 +311,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 			} else if (which == 'r') {
 				var time = timesAt(cfmIdx);
-				replay.popupReplay(time[1], time[4][0]);
+				if (time[4]) {
+					var puzzle = typeof time[4][1] == 'string' && time[4][1] || tools.getCurPuzzle() || '333';
+					replay.popupReplay(time[1], time[4][0], puzzle);
+				}
 			}
 		}
 
