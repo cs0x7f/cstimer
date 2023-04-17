@@ -597,6 +597,12 @@
 			}
 		}
 
+		function moveInv(move) {
+			var move = move.slice();
+			move[3] = -move[3];
+			return move;
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,

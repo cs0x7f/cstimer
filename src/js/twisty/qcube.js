@@ -292,6 +292,12 @@ window.twistyjs.qcube = function() {
 		}
 	}
 
+	this.moveInv = function(move) {
+		var move = move.slice();
+		move[3] = -move[3];
+		return move;
+	}
+
 	this.toggleColorVisible = function(args) {
 		return;
 	}

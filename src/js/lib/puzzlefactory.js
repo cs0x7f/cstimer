@@ -42,6 +42,10 @@ var puzzleFactory = execMain(function() {
 		return this.twisty.move2str(move);
 	};
 
+	Puzzle.prototype.moveInv = function(move) {
+		return this.twisty.moveInv(move);
+	};
+
 	Puzzle.prototype.toggleColorVisible = function(args) {
 		return this.twisty.toggleColorVisible(this.twisty, args);
 	};
@@ -100,6 +104,28 @@ var puzzleFactory = execMain(function() {
 			parent.empty().append(child[2].getDomElement());
 			child[2].addMoveListener(moveListener);
 		}
+		var puzzle = options['puzzle'];
+		if (puzzle.startsWith("cube")) {
+			options["type"] = "cube";
+			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]); // U L F D L B
+			options["dimension"] = ~~puzzle.slice(4) || 3;
+			options["stickerWidth"] = 1.7;
+		} else if (puzzle == "skb") {
+			options["type"] = "skewb";
+			options["faceColors"] = col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);
+		} else if (puzzle == "mgm") {
+			options["type"] = "mgm";
+			options["faceColors"] = col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
+		} else if (puzzle == "pyr") {
+			options["type"] = "pyr";
+			options["faceColors"] = col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
+		} else if (puzzle == "sq1") {
+			options["type"] = "sq1";
+			options["faceColors"] = col2std(kernel.getProp("colsq1"), [0, 5, 4, 2, 1, 3]);
+		} else if (puzzle == "clk") {
+			options["type"] = "clk";
+			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
+		}
 		if (style == 'q') {
 			child[2].init(options);
 		} else {
@@ -108,6 +134,15 @@ var puzzleFactory = execMain(function() {
 		}
 		child[2].resize();
 		callback(child[2], isInit);
+	}
+
+	function col2std(col, faceMap) {
+		var ret = [];
+		col = (col || '').match(/#[0-9a-fA-F]{3}/g) || [];
+		for (var i = 0; i < col.length; i++) {
+			ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
+		}
+		return ret;
 	}
 
 	return {

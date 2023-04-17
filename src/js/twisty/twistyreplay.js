@@ -17,15 +17,6 @@ var replay = execMain(function() {
 	var algSpan;
 	var curScramble;
 
-	function col2std(col, faceMap) {
-		var ret = [];
-		col = (col || '').match(/#[0-9a-fA-F]{3}/g) || [];
-		for (var i = 0; i < col.length; i++) {
-			ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
-		}
-		return ret;
-	}
-
 	var startTs = 0;
 	var activeTid = 0;
 	var scrMoves = [];
@@ -72,8 +63,7 @@ var replay = execMain(function() {
 			}
 		} else if (step < curPlayIdx) {
 			for (var i = curPlayIdx - 1; i >= step; i--) {
-				var move = playMoves[i][0].slice();
-				move[3] = -move[3];
+				var move = puzzleObj.moveInv(playMoves[i][0])
 				if (Math.abs(step - 1 - i) > 3) {
 					puzzleObj.applyMoves([move]);
 				} else {
@@ -209,19 +199,17 @@ var replay = execMain(function() {
 
 	function popupReplay(scramble, recons, _puzzle) {
 		puzzle = _puzzle || tools.puzzleType(tools.getCurScramble()[0]);
-		var size = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'].indexOf(puzzle);
-		if (!size) {
-			size = 3;
-		}
+		var size = ['222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'].indexOf(puzzle);
 		curScramble = scramble;
 		shareURL = new URL('?vrcreplay=' + LZString.compressToEncodedURIComponent(JSON.stringify([scramble, recons, puzzle])), location).toString();
-		options = {
-			type: "cube",
-			faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
-			dimension: size,
-			stickerWidth: 1.7,
-			scale: 0.9
+		var options = {
+			puzzle: 'cube3',
 		};
+		if (size != -1) {
+			options['puzzle'] = 'cube' + (size + 2);
+		} else if (['skb', 'mgm', 'pyr', 'sq1', 'clk'].indexOf(puzzle) != -1) {
+			options['puzzle'] = puzzle;
+		}
 		kernel.showDialog([div, function() {
 			status = 0;
 		}, undefined, function() {

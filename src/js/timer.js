@@ -789,15 +789,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	})();
 
-	function col2std(col, faceMap) {
-		var ret = [];
-		col = (col || '').match(/#[0-9a-fA-F]{3}/g) || [];
-		for (var i = 0; i < col.length; i++) {
-			ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
-		}
-		return ret;
-	}
-
 	var virtual333 = (function() {
 		var puzzleObj;
 		var vrcType = '';
@@ -888,42 +879,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				size = 3;
 			}
 			var options = {
-				type: "cube",
-				faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
-				dimension: size,
-				allowDragging: true,
-				stickerWidth: 1.7,
-				scale: 0.9
+				puzzle: "cube" + size,
+				allowDragging: true
 			};
-			if (curPuzzle == 'skb') {
+			if (['skb', 'mgm', 'pyr', 'sq1', 'clk'].indexOf(curPuzzle) != -1) {
 				options = {
-					type: "skewb",
-					faceColors: col2std(kernel.getProp('colskb'), [0, 5, 4, 2, 1, 3]),
-					scale: 0.9
-				};
-			} else if (curPuzzle == 'mgm') {
-				options = {
-					type: "mgm",
-					faceColors: col2std(kernel.getProp('colmgm'), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]),
-					scale: 0.9
-				};
-			} else if (curPuzzle == 'pyr') {
-				options = {
-					type: "pyr",
-					faceColors: col2std(kernel.getProp('colpyr'), [3, 1, 2, 0]),
-					scale: 0.9
-				};
-			} else if (curPuzzle == 'sq1') {
-				options = {
-					type: "sq1",
-					faceColors: col2std(kernel.getProp('colsq1'), [0, 5, 4, 2, 1, 3]),
-					scale: 0.9
-				};
-			} else if (curPuzzle == 'clk') {
-				options = {
-					type: "clk",
-					faceColors: col2std(kernel.getProp('colclk'), [1, 2, 0, 3, 4]),
-					scale: 0.9
+					puzzle: curPuzzle
 				};
 			}
 			options['style'] = getProp('input');
@@ -1098,13 +1059,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					return;
 				}
 				var options = {
-					type: "cube",
-					faceColors: col2std(kernel.getProp('colcube'), [3, 4, 5, 0, 1, 2]), // U L F D L B
-					dimension: 3,
-					stickerWidth: 1.7,
-					scale: 0.9
+					puzzle: "cube3",
+					style: getProp('giiVRC')
 				};
-				options['style'] = getProp('giiVRC');
 				puzzleFactory.init(options, $.noop, div, function(ret, isInit) {
 					puzzleObj = ret;
 					if (isInit && !puzzleObj) {
