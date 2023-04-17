@@ -238,11 +238,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	var avgDiv = (function() {
 		var avgDiv;
-		var avgDiv0 = $('<span class="click">Replay</span><br>');
+		var avgDiv0 = $('<span class="click">');
+		var avgDiv0Br = $('<br>');
 		var avgDiv1 = $('<span class="click">');
 		var avgDiv2 = $('<span class="click">');
 
 		var isShowAvgDiv = true;
+		var isRight = false;
 		var curValue;
 
 		function showAvgDiv(enable) {
@@ -260,6 +262,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setValue(value) {
+			if (!value) {
+				return;
+			}
 			avgDiv1.html(value[0]).unbind('click');
 			if (value[2] != undefined) {
 				avgDiv1.addClass('click').click(function() {
@@ -277,29 +282,41 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				avgDiv2.removeClass('click');
 			}
 			if (value[5] && value[5][4]) {
-				avgDiv0.show().unbind('click').click(function() {
+				var moveCnt = recons.getMoveCnt(value[5]);
+				var txt = STATS_REVIEW;
+				if (moveCnt > 0) {
+					txt = moveCnt + " moves" + (isRight ? "<br>" : ", ") + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
+				}
+				avgDiv0.html(txt).show().unbind('click').click(function() {
 					replay.popupReplay(value[5][1], value[5][4][0]);
 				});
+				avgDiv0Br.show();
 			} else {
 				avgDiv0.hide();
+				avgDiv0Br.hide();
 			}
 		}
 
 		function procSignal(signal, value) {
-			var curValue = value;
+			curValue = value;
 			setValue(curValue);
 		}
 
-		function updatePos(isRight) {
+		function updatePos(_isRight) {
+			if (isRight == !!_isRight) {
+				return;
+			}
+			isRight = !!_isRight;
 			if (isRight) {
 				avgDiv.appendTo('#multiphase');
 			} else {
 				avgDiv.appendTo('#container');
 			}
+			setValue(curValue);
 		}
 
 		$(function() {
-			avgDiv = $('#avgstr').append(avgDiv0, avgDiv1, '<br>', avgDiv2);
+			avgDiv = $('#avgstr').append(avgDiv0, avgDiv0Br, avgDiv1, '<br>', avgDiv2);
 			regListener('timer', 'avg', procSignal);
 		})
 
@@ -854,9 +871,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.setStaticAppend('');
 					lcd.val(curTime[1]);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
-					lcd.append(
-						'<div style="font-family: Arial; font-size: 0.5em">' + moveCnt + " moves<br>" + ~~(100000 * moveCnt / curTime[1]) / 100.0 + " tps" + "</div>");
-					$('#lcd').css({'visibility': 'unset'});
 					rawMoves.reverse();
 					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
 				}
@@ -1248,13 +1262,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.fixDisplay(false, true);
 					lcd.val(curTime[1]);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
-					lcd.append(
-						'<div style="font-family: Arial; font-size: 0.3em">' +
-						moveCnt + " stm, " + (~~(100000 * moveCnt / curTime[1]) / 100.0) + " tps" +
-						'<br>' +
-						rawMoveCnt + " rqtm, " + (~~(100000 * rawMoveCnt / curTime[1]) / 100.0) + " tps" +
-						'</div>'
-					);
 					if (curTime[1] != 0) {
 						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
 						sol = kernel.getConjMoves(sol, true);

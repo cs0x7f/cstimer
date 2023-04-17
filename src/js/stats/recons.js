@@ -16,6 +16,45 @@ var recons = execMain(function() {
 		return movere.exec(moveStr);
 	}
 
+	function MoveCounter() {
+		this.clear();
+	}
+
+	MoveCounter.prototype.push = function(move) {
+		var axis = ~~(move / 3);
+		var amask = 1 << axis;
+		if (axis % 3 != this.lastMove % 3) {
+			this.lastMove = axis;
+			this.lastPow = 0;
+		}
+		this.moveCnt += (this.lastPow & amask) == amask ? 0 : 1;
+		this.lastPow |= amask;
+	}
+
+	MoveCounter.prototype.clear = function() {
+		this.lastPow = 0;
+		this.lastMove = -3;
+		this.moveCnt = 0;
+	}
+
+	function getMoveCnt(times) {
+		if (!times || !times[4]) {
+			return -1;
+		}
+		var solution = times[4];
+		solution = solution[0].split(/ +/);
+		var c = new mathlib.CubieCube();
+		c.ori = 0;
+		var cnter = new MoveCounter();
+		for (var i = 0; i < solution.length; i++) {
+			var effMove = c.selfMoveStr(solution[i], false);
+			if (effMove != undefined) {
+				cnter.push(effMove);
+			}
+		}
+		return cnter.moveCnt;
+	}
+
 	function calcRecons(times, method) {
 		if (!times || !times[4] || times[0][0] < 0) {
 			return;
@@ -31,29 +70,19 @@ var recons = execMain(function() {
 		c.selfConj();
 		var facelet = c.toFaceCube();
 		var data = []; //[[start, firstMove, end, moveCnt], [start, firstMove, end, moveCnt], ...]
-		var lastMove = -3;
-		var lastPow = 0;
+		var cnter = new MoveCounter();
 		var startCubieI = new mathlib.CubieCube();
 		startCubieI.invFrom(c);
 		var tsStart = 0;
 		var tsFirst = 0;
-		var moveCnt = 0;
 		var stepMoves = [];
 		var progress = cubeutil.getProgress(facelet, method);
 		for (var i = 0; i < solution.length; i++) {
 			var effMove = c.selfMoveStr(solution[i], false);
 			if (effMove != undefined) {
 				tsFirst = Math.min(tsFirst, c.tstamp);
+				cnter.push(effMove);
 				var axis = ~~(effMove / 3);
-				var amask = 1 << axis;
-				if (axis % 3 != lastMove % 3) {
-					moveCnt++;
-					lastMove = axis;
-					lastPow = 0;
-				} else {
-					moveCnt += (lastPow & amask) == amask ? 0 : 1;
-				}
-				lastPow |= amask;
 				stepMoves.push(["URFDLB".charAt(axis % 6) + " 2'".charAt(effMove % 3), c.tstamp]);
 				if (axis >= 6) { // slice move
 					stepMoves.push(["DLBURF".charAt(axis % 6) + "'2 ".charAt(effMove % 3), c.tstamp]);
@@ -64,15 +93,14 @@ var recons = execMain(function() {
 				var transCubie = new mathlib.CubieCube();
 				mathlib.CubieCube.EdgeMult(startCubieI, c, transCubie);
 				mathlib.CubieCube.CornMult(startCubieI, c, transCubie);
-				data[--progress] = [tsStart, tsFirst, c.tstamp, moveCnt, transCubie, stepMoves];
+				data[--progress] = [tsStart, tsFirst, c.tstamp, cnter.moveCnt, transCubie, stepMoves];
 				while (progress > curProg) {
 					data[--progress] = [c.tstamp, c.tstamp, c.tstamp, 0, new mathlib.CubieCube(), []];
 				}
 				startCubieI.invFrom(c);
 				tsStart = c.tstamp;
-				moveCnt = 0;
+				cnter.clear();
 				stepMoves = [];
-				lastMove = -3;
 				tsFirst = 1e9;
 			}
 		}
@@ -379,7 +407,8 @@ var recons = execMain(function() {
 	});
 
 	return {
-		calcRecons: calcRecons
+		calcRecons: calcRecons,
+		getMoveCnt: getMoveCnt
 	}
 });
 

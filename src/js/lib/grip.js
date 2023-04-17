@@ -295,7 +295,7 @@ var gripRecons = execBoth(function() {
 		var stepNames = cubeutil.getStepNames(method).reverse();
 		for (var i = 0; i < bestAlg.length; i++) {
 			var idx = bestAlg[i][2];
-			if ((idx >> 8) >= stepN[sidx]) {
+			while ((idx >> 8) >= stepN[sidx]) {
 				prettySolve += alg2str(bestAlg.slice(last, i + 1)) + (stepNames[sidx] ? " // " + stepNames[sidx] + " " + (stepN[sidx] - (stepN[sidx - 1] || 0)) + " move(s)" : "") + "\n";
 				last = i + 1;
 				sidx++;

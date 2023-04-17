@@ -245,25 +245,25 @@ var replay = execMain(function() {
 	$(function() {
 		div = $('<table style="height:98%">');
 		puzzleDiv = $('<div style="height:100%;">');
-		var span = '<span class="click" data="%" style="display:inline-block; min-width:7%;">&nbsp;$&nbsp;</span>';
+		var span = '<span class="click" data="%" style="display:inline-block; min-width:7%;font-family: iconfont, Arial;">&nbsp;$&nbsp;</span>';
 		rangeTime = $('<input type="range" style="width:50%;" data="r">');
 		txtTime = $('<span style="user-select:none;"></span>');
 		txtSpeed = $('<span style="user-select:none;">1x</span>');
 		div.append(
 			$('<tr>').append($('<td>').append(
-				span.replace('$', '\u23eb').replace('%', 's+'),
-				span.replace('$', '\u23ec').replace('%', 's-'), '|',
+				span.replace('$', '\ue806').replace('%', 's+'),
+				span.replace('$', '\ue807').replace('%', 's-'), '|',
 				span.replace('$', 'raw ori').replace('%', 'o'), '|',
 				span.replace('$', 'share link').replace('%', 'a')
 			)),
 			$('<tr>').append($('<td>').append(puzzleDiv)),
 			$('<tr>').append($('<td style="display:flex;justify-content:center;">').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
 			$('<tr>').append($('<td>').append(
-				span.replace('$', '\u23ee').replace('%', 's'),
-				span.replace('$', '&lt;').replace('%', 'l'),
-				span.replace('$', '\u23f5').replace('%', 'p'),
-				span.replace('$', '&gt;').replace('%', 'n'),
-				span.replace('$', '\u23ed').replace('%', 'e')
+				span.replace('$', '\ue802').replace('%', 's'),
+				span.replace('$', '\ue804').replace('%', 'l'),
+				span.replace('$', '\ue800').replace('%', 'p'),
+				span.replace('$', '\ue805').replace('%', 'n'),
+				span.replace('$', '\ue803').replace('%', 'e')
 			))
 		);
 		var req = $.urlParam('vrcreplay');
