@@ -14,6 +14,8 @@ var replay = execMain(function() {
 	var speedIdx = 4;
 	var txtSpeed;
 	var shareURL;
+	var algSpan;
+	var curScramble;
 
 	function col2std(col, faceMap) {
 		var ret = [];
@@ -174,6 +176,7 @@ var replay = execMain(function() {
 		if (autoOri && puzzle == '333') {
 			recons = gripRecons.updateReconsOri(recons);
 		}
+		algSpan.attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent((recons || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) + '&setup=' + encodeURIComponent(curScramble || ''));
 		var movets = recons.split(' ');
 		var moves = [];
 		var tstamp = [];
@@ -210,6 +213,7 @@ var replay = execMain(function() {
 		if (!size) {
 			size = 3;
 		}
+		curScramble = scramble;
 		shareURL = new URL('?vrcreplay=' + LZString.compressToEncodedURIComponent(JSON.stringify([scramble, recons, puzzle])), location).toString();
 		options = {
 			type: "cube",
@@ -249,16 +253,18 @@ var replay = execMain(function() {
 		rangeTime = $('<input type="range" style="width:50%;" data="r">');
 		txtTime = $('<span style="user-select:none;"></span>');
 		txtSpeed = $('<span style="user-select:none;">1x</span>');
+		algSpan = $('<a target="_blank">\u23efAlg</a>');
 		div.append(
 			$('<tr>').append($('<td>').append(
-				span.replace('$', '\ue806').replace('%', 's+'),
-				span.replace('$', '\ue807').replace('%', 's-'), '|',
-				span.replace('$', 'raw ori').replace('%', 'o'), '|',
+				span.replace('$', 'raw ori').replace('%', 'o'), '| ',
+				algSpan, ' |',
 				span.replace('$', 'share link').replace('%', 'a')
 			)),
 			$('<tr>').append($('<td>').append(puzzleDiv)),
 			$('<tr>').append($('<td style="display:flex;justify-content:center;">').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
 			$('<tr>').append($('<td>').append(
+				span.replace('$', '\ue807').replace('%', 's-'),
+				span.replace('$', '\ue806').replace('%', 's+'),
 				span.replace('$', '\ue802').replace('%', 's'),
 				span.replace('$', '\ue804').replace('%', 'l'),
 				span.replace('$', '\ue800').replace('%', 'p'),

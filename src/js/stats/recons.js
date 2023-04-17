@@ -256,7 +256,7 @@ var recons = execMain(function() {
 			var curData = data[i] || [0, 0, 0, 0];
 			stepData.push([steps[i], curData[1] - curData[0], curData[2] - curData[1], curData[3]]);
 		}
-		var solve = gripRecons.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
+		var solve = cubeutil.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
 		renderResult(stepData, value[1] + 1, isPercent, times[1], solve);
 	}
 
@@ -313,7 +313,7 @@ var recons = execMain(function() {
 			stepData[i][3] /= nvalid;
 		}
 		if (nrec == 1) {
-			var solve = gripRecons.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
+			var solve = cubeutil.getPrettyReconstruction(rec.rawMoves, method).prettySolve;
 			renderResult(stepData, null, isPercent, stats.timesAt(nsolv - 1)[1], solve);
 		} else {
 			renderResult(stepData, null, isPercent);

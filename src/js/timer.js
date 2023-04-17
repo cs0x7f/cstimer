@@ -238,8 +238,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	var avgDiv = (function() {
 		var avgDiv;
-		var avgDiv0 = $('<span class="click">');
-		var avgDiv0Br = $('<br>');
+		var avgDivr = $('<div style="position:relative;font-size:0.3em;">');
+		var avgDiv0 = $('<span class="click" style="position:relative;z-index:20;font-family:Arial;">');
 		var avgDiv1 = $('<span class="click">');
 		var avgDiv2 = $('<span class="click">');
 
@@ -286,15 +286,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5]) : value[5][4][2];
 				var txt = STATS_REVIEW;
 				if (moveCnt > 0) {
-					txt = moveCnt + " moves" + (isRight ? "<br>" : ", ") + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
+					txt = moveCnt + " moves<br>" + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
 				}
 				avgDiv0.html(txt).show().unbind('click').click(function() {
 					replay.popupReplay(value[5][1], value[5][4][0], puzzle);
 				});
-				avgDiv0Br.show();
 			} else {
 				avgDiv0.hide();
-				avgDiv0Br.hide();
 			}
 		}
 
@@ -317,9 +315,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		$(function() {
-			avgDiv = $('#avgstr').append(avgDiv0, avgDiv0Br, avgDiv1, '<br>', avgDiv2);
+			avgDiv = $('#avgstr').append(avgDiv1, '<br>', avgDiv2);
+			$('#multiphase').append(avgDivr.append(avgDiv0));
 			regListener('timer', 'avg', procSignal);
-		})
+		});
 
 		return {
 			showAvgDiv: showAvgDiv,
