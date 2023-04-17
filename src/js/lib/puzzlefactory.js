@@ -126,6 +126,7 @@ var puzzleFactory = execMain(function() {
 			options["type"] = "clk";
 			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
 		}
+		options['scale'] = 0.9;
 		if (style == 'q') {
 			child[2].init(options);
 		} else {
