@@ -282,13 +282,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				avgDiv2.removeClass('click');
 			}
 			if (value[5] && value[5][4]) {
-				var moveCnt = recons.getMoveCnt(value[5]);
+				var puzzle = value[5][4][1] || tools.getCurPuzzle() || '333';
+				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5]) : value[5][4][2];
 				var txt = STATS_REVIEW;
 				if (moveCnt > 0) {
 					txt = moveCnt + " moves" + (isRight ? "<br>" : ", ") + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
 				}
 				avgDiv0.html(txt).show().unbind('click').click(function() {
-					replay.popupReplay(value[5][1], value[5][4][0]);
+					replay.popupReplay(value[5][1], value[5][4][0], puzzle);
 				});
 				avgDiv0Br.show();
 			} else {
@@ -872,7 +873,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(curTime[1]);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					rawMoves.reverse();
-					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
+					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 				}
 			}
 		}
@@ -990,7 +991,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (keyCode == 27 || keyCode == 28) { //ESC
 					ui.setAutoShow(true);
 					if (status >= 1) {
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 					}
 					reset();
 					status = -1;
@@ -1265,7 +1266,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					if (curTime[1] != 0) {
 						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
 						sol = kernel.getConjMoves(sol, true);
-						pushSignal('time', ["", 0, curTime, 0, [sol]]);
+						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
 					} else if (getProp('giiMode') == 't') {
 						kernel.pushSignal('ctrl', ['scramble', 'next']);
 					}
@@ -1358,7 +1359,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var now = $.now();
 				if (keyCode == 27 || keyCode == 28) {
 					if (status >= 1) {
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')]]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), '333']]);
 					}
 					clearReadyTid();
 					status = -1;

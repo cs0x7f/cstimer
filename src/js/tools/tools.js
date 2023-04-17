@@ -320,6 +320,9 @@ var tools = execMain(function() {
 		getCurScramble: function() {
 			return curScramble;
 		},
+		getCurPuzzle: function() {
+			return puzzleType(curScramble[0]);
+		},
 		getSolutionSpan: getSolutionSpan,
 		scrambleType: scrambleType,
 		puzzleType: puzzleType,
