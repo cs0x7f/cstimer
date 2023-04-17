@@ -282,7 +282,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				avgDiv2.removeClass('click');
 			}
 			if (value[5] && value[5][4]) {
-				var puzzle = value[5][4][1] || tools.getCurPuzzle() || '333';
+				var puzzle = typeof value[5][4][1] == 'string' && value[5][4][1] || tools.getCurPuzzle() || '333';
 				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5]) : value[5][4][2];
 				var txt = STATS_REVIEW;
 				if (moveCnt > 0) {
