@@ -504,14 +504,22 @@
 				return generateScramble(this);
 			} else {
 				var clkre = /^(([URDL]{1,2}|ALL)(\d+)?([+-])?|y2)$/;
+				var clkmre = /^m(b?[UD][RL]|Y)(-?\d+)$/;
 				var button = [1, 1, 1, 1];
 				var finalButton = [1, 1, 1, 1];
 				var moves = scramble.split(/\s/);
 				var isFlip = 1;
 				scramble = [[mY, 6]];
+				var isRecons = false;
 				for (var i = 0; i < moves.length; i++) {
 					var move = moves[i];
-					var m = clkre.exec(move);
+					var m = clkmre.exec(move);
+					if (m) {
+						isRecons = true;
+						scramble.push([['UR', 'UL', 'DR', 'DL', 'bUR', 'bUL', 'bDR', 'bDL', 'Y'].indexOf(m[1]), ~~m[2]]);
+						continue;
+					}
+					m = clkre.exec(move);
 					if (!m) {
 						return [];
 					}
@@ -558,6 +566,10 @@
 					}
 					scramble.push([axis + mUR, pow]);
 				}
+				if (isRecons) {
+					scramble.shift();
+					return scramble;
+				}
 				if (isFlip) {
 					scramble.push([mY, 6]);
 					button = [1 - button[1], 1 - button[0], 1 - button[3], 1 - button[2]];
@@ -594,6 +606,12 @@
 			return axis + move[1];
 		}
 
+		function moveInv(move) {
+			move = move.slice();
+			move[1] = -move[1];
+			return move;
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -609,7 +627,8 @@
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
 			moveCnt: moveCnt,
-			move2str: move2str
+			move2str: move2str,
+			moveInv: moveInv
 		};
 	}
 })();

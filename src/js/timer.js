@@ -248,6 +248,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curValue;
 
 		function showAvgDiv(enable) {
+			if (enable) {
+				avgDivr.show();
+			} else {
+				avgDivr.hide();
+			}
 			if (enable && getProp('showAvg')) {
 				if (!isShowAvgDiv) {
 					avgDiv.show();

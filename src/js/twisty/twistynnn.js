@@ -622,7 +622,8 @@
 			getFacelet: getFacelet,
 			moveCnt: moveCnt,
 			borderMaterial: borderMaterial,
-			move2str: move2str
+			move2str: move2str,
+			moveInv: moveInv
 		};
 	}
 })();
