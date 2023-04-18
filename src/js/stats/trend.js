@@ -155,12 +155,12 @@ var trend = execMain(function(kpretty) {
 		if (key == 'x') {
 			curAdj = 'y';
 			target.attr('data', 'y');
-			target.html('&nbsp;\u2b65&nbsp;');
+			target.html('\ue80d');
 			return;
 		} else if (key == 'y') {
 			curAdj = 'x';
 			target.attr('data', 'x');
-			target.html('&nbsp;\u2b64&nbsp;');
+			target.html('\ue80e');
 			return;
 		}
 		var off = {'p': 1, 'm': -1}[key] || 0;
@@ -186,13 +186,13 @@ var trend = execMain(function(kpretty) {
 		if (/^scr/.exec(signal)) {
 			return;
 		}
-		var span = '<span class="click" data="%">&nbsp;$&nbsp;</span>';
+		var span = '<span class="click" data="%" style="font-family: iconfont, Arial;display:inline-block;width:2em;">$</span>';
 		fdiv.empty().append(trendDiv.empty().append(canvas, '<br>', [
-			span.replace('$', '\u2b64').replace('%', 'x'),
+			span.replace('$', '\ue80e').replace('%', 'x'),
 			span.replace('$', '&lt;').replace('%', 'p'),
 			span.replace('$', '&gt;').replace('%', 'm'),
-			span.replace('$', '+').replace('%', 'l'),
-			span.replace('$', '-').replace('%', 's')
+			span.replace('$', '\ue80f').replace('%', 'l'),
+			span.replace('$', '\ue810').replace('%', 's')
 		].join('')
 		).unbind('click').click(procClick));
 		updateTrend();
