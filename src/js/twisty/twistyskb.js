@@ -365,18 +365,18 @@
 			return move1[0] == move2[0];
 		}
 
+		var moveRe = /([URLBxyzrlFD])('?)/g;
 		function parseScramble(scramble) {
 			if (!scramble || /^\s*$/.exec(scramble)) {
 				return generateScramble(this);
 			} else {
-				var moves = kernel.parseScramble(scramble, "URLB");
-				scramble = [];
-				for (var i = 0; i < moves.length; i++) {
-					scramble.push([moves[i][0],
-						[4, 0, -4][moves[i][2] - 1], 0, 5
+				var ret = [];
+				scramble.replace(moveRe, function(m, p1, p2) {
+					ret.push(['URLBxyzrlFD'.indexOf(p1),
+						p2 ? -4 : 4, 0, 5
 					]);
-				}
-				return scramble;
+				});
+				return ret;
 			}
 		}
 
@@ -402,7 +402,13 @@
 			var axis = move[0];
 			var pow = move[1];
 			var nlayer = move[3] - move[2];
-			return "U??BxyzRLFD".charAt(axis) + (pow > 0 ? "" : "'");
+			return "URLBxyzrlFD".charAt(axis) + (pow > 0 ? "" : "'");
+		}
+
+		function moveInv(move) {
+			move = move.slice();
+			move[1] = -move[1];
+			return move;
 		}
 
 		return {
@@ -419,7 +425,8 @@
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
 			moveCnt: moveCnt,
-			move2str: move2str
+			move2str: move2str,
+			moveInv: moveInv
 		};
 	}
 })();

@@ -370,34 +370,20 @@
 			if (!scramble || /^\s*$/.exec(scramble)) {
 				return generateScramble(this);
 			} else {
-				var moves = scramble.match(/[RD](?:\+\+|--)|U'?/g);
-				if (!moves) {
+				var ret = [];
+				scramble.replace(/([DLR])(\+\+?|--?)|([UFRL])('?)|\[([ufrl])('?)\]/g, function(m, p1, p2, p3, p4, p5, p6) {
+					if (p1) {
+						ret.push(['D?L??R'.indexOf(p1), (p2[0] == '+' ? -1 : 1) * p2.length, -3, 1]);
+					} else if (p3) {
+						ret.push(['UFR??L'.indexOf(p3), p4 ? -1 : 1, 1, 3]);
+					} else {
+						ret.push(['ufr??l'.indexOf(p5), p6 ? -1 : 1, -3, 3]);
+					}
+				});
+				if (ret.length == 0) {
 					return generateScramble(this);
 				}
-				scramble = [];
-				for (var i = 0; i < moves.length; i++) {
-					switch (moves[i]) {
-						case "R++":
-							scramble.push([mL, -2, -3, 1]);
-							break;
-						case "R--":
-							scramble.push([mL, 2, -3, 1]);
-							break;
-						case "D++":
-							scramble.push([mU, -2, -3, 1]);
-							break;
-						case "D--":
-							scramble.push([mU, 2, -3, 1]);
-							break;
-						case "U":
-							scramble.push([mU, 1, 1, 3]);
-							break;
-						case "U'":
-							scramble.push([mU, -1, 1, 3]);
-							break;
-					}
-				}
-				return scramble;
+				return ret;
 			}
 		}
 
@@ -432,6 +418,12 @@
 			}
 		}
 
+		function moveInv(move) {
+			move = move.slice();
+			move[1] = -move[1];
+			return move;
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -446,7 +438,8 @@
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
 			moveCnt: moveCnt,
-			move2str: move2str
+			move2str: move2str,
+			moveInv: moveInv
 		};
 	}
 })();

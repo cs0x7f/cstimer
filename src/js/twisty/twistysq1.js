@@ -470,14 +470,16 @@
 			if (!scramble || /^\s*$/.exec(scramble)) {
 				return generateScramble(this);
 			}
-			scramble = scramble.split('/');
-			var sqre = /\s*\((-?\d+), *(-?\d+)\)\s*/;
+			var sqre = /(\/)|\((-?\d+), *(-?\d+)\)|(y'?2)/g;
 			ret = [];
-			for (var i = 0; i < scramble.length; i++) {
-				var m = sqre.exec(scramble[i]);
-				if (m) {
-					var u = ~~m[1];
-					var d = ~~m[2];
+			scramble.replace(sqre, function(m, p1, p2, p3, p4) {
+				if (p1) {
+					ret.push([0, 6, 0, 5]);
+				} else if (p4) {
+					ret.push([1, p4[2] == "'" ? -6 : 6, -5, 5]);
+				} else {
+					var u = ~~p2;
+					var d = ~~p3;
 					if (u != 0) {
 						ret.push([1, u, 1, 5]);
 					}
@@ -485,10 +487,7 @@
 						ret.push([2, d, 1, 5]);
 					}
 				}
-				if (i != scramble.length - 1) {
-					ret.push([0, 6, 0, 5]);
-				}
-			}
+			});
 			return ret;
 		}
 
@@ -523,6 +522,12 @@
 			}
 		}
 
+		function moveInv(move) {
+			move = move.slice();
+			move[1] = -move[1];
+			return move;
+		}
+
 		return {
 			type: twistyParameters,
 			options: cubeOptions,
@@ -537,7 +542,8 @@
 			generateScramble: generateScramble,
 			parseScramble: parseScramble,
 			moveCnt: moveCnt,
-			move2str: move2str
+			move2str: move2str,
+			moveInv: moveInv
 		};
 	}
 })();
