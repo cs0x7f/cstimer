@@ -802,11 +802,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var totPhases = 1;
 
 		//mstep: 0 move start, 1 move doing, 2 move finish
-		function moveListener(move, mstep) {
+		function moveListener(move, mstep, ts) {
 			if (mstep == 1) {
 				return;
 			}
-			var now = $.now();
+			var now = ts || $.now();
 			if (status == -3 || status == -2) {
 				if (puzzleObj.isRotation(move) && !/^(333ni|444bld|555bld)$/.exec(curScrType)) {
 					if (mstep == 0) {

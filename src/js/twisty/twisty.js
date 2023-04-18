@@ -295,38 +295,41 @@ window.twistyjs = (function() {
 			delete moveListeners[index];
 		};
 
-		function fireMoveAdded(move) {
+		function fireMoveAdded(movets) {
 			for (var i = 0; i < moveListeners.length; i++) {
-				moveListeners[i](move, 0);
+				moveListeners[i](movets[0], 0, movets[1]);
 			}
 		}
 
-		function fireMoveStarted(move) {
+		function fireMoveStarted(movets) {
 			for (var i = 0; i < moveListeners.length; i++) {
-				moveListeners[i](move, 1);
+				moveListeners[i](movets[0], 1, movets[1]);
 			}
 		}
 
-		function fireMoveEnded(move) {
+		function fireMoveEnded(movets) {
 			for (var i = 0; i < moveListeners.length; i++) {
-				moveListeners[i](move, 2);
+				moveListeners[i](movets[0], 2, movets[1]);
 			}
 		}
 
 		function startMove() {
 			currentMove.push(moveQueue.shift());
 			moveProgress.push(0);
-			currentMoveStartTime.push($.now());
 			fireMoveStarted(currentMove[currentMove.length - 1]);
 		}
 
-		this.addMoves = function(moves) {
-			$.map(moves, fireMoveAdded);
-			if (!kernel.getProp('vrcSpeed', 100)) {
-				this.applyMoves(moves);
-				return;
+		this.addMoves = function(moves, ts) {
+			var timestamp = ts || $.now();
+			var movets = [];
+			for (var i = 0; i < moves.length; i++) {
+				movets.push([moves[i], timestamp]);
 			}
-			moveQueue = moveQueue.concat(moves);
+			$.map(movets, fireMoveAdded);
+			if (~~kernel.getProp('vrcSpeed', 100) == 0) {
+				return this.applyMoves(moves, ts);
+			}
+			moveQueue = moveQueue.concat(movets);
 			if (moveQueue.length > 0) {
 				startAnimation();
 			}
@@ -340,17 +343,23 @@ window.twistyjs = (function() {
 			return currentMove.length == 0;
 		}
 
-		this.applyMoves = function(moves) {
-			moveQueue = moveQueue.concat(moves);
+		this.applyMoves = function(moves, ts) {
+			var timestamp = ts || $.now();
+			var movets = [];
+			for (var i = 0; i < moves.length; i++) {
+				movets.push([moves[i], timestamp]);
+			}
+			moveQueue = moveQueue.concat(movets);
 			while (cachedFireMoves.length != 0) {
-				twisty.advanceMoveCallback(twisty, cachedFireMoves.shift());
+				twisty.advanceMoveCallback(twisty, cachedFireMoves[0][0]);
+				fireMoveEnded(cachedFireMoves.shift());
 			}
 			while (moveQueue.length > 0) {
 				if (this.isAnimationFinished()) {
 					startMove();
 				}
-				twisty.advanceMoveCallback(twisty, currentMove.shift());
-				currentMoveStartTime.shift();
+				twisty.advanceMoveCallback(twisty, currentMove[0][0]);
+				fireMoveEnded(currentMove.shift());
 				moveProgress.shift();
 			}
 			render();
@@ -364,15 +373,14 @@ window.twistyjs = (function() {
 			}
 			if (moveProgress[0] < 1) {
 				for (var i = 0; i < currentMove.length; i++) {
-					twisty.animateMoveCallback(twisty, currentMove[i], moveProgress[i], animationStep);
+					twisty.animateMoveCallback(twisty, currentMove[i][0], moveProgress[i], animationStep);
 				}
 			} else {
 				cachedFireMoves.push(currentMove.shift());
-				currentMoveStartTime.shift();
 				moveProgress.shift();
 				if (currentMove.length == 0) {
 					while (cachedFireMoves.length != 0) {
-						twisty.advanceMoveCallback(twisty, cachedFireMoves[0]);
+						twisty.advanceMoveCallback(twisty, cachedFireMoves[0][0]);
 						fireMoveEnded(cachedFireMoves.shift());
 					}
 				}
@@ -392,7 +400,6 @@ window.twistyjs = (function() {
 				pendingAnimationLoop = null;
 			}
 		}
-		var currentMoveStartTime = [];
 
 		function startAnimation() {
 			if (pendingAnimationLoop === null) {
@@ -400,7 +407,7 @@ window.twistyjs = (function() {
 				startMove();
 				lastTimeStamp = $.now();
 				pendingAnimationLoop = requestAnimFrame(animateLoop, twistyCanvas);
-			} else if (!currentMove[0] || twisty.isParallelMove(twisty, currentMove[0], moveQueue[0])) {
+			} else if (!currentMove[0] || twisty.isParallelMove(twisty, currentMove[0][0], moveQueue[0][0])) {
 				//			console.log('parallel');
 				startMove();
 			}
