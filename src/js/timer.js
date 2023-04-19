@@ -12,6 +12,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 	 */
 	var status = -1;
 
+	function setStatus(_status) {
+		if (_status == status) {
+			return;
+		}
+		status = _status;
+		lcd.updateInspLabel();
+		kernel.pushSignal('timerStatus', status);
+	}
+
 	var curTime = []; //[inspection time, phaseN, phaseN-1, ...]
 	var startTime;
 
@@ -19,8 +28,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	function reset() {
 		var type = getProp('input');
-		status = -1;
-		kernel.pushSignal('timerStatus', status);
+		setStatus(-1);
 
 		virtual333.setEnable(type == 'v' || type == 'q');
 		virtual333.reset();
@@ -65,14 +73,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				curTime[i] = now - startTime;
 			}
 		}
-		status = Math.min(curProgress, status) || 1;
-		kernel.pushSignal('timerStatus', status);
+		setStatus(Math.min(curProgress, status) || 1);
 		lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 	}
 
 	var lcd = (function() {
 
-		var div;
+		var mainDiv;
 		var rightDiv = $('<div />');
 		var runningDiv;
 		var runningId;
@@ -91,7 +98,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else if (!run && runningId != undefined) {
 				runningId = undefined;
 			}
-			runningDiv = isRight ? rightDiv : div;
+			runningDiv = isRight ? rightDiv : mainDiv;
 		}
 
 		function runningThread(timestamp) {
@@ -160,12 +167,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setColor(val) {
-			div.css('color', val);
+			mainDiv.css('color', val);
 			rightDiv.css('color', val);
 		}
 
 		function setValue(val) {
-			setHtml(isRight ? rightDiv : div, val != undefined ? pretty(val, true) : '--:--');
+			setHtml(isRight ? rightDiv : mainDiv, val != undefined ? pretty(val, true) : '--:--');
 		}
 
 		function setHtml(div, val) {
@@ -191,16 +198,23 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function setEnable(enable) {
 			if (enable) {
-				div.show();
+				mainDiv.show();
 			} else {
-				div.hide();
+				mainDiv.hide();
 			}
 		}
 
 		function reset(right) {
 			isRight = right;
-			div.empty();
+			mainDiv.empty();
 			rightDiv.empty();
+			if (isRight) {
+				mainDiv.removeClass('activetimer');
+				rightDiv.addClass('activetimer');
+			} else {
+				mainDiv.addClass('activetimer');
+				rightDiv.removeClass('activetimer');
+			}
 			divDict[0] = "";
 			divDict[1] = "";
 			setValue(0, isRight);
@@ -218,8 +232,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				'<div style="font-size: 0.65em">' + '=' + ret.join('<br>+') + '</div>';
 		}
 
+		function updateInspLabel() {
+			if (checkUseIns() && [-1, -4].indexOf(status) != -1) {
+				mainDiv.addClass('insp');
+				rightDiv.addClass('insp');
+			} else {
+				mainDiv.removeClass('insp');
+				rightDiv.removeClass('insp');
+			}
+		}
+
 		$(function() {
-			div = $('#lcd');
+			mainDiv = $('#lcd');
 			$('#multiphase').append(rightDiv);
 		});
 
@@ -232,6 +256,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			setStaticAppend: setStaticAppend,
 			fixDisplay: fixDisplay,
 			getMulPhaseAppend: getMulPhaseAppend,
+			updateInspLabel: updateInspLabel,
 			reset: reset
 		}
 	})();
@@ -348,8 +373,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			var now = $.now();
 			if (isTrigger) {
 				if (status == 0) {
-					status = -1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-1);
 				} else if (status == -1 || status == -3) {
 					clearPressReady();
 					if (now - lastStop < 500) {
@@ -358,15 +382,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 				} else if (status == -2) {
 					var time = now;
-					status = getProp('phases');
-					kernel.pushSignal('timerStatus', status);
+					setStatus(getProp('phases'));
 					var insTime = checkUseIns() ? (time - startTime) : 0;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					startTime = time;
 					lcd.reset();
 				} else if (status == -4) {
-					status = -3;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-3);
 					lcd.reset();
 					startTime = now;
 				}
@@ -393,8 +415,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					while (status < curTime.length) {
 						times[i++] = curTime[status++];
 					}
-					status = 1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(1);
 					curTime = times;
 				}
 				if (--status == 0) {
@@ -403,21 +424,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					ui.setAutoShow(true);
 					pushSignal('time', curTime);
 					if (keyCode != 32) {
-						status = -1;
-						kernel.pushSignal('timerStatus', status);
+						setStatus(-1);
 					}
 				}
 			} else if (isTrigger) {
 				if ((status == (checkUseIns() ? -3 : -1)) && pressreadyId == undefined) {
 					pressreadyId = setTimeout(pressReady, getProp('preTime'));
 				} else if (status == -1 && checkUseIns()) {
-					status = -4;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-4);
 				}
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
 				clearPressReady();
-				status = -1;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-1);
 				lcd.val(0);
 				ui.setAutoShow(true);
 			}
@@ -432,8 +450,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (status == -1) {
 					lcd.reset();
 				}
-				status = -2;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-2);
 				pressreadyId = undefined;
 				lcd.fixDisplay(true, true);
 			}
@@ -595,8 +612,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var now = $.now();
 			if (!state.on) {
-				status = -1;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-1);
 				lcd.val();
 				lcd.setRunning(false);
 				lcd.color('');
@@ -610,18 +626,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					inspectionTime = now - startTime - curTime;
 					lcd.reset();
 				}
-				status = 1;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(1);
 				startTime = now - curTime;
 				ui.setAutoShow(false);
 			} else if (status == -1 && checkUseIns() && curTime == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
-				status = -3;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-3);
 				ui.setAutoShow(false);
 				startTime = now;
 			} else if (status != -3 && status != -4) {
-				status = -1;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-1);
 				lcd.val(curTime);
 				ui.setAutoShow(true);
 			}
@@ -649,8 +662,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function onkeyup(keyCode) {
 			var now = $.now();
 			if (keyCode == 32 && status == -4) {
-				status = -3;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-3);
 				lcd.reset();
 				startTime = now;
 				lcd.fixDisplay(false, keyCode == 32);
@@ -664,13 +676,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			var now = $.now();
 
 			if (keyCode == 32 && status == -1 && checkUseIns() && lastState.on && lastState.time_milli == 0) {
-				status = -4;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-4);
 				startTime = now;
 				lcd.fixDisplay(true, true);
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
-				status = -1;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-1);
 				lcd.val(0);
 				lcd.fixDisplay(true, false);
 			}
@@ -722,16 +732,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					switch (status) {
 						case -1:         // if was idle start inspection timer
 							if (checkUseIns()) { // only when inspection enabled in settings
-								status = -3;
-								kernel.pushSignal('timerStatus', status);
+								setStatus(-3);
 								lcd.setRunning(true);
 								startTime = $.now();
 								ui.setAutoShow(false);
 							}
 							break;
 						default:         // by default just reset / cancel timer
-							status = -1;
-							kernel.pushSignal('timerStatus', status);
+							setStatus(-1);
 							lcd.reset();
 							ui.setAutoShow(true);
 							break;
@@ -746,8 +754,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					startTime = $.now();
 					lcd.reset();
 					lcd.color('');
-					status = 1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(1);
 					lcd.setRunning(true);
 					ui.setAutoShow(false);
 					break;
@@ -758,8 +765,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					pushSignal('time', [inspectionTime, timerEvent.recordedTime.asTimestamp]);
 					break;
 				case GanTimerState.DISCONNECT: // timer is switched off or something else
-					status = -1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-1);
 					lcd.val();
 					lcd.setRunning(false);
 					lcd.color('');
@@ -821,8 +827,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					startTime = now;
 					moveCnt = 0;
-					status = curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(getProp('vrcMP', 'n')) : 1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(getProp('vrcMP', 'n')) : 1);
 					var inspectionMoves = rawMoves[0];
 					rawMoves = [];
 					for (var i = 0; i < status; i++) {
@@ -861,8 +866,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						return;
 					}
 					ui.setAutoShow(true);
-					status = -1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-1);
 					lcd.setRunning(false);
 					lcd.setStaticAppend('');
 					lcd.val(curTime[1]);
@@ -939,15 +943,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (keyCode == 32) {
 					scrambleIt();
 					if (checkUseIns()) {
-						status = -3; //inspection
-						kernel.pushSignal('timerStatus', status);
+						setStatus(-3); //inspection
 						startTime = now;
 						lcd.setRunning(true);
 					} else {
 						lcd.setRunning(false);
 						lcd.val(0);
-						status = -2; //ready
-						kernel.pushSignal('timerStatus', status);
+						setStatus(-2); //ready
 					}
 					$('#lcd').css({'visibility': 'hidden'});
 					ui.setAutoShow(false);
@@ -956,11 +958,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (keyCode == 27 || keyCode == 28) { //ESC
 					ui.setAutoShow(true);
 					if (status >= 1) {
+						rawMoves.reverse();
 						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 					}
 					reset();
-					status = -1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-1);
 					$('#lcd').css({'visibility': 'unset'});
 				} else {
 					var mappedCode = help.getMappedCode(keyCode);
@@ -1188,8 +1190,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					insTime = 0;
 				}
 				startTime = now;
-				status = cubeutil.getStepCount(solvingMethod);
-				kernel.pushSignal('timerStatus', status);
+				setStatus(cubeutil.getStepCount(solvingMethod));
 				rawMoves = [];
 				for (var i = 0; i < status; i++) {
 					rawMoves[i] = [];
@@ -1214,8 +1215,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
 					var moveCnt = pretty.totalMoves;
 					giikerutil.setLastSolve(pretty.prettySolve);
-					status = -1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-1);
 					curTime[1] = now - startTime;
 					giikerutil.reSync();
 					ui.setAutoShow(true);
@@ -1268,8 +1268,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				} else {
 					giikerutil.markScrambled(true);
 				}
-				status = -2;
-				kernel.pushSignal('timerStatus', status);
+				setStatus(-2);
 				startTime = now;
 				lcd.reset(enableVRC);
 				lcd.fixDisplay(true, true);
@@ -1320,11 +1319,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var now = $.now();
 				if (keyCode == 27 || keyCode == 28) {
 					if (status >= 1) {
+						rawMoves.reverse();
 						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), '333']]);
 					}
 					clearReadyTid();
-					status = -1;
-					kernel.pushSignal('timerStatus', status);
+					setStatus(-1);
 					giikerutil.reSync();
 					ui.setAutoShow(true);
 					lcd.val(0);
@@ -1479,10 +1478,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (['toolPos', 'scrHide', 'toolHide', 'statHide'].indexOf(value[0]) >= 0) {
 				updateTimerOffsetAsync(false);
 			}
+			if (['useIns', 'scrType'].indexOf(value[0]) >= 0) {
+				lcd.updateInspLabel();
+			}
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide)$/);
+		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});

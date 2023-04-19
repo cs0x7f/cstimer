@@ -537,6 +537,13 @@ a {
 	z-index: 10;
 }
 
+.insp.activetimer::after {
+	content: "\e6b6";
+	font-family: iconfont;
+	position: absolute;
+	font-size: 0.2em;
+}
+
 #about {
 	line-height: 1.6em;
 	text-align: left;
