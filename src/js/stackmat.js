@@ -89,9 +89,11 @@ var stackmat = execMain(function() {
 
 	function stop() {
 		if (audio_stream != undefined) {
-			source["disconnect"](node);
-			node["disconnect"](audio_context["destination"]);
-			audio_stream["stop"] && audio_stream["stop"]();
+			try {
+				source["disconnect"](node);
+				node["disconnect"](audio_context["destination"]);
+				audio_stream["stop"] && audio_stream["stop"]();
+			} catch (e) {}
 			audio_stream = undefined;
 		}
 	}

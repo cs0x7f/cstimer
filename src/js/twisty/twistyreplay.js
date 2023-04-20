@@ -15,6 +15,7 @@ var replay = execMain(function() {
 	var txtSpeed;
 	var shareURL;
 	var algSpan;
+	var playSpan;
 	var curScramble;
 
 	var startTs = 0;
@@ -25,13 +26,20 @@ var replay = execMain(function() {
 	var curTime = 0;
 	var status = 0; // 0 - idle, 1 - play
 
+	function setStatus(_status) {
+		if (_status != status) {
+			status = _status;
+			playSpan.html(status ? '\ue801' : '\ue800');
+		}
+	}
+
 	function startPlayMoves() {
 		if (activeTid) {
 			clearTimeout(activeTid);
 			activeTid = 0;
 		}
 		startTs = +new Date - curTime;
-		status = 1;
+		setStatus(1);
 		updateTime();
 	}
 
@@ -84,7 +92,7 @@ var replay = execMain(function() {
 		var key = obj.attr('data');
 		var _status = status;
 		var ctime = normTime(curTime, true);
-		status = 0;
+		setStatus(0);
 		if (key == 'l') {
 			if (curPlayIdx > 0) {
 				goToStep(curPlayIdx - 1);
@@ -94,7 +102,10 @@ var replay = execMain(function() {
 				goToStep(curPlayIdx + 1);
 			}
 		} else if (key == 'p') {
-			status = 1 - _status;
+			if (_status == 0 && curTime >= normTime(playMoves[playMoves.length - 1][1])) {
+				goToStep(0);
+			}
+			setStatus(1 - _status);
 			if (status == 1) {
 				startPlayMoves();
 			}
@@ -152,9 +163,9 @@ var replay = execMain(function() {
 		curTime = execLoop();
 		curTime = Math.min(curTime, normTime(playMoves[playMoves.length - 1][1]));
 		rangeTime.val(normTime(curTime, true));
-		txtTime.html(kernel.pretty(normTime(curTime, true)));
+		txtTime.html((curTime >= 0 ? kernel.pretty(normTime(curTime, true)) : '--') + '/' + kernel.pretty(playMoves[playMoves.length - 1][1]));
 		if (curTime >= normTime(playMoves[playMoves.length - 1][1])) {
-			status = 0;
+			setStatus(0);
 		}
 		if (status == 1) {
 			requestAnimFrame(updateTime);
@@ -211,9 +222,9 @@ var replay = execMain(function() {
 			options['puzzle'] = puzzle;
 		}
 		kernel.showDialog([div, function() {
-			status = 0;
+			setStatus(0);
 		}, undefined, function() {
-			status = 0;
+			setStatus(0);
 		}], 'share', 'Virtual Replay', function() {
 			puzzleFactory.init(options, $.noop, puzzleDiv, function(ret, isInit) {
 				div.unbind('click').click(procClick);
@@ -237,11 +248,12 @@ var replay = execMain(function() {
 	$(function() {
 		div = $('<table style="height:98%">');
 		puzzleDiv = $('<div style="height:100%;">');
-		var span = '<span class="click" data="%" style="display:inline-block; min-width:7%;font-family: iconfont, Arial;">&nbsp;$&nbsp;</span>';
+		var span = '<span class="click playbutton" data="%">$</span>';
 		rangeTime = $('<input type="range" style="width:50%;" data="r">');
 		txtTime = $('<span style="user-select:none;"></span>');
 		txtSpeed = $('<span style="user-select:none;">1x</span>');
 		algSpan = $('<a target="_blank">\u23efAlg</a>');
+		playSpan = $(span.replace('$', '\ue800').replace('%', 'p'));
 		div.append(
 			$('<tr>').append($('<td>').append(
 				span.replace('$', 'raw ori').replace('%', 'o'), '| ',
@@ -255,7 +267,7 @@ var replay = execMain(function() {
 				span.replace('$', '\ue806').replace('%', 's+'),
 				span.replace('$', '\ue802').replace('%', 's'),
 				span.replace('$', '\ue804').replace('%', 'l'),
-				span.replace('$', '\ue800').replace('%', 'p'),
+				playSpan,
 				span.replace('$', '\ue805').replace('%', 'n'),
 				span.replace('$', '\ue803').replace('%', 'e')
 			))

@@ -544,6 +544,12 @@ a {
 	font-size: 0.2em;
 }
 
+.playbutton.click {
+	display: inline-block;
+	min-width: 7%;
+	font-family: iconfont, Arial;
+}
+
 #about {
 	line-height: 1.6em;
 	text-align: left;
