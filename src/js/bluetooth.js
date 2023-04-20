@@ -349,6 +349,8 @@ var GiikerCube = execMain(function() {
 				_device.addEventListener('advertisementreceived', onAdvEvent);
 				_device.watchAdvertisements({ signal: abortController.signal });
 				setTimeout(function() { // reject if no mac found
+					_device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					reject(-2);
 				}, 5000);
 			});
