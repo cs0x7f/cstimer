@@ -195,8 +195,8 @@ var image = execMain(function() {
 				drawClock([colors[1], colors[2]][~~(i / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[i]);
 			}
 
-			var y = [20, 40];
-			var x = [20, 40, 85, 105];
+			y = [20, 40];
+			x = [20, 40, 85, 105];
 			for (var i = 0; i < 8; i++) {
 				drawButton([colors[4], colors[3]][buttons[i]], [width, x[~~(i / 2)], y[i % 2]]);
 			}

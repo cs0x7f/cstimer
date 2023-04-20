@@ -242,7 +242,7 @@
 			cubePieces.push(facePieces);
 
 			for (var j = 0; j < facelets[i].length; j++) {
-				curf = facelets[i][j];
+				var curf = facelets[i][j];
 				var sticker = new THREE.Object3D();
 
 				var meshes = [materials[i]];
@@ -471,7 +471,7 @@
 				return generateScramble(this);
 			}
 			var sqre = /(\/)|\((-?\d+), *(-?\d+)\)|(y'?2)/g;
-			ret = [];
+			var ret = [];
 			scramble.replace(sqre, function(m, p1, p2, p3, p4) {
 				if (p1) {
 					ret.push([0, 6, 0, 5]);

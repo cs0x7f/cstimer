@@ -651,7 +651,7 @@ var min2phase = (function() {
 		this.moveSol = null;
 		this.isRec = true;
 		this.verbose = verbose;
-		return search();
+		return this.search();
 	}
 
 	Search.prototype.verify = function(facelets) {

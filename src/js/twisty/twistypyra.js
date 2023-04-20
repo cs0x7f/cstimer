@@ -362,7 +362,7 @@
 		}
 
 		function moveInv(move) {
-			var move = move.slice();
+			move = move.slice();
 			move[1] = -move[1];
 			return move;
 		}

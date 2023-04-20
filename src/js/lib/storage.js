@@ -176,7 +176,7 @@ var storage = execMain(function() {
 				}, resolve, curDB);
 			} else {
 				for (var sessionIdx = 1; sessionIdx <= ~~kernel.getProp('sessionN'); sessionIdx++) {
-					localStorage['session' + sessionIdx] = obj2str(obj['session' + sessionIdx]);
+					localStorage['session' + sessionIdx] = mathlib.obj2str(obj['session' + sessionIdx]);
 				}
 				resolve();
 			}

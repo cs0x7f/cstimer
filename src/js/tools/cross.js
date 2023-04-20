@@ -282,7 +282,6 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				}
 			}
 			var sol = [];
-			var len = 0;
 			for (var len = 0; len < 100; len++) {
 				if (idacross(perm, flip, len, -1, sol)) {
 					break;

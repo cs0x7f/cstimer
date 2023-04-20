@@ -219,7 +219,7 @@ var bldhelper = execMain(function() {
 			// perm sample
 			cyclesR = cycles.slice(0, cycles.length - fixInp);
 			var permState = [0];
-			var rndState = [];
+			rndState = [];
 			var rmap = [0];
 			var k = (i == 2) ? 1 : 0;
 			if (k == 0) {
@@ -245,9 +245,9 @@ var bldhelper = execMain(function() {
 				var cur = perm.slice(0, cyclesR[j]);
 				permCycles.push(cur);
 				perm = perm.slice(cyclesR[j]);
-				for (var k = 0; k < cur.length; k++) {
-					permState[rmap[cur[k]]] = rmap[cur[(k + 1) % cur.length]];
-					rndState[rmap[cur[k]]] = [rmap[cur[(k + 1) % cur.length]], flipState.shift()];
+				for (var l = 0; l < cur.length; l++) {
+					permState[rmap[cur[l]]] = rmap[cur[(l + 1) % cur.length]];
+					rndState[rmap[cur[l]]] = [rmap[cur[(l + 1) % cur.length]], flipState.shift()];
 				}
 			}
 		}
@@ -361,7 +361,7 @@ var bldhelper = execMain(function() {
 		var efixs = bldSets['efix'].split(' ');
 		var efixDones = [];
 		var efixErrs = [];
-		var fixRe = /^(UR|UF|UL|UB|DR|DF|DL|DB|FR|FL|BL|BR)(\+?)$/i;
+		fixRe = /^(UR|UF|UL|UB|DR|DF|DL|DB|FR|FL|BL|BR)(\+?)$/i;
 		for (var i = 0; i < efixs.length; i++) {
 			var m = fixRe.exec(efixs[i]);
 			if (!m) {

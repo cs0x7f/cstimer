@@ -44,7 +44,6 @@ var trend = execMain(function(kpretty) {
 		}
 		var timesLen = times_stats_list.timesLen;
 
-		var diff = data[2];
 		var diff = times_stats_list.getBestDiff((data[0] - data[1]) * ampty);
 		var plotmax = Math.ceil(data[0] / diff) * diff;
 		var plotmin = ~~(data[1] / diff) * diff;

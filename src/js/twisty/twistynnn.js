@@ -530,8 +530,8 @@
 					var axis = idx + (coord[idx] > 0 ? 0 : 3);
 					coord.splice(idx, 1);
 					var xy = xyXchg[axis];
-					x = (coord[xy] * xInv[axis] + dimension - 1) / 2;
-					y = (coord[1 - xy] * yInv[axis] + dimension - 1) / 2;
+					var x = (coord[xy] * xInv[axis] + dimension - 1) / 2;
+					var y = (coord[1 - xy] * yInv[axis] + dimension - 1) / 2;
 					ret[axis * dimension * dimension + x * dimension + y] = index_side[faceIndex];
 				}
 			}
@@ -598,7 +598,7 @@
 		}
 
 		function moveInv(move) {
-			var move = move.slice();
+			move = move.slice();
 			move[3] = -move[3];
 			return move;
 		}

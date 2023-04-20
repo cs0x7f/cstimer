@@ -148,7 +148,7 @@
 			cubePieces.push(facePieces);
 
 			for (var j = 0; j < facelets.length; j++) {
-				curf = facelets[j];
+				var curf = facelets[j];
 				var sticker = new THREE.Object3D();
 
 				var meshes = [materials[i]];

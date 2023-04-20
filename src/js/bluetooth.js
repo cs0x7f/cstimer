@@ -932,7 +932,7 @@ var GiikerCube = execMain(function() {
 				return gatt.getPrimaryService(SERVICE_UUID);
 			}).then(function(service) {
 				_service = service;
-				return _service_data.getCharacteristics();
+				return _service.getCharacteristics();
 			}).then(function(chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
@@ -968,7 +968,7 @@ var GiikerCube = execMain(function() {
 				return;
 			}
 			var value = event.target.value;
-			parseTurn(data);
+			parseTurn(value);
 		}
 
 		function parseTurn(data) {
@@ -1006,12 +1006,12 @@ var GiikerCube = execMain(function() {
 					timeOffset = timestamp - ts;
 					calcTs = timestamp;
 				}
-				var m = axis * 3 + power;
-				DEBUG && console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(power));
+				var m = axis * 3 + pow;
+				DEBUG && console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
 				mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				curFacelet = curCubie.toFaceCube();
-				callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(power)], calcTs, _deviceName);
+				callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(pow)], calcTs, _deviceName);
 				var tmp = curCubie;
 				curCubie = prevCubie;
 				prevCubie = tmp;

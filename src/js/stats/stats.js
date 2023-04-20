@@ -619,10 +619,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		genAvgSignal(times.length - 1);
 	}
 
-	var avgSizes = [-3, 5, 12, 50, 100, 1000];
-	var times_stats_table = new TimeStat(avgSizes, 0, timeAt);
-	var times_stats_list = new TimeStat([], 0, timeAt);
-
 	function getTableTimeAt() {
 		var statSrc = kernel.getProp('statsrc', 't');
 		if (statSrc == 't') {
@@ -792,6 +788,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function timesAt(idx) {
 		return times[idx];
 	}
+
+	var avgSizes = [-3, 5, 12, 50, 100, 1000];
+	var times_stats_table = new TimeStat(avgSizes, 0, timeAt);
+	var times_stats_list = new TimeStat([], 0, timeAt);
 
 	function getSortedTimesByDate(times) {
 		var sorted = [];

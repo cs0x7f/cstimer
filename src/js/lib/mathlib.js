@@ -551,7 +551,7 @@ var mathlib = (function() {
 		this.ori = this.ori || 0;
 		var axis = 'URFDLB'.indexOf(face);
 		if (axis != -1) {
-			var m = axis * 3 + pow % 4 - 1
+			m = axis * 3 + pow % 4 - 1
 			m = CubieCube.rotMulM[this.ori][m];
 			CubieCube.EdgeMult(this, CubieCube.moveCube[m], tmpCubie);
 			CubieCube.CornMult(this, CubieCube.moveCube[m], tmpCubie);
@@ -561,7 +561,7 @@ var mathlib = (function() {
 		axis = 'UwRwFwDwLwBw'.indexOf(face);
 		if (axis != -1) {
 			axis >>= 1;
-			var m = (axis + 3) % 6 * 3 + pow % 4 - 1
+			m = (axis + 3) % 6 * 3 + pow % 4 - 1
 			m = CubieCube.rotMulM[this.ori][m];
 			CubieCube.EdgeMult(this, CubieCube.moveCube[m], tmpCubie);
 			CubieCube.CornMult(this, CubieCube.moveCube[m], tmpCubie);
@@ -929,7 +929,7 @@ var mathlib = (function() {
 
 	_ = phSolver.prototype;
 
-	_.initPrun = function(idx) {
+	_.initPrun = function() {
 		if (this.moveTables.length != 0) {
 			return;
 		}

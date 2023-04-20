@@ -194,7 +194,7 @@
 					cubeObject.addChild(sticker);
 				}
 
-				var meshes = [materials[2]];
+				meshes = [materials[2]];
 				if (cubeOptions.stickerBorder) {
 					meshes.push(borderMaterial);
 				}

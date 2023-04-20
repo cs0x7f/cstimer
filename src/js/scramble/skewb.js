@@ -25,7 +25,7 @@
 		var corner = cpcord.set([], perm % 12);
 		var center = ctcord.set([], ~~(perm / 12));
 		var fixedtwst = ftcord.set([], twst % 81);
-		var twst = twcord.set([], ~~(twst / 81));
+		twst = twcord.set([], ~~(twst / 81));
 		var f = [];
 		for (var i = 0; i < 6; i++) {
 			f[i * 5] = center[i];

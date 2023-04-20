@@ -2,7 +2,6 @@
 
 window.twistyjs.qcube = function() {
 
-	var canvas;
 	var drawPolygon = $.ctxDrawPolygon;
 
 	var posit = [];

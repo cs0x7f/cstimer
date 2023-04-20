@@ -1113,7 +1113,7 @@ var gsolver = (function() {
 			selectPre.val('');
 			kernel.blur();
 			if (state == 'input') {
-				var state = prompt('U1U2...U9R1..R9F1..D1..L1..B1..B9', solvedState);
+				state = prompt('U1U2...U9R1..R9F1..D1..L1..B1..B9', solvedState);
 				if (state == null) {
 					return;
 				}
