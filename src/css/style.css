@@ -166,6 +166,13 @@ textarea {
 	font-size: 0.3em;
 }
 
+#multiphase .replay {
+	font-family: Arial;
+	font-size: 0.4em;
+	position: relative;
+	z-index: 20;
+}
+
 #avgstr > span {
 	position: relative;
 	display: inline-block;
@@ -537,11 +544,23 @@ a {
 	z-index: 10;
 }
 
-.insp.activetimer::after {
+#timer .insp.activetimer::after {
 	content: "\e6b6";
 	font-family: iconfont;
 	position: absolute;
 	font-size: 0.2em;
+	opacity: 0.65;
+}
+
+#rtimer .insp.activetimer::before {
+	content: "\e6b6";
+	font-family: iconfont;
+	position: absolute;
+	top: auto;
+	right: 0px;
+	padding-right: 0.75rem;
+	font-size: 0.2em;
+	opacity: 0.65;
 }
 
 .playbutton.click {

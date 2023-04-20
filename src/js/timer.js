@@ -77,6 +77,19 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 	}
 
+	function appendReplayLink(puzzle, scramble, sol, times, turns) {
+		var turnCnt = puzzle == '333' ? recons.getMoveCnt(sol) : turns;
+		var txt = STATS_REVIEW;
+		if (turnCnt > 0) {
+			txt = turnCnt + " turns<br>" + ~~(100000 * turnCnt / times[1]) / 100.0 + " tps";
+		}
+		var replayLink = $('<div>').addClass('click replay');
+		replayLink.html(txt).unbind('click').click(function () {
+			replay.popupReplay(scramble, sol, puzzle);
+		});
+		lcd.append(replayLink);
+	}
+
 	var lcd = (function() {
 
 		var mainDiv;
@@ -185,7 +198,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function append(val) {
-			setHtml(rightDiv, rightDiv.html() + val);
+			if (val instanceof jQuery) {
+				rightDiv.append(val);
+			} else {
+				setHtml(rightDiv, rightDiv.html() + val);
+			}
 		}
 
 		function setStaticAppend(val, append) {
@@ -263,8 +280,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	var avgDiv = (function() {
 		var avgDiv;
-		var avgDivr = $('<div style="position:relative;font-size:0.3em;">');
-		var avgDiv0 = $('<span class="click" style="position:relative;z-index:20;font-family:Arial;">');
 		var avgDiv1 = $('<span class="click">');
 		var avgDiv2 = $('<span class="click">');
 
@@ -273,11 +288,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curValue;
 
 		function showAvgDiv(enable) {
-			if (enable) {
-				avgDivr.show();
-			} else {
-				avgDivr.hide();
-			}
 			if (enable && getProp('showAvg')) {
 				if (!isShowAvgDiv) {
 					avgDiv.show();
@@ -311,19 +321,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				avgDiv2.removeClass('click');
 			}
-			if (value[5] && value[5][4]) {
-				var puzzle = typeof value[5][4][1] == 'string' && value[5][4][1] || tools.getCurPuzzle() || '333';
-				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5]) : value[5][4][2];
-				var txt = STATS_REVIEW;
-				if (moveCnt > 0) {
-					txt = moveCnt + " moves<br>" + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
-				}
-				avgDiv0.html(txt).show().unbind('click').click(function() {
-					replay.popupReplay(value[5][1], value[5][4][0], puzzle);
-				});
-			} else {
-				avgDiv0.hide();
-			}
 		}
 
 		function procSignal(signal, value) {
@@ -346,7 +343,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		$(function() {
 			avgDiv = $('#avgstr').append(avgDiv1, '<br>', avgDiv2);
-			$('#multiphase').append(avgDivr.append(avgDiv0));
 			regListener('timer', 'avg', procSignal);
 		});
 
@@ -872,7 +868,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(curTime[1]);
 					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					rawMoves.reverse();
-					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
+					var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
+					appendReplayLink(curPuzzle, curScramble, sol, curTime, moveCnt);
+					pushSignal('time', ["", 0, curTime, 0, [sol, curPuzzle, moveCnt]]);
 				}
 			}
 		}
@@ -1227,7 +1225,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					if (curTime[1] != 0) {
 						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
 						sol = kernel.getConjMoves(sol, true);
-						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
+						var scramble = tools.getCurScramble();
+						var puzzle = tools.getCurPuzzle();
+						appendReplayLink(puzzle, scramble[1], sol, curTime);
+						pushSignal('time', ["", 0, curTime, 0, [sol, puzzle]]);
 					} else if (getProp('giiMode') == 't') {
 						kernel.pushSignal('ctrl', ['scramble', 'next']);
 					}
@@ -1320,7 +1321,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (keyCode == 27 || keyCode == 28) {
 					if (status >= 1) {
 						rawMoves.reverse();
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), '333']]);
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), tools.getCurPuzzle()]]);
 					}
 					clearReadyTid();
 					setStatus(-1);

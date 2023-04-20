@@ -37,12 +37,8 @@ var recons = execMain(function() {
 		this.moveCnt = 0;
 	}
 
-	function getMoveCnt(times) {
-		if (!times || !times[4]) {
-			return -1;
-		}
-		var solution = times[4];
-		solution = solution[0].split(/ +/);
+	function getMoveCnt(solution) {
+		solution = solution.split(/ +/);
 		var c = new mathlib.CubieCube();
 		c.ori = 0;
 		var cnter = new MoveCounter();
