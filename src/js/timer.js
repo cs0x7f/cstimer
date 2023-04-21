@@ -37,6 +37,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.reset(type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC') != 'n');
 		keyboardTimer.reset();
 		inputTimer.setEnable(type == 'i');
+		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
 	}
 
