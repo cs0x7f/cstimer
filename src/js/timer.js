@@ -17,12 +17,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			return;
 		}
 		status = _status;
-		lcd.updateInspLabel();
+		lcd.renderUtil();
 		kernel.pushSignal('timerStatus', status);
 	}
 
 	var curTime = []; //[inspection time, phaseN, phaseN-1, ...]
 	var startTime;
+	var hardTime;
 
 	var rawMoves = [];
 
@@ -36,7 +37,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.reset(type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC') != 'n');
 		keyboardTimer.reset();
 		inputTimer.setEnable(type == 'i');
-		ui.setAutoShow(true);
+		lcd.fixDisplay(false, true);
 	}
 
 	var voicen = {
@@ -74,7 +75,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 		setStatus(Math.min(curProgress, status) || 1);
-		lcd.setStaticAppend(lcd.getMulPhaseAppend(status, totPhases));
 	}
 
 	var lcd = (function() {
@@ -83,8 +83,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var rightDiv = $('<div />');
 		var runningDiv;
 		var runningId;
+		var rightADiv = $('<div />');
 
 		var staticAppend = "";
+		var mpAppend = "";
 		var divDict = ["", ""];
 		var isRight = false;
 
@@ -106,9 +108,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				return;
 			}
 			var time = $.now() - startTime;
-			var curAppend = runningDiv === rightDiv ? staticAppend : "";
 			if (status == -3 || (status == -2 && checkUseIns())) {
-				setHtml(runningDiv, (getProp('timeU') != 'n' ? ((time > 17000) ? 'DNF' : (time > 15000) ? '+2' : 15 - ~~(time / 1000)) : TIMER_INSPECT) + curAppend);
+				setHtml(runningDiv, (getProp('timeU') != 'n' ? ((time > 17000) ? 'DNF' : (time > 15000) ? '+2' : 15 - ~~(time / 1000)) : TIMER_INSPECT));
 			} else { //>0
 				var pret = pretty(time > 0 ? time : 0, true);
 				setHtml(runningDiv, {
@@ -117,7 +118,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					's': pret.split(".")[0],
 					'n': TIMER_SOLVE,
 					'i': TIMER_SOLVE
-				} [getProp('timeU')] + curAppend);
+				} [getProp('timeU')]);
 			}
 
 			if (status == -3 || status == -2) { //inspection alert
@@ -194,6 +195,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				staticAppend = val;
 			}
+			rightADiv.html(mpAppend + staticAppend);
 		}
 
 		function setEnable(enable) {
@@ -219,7 +221,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			divDict[1] = "";
 			setValue(0, isRight);
 			setRunning(false);
-			staticAppend = "";
+			setStaticAppend("", false);
 			avgDiv.updatePos(isRight);
 		}
 
@@ -228,11 +230,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			for (var i = totPhases; i > curProgress; i--) {
 				ret.push(pretty(curTime[i] - ~~curTime[i + 1], true));
 			}
-			return curProgress == totPhases || totPhases == 1 ? '' :
+			return curProgress == totPhases || totPhases == 1 || ret.length == 0 ? '' :
 				'<div style="font-size: 0.65em">' + '=' + ret.join('<br>+') + '</div>';
 		}
 
-		function updateInspLabel() {
+		function renderUtil() {
+			// render inspection icon
 			if (checkUseIns() && [-1, -4].indexOf(status) != -1) {
 				mainDiv.addClass('insp');
 				rightDiv.addClass('insp');
@@ -240,11 +243,20 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				mainDiv.removeClass('insp');
 				rightDiv.removeClass('insp');
 			}
+			mpAppend = getMulPhaseAppend(Math.max(0, status), Math.max(curTime.length - 1, status))
+			rightADiv.html(status > -2 ? mpAppend + staticAppend : staticAppend);
+			if (status == -1 || status == 0) {
+				if ('sb'.indexOf(getProp('input')) != -1) {
+					lcd.val(hardTime);
+				} else {
+					lcd.val(curTime[1] || 0);
+				}
+			}
 		}
 
 		$(function() {
 			mainDiv = $('#lcd');
-			$('#multiphase').append(rightDiv);
+			$('#multiphase').append(rightDiv, rightADiv);
 		});
 
 		return {
@@ -255,8 +267,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			append: append,
 			setStaticAppend: setStaticAppend,
 			fixDisplay: fixDisplay,
-			getMulPhaseAppend: getMulPhaseAppend,
-			updateInspLabel: updateInspLabel,
+			renderUtil: renderUtil,
 			reset: reset
 		}
 	})();
@@ -324,6 +335,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				avgDiv0.hide();
 			}
+			if (value[5]) {
+				curTime = value[5][0].slice();
+				lcd.renderUtil();
+			}
 		}
 
 		function procSignal(signal, value) {
@@ -382,15 +397,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 				} else if (status == -2) {
 					var time = now;
-					setStatus(getProp('phases'));
 					var insTime = checkUseIns() ? (time - startTime) : 0;
-					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					startTime = time;
-					lcd.reset();
+					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
+					setStatus(getProp('phases'));
 				} else if (status == -4) {
-					setStatus(-3);
-					lcd.reset();
 					startTime = now;
+					setStatus(-3);
 				}
 			}
 			lcd.fixDisplay(false, isTrigger);
@@ -407,25 +420,23 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (status > 0) {
 				lastDown = now;
 				curTime[status] = lastDown - startTime;
-				getProp('phases') != status && lcd.append('+');
-				getProp('phases') != 1 && lcd.append(pretty(curTime[status] - ~~curTime[status + 1], true) + '<br>');
 				if (keyCode == 27) {
 					var times = [-1],
 						i = 1;
 					while (status < curTime.length) {
 						times[i++] = curTime[status++];
 					}
-					setStatus(1);
 					curTime = times;
+					setStatus(1);
 				}
-				if (--status == 0) {
+				setStatus(status - 1);
+				if (status == 0) {
 					lastStop = lastDown;
-					lcd.val(curTime[1]);
-					ui.setAutoShow(true);
-					pushSignal('time', curTime);
 					if (keyCode != 32) {
 						setStatus(-1);
 					}
+					lcd.fixDisplay(false, isTrigger);
+					pushSignal('time', curTime);
 				}
 			} else if (isTrigger) {
 				if ((status == (checkUseIns() ? -3 : -1)) && pressreadyId == undefined) {
@@ -436,8 +447,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
 				clearPressReady();
 				setStatus(-1);
-				lcd.val(0);
-				ui.setAutoShow(true);
+				lcd.fixDisplay(false, false);
 			}
 			lcd.fixDisplay(true, isTrigger);
 			if (isTrigger) {
@@ -612,35 +622,34 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var now = $.now();
 			if (!state.on) {
+				hardTime = undefined;
 				setStatus(-1);
-				lcd.val();
-				lcd.setRunning(false);
-				lcd.color('');
-				ui.setAutoShow(true);
+				lcd.fixDisplay(false, true);
 				lastState = state;
 				return;
 			}
-			var curTime = state.time_milli;
+			hardTime = state.time_milli;
 			if (state.running) {
 				if (status == -3 || status == -4) {
-					inspectionTime = now - startTime - curTime;
+					inspectionTime = now - startTime - hardTime;
 					lcd.reset();
 				}
+				curTime = [0];
 				setStatus(1);
-				startTime = now - curTime;
-				ui.setAutoShow(false);
-			} else if (status == -1 && checkUseIns() && curTime == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
+				startTime = now - hardTime;
+				lcd.fixDisplay(false, true);
+			} else if (status == -1 && checkUseIns() && hardTime == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
 				setStatus(-3);
-				ui.setAutoShow(false);
 				startTime = now;
+				lcd.fixDisplay(false, true);
 			} else if (status != -3 && status != -4) {
 				setStatus(-1);
-				lcd.val(curTime);
-				ui.setAutoShow(true);
+				lcd.fixDisplay(false, true);
 			}
 			if (lastState.running && !state.running && state.time_milli != 0) {
 				inspectionTime = checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
-				pushSignal('time', [inspectionTime, ~~curTime]);
+				curTime = [inspectionTime, ~~hardTime];
+				pushSignal('time', curTime);
 			}
 			timerDisplay(state);
 			lastState = state;
@@ -681,7 +690,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.fixDisplay(true, true);
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
 				setStatus(-1);
-				lcd.val(0);
 				lcd.fixDisplay(true, false);
 			}
 			if (keyCode == 32) {
@@ -733,15 +741,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						case -1:         // if was idle start inspection timer
 							if (checkUseIns()) { // only when inspection enabled in settings
 								setStatus(-3);
-								lcd.setRunning(true);
 								startTime = $.now();
-								ui.setAutoShow(false);
+								lcd.fixDisplay(false, true);
 							}
 							break;
 						default:         // by default just reset / cancel timer
 							setStatus(-1);
 							lcd.reset();
-							ui.setAutoShow(true);
+							lcd.fixDisplay(false, true);
 							break;
 					}
 					break;
@@ -753,23 +760,21 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					startTime = $.now();
 					lcd.reset();
-					lcd.color('');
+					curTime = [inspectionTime];
 					setStatus(1);
-					lcd.setRunning(true);
-					ui.setAutoShow(false);
+					lcd.fixDisplay(false, true);
 					break;
 				case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
-					lcd.setRunning(false);
-					lcd.val(timerEvent.recordedTime.asTimestamp);
-					ui.setAutoShow(true);
-					pushSignal('time', [inspectionTime, timerEvent.recordedTime.asTimestamp]);
+					hardTime = timerEvent.recordedTime.asTimestamp;
+					curTime[1] = hardTime;
+					setStatus(-1);
+					lcd.fixDisplay(false, true);
+					pushSignal('time', curTime);
 					break;
 				case GanTimerState.DISCONNECT: // timer is switched off or something else
+					hardTime = undefined;
 					setStatus(-1);
-					lcd.val();
-					lcd.setRunning(false);
-					lcd.color('');
-					ui.setAutoShow(true);
+					lcd.fixDisplay(false, true);
 					break;
 			}
 
@@ -827,6 +832,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					startTime = now;
 					moveCnt = 0;
+					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					setStatus(curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(getProp('vrcMP', 'n')) : 1);
 					var inspectionMoves = rawMoves[0];
 					rawMoves = [];
@@ -835,11 +841,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					rawMoves[status] = inspectionMoves;
 					totPhases = status;
-					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					updateMulPhase(totPhases, puzzleObj.isSolved(getProp('vrcMP', 'n')), now);
 					fixRelayCounter();
-					lcd.setRunning(true);
-					ui.setAutoShow(false);
+					lcd.fixDisplay(false, true);
 				}
 			}
 			if (status >= 1) {
@@ -865,12 +869,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						scrambleIt();
 						return;
 					}
-					ui.setAutoShow(true);
 					setStatus(-1);
-					lcd.setRunning(false);
+					$('#lcd').css({'visibility': 'unset'}); // disable dragging
 					lcd.setStaticAppend('');
-					lcd.val(curTime[1]);
-					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
+					lcd.fixDisplay(false, true);
 					rawMoves.reverse();
 					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 				}
@@ -904,8 +906,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					div.html('--:--');
 				}
 				if (!temp || isInit) {
-					lcd.setRunning(false);
 					lcd.setStaticAppend('');
+					lcd.fixDisplay(false, true);
 					setSize(getProp('timerSize'));
 				}
 			});
@@ -913,7 +915,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function fixRelayCounter() {
 			if (/^r\d+$/.exec(curScrType)) {
-				lcd.setStaticAppend("<br>" + (curScramble.length + 1) + "/" + curScramble.len);
+				lcd.setStaticAppend((curScramble.length + 1) + "/" + relayScrs.length);
 			}
 		}
 
@@ -941,29 +943,32 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			var now = $.now();
 			if (status == -1) { // idle
 				if (keyCode == 32) {
+					if (relayScrs) {
+						curScramble = relayScrs.slice();
+					}
 					scrambleIt();
 					if (checkUseIns()) {
-						setStatus(-3); //inspection
 						startTime = now;
-						lcd.setRunning(true);
+						setStatus(-3); //inspection
 					} else {
-						lcd.setRunning(false);
 						lcd.val(0);
 						setStatus(-2); //ready
 					}
-					$('#lcd').css({'visibility': 'hidden'});
-					ui.setAutoShow(false);
+					$('#lcd').css({'visibility': 'hidden'}); // enable dragging
+					lcd.fixDisplay(false, true);
 				}
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
 				if (keyCode == 27 || keyCode == 28) { //ESC
-					ui.setAutoShow(true);
-					if (status >= 1) {
+					var recordDNF = status >= 1;
+					setStatus(-1);
+					reset();
+					$('#lcd').css({'visibility': 'unset'}); // disable dragging
+					lcd.setStaticAppend('');
+					lcd.fixDisplay(false, true);
+					if (recordDNF) {
 						rawMoves.reverse();
 						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 					}
-					reset();
-					setStatus(-1);
-					$('#lcd').css({'visibility': 'unset'});
 				} else {
 					var mappedCode = help.getMappedCode(keyCode);
 					var a = {
@@ -978,6 +983,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		var curScramble;
+		var relayScrs;
 		var curScrType;
 		var curScrSize;
 		var curPuzzle;
@@ -1001,13 +1007,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				var m = value[0].match(/^r(\d)\d*$/);
 				if (m) {
-					curScramble = curScramble.split('\n');
-					curScramble.len = curScramble.length;
+					relayScrs = curScramble.split('\n');
 					if (curScrSize != ~~m[1]) {
 						curScrSize = ~~m[1];
 						isReseted = false;
 						reset();
 					}
+				} else {
+					relayScrs = null;
 				}
 			}
 		}
@@ -1076,8 +1083,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						div.html('--:--');
 					}
 					if (!temp || isInit) {
-						lcd.setRunning(false, true);
-						lcd.setStaticAppend('');
+						lcd.fixDisplay(false, true);
 						setSize(getProp('timerSize'));
 					}
 					curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
@@ -1173,8 +1179,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					var moveStart = getProp('giiSM');
 					if (moveStart != 'n') {
 						var movere = {
-							'x4': /^([URFDLB][ '])\1\1\1$/,
-							'xi2': /^([URFDLB])( \1'\1 \1'|'\1 \1'\1 )$/
+							'x4': /^([URFDLB][ '])\1\1\1/,
+							'xi2': /^([URFDLB])( \1'\1 \1'|'\1 \1'\1 )/
 						} [moveStart];
 						if (movere.exec(prevMoves.join(''))) {
 							moveReadyTid = setTimeout(function() {
@@ -1190,19 +1196,17 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					insTime = 0;
 				}
 				startTime = now;
+				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 				setStatus(cubeutil.getStepCount(solvingMethod));
 				rawMoves = [];
 				for (var i = 0; i < status; i++) {
 					rawMoves[i] = [];
 				}
 				totPhases = status;
-				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
-				lcd.reset(enableVRC);
-				lcd.fixDisplay(false, true);
-				lcd.setRunning(true, enableVRC);
-				ui.setAutoShow(false);
 				var initialProgress = cubeutil.getProgress(prevFacelet, solvingMethod);
 				updateMulPhase(totPhases, initialProgress, now);
+				lcd.reset(enableVRC);
+				lcd.fixDisplay(false, true);
 			}
 			if (status >= 1) {
 				rawMoves[status - 1].push([prevMoves[0], now - startTime]);
@@ -1215,15 +1219,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
 					var moveCnt = pretty.totalMoves;
 					giikerutil.setLastSolve(pretty.prettySolve);
-					setStatus(-1);
 					curTime[1] = now - startTime;
+					setStatus(-1);
 					giikerutil.reSync();
-					ui.setAutoShow(true);
-					lcd.setRunning(false, enableVRC);
-					lcd.setStaticAppend('');
 					lcd.fixDisplay(false, true);
-					lcd.val(curTime[1]);
-					lcd.append(lcd.getMulPhaseAppend(0, totPhases));
 					if (curTime[1] != 0) {
 						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
 						sol = kernel.getConjMoves(sol, true);
@@ -1272,10 +1271,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				startTime = now;
 				lcd.reset(enableVRC);
 				lcd.fixDisplay(true, true);
-				if (checkUseIns()) {
-					lcd.setRunning(true, enableVRC);
-				}
-				ui.setAutoShow(false);
 				if (getProp('giiBS')) {
 					metronome.playTick();
 				}
@@ -1318,17 +1313,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			onkeydown: function(keyCode) {
 				var now = $.now();
 				if (keyCode == 27 || keyCode == 28) {
-					if (status >= 1) {
-						rawMoves.reverse();
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), '333']]);
-					}
+					var recordDNF = status >= 1;
 					clearReadyTid();
 					setStatus(-1);
 					giikerutil.reSync();
-					ui.setAutoShow(true);
-					lcd.val(0);
-					lcd.setRunning(false, enableVRC);
 					lcd.fixDisplay(false, true);
+					if (recordDNF) {
+						rawMoves.reverse();
+						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), '333']]);
+					}
 				} else if (keyCode == 32 && getProp('giiSK')) {
 					if (!isGiiSolved(currentFacelet, true)) {
 						if (status == -1) {
@@ -1479,7 +1472,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				updateTimerOffsetAsync(false);
 			}
 			if (['useIns', 'scrType'].indexOf(value[0]) >= 0) {
-				lcd.updateInspLabel();
+				lcd.renderUtil();
 			}
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();

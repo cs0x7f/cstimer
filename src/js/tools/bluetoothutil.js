@@ -314,7 +314,7 @@ var giikerutil = execMain(function(CubieCube) {
 		movesTimestamp = [];
 		scrambleLength = 0;
 		drawState();
-		callback(curState, ['U '], lastTimestamp);
+		callback(curState, ['U '], $.now());
 	}
 
 	var movesAfterSolved = [];
@@ -483,7 +483,7 @@ var giikerutil = execMain(function(CubieCube) {
 			return;
 		}
 		hackedSolvedCubieInv = null;
-		callback(curState, ['U '], lastTimestamp);
+		callback(curState, ['U '], $.now());
 	}
 
 	$(function() {
