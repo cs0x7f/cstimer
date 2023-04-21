@@ -85,9 +85,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var runningDiv;
 		var runningId;
 		var rightADiv = $('<div />');
+		var reconsDiv = $('<div style="position:relative;font-size:0.3em;">');
+		var reconsSpan = $('<span class="click" style="position:relative;z-index:20;font-family:Arial;">');
 
 		var staticAppend = "";
-		var mpAppend = "";
 		var divDict = ["", ""];
 		var isRight = false;
 
@@ -196,7 +197,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				staticAppend = val;
 			}
-			rightADiv.html(mpAppend + staticAppend);
 		}
 
 		function setEnable(enable) {
@@ -220,9 +220,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			divDict[0] = "";
 			divDict[1] = "";
+			setStaticAppend("", false);
 			setValue(0, isRight);
 			setRunning(false);
-			setStaticAppend("", false);
 			avgDiv.updatePos(isRight);
 		}
 
@@ -235,6 +235,12 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				'<div style="font-size: 0.65em">' + '=' + ret.join('<br>+') + '</div>';
 		}
 
+
+		var value;
+		function setRecons(_value) {
+			value = _value;
+		}
+
 		function renderUtil() {
 			// render inspection icon
 			if (checkUseIns() && [-1, -4].indexOf(status) != -1) {
@@ -244,20 +250,36 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				mainDiv.removeClass('insp');
 				rightDiv.removeClass('insp');
 			}
-			mpAppend = getMulPhaseAppend(Math.max(0, status), Math.max(curTime.length - 1, status))
-			rightADiv.html(status > -2 ? mpAppend + staticAppend : staticAppend);
+			var mpAppend = status > -2 ? getMulPhaseAppend(Math.max(0, status), Math.max(curTime.length - 1, status)) : '';
+			rightADiv.html(mpAppend + staticAppend);
 			if (status == -1 || status == 0) {
 				if ('sb'.indexOf(getProp('input')) != -1) {
 					lcd.val(hardTime);
 				} else {
 					lcd.val(curTime[1] || 0);
 				}
+				if (value && value[4]) {
+					reconsDiv.show();
+					var puzzle = typeof value[4][1] == 'string' && value[4][1] || tools.getCurPuzzle() || '333';
+					var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[4][0]) : value[4][2];
+					var txt = STATS_REVIEW;
+					if (moveCnt > 0) {
+						txt = moveCnt + " turns<br>" + ~~(100000 * moveCnt / value[0][1]) / 100.0 + " tps";
+					}
+					reconsSpan.html(txt).unbind('click').click(function() {
+						replay.popupReplay(value[1], value[4][0], puzzle);
+					});
+				} else {
+					reconsDiv.hide();
+				}
+			} else {
+				reconsDiv.hide();
 			}
 		}
 
 		$(function() {
 			mainDiv = $('#lcd');
-			$('#multiphase').append(rightDiv, rightADiv);
+			$('#multiphase').append(rightDiv, rightADiv, reconsDiv.append(reconsSpan));
 		});
 
 		return {
@@ -269,14 +291,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			setStaticAppend: setStaticAppend,
 			fixDisplay: fixDisplay,
 			renderUtil: renderUtil,
+			setRecons: setRecons,
 			reset: reset
 		}
 	})();
 
 	var avgDiv = (function() {
 		var avgDiv;
-		var avgDivr = $('<div style="position:relative;font-size:0.3em;">');
-		var avgDiv0 = $('<span class="click" style="position:relative;z-index:20;font-family:Arial;">');
 		var avgDiv1 = $('<span class="click">');
 		var avgDiv2 = $('<span class="click">');
 
@@ -285,11 +306,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curValue;
 
 		function showAvgDiv(enable) {
-			if (enable) {
-				avgDivr.show();
-			} else {
-				avgDivr.hide();
-			}
 			if (enable && getProp('showAvg')) {
 				if (!isShowAvgDiv) {
 					avgDiv.show();
@@ -323,19 +339,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				avgDiv2.removeClass('click');
 			}
-			if (value[5] && value[5][4]) {
-				var puzzle = typeof value[5][4][1] == 'string' && value[5][4][1] || tools.getCurPuzzle() || '333';
-				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5][4][0]) : value[5][4][2];
-				var txt = STATS_REVIEW;
-				if (moveCnt > 0) {
-					txt = moveCnt + " turns<br>" + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
-				}
-				avgDiv0.html(txt).show().unbind('click').click(function() {
-					replay.popupReplay(value[5][1], value[5][4][0], puzzle);
-				});
-			} else {
-				avgDiv0.hide();
-			}
+			lcd.setRecons(value[5]);
 			if (value[5]) {
 				curTime = value[5][0].slice();
 				lcd.renderUtil();
@@ -362,7 +366,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		$(function() {
 			avgDiv = $('#avgstr').append(avgDiv1, '<br>', avgDiv2);
-			$('#multiphase').append(avgDivr.append(avgDiv0));
 			regListener('timer', 'avg', procSignal);
 		});
 
@@ -738,6 +741,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					break;
 				case GanTimerState.IDLE: // timer reset button pressed
 					inspectionTime = 0;
+					hardTime = 0;
 					switch (status) {
 						case -1:         // if was idle start inspection timer
 							if (checkUseIns()) { // only when inspection enabled in settings
@@ -870,9 +874,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						scrambleIt();
 						return;
 					}
+					lcd.setStaticAppend('');
 					setStatus(-1);
 					$('#lcd').css({'visibility': 'unset'}); // disable dragging
-					lcd.setStaticAppend('');
 					lcd.fixDisplay(false, true);
 					rawMoves.reverse();
 					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
@@ -909,6 +913,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (!temp || isInit) {
 					lcd.setStaticAppend('');
 					lcd.fixDisplay(false, true);
+					lcd.renderUtil();
 					setSize(getProp('timerSize'));
 				}
 			});
@@ -917,6 +922,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function fixRelayCounter() {
 			if (/^r\d+$/.exec(curScrType)) {
 				lcd.setStaticAppend((curScramble.length + 1) + "/" + relayScrs.length);
+				lcd.renderUtil();
 			}
 		}
 
@@ -961,10 +967,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
 				if (keyCode == 27 || keyCode == 28) { //ESC
 					var recordDNF = status >= 1;
+					lcd.setStaticAppend('');
 					setStatus(-1);
 					reset();
 					$('#lcd').css({'visibility': 'unset'}); // disable dragging
-					lcd.setStaticAppend('');
 					lcd.fixDisplay(false, true);
 					if (recordDNF) {
 						rawMoves.reverse();
