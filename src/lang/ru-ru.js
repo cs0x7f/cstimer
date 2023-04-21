@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'ГенераторСкрамблов';
 var SCRGEN_NSCR = 'Количество скрамблов';
 var SCRGEN_PRE = 'префикс';
 var SCRGEN_GEN = 'Генерировать скрамблы!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

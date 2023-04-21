@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'Blandningsgenerator';
 var SCRGEN_NSCR = 'Antal blandningar';
 var SCRGEN_PRE = 'prefix';
 var SCRGEN_GEN = 'Generera Blandningar!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

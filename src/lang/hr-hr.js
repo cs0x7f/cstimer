@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'Generator scramble-ova';
 var SCRGEN_NSCR = 'Broj scramble-ova';
 var SCRGEN_PRE = 'prefiks';
 var SCRGEN_GEN = 'Generiraj scramble-ove!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

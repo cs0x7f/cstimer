@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = '섞기 생성기';
 var SCRGEN_NSCR = '섞기 개수';
 var SCRGEN_PRE = '번호 표기';
 var SCRGEN_GEN = '섞기 공식 생성하기!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

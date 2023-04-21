@@ -71,7 +71,7 @@ var TOOLS_TRAINSTAT = 'Stats des entraînements';
 var TOOLS_BLDHELPER = 'Assistant BLD';
 var TOOLS_CFMTIME = 'Confirmation du temps';
 var TOOLS_SOLVERS = 'Solveurs';
-var TOOLS_DLYSTAT = 'Daily Statistics';
+var TOOLS_DLYSTAT = 'Stats quotidiennes';
 var TOOLS_DLYSTAT1 = 'Période|Début de journée|Semaine';
 var TOOLS_DLYSTAT_OPT1 = 'jour|semaine|mois|année';
 var TOOLS_DLYSTAT_OPT2 = 'Dim|Lun|Mar|Mer|Jeu|Ven|Sam';
@@ -82,13 +82,13 @@ var TOOLS_SYNCSEED_30S = 'Utiliser un Seed de 30 sec';
 var TOOLS_SYNCSEED_HELP = 'Si activé, le mélange dépendra uniquement du seed et des paramètres de mélange. ';
 var TOOLS_SYNCSEED_DISABLE = 'Désactiver le seed actuel ?';
 var TOOLS_SYNCSEED_INPUTA = 'Entrez une valeur (a-zA-Z0-9) en tant que seed';
-var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
-var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_BATTLE = 'Match en ligne';
+var TOOLS_BATTLE_HEAD = 'Salon|Rejoindre le salon';
+var TOOLS_BATTLE_TITLE = 'Rang |Statut|Temps';
+var TOOLS_BATTLE_STATUS = 'Prêt|Inspection|Résolution|Résolu|Perdu';
+var TOOLS_BATTLE_INFO = 'Pour affronter vos amis lors de matchs en ligne, rejoignez tous le même salon.';
+var TOOLS_BATTLE_JOINALERT = 'Veuillez entrer l\'ID du salon';
+var TOOLS_BATTLE_LEAVEALERT = 'Quitter le salon actuel';
 var OLCOMP_UPDATELIST = 'Mettre à jour la liste des compétitions';
 var OLCOMP_VIEWRESULT = 'Voir le résultat';
 var OLCOMP_VIEWMYRESULT = 'Mon historique';
@@ -133,7 +133,7 @@ var PROPERTY_AHIDE = 'Cacher tous les éléments lors du chronométrage';
 var SCRAMBLE_LAST = 'dernier';
 var SCRAMBLE_NEXT = 'prochain';
 var SCRAMBLE_SCRAMBLE = ' mélange';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Mélange';
 var SCRAMBLE_LENGTH = 'Longueur';
 var SCRAMBLE_INPUT = 'Entrer mélange(s)';
 var PROPERTY_VRCSPEED = 'Vitesse de base du cube virtuel (tps)';
@@ -177,7 +177,7 @@ var scrdata = [
 	['Entrer', [
 		['Externe', "input", 0],
 		['Compétition', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['Match en ligne', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'Générateur de mélange';
 var SCRGEN_NSCR = 'Nombre de mélanges';
 var SCRGEN_PRE = 'Préfixe';
 var SCRGEN_GEN = 'Générer des mélanges !';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

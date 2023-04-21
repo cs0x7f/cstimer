@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'スクランブルジェネレーター';
 var SCRGEN_NSCR = 'スクランブル数';
 var SCRGEN_PRE = 'プレフィクス';
 var SCRGEN_GEN = 'スクランブル生成！';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

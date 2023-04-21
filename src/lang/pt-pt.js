@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'Gerador de Embaralhamentos';
 var SCRGEN_NSCR = 'Número de embaralhamentos';
 var SCRGEN_PRE = 'prefixo';
 var SCRGEN_GEN = 'Gerar embaralhamentos!!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

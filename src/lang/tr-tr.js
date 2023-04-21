@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'karıştırma oluşturucu';
 var SCRGEN_NSCR = 'karıştırmaların sayısı';
 var SCRGEN_PRE = 'karıştırma öncesi';
 var SCRGEN_GEN = 'karıştırma oluştur!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

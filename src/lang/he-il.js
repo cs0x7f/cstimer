@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'מייצר ערבובים';
 var SCRGEN_NSCR = 'כמות ערבובים';
 var SCRGEN_PRE = 'קידומת';
 var SCRGEN_GEN = 'יצר ערבובים';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

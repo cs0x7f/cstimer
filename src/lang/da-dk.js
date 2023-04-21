@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'BlandingsGenerator';
 var SCRGEN_NSCR = 'Nummere af blandinger';
 var SCRGEN_PRE = 'præfiks';
 var SCRGEN_GEN = 'Frembringe Blandinger!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

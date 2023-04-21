@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'Generátor Zamíchání';
 var SCRGEN_NSCR = 'Počet zamíchání';
 var SCRGEN_PRE = 'předpona';
 var SCRGEN_GEN = 'Generovat Zamíchání!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

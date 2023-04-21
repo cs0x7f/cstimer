@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = '打亂製造器';
 var SCRGEN_NSCR = '打亂總數';
 var SCRGEN_PRE = '前綴';
 var SCRGEN_GEN = '生成打亂!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

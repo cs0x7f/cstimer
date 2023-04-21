@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'KeverésGenerátor';
 var SCRGEN_NSCR = 'Keverések száma';
 var SCRGEN_PRE = 'előtag';
 var SCRGEN_GEN = 'Keverések Generálása!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

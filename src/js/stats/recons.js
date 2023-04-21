@@ -37,17 +37,13 @@ var recons = execMain(function() {
 		this.moveCnt = 0;
 	}
 
-	function getMoveCnt(times) {
-		if (!times || !times[4]) {
-			return -1;
-		}
-		var solution = times[4];
-		solution = solution[0].split(/ +/);
+	function getMoveCnt(sol) {
+		sol = sol.split(/ +/);
 		var c = new mathlib.CubieCube();
 		c.ori = 0;
 		var cnter = new MoveCounter();
-		for (var i = 0; i < solution.length; i++) {
-			var effMove = c.selfMoveStr(solution[i], false);
+		for (var i = 0; i < sol.length; i++) {
+			var effMove = c.selfMoveStr(sol[i], false);
 			if (effMove != undefined) {
 				cnter.push(effMove);
 			}

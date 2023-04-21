@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'GeneratorScrambli';
 var SCRGEN_NSCR = 'Liczba scramblów';
 var SCRGEN_PRE = 'prefiks';
 var SCRGEN_GEN = 'Generuj algorytmy mieszające!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

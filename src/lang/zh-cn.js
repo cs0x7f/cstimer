@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = '打乱生成器';
 var SCRGEN_NSCR = '打乱个数';
 var SCRGEN_PRE = '前缀';
 var SCRGEN_GEN = '生成打乱！';
+var VRCREPLAY_TITLE = '虚拟魔方回放';
+var VRCREPLAY_ORI = '原始朝向|自动朝向';
+var VRCREPLAY_SHARE = '分享链接';

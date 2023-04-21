@@ -325,10 +325,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			if (value[5] && value[5][4]) {
 				var puzzle = typeof value[5][4][1] == 'string' && value[5][4][1] || tools.getCurPuzzle() || '333';
-				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5]) : value[5][4][2];
+				var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[5][4][0]) : value[5][4][2];
 				var txt = STATS_REVIEW;
 				if (moveCnt > 0) {
-					txt = moveCnt + " moves<br>" + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
+					txt = moveCnt + " turns<br>" + ~~(100000 * moveCnt / value[5][0][1]) / 100.0 + " tps";
 				}
 				avgDiv0.html(txt).show().unbind('click').click(function() {
 					replay.popupReplay(value[5][1], value[5][4][0], puzzle);

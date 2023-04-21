@@ -160,7 +160,7 @@
 <p>Ще раз дякуємо вам за ваш внесок!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of faulure check that Bluetooth is enabled on your system!</strong></p>
+<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
 <p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
 <ul>
 <li>Chrome on macOS, Linux, Android or Windows</li>

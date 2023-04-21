@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'Generador de mezcla';
 var SCRGEN_NSCR = 'Número de mezclas';
 var SCRGEN_PRE = 'Prefijo';
 var SCRGEN_GEN = 'Generar mezclas';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';

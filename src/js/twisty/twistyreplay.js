@@ -26,6 +26,8 @@ var replay = execMain(function() {
 	var curTime = 0;
 	var status = 0; // 0 - idle, 1 - play
 
+	var vrcOriStr = VRCREPLAY_ORI.split('|');
+
 	function setStatus(_status) {
 		if (_status != status) {
 			status = _status;
@@ -130,9 +132,9 @@ var replay = execMain(function() {
 		} else if (key == 'o') {
 			autoOri = !autoOri;
 			if (autoOri) {
-				obj.html('auto ori');
+				obj.html(vrcOriStr[1]);
 			} else {
-				obj.html('raw ori');
+				obj.html(vrcOriStr[0]);
 			}
 			goToStep(0);
 			parseRecons(rawRecons);
@@ -225,7 +227,7 @@ var replay = execMain(function() {
 			setStatus(0);
 		}, undefined, function() {
 			setStatus(0);
-		}], 'share', 'Virtual Replay', function() {
+		}], 'share', VRCREPLAY_TITLE, function() {
 			puzzleFactory.init(options, $.noop, puzzleDiv, function(ret, isInit) {
 				div.unbind('click').click(procClick);
 				rangeTime.unbind('input click').bind('input', procClick);
@@ -247,7 +249,7 @@ var replay = execMain(function() {
 
 	$(function() {
 		div = $('<table style="height:98%">');
-		puzzleDiv = $('<div style="height:100%;">');
+		puzzleDiv = $('<td style="height:80%">');
 		var span = '<span class="click playbutton" data="%">$</span>';
 		rangeTime = $('<input type="range" style="width:50%;" data="r">');
 		txtTime = $('<span style="user-select:none;"></span>');
@@ -256,11 +258,11 @@ var replay = execMain(function() {
 		playSpan = $(span.replace('$', '\ue800').replace('%', 'p'));
 		div.append(
 			$('<tr>').append($('<td>').append(
-				span.replace('$', 'raw ori').replace('%', 'o'), '| ',
+				span.replace('$', vrcOriStr[0]).replace('%', 'o'), '| ',
 				algSpan, ' |',
-				span.replace('$', 'share link').replace('%', 'a')
+				span.replace('$', VRCREPLAY_SHARE).replace('%', 'a')
 			)),
-			$('<tr>').append($('<td>').append(puzzleDiv)),
+			$('<tr>').append(puzzleDiv),
 			$('<tr>').append($('<td style="display:flex;justify-content:center;">').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
 			$('<tr>').append($('<td>').append(
 				span.replace('$', '\ue807').replace('%', 's-'),

@@ -507,3 +507,6 @@ var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Aantal scrambles';
 var SCRGEN_PRE = 'prefix';
 var SCRGEN_GEN = 'Genereer scrambles!';
+var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_ORI = 'raw ori|auto ori';
+var VRCREPLAY_SHARE = 'share link';
