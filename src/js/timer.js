@@ -84,7 +84,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var rightDiv = $('<div />');
 		var runningDiv;
 		var runningId;
-		var rightADiv = $('<div />');
+		var rightADiv = $('<div style="line-height:0.6em;" />');
 		var reconsDiv = $('<div style="position:relative;font-size:0.3em;">');
 		var reconsSpan = $('<span class="click" style="position:relative;z-index:20;font-family:Arial;">');
 
@@ -339,11 +339,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				avgDiv2.removeClass('click');
 			}
-			lcd.setRecons(value[5]);
 			if (value[5]) {
 				curTime = value[5][0].slice();
-				lcd.renderUtil();
+			} else {
+				curTime = [0];
 			}
+			lcd.setRecons(value[5]);
+			lcd.renderUtil();
 		}
 
 		function procSignal(signal, value) {
