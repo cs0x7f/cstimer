@@ -1535,6 +1535,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		onkeyup: onkeyup,
 		showAvgDiv: avgDiv.showAvgDiv,
 		refocus: refocus,
+		getStatus: function() {
+			return status;
+		},
 		getCurTime: function(now) {
 			return status > 0 ? (now || $.now()) - startTime : 0;
 		}

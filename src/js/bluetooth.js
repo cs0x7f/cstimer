@@ -341,7 +341,7 @@ var GiikerCube = execMain(function() {
 						for (var i = 0; i < 6; i++) {
 							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
-						_device.removeEventListener('advertisementreceived', onAdvEvent);
+						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
 						abortController.abort();
 						resolve(mac.join(':'));
 					}
@@ -349,7 +349,7 @@ var GiikerCube = execMain(function() {
 				_device.addEventListener('advertisementreceived', onAdvEvent);
 				_device.watchAdvertisements({ signal: abortController.signal });
 				setTimeout(function() { // reject if no mac found
-					_device.removeEventListener('advertisementreceived', onAdvEvent);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
 					abortController.abort();
 					reject(-2);
 				}, 5000);
@@ -551,11 +551,6 @@ var GiikerCube = execMain(function() {
 			});
 		}
 
-		function wasMoveSeqExecuted(moveSeq) {
-			var prevMoveSeq = prevMoves.slice().reverse().join('').replace(/ /g, '');
-			return prevMoveSeq.endsWith(moveSeq);
-		}
-
 		function updateMoveTimes(timestamp, isV2) {
 			var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
 			DEBUG && moveDiff > 1 && console.log('[gancube]', 'bluetooth event was lost, moveDiff = ' + moveDiff);
@@ -565,15 +560,13 @@ var GiikerCube = execMain(function() {
 				movesFromLastCheck = 50;
 				moveDiff = prevMoves.length;
 			}
-			var _timestamp = prevTimestamp;
+			var calcTs = prevTimestamp;
 			for (var i = moveDiff - 1; i >= 0; i--) {
-				_timestamp += timeOffs[i];
+				calcTs += timeOffs[i];
 			}
-			DEBUG && console.log('[gancube] time skew', timestamp - _timestamp);
-			// forcely adjust time base once upon init, if time skew > 2000ms, or if magic sequence on cube executed
-			if (!prevTimestamp || Math.abs(_timestamp - timestamp) > 2000 || wasMoveSeqExecuted("UU'UU'UU'")) {
-				DEBUG && console.log('[gancube]', 'time adjust', timestamp - _timestamp, '@', timestamp);
-				prevTimestamp += timestamp - _timestamp;
+			if (!prevTimestamp || Math.abs(timestamp - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(timestamp - calcTs) > 300) {
+				DEBUG && console.log('[gancube]', 'time adjust', timestamp - calcTs, '@', timestamp);
+				prevTimestamp += timestamp - calcTs;
 			}
 			for (var i = moveDiff - 1; i >= 0; i--) {
 				var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + " 2'".indexOf(prevMoves[i][1]);
@@ -1004,7 +997,7 @@ var GiikerCube = execMain(function() {
 					continue;
 				}
 				var calcTs = ts + timeOffset;
-				if (timeOffset == 0 || Math.abs(timestamp - calcTs) > 2000) {
+				if (timeOffset == 0 || Math.abs(timestamp - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(timestamp - calcTs) > 300) {
 					timeOffset = timestamp - ts;
 					calcTs = timestamp;
 				}
