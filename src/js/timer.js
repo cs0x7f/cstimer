@@ -635,6 +635,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				return;
 			}
 			hardTime = state.time_milli;
+			lcd.renderUtil();
 			if (state.running) {
 				if (status == -3 || status == -4) {
 					inspectionTime = now - startTime - hardTime;
@@ -744,6 +745,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				case GanTimerState.IDLE: // timer reset button pressed
 					inspectionTime = 0;
 					hardTime = 0;
+					lcd.renderUtil();
 					switch (status) {
 						case -1:         // if was idle start inspection timer
 							if (checkUseIns()) { // only when inspection enabled in settings
@@ -773,6 +775,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					break;
 				case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
 					hardTime = timerEvent.recordedTime.asTimestamp;
+					lcd.renderUtil();
 					curTime[1] = hardTime;
 					setStatus(-1);
 					lcd.fixDisplay(false, true);
@@ -780,6 +783,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					break;
 				case GanTimerState.DISCONNECT: // timer is switched off or something else
 					hardTime = undefined;
+					lcd.renderUtil();
 					setStatus(-1);
 					lcd.fixDisplay(false, true);
 					break;
