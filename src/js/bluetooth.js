@@ -564,7 +564,7 @@ var GiikerCube = execMain(function() {
 			for (var i = moveDiff - 1; i >= 0; i--) {
 				calcTs += timeOffs[i];
 			}
-			if (!prevTimestamp || Math.abs(timestamp - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(timestamp - calcTs) > 300) {
+			if (!prevTimestamp || Math.abs(timestamp - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(timestamp - calcTs) > 100) {
 				DEBUG && console.log('[gancube]', 'time adjust', timestamp - calcTs, '@', timestamp);
 				prevTimestamp += timestamp - calcTs;
 			}
@@ -765,6 +765,14 @@ var GiikerCube = execMain(function() {
 			batteryLevel = 100;
 			return result;
 		}
+
+		function onMarkScrambled() {
+			prevTimestamp = 0; // force time skew adjust (cube/device time sync) upon cube successfully scrambled
+		}
+
+		$(function () {
+			kernel.regListener('gancube', 'markScrambled', onMarkScrambled);
+		});
 
 		return {
 			init: init,
@@ -997,7 +1005,7 @@ var GiikerCube = execMain(function() {
 					continue;
 				}
 				var calcTs = ts + timeOffset;
-				if (timeOffset == 0 || Math.abs(timestamp - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(timestamp - calcTs) > 300) {
+				if (timeOffset == 0 || Math.abs(timestamp - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(timestamp - calcTs) > 100) {
 					timeOffset = timestamp - ts;
 					calcTs = timestamp;
 				}

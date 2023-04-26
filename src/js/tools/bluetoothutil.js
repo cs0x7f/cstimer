@@ -469,6 +469,7 @@ var giikerutil = execMain(function(CubieCube) {
 		scrambleLength = movesAfterSolved.length;
 		updateRawMovesClick();
 		updateAlgClick(lastSolveClick, "In Progress");
+		kernel.pushSignal('markScrambled', []);
 	}
 
 	var hackedSolvedCubieInv = null;
