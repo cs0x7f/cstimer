@@ -21,7 +21,7 @@ var PROPERTY_SCRSIZE = 'حجم الخلط';
 var PROPERTY_SCRMONO = 'خلط احادي الحجم';
 var PROPERTY_SCRLIM = 'الحد من حجم منطقة الخلط';
 var PROPERTY_SCRALIGN = 'محاذاة منطقة الخلط';
-var PROPERTY_SCRALIGN_STR = 'center|left|right';
+var PROPERTY_SCRALIGN_STR = 'وَسَط|يسار|يمين';
 var PROPERTY_SCRFAST = 'استخدام الخلط السريع لـمكعب 4x4x4 (غير رسمي)';
 var PROPERTY_SCRKEYM = 'تسمية مفتاح الحركة (الحركات) في الخلط';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
@@ -29,7 +29,7 @@ var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'أسلوب عرض لوحة الخلط';
 var PROPERTY_WNDSTAT = 'أسلوب عرض لوحة الإحصاء';
 var PROPERTY_WNDTOOL = 'اسلوب عرض لوحة الادوات';
-var PROPERTY_WND_STR = 'Normal|Flat';
+var PROPERTY_WND_STR = 'عادي|مسطّح';
 var EXPORT_DATAEXPORT = 'استيراد و تصدير البيانات';
 var EXPORT_TOFILE = 'تصدير إلى ملف';
 var EXPORT_FROMFILE = 'استيراد من ملف';
@@ -64,7 +64,7 @@ var TOOLS_HUGESTATS = 'احصاء جلسة اتمام الزائد';
 var TOOLS_DISTRIBUTION = 'توزيع الوقت';
 var TOOLS_TREND = 'اتجاه الوقت';
 var TOOLS_METRONOME = 'إيقاع';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'إعادة بناء';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Training Stat.';
@@ -166,9 +166,9 @@ var scrdata = [
 		['3x3 بأقل عدد من الحركات', "333fm", 0],
 		['3x3 بيدّ واحدة', "333oh", 0],
 		['ساعة', "clkwca", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
+		['ميغامينكس', "mgmp", -70],
+		['بيرامينكس', "pyrso", -10],
+		['سكيوب', "skbso", 0],
 		['sq1', "sqrs", 0],
 		['4x4 مع معصوب العينين', "444bld", -40],
 		['5x5 مع معصوب العينين', "555bld", -60],
@@ -211,7 +211,7 @@ var scrdata = [
 		['صليب سهل', "easyc", 3],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 بالقدمين', "333ft", 0],
-		['Custom', "333custom", 0]
+		['مُخصّص', "333custom", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],
@@ -225,7 +225,7 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['حركة عشوائية', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
 		['4x4x4 edges', "4edge", 8],
@@ -250,7 +250,7 @@ var scrdata = [
 		['suffix', "777s", 100],
 		['حواف ال7x7x7', "7edge", 8]
 	]],
-	['Clock', [
+	['الساعة', [
 		['jaap', "clk", 0],
 		['جمعية الكيوبينغ العالمية', "clkwca", 0],
 		['optimal', "clko", 0],
@@ -262,7 +262,7 @@ var scrdata = [
 		['Carrot', "mgmc", 70],
 		['old style', "mgmo", 70]
 	]],
-	['Pyraminx', [
+	['بيرامينكس', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
 		['random move', "pyrm", 25],
@@ -418,16 +418,16 @@ var scrdata = [
 ];
 var SCRAMBLE_NOOBST = [
 	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['turn the right face', 'اقلب الوجه الأيسر'],
+	['اقلب الوجه الأمامي', 'اقلب الوجه الخلفي']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
 var SCROPT_TITLE = 'Scramble Options';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
-var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_RESET = 'إعادة تعيين كل الأوقات لهذه الجَلسة؟';
+var STATS_CFM_DELSS = 'حذف الجَلسة [%s]؟';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
 var STATS_CFM_DELETE = 'delete this time?';
 var STATS_COMMENT = 'Comment';

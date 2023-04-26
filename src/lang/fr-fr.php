@@ -160,11 +160,11 @@
 <p>Merci encore pour votre don !</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>En cas d'échec, vérifiez que le Bluetooth est activé sur votre système !</strong></p>
+<p>Votre navigateur doit prendre en charge l'API Web Bluetooth. Choisissez le meilleur navigateur compatible :</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome sur macOS, Linux, Android ou Windows</li>
+<li>Bluefy sur iOS</li>
 </ul>
-<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+<p>Pour un état complet de la mise en œuvre du Web Bluetooth sur les différents navigateurs, consultez <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">cette page de la Communauté Web Bluetooth.</a></p>
 </div>
