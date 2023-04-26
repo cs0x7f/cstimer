@@ -82,7 +82,8 @@ var replay = execMain(function() {
 			}
 		}
 		curPlayIdx = step;
-		curTime = normTime(playMoves[Math.max(0, step - 1)][1]);
+		var movets = playMoves[Math.max(0, step - 1)];
+		curTime = normTime(movets ? movets[1] : 0);
 		updateTime();
 	}
 
@@ -104,7 +105,7 @@ var replay = execMain(function() {
 				goToStep(curPlayIdx + 1);
 			}
 		} else if (key == 'p') {
-			if (_status == 0 && curTime >= normTime(playMoves[playMoves.length - 1][1])) {
+			if (_status == 0 && playMoves.length > 0 && curTime >= normTime(playMoves[playMoves.length - 1][1])) {
 				goToStep(0);
 			}
 			setStatus(1 - _status);
@@ -163,10 +164,11 @@ var replay = execMain(function() {
 
 	function updateTime() {
 		curTime = execLoop();
-		curTime = Math.min(curTime, normTime(playMoves[playMoves.length - 1][1]));
+		var lastTs = playMoves.length > 0 ? playMoves[playMoves.length - 1][1] : 0;
+		curTime = Math.min(curTime, normTime(lastTs));
 		rangeTime.val(normTime(curTime, true));
-		txtTime.html((curTime >= 0 ? kernel.pretty(normTime(curTime, true)) : '--') + '/' + kernel.pretty(playMoves[playMoves.length - 1][1]));
-		if (curTime >= normTime(playMoves[playMoves.length - 1][1])) {
+		txtTime.html((curTime >= 0 ? kernel.pretty(normTime(curTime, true)) : '--') + '/' + kernel.pretty(lastTs));
+		if (curTime >= normTime(lastTs)) {
 			setStatus(0);
 		}
 		if (status == 1) {
