@@ -737,29 +737,24 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.color('#f00');
 					break;
 				case GanTimerState.HANDS_OFF: // hands removed from timer before grace period expired
-					lcd.color('');
+					lcd.fixDisplay(false, true);
 					break;
 				case GanTimerState.GET_SET:   // grace period expired and timer is ready to start
 					lcd.color('#0d0');
 					break;
 				case GanTimerState.IDLE: // timer reset button pressed
 					inspectionTime = 0;
-					hardTime = 0;
-					lcd.renderUtil();
-					switch (status) {
-						case -1:         // if was idle start inspection timer
-							if (checkUseIns()) { // only when inspection enabled in settings
-								setStatus(-3);
-								startTime = $.now();
-								lcd.fixDisplay(false, true);
-							}
-							break;
-						default:         // by default just reset / cancel timer
-							setStatus(-1);
-							lcd.reset();
-							lcd.fixDisplay(false, true);
-							break;
+					if (hardTime > 0 || status != -1) { // reset timer / cancel inspection timer
+						hardTime = 0;
+						setStatus(-1);
+						lcd.reset();
+						lcd.fixDisplay(false, true);
+					} else if (status == -1 && checkUseIns()) { // start inspection timer if was idle and inspection enabled in settings
+						setStatus(-3);
+						startTime = $.now();
+						lcd.fixDisplay(false, true);
 					}
+					lcd.renderUtil();
 					break;
 				case GanTimerState.RUNNING: // timer is started
 					if (status == -3) { // if inspection timer was running, record elapsed inspection time
@@ -775,16 +770,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					break;
 				case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
 					hardTime = timerEvent.recordedTime.asTimestamp;
-					lcd.renderUtil();
 					curTime[1] = hardTime;
 					setStatus(-1);
+					lcd.renderUtil();
 					lcd.fixDisplay(false, true);
 					pushSignal('time', curTime);
 					break;
 				case GanTimerState.DISCONNECT: // timer is switched off or something else
 					hardTime = undefined;
-					lcd.renderUtil();
 					setStatus(-1);
+					lcd.renderUtil();
 					lcd.fixDisplay(false, true);
 					break;
 			}
@@ -794,11 +789,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function setEnableImpl(input) {
 			enable = input == 'b';
 			if (enable) {
-				setTimeout(lcd.val, 100);
+				hardTime = undefined;
 				kernel.showDialog([$('<div><br><br><b>Press OK to connect to GAN Smart Timer</b><br><br>If you have enabled WCA inspections in settings, use GAN Smart Timer RESET button to start/cancel inspection timer.</div>').append(bluetoothInstructDiv), function () {
 					GanTimerDriver.connect().then(function () {
 						GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
-						lcd.reset(0);
+						hardTime = 0;
+						setStatus(-1);
+						lcd.reset();
+						lcd.renderUtil();
+						lcd.fixDisplay(false, true);
 					}).catch(function (err) {
 						alert(err);
 					});
