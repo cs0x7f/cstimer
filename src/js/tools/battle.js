@@ -145,7 +145,7 @@ var battle = execMain(function() {
 			conn.connect().then(joinRoom.bind(null, false));
 			return;
 		}
-		if (!checkConnState()) {
+		if (!checkConnState() || !roomId) {
 			return;
 		}
 		conn.remoteCall({
@@ -160,7 +160,7 @@ var battle = execMain(function() {
 	}
 
 	function leaveRoom(direct) {
-		if (!checkConnState()) {
+		if (!checkConnState(true) || !roomId) {
 			return;
 		}
 		if (!direct) {
@@ -188,7 +188,7 @@ var battle = execMain(function() {
 	}
 
 	function submitStatus(status) {
-		if (!checkConnState()) {
+		if (!checkConnState(true) || !roomId) {
 			return;
 		}
 		conn.remoteCall({
@@ -203,7 +203,7 @@ var battle = execMain(function() {
 	}
 
 	function submitSolve(time, isLast) {
-		if (!checkConnState()) {
+		if (!checkConnState(true) || !roomId) {
 			return;
 		}
 		var solvScr = time[1];

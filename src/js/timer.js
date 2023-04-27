@@ -142,7 +142,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					voice.volume = ~~getProp('voiceVol') / 100;
 					voice.play();
 				}
-
+			} else if (runningDiv !== rightDiv) {
+				setHtml(rightDiv, '');
 			}
 
 			lasttime = time;
