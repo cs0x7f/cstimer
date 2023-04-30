@@ -40,6 +40,7 @@
   <script type="text/javascript" src="js/scramble/2x2x3.js"></script>
   <script type="text/javascript" src="js/scramble/clock.js"></script>
   <script type="text/javascript" src="js/scramble/333lse.js"></script>
+  <script type="text/javascript" src="js/scramble/mgmlsll.js"></script>
   <script type="text/javascript" src="js/scramble/utilscramble.js"></script>
   <script type="text/javascript" src="js/lib/storage.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
@@ -79,6 +80,8 @@
   <script type="text/javascript" src="js/twisty/twistyminx.js"></script>
   <script type="text/javascript" src="js/twisty/twistyclk.js"></script>
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
+  <script type="text/javascript" src="js/twisty/qcubennn.js"></script>
+  <script type="text/javascript" src="js/twisty/qcubeminx.js"></script>
 </head>
 <body>
 <div id="leftbar">

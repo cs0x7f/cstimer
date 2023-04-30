@@ -603,31 +603,6 @@ var mathlib = (function() {
 		}
 	}
 
-	function schreierSims(gen, shuffle) {
-		this.sgs = [];
-		this.sgsi = [];
-		this.Tk = [];
-		var n = gen[0].length;
-		var e = [];
-		for (var i = 0; i < n; i++) {
-			e[i] = i;
-		}
-		for (var i = 0; i < n; i++) {
-			this.sgs.push([]);
-			this.sgsi.push([]);
-			this.Tk.push([]);
-			this.sgs[i][i] = e;
-			this.sgsi[i][i] = e;
-		}
-		for (var i = 0; i < gen.length; i++) {
-			var g = gen[i];
-			if (shuffle) {
-				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
-			}
-			this.knutha(n - 1, g);
-		}
-	}
-
 	CubieCube.prototype.selfConj = function(conj) {
 		if (conj === undefined) {
 			conj = this.ori;
@@ -638,6 +613,104 @@ var mathlib = (function() {
 			CubieCube.CornMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
 			CubieCube.EdgeMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
 			this.ori = CubieCube.rotMulI[this.ori][conj] || 0;
+		}
+	}
+
+	var minx = (function() {
+		var U = 0, R = 1, F = 2, L = 3, BL = 4, BR = 5, DR = 6, DL = 7, DBL = 8, B = 9, DBR = 10, D = 11;
+		var oppFace = [D, DBL, B, DBR, DR, DL, BL, BR, R, F, L, U];
+		var adjFaces = [
+			[BR, R, F, L, BL], //U
+			[DBR, DR, F, U, BR], //R
+			[DR, DL, L, U, R], //F
+			[DL, DBL, BL, U, F], //L
+			[DBL, B, BR, U, L], //BL
+			[B, DBR, R, U, BL], //BR
+			[D, DL, F, R, DBR], //DR
+			[D, DBL, L, F, DR], //DL
+			[D, B, BL, L, DL], //DBL
+			[D, DBR, BR, BL, DBL], //B
+			[D, DR, R, BR, B], //DBR
+			[DR, DBR, B, DBL, DL]  //D
+		];
+
+		// wide: 0=single, 1=all, 2=all but single
+		// state: corn*5, edge*5, center*1
+		function doMove(state, face, pow, wide) {
+			pow = (pow % 5 + 5) % 5;
+			if (pow == 0) {
+				return;
+			}
+			var base = face * 11;
+			var adjs = [];
+			var swaps = [[], [], [], [], []];
+			for (var i = 0; i < 5; i++) {
+				var aface = adjFaces[face][i];
+				var ridx = adjFaces[aface].indexOf(face);
+				if (wide == 0 || wide == 1) {
+					swaps[i].push(base + i);
+					swaps[i].push(base + i + 5);
+					swaps[i].push(aface * 11 + ridx % 5 + 5);
+					swaps[i].push(aface * 11 + ridx % 5);
+					swaps[i].push(aface * 11 + (ridx + 1) % 5);
+				}
+				if (wide == 1 || wide == 2) {
+					swaps[i].push(aface * 11 + 10);
+					for (var j = 1; j < 5; j++) {
+						swaps[i].push(aface * 11 + (ridx + j) % 5 + 5);
+					}
+					for (var j = 2; j < 5; j++) {
+						swaps[i].push(aface * 11 + (ridx + j) % 5);
+					}
+					var ii = 4 - i;
+					var opp = oppFace[face];
+					var oaface = adjFaces[opp][ii];
+					var oridx = adjFaces[oaface].indexOf(opp);
+					swaps[i].push(opp * 11 + ii);
+					swaps[i].push(opp * 11 + ii + 5);
+					swaps[i].push(oaface * 11 + 10);
+					for (var j = 0; j < 5; j++) {
+						swaps[i].push(oaface * 11 + (oridx + j) % 5 + 5);
+						swaps[i].push(oaface * 11 + (oridx + j) % 5);
+					}
+				}
+			}
+			for (var i = 0; i < swaps[0].length; i++) {
+				mathlib.acycle(state, [swaps[0][i], swaps[1][i], swaps[2][i], swaps[3][i], swaps[4][i]], pow);
+			}
+		}
+
+		return {
+			doMove: doMove,
+			oppFace: oppFace,
+			adjFaces: adjFaces
+		}
+	})();
+
+	function schreierSims(gen, shuffle) {
+		this.sgs = [];
+		this.sgsi = [];
+		this.Tk = [];
+		this.gen = gen;
+		this.invMap = {};
+		var n = gen[0].length;
+		this.e = [];
+		for (var i = 0; i < n; i++) {
+			this.e[i] = i;
+		}
+		for (var i = 0; i < n; i++) {
+			this.sgs.push([]);
+			this.sgsi.push([]);
+			this.Tk.push([]);
+			this.sgs[i][i] = this.e;
+			this.sgsi[i][i] = this.e;
+		}
+		for (var i = 0; i < gen.length; i++) {
+			var g = gen[i];
+			if (shuffle) {
+				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
+			}
+			this.knutha(n - 1, g);
 		}
 	}
 
@@ -661,14 +734,207 @@ var mathlib = (function() {
 		depth = depth || 0;
 		for (var i = p.length - 1; i >= depth; i--) {
 			var j = p[i];
+			if (!this.sgs[i][j]) {
+				return false;
+			}
 			if (j !== i) {
-				if (!this.sgs[i][j]) {
-					return false;
-				}
 				p = this.permMult(p, this.sgsi[i][j]);
 			}
 		}
 		return true;
+	}
+
+	schreierSims.prototype.minkwitz = function() {
+		var words = [];
+		var maxl = 8;
+		var toFill = 0;
+		var newDelay = 3;
+		this.words = [];
+		this.isNew = [];
+		for (var i = 0; i < this.e.length; i++) {
+			this.words[i] = [];
+			this.words[i][i] = [];
+			this.isNew[i] = [];
+			for (var j = 0; j < i; j++) {
+				if (this.sgs[i][j] && !this.words[i][j]) {
+					this.words[i][j] = null;
+					toFill++;
+				}
+			}
+		}
+
+		this.invMap = {};
+		for (var i = 0; i < this.gen.length; i++) {
+			var g = this.gen[i];
+			for (var j = i; j < this.gen.length; j++) {
+				var isEq = true;
+				for (var k = 0; k < this.e.length; k++) {
+					if (g[this.gen[j][k]] != k) {
+						isEq = false;
+						break;
+					}
+				}
+				if (isEq) {
+					this.invMap[i] = j;
+					this.invMap[j] = i;
+				}
+			}
+			if (this.invMap[i] == undefined) {
+				this.invMap[i] = ~i;
+				this.invMap[~i] = i;
+			}
+		}
+
+		var addWords = function(p, words) {
+			var ret = -1;
+			for (var i = p.length - 1; i >= 0; i--) {
+				var j = p[i];
+				if (!this.sgs[i][j]) {
+					return -2;
+				}
+				if (!this.words[i][j]) {
+					this.words[i][j] = words;
+					this.isNew[i][j] = newDelay;
+					this.sgs[i][j] = p;
+					this.sgsi[i][j] = this.permInv(p);
+					return 1;
+				}
+				if (words.length < this.words[i][j].length) {
+					var _p = this.sgs[i][j];
+					this.sgs[i][j] = p;
+					this.sgsi[i][j] = this.permInv(p);
+					p = _p;
+					var _words = this.words[i][j];
+					this.words[i][j] = words;
+					this.isNew[i][j] = newDelay;
+					words = _words;
+					ret = 0;
+				}
+				if (words.length + this.words[i][j].length > maxl) {
+					return ret;
+				}
+				p = this.permMult(p, this.sgsi[i][j]);
+				for (var k = this.words[i][j].length - 1; k >= 0; k--) {
+					words.push(this.invMap[this.words[i][j][k]]);
+				}
+			}
+		}
+
+		var iterGens = function(p, remain, func) {
+			if (remain <= 0) {
+				return func.call(this, p, words);
+			}
+			for (var i = 0; i < this.gen.length && toFill > 0; i++) {
+				words.push(i);
+				var ret = iterGens.call(this, this.permMult(p, this.gen[i]), remain - 1, func);
+				words.pop();
+				if (ret < 0) { // no improve
+					continue;
+				}
+				words.push(this.invMap[i]);
+				iterGens.call(this, this.permMult(p, this.permInv(this.gen[i])), remain - 1, func);
+				words.pop();
+			}
+		}
+
+		var improve = function() {
+			var n = 0;
+			var newCnt = 0;
+			for (var i1 = 0; i1 < this.e.length; i1++) {
+				for (var j1 = 0; j1 < i1; j1++) {
+					if (this.isNew[i1][j1] > 0) {
+						this.isNew[i1][j1]--;
+					}
+					if (this.isNew[i1][j1]) {
+						newCnt++;
+					}
+				}
+			}
+			console.log('newCnt', newCnt);
+			for (var i1 = 0; i1 < this.e.length; i1++) {
+				var isFilled = true;
+				for (var j1 = 0; j1 < i1; j1++) {
+					if (this.sgs[i1][j1] && !this.words[i1][j1]) {
+						isFilled = false;
+						break;
+					}
+				}
+				for (var j1 = 0; j1 < i1; j1++) {
+					if (!this.words[i1][j1]) {
+						continue;
+					}
+					for (var i2 = i1; i2 < this.e.length; i2++) {
+						if (isFilled && i1 != i2) {
+							continue;
+						}
+						for (var j2 = (i1 == i2 ? j1 : 0); j2 < i2; j2++) {
+							if (!this.words[i2][j2]) {
+								continue;
+							}
+							var cuml = this.words[i1][j1].length + this.words[i2][j2].length;
+							if (cuml > maxl) {
+								continue;
+							}
+							if (this.isNew[i1][j1] == 0 && this.isNew[i2][j2] == 0 && i1 == i2) {
+								continue;
+							}
+							var cc = this.sgs[i1][j1][this.sgs[i2][j2][i1]];
+							if (this.words[i1][cc] && this.words[i1][cc].length < cuml * 1.5 && i1 != i2) {
+								continue;
+							}
+							var ret = addWords.call(this,
+								this.permMult(this.sgs[i2][j2], this.sgs[i1][j1]),
+								this.words[i2][j2].concat(this.words[i1][j1])
+							);
+							if (ret > -1) {
+								n++;
+							}
+							if (ret > 0) {
+								toFill--;
+							}
+							// console.log(i1, i2, ret);
+						}
+					}
+				}
+			}
+			return n;
+		}
+		var start = $.now();
+		var cnt = 0;
+		for (var i = 1; i < 100 && toFill > 0; i++) {
+			iterGens.call(this, this.e, i, function(p, words) {
+				var ret = addWords.call(this, p, words.slice());
+				cnt++;
+				if (ret > 0) {
+					toFill--;
+				}
+				if (cnt % 1000 == 0) {
+					var ret2 = improve.call(this);
+					maxl = Math.round(maxl * 1.25);
+					console.log(ret2, toFill, maxl);
+				}
+				return ret;
+			});
+		}
+		console.log('final', $.now() - start);
+		improve.call(this);
+		console.log('init minkwitz', $.now() - start);
+		window.sgs1 = this;
+	}
+
+	schreierSims.prototype.getGen = function(p) {
+		var ret = [];
+		for (var i = p.length - 1; i >= 0; i--) {
+			var j = p[i];
+			if (!this.sgs[i][j]) {
+				return null;
+			}
+			if (j !== i) {
+				p = this.permMult(p, this.sgsi[i][j]);
+				ret.push(this.words[i][j]);
+			}
+		}
+		return ret.reverse();
 	}
 
 	schreierSims.prototype.knutha = function(k, p) {
@@ -777,6 +1043,26 @@ var mathlib = (function() {
 
 	schreierSims.prototype.enum = function(callback) {
 		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
+	}
+
+	schreierSims.prototype.rndElem = function() {
+		var perm = this.e.slice();
+		for (var i = this.e.length - 1; i >= 0; i--) {
+			var cnt = 0;
+			var p = 0;
+			for (var j = 0; j <= i; j++) {
+				if (!this.sgs[i][j]) {
+					continue;
+				}
+				if (rn(++cnt) < 1) {
+					p = j;
+				}
+			}
+			if (p !== i) {
+				perm = this.permMult(perm, this.sgsi[i][p]);
+			}
+		}
+		return perm;
 	}
 
 	function createPrun(prun, init, size, maxd, doMove, N_MOVES, N_POWER, N_INV) {
@@ -1150,6 +1436,21 @@ var mathlib = (function() {
 				}
 			}
 		}
+		/*
+		var sgsObj = new schreierSims(genMove);
+		sgsObj.minkwitz();
+		var perm = e.slice();
+		var initMv = [];
+		for (var i = 0; i < 50; i++) {
+			var mv = rn(genMove.length);
+			perm = sgsObj.permMult(genMove[mv], perm);
+			initMv.push(sgsObj.invMap[mv]);
+		}
+		var sol = sgsObj.getGen(perm);
+		var move2str = function(v) { return "URFDLB"[~~(v/3)] + " 2'"[v%3]; };
+		sol = $.map(Array.prototype.concat.apply([], sol).reverse(), move2str).join(' ');
+		console.log($.map(initMv.reverse(), move2str).join(' '), '\n', sol);
+		*/
 		var sgs0, sgs1, sgs01;
 		for (var r = 0; r < 100; r++) {
 			var shuffle = [];
@@ -1371,13 +1672,19 @@ var mathlib = (function() {
 		return randGen.random() < prob;
 	}
 
-	function rndPerm(n) {
+	function rndPerm(n, isEven) {
+		var p = 0;
 		var arr = [];
 		for (var i = 0; i < n; i++) {
 			arr[i] = i;
 		}
 		for (var i = 0; i < n - 1; i++) {
-			circle(arr, i, i + rn(n - i));
+			var k = rn(n - i);
+			circle(arr, i, i + k);
+			p ^= k != 0;
+		}
+		if (isEven && p) {
+			circle(arr, 0, 1);
 		}
 		return arr;
 	}
@@ -1471,6 +1778,7 @@ var mathlib = (function() {
 		schreierSims: schreierSims,
 		createPrun: createPrun,
 		CubieCube: CubieCube,
+		minx: minx,
 		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
 		fillFacelet: fillFacelet,
 		rn: rn,

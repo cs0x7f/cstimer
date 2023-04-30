@@ -260,7 +260,11 @@ var scrdata = [
 	['Magaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['Antiguo estilo', "mgmo", 70]
+		['Antiguo estilo', "mgmo", 70],
+		['Sólo movimientos R,U', "minx2g", 30],
+		['última capa + último hueco', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["estado aleatorio (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Cubo con bloqueos', [
 		['Bicube', "bic", 30],
 		['Square-1/,(1,0)', "bsq", 25]
-	]],
-	['Subconjuntos de megaminx', [
-		['Sólo movimientos R,U', "minx2g", 30],
-		['última capa + último hueco', "mlsll", 20]
 	]],
 	['Relays', [
 		['Muchos 3x3x3s', "r3", 5],

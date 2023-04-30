@@ -40,6 +40,7 @@ scramble/1x3x3.js \
 scramble/2x2x3.js \
 scramble/clock.js \
 scramble/333lse.js \
+scramble/mgmlsll.js \
 scramble/utilscramble.js \
 lib/storage.js \
 stats/timestat.js \
@@ -87,7 +88,9 @@ twisty/twistyskb.js \
 twisty/twistypyra.js \
 twisty/twistyminx.js \
 twisty/twistyclk.js \
-twisty/qcube.js)
+twisty/qcube.js \
+twisty/qcubennn.js \
+twisty/qcubeminx.js)
 
 
 cstimer = $(dest)/js/cstimer.js

@@ -96,11 +96,11 @@ var puzzleFactory = execMain(function() {
 				child[1] = style;
 			}
 			if (style == 'q') {
-				child[2] = new twistyjs.qcube();
+				twistyScene = new twistyjs.qcube.TwistyScene();
 			} else {
 				twistyScene = new twistyjs.TwistyScene();
-				child[2] = new Puzzle(twistyScene, null);
 			}
+			child[2] = new Puzzle(twistyScene, null);
 			parent.empty().append(child[2].getDomElement());
 			child[2].addMoveListener(moveListener);
 		}
@@ -127,12 +127,8 @@ var puzzleFactory = execMain(function() {
 			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
 		}
 		options['scale'] = 0.9;
-		if (style == 'q') {
-			child[2].init(options);
-		} else {
-			child[2].twistyScene.initializeTwisty(options);
-			child[2].twisty = child[2].twistyScene.getTwisty();
-		}
+		child[2].twistyScene.initializeTwisty(options);
+		child[2].twisty = child[2].twistyScene.getTwisty();
 		child[2].resize();
 		callback(child[2], isInit);
 	}

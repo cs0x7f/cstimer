@@ -260,7 +260,11 @@ var scrdata = [
 	['五魔方', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['传统', "mgmo", 70]
+		['传统', "mgmo", 70],
+		['2-generator R,U', "minx2g", 30],
+		['last slot + last layer', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['金字塔', [
 		["随机状态 (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['捆绑魔方', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
-	]],
-	['五魔子集', [
-		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 20]
 	]],
 	['连拧', [
 		['N个三阶', "r3", 5],

@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['stari stil', "mgmo", 70]
+		['stari stil', "mgmo", 70],
+		['2-generator R,U', "minx2g", 30],
+		['zadnji slot + zadnji sloj', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["nasumično stanje (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Bandaged Cube', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx subsetovi', [
-		['2-generator R,U', "minx2g", 30],
-		['zadnji slot + zadnji sloj', "mlsll", 20]
 	]],
 	['Maratoni', [
 		['puno 3x3x3 kocaka', "r3", 5],

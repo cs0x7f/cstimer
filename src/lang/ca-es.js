@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['Estil antic', "mgmo", 70]
+		['Estil antic', "mgmo", 70],
+		['2-gen R,U', "minx2g", 30],
+		['Últim espai + Última capa', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["random state (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Cub embenat', [
 		['Bicub', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx subtipus ', [
-		['2-gen R,U', "minx2g", 30],
-		['Últim espai + Última capa', "mlsll", 20]
 	]],
 	['Relays', [
 		['Molts 3x3x3s', "r3", 5],

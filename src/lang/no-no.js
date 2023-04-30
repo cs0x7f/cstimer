@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Gulrot', "mgmc", 70],
-		['gammel stil', "mgmo", 70]
+		['gammel stil', "mgmo", 70],
+		['2-generatorer R,r,U', "minx2g", 30],
+		['Siste plass + siste lag', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["tilfeldig tilstand (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Bandasjert Kube', [
 		['Bikube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx delmengde', [
-		['2-generatorer R,r,U', "minx2g", 30],
-		['Siste plass + siste lag', "mlsll", 20]
 	]],
 	['Overganger', [
 		['Mange 3x3x3', "r3", 5],

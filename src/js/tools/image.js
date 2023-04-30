@@ -11,10 +11,6 @@ var image = execMain(function() {
 	var drawPolygon = $.ctxDrawPolygon;
 
 	var mgmImage = (function() {
-		var moveU = [4, 0, 1, 2, 3, 9, 5, 6, 7, 8, 10, 11, 12, 13, 58, 59, 16, 17, 18, 63, 20, 21, 22, 23, 24, 14, 15, 27, 28, 29, 19, 31, 32, 33, 34, 35, 25, 26, 38, 39, 40, 30, 42, 43, 44, 45, 46, 36, 37, 49, 50, 51, 41, 53, 54, 55, 56, 57, 47, 48, 60, 61, 62, 52, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131];
-		var moveR = [81, 77, 78, 3, 4, 86, 82, 83, 8, 85, 87, 122, 123, 124, 125, 121, 127, 128, 129, 130, 126, 131, 89, 90, 24, 25, 88, 94, 95, 29, 97, 93, 98, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 26, 22, 23, 48, 30, 31, 27, 28, 53, 32, 69, 70, 66, 67, 68, 74, 75, 71, 72, 73, 76, 101, 102, 103, 99, 100, 106, 107, 108, 104, 105, 109, 46, 47, 79, 80, 45, 51, 52, 84, 49, 50, 54, 0, 1, 2, 91, 92, 5, 6, 7, 96, 9, 10, 15, 11, 12, 13, 14, 20, 16, 17, 18, 19, 21, 113, 114, 110, 111, 112, 118, 119, 115, 116, 117, 120, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65];
-		var moveD = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 33, 34, 35, 14, 15, 38, 39, 40, 19, 42, 43, 44, 45, 46, 25, 26, 49, 50, 51, 30, 53, 54, 55, 56, 57, 36, 37, 60, 61, 62, 41, 64, 65, 11, 12, 13, 47, 48, 16, 17, 18, 52, 20, 21, 22, 23, 24, 58, 59, 27, 28, 29, 63, 31, 32, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 124, 125, 121, 122, 123, 129, 130, 126, 127, 128, 131];
-		var moveMaps = [moveU, moveR, moveD];
 
 		var width = 40;
 		var cfrac = 0.5;
@@ -40,21 +36,6 @@ var image = execMain(function() {
 			drawPolygon(ctx, colors[state[baseIdx + 10]], Rotate([centX, centY], rot), trans);
 		}
 
-		function doMove(state, axis, inv) {
-			var moveMap = moveMaps[axis];
-			var oldState = state.slice();
-			if (inv) {
-				for (var i = 0; i < 132; i++) {
-					state[moveMap[i]] = oldState[i];
-				}
-			} else {
-				for (var i = 0; i < 132; i++) {
-					state[i] = oldState[moveMap[i]];
-				}
-			}
-		}
-
-		var movere = /[RD][+-]{2}|U'?/
 		return function(moveseq) {
 			colors = kernel.getProp('colmgm').match(colre);
 			var state = [];
@@ -63,16 +44,15 @@ var image = execMain(function() {
 					state[i * 11 + j] = i;
 				}
 			}
-			var moves = moveseq.split(/\s+/);
-			for (var i = 0; i < moves.length; i++) {
-				var m = movere.exec(moves[i]);
-				if (!m) {
-					continue;
+			moveseq.replace(/(?<=^|\s)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?=$|\s)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+				if (p1) {
+					mathlib.minx.doMove(state, 'DL?R'.indexOf(p1), (p2[0] == '+' ? -1 : 1) * p2.length, 2);
+				} else if (p3) {
+					mathlib.minx.doMove(state, ["U", "R", "F", "L", "BL", "BR", "DR", "DL", "DBL", "B", "DBR", "D"].indexOf(p3), (p5 ? -1 : 1) * (~~p4 || 1), 0);
+				} else {
+					mathlib.minx.doMove(state, 'urfl'.indexOf(p6), p7 ? -1 : 1, 1);
 				}
-				var axis = "URD".indexOf(m[0][0]);
-				var inv = /[-']/.exec(m[0][1]);
-				doMove(state, axis, inv);
-			}
+			});
 			var imgSize = kernel.getProp('imgSize') / 7.5;
 			canvas.width(7 * imgSize + 'em');
 			canvas.height(3.5 * imgSize + 'em');

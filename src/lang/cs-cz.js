@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Mrkev', "mgmc", 70],
-		['starý styl', "mgmo", 70]
+		['starý styl', "mgmo", 70],
+		['2-generátor R,U', "minx2g", 30],
+		['poslední slot + poslední vrstva', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["náhodný stav (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Bangaged Kostka', [
 		['Bicube', "bic", 30],
 		['Čtverec-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx subsety', [
-		['2-generátor R,U', "minx2g", 30],
-		['poslední slot + poslední vrstva', "mlsll", 20]
 	]],
 	['Relace', [
 		['spousta 3x3x3', "r3", 5],

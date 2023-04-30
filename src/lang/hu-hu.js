@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Répa', "mgmc", 70],
-		['régi stílus', "mgmo", 70]
+		['régi stílus', "mgmo", 70],
+		['2-gen R,U', "minx2g", 30],
+		['utolsó pár + utolsó réteg', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["véletlen állapot (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Bandaged kocka', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx alegységek', [
-		['2-gen R,U', "minx2g", 30],
-		['utolsó pár + utolsó réteg', "mlsll", 20]
 	]],
 	['Váltók', [
 		['rengeteg 3x3x3-as', "r3", 5],

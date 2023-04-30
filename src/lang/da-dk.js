@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Gulerod', "mgmc", 70],
-		['gammel stil', "mgmo", 70]
+		['gammel stil', "mgmo", 70],
+		['2-generator R,U', "minx2g", 30],
+		['sidste plads + sidste lag', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["tilfældig tilstand (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Sammensmeltet terning', [
 		['Bi-terning', "bic", 30],
 		['Firkant-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx  delmængde', [
-		['2-generator R,U', "minx2g", 30],
-		['sidste plads + sidste lag', "mlsll", 20]
 	]],
 	['Stafet', [
 		['mange 3x3x3', "r3", 5],

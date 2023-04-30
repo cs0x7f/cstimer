@@ -371,13 +371,13 @@
 				return generateScramble(this);
 			} else {
 				var ret = [];
-				scramble.replace(/([DLR])(\+\+?|--?)|([UFRL])('?)|\[([ufrl])('?)\]/g, function(m, p1, p2, p3, p4, p5, p6) {
+				scramble.replace(/(?<=^|\s)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?=$|\s)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
 					if (p1) {
 						ret.push(['D?L??R'.indexOf(p1), (p2[0] == '+' ? -1 : 1) * p2.length, -3, 1]);
 					} else if (p3) {
-						ret.push(['UFR??L'.indexOf(p3), p4 ? -1 : 1, 1, 3]);
+						ret.push([["U", "F", "R", "BR", "BL", "L", "D", "B", "DBL", "DL", "DR", "DBR"].indexOf(p3), (p5 ? -1 : 1) * (~~p4 || 1), 1, 3]);
 					} else {
-						ret.push(['ufr??l'.indexOf(p5), p6 ? -1 : 1, -3, 3]);
+						ret.push(['ufr??l'.indexOf(p6), p7 ? -1 : 1, -3, 3]);
 					}
 				});
 				if (ret.length == 0) {
@@ -414,7 +414,7 @@
 			} else if (nlayer == 4) {
 				return "D?L??R??????".charAt(axis) + (pow > 0 ? "-" : "+");
 			} else if (nlayer == 2) {
-				return "UFR??L??????".charAt(axis) + (pow > 0 ? "" : "'");
+				return ["U", "F", "R", "BR", "BL", "L", "D", "B", "DBL", "DL", "DR", "DBR"][axis] + (pow > 0 ? "" : "'");
 			}
 		}
 

@@ -260,7 +260,11 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['havuç', "mgmc", 70],
-		['eski stil', "mgmo", 70]
+		['eski stil', "mgmo", 70],
+		['2-tür hamle R,U', "minx2g", 30],
+		['son bölme + son katman', "mlsll", 0],
+		['PLL', "mgmpll", 0],
+		['Last Layer', "mgmll", 0]
 	]],
 	['Pyraminx', [
 		["Rastgele Durum (WCA)", "pyrso", 10],
@@ -381,10 +385,6 @@ var scrdata = [
 	['Bandage küp', [
 		['Biküp', "bic", 30],
 		['Kare-1 /,(1,0)', "bsq", 25]
-	]],
-	['Megaminx subsetleri', [
-		['2-tür hamle R,U', "minx2g", 30],
-		['son bölme + son katman', "mlsll", 20]
 	]],
 	['ardışık çözümler', [
 		['Birsürü 3x3x3\'ler', "r3", 5],

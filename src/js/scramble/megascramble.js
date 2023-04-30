@@ -39,7 +39,6 @@
 		"RrU": [[["U"],["R","r"]],cubesuff], // 3-generator <R,r,U>
 		"RrUu": [[["U","u"],["R","r"]],cubesuff], // <R,r,U,u>
 		"minx2g": [[["U"],["R"]],minxsuff], // megaminx 2-gen
-		"mlsll": [[[["R U R'","R U2 R'","R U' R'","R U2' R'"]],[["F' U F","F' U2 F","F' U' F","F' U2' F"]],[["U","U2","U'","U2'"]]]], // megaminx LSLL
 		"half": [[["U","D"],["R","L"],["F","B"]],["2"]], // 3x3x3 half turns
 		"lsll": [[[["R U R'","R U2 R'","R U' R'"]],[["F' U F","F' U2 F","F' U' F"]],[["U","U2","U'"]]]], // 3x3x3 last slot + last layer (old)
 		"prco": [[["F","B"],["U","D"],["L","DBR"],["R","DBL"],["BL","DR"],["BR","DL"]],minxsuff], // Pyraminx Crystal (old style)
