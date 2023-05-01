@@ -125,11 +125,16 @@ var giikerutil = execMain(function(CubieCube) {
 	var algCubingClick = $('<a target="_blank">0 move(s)</a>').addClass('click');
 	var lastSolveClick = $('<a target="_blank">N/A</a>').addClass('click');
 	var canvas = $('<canvas>');
-	var connectedStr = 'Connected | ??%';
+	var canvasTd = $('<tr>').append($('<td colspan=2>').append(canvas));
+	var deviceName = null;
+	var batteryTd = $('<td>').html('Battery ??%');
+	var slopeTd = $('<td>').html('<span style="font-family:iconfont;">\ue6b6</span> 0%');
+	var statusDiv = $('<table class="table">');
+
 	var drawState = (function() {
 		var faceOffsetX = [1, 2, 1, 1, 0, 3];
 		var faceOffsetY = [0, 1, 1, 2, 1, 1];
-		var colors = ['#ff0', '#fa0', '#00f', '#fff', '#f00', '#0d0'];
+		var colors = [];
 		var width = 30;
 		var ctx;
 
@@ -151,11 +156,11 @@ var giikerutil = execMain(function(CubieCube) {
 				return;
 			}
 			if (kernel.getProp('giiVRC') != 'n') {
-				canvas.hide();
+				canvasTd.hide();
 				return;
 			}
 			colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
-			canvas.show();
+			canvasTd.show();
 			ctx = canvas[0].getContext('2d');
 			var imgSize = kernel.getProp('imgSize') / 50;
 			canvas.width(39 * imgSize + 'em');
@@ -170,26 +175,31 @@ var giikerutil = execMain(function(CubieCube) {
 		return drawState;
 	})();
 
+	function renderStatus() {
+		if (!(kernel.getProp('giiVRC') != 'n')) {
+			statusDiv.css('font-size', 'calc(100% / 1.5)');
+		}
+		statusDiv.empty();
+		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick)));
+		if (GiikerCube.isConnected() || DEBUG && deviceName) {
+			statusDiv.append($('<tr>').append(batteryTd, slopeTd))
+				.append($('<tr>').append($('<td colspan=2>').append(resetClick.unbind('click').click(markSolved))))
+				.append($('<tr>').append('<td>Raw Data</td>', $('<td>').append(algCubingClick)))
+				.append($('<tr>').append('<td>Last Solve</td>', $('<td>').append(lastSolveClick)))
+				.append(canvasTd);
+			connectClick.html(deviceName).addClass('click').unbind('click').click(disconnect);
+			drawState();
+		} else {
+			connectClick.html('Smart cube<br>Click to connect').addClass('click').unbind('click').click(init);
+		}
+	}
+
 	function execFunc(fdiv) {
 		if (!fdiv) {
 			return;
 		}
-		if (GiikerCube.isConnected()) {
-			connectClick.html(connectedStr).addClass('click').unbind('click').click(disconnect);
-		} else {
-			connectClick.html('Bluetooth: Connect').addClass('click').unbind('click').click(init);
-		}
-		var content = $('<div></div>');
-		if (!(kernel.getProp('giiVRC') != 'n')) {
-			content.css('font-size', 'calc(100% / 1.5)');
-		}
-		content.append(connectClick, '<br>')
-			.append(resetClick.unbind('click').click(markSolved), '<br>')
-			.append('Raw Data: ', algCubingClick, '<br>')
-			.append('Last Solve: ', lastSolveClick, '<br>')
-			.append($('<div>').append(canvas).css('text-align', 'center'));
-		fdiv.empty().append(content);
-		drawState();
+		fdiv.empty().append(statusDiv);
+		renderStatus();
 	}
 
 	var batId = 0;
@@ -197,8 +207,9 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateBattery(value) {
 		batValue = value[0];
-		connectedStr = value[1] + ': Connected | ' + (batValue || '??') + '%';
-		connectClick.html(connectedStr);
+		batteryTd.html('Battery ' + (batValue || '??') + '%');
+		deviceName = value[1];
+		connectClick.html(deviceName);
 	}
 
 	function pollUpdateBattery() {
@@ -220,7 +231,6 @@ var giikerutil = execMain(function(CubieCube) {
 	var curState = curRawState;
 	var solvedStateInv = new CubieCube();
 
-	var lastTimestamp = $.now();
 	var detectTid = 0;
 
 	function giikerErrorDetect() {
@@ -230,12 +240,9 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		if (kernel.getProp('giiAED')) {
 			detectTid = setTimeout(function() {
-				if (checkMoves(movesAfterSolved) == 99) {
+				if (checkMoves(moveTsList.slice(moveTsStart)) == 99) {
 					return;
 				}
-				// if (!simpleErrorDetect(curCubie)) {
-				// 	return;
-				// }
 				var facelet = curCubie.toFaceCube();
 				if (cubeutil.getProgress(facelet, 'cfop') <= 2) { // all unsolved pieces is on same face
 					return;
@@ -253,19 +260,19 @@ var giikerutil = execMain(function(CubieCube) {
 
 	var nodeSearchd = 0;
 
-	function checkMoves(moves) {
-		if (moves.length % 2 == 1) {
+	function checkMoves(moveTsList) {
+		if (moveTsList.length % 2 == 1) {
 			return 99;
 		}
 		var stateToEnd = [];
-		stateToEnd[moves.length] = new CubieCube();
-		for (var i = moves.length - 1; i >= 0; i--) {
+		stateToEnd[moveTsList.length] = new CubieCube();
+		for (var i = moveTsList.length - 1; i >= 0; i--) {
 			stateToEnd[i] = new CubieCube();
-			CubieCube.CubeMult(CubieCube.moveCube[moves[i]], stateToEnd[i + 1], stateToEnd[i]);
+			CubieCube.CubeMult(CubieCube.moveCube[moveTsList[i][0]], stateToEnd[i + 1], stateToEnd[i]);
 		}
 		for (var i = 1; i < 3; i++) {
 			nodeSearchd = 0;
-			if (checkSwap(moves, 0, i, new CubieCube(), stateToEnd)) {
+			if (checkSwap(moveTsList, 0, i, new CubieCube(), stateToEnd)) {
 				return i;
 			} else if (nodeSearchd > 9999) {
 				return 99;
@@ -274,32 +281,32 @@ var giikerutil = execMain(function(CubieCube) {
 		return 99;
 	}
 
-	function checkSwap(moves, start, nswap, stateFromStart, stateToEnd) {
+	function checkSwap(moveTsList, start, nswap, stateFromStart, stateToEnd) {
 		if (nswap == 0) {
 			return stateFromStart.isEqual(new CubieCube().invFrom(stateToEnd[start]));
 		}
 		var cctmp = new CubieCube();
-		for (var i = start; i < moves.length - 1; i++) {
+		for (var i = start; i < moveTsList.length - 1; i++) {
 			// try to swap moves[i] and moves[i + 1]
-			if (~~(moves[i] / 3) % 3 == ~~(moves[i + 1] / 3) % 3) {
-				CubieCube.CubeMult(stateFromStart, CubieCube.moveCube[moves[i]], cctmp);
+			if (~~(moveTsList[i][0] / 3) % 3 == ~~(moveTsList[i + 1][0] / 3) % 3) {
+				CubieCube.CubeMult(stateFromStart, CubieCube.moveCube[moveTsList[i][0]], cctmp);
 				stateFromStart.init(cctmp.ca, cctmp.ea);
 				continue;
 			}
 			var state = new CubieCube().init(stateFromStart.ca, stateFromStart.ea);
-			CubieCube.CubeMult(state, CubieCube.moveCube[moves[i + 1]], cctmp);
-			CubieCube.CubeMult(cctmp, CubieCube.moveCube[moves[i]], state);
+			CubieCube.CubeMult(state, CubieCube.moveCube[moveTsList[i + 1][0]], cctmp);
+			CubieCube.CubeMult(cctmp, CubieCube.moveCube[moveTsList[i][0]], state);
 			CubieCube.CubeMult(state, stateToEnd[i + 2], cctmp);
 			if (++nodeSearchd > 9999) {
 				return false;
 			}
 			if (cctmp.edgeCycles() < nswap) {
-				var ret = checkSwap(moves, i + 2, nswap - 1, state, stateToEnd);
+				var ret = checkSwap(moveTsList, i + 2, nswap - 1, state, stateToEnd);
 			}
 			if (ret) {
 				return true;
 			}
-			CubieCube.CubeMult(stateFromStart, CubieCube.moveCube[moves[i]], cctmp);
+			CubieCube.CubeMult(stateFromStart, CubieCube.moveCube[moveTsList[i][0]], cctmp);
 			stateFromStart.init(cctmp.ca, cctmp.ea);
 		}
 		return false;
@@ -310,20 +317,22 @@ var giikerutil = execMain(function(CubieCube) {
 		solvedStateInv.invFrom(curRawCubie);
 		curState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', curRawState);
-		movesAfterSolved = [];
-		movesTimestamp = [];
+		moveTsStart = moveTsList.length;
 		scrambleLength = 0;
 		drawState();
-		callback(curState, ['U '], $.now());
+		callback(curState, ['U '], [null, $.now()]);
 	}
 
-	var movesAfterSolved = [];
-	var movesTimestamp = [];
+	var moveTsList = []; //[[move, deviceTime, locTime], ...], locTime might be null
+	var moveTsStart = 0;
 
-	function giikerCallback(facelet, prevMoves, lastTimestamp, hardware) {
-		lastTimestamp = lastTimestamp || $.now();
-		connectedStr = hardware + ': Connected | ' + (batValue || '??') + '%';
-		connectClick.html(connectedStr).addClass('click').unbind('click').click(disconnect);
+	function giikerCallback(facelet, prevMoves, lastTs, hardware) {
+		var locTime = $.now();
+		lastTs = lastTs || [locTime, locTime];
+		if (deviceName != hardware) {
+			deviceName = hardware;
+			renderStatus();
+		}
 		curRawState = facelet;
 		curRawCubie.fromFacelet(curRawState);
 		CubieCube.EdgeMult(solvedStateInv, curRawCubie, curCubie);
@@ -331,15 +340,17 @@ var giikerutil = execMain(function(CubieCube) {
 		curState = curCubie.toFaceCube();
 
 		if (prevMoves.length > 0) {
-			movesAfterSolved.push("URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]));
-			movesTimestamp.push(timer.getCurTime(lastTimestamp));
+			var move = "URFDLB".indexOf(prevMoves[0][0]) * 3 + " 2'".indexOf(prevMoves[0][1]);
+			moveTsList.push([move, lastTs[0], lastTs[1]]);
 		}
 		if (scrambleLength > 0) {
 			updateRawMovesClick();
 		}
+		if (moveTsList.length > 10) {
+			updateSlopeSpan();
+		}
 		if (curState == mathlib.SOLVED_FACELET) {
-			movesAfterSolved = [];
-			movesTimestamp = [];
+			moveTsStart = moveTsList.length;
 			scrambleLength = 0;
 		}
 		drawState();
@@ -351,25 +362,89 @@ var giikerutil = execMain(function(CubieCube) {
 			CubieCube.CornMult(hackedSolvedCubieInv, curCubie, hackedCubie);
 			retState = hackedCubie.toFaceCube();
 		}
-		callback(retState, prevMoves, lastTimestamp);
+		callback(retState, prevMoves, lastTs);
 		if (curScramble && kernel.getProp('input') == 'g' && timer.getCurTime() == 0) {
 			scrHinter.checkState(curCubie);
 		}
 	}
 
+	function tsLinearFit(moveTsList, inv) {
+		var sumX = 0;
+		var sumY = 0;
+		var sumXY = 0;
+		var sumXX = 0;
+		var sumYY = 0;
+		var n = 0;
+		for (var i = 0; i < moveTsList.length; i++) {
+			var x = moveTsList[i][inv ? 2 : 1];
+			var y = moveTsList[i][inv ? 1 : 2];
+			if (x == null || y == null) {
+				continue;
+			}
+			n++;
+			sumX += x;
+			sumY += y;
+			sumXY += x * y;
+			sumXX += x * x;
+			sumYY += y * y;
+		}
+		var varY = n * sumYY - sumY * sumY;
+		var varX = n * sumXX - sumX * sumX;
+		var covXY = n * sumXY - sumX * sumY;
+		var slope = varX < 1e-3 ? 1 : covXY / varX;
+		var intercept = n < 1 ? 0 : sumY / n - slope * sumX / n;
+		var r2 = varX < 1e-3 || varY < 1e-3 ? 1 : Math.pow(covXY, 2) / varX / varY;
+		var s_slope = n < 3 || varX < 1e-3 ? 0 : Math.sqrt(varY / varX * (1 - r2) / (n - 2));
+		return [slope, intercept, r2, s_slope];
+	}
+
+	function tsLinearFix(moveTsList, startTime, endTime) {
+		if (moveTsList.length == 0) {
+			return moveTsList;
+		}
+		var param = tsLinearFit(moveTsList);
+		var slope = param[0];
+		var intercept = param[1];
+		var first = Math.round(slope * moveTsList[0][1] + intercept);
+		var last = Math.round(slope * moveTsList[moveTsList.length - 1][1] + intercept);
+		if (startTime == null || startTime > first) {
+			startTime = first;
+		} else if (endTime != null && endTime < last) {
+			startTime -= Math.min(first - startTime, last - endTime);
+		}
+		for (var i = 0; i < moveTsList.length; i++) {
+			moveTsList[i][1] = Math.round(slope * moveTsList[i][1] + intercept) - startTime;
+		}
+		return moveTsList;
+	}
+
 	function updateRawMovesClick() {
-		var moveCount = movesAfterSolved.length;
+		var moveCount = moveTsList.length - moveTsStart;
 		var scrambleStr = "";
 		for (var i = 0; i < scrambleLength; i++) {
-			var move = movesAfterSolved[i];
-			scrambleStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3); // + "/*" + movesTimestamp[i] + "*/";
+			var move = moveTsList[i + moveTsStart][0];
+			scrambleStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3);
 		}
 		var solveStr = "";
-		for (var i = scrambleLength; i < movesAfterSolved.length; i++) {
-			var move = movesAfterSolved[i];
-			solveStr += "URFDLB".charAt(~~(move / 3)) + " 2'".charAt(move % 3) + "/*" + movesTimestamp[i] + "*/";
+		var solvMoves = [];
+		for (var i = scrambleLength; i < moveCount; i++) {
+			solvMoves.push(moveTsList[i + moveTsStart].slice());
 		}
-		updateAlgClick(algCubingClick, moveCount + ' move(s)', scrambleStr, solveStr)
+		solvMoves = tsLinearFix(solvMoves);
+		for (var i = 0; i < solvMoves.length; i++) {
+			var move = solvMoves[i];
+			solveStr += "URFDLB".charAt(~~(move[0] / 3)) + " 2'".charAt(move[0] % 3) + "/*" + move[1] + "*/";
+		}
+		updateAlgClick(algCubingClick, ' ' + moveCount + ' ', scrambleStr, solveStr)
+	}
+
+	function updateSlopeSpan() {
+		if (moveTsList.length - moveTsStart > 50 && moveTsStart > 0) {
+			moveTsList = moveTsList.slice(moveTsStart);
+			moveTsStart = 0;
+		}
+		var param = tsLinearFit(moveTsList, true);
+		slopeTd.html('<span style="font-family:iconfont;">\ue6b6</span> ' + Math.round((param[0] - 1) * 10000) / 100 + '%');
 	}
 
 	function updateAlgClick(click, text, setup, alg) {
@@ -391,10 +466,7 @@ var giikerutil = execMain(function(CubieCube) {
 	function evtCallback(info, event) {
 		if (info == 'disconnect') {
 			logohint.push('Bluetooth disconnected!');
-			connectClick.html(connectedStr).removeClass('click').unbind('click');
-			if (!GiikerCube.isConnected()) {
-				connectClick.html('Bluetooth: Connect').addClass('click').click(init);
-			}
+			renderStatus();
 		}
 	}
 
@@ -463,10 +535,10 @@ var giikerutil = execMain(function(CubieCube) {
 			hackedCubie.invFrom(curCubie);
 			CubieCube.EdgeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			CubieCube.CornMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
-			movesAfterSolved = [];
-			callback(targetCubie.toFaceCube(), ['U '], $.now());
+			moveTsStart = moveTsList.length;
+			callback(targetCubie.toFaceCube(), ['U '], [null, $.now()]);
 		}
-		scrambleLength = movesAfterSolved.length;
+		scrambleLength = moveTsList.length - moveTsStart;
 		updateRawMovesClick();
 		updateAlgClick(lastSolveClick, "In Progress");
 	}
@@ -483,7 +555,7 @@ var giikerutil = execMain(function(CubieCube) {
 			return;
 		}
 		hackedSolvedCubieInv = null;
-		callback(curState, ['U '], $.now());
+		callback(curState, ['U '], [null, $.now()]);
 	}
 
 	$(function() {
@@ -503,6 +575,7 @@ var giikerutil = execMain(function(CubieCube) {
 		init: init,
 		isSync: isSync,
 		reSync: reSync,
+		tsLinearFix: tsLinearFix,
 		updateBattery: updateBattery,
 		setLastSolve: setLastSolve
 	}

@@ -1165,7 +1165,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function giikerCallback(facelet, prevMoves, now) {
+		function giikerCallback(facelet, prevMoves, lastTs) {
+			var locTime = lastTs[1] || $.now();
 			var prevFacelet = currentFacelet;
 			currentFacelet = facelet;
 			if (!enable) {
@@ -1182,11 +1183,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					if (delayStart == 's') {
 						//according to scramble
 						if (giikerutil.checkScramble()) {
-							markScrambled(now);
+							markScrambled(locTime);
 						}
 					} else if (delayStart != 'n') {
 						waitReadyTid = setTimeout(function() {
-							markScrambled(now);
+							markScrambled(locTime);
 						}, ~~delayStart * 1000);
 					}
 					var moveStart = getProp('giiSM');
@@ -1197,18 +1198,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						} [moveStart];
 						if (movere.exec(prevMoves.join(''))) {
 							moveReadyTid = setTimeout(function() {
-								markScrambled(now);
+								markScrambled(locTime);
 							}, 1000);
 						}
 					}
 				}
 			} else if (status == -3 || status == -2) {
 				if (checkUseIns()) {
-					insTime = now - startTime;
+					insTime = locTime - startTime;
 				} else {
 					insTime = 0;
 				}
-				startTime = now;
+				startTime = locTime;
 				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 				setStatus(cubeutil.getStepCount(solvingMethod));
 				rawMoves = [];
@@ -1217,28 +1218,34 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 				totPhases = status;
 				var initialProgress = cubeutil.getProgress(prevFacelet, solvingMethod);
-				updateMulPhase(totPhases, initialProgress, now);
+				updateMulPhase(totPhases, initialProgress, locTime);
 				lcd.reset(enableVRC);
 				lcd.fixDisplay(false, true);
 			}
 			if (status >= 1) {
-				rawMoves[status - 1].push([prevMoves[0], now - startTime]);
+				rawMoves[status - 1].push([prevMoves[0], lastTs[0], lastTs[1]]);
 				var curProgress = cubeutil.getProgress(facelet, solvingMethod);
-				updateMulPhase(totPhases, curProgress, now);
+				updateMulPhase(totPhases, curProgress, locTime);
 
 				if (isGiiSolved(currentFacelet, false)) {
 					rawMoves.reverse();
-					var rawMoveCnt = rawMoves.flat().length;
 					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
 					var moveCnt = pretty.totalMoves;
 					giikerutil.setLastSolve(pretty.prettySolve);
-					curTime[1] = now - startTime;
+					curTime[1] = locTime - startTime;
 					setStatus(-1);
 					giikerutil.reSync();
 					lcd.fixDisplay(false, true);
 					if (curTime[1] != 0) {
-						var sol = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ');
-						sol = kernel.getConjMoves(sol, true);
+						var sol = giikerutil.tsLinearFix(rawMoves.flat()); // fit deviceTime to locTime
+						var cnt = 0;
+						DEBUG && console.log('time fit, old=', curTime);
+						for (var i = 0; i < rawMoves.length; i++) {
+							cnt += rawMoves[i].length;
+							curTime[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
+						}
+						DEBUG && console.log('time fit, new=', curTime);
+						sol = kernel.getConjMoves(cubeutil.moveSeq2str(sol), true);
 						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
 					} else if (getProp('giiMode') == 't') {
 						kernel.pushSignal('ctrl', ['scramble', 'next']);
@@ -1332,8 +1339,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					giikerutil.reSync();
 					lcd.fixDisplay(false, true);
 					if (recordDNF) {
+						curTime[0] = -1;
 						rawMoves.reverse();
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), '333']]);
+						var sol = giikerutil.tsLinearFix(rawMoves.flat()); // fit deviceTime to locTime
+						var cnt = 0;
+						DEBUG && console.log('time fit, old=', curTime);
+						for (var i = 0; i < rawMoves.length; i++) {
+							cnt += rawMoves[i].length;
+							curTime[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
+						}
+						DEBUG && console.log('time fit, new=', curTime);
+						sol = kernel.getConjMoves(cubeutil.moveSeq2str(sol), true);
+						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
 					}
 				} else if (keyCode == 32 && getProp('giiSK')) {
 					if (!isGiiSolved(currentFacelet, true)) {
