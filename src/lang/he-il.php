@@ -47,7 +47,7 @@
 <li><strong data="opt_useMilli">השתמש באלפיות שנייה</strong>. הצג את צג המאיות, לא משנה אם מסומן, הדיוק של csTimer הוא מאיה אחת</li>
 <li><strong data="opt_timeFormat">פורמט זמן</strong>. פורמט הזמן להציג</li>
 <li><strong data="opt_atexpa">יצוא אוטומטי (כל 100 פתירות)</strong>. אם יסומן, csTimer ייצא את הפתירות אוטומטית כל 100 פתירות למיקום ספציפי, קובץ מקומי, שרת csTimer, או אחסון גוגל.</li>
-<li><strong data="opt_expp">יבא מידע לא עדכני</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
+<li><strong data="opt_expp">יבא מידע לא עדכני</strong>. אם הוספתם כמה גיבויים, אפשר להעלות  אחד מעשרה גיבויים הכי מחודשים. אם בטעות מעלים גיבוי ריק, האופציה הזות תעזור להחזיר את הזמנים.</li>
 <li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">הראה ממוצע מתחת לטיימר</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">שנה מרחק מתצוגה</strong>. You can adjust sizes of all elements by this option.</li>
@@ -135,7 +135,7 @@
 </ul>
 <h2>Links</h2>
 <ul>
-<li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
+<li><a class="click" href="https://cubingchina.com/" title="">קייובינג סין</a></li>
 <li><a class="click" href="/new/" title="">csTimer גרסת בטא</a></li>
 <li><a class="click" href="/src/" title="">csTimer beta version with uncompressed files</a></li>
 <li><a class="click" href="https://github.com/cs0x7f/cstimer" title="">csTimer קוד מקור</a></li>
@@ -160,10 +160,10 @@
 <p>שוב פעם, תודה רבה על תרומתך!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
+<p><strong>במקרה של שגיעה, תבדקו שבלוטוז פתוח במערכת שלך.</strong></p>
 <p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
+<li>כרום ב-macOS, לינוקס, אנדרואיד, ו-Windows</li>
 <li>Bluefy on iOS</li>
 </ul>
 <p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>

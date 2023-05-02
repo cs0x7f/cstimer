@@ -121,7 +121,7 @@ var scrHinter = execMain(function(CubieCube) {
 var giikerutil = execMain(function(CubieCube) {
 
 	var connectClick = $('<span></span>');
-	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
+	var resetClick = $('<span>' + GIIKER_RESET + '</span>').addClass('click');
 	var algCubingClick = $('<a target="_blank">Raw(N/A)</a>').addClass('click');
 	var lastSolveClick = $('<a target="_blank">Pretty(N/A)</a>').addClass('click');
 	var canvas = $('<canvas>');
@@ -190,7 +190,7 @@ var giikerutil = execMain(function(CubieCube) {
 			connectClick.html(deviceName).addClass('click').unbind('click').click(disconnect);
 			drawState();
 		} else {
-			connectClick.html('Smart cube<br>Click to connect').addClass('click').unbind('click').click(init);
+			connectClick.html(TOOLS_GIIKER + '<br>' + GIIKER_CONNECT).addClass('click').unbind('click').click(init);
 		}
 	}
 

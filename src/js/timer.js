@@ -244,7 +244,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function renderUtil() {
 			// render inspection icon
-			if (checkUseIns() && [-1, -4].indexOf(status) != -1) {
+			if (checkUseIns() && [-1, -4].indexOf(status) != -1 && getProp('showIns')) {
 				mainDiv.addClass('insp');
 				rightDiv.addClass('insp');
 			} else {
@@ -1501,13 +1501,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (['toolPos', 'scrHide', 'toolHide', 'statHide'].indexOf(value[0]) >= 0) {
 				updateTimerOffsetAsync(false);
 			}
-			if (['useIns', 'scrType'].indexOf(value[0]) >= 0) {
+			if (['useIns', 'scrType', 'showIns'].indexOf(value[0]) >= 0) {
 				lcd.renderUtil();
 			}
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns)$/);
+		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});
@@ -1529,6 +1529,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'giiAED', 0, PROPERTY_GIIAED, [false]);
 		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false], 1);
 		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
+		regProp('timer', 'showIns', 0, PROPERTY_SHOWINS, [true], 1);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
 		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q', 'b'], PROPERTY_ENTERING_STR.split('|')], 1);

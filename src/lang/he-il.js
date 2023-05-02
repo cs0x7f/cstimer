@@ -10,6 +10,7 @@ var BUTTON_DONATE = 'תרום';
 var PROPERTY_SR = 'עם סשן';
 var PROPERTY_USEINS = 'השתמש בסקירת WCA';
 var PROPERTY_USEINS_STR = 'תמיד|מלבד BLD|אף פעם';
+var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
 var PROPERTY_VOICEINS = 'התראה קולית של סקירת WCA';
 var PROPERTY_VOICEINS_STR = 'ללא|קול זכר|קול נקבה';
 var PROPERTY_VOICEVOL = 'עוצמת שמע';
@@ -64,7 +65,7 @@ var TOOLS_HUGESTATS = 'סטטיסטיקות רשימת פלוס';
 var TOOLS_DISTRIBUTION = 'חלוקת זמן';
 var TOOLS_TREND = 'מגמת זמן';
 var TOOLS_METRONOME = 'מטרונום';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'בנה מחדש';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Training Stat.';
@@ -239,7 +240,7 @@ var scrdata = [
 	['6×6×6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
+		['פרפיקס', "666p", 80],
 		['suffix', "666s", 80],
 		['אדג\'ים 6×6×6', "6edge", 8]
 	]],
@@ -425,7 +426,7 @@ var SCRAMBLE_NOOBSS = 'בכיוון השעון 90°,| נגד כיוון השעו
 var SCROPT_TITLE = 'Scramble Options';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_EMPTYALT = 'בחר לפחות מקרה אחד בבקשה';
 var STATS_CFM_RESET = 'אפס את כל הזמנית בסשן הזה?';
 var STATS_CFM_DELSS = 'מחק סשן [%s]?';
 var STATS_CFM_DELMUL = 'כמות הערכים המחוקים מהאינדקס הנוכחי?';
@@ -481,6 +482,8 @@ var PROPERTY_TOOLSFUNC = 'הפונקציות שנבחרו';
 var PROPERTY_TRIM = 'כמות פתירות חתוכה מכל צד';
 var PROPERTY_TRIM_MED = 'חציון';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
+var PROPERTY_TOOLPOS = 'Tools panel position';
+var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'יבא מידע לא עדכני';
 var PROPERTY_AUTOEXP = 'יצוא אוטומטי (כל 100 פתירות)';
@@ -510,3 +513,5 @@ var SCRGEN_GEN = 'יצר ערבובים';
 var VRCREPLAY_TITLE = 'Virtual Replay';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
 var VRCREPLAY_SHARE = 'share link';
+var GIIKER_CONNECT = 'Click to connect';
+var GIIKER_RESET = 'Reset (Mark Solved)';
