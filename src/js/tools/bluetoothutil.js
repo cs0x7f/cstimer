@@ -122,13 +122,15 @@ var giikerutil = execMain(function(CubieCube) {
 
 	var connectClick = $('<span></span>');
 	var resetClick = $('<span>Reset (Mark Solved)</span>').addClass('click');
-	var algCubingClick = $('<a target="_blank">0 move(s)</a>').addClass('click');
-	var lastSolveClick = $('<a target="_blank">N/A</a>').addClass('click');
+	var algCubingClick = $('<a target="_blank">Raw(N/A)</a>').addClass('click');
+	var lastSolveClick = $('<a target="_blank">Pretty(N/A)</a>').addClass('click');
 	var canvas = $('<canvas>');
 	var canvasTd = $('<tr>').append($('<td colspan=2>').append(canvas));
 	var deviceName = null;
-	var batteryTd = $('<td>').html('Battery ??%');
-	var slopeTd = $('<td>').html('<span style="font-family:iconfont;">\ue6b6</span> 0%');
+	var batteryIcon = '<span style="font-family:iconfont;">\ueaea</span> ';
+	var slopeIcon = '<span style="font-family:iconfont;">\ue6b6</span> ';
+	var batteryTd = $('<td>').html(batteryIcon +  '??%');
+	var slopeTd = $('<td>').html(slopeIcon + '0%');
 	var statusDiv = $('<table class="table">');
 
 	var drawState = (function() {
@@ -167,7 +169,6 @@ var giikerutil = execMain(function(CubieCube) {
 			canvas.height(29 * imgSize + 'em');
 			canvas.attr('width', 39 * 3 / 9 * width + 1);
 			canvas.attr('height', 29 * 3 / 9 * width + 1);
-			canvas.css('margin', '0.5em 0 0 0');
 			for (var i = 0; i < 6; i++) {
 				face(i, curState);
 			}
@@ -184,8 +185,7 @@ var giikerutil = execMain(function(CubieCube) {
 		if (GiikerCube.isConnected() || DEBUG && deviceName) {
 			statusDiv.append($('<tr>').append(batteryTd, slopeTd))
 				.append($('<tr>').append($('<td colspan=2>').append(resetClick.unbind('click').click(markSolved))))
-				.append($('<tr>').append('<td>Raw Data</td>', $('<td>').append(algCubingClick)))
-				.append($('<tr>').append('<td>Last Solve</td>', $('<td>').append(lastSolveClick)))
+				.append($('<tr>').append($('<td>').append(algCubingClick),$('<td>').append(lastSolveClick)))
 				.append(canvasTd);
 			connectClick.html(deviceName).addClass('click').unbind('click').click(disconnect);
 			drawState();
@@ -207,7 +207,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateBattery(value) {
 		batValue = value[0];
-		batteryTd.html('Battery ' + (batValue || '??') + '%');
+		batteryTd.html(batteryIcon + (batValue || '??') + '%');
 		deviceName = value[1];
 		connectClick.html(deviceName);
 	}
@@ -435,7 +435,7 @@ var giikerutil = execMain(function(CubieCube) {
 			var move = solvMoves[i];
 			solveStr += "URFDLB".charAt(~~(move[0] / 3)) + " 2'".charAt(move[0] % 3) + "/*" + move[1] + "*/";
 		}
-		updateAlgClick(algCubingClick, ' ' + moveCount + ' ', scrambleStr, solveStr)
+		updateAlgClick(algCubingClick, 'Raw (' + moveCount + ')', scrambleStr, solveStr)
 	}
 
 	function updateSlopeSpan() {
@@ -444,7 +444,7 @@ var giikerutil = execMain(function(CubieCube) {
 			moveTsStart = 0;
 		}
 		var param = tsLinearFit(moveTsList, true);
-		slopeTd.html('<span style="font-family:iconfont;">\ue6b6</span> ' + Math.round((param[0] - 1) * 10000) / 100 + '%');
+		slopeTd.html(slopeIcon + Math.round((param[0] - 1) * 10000) / 100 + '%');
 	}
 
 	function updateAlgClick(click, text, setup, alg) {
@@ -460,7 +460,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function setLastSolve(solve) {
-		updateAlgClick(lastSolveClick, "Ready", kernel.getConjMoves(curScramble), solve)
+		updateAlgClick(lastSolveClick, "Pretty", kernel.getConjMoves(curScramble), solve)
 	}
 
 	function evtCallback(info, event) {
@@ -540,7 +540,7 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		scrambleLength = moveTsList.length - moveTsStart;
 		updateRawMovesClick();
-		updateAlgClick(lastSolveClick, "In Progress");
+		updateAlgClick(lastSolveClick, "Pretty(N/A)");
 	}
 
 	var hackedSolvedCubieInv = null;
