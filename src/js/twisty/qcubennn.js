@@ -94,6 +94,7 @@
 	}
 
 	function renderTopCube(isTwoLook, twisty) {
+		var size = twisty.size;
 		var gap = Math.sqrt(size / 3) * 0.1;
 		var offset = isTwoLook ? 0 : (gap + 1);
 		var width = twisty.twistyScene.fixSize(size + 1 + gap * 3 + offset, size * 2 + gap * 3 - 1 + offset);
