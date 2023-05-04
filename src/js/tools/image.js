@@ -44,7 +44,7 @@ var image = execMain(function() {
 					state[i * 11 + j] = i;
 				}
 			}
-			moveseq.replace(/(?<=^|\s)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?=$|\s)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+			moveseq.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
 				if (p1) {
 					mathlib.minx.doMove(state, 'DL?R'.indexOf(p1), (p2[0] == '+' ? -1 : 1) * p2.length, 2);
 				} else if (p3) {

@@ -371,7 +371,7 @@
 				return generateScramble(this);
 			} else {
 				var ret = [];
-				scramble.replace(/(?<=^|\s)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?=$|\s)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+				scramble.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
 					if (p1) {
 						ret.push(['D?L??R'.indexOf(p1), (p2[0] == '+' ? -1 : 1) * p2.length, -3, 1]);
 					} else if (p3) {
