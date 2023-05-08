@@ -256,7 +256,7 @@ var battle = execMain(function() {
 			return;
 		}
 		if (roomInfo['cur'][1] && roomInfo['cur'][1] != localLastSolve[1]) {
-			scrResolve && scrResolve([roomInfo['cur'][1]]);
+			scrResolve && scrResolve(['$T333$' + roomInfo['cur'][1]]);
 			scrResolve = null;
 			if (kernel.getProp('scrType') != 'remoteBattle') {
 				kernel.setProp('scrType', 'remoteBattle');
@@ -425,7 +425,7 @@ var battle = execMain(function() {
 			return Promise.reject();
 		}
 		if (roomInfo['cur'][1] && roomInfo['cur'][1] != localLastSolve[1]) {
-			return Promise.resolve([roomInfo['cur'][1]]);
+			return Promise.resolve(['$T333$' + roomInfo['cur'][1]]);
 		}
 		return new Promise(function(resolve, reject) {
 			scrResolve = resolve;
