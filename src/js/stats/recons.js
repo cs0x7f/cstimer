@@ -555,3 +555,220 @@ var caseStat = execMain(function() {
 		}
 	});
 });
+
+var scatter = execMain(function() {
+	var canvas = $('<canvas />'), ctx;
+	var scatterDiv = $('<div style="text-align:center">');
+	var methodSelect = $('<select>');
+	var slowSpan = $('<span style="font-size:0.8em;">');
+
+	var isEnable = false;
+
+	var offx = 0,
+		offy = 0;
+	var width, height;
+
+	var offtx = 0;
+	var amptx = 1;
+	var offty = 0;
+	var ampty = 1;
+
+	function renderEmpty() {
+		slowSpan.html(TOOLS_RECONS_NODATA);
+		methodSelect.unbind('change').change(procClick);
+		scatterDiv.hide();
+	}
+
+	function renderRecons(times, method) {
+		if (!times || !times[4]) {
+			return renderEmpty();
+		}
+		var rec = recons.calcRecons(times, method);
+		if (!rec) {
+			return renderEmpty();
+		}
+		scatterDiv.show();
+		ctx = canvas[0].getContext('2d');
+		var imgSize = kernel.getProp('imgSize') / 10;
+		width = 50;
+		canvas.width(8 * imgSize * 1.2 + 'em');
+		canvas.height(4 * imgSize * 1.2 + 'em');
+		canvas.attr('width', 8 * width + 1);
+		canvas.attr('height', 4 * width + 5);
+		height = 4 * width;
+		width = 8 * width;
+
+		var finalTime = rec.data[0][2];
+		var moveLen = 0;
+		for (var i = 0; i < rec.data.length; i++) {
+			moveLen += rec.data[i][5].length;
+		}
+		var avgGap = finalTime / (moveLen - 1);
+		fill([0, 1, 1, 0, 0], [0, 0, 1, 1, 0], '#fff');
+		var curMoveIdx = 0;
+		var lastTime = 0;
+		var xs = [];
+		var ys = [];
+		var arcs = [];
+		var slow0 = 0;
+		var slow1 = 0;
+		for (var i = rec.data.length - 1; i >= 0; i--) {
+			var substep = rec.data[i];
+			for (var j = 0; j < substep[5].length; j++) {
+				ys.push(curMoveIdx / (moveLen - 1));
+				xs.push(substep[5][j][1] / finalTime);
+				curMoveIdx++;
+				if (xs.length > 1) {
+					ctx.lineWidth = 3;
+					var col = '#888';
+					if (xs[1] - xs[0] > 3 / (moveLen - 1)) {
+						col = '#f00';
+						slow0 += xs[1] - xs[0];
+					} else if (xs[1] - xs[0] > 2 / (moveLen - 1)) {
+						col = '#00f';
+						slow1 += xs[1] - xs[0];
+					}
+					plot(xs, ys, col);
+					xs = xs.slice(xs.length - 1);
+					ys = ys.slice(ys.length - 1);
+				}
+			}
+			if (i != 0) {
+				arcs.push([xs[0] * (width - offx) + offx, (1 - ys[0]) * (height - offy) + offy]);
+			}
+		}
+		for (var i = 0; i < arcs.length; i++) {
+			ctx.strokeStyle = '#000';
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.arc(arcs[i][0], arcs[i][1], 4, 0, 2 * Math.PI);
+			ctx.stroke();
+			ctx.closePath();
+		}
+		var spanT = '<span style="color:$">$</span>';
+		slowSpan.html(' ' + 
+			spanT.replace('$', '#f00').replace('$', kernel.pretty(slow0 * finalTime)) + ' ' + 
+			spanT.replace('$', '#00f').replace('$', kernel.pretty(slow1 * finalTime)) + ' ' + 
+			spanT.replace('$', '#888').replace('$', kernel.pretty((1 - slow0 - slow1) * finalTime))
+		);
+	}
+
+	function updateScatter() {
+		if (!isEnable || !canvas[0].getContext) {
+			return;
+		}
+		var nsolv = stats.getTimesStatsTable().timesLen;
+		renderRecons(stats.timesAt(nsolv - 1), methodSelect.val() || 'cf4op');
+	}
+
+	function reqRecons(signal, value) {
+		if (!isEnable || !canvas[0].getContext) {
+			return;
+		}
+		renderRecons(value[0], methodSelect.val() || 'cf4op');
+	}
+
+	function plot(x, y, color) {
+		ctx.strokeStyle = color;
+		ctx.beginPath();
+		for (var i = 0; i < x.length; i++) {
+			x[i] = (x[i] - offtx) / amptx;
+			y[i] = (y[i] - offty) / ampty;
+		}
+		ctx.moveTo(x[0] * (width - offx) + offx, (1 - y[0]) * (height - offy) + offy);
+		for (var i = 1; i < x.length; i++) {
+			ctx.lineTo(x[i] * (width - offx) + offx, (1 - y[i]) * (height - offy) + offy);
+		}
+		ctx.stroke();
+		ctx.closePath();
+	}
+
+	function fill(x, y, color) {
+		ctx.fillStyle = color;
+		ctx.beginPath();
+		ctx.moveTo(x[0] * (width - offx) + offx, (1 - y[0]) * (height - offy) + offy);
+		for (var i = 1; i < x.length; i++) {
+			ctx.lineTo(x[i] * (width - offx) + offx, (1 - y[i]) * (height - offy) + offy);
+		}
+		ctx.fill();
+		ctx.closePath();
+	}
+
+	var curAdj = 'x';
+
+	function procClick(e) {
+		if (e.type == 'change') {
+			return updateScatter();
+		}
+		var target = $(e.target);
+		if (!target.hasClass('click')) {
+			return;
+		}
+		var key = target.attr('data');
+		if (key == 'x') {
+			curAdj = 'y';
+			target.attr('data', 'y');
+			target.html('\ue80d');
+			return;
+		} else if (key == 'y') {
+			curAdj = 'x';
+			target.attr('data', 'x');
+			target.html('\ue80e');
+			return;
+		}
+		var off = {'p': 1, 'm': -1}[key] || 0;
+		var amp = {'l': Math.sqrt(0.5), 's': Math.sqrt(2)}[key] || 1;
+		if (curAdj == 'x') {
+			offtx += off * amptx * 0.25 + amptx * (1 - amp) / 2;
+			amptx *= amp;
+			amptx = Math.min(Math.max(amptx, 0.1), 1.0);
+			offtx = Math.min(Math.max(offtx, 0), 1 - amptx);
+		} else {
+			offty += off * ampty * 0.25 + ampty * (1 - amp) / 2;
+			ampty *= amp;
+			ampty = Math.min(Math.max(ampty, 0.1), 1.0);
+			offty = Math.min(Math.max(offty, 0), 1 - ampty);
+		}
+		updateScatter();
+	}
+
+	function execFunc(fdiv, signal) {
+		if (!(isEnable = (fdiv != undefined))) {
+			return;
+		}
+		if (/^scr/.exec(signal)) {
+			return;
+		}
+		var span = '<span class="click" data="%" style="font-family: iconfont, Arial;display:inline-block;width:2em;">$</span>';
+		fdiv.empty().append(methodSelect, slowSpan, scatterDiv.empty().append(canvas
+/*		, '<br>', [
+			span.replace('$', '\ue80e').replace('%', 'x'),
+			span.replace('$', '&lt;').replace('%', 'p'),
+			span.replace('$', '&gt;').replace('%', 'm'),
+			span.replace('$', '\ue80f').replace('%', 'l'),
+			span.replace('$', '\ue810').replace('%', 's')
+		].join('')
+*/		).unbind('click').click(procClick));
+		methodSelect.unbind('change').change(procClick);
+		updateScatter();
+	}
+
+	$(function() {
+		if (typeof tools != "undefined") {
+			if (canvas[0].getContext) {
+				tools.regTool('scatter', TOOLS_RECONS + '>' + 'scatter', execFunc);
+			}
+		}
+		stats.regUtil('scatter', updateScatter);
+		kernel.regListener('scatter', 'reqrec', reqRecons);
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux']];
+		for (var i = 0; i < methods.length; i++) {
+			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
+		}
+	});
+
+	return {
+		update: updateScatter
+	}
+
+});

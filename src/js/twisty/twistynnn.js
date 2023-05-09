@@ -587,7 +587,7 @@
 			var axis = move[2];
 			var nlayer = move[1];
 			var pow = (move[3] + 3) % 4;
-			if (nlayer == iSi) {
+			if (nlayer >= iSi) {
 				return "yxz".charAt("URFDLB".indexOf(move[2]) % 3) +
 					" 2'".charAt("URF".indexOf(move[2]) == -1 ? (2 - pow) : pow);
 			} else if (move[0] == 1) {

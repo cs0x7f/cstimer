@@ -17,6 +17,7 @@ var replay = execMain(function() {
 	var algSpan;
 	var playSpan;
 	var curScramble;
+	var moveSeqTd;
 
 	var startTs = 0;
 	var activeTid = 0;
@@ -168,12 +169,37 @@ var replay = execMain(function() {
 		curTime = Math.min(curTime, normTime(lastTs));
 		rangeTime.val(normTime(curTime, true));
 		txtTime.html((curTime >= 0 ? kernel.pretty(normTime(curTime, true)) : '--') + '/' + kernel.pretty(lastTs));
+		updateMoveTd();
 		if (curTime >= normTime(lastTs)) {
 			setStatus(0);
 		}
 		if (status == 1) {
 			requestAnimFrame(updateTime);
 		}
+	}
+
+	function updateMoveTd() {
+		var startIdx = Math.max(curPlayIdx - 4, 0);
+		var endIdx = Math.min(curPlayIdx + 5, playMoves.length);
+		var moves = [];
+		for (var i = -4; i < 5; i++) {
+			var idx = i + curPlayIdx;
+			if (idx < 0 || idx >= playMoves.length) {
+				moves[i + 4] = '~';
+			} else {
+				var move = puzzleObj.move2str(playMoves[idx][0]);
+				var isRot = puzzleObj.isRotation(playMoves[idx][0]);
+				if (isRot) {
+					move = '<span style="color:#888;">' + move + '</span>';
+				}
+				moves[i + 4] = move;
+			}
+			if (i == 0) {
+				moves[i + 4] = '<b><u>' + moves[i + 4] + '</u></b>';
+			}
+		}
+		moveSeqTd.empty();
+		moveSeqTd.html(moves.join('<br>'));
 	}
 
 	function parseRecons(recons) {
@@ -258,13 +284,14 @@ var replay = execMain(function() {
 		txtSpeed = $('<span style="user-select:none;">1x</span>');
 		algSpan = $('<a target="_blank">\u23efAlg</a>');
 		playSpan = $(span.replace('$', '\ue800').replace('%', 'p'));
+		moveSeqTd = $('<td style="width:0%;font-family:monospace;">');
 		div.append(
 			$('<tr>').append($('<td>').append(
 				span.replace('$', vrcOriStr[0]).replace('%', 'o'), '| ',
 				algSpan, ' |',
 				span.replace('$', VRCREPLAY_SHARE).replace('%', 'a')
 			)),
-			$('<tr>').append(puzzleDiv),
+			$('<tr>').append(puzzleDiv, moveSeqTd),
 			$('<tr>').append($('<td style="display:flex;justify-content:center;">').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
 			$('<tr>').append($('<td>').append(
 				span.replace('$', '\ue807').replace('%', 's-'),
