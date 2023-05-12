@@ -1080,6 +1080,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			var curVRCCubie = new mathlib.CubieCube();
 			var tmpCubie1 = new mathlib.CubieCube();
 			var puzzleObj;
+			var curOri = -1;
 
 			function resetVRC(temp, force) {
 				if ((isReseted && !force) || !enableVRC) {
@@ -1100,7 +1101,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						setSize(getProp('timerSize'));
 					}
 					curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
-					puzzleObj && puzzleObj.applyMoves(puzzleObj.parseScramble('U2 U2', true)); // process pre scramble (cube orientation)
+					if (!puzzleObj) {
+						return;
+					}
+					var preScramble = puzzleObj.parseScramble('U2 U2', true);
+					curVRCCubie.ori = 0;
+					for (var i = 0; i < preScramble.length; i++) {
+						curVRCCubie.selfMoveStr(puzzleObj.move2str(preScramble[i]));
+					}
+					puzzleObj.applyMoves(preScramble); // process pre scramble (cube orientation)
+					var targetOri = getProp('giiOri');
+					targetOri = targetOri == 'auto' ? -1 : ~~targetOri;
+					setOri(targetOri);
 				});
 				isReseted = true;
 			}
@@ -1136,7 +1148,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (todoMoves.match(/^\s*$/) || !puzzleObj) {
 					scramble = [];
 				} else {
-					scramble = puzzleObj.parseScramble(kernel.getConjMoves(todoMoves, true));
+					scramble = puzzleObj.parseScramble(kernel.getConjMoves(todoMoves, true, curVRCCubie.ori));
 				}
 				if (scramble.length < 5) {
 					puzzleObj.addMoves(scramble);
@@ -1147,9 +1159,23 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				curVRCCubie.fromFacelet(state);
 			}
 
+			function setOri(ori) {
+				curOri = ori;
+				if (curOri == -1 || curVRCCubie.ori == curOri) {
+					return;
+				}
+				var todoRot = mathlib.CubieCube.rotMulI[curOri][curVRCCubie.ori];
+				var todoMoves = mathlib.CubieCube.rot2str[todoRot].split(/\s+/);
+				for (var i = 0; i < todoMoves.length; i++) {
+					curVRCCubie.selfMoveStr(todoMoves[i]);
+				}
+				puzzleObj.applyMoves(puzzleObj.parseScramble(todoMoves.join(' ')));
+			}
+
 			return {
 				resetVRC: resetVRC, //reset to solved
 				setState: setState,
+				setOri: setOri,
 				setSize: setSize
 			}
 		})();
@@ -1312,7 +1338,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					giikerVRC.resetVRC(true, true);
 					giikerVRC.setState(currentFacelet, ['U2', 'U2'], false);
 				}
-			}, /^(?:preScr)$/);
+			}, /^(?:preScr|giiOri)$/);
 		});
 
 		return {
@@ -1473,7 +1499,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
-	var resetCondition = "input|phases|preScr|useMilli|smallADP|giiVRC".split('|');
+	var resetCondition = "input|phases|preScr|giiOri|useMilli|smallADP|giiVRC".split('|');
 
 	$(function() {
 		container = $('#container');
@@ -1507,7 +1533,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
+		}, /^(?:input|phases|scrType|preScr|giiOri|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});
@@ -1527,6 +1553,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'giiBS', 0, PROPERTY_GIISBEEP, [true], 1);
 		regProp('vrc', 'giiRST', 1, PROPERTY_GIIRST, ['p', ['a', 'p', 'n'], PROPERTY_GIIRSTS.split('|')]);
 		regProp('vrc', 'giiAED', 0, PROPERTY_GIIAED, [false]);
+		regProp('vrc', 'giiOri', 1, "Cube Orientation", ['auto',
+			["auto", "0", "3", "2", "1", "4", "5", "6", "7", "23", "14", "19", "8", "17", "10", "21", "12", "11", "22", "13", "18", "15", "16", "9", "20"],
+			["auto", "(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
+		], 1);
 		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false], 1);
 		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
 		regProp('timer', 'showIns', 0, PROPERTY_SHOWINS, [true], 1);
