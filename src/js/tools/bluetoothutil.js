@@ -164,7 +164,7 @@ var giikerutil = execMain(function(CubieCube) {
 			colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
 			canvasTd.show();
 			ctx = canvas[0].getContext('2d');
-			var imgSize = kernel.getProp('imgSize') / 50;
+			var imgSize = kernel.getProp('imgSize') / 60;
 			canvas.width(39 * imgSize + 'em');
 			canvas.height(29 * imgSize + 'em');
 			canvas.attr('width', 39 * 3 / 9 * width + 1);
@@ -178,7 +178,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function renderStatus() {
 		if (!(kernel.getProp('giiVRC') != 'n')) {
-			statusDiv.css('font-size', 'calc(100% / 1.5)');
+			statusDiv.css('font-size', '60%');
 		}
 		statusDiv.empty();
 		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick)));
@@ -470,7 +470,24 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 	}
 
+	function cleanup() {
+		batId = 0;
+		batValue = 0;
+		deviceName = null;
+		curRawState = mathlib.SOLVED_FACELET;
+		curRawCubie = new CubieCube();
+		curCubie = new CubieCube();
+		curState = curRawState;
+		solvedStateInv = new CubieCube();
+		moveTsList = [];
+		moveTsStart = 0;
+		slopeTd.html(slopeIcon + '0%');
+		updateAlgClick(algCubingClick, "Raw(N/A)");
+		updateAlgClick(lastSolveClick, "Pretty(N/A)");
+	}
+
 	function init() {
+		cleanup();
 		curRawState = kernel.getProp('giiSolved', mathlib.SOLVED_FACELET);
 		curRawCubie.fromFacelet(curRawState);
 		solvedStateInv.invFrom(curRawCubie);
