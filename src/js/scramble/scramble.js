@@ -162,6 +162,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	function genScramble() {
 		kernel.blur();
+		kernel.pushSignal('scrambling', type);
 		sdiv.html(SCRAMBLE_SCRAMBLING + '...');
 		typeExIn = (!type || /^(remote|input$)/.exec(type)) ? typeExIn : type;
 		if (!isDisplayLast) {

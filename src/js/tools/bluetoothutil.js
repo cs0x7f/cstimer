@@ -500,7 +500,9 @@ var giikerutil = execMain(function(CubieCube) {
 	var curScramble;
 
 	function procSignal(signal, value) {
-		if (signal == 'scramble' || signal == 'scrambleX') {
+		if (signal == 'scrambling') {
+			curScramble = "";
+		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			var scrType = value[0];
 			curScramble = value[1];
 			if (tools.puzzleType(scrType) != '333') {
@@ -560,6 +562,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	$(function() {
 		kernel.regListener('giiker', 'scramble', procSignal);
+		kernel.regListener('giiker', 'scrambling', procSignal);
 		kernel.regListener('giiker', 'scrambleX', procSignal);
 		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|preScr)$/);
 		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
