@@ -452,40 +452,16 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		image.face3Image(pieces.join(''), canvas);
 	}
 
-	var wvls_map = [
-		0x0000,
-		0x0001,
-		0x0002,
-		0x0100,
-		0x0101,
-		0x0102,
-		0x0200,
-		0x0201,
-		0x0202,
-		0x1000,
-		0x1001,
-		0x1002,
-		0x1100,
-		0x1101,
-		0x1102,
-		0x1200,
-		0x1201,
-		0x1202,
-		0x2000,
-		0x2001,
-		0x2002,
-		0x2100,
-		0x2101,
-		0x2102,
-		0x2200,
-		0x2201,
-		0x2202
-	];
-
-	var wvlsprobs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+	var wvls_map = [];
+	var wvlsprobs = [];
 	var wvlsfilter = [
 		'Oriented', 'Rectangle-1', 'Rectangle-2', 'Tank-1', 'Bowtie-1', 'Bowtie-3', 'Tank-2', 'Bowtie-2', 'Bowtie-4', 'Snake-1', 'Adjacent-1', 'Adjacent-2', 'Gun-Far', 'Sune-1', 'Pi-Near', 'Gun-Back', 'Pi-Front', 'H-Side', 'Snake-2', 'Adjacent-3', 'Adjacent-4', 'Gun-Sides', 'H-Front', 'Pi-Back', 'Gun-Near', 'Pi-Far', 'Sune-2'
 	];
+
+	for (var i = 0; i < 27; i++) {
+		wvls_map[i] = ~~(i / 9) << 12 | ~~(i / 3) % 3 << 8 | i % 3;
+		wvlsprobs[i] = 1;
+	}
 
 	function getWVLSScramble(type, length, cases) {
 		var caze = wvls_map[scrMgr.fixCase(cases, wvlsprobs)];
@@ -498,6 +474,36 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		fill = fill[caze & 3] + fill[caze >> 8 & 3] + fill[caze >> 12 & 3];
 		image.llImage('3D6DDDBB0RR21G87G54GU'.replace(/[0-9]/g, function(v) {
 			return fill[~~v];
+		}), null, canvas);
+	}
+
+	var vls_map = [];
+	var vlsprobs = [];
+	var vlsfilter = [];
+
+	for (var i = 0; i < 27 * 8; i++) {
+		var co = i % 27;
+		var eo = ~~(i / 27);
+		vls_map[i] = [~~(co / 9) % 3 << 12 | ~~(co / 3) % 3 << 8 | co % 3, (eo >> 2 & 1) << 12 | (eo >> 1 & 1) << 8 | eo & 1];
+		vlsprobs[i] = 1;
+		vlsfilter[i] = ["WVLS", "UB", "UF", "UF UB", "UL", "UB UL", "UF UL", "No Edge"][eo] + "-" + (co + 1);
+	}
+
+	function getVLSScramble(type, length, cases) {
+		var caze = vls_map[scrMgr.fixCase(cases, vlsprobs)];
+		return getAnyScramble(0xba9f7654ff8f, 0x000000000000 | caze[1], 0x765fff4f, 0x000f0020 | caze[0], [[Ux3]]);
+	}
+
+	function getVLSImage(cases, canvas) {
+		var caze = vls_map[scrMgr.fixCase(cases, vlsprobs)];
+		var fillc = ['DGG', 'GDG', 'GGD'];
+		fillc = fillc[caze[0] & 3] + fillc[caze[0] >> 8 & 3] + fillc[caze[0] >> 12 & 3];
+		var fille = ['DG', 'GD'];
+		fille = fille[caze[1] & 3] + fille[caze[1] >> 8 & 3] + fille[caze[1] >> 12 & 3];
+		image.llImage('6a0eDR3cR4dUFF21b87f5'.replace(/[0-9]/g, function(v) {
+			return fillc[~~v];
+		}).replace(/[a-z]/g, function(v) {
+			return fille[v.charCodeAt(0) - 'a'.charCodeAt(0)];
 		}), null, canvas);
 	}
 
@@ -929,6 +935,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('ttll', getTTLLScramble, [ttllfilter, ttllprobs, getTTLLImage])
 		('eols', getEOLSScramble, [eolsfilter, eolsprobs, getF2LImage.bind(null, 'GDGDDDGDGGGGGRRGRRGGGBBDBBG', eols_map, eolsprobs)])
 		('wvls', getWVLSScramble, [wvlsfilter, wvlsprobs, getWVLSImage])
+		('vls', getVLSScramble, [vlsfilter, vlsprobs, getVLSImage])
 		('lse', getLSEScramble)
 		('cmll', getCMLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])
 		('cll', getCLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])

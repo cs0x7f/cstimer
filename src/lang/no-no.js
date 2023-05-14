@@ -204,6 +204,7 @@ var scrdata = [
 		['ZBLS', "zbls", 0],
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
+		['VLS', "vls", 0],
 		['ZLL', "zzll", 0],
 		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
