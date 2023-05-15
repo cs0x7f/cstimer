@@ -753,7 +753,7 @@ var GiikerCube = execMain(function() {
 			var result = Promise.resolve();
 			if (_chrct_v2read) {
 				_chrct_v2read.removeEventListener('characteristicvaluechanged', onStateChangedV2);
-				result = _chrct_v2read.stopNotifications();
+				result = _chrct_v2read.stopNotifications().catch($.noop);
 				_chrct_v2read = null;
 			}
 			deviceMac = null;
@@ -1024,10 +1024,13 @@ var GiikerCube = execMain(function() {
 	})();
 
 	function onHardwareEvent(info, event) {
+		var res = Promise.resolve();
 		if (info == 'disconnect') {
-			stop();
+			res = Promise.resolve(stop());
 		}
-		evtCallback && evtCallback(info, event);
+		return res.then(function () {
+			return typeof evtCallback == 'function' && evtCallback(info, event);
+		});
 	}
 
 	var onDisconnect = onHardwareEvent.bind(null, 'disconnect');

@@ -164,7 +164,7 @@ var giikerutil = execMain(function(CubieCube) {
 			colors = kernel.getProp('colcube').match(/#[0-9a-fA-F]{3}/g);
 			canvasTd.show();
 			ctx = canvas[0].getContext('2d');
-			var imgSize = kernel.getProp('imgSize') / 50;
+			var imgSize = kernel.getProp('imgSize') / 60;
 			canvas.width(39 * imgSize + 'em');
 			canvas.height(29 * imgSize + 'em');
 			canvas.attr('width', 39 * 3 / 9 * width + 1);
@@ -178,7 +178,9 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function renderStatus() {
 		if (!(kernel.getProp('giiVRC') != 'n')) {
-			statusDiv.css('font-size', 'calc(100% / 1.5)');
+			statusDiv.css('font-size', '60%');
+		} else {
+			statusDiv.css('font-size', '');
 		}
 		statusDiv.empty();
 		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick)));
@@ -444,7 +446,7 @@ var giikerutil = execMain(function(CubieCube) {
 			moveTsStart = 0;
 		}
 		var param = tsLinearFit(moveTsList, true);
-		slopeTd.html(slopeIcon + Math.round((param[0] - 1) * 10000) / 100 + '%');
+		slopeTd.html(slopeIcon + Math.round((param[0] - 1) * 100000) / 1000 + '%');
 	}
 
 	function updateAlgClick(click, text, setup, alg) {
@@ -470,7 +472,24 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 	}
 
+	function cleanup() {
+		batId = 0;
+		batValue = 0;
+		deviceName = null;
+		curRawState = mathlib.SOLVED_FACELET;
+		curRawCubie = new CubieCube();
+		curCubie = new CubieCube();
+		curState = curRawState;
+		solvedStateInv = new CubieCube();
+		moveTsList = [];
+		moveTsStart = 0;
+		slopeTd.html(slopeIcon + '0%');
+		updateAlgClick(algCubingClick, "Raw(N/A)");
+		updateAlgClick(lastSolveClick, "Pretty(N/A)");
+	}
+
 	function init() {
+		cleanup();
 		curRawState = kernel.getProp('giiSolved', mathlib.SOLVED_FACELET);
 		curRawCubie.fromFacelet(curRawState);
 		solvedStateInv.invFrom(curRawCubie);
@@ -485,11 +504,19 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 	}
 
-	function disconnect() {
-		if (GiikerCube.isConnected() && confirm("Disconnect?")) {
-			GiikerCube.stop().then(function () {
+	function stop() {
+		if (GiikerCube.isConnected()) {
+			return GiikerCube.stop().then(function () {
 				evtCallback('disconnect');
 			});
+		} else {
+			return Promise.resolve();
+		}
+	}
+
+	function disconnect() {
+		if (GiikerCube.isConnected() && confirm("Disconnect?")) {
+			stop();
 		}
 	}
 
@@ -513,8 +540,8 @@ var giikerutil = execMain(function(CubieCube) {
 				scrHinter.checkState(curCubie);
 			}
 		} else if (signal == 'property') {
-			if (value[0] == 'giiVRC') {
-				drawState();
+			if (['giiVRC', 'imgSize'].indexOf(value[0]) >= 0) {
+				renderStatus();
 			} else if (value[0] == 'preScr') {
 				scrHinter.setScramble(curScramble);
 				if (curScramble && kernel.getProp('input') == 'g') {
@@ -564,7 +591,7 @@ var giikerutil = execMain(function(CubieCube) {
 		kernel.regListener('giiker', 'scramble', procSignal);
 		kernel.regListener('giiker', 'scrambling', procSignal);
 		kernel.regListener('giiker', 'scrambleX', procSignal);
-		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|preScr)$/);
+		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|imgSize|preScr)$/);
 		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
 	});
 
@@ -576,6 +603,7 @@ var giikerutil = execMain(function(CubieCube) {
 		checkScramble: checkScramble,
 		markScrambled: markScrambled,
 		init: init,
+		stop: stop,
 		isSync: isSync,
 		reSync: reSync,
 		tsLinearFix: tsLinearFix,
