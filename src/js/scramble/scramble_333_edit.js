@@ -491,7 +491,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	function getVLSScramble(type, length, cases) {
 		var caze = vls_map[scrMgr.fixCase(cases, vlsprobs)];
-		return getAnyScramble(0xba9f7654ff8f, 0x000000000000 | caze[1], 0x765fff4f, 0x000f0020 | caze[0], [[Ux3]]);
+		return getAnyScramble(0xba9f7654ff8f, 0x000f00000000 + caze[1], 0x765fff4f, 0x000f0020 + caze[0], [[Ux3]]);
 	}
 
 	function getVLSImage(cases, canvas) {
