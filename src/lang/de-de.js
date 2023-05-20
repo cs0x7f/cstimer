@@ -65,17 +65,17 @@ var TOOLS_HUGESTATS = 'sitzungsübergreifende Statistiken';
 var TOOLS_DISTRIBUTION = 'Zeitverteilung';
 var TOOLS_TREND = 'Zeit-Trend';
 var TOOLS_METRONOME = 'Metronom';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'Rekonstruieren';
 var TOOLS_RECONS_NODATA = 'Keine Lösung gefunden.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_TRAINSTAT = 'Trainingsstatistik.';
 var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Zeit bestätigen';
 var TOOLS_SOLVERS = 'Löser';
 var TOOLS_DLYSTAT = 'Daily Statistics';
 var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT_OPT1 = 'Tag|Woche|Monat|Jahr';
+var TOOLS_DLYSTAT_OPT2 = 'So|Mo|Di|Mi|Do|Fr|Sa';
 var TOOLS_SYNCSEED = 'Gemeinsamen Scramble';
 var TOOLS_SYNCSEED_SEED = 'Seed';
 var TOOLS_SYNCSEED_INPUT = 'Eingabe Seed';
@@ -83,9 +83,9 @@ var TOOLS_SYNCSEED_30S = 'Benutzte 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'Wenn aktiviert, hängt Scramble nur von den Seed- und Scramble-Einstellungen ab.';
 var TOOLS_SYNCSEED_DISABLE = 'Aktuellen Seed deaktivieren?';
 var TOOLS_SYNCSEED_INPUTA = 'Gebe einen Wert (a-zA-Z0-9) als Seed ein';
-var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
+var TOOLS_BATTLE = 'Online-Kampf';
+var TOOLS_BATTLE_HEAD = 'Raum|Raum beitreten';
+var TOOLS_BATTLE_TITLE = 'Rang|Status|Zeit';
 var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
 var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
 var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
@@ -149,9 +149,9 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4 etc.|(U U\')2, (U\' U)2, ect.|Nie';
 var PROPERTY_GIISBEEP = 'Beep am Ende des Scrambles';
 var PROPERTY_GIIRST = 'Giiker Cube bei Verbindung zurück setzen';
 var PROPERTY_GIIRSTS = 'Immer|Nachfragen|Nie';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
+var PROPERTY_GIIMODE = 'Bluetooth Würfel-Modus';
 var PROPERTY_GIIMODES = 'Normal|Training';
-var PROPERTY_VRCAH = 'Useless pieces in huge cube';
+var PROPERTY_VRCAH = 'Nutzlose Steine in großem Würfel';
 var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
 var CONFIRM_GIIRST = 'Giiker Cube als gelöst zurück setzen?';
 var PROPERTY_GIIAED = 'Automatische Hardware-Fehler-Erkennung';
@@ -178,7 +178,7 @@ var scrdata = [
 	['Eingabe', [
 		['Extern', "input", 0],
 		['Competition', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['Online-Kampf', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -213,7 +213,7 @@ var scrdata = [
 		['einfaches Kreuz', "easyc", 3],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 mit Füßen', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Angepasst', "333custom", 0]
 	]],
 	['2x2x2', [
 		["zufälliger Status (WCA)", "222so", 0],
@@ -424,8 +424,8 @@ var SCRAMBLE_NOOBST = [
 	['drehe die vordere Fläche', 'drehe die hintere Fläche']
 ];
 var SCRAMBLE_NOOBSS = 'um 90° im Uhrzeigersinn, |um 90° gegen den Uhrzeigersinn, | um 180°';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
+var SCROPT_TITLE = 'Scramble Optionen';
+var SCROPT_BTNALL = 'Voll';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Bitte wählen Sie mindestens einen Fall aus';
 var STATS_CFM_RESET = 'alle zeiten in dieser Sitzung zurück setzen?';
@@ -516,3 +516,4 @@ var VRCREPLAY_ORI = 'raw ori|auto ori';
 var VRCREPLAY_SHARE = 'share link';
 var GIIKER_CONNECT = 'Click to connect';
 var GIIKER_RESET = 'Reset (Mark Solved)';
+var PROPERTY_SHOWAD = 'Show advistisements (take effect after reload)';

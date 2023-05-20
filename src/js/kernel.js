@@ -367,6 +367,7 @@ var kernel = execMain(function() {
 		var curLang = LANG_CUR || 'en-us';
 		regProp('kernel', 'lang', 1, 'Language', [curLang, (LANG_SET + '|h').split('|').slice(1), (LANG_STR + '|help translation').split('|')]);
 		setProp('lang', curLang);
+		regProp('kernel', 'showad', 0, PROPERTY_SHOWAD, [true]);
 		regListener('kernel', 'property', function(signal, value) {
 			if (value[1] == curLang || value[2] != "modify") {
 				return;
