@@ -253,13 +253,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				mainDiv.removeClass('insp');
 				rightDiv.removeClass('insp');
 			}
-			var mpAppend = status > -2 ? getMulPhaseAppend(Math.max(0, status), Math.max(curTime.length - 1, status)) : '';
-			rightADiv.html(mpAppend + staticAppend);
 			if (clear && status == -1) {
 				isCleared = true;
 			} else if (status != -1) {
 				isCleared = false;
 			}
+			var mpAppend = status > -2 && !isCleared ? getMulPhaseAppend(Math.max(0, status), Math.max(curTime.length - 1, status)) : '';
+			rightADiv.html(mpAppend + staticAppend);
 			if (status == -1 || status == 0) {
 				if ('sb'.indexOf(getProp('input')) != -1) {
 					lcd.val(hardTime);
