@@ -242,7 +242,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			value = _value;
 		}
 
-		function renderUtil() {
+		var isCleared = false;
+
+		function renderUtil(clear) {
 			// render inspection icon
 			if (checkUseIns() && [-1, -4].indexOf(status) != -1 && getProp('showIns')) {
 				mainDiv.addClass('insp');
@@ -253,13 +255,18 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var mpAppend = status > -2 ? getMulPhaseAppend(Math.max(0, status), Math.max(curTime.length - 1, status)) : '';
 			rightADiv.html(mpAppend + staticAppend);
+			if (clear && status == -1) {
+				isCleared = true;
+			} else if (status != -1) {
+				isCleared = false;
+			}
 			if (status == -1 || status == 0) {
 				if ('sb'.indexOf(getProp('input')) != -1) {
 					lcd.val(hardTime);
 				} else {
-					lcd.val(curTime[1] || 0);
+					lcd.val(isCleared ? 0 : (curTime[1] || 0));
 				}
-				if (value && value[4]) {
+				if (value && value[4] && !isCleared) {
 					reconsDiv.show();
 					var puzzle = typeof value[4][1] == 'string' && value[4][1] || tools.getCurPuzzle() || '333';
 					var moveCnt = puzzle == '333' ? recons.getMoveCnt(value[4][0]) : value[4][2];
@@ -1449,6 +1456,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			return;
 		} else {
 			focusObj.blur();
+		}
+		if (status == -1 && keyCode == 27) {
+			lcd.renderUtil(true);
 		}
 		switch (getProp('input')) {
 			case 't':
