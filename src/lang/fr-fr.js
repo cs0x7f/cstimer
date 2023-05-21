@@ -516,4 +516,5 @@ var VRCREPLAY_ORI = 'ori° brute|ori° auto.';
 var VRCREPLAY_SHARE = 'partager le lien';
 var GIIKER_CONNECT = 'Cliquer pour se connecter';
 var GIIKER_RESET = 'Réinitialiser (Marquer comme résolu)';
-var PROPERTY_SHOWAD = 'Show advistisements (take effect after reload)';
+var PROPERTY_SHOWAD = 'Afficher les publicités (prend effet après rechargement)';
+var PROPERTY_GIIORI = 'Cube orientation';

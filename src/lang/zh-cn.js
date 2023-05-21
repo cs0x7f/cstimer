@@ -517,3 +517,4 @@ var VRCREPLAY_SHARE = '分享链接';
 var GIIKER_CONNECT = '点击连接';
 var GIIKER_RESET = '重置（置为还原）';
 var PROPERTY_SHOWAD = '显示广告（刷新后生效）';
+var PROPERTY_GIIORI = '魔方朝向';

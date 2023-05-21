@@ -1547,16 +1547,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'vrcAH', 1, PROPERTY_VRCAH, ['01', ['00', '01', '10', '11'], PROPERTY_VRCAHS.split('|')], 1);
 		regProp('vrc', 'giiMode', 1, PROPERTY_GIIMODE, ['n', ['n', 't'], PROPERTY_GIIMODES.split('|')], 1);
 		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q', 'ql', 'q2'], ['None', 'Virtual', 'qCube', 'qLast', 'q2Look']], 1);
+		regProp('vrc', 'giiOri', 1, PROPERTY_GIIORI, ['auto',
+			["auto", "0", "3", "2", "1", "4", "5", "6", "7", "23", "14", "19", "8", "17", "10", "21", "12", "11", "22", "13", "18", "15", "16", "9", "20"],
+			["auto", "(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
+		], 1);
 		regProp('vrc', 'giiSD', 1, PROPERTY_GIISOK_DELAY, ['s', ['2', '3', '4', '5', 'n', 's'], PROPERTY_GIISOK_DELAYS.split('|')], 1);
 		regProp('vrc', 'giiSK', 0, PROPERTY_GIISOK_KEY, [true], 1);
 		regProp('vrc', 'giiSM', 1, PROPERTY_GIISOK_MOVE, ['n', ['x4', 'xi2', 'n'], PROPERTY_GIISOK_MOVES.split('|')], 1);
 		regProp('vrc', 'giiBS', 0, PROPERTY_GIISBEEP, [true], 1);
 		regProp('vrc', 'giiRST', 1, PROPERTY_GIIRST, ['p', ['a', 'p', 'n'], PROPERTY_GIIRSTS.split('|')]);
 		regProp('vrc', 'giiAED', 0, PROPERTY_GIIAED, [false]);
-		regProp('vrc', 'giiOri', 1, "Cube Orientation", ['auto',
-			["auto", "0", "3", "2", "1", "4", "5", "6", "7", "23", "14", "19", "8", "17", "10", "21", "12", "11", "22", "13", "18", "15", "16", "9", "20"],
-			["auto", "(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
-		], 1);
 		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false], 1);
 		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
 		regProp('timer', 'showIns', 0, PROPERTY_SHOWINS, [true], 1);

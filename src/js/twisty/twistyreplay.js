@@ -6,7 +6,7 @@ var replay = execMain(function() {
 	var puzzle;
 	var options = {};;
 	var rawRecons;
-	var autoOri = false;
+	var autoOri = true;
 
 	var rangeTime;
 	var txtTime;
@@ -26,6 +26,7 @@ var replay = execMain(function() {
 	var curPlayIdx = 0;
 	var curTime = 0;
 	var status = 0; // 0 - idle, 1 - play
+	var maxMoveLen = 0;
 
 	var vrcOriStr = VRCREPLAY_ORI.split('|');
 
@@ -185,9 +186,11 @@ var replay = execMain(function() {
 		for (var i = -4; i < 5; i++) {
 			var idx = i + curPlayIdx;
 			if (idx < 0 || idx >= playMoves.length) {
-				moves[i + 4] = '~';
+				moves[i + 4] = '<span style="color:#888;">~</span>';
+				pad = mathlib.valuedArray(maxMoveLen - 1, ' ').join('');
 			} else {
 				var move = puzzleObj.move2str(playMoves[idx][0]);
+				pad = mathlib.valuedArray(maxMoveLen - move.length, ' ').join('');
 				var isRot = puzzleObj.isRotation(playMoves[idx][0]);
 				if (isRot) {
 					move = '<span style="color:#888;">' + move + '</span>';
@@ -197,16 +200,33 @@ var replay = execMain(function() {
 			if (i == 0) {
 				moves[i + 4] = '<b><u>' + moves[i + 4] + '</u></b>';
 			}
+			moves[i + 4] = pad + moves[i + 4];
 		}
 		moveSeqTd.empty();
 		moveSeqTd.html(moves.join('<br>'));
 	}
 
+	function fixMoveOri(move, isInit) {
+		if (!autoOri || !/^\d+$/.exec(puzzle)) {
+			return isInit ? [] : move;
+		}
+		var targetOri = kernel.getProp('giiOri');
+		if (targetOri == 'auto') {
+			return isInit ? [] : move;
+		}
+		if (isInit) {
+			return puzzleObj.parseScramble(mathlib.CubieCube.rot2str[targetOri]);
+		}
+		targetOri = mathlib.CubieCube.rotMulI[0][~~targetOri];
+		var axis = 'URFDLB'.indexOf(move[2]);
+		axis = mathlib.CubieCube.rotMulM[targetOri][axis * 3] / 3;
+		move = move.slice();
+		move[2] = 'URFDLB'.charAt(axis);
+		return move;
+	}
+
 	function parseRecons(recons) {
 		rawRecons = recons;
-		if (autoOri && puzzle == '333') {
-			recons = gripRecons.updateReconsOri(recons);
-		}
 		algSpan.attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent((recons || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) + '&setup=' + encodeURIComponent(curScramble || ''));
 		var movets = recons.split(' ');
 		var moves = [];
@@ -226,12 +246,19 @@ var replay = execMain(function() {
 		}
 		rangeTime.attr('min', -1);
 		rangeTime.attr('max', tstamp[tstamp.length - 1]);
-		playMoves = [];
+		playMoves = fixMoveOri(null, true);
+		for (var i = 0; i < playMoves.length; i++) {
+			playMoves[i] = [playMoves[i], -1];
+		}
 		for (var i = 0; i < puzzleMoves.length; i++) {
 			if (tstamp[i] == 0 && puzzleObj.isRotation(puzzleMoves[i])) {
 				tstamp[i] -= 1;
 			}
-			playMoves.push([puzzleMoves[i], tstamp[i]]);
+			playMoves.push([fixMoveOri(puzzleMoves[i]), tstamp[i]]);
+		}
+		maxMoveLen = 0;
+		for (var i = 0; i < playMoves.length; i++) {
+			maxMoveLen = Math.max(maxMoveLen, ("" + puzzleObj.move2str(playMoves[i][0])).length);
 		}
 		curPlayIdx = 0;
 		curTime = normTime(-1);
@@ -284,10 +311,10 @@ var replay = execMain(function() {
 		txtSpeed = $('<span style="user-select:none;">1x</span>');
 		algSpan = $('<a target="_blank">\u23efAlg</a>');
 		playSpan = $(span.replace('$', '\ue800').replace('%', 'p'));
-		moveSeqTd = $('<td style="width:0%;font-family:monospace;">');
+		moveSeqTd = $('<td style="width:0%;font-family:monospace;white-space:pre;">');
 		div.append(
 			$('<tr>').append($('<td>').append(
-				span.replace('$', vrcOriStr[0]).replace('%', 'o'), '| ',
+				span.replace('$', vrcOriStr[1]).replace('%', 'o'), '| ',
 				algSpan, ' |',
 				span.replace('$', VRCREPLAY_SHARE).replace('%', 'a')
 			)),
