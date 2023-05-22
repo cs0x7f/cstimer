@@ -160,7 +160,7 @@
 <p>Merci encore pour votre don !</p>
 </div>
 <div class="instruction">
-<p><strong>En cas d'échec, vérifiez que le Bluetooth est activé sur votre système !</strong></p>
+<p><strong>En cas d'échec, vérifiez que le Bluetooth est bien activé sur votre système.</strong></p>
 <p>Votre navigateur doit prendre en charge l'API Web Bluetooth. Choisissez le meilleur navigateur compatible :</p>
 <ul>
 <li>Chrome sur macOS, Linux, Android ou Windows</li>

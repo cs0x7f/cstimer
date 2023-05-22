@@ -211,6 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['lagani križ', "easyc", 3],
+		['easy xcross', "easyxc", 4],
 		['BLD pomoćnik', "nocache_333bldspec", 0],
 		['3x3 s nogama', "333ft", 0],
 		['Prilagođeno', "333custom", 0]

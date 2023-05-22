@@ -211,6 +211,7 @@ var scrdata = [
 		['son katmanın permütasyonu', "pll", 0],
 		['EO Çizgisi', "eoline", 0],
 		['kolay cross', "easyc", 3],
+		['easy xcross', "easyxc", 4],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ayakla', "333ft", 0],
 		['Custom', "333custom", 0]

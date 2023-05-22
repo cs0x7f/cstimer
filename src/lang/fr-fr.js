@@ -211,6 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Croix facile', "easyc", 3],
+		['easy xcross', "easyxc", 4],
 		['Assistant BLD', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Personnalisé', "333custom", 0]
@@ -512,9 +513,9 @@ var SCRGEN_NSCR = 'Nombre de mélanges';
 var SCRGEN_PRE = 'Préfixe';
 var SCRGEN_GEN = 'Générer des mélanges !';
 var VRCREPLAY_TITLE = 'Replay virtuel';
-var VRCREPLAY_ORI = 'ori° brute|ori° auto.';
+var VRCREPLAY_ORI = 'ori° brute|ori° auto';
 var VRCREPLAY_SHARE = 'partager le lien';
 var GIIKER_CONNECT = 'Cliquer pour se connecter';
 var GIIKER_RESET = 'Réinitialiser (Marquer comme résolu)';
 var PROPERTY_SHOWAD = 'Afficher les publicités (prend effet après rechargement)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var PROPERTY_GIIORI = 'Orientation du cube';

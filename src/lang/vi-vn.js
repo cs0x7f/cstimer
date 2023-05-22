@@ -211,6 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['Edge Orientation Line', "eoline", 0],
 		['solve dởm', "easyc", 3],
+		['easy xcross', "easyxc", 4],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 FT', "333ft", 0],
 		['Custom', "333custom", 0]

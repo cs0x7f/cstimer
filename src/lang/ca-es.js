@@ -211,6 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['Línia EO', "eoline", 0],
 		['Creu fàcil', "easyc", 3],
+		['easy xcross', "easyxc", 4],
 		['Ajudant per a BLD', "nocache_333bldspec", 0],
 		['3x3 Peus', "333ft", 0],
 		['Personalitzat', "333custom", 0]

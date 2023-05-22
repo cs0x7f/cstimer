@@ -211,6 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['简单十字', "easyc", 3],
+		['简单XCross', "easyxc", 4],
 		['盲拧助手', "nocache_333bldspec", 0],
 		['三阶脚拧', "333ft", 0],
 		['自定义', "333custom", 0]

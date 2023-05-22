@@ -383,6 +383,31 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 		createPrun(fullPrun, 0, 190080, 7, fullmv, 6, 3, 6);
 	}
 
+	function mapCross(idx) {
+		var comb = ~~(idx / 384);
+		var perm = (idx >> 4) % 24;
+		var flip = idx & 15;
+
+		var arrp = [];
+		var arrf = [];
+		var pm = [];
+		var fl = [];
+		i2f(flip, fl);
+		setNPerm(pm, perm, 4);
+		var r = 4;
+		var map = [7, 6, 5, 4, 10, 9, 8, 11, 3, 2, 1, 0];
+		for (var i = 0; i < 12; i++) {
+			if (comb >= Cnk[11 - i][r]) {
+				comb -= Cnk[11 - i][r--];
+				arrp[map[i]] = pm[r];
+				arrf[map[i]] = fl[r];
+			} else {
+				arrp[map[i]] = arrf[map[i]] = -1;
+			}
+		}
+		return [arrp, arrf];
+	}
+
 	function getEasyCross(length) {
 		fullInit();
 		var lenA = Math.min(length % 10, 8);
@@ -398,28 +423,92 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				break;
 			}
 		}
-		var comb = ~~(i / 384);
-		var perm = (i >> 4) % 24;
-		var flip = i & 15;
+		return mapCross(i);
+	}
 
-		var arrp = [];
-		var arrf = [];
-		var pm = [];
-		var fl = [];
-		i2f(flip, fl);
-		setNPerm(pm, perm, 4);
-		var r = 4;
-		var map = [7, 6, 5, 4, 10, 9, 8, 11, 3, 2, 1, 0];
-		for (i = 0; i < 12; i++) {
-			if (comb >= Cnk[11 - i][r]) {
-				comb -= Cnk[11 - i][r--];
-				arrp[map[i]] = pm[r];
-				arrf[map[i]] = fl[r];
-			} else {
-				arrp[map[i]] = arrf[map[i]] = -1;
+	function getEasyXCross(length) {
+		fullInit();
+		xinit();
+		var ncase = [1, 16, 174, 1568, 11377, 57758, 155012, 189978, 190080];
+		length = Math.max(0, Math.min(length, 8));
+		var remain = ncase[length];
+		var isFound = false;
+		var testCnt = 0;
+		while (!isFound) {
+			var rndIdx = [];
+			var sample = 500;
+			for (var i = 0; i < sample; i++) {
+				rndIdx.push(mathlib.rn(remain));
+			}
+			rndIdx.sort(function(a, b) { return b - a; });
+			var rndCases = [];
+			var cnt = 0;
+			for (var i = 0; i < 190080; i++) {
+				var prun = getPruning(fullPrun, i);
+				if (prun > length) {
+					continue;
+				}
+				while (rndIdx[rndIdx.length - 1] == cnt) {
+					rndCases.push(i);
+					rndIdx.pop();
+				}
+				if (rndIdx.length == 0) {
+					break;
+				}
+				cnt++;
+			}
+			rndIdx = mathlib.rndPerm(sample);
+			for (var i = 0; i < sample; i++) {
+				var caze = rndCases[rndIdx[i]];
+				var comb = ~~(caze / 384);
+				var perm = comb * 24 + (caze >> 4) % 24;
+				var flip = comb << 4 | caze & 15;
+				var sol = [];
+				var ret = idacross(perm, flip, length, -1, sol);
+				var corns = mathlib.rndPerm(8).slice(4);
+				var edges = mathlib.rndPerm(8);
+
+				var arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+				var r = 4;
+				for (var j = 0; j < 12; j++) {
+					if (comb >= Cnk[11 - j][r]) {
+						comb -= Cnk[11 - j][r--];
+						arr[j] = -1;
+					} else {
+						arr[j] = edges.pop();
+					}
+				}
+				for (var j = 0; j < 4; j++) {
+					corns[j] = corns[j] * 3 + mathlib.rn(3);
+					edges[j] = arr.indexOf(j) * 2 + mathlib.rn(2);
+					if (isFound || getPruning(ecPrun[j], corns[j] * 24 + edges[j]) > length) {
+						continue;
+					}
+					var sol = [];
+					for (var depth = 0; depth <= length; depth++) {
+						if (idaxcross(perm, flip, edges[j], corns[j], j, depth, -1, sol)) {
+							isFound = true;
+							break;
+						}
+					}
+				}
+				if (!isFound) {
+					continue;
+				}
+				var crossArr = mapCross(caze);
+				crossArr[2] = mathlib.valuedArray(8, -1);
+				crossArr[3] = mathlib.valuedArray(8, -1);
+				var map = [7, 6, 5, 4, 10, 9, 8, 11, 3, 2, 1, 0];
+				var map2 = [6, 5, 4, 7, 2, 1, 0, 3];
+				for (var i = 0; i < 4; i++) {
+					crossArr[0][map[edges[i] >> 1]] = map[i + 4];
+					crossArr[1][map[edges[i] >> 1]] = edges[i] % 2;
+					crossArr[2][map2[~~(corns[i] / 3)]] = map2[i + 4];
+					crossArr[3][map2[~~(corns[i] / 3)]] = (30 - corns[i]) % 3;
+				}
+				return crossArr;
 			}
 		}
-		return [arrp, arrf];
 	}
 
 
@@ -475,6 +564,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 
 	return {
 		solve: solve_cross,
-		getEasyCross: getEasyCross
+		getEasyCross: getEasyCross,
+		getEasyXCross: getEasyXCross
 	}
 })(mathlib.createMove, mathlib.edgeMove, mathlib.createPrun, mathlib.setNPerm, mathlib.getNPerm, mathlib.Cnk, mathlib.getPruning);
