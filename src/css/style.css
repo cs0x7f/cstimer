@@ -851,6 +851,37 @@ input[type="color"].mulcolor {
 	width: 1.5em;
 }
 
+.touchcube {
+	display: table;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	margin: auto;
+	user-select: none;
+	font-family: Arial;
+	border-collapse: collapse;
+	color: transparent;
+}
+
+.touchcube tr td {
+	width: 33%;
+	height: 33%;
+}
+
+.touchcube.active {
+	background-color: #6666;
+	color: #fffa;
+}
+
+.touchcube.active td.touchto {
+	background-color: #0f0a;
+}
+
+.touchcube.active td.touchfrom {
+	background-color: #f00a;
+}
+
 .expOauth {
 	width: 80%;
 	margin-left: 10%;

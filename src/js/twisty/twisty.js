@@ -55,6 +55,7 @@ window.twistyjs = (function() {
 
 		var camera, scene, renderer;
 		var twistyCanvas;
+		var touchCube;
 		var cameraTheta = 0;
 		var cameraPhi = 6;
 
@@ -64,6 +65,7 @@ window.twistyjs = (function() {
 		var twistyContainer = $('<div/>');
 		twistyContainer.css('width', '100%');
 		twistyContainer.css('height', '100%');
+		twistyContainer.css('position', 'relative');
 		twistyContainer = twistyContainer[0];
 
 		this.getDomElement = function() {
@@ -109,14 +111,32 @@ window.twistyjs = (function() {
 			twistyCanvas = renderer.domElement;
 
 			twistyContainer.appendChild(twistyCanvas);
+			touchCube = $('<table class="touchcube">').appendTo(twistyContainer);
+			var trs = '';
+			for (var i = 0; i < 3; i++) {
+				var tds = '';
+				for (var j = 0; j < 3; j++) {
+					tds += '<td data="' + (i * 3 + j + 1) + '"/>';
+				}
+				trs += '<tr>' + tds + '</tr>';
+			}
+			touchCube.append(trs);
 
 			if (twistyType.allowDragging) {
+				touchCube.on('mousedown', onTouchDown);
+				touchCube.on('mousemove', onTouchMove);
+				touchCube.on('mouseup', onTouchUp);
+				touchCube.on('touchstart', onTouchDown);
+				touchCube.on('touchmove', onTouchMove);
+				touchCube.on('touchend', onTouchUp);
+				/*
 				twistyCanvas.addEventListener('mousedown', onCanvasDown);
 				twistyCanvas.addEventListener('mousemove', onCanvasMove);
 				twistyCanvas.addEventListener('mouseup', onCanvasUp);
 				twistyCanvas.addEventListener('touchstart', onCanvasDown);
 				twistyCanvas.addEventListener('touchmove', onCanvasMove);
 				twistyCanvas.addEventListener('touchend', onCanvasUp);
+				*/
 			}
 			// resize creates the camera and calls render()
 			that.resize();
@@ -132,6 +152,11 @@ window.twistyjs = (function() {
 			moveCamera(~~ori[0] - 6, ~~ori[1] - 6);
 			camera.target.position = new THREE.Vector3(0, -0.075, 0);
 			renderer.setSize(min, min);
+			touchCube.css({
+				'width': min,
+				'height': min,
+				'font-size': min * 0.15
+			});
 			render();
 		};
 
@@ -161,6 +186,77 @@ window.twistyjs = (function() {
 			}
 		};
 
+
+		var startIdx = null;
+
+		function getTouchIdx(event) {
+			var obj = event.target;
+			if (event.type.startsWith('touch')) {
+				obj = document.elementFromPoint(
+					event.originalEvent.changedTouches[0].pageX,
+					event.originalEvent.changedTouches[0].pageY
+				);
+			}
+			return ~~$(obj).attr('data');
+		}
+
+		function onTouchDown(event) {
+			startIdx = getTouchIdx(event);
+			if (!startIdx) {
+				return;
+			}
+			touchCube.addClass('active');
+			var validMoves = twisty.getTouchMoves();
+			for (var i = 1; i <= 9; i++) {
+				var key = startIdx * 10 + i;
+				var obj = touchCube.find('[data="' + i + '"]');
+				if (key in validMoves) {
+					obj.html(validMoves[key][0]);
+				} else {
+					obj.html('');
+				}
+			}
+			touchCube.find('td').removeClass('touchfrom touchto');
+			touchCube.find('[data="' + startIdx + '"]').addClass('touchfrom');
+		}
+
+		function onTouchMove(event) {
+			if (!startIdx) {
+				return;
+			}
+			var curIdx = getTouchIdx(event);
+			if (!curIdx) {
+				touchCube.removeClass('active');
+				return;
+			}
+			touchCube.addClass('active');
+			var validMoves = twisty.getTouchMoves();
+			var key = startIdx * 10 + curIdx;
+			touchCube.find('td').removeClass('touchfrom touchto');
+			touchCube.find('[data="' + curIdx + '"]').addClass((key in validMoves) ? 'touchto' : 'touchfrom');
+			touchCube.find('[data="' + startIdx + '"]').addClass('touchfrom');
+		}
+
+		function onTouchUp(event) {
+			touchCube.removeClass('active');
+			if (!startIdx) {
+				return;
+			}
+			var curIdx = getTouchIdx(event);
+			if (!curIdx) {
+				return;
+			}
+			touchCube.find('td').removeClass('touchfrom touchto').html('');
+			var validMoves = twisty.getTouchMoves();
+			var key = startIdx * 10 + curIdx;
+			startIdx = null;
+			if (!(key in validMoves)) {
+				return;
+			}
+			that.addMoves([validMoves[key][1]]);
+		}
+
+		/**
 		var clkPoint = null;
 
 		function onCanvasDown(event) {
@@ -256,6 +352,7 @@ window.twistyjs = (function() {
 			direction.subSelf(origin).normalize();
 			return new THREE.Ray(origin, direction).intersectScene(scene);
 		}
+		*/
 
 		this.cam = function(deltaTheta) {
 			moveCameraDelta(deltaTheta, 0);
