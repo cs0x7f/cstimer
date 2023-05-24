@@ -882,6 +882,11 @@ input[type="color"].mulcolor {
 	background-color: #f00a;
 }
 
+.touchcube.board td {
+	border: 2px solid #6666;
+	border: 0.15rem solid #6666;
+}
+
 .expOauth {
 	width: 80%;
 	margin-left: 10%;

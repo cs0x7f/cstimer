@@ -1394,6 +1394,7 @@ var mathlib = (function() {
 		this.prunTableSize = 0;
 		this.prunDepth = -1;
 		this.cost = 0;
+		this.MAX_PRUN_SIZE = 100000;
 	}
 
 	_ = gSolver.prototype;
@@ -1477,6 +1478,10 @@ var mathlib = (function() {
 	_.updatePrun = function(targetDepth) {
 		targetDepth = targetDepth === undefined ? this.prunDepth + 1 : targetDepth;
 		for (var depth = this.prunDepth + 1; depth <= targetDepth; depth++) {
+			if (this.prevSize >= this.MAX_PRUN_SIZE) {
+				DEBUG && console.log('[gSolver] skipPrun', depth, this.prunTableSize);
+				break;
+			}
 			var t = +new Date;
 			if (depth < 1) {
 				this.prevSize = 0;

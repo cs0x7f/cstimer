@@ -200,12 +200,20 @@ window.twistyjs = (function() {
 			return ~~$(obj).attr('data');
 		}
 
+		function hintBoard() {
+			touchCube.addClass('board');
+			$.delayExec('hintBoard', function() {
+				touchCube && touchCube.removeClass('board');
+			}, 5000);
+		}
+
 		function onTouchDown(event) {
 			startIdx = getTouchIdx(event);
 			if (!startIdx) {
 				return;
 			}
 			touchCube.addClass('active');
+			hintBoard();
 			var validMoves = twisty.getTouchMoves();
 			for (var i = 1; i <= 9; i++) {
 				var key = startIdx * 10 + i;
@@ -230,6 +238,7 @@ window.twistyjs = (function() {
 				return;
 			}
 			touchCube.addClass('active');
+			hintBoard();
 			var validMoves = twisty.getTouchMoves();
 			var key = startIdx * 10 + curIdx;
 			touchCube.find('td').removeClass('touchfrom touchto');
