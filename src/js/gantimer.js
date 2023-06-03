@@ -133,7 +133,11 @@ var GanTimerDriver = execMain(function () {
 				return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
 		}).then(function () {
 			return navigator.bluetooth.requestDevice({
-				filters: [{ namePrefix: "GAN" }],
+				filters: [
+					{ namePrefix: "GAN" },
+					{ namePrefix: "gan" },
+					{ namePrefix: "Gan" }
+				],
 				optionalServices: [GAN_TIMER_SERVICE]
 			});
 		}).then(function (device) {
