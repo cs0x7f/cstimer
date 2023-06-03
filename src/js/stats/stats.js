@@ -483,7 +483,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			st1 ? [i - len1 + 1, len1, len1 * 10, stat1 < 0] : undefined,
 			st2 ? [i - len2 + 1, len2, len2 * 10, stat2 < 0] : undefined,
 			setHighlight.bind(undefined, times_stats_list, timesAt),
-			timesAt(i)
+			timesAt(i),
+			i == 0 ? null : timesAt(i - 1)
 		]);
 	}
 

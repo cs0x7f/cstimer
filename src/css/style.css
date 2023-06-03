@@ -546,6 +546,18 @@ a {
 	opacity: 0.65;
 }
 
+#timer .difflabel {
+	display: inline-block;
+	font-family: Arial;
+	font-size: 0.15em;
+}
+
+#rtimer .difflabel {
+	margin-top: -0.5em;
+	font-family: Arial;
+	font-size: 0.25em;
+}
+
 .playbutton.click {
 	display: inline-block;
 	min-width: 7%;

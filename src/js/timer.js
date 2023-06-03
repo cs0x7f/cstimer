@@ -24,6 +24,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 	var curTime = []; //[inspection time, phaseN, phaseN-1, ...]
 	var startTime;
 	var hardTime;
+	var lastTime = [];
 
 	var rawMoves = [];
 
@@ -176,7 +177,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setValue(val) {
-			setHtml(isRight ? rightDiv : mainDiv, val != undefined ? pretty(val, true) : '--:--');
+			setHtml(isRight ? rightDiv : mainDiv, val != undefined ? (pretty(val, true) + '<div class="difflabel"/>') : '--:--');
 		}
 
 		function setHtml(div, val) {
@@ -265,6 +266,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(hardTime);
 				} else {
 					lcd.val(isCleared ? 0 : (curTime[1] || 0));
+					if (!isCleared && curTime[1] && lastTime && lastTime[1] && getProp('showDiff')) {
+						var diff = curTime[1] - lastTime[1];
+						$('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(lastTime[1] - curTime[1])) + ')');
+					}
 				}
 				if (value && value[4] && !isCleared) {
 					reconsDiv.show();
@@ -347,11 +352,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			} else {
 				avgDiv2.removeClass('click');
 			}
-			if (value[5]) {
-				curTime = value[5][0].slice();
-			} else {
-				curTime = [0];
-			}
+			curTime = value[5] ? value[5][0].slice() : [0];
+			lastTime = value[6] ? value[6][0].slice() : null;
 			lcd.setRecons(value[5]);
 			lcd.renderUtil();
 		}
@@ -1509,7 +1511,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
-	var resetCondition = "input|phases|preScr|giiOri|useMilli|smallADP|giiVRC".split('|');
+	var resetCondition = "input|phases|preScr|giiOri|useMilli|showDiff|smallADP|giiVRC".split('|');
 
 	$(function() {
 		container = $('#container');
@@ -1543,7 +1545,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|giiOri|timerSize|showAvg|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
+		}, /^(?:input|phases|scrType|preScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});
@@ -1578,6 +1580,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10], 3);
 		regProp('kernel', 'showAvg', 0, SHOW_AVG_LABEL, [true], 1);
+		regProp('kernel', 'showDiff', 0, 'SHOW_DIFF_LABEL', [true], 1);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100], 1);
 		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true], 1);
 	});
