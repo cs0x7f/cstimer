@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'Doneren';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'Gebruik WCA inspectie';
 var PROPERTY_USEINS_STR = 'Altijd|Behalve BLD|Nooit';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Toon een pictogram wanneer inspectie is ingeschakeld';
 var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection';
 var PROPERTY_VOICEINS_STR = 'geen|mannelijke stem|vrouwlijke stem';
 var PROPERTY_VOICEVOL = 'Voice volume';
@@ -43,12 +43,12 @@ var EXPORT_ERROR = 'Er zijn fouten opgetreden...';
 var EXPORT_NODATA = 'Geen gegevens gevonden in je account';
 var EXPORT_UPLOADED = 'Succesvol geupload';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_ONLYOPT = 'Alleen opties exporteren/importeren';
+var EXPORT_ACCOUNT = 'Accounts exporteren';
+var EXPORT_LOGINGGL = 'Login met behulp van Google-account';
+var EXPORT_LOGINWCA = 'Inloggen met WCA Account';
+var EXPORT_LOGOUTCFM = 'Bevestigen om uit te loggen?';
+var EXPORT_LOGINAUTHED = 'Geautoriseerde<br>gegevens ophalen...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'Hulpmi-<br>ddelen';
@@ -65,7 +65,7 @@ var TOOLS_HUGESTATS = 'gekruiste-sessie statistieken';
 var TOOLS_DISTRIBUTION = 'Verdeling tijden';
 var TOOLS_TREND = 'tijd trend';
 var TOOLS_METRONOME = 'metronoom';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'Reconstrueer';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Training Stat.';
@@ -211,7 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Makkelijk kruis', "easyc", 3],
-		['easy xcross', "easyxc", 4],
+		['eenvoudig xkruis', "easyxc", 4],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
@@ -265,7 +265,7 @@ var scrdata = [
 		['Wortel', "mgmc", 70],
 		['Oude methode', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 0],
+		['Laatste slot + laatste laag', "mlsll", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],
@@ -323,6 +323,9 @@ var scrdata = [
 		['willekeurige staat', "gearso", 0],
 		['optimaal', "gearo", 0],
 		['willekeurige draai', "gear", 10]
+	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -383,14 +386,14 @@ var scrdata = [
 		['3-generator R,U,L', "3gen_L", 25],
 		['3-generator R,r,U', "RrU", 25],
 		['Alleen halve draaien', "half", 25],
-		['last slot + last layer (old)', "lsll", 15]
+		['Laatste slot + laatste laag (oud)', "lsll", 15]
 	]],
 	['Bandaged Cube', [
 		['Bicube', "bic", 30],
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
 	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
+		['Veel 3x3x3s', "r3", 5],
 		['234 relay', "r234", 0],
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
@@ -441,7 +444,7 @@ var STATS_CURROUND = 'Gegevens actuele ronde';
 var STATS_CURSESSION = 'Gegevens actuele sessie';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Exporteer CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
+var STATS_SSMGR_TITLE = 'Sessie manager';
 var STATS_SSMGR_NAME = 'Naam';
 var STATS_SSMGR_DETAIL = 'Sessie details';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
@@ -464,19 +467,19 @@ var STATS_TYPELEN = 'lijst %d type|lijst %d lengte|average|mean';
 var STATS_STATCLR = 'Schakel sessie leegmaken in';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_NAME = 'elke naam';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'afdrukken scramble(s) in statistieken';
-var PROPERTY_PRINTDATE = 'print solving date in statistics';
+var PROPERTY_PRINTDATE = 'druk oplossingsdatum in statistieken';
 var PROPERTY_SUMMARY = 'samenvatting tonen voor tijdlijst';
 var PROPERTY_IMRENAME = 'hernoem sessie direct na aanmaken';
 var PROPERTY_SCR2SS = 'maak nieuwe sessie bij wisselen van scramble type';
 var PROPERTY_SS2SCR = 'herstel scramble tytpe bij wisselen van sessie';
 var PROPERTY_SS2PHASES = 'herstel multi-fase tijdmeting bij wisselen van sessie';
 var PROPERTY_STATINV = 'Omgekeerde tijdenlijst';
-var PROPERTY_STATTHRES = 'Show target time for session best';
+var PROPERTY_STATTHRES = 'Doeltijd voor sessie beste tijd weergeven';
 var PROPERTY_STATAL = 'Statistische indicatoren';
 var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_DELMUL = 'Inschakelen meervoudige verwijdering';

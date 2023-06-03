@@ -324,6 +324,9 @@ var scrdata = [
 		['最佳化', "gearo", 0],
 		['隨機步驟', "gear", 10]
 	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
+	]],
 	['Cmetric', [
 		[' ', "cm3", 25]
 	]],

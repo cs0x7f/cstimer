@@ -211,7 +211,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Croix facile', "easyc", 3],
-		['easy xcross', "easyxc", 4],
+		['X-cross facile', "easyxc", 4],
 		['Assistant BLD', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Personnalisé', "333custom", 0]
@@ -323,6 +323,9 @@ var scrdata = [
 		['état aléatoire', "gearso", 0],
 		['optimal', "gearo", 0],
 		['mouvements aléatoires', "gear", 10]
+	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]

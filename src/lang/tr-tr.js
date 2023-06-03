@@ -324,6 +324,9 @@ var scrdata = [
 		['ideal', "gearo", 0],
 		['Rastgele hamle', "gear", 10]
 	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
+	]],
 	['Smetrik', [
 		[' ', "cm3", 25]
 	]],

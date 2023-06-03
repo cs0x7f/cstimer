@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'DAROWIZNA';
 var PROPERTY_SR = 'Dla sesji';
 var PROPERTY_USEINS = 'użyj inspekcji WCA';
 var PROPERTY_USEINS_STR = 'Zawsze|Oprócz BLD|Nigdy';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Pokaż ikonę, gdy inspekcja jest włączona';
 var PROPERTY_VOICEINS = 'ostrzeżenie głosowe inspekcji WCA';
 var PROPERTY_VOICEINS_STR = 'brak|męski głos|żeński głos';
 var PROPERTY_VOICEVOL = 'Głośność głosu';
@@ -83,13 +83,13 @@ var TOOLS_SYNCSEED_30S = 'Użyj 30s seeda';
 var TOOLS_SYNCSEED_HELP = 'Jeśli włączone, scramble będzie zależeć tylko od ustawień seeda i scramble\'a.';
 var TOOLS_SYNCSEED_DISABLE = 'Wyłączyć bieżący seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Wprowadź seeda (a-zA-Z0-9)';
-var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE = 'Bitwa online';
 var TOOLS_BATTLE_HEAD = 'Room|Join Room';
 var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
 var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_BATTLE_INFO = 'Dołącz do pokoju bitewnego ze swoim przyjacielem, wtedy będziesz walczyć razem.';
+var TOOLS_BATTLE_JOINALERT = 'Wprowadź identyfikator pokoju';
+var TOOLS_BATTLE_LEAVEALERT = 'Opuść bieżący pokój';
 var OLCOMP_UPDATELIST = 'Zaktualizuj listę zawodów';
 var OLCOMP_VIEWRESULT = 'Pokaż wyniki';
 var OLCOMP_VIEWMYRESULT = 'Moja historia';
@@ -178,7 +178,7 @@ var scrdata = [
 	['Wprowadź', [
 		['Zewnętrzny', "input", 0],
 		['Zawody', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['Bitwa online', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -323,6 +323,9 @@ var scrdata = [
 		['stan losowy', "gearso", 0],
 		['optymalny', "gearo", 0],
 		['losowy ruch', "gear", 10]
+	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -484,7 +487,7 @@ var PROPERTY_TOOLSFUNC = 'Wybrane funkcje';
 var PROPERTY_TRIM = 'Liczba ułożeń niebranych pod uwagę';
 var PROPERTY_TRIM_MED = 'Mediana';
 var PROPERTY_STKHEAD = 'Użyj informacji o stanie Stackmat';
-var PROPERTY_TOOLPOS = 'Tools panel position';
+var PROPERTY_TOOLPOS = 'Pozycja panelu narzędzi';
 var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Pokaż stopniowo rozwiązanie';
 var PROPERTY_IMPPREV = 'Importuj starsze dane';
@@ -512,10 +515,10 @@ var TOOLS_SCRGEN = 'GeneratorScrambli';
 var SCRGEN_NSCR = 'Liczba scramblów';
 var SCRGEN_PRE = 'prefiks';
 var SCRGEN_GEN = 'Generuj algorytmy mieszające!';
-var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_TITLE = 'Wirtualna powtórka';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
-var GIIKER_RESET = 'Reset (Mark Solved)';
+var VRCREPLAY_SHARE = 'udostępnij link';
+var GIIKER_CONNECT = 'Kliknij, aby połączyć';
+var GIIKER_RESET = 'Resetuj (Oznacz jako rozwiązane)';
 var PROPERTY_SHOWAD = 'Show advistisements (take effect after reload)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var PROPERTY_GIIORI = 'Orientacja kostki';

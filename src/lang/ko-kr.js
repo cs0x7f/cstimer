@@ -324,6 +324,9 @@ var scrdata = [
 		['최적', "gearo", 0],
 		['무작위 수순', "gear", 10]
 	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
+	]],
 	['C메트릭', [
 		[' ', "cm3", 25]
 	]],

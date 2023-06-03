@@ -324,6 +324,9 @@ var scrdata = [
 		['Optimal', "gearo", 0],
 		['tilfældig træk', "gear", 10]
 	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
+	]],
 	['Cmetrik', [
 		[' ', "cm3", 25]
 	]],

@@ -324,6 +324,9 @@ var scrdata = [
 		['optimalno', "gearo", 0],
 		['nasumični potez', "gear", 10]
 	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
+	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
 	]],

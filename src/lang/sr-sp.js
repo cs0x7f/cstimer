@@ -324,6 +324,9 @@ var scrdata = [
 		['optimal', "gearo", 0],
 		['Насумичан потез', "gear", 10]
 	]],
+	['Kilominx', [
+		['random state', "klmso", 0]
+	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
 	]],

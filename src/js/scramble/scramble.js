@@ -647,7 +647,7 @@ var scramble = execMain(function(rn, rndEl) {
 			if (value[0] == 'scrSize') {
 				ssdiv.css('font-size', value[1] / 7 + 'em');
 			} else if (value[0] == 'scrMono') {
-				div.css('font-family', value[1] ? 'SimHei, Monospace' : 'Arial');
+				div.css('font-family', value[1] ? 'Monospace' : 'Arial');
 			} else if (value[0] == 'scrType') {
 				if (value[1] != menu.getSelected()) {
 					loadType(value[1]);

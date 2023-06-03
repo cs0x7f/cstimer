@@ -109,7 +109,7 @@ var tools = execMain(function() {
 			return "sq1";
 		} else if (/^clk(wca|o)$/.exec(scrambleType)) {
 			return "clk";
-		} else if (/^(mgmp|mgmo|minx2g|mlsll|mgmpll|mgmll)$/.exec(scrambleType)) {
+		} else if (/^(mgmp|mgmo|minx2g|mlsll|mgmpll|mgmll|klmso)$/.exec(scrambleType)) {
 			return "mgm";
 		} else if (/^15p(at|ra?p?)?$/.exec(scrambleType)) {
 			return "15p";
