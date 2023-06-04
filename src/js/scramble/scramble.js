@@ -737,21 +737,34 @@ var scramble = execMain(function(rn, rndEl) {
 		var scrNum = $('<input type="text" maxlength="3">').val(5);
 		var output = $('<textarea rows="10" style="width: 100%" readonly />');
 		var prefix = $('<select><option value="1. ">1. </option><option value="1) ">1) </option><option value="(1) ">(1) </option><option value=""></option></select>');
-		tdiv.append(SCRGEN_NSCR, scrNum, "&nbsp;", SCRGEN_PRE).append(prefix, "<br>", button, "<br>", output);
+		var downclk = $('<span class="click">').html('Download');
+		tdiv.append(SCRGEN_NSCR, scrNum, "&nbsp;", SCRGEN_PRE).append(prefix, "<br>", button, ' | ', downclk, "<br>", output);
+		var genScrambles = "";
 
 		function generate() {
 			var n_scramble = ~~scrNum.val();
-			var scrambles = "";
+			genScrambles = "";
 			var scramble_copy = scramble;
 			var pre = prefix.val();
 			for (var i = 0; i < n_scramble; i++) {
 				calcScramble();
-				scrambles += pre.replace('1', i + 1) + scramble + "\n";
+				genScrambles += pre.replace('1', i + 1) + scramble + "\n";
 			}
-			// console.log(scrambles);
 			scramble = scramble_copy;
-			output.text(scrambles);
+			output.text(genScrambles);
 			output.select();
+		}
+
+		function downClk(e) {
+			if (!genScrambles) {
+				return;
+			}
+			var blob = new Blob([genScrambles], {'type': 'text/plain'});
+			var outFile = $('<a class="click"/>').appendTo('body');
+			outFile.attr('href', URL.createObjectURL(blob));
+			outFile.attr('download', 'Scrambles_' + mathlib.time2str(new Date()/1000, '%Y%M%D_%h%m%s') + '.txt');
+			outFile[0].click();
+			outFile.remove();
 		}
 
 		return function(fdiv) {
@@ -761,6 +774,7 @@ var scramble = execMain(function(rn, rndEl) {
 			fdiv.empty().append(tdiv.width(div.width() / 2));
 			prefix.unbind("change").change(kernel.blur);
 			button.unbind("click").click(generate);
+			downclk.unbind("click").click(downClk);
 		}
 	})();
 

@@ -390,14 +390,12 @@ var kilominx = (function() {
 		phase1Coord = new CombCoord([5, 6, 7, 8, 9]);
 		var tmp1 = new KiloCubie();
 		var tmp2 = new KiloCubie();
-		mathlib.createMove(Phase1Move, 4845, function(idx, move) {
-			phase1Coord.set(tmp1, idx);
+		mathlib.createMove(Phase1Move, 1140, function(idx, move) {
+			phase1Coord.set(tmp1, idx, 3);
 			KiloCubie.KiloMult(tmp1, KiloCubie.moveCube[move * 4], tmp2);
-			return phase1Coord.get(tmp2);
+			return phase1Coord.get(tmp2, 3);
 		}, 12);
-		mathlib.createPrun(Phase1Prun, 0, 4845 * 24, 14, function(idx, move) {
-			return ~~(comb4FullMove(Phase1Move, idx * 81, move) / 81);
-		}, 12, 4, 4);
+		mathlib.createPrun(Phase1Prun, 0, 1140 * 27 * 6, 8, comb3FullMove.bind(null, Phase1Move), 12, 4, 5);
 	}
 
 	function initPhase2() {
@@ -493,16 +491,16 @@ var kilominx = (function() {
 		var idx;
 
 		//phase1
-		var doPhase1Move = comb4FullMove.bind(null, Phase1Move);
-		var val0 = phase1Coord.get(kc0);
+		var doPhase1Move = comb3FullMove.bind(null, Phase1Move);
+		var val0 = phase1Coord.get(kc0, 3);
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][2]], kc0, KiloCubie.symCube[2], kc1);
-		var val1 = phase1Coord.get(kc1);
-		idx = [val0[0] * 81 * 24 + val0[1] * 81 + val0[2], val1[0] * 81 * 24 + val1[1] * 81 + val1[2]];
+		var val1 = phase1Coord.get(kc1, 3);
+		idx = [val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]];
 		var tt = +new Date;
 		var sol1 = solve(idx, function(idx) {
 			return idx[0] == 0 && idx[1] == 0;
 		}, function(idx) {
-			return Math.max(mathlib.getPruning(Phase1Prun, ~~(idx[0] / 81)), mathlib.getPruning(Phase1Prun, ~~(idx[1] / 81)));
+			return Math.max(mathlib.getPruning(Phase1Prun, idx[0]), mathlib.getPruning(Phase1Prun, idx[1]));
 		}, function(idx, move) {
 			var idx1 = [doPhase1Move(idx[0], move), doPhase1Move(idx[1], y2Move[move])];
 			if (idx1[0] == idx[0] && idx1[1] == idx[1]) {
