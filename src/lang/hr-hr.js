@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 za noob-ove', "333noob", 25],
 		['samo rubni dijelovi', "edges", 0],
 		['samo korneri', "corners", 0],
+		['BLD pomoćnik', "nocache_333bldspec", 0],
+		['3x3 s nogama', "333ft", 0],
+		['Prilagođeno', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['zadnji sloj', "ll", 0],
 		['zb zadnjeg sloja', "zbll", 0],
 		['korneri zadnjeg sloja', "cll", 0],
 		['COLL', "coll", 0],
 		['rubni dijelovi zadnjeg sloja', "ell", 0],
-		['zadnjih 6 rubnih dijelova', "lse", 0],
-		['zadnjih 6 rubnih dijelova&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['složeni križ', "f2l", 0],
 		['zadnji slot + zadnji sloj', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['lagani križ', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD pomoćnik', "nocache_333bldspec", 0],
-		['3x3 s nogama', "333ft", 0],
-		['Prilagođeno', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["nasumično stanje (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 maraton (WCA)', "r234w", 0],
 		['2345 maraton (WCA)', "r2345w", 0],
 		['23456 maraton (WCA)', "r23456w", 0],
-		['234567 maraton (WCA)', "r234567w", 0]
+		['234567 maraton (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===ŠALE===', [
 		['--', "blank", 0]

@@ -576,6 +576,11 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, cocase[0] + 0x76540000, cocase[1], presuff, aufsuff) + rlappsuff[rnd4];
 	}
 
+	function getSBRouxScramble(type, length, cases) {
+		var rnd4 = rn(4);
+		return getAnyScramble(0xfa9ff6ffffff, 0xf00ff0ffffff, 0xf65fffff, 0xf00fffff, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
+	}
+
 	function getCOLLImage(efill, cases, canvas) {
 		var face = coll_map[cases][2].replace(/e/g, efill || 'U');
 		image.llImage(face, null, canvas);
@@ -877,6 +882,35 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xffff7f5fffff, 0x000000000000, 0xffffffff, 0xffffffff);
 	}
 
+	var daufsuff = [[], [Dx1], [Dx2], [Dx3]];
+	var daufrot = ["", "y", "y2", "y'"];
+	function getMehta3QBScramble() {
+		var rnd4 = mathlib.rn(4);
+		return getAnyScramble(0xffff765fffff, 0xffff000fffff, 0xf65fffff, 0xf00fffff, [daufsuff[rnd4]]) + daufrot[rnd4];
+	}
+
+	function getMehtaEOLEScramble() {
+		var skip = mathlib.rn(4);
+		var rnd4 = mathlib.rn(4);
+		return getAnyScramble(0xba98765fffff + (0x4567 & (0xf << skip * 4)) * 0x100000000, 0x0000000fffff + (0xf << skip * 4) * 0x100000000, 0xf65fffff, 0xf00fffff, [daufsuff[rnd4]]) + daufrot[rnd4];
+	}
+
+	function getMehtaTDRScramble() {
+		return getAnyScramble(0xba98765fffff, 0x000000000000, 0xf65fffff, 0xf00fffff);
+	}
+
+	function getMehta6CPScramble() {
+		return getAnyScramble(0xba98765fffff, 0x000000000000, 0xf65fffff, 0x00000000);
+	}
+
+	function getMehtaL5EPScramble() {
+		return getAnyScramble(0xba98765fffff, 0x000000000000, 0x76543210, 0x00000000);
+	}
+
+	function getMehtaCDRLLScramble() {
+		return getAnyScramble(0xba98765fffff, 0x000000000000, 0x7654ffff, 0x0000ffff);
+	}
+
 	var customfilter = ['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'RF', 'LF', 'LB', 'RB', 'URF', 'UFL', 'ULB', 'UBR', 'DFR', 'DLF', 'DBL', 'DRB'];
 	for (var i = 0; i < 20; i++) {
 		var piece = customfilter[i];
@@ -949,6 +983,13 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('pll', getPLLScramble, [pllfilter, pllprobs, getPLLImage])
 		('oll', getOLLScramble, [ollfilter, ollprobs, getOLLImage])
 		('2gll', get2GLLScramble)
+		('sbrx', getSBRouxScramble)
+		('mt3qb', getMehta3QBScramble)
+		('mteole', getMehtaEOLEScramble)
+		('mttdr', getMehtaTDRScramble)
+		('mt6cp', getMehta6CPScramble)
+		('mtl5ep', getMehtaL5EPScramble)
+		('mtcdrll', getMehtaCDRLLScramble)
 		('easyc', getEasyCrossScramble)
 		('easyxc', getEasyXCrossScramble)
 		('eoline', getEOLineScramble);

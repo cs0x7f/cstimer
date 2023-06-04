@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 kezdőknek', "333noob", 25],
 		['csak élek', "edges", 0],
 		['csak sarkok', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3 ft (lábbal)', "333ft", 0],
+		['Custom', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['utolsó réteg', "ll", 0],
 		['ZB utolsó réteg', "zbll", 0],
 		['utolsó réteg sarkai', "cll", 0],
 		['COLL', "coll", 0],
 		['utolsó réteg élei', "ell", 0],
-		['utolsó hat él', "lse", 0],
-		['utolsó hat él&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['kereszt megoldva', "f2l", 0],
 		['utolsó pár + utolsó réteg', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['könnyű kereszt', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3 ft (lábbal)', "333ft", 0],
-		['Custom', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["véletlen állapot (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 váltó (WCA)', "r234w", 0],
 		['2345 váltó (WCA)', "r2345w", 0],
 		['23456 váltó (WCA)', "r23456w", 0],
-		['234567 váltó (WCA)', "r234567w", 0]
+		['234567 váltó (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===POÉN===', [
 		['--', "blank", 0]

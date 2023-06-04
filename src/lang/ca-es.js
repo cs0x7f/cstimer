@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 per a novicis', "333noob", 25],
 		['Només arestes', "edges", 0],
 		['Només cantonades', "corners", 0],
+		['Ajudant per a BLD', "nocache_333bldspec", 0],
+		['3x3 Peus', "333ft", 0],
+		['Personalitzat', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['Última capa', "ll", 0],
 		['Última capa ZB', "zbll", 0],
 		['Cantonades de la última capa', "cll", 0],
 		['COLL', "coll", 0],
 		['Arestes de la última capa', "ell", 0],
-		['Últimes sis arestes', "lse", 0],
-		['Últimes sis arestes&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['Creu resolta', "f2l", 0],
 		['Últim espai + Última capa', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['Línia EO', "eoline", 0],
 		['Creu fàcil', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['Ajudant per a BLD', "nocache_333bldspec", 0],
-		['3x3 Peus', "333ft", 0],
-		['Personalitzat', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["estat aleatori (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['Relay 234 (WCA)', "r234w", 0],
 		['Relay 2345 (WCA)', "r2345w", 0],
 		['Relay 23456 (WCA)', "r23456w", 0],
-		['Relay 234567 (WCA)', "r234567w", 0]
+		['Relay 234567 (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===Bromes===', [
 		['--', "blank", 0]

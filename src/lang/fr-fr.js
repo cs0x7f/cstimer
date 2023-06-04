@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 pour débutants', "333noob", 25],
 		['Arêtes seulement', "edges", 0],
 		['Coins seulement', "corners", 0],
+		['Assistant BLD', "nocache_333bldspec", 0],
+		['3x3 ft', "333ft", 0],
+		['Personnalisé', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['Dernier étage', "ll", 0],
 		['Dernier étage (ZB)', "zbll", 0],
 		['Coins du dernier étage', "cll", 0],
 		['COLL', "coll", 0],
 		['Arêtes du dernier étage', "ell", 0],
-		['Six dernières arêtes', "lse", 0],
-		['Six dernières arêtes&ltM,U&gt', "lsemu", 0],
-		['L10P Roux', "cmll", 0],
 		['Croix résolue', "f2l", 0],
 		['Dernier slot + dernier étage', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['Croix facile', "easyc", 3],
-		['X-cross facile', "easyxc", 4],
-		['Assistant BLD', "nocache_333bldspec", 0],
-		['3x3 ft', "333ft", 0],
-		['Personnalisé', "333custom", 0]
+		['X-cross facile', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["état aléatoire (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['Relai 234 (WCA)', "r234w", 0],
 		['Relai 2345 (WCA)', "r2345w", 0],
 		['Relai 23456 (WCA)', "r23456w", 0],
-		['Relai 234567 (WCA)', "r234567w", 0]
+		['Relai 234567 (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===BLAGUES===', [
 		['--', "blank", 0]

@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 cho những thằng đần', "333noob", 25],
 		['cạnh', "edges", 0],
 		['góc', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3 FT', "333ft", 0],
+		['Custom', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['tầng 3', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "cll", 0],
 		['COLL', "coll", 0],
 		['ELL', "ell", 0],
-		['6 cạnh cuối', "lse", 0],
-		['6 cạnh cuối &ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['đã giải cross', "f2l", 0],
 		['F2L cuối  + tầng 3', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['Edge Orientation Line', "eoline", 0],
 		['solve dởm', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3 FT', "333ft", 0],
-		['Custom', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["random state (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 relay (WCA)', "r234w", 0],
 		['2345 relay (WCA)', "r2345w", 0],
 		['23456 relay (WCA)', "r23456w", 0],
-		['234567 relay (WCA)', "r234567w", 0]
+		['234567 relay (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['=== VUI =)) ===', [
 		['--', "blank", 0]

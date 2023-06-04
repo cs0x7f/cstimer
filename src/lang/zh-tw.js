@@ -190,14 +190,16 @@ var scrdata = [
 		['笨蛋專用', "333noob", 25],
 		['僅打亂邊塊', "edges", 0],
 		['僅打亂角塊', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3x3腳解', "333ft", 0],
+		['Custom', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['僅打亂頂層', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['CLL', "cll", 0],
 		['COLL', "coll", 0],
 		['ELL', "ell", 0],
-		['LSE', "lse", 0],
-		['LSE(使用MU)', "lsemu", 0],
-		['橋式最後十塊', "cmll", 0],
 		['預先解好十字', "f2l", 0],
 		['最後一個F2L+頂層', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['簡單的十字', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3x3腳解', "333ft", 0],
-		['Custom', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["隨機狀態 (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234連解 (WCA)', "r234w", 0],
 		['2345連解 (WCA)', "r2345w", 0],
 		['23456連解 (WCA)', "r23456w", 0],
-		['234567連解 (WCA)', "r234567w", 0]
+		['234567連解 (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===搞笑===', [
 		['--', "blank", 0]

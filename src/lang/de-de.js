@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 für Anfänger', "333noob", 25],
 		['nur Kanten', "edges", 0],
 		['nur Ecken', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3 mit Füßen', "333ft", 0],
+		['Angepasst', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['letze Schicht', "ll", 0],
 		['ZB letzte Schicht', "zbll", 0],
 		['Ecken der letzten Schicht', "cll", 0],
 		['COLL', "coll", 0],
 		['Kanten der letzen Schicht', "ell", 0],
-		['letzten sechs Kanten', "lse", 0],
-		['letzten sechs Kanten&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['Kreuz gelöst', "f2l", 0],
 		['letzter Slot + letzte Schicht', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['einfaches Kreuz', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3 mit Füßen', "333ft", 0],
-		['Angepasst', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["zufälliger Status (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 Staffel (WCA)', "r234w", 0],
 		['2345 Staffel (WCA)', "r2345w", 0],
 		['23456 Staffel (WCA)', "r23456w", 0],
-		['234567 Staffel (WCA)', "r234567w", 0]
+		['234567 Staffel (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===Witze===', [
 		['--', "blank", 0]

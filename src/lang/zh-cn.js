@@ -190,14 +190,16 @@ var scrdata = [
 		['傻瓜', "333noob", 25],
 		['棱块训练', "edges", 0],
 		['角块训练', "corners", 0],
+		['盲拧助手', "nocache_333bldspec", 0],
+		['三阶脚拧', "333ft", 0],
+		['自定义', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['顶层训练', "ll", 0],
 		['zbll训练', "zbll", 0],
 		['顶层角块', "cll", 0],
 		['COLL', "coll", 0],
 		['顶层棱块', "ell", 0],
-		['桥式六棱', "lse", 0],
-		['桥式六棱&ltM,U&gt', "lsemu", 0],
-		['桥式四角', "cmll", 0],
 		['F2L训练', "f2l", 0],
 		['F2L单组', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['简单十字', "easyc", 3],
-		['简单XCross', "easyxc", 4],
-		['盲拧助手', "nocache_333bldspec", 0],
-		['三阶脚拧', "333ft", 0],
-		['自定义', "333custom", 0]
+		['简单XCross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["随机状态 (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['2到4阶 (WCA)', "r234w", 0],
 		['2到5阶 (WCA)', "r2345w", 0],
 		['2到6阶 (WCA)', "r23456w", 0],
-		['2到7阶 (WCA)', "r234567w", 0]
+		['2到7阶 (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===213===', [
 		['--', "blank", 0]

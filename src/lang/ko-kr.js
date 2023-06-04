@@ -190,14 +190,16 @@ var scrdata = [
 		['바보', "333noob", 25],
 		['모서리만', "edges", 0],
 		['귀퉁이만', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3 발', "333ft", 0],
+		['Custom', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['맨 위층만', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['CLL', "cll", 0],
 		['COLL', "coll", 0],
 		['ELL', "ell", 0],
-		['LSE', "lse", 0],
-		['LSE &ltM,U&gt', "lsemu", 0],
-		['CMLL', "cmll", 0],
 		['맨 위층+홈통 4개', "f2l", 0],
 		['맨 위층+홈통 1개', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
 		['간단한 십자', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3 발', "333ft", 0],
-		['Custom', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["무작위 상태 (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 계주 (WCA)', "r234w", 0],
 		['2345 계주 (WCA)', "r2345w", 0],
 		['23456 계주 (WCA)', "r23456w", 0],
-		['234567 계주 (WCA)', "r234567w", 0]
+		['234567 계주 (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===ㅁㄴㅇㄹ===', [
 		['--', "blank", 0]

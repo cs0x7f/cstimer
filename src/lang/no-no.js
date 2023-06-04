@@ -190,14 +190,16 @@ var scrdata = [
 		['3x3x3 for nybegynnere', "333noob", 25],
 		['Bare kanter', "edges", 0],
 		['Bare hjørner', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3 ft', "333ft", 0],
+		['Custom', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['Siste rad', "ll", 0],
 		['zb siste rad', "zbll", 0],
 		['Hjørner på siste rad', "cll", 0],
 		['COLL', "coll", 0],
 		['Kantene på siste rad', "ell", 0],
-		['Siste seks kanter', "lse", 0],
-		['sist seks kanter', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['Krysset løst', "f2l", 0],
 		['Siste F2L plass + Siste rad', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLinje', "eoline", 0],
 		['lett kryss', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3 ft', "333ft", 0],
-		['Custom', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["tilfeldig tilstand (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 relay (WCA)', "r234w", 0],
 		['2345 relay (WCA)', "r2345w", 0],
 		['23456 relay (WCA)', "r23456w", 0],
-		['234567 relay (WCA)', "r234567w", 0]
+		['234567 relay (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===SPØK===', [
 		['--', "blank", 0]

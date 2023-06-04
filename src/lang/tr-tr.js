@@ -190,14 +190,16 @@ var scrdata = [
 		['yeniler için 3x3', "333noob", 25],
 		['sadece kenarlar', "edges", 0],
 		['sadece köşeler', "corners", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
+		['3x3 ayakla', "333ft", 0],
+		['Custom', "333custom", 0]
+	]],
+	['3x3x3 CFOP', [
 		['son katman', "ll", 0],
 		['zb son katman', "zbll", 0],
 		['son katmanın köşeleri', "cll", 0],
 		['COLL', "coll", 0],
 		['son katmanın kenarları', "ell", 0],
-		['son 6 kenar', "lse", 0],
-		['Son altı kenarlar&ltM,U&gt', "lsemu", 0],
-		['Roux L10P', "cmll", 0],
 		['cross çözülü', "f2l", 0],
 		['son bölme + son katman', "lsll2", 0],
 		['2GLL', "2gll", 0],
@@ -206,15 +208,26 @@ var scrdata = [
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
 		['ZZLL', "zzll", 0],
-		['TTLL', "ttll", 0],
 		['OLL', "oll", 0],
 		['son katmanın permütasyonu', "pll", 0],
 		['EO Çizgisi', "eoline", 0],
 		['kolay cross', "easyc", 3],
-		['easy xcross', "easyxc", 4],
-		['BLD Helper', "nocache_333bldspec", 0],
-		['3x3 ayakla', "333ft", 0],
-		['Custom', "333custom", 0]
+		['easy xcross', "easyxc", 4]
+	]],
+	['3x3x3 Roux', [
+		['2nd Block', "sbrx", 0],
+		['CMLL', "cmll", 0],
+		['LSE', "lse", 0],
+		['LSE &lt;M, U&gt;', "lsemu", 0]
+	]],
+	['3x3x3 Mehta', [
+		['3QB', "mt3qb", 0],
+		['EOLE', "mteole", 0],
+		['TDR', "mttdr", 0],
+		['6CP', "mt6cp", 0],
+		['CDRLL', "mtcdrll", 0],
+		['L5EP', "mtl5ep", 0],
+		['TTLL', "ttll", 0]
 	]],
 	['2x2x2', [
 		["Rastgele Durum (WCA)", "222so", 0],
@@ -401,7 +414,8 @@ var scrdata = [
 		['234 ardışık (WCA)', "r234w", 0],
 		['2345 ardışık (WCA)', "r2345w", 0],
 		['23456 ardışık (WCA)', "r23456w", 0],
-		['234567 ardışık (WCA)', "r234567w", 0]
+		['234567 ardışık (WCA)', "r234567w", 0],
+		['Mini Guildford', "rmngf", 0]
 	]],
 	['===ESPRİLER===', [
 		['--', "blank", 0]
