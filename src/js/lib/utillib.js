@@ -229,6 +229,18 @@ execMain(function() {
 			}, false);
 		});
 	}
+
+	if (navigator.storage && navigator.storage.persisted) {
+		navigator.storage.persisted().then(function(persistent) {
+			if (persistent) {
+				return Promise.resolve(persistent);
+			} else if (navigator.storage.persist) {
+				return navigator.storage.persist();
+			}
+		}).then(function(persistent) {
+			$.persistent = persistent;
+		});
+	}
 });
 
 /** @define {boolean} */
