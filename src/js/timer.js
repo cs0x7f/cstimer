@@ -266,9 +266,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.val(hardTime);
 				} else {
 					lcd.val(isCleared ? 0 : (curTime[1] || 0));
-					if (!isCleared && curTime[1] && lastTime && lastTime[1] && getProp('showDiff')) {
+					if (!isCleared && curTime[1] && lastTime && lastTime[1] && getProp('showDiff') != 'n') {
 						var diff = curTime[1] - lastTime[1];
-						$('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(lastTime[1] - curTime[1])) + ')');
+						var label = $('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(lastTime[1] - curTime[1])) + ')');
+						var color = getProp('showDiff');
+						if (diff != 0 && color != 'b') {
+							label.css('color', (diff > 0) == (color == 'gr') ? 'green' : 'red');
+						}
 					}
 				}
 				if (value && value[4] && !isCleared) {
@@ -1580,7 +1584,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10], 3);
 		regProp('kernel', 'showAvg', 0, SHOW_AVG_LABEL, [true], 1);
-		regProp('kernel', 'showDiff', 0, 'SHOW_DIFF_LABEL', [true], 1);
+		regProp('kernel', 'showDiff', 1, SHOW_DIFF_LABEL, ['rg', ['rg', 'gr', 'b', 'n'], SHOW_DIFF_LABEL_STR.split('|')], 1);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100], 1);
 		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true], 1);
 	});

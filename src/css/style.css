@@ -552,8 +552,14 @@ a {
 	font-size: 0.15em;
 }
 
+.m #timer .difflabel {
+	display: block;
+	font-size: 0.2em;
+	margin-top: -0.4em;
+}
+
 #rtimer .difflabel {
-	margin-top: -0.5em;
+	margin-top: -0.4em;
 	font-family: Arial;
 	font-size: 0.25em;
 }
