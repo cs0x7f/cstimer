@@ -119,8 +119,10 @@ var storage = execMain(function() {
 					var cursor = event.target.result;
 					if (cursor) {
 						var m = keyre.exec(cursor.key);
-						objectStore.put(cursor.value, getID(sessionIdx, ~~m[2]));
-						objectStore["delete"](cursor.key);
+						if (m) {
+							objectStore.put(cursor.value, getID(sessionIdx, ~~m[2]));
+							objectStore["delete"](cursor.key);
+						}
 						cursor["continue"]();
 					}
 				};
@@ -141,9 +143,11 @@ var storage = execMain(function() {
 						var cursor = event.target.result;
 						if (cursor) {
 							var m = keyre.exec(cursor.key);
-							var sessionIdx = ~~m[1];
-							exportObj['session' + sessionIdx] = exportObj['session' + sessionIdx] || [];
-							Array.prototype.push.apply(exportObj['session' + sessionIdx], cursor.value);
+							if (m) {
+								var sessionIdx = ~~m[1];
+								exportObj['session' + sessionIdx] = exportObj['session' + sessionIdx] || [];
+								Array.prototype.push.apply(exportObj['session' + sessionIdx], cursor.value);
+							}
 							cursor["continue"]();
 						}
 					};
@@ -183,10 +187,44 @@ var storage = execMain(function() {
 		});
 	}
 
+	function setKey(key, value) {
+		return new Promise(function(resolve, reject) {
+			if (indexedDB) {
+				getTrans("readwrite", function(objectStore) {
+					objectStore.put(value, key);
+				}, function() {
+					resolve(true);
+				});
+			} else {
+				localStorage[key] = value;
+				resolve(true);
+			}
+		});
+	}
+
+	function getKey(key) {
+		return new Promise(function(resolve, reject) {
+			var result;
+			if (indexedDB) {
+				getTrans("readonly", function(objectStore) {
+					objectStore.get(key).onsuccess = function(event) {
+						result = event.target.result;
+					};
+				}, function() {
+					resolve(result);
+				});
+			} else {
+				resolve(localStorage[key]);
+			}
+		});
+	}
+
 	return {
 		set: set,
 		get: get,
 		del: del,
+		setKey: setKey,
+		getKey: getKey,
 		importAll: importAll,
 		exportAll: exportAll
 	};

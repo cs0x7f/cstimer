@@ -1019,6 +1019,7 @@ var kernel = execMain(function() {
 		var img;
 		var lastidx = 0;
 		var urlre = /^((http|https|ftp):\/\/)?(\w(\:\w)?@)?([0-9a-z_-]+\.)*?([a-z0-9-]+\.[a-z]{2,6}(\.[a-z]{2})?(\:[0-9]{2,6})?)((\/[^?#<>\/\\*":]*)+(\?[^#]*)?(#.*)?)?$/i;
+		var uploadImageFile = $('<input type="file" id="imgfile" accept="image/*"/>');
 
 		function procSignal(signal, value) {
 			if (value[0] == "bgImgO") {
@@ -1035,7 +1036,7 @@ var kernel = execMain(function() {
 				if (value[1] == 'u') {
 					if (value[2] == 'modify') {
 						var input = prompt(BGIMAGE_URL, src);
-						if (urlre.exec(input)) {
+						if (urlre.exec(input) && input.length < 2048) {
 							src = input;
 							img.attr("src", src);
 							setProp('bgImgSrc', src);
@@ -1048,6 +1049,26 @@ var kernel = execMain(function() {
 						src = getProp('bgImgSrc', src);
 						img.attr("src", src);
 					}
+				} else if (value[1] == 'f') {
+					storage.getKey("bgImgFile").then(function(file) {
+						if (file) {
+							img.attr("src", URL.createObjectURL(file));
+						} else if (value[2] != 'modify') {
+							setProp('bgImgS', 'n');
+							property.reload();
+						}
+					});
+					if (value[2] == 'modify') {
+						uploadImageFile.unbind('change').change(function() {
+							if (!uploadImageFile[0].files.length) {
+								return;
+							}
+							var file = uploadImageFile[0].files[0];
+							img.attr("src", URL.createObjectURL(file));
+							storage.setKey("bgImgFile", file);
+						});
+						uploadImageFile.click();
+					}
 				} else {
 					lastidx = value[1];
 					img.attr("src", images[value[1]]);
@@ -1059,7 +1080,7 @@ var kernel = execMain(function() {
 			img = $('#bgImage');
 			regListener('bgImage', 'property', procSignal, /^bgImg[OS]$/);
 			regProp('ui', 'bgImgO', 2, BGIMAGE_OPACITY, [25, 0, 100]);
-			regProp('ui', 'bgImgS', 1, BGIMAGE_IMAGE, ['n', ['n', 'u', 0, 1, 2], BGIMAGE_IMAGE_STR.split('|').slice(0, -1).concat(1, 2, 3)]);
+			regProp('ui', 'bgImgS', 1, BGIMAGE_IMAGE, ['n', ['n', 'u', 0, 1, 2, 'f'], BGIMAGE_IMAGE_STR.split('|').slice(0, -1).concat(1, 2, 3, 'upload')]);
 		});
 	})();
 
