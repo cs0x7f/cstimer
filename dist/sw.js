@@ -10,6 +10,7 @@ var urlsToCache = [
 var langUrlRe = /^(.*(\/|timer.php))\?lang=.*$/;
 
 self.addEventListener('install', function(event) {
+	self.skipWaiting();
 	event.waitUntil(
 		caches.open(CACHE_NAME)
 		.then(function(cache) {
