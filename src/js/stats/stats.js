@@ -1761,22 +1761,20 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var ret = -1;
 		(times[2] || "").replace(/[0-9]+(\.[0-9]+)?/g, function(m) {
 			if (idx == 0) {
-				ret = parseFloat(m);
+				ret = parseFloat(m) * 1000;
 			}
 			idx--;
 		});
-		return ret * 1000;
+		return ret;
 	}
 
 	for (var i = 0; i < 5; i++) {
 		regExtraInfo('comment' + i,
 			getCommentNumber.bind(null, i),
 			[STATS_COMMENT + (i + 1), function(val) {
-				val /= 1000;
-				return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
+				return "" + (val >= 0 ? (val * 1e-3).toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
 			}, function(val) {
-				val /= 1000;
-				return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'DNF');
+				return "" + (val >= 0 ? (val * 1e-3).toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'DNF');
 			}]
 		);
 	}
