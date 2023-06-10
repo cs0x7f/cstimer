@@ -22,11 +22,12 @@ var stattool = execMain(function(kpretty, round, kpround) {
 		for (var i = 0; i < times_stats_table.timesLen; i++) {
 			totalTime += stats.timesAt(i)[0][1];
 		}
+		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
 		var s = [];
-		s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats_table.timesLen - numdnf) + "/" + times_stats_table.timesLen) + ', ' + hlstr[9].replace("%v", kpround(sessionmean)) + '</span>\n');
-		s.push('<span>' + hlstr[12].replace("%d", kpretty(totalTime)) + '</span>\n');
-		s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + kpretty(times_stats_table.bestTime) + '</span>');
-		s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + kpretty(times_stats_table.worstTime) + "</span>\n");
+		s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats_table.timesLen - numdnf) + "/" + times_stats_table.timesLen) + ', ' + hlstr[9].replace("%v", prettyFunc[1](sessionmean)) + '</span>\n');
+		s.push('<span>' + hlstr[12].replace("%d", prettyFunc[0](totalTime)) + '</span>\n');
+		s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + prettyFunc[0](times_stats_table.bestTime) + '</span>');
+		s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + prettyFunc[0](times_stats_table.worstTime) + "</span>\n");
 		var hasTable = false;
 		var tableHead = '<table class="table"><tr><td></td><td>' + hlstr[1] + '</td><td>' + hlstr[0] + '</td></tr>';
 		for (var j = 0; j < avgSizes.length; j++) {
@@ -34,9 +35,9 @@ var stattool = execMain(function(kpretty, round, kpround) {
 			if (times_stats_table.timesLen >= size) {
 				hasTable || (hasTable = true, s.push(tableHead));
 				s.push('<tr><td>' + hlstr[7 - (avgSizes[j] >>> 31)].replace("%mk", size));
-				s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.lastAvg[j][0]) + " (σ=" + stats.trim(times_stats_table.lastAvg[j][1], 2) +
+				s.push('<td><span class="click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + prettyFunc[1](times_stats_table.lastAvg[j][0]) + " (σ=" + stats.trim(times_stats_table.lastAvg[j][1], 2) +
 					')</span></td>');
-				s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + kpround(times_stats_table.bestAvg(j, 0)) + " (σ=" + stats.trim(times_stats_table.bestAvg(j, 1), 2) +
+				s.push('<td><span class="click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + prettyFunc[1](times_stats_table.bestAvg(j, 0)) + " (σ=" + stats.trim(times_stats_table.bestAvg(j, 1), 2) +
 					')</span></td></tr>');
 			}
 		}
