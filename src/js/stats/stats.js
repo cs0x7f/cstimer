@@ -517,7 +517,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
 		if (statSrc[0] != 't') {
 			ret.pop();
-			ret.push('<td class="times">' + '<span style="opacity:0.5">' + pretty(curTime, false) + '</span> ' + prettyFunc[0](times_stats_table.timeAt(i)) + '</td>');
+			ret.push('<td class="times">' + '<span style="opacity:0.5">' + pretty(curTime, false) + '</span> ' + prettyFunc[0](times_stats_table.timeAt(i)).split(' ')[0] + '</td>');
 		}
 
 		var st1 = times_stats_table.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
