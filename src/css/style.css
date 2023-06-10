@@ -528,6 +528,10 @@ a {
 	user-select: none;
 }
 
+#lcd {
+	white-space: nowrap;
+}
+
 #lcd::before {
 	content: "";
 	position: absolute;

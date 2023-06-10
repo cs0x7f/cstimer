@@ -1793,22 +1793,21 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			var score = data[0] * 2 - data[1];
 			var time = times[0][0] + times[0][1];
-			if (times[0][1] > Math.min(6, data[1]) * 600000) { // 10min/attempt, 60min in total
-				return -1;
-			}
-			return (256 - score) * 1000 + time / (1 << 22);
+			return (256 - score) * 1024 + time / (1 << 26);
 		}, ['MBLD', function(val) {
 			if (val < 0) {
 				return 'DNF';
+			} else if (val > 256 * 1024 + 1) {
+				return 'N/A';
 			}
-			var score = 256 - Math.floor(val) / 1000;
-			var time = Math.round((val % 1) * (1 << 22));
-			return "" + score + " " + kernel.pretty(time);
+			var score = 256 - Math.floor(val) / 1024;
+			var time = Math.round((val % 1) * (1 << 26));
+			return "" + score + " " + kernel.pretty(time).split('.')[0];
 		}, function(val) {
 			if (val < 0) {
 				return "DNF";
 			}
-			var score = 256 - Math.floor(val) / 1000;
+			var score = 256 - Math.floor(val) / 1024;
 			return "" + (val >= 0 ? score.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'DNF');
 		}]
 	);
