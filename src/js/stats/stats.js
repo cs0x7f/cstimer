@@ -1779,7 +1779,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		);
 	}
 
-	regExtraInfo('mbld',
+	regExtraInfo('commentmbld',
 		function(times) {
 			if (times[0][0] < 0) {
 				return -1;

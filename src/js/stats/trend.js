@@ -1,5 +1,5 @@
 var trend = execMain(function(kpretty) {
-	var canvas = $('<canvas />'), ctx;
+	var canvas = $('<canvas style="margin-bottom:-0.4em"/>'), ctx;
 	var trendDiv = $('<div style="text-align:center">');
 
 	var isEnable = false;
