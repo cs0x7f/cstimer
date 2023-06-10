@@ -716,7 +716,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			} else {
 				s.push(hlstr[7].replace("%mk", ~~(id / 10))); //"Average of "+~~(id/10);
 			}
-			s.push(": " + prettyFunc[1](data[0]));
+			s.push(": " + prettyFunc[id == 10 ? 0 : 1](data[0]));
 		}
 
 		s.push("\n\n" + hlstr[10] + "\n");
@@ -1778,6 +1778,40 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}]
 		);
 	}
+
+	regExtraInfo('mbld',
+		function(times) {
+			if (times[0][0] < 0) {
+				return -1;
+			}
+			var data = [];
+			(times[2] || "").replace(/[0-9]+/g, function(m) {
+				data.push(parseInt(m));
+			});
+			if (data.length < 2 || data[0] < 2 || data[0] > data[1] || data[0] * 2 < data[1] || data[1] >= 256) {
+				return -1;
+			}
+			var score = data[0] * 2 - data[1];
+			var time = times[0][0] + times[0][1];
+			if (times[0][1] > Math.min(6, data[1]) * 600000) { // 10min/attempt, 60min in total
+				return -1;
+			}
+			return (256 - score) * 1000 + time / (1 << 22);
+		}, ['MBLD', function(val) {
+			if (val < 0) {
+				return 'DNF';
+			}
+			var score = 256 - Math.floor(val) / 1000;
+			var time = Math.round((val % 1) * (1 << 22));
+			return "" + score + " " + kernel.pretty(time);
+		}, function(val) {
+			if (val < 0) {
+				return "DNF";
+			}
+			var score = 256 - Math.floor(val) / 1000;
+			return "" + (val >= 0 ? score.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'DNF');
+		}]
+	);
 
 	return {
 		importSessions: sessionManager.importSessions,
