@@ -1788,26 +1788,27 @@ var stats = execMain(function(kpretty, round, kpround) {
 			(times[2] || "").replace(/[0-9]+/g, function(m) {
 				data.push(parseInt(m));
 			});
-			if (data.length < 2 || data[0] < 2 || data[0] > data[1] || data[0] * 2 < data[1] || data[1] >= 256) {
+			if (data.length < 2 || data[0] < 2 || data[0] > data[1] || data[0] * 2 < data[1] || data[1] >= 255) {
 				return -1;
 			}
 			var score = data[0] * 2 - data[1];
-			var time = times[0][0] + times[0][1];
-			return (256 - score) * 1024 + time / (1 << 26);
+			var time = ~~(times[0][0] + times[0][1]);
+			return (255 - score) * 1024 + time / Math.pow(2, 26) + data[0] / Math.pow(2, 34);
 		}, ['MBLD', function(val) {
 			if (val < 0) {
 				return 'DNF';
-			} else if (val > 256 * 1024 + 1) {
+			} else if (val > 255 * 1024 + 1) {
 				return 'N/A';
 			}
-			var score = 256 - Math.floor(val) / 1024;
-			var time = Math.round((val % 1) * (1 << 26));
-			return "" + score + " " + kernel.pretty(time).split('.')[0];
+			var score = 255 - Math.floor(val) / 1024;
+			var solved = val * Math.pow(2, 34) & 0xff;
+			var time = ~~((val % 1) * Math.pow(2, 26));
+			return "" + solved + "/" + (solved * 2 - score) + " " + kernel.pretty(time).split('.')[0];
 		}, function(val) {
 			if (val < 0) {
 				return "DNF";
 			}
-			var score = 256 - Math.floor(val) / 1024;
+			var score = 255 - Math.floor(val) / 1024;
 			return "" + (val >= 0 ? score.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'DNF');
 		}]
 	);

@@ -25,7 +25,7 @@ var stattool = execMain(function(kpretty, round, kpround) {
 		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
 		var s = [];
 		s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats_table.timesLen - numdnf) + "/" + times_stats_table.timesLen) + ', ' + hlstr[9].replace("%v", prettyFunc[1](sessionmean)) + '</span>\n');
-		s.push('<span>' + hlstr[12].replace("%d", prettyFunc[0](totalTime)) + '</span>\n');
+		s.push('<span>' + hlstr[12].replace("%d", kpretty(totalTime)) + '</span>\n');
 		s.push(hlstr[0] + ": " + '<span class="click" data="bs">' + prettyFunc[0](times_stats_table.bestTime) + '</span>');
 		s.push(' | ' + hlstr[2] + ": " + '<span class="click" data="ws">' + prettyFunc[0](times_stats_table.worstTime) + "</span>\n");
 		var hasTable = false;
