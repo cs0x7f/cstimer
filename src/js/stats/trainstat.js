@@ -76,7 +76,7 @@ var trainStat = execMain(function() {
 				caseCnt[0] / maxSubt * 100,
 				(caseCnt[1] - caseCnt[0]) / maxSubt * 100,
 				kernel.pretty(caseCnt[0]),
-				kernel.pretty(caseCnt[1])
+				kernel.pround(caseCnt[1])
 			];
 			var curTr = trTpl;
 			for (var j = 0; j < 6; j++) {

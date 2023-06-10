@@ -35,7 +35,7 @@ var TimeStat = execMain(function() {
 	TimeStat.prototype.getAllStats = function() {
 		this.genStats();
 		var numdnf = this.timesLen - this.tree.rankOf(-1);
-		return [numdnf, (numdnf == this.timesLen) ? -1 : kernel.round(this.tree.cumSum(this.timesLen - numdnf) / (this.timesLen - numdnf))];
+		return [numdnf, (numdnf == this.timesLen) ? -1 : this.tree.cumSum(this.timesLen - numdnf) / (this.timesLen - numdnf)];
 	}
 
 	TimeStat.prototype.genStats = function() {
