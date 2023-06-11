@@ -932,34 +932,44 @@ var gsolver = (function() {
 
 		function prettySol(settings, size, midx) {
 			var ret = [];
-			var moveRef = midx == 0 ? 'VH' : 'HV';
+			var moveRef = midx == 1 ? 'VH' : 'HV';
 			var symbol = settings.indexOf('a') == -1 ? ['DR', 'UL'] : ['\uFFEC\uFFEB', '\uFFEA\uFFE9'];
 			var isBlankMove = settings.indexOf('m') != -1;
 			var compress = settings.indexOf('p') != -1;
-			var pos = [size - 1, size - 1];
-			for (var i = 0; i < sol.length; i++) {
-				if (i < sol.length - 1 && sol[i][0] == sol[i + 1][0] ||
-					i >= 2 && sol[i - 2] == sol[i]) {
-					sol.splice(i, 1);
-					i = -1;
-				}
-			}
+			var pos = [-1, -1];
 			for (var i = 0; i < sol.length; i++) {
 				var val = ~~sol[i][1];
 				var m = moveRef.indexOf(sol[i][0]);
-				if (pos[m] != val) {
-					var axis = symbol[isBlankMove != (pos[m] > val) ? 0 : 1][m];
-					var pow = Math.abs(pos[m] - val);
-					if (compress) {
-						ret.push(axis + pow);
-					} else {
-						while (pow-- > 0) {
-							ret.push(axis);
-						}
-					}
+				if (pos[m] == -1 || pos[m] == val) {
 					pos[m] = val;
+					continue;
 				}
+				if (ret.length > 0 && ret[ret.length - 1][0] == m) {
+					var move = ret[ret.length - 1];
+					move[1] += val - pos[m];
+					if (move[1] == 0) {
+						ret.pop();
+					}
+				} else {
+					ret.push([m, val - pos[m]]);
+				}
+				pos[m] = val;
 			}
+			for (var i = 0; i < ret.length; i++) {
+				var move = ret[i];
+				var axis = symbol[isBlankMove != (move[1] > 0) ? 0 : 1][move[0]];
+				var pow = Math.abs(move[1]);
+				ret[i] = [];
+				if (compress) {
+					ret[i].push(axis + pow);
+				} else {
+					while (pow-- > 0) {
+						ret[i].push(axis);
+					}
+				}
+				ret[i] = ret[i].join(' ');
+			}
+			ret.reverse();
 			return ret.join(' ').replace(/1/g, '');
 		}
 
@@ -972,7 +982,7 @@ var gsolver = (function() {
 				perm[1] = mirror(perm[0]);
 				out: for (var d = 0; d < 99; d++) {
 					for (midx = 0; midx < 2; midx++) {
-						var blank = perm[midx].indexOf(perm.length - 1);
+						var blank = perm[midx].indexOf(perm[midx].length - 1);
 						sol = ['V' + (blank & 3), 'H' + (blank >> 2)];
 						var sol1 = solv1.search(stateInit('0123???????????-', perm[midx]), d, d);
 						if (sol1) {
@@ -996,7 +1006,6 @@ var gsolver = (function() {
 			var sol3 = solv3.search(stateInit('0123456789abcde-', perm[midx]).replace(/[012348c]/g, '$'), 0);
 			sol = sol.concat(sol3);
 			DEBUG && console.log('[15p solver]', midx, stateInit('0123456789abcde-', perm[midx]), sol.join(''), sol.length, +new Date - t);
-			sol.reverse();
 			return prettySol(type.slice(size == 3 ? 3 : 4), 4, midx);
 		}
 		scrMgr.reg(['15prp', '15prap', '15prmp'], getScramble.bind(null, 4))
