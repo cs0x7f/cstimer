@@ -10,11 +10,11 @@ var BUTTON_DONATE = 'ПОЖЕРТВУВАТИ';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'використовувати WCA інспекцію';
 var PROPERTY_USEINS_STR = 'Завжди|Тільки для BLD|Ніколи';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Показувати іконку, коли інспекція увімкнена';
 var PROPERTY_VOICEINS = 'голосове попередження інспекції WCA';
 var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
 var PROPERTY_VOICEVOL = 'Voice volume';
-var PROPERTY_PHASES = 'multi-phase';
+var PROPERTY_PHASES = 'мультифаза';
 var PROPERTY_TIMERSIZE = 'Розмір таймеру';
 var PROPERTY_USEMILLI = 'Використовувати мілісекунди';
 var PROPERTY_SMALLADP = 'використовувати малий шрифт після десяткової точки';
@@ -23,7 +23,7 @@ var PROPERTY_SCRMONO = 'monospaced scramble';
 var PROPERTY_SCRLIM = 'Limit the height of scramble area';
 var PROPERTY_SCRALIGN = 'Alignment of scramble area';
 var PROPERTY_SCRALIGN_STR = 'Центр|ліворуч|праворуч';
-var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
+var PROPERTY_SCRFAST = 'Використання швидкого скрамблу для 4х4х4 (неофіційно)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
@@ -51,7 +51,7 @@ var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
+var BUTTON_TOOLS = 'ІНСТРУМЕНТИ';
 var IMAGE_UNAVAILABLE = 'Недоступний для цього типу скрамблу';
 var TOOLS_SELECTFUNC = 'Функція';
 var TOOLS_CROSS = 'Хрест';
@@ -60,7 +60,7 @@ var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Куб';
 var TOOLS_IMAGE = 'Зобразити скрамбл';
-var TOOLS_STATS = 'Statistics';
+var TOOLS_STATS = 'Статистика';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'time distribution';
 var TOOLS_TREND = 'time trend';
@@ -68,7 +68,7 @@ var TOOLS_METRONOME = 'Метроном';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_TRAINSTAT = 'Стат. тренування';
 var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Підтвердити час';
 var TOOLS_SOLVERS = 'Solvers';
@@ -115,15 +115,15 @@ var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|bluetooth|q
 var PROPERTY_INTUNIT = 'Unit when entering an integer';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
 var PROPERTY_COLOR = 'Обрати колірну тему';
-var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
-var PROPERTY_VIEW = 'UI style is';
-var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
+var PROPERTY_COLORS = 'колір шрифту|колір фону|колір рамки|колір кнопок|колір посилань|колір лого|фоновий колір лого';
+var PROPERTY_VIEW = 'Стиль інтерфейсу є';
+var PROPERTY_VIEW_STR = 'Авто|Телефон|Комп\'ютер';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
-var COLOR_EXPORT = 'Please save the string for import';
+var COLOR_EXPORT = 'Будь ласка, збережіть строку для імпорту';
 var COLOR_IMPORT = 'Please input the string exported';
 var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
+var PROPERTY_FONTCOLOR_STR = 'чорний|білий';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
 var PROPERTY_FONT = 'Вибрати шрифт таймера';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
@@ -131,11 +131,11 @@ var PROPERTY_FORMAT = 'Формат часу';
 var PROPERTY_USEKSC = 'use keyboard shortcut';
 var PROPERTY_NTOOLS = 'number of tools';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
-var SCRAMBLE_NEXT = 'next';
-var SCRAMBLE_SCRAMBLE = ' scramble';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
-var SCRAMBLE_LENGTH = 'length';
+var SCRAMBLE_LAST = 'останній';
+var SCRAMBLE_NEXT = 'наступний';
+var SCRAMBLE_SCRAMBLE = 'розібрати';
+var SCRAMBLE_SCRAMBLING = 'Розбирання...';
+var SCRAMBLE_LENGTH = 'довжина';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
 var PROPERTY_VRCMP = 'multi-phase';
@@ -148,12 +148,12 @@ var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIIRSTS = 'Завжди|Питати|Ніколи';
 var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
 var PROPERTY_GIIMODES = 'Normal|Training';
 var PROPERTY_VRCAH = 'Useless pieces in huge cube';
 var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
+var CONFIRM_GIIRST = 'Скинути bluetooth куб як зібраний?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
@@ -163,19 +163,19 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
+		['3x3 наосліп', "333ni", 0],
 		['3x3 fm', "333fm", 0],
 		['3x3 oh', "333oh", 0],
-		['clock', "clkwca", 0],
+		['годинник', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['skewb', "skbso", 0],
 		['sq1', "sqrs", 0],
-		['4x4 bld', "444bld", -40],
-		['5x5 bld', "555bld", -60],
+		['4x4 наосліп', "444bld", -40],
+		['5x5 наосліп', "555bld", -60],
 		['3x3 mbld', "r3ni", 5]
 	]],
-	['Input', [
+	['Ввід', [
 		['Extern', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Online battle', "remoteBattle", 0],
@@ -187,21 +187,21 @@ var scrdata = [
 	['3x3x3', [
 		["random state (WCA)", "333", 0],
 		['random move', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['3x3x3 для початківців', "333noob", 25],
+		['тільки ребра', "edges", 0],
+		['тільки кути', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Користувацький', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
-		['last layer', "ll", 0],
+		['останній шар', "ll", 0],
 		['zb last layer', "zbll", 0],
-		['corners of last layer', "cll", 0],
+		['кути останнього шару', "cll", 0],
 		['COLL', "coll", 0],
 		['edges of last layer', "ell", 0],
-		['cross solved', "f2l", 0],
-		['last slot + last layer', "lsll2", 0],
+		['хрест зібрано', "f2l", 0],
+		['останній слот + останній шар', "lsll2", 0],
 		['2GLL', "2gll", 0],
 		['ZBLS', "zbls", 0],
 		['EOLS', "eols", 0],
@@ -211,7 +211,7 @@ var scrdata = [
 		['OLL', "oll", 0],
 		['PLL', "pll", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3],
+		['легкий хрест', "easyc", 3],
 		['easy xcross', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
@@ -278,7 +278,7 @@ var scrdata = [
 		['Carrot', "mgmc", 70],
 		['old style', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 0],
+		['останній слот + останній шар', "mlsll", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],
@@ -302,7 +302,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===ІНШЕ===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -321,7 +321,7 @@ var scrdata = [
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
 		['2x2x3 (Tower Cube)', "223", 0],
-		['2x3x3 (Domino)', "233", 25],
+		['2x3x3 (Доміно)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
 		['3x3x6', "336", 40],
@@ -349,7 +349,7 @@ var scrdata = [
 	['Gigaminx', [
 		['Pochmann', "giga", 300]
 	]],
-	['Helicopter Cube', [
+	['Куб-гвинтокрил', [
 		[' ', "heli", 40]
 	]],
 	['Redi Cube', [
@@ -366,12 +366,12 @@ var scrdata = [
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['old style', "prco", 70]
+		['старий стиль', "prco", 70]
 	]],
-	['Siamese Cube', [
-		['1x1x3 block', "sia113", 25],
-		['1x2x3 block', "sia123", 25],
-		['2x2x2 block', "sia222", 25]
+	['Сіамський Куб', [
+		['Блок 1х1х3', "sia113", 25],
+		['Блок 1х2х3', "sia123", 25],
+		['Блок 2х2х2', "sia222", 25]
 	]],
 	['Square-2', [
 		[' ', "sq2", 20]
@@ -382,13 +382,13 @@ var scrdata = [
 	['Super Square-1', [
 		['twist metric', "ssq1t", 20]
 	]],
-	['UFO', [
+	['НЛО', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
+	['Інше', [
 		['FTO (Face-Turning Octahedron)', "fto", 30]
 	]],
-	['===SPECIAL===', [
+	['===СПЕЦІАЛЬНЕ===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [

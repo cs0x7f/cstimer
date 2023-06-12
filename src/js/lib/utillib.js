@@ -33,7 +33,7 @@ execWorker(function() {
 
 execMain(function() {
 	window.onerror = function(msg, url, line, col, error) {
-		if (!line && !col || /^chrome-extension/i.exec(url)) {
+		if (!line && !col || /extension/i.exec(url) || !/\.js/i.exec(url)) {
 			return;
 		}
 		if (error == undefined) {
