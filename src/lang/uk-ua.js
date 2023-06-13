@@ -30,10 +30,10 @@ var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
 var PROPERTY_WNDSCR = 'Scramble panel display style';
 var PROPERTY_WNDSTAT = 'Statistics panel display style';
 var PROPERTY_WNDTOOL = 'Tools panel display style';
-var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Data Import/Export';
+var PROPERTY_WND_STR = 'Нормальний|Плаский';
+var EXPORT_DATAEXPORT = 'Імпорт/Експорт даних';
 var EXPORT_TOFILE = 'Експортувати до файлу';
-var EXPORT_FROMFILE = 'Import from file';
+var EXPORT_FROMFILE = 'Імпортувати з файлу';
 var EXPORT_TOSERV = 'Експортувати на сервер';
 var EXPORT_FROMSERV = 'Експортувати з серверу';
 var EXPORT_FROMOTHER = 'Імпорт сеансу(-ів) з інших таймерів';
@@ -62,10 +62,10 @@ var TOOLS_GIIKER = 'Bluetooth Куб';
 var TOOLS_IMAGE = 'Зобразити скрамбл';
 var TOOLS_STATS = 'Статистика';
 var TOOLS_HUGESTATS = 'cross-session stats';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
+var TOOLS_DISTRIBUTION = 'розподіл часу';
+var TOOLS_TREND = 'тенденція часу';
 var TOOLS_METRONOME = 'Метроном';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'Реконструювати';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Стат. тренування';
@@ -106,7 +106,7 @@ var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Розмір зображення скрамблу';
 var TIMER_INSPECT = 'Оглянути';
 var TIMER_SOLVE = 'Рішення';
-var PROPERTY_USEMOUSE = 'use mouse timer';
+var PROPERTY_USEMOUSE = 'використовувати мишу як таймер';
 var PROPERTY_TIMEU = 'timer update is';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
@@ -128,8 +128,8 @@ var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|bl
 var PROPERTY_FONT = 'Вибрати шрифт таймера';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'Формат часу';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
+var PROPERTY_USEKSC = 'використовувати гарячі клавіші';
+var PROPERTY_NTOOLS = 'кількість інструментів';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
 var SCRAMBLE_LAST = 'останній';
 var SCRAMBLE_NEXT = 'наступний';
@@ -241,10 +241,10 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['випадковий хід', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['4x4x4 ребра', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
@@ -266,9 +266,9 @@ var scrdata = [
 		['suffix', "777s", 100],
 		['7x7x7 edges', "7edge", 8]
 	]],
-	['Clock', [
+	['Годинник', [
 		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
@@ -535,8 +535,8 @@ var SCRGEN_PRE = 'prefix';
 var SCRGEN_GEN = 'Generate Scrambles!';
 var VRCREPLAY_TITLE = 'Virtual Replay';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
-var GIIKER_RESET = 'Reset (Mark Solved)';
-var PROPERTY_SHOWAD = 'Show advistisements (take effect after reload)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var VRCREPLAY_SHARE = 'поширити посилання';
+var GIIKER_CONNECT = 'Натисніть для підключення';
+var GIIKER_RESET = 'Скинути (Позначити як вирішене)';
+var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
+var PROPERTY_GIIORI = 'Орієнтація куба';

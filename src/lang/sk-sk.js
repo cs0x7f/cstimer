@@ -538,5 +538,5 @@ var VRCREPLAY_ORI = 'raw ori|auto ori';
 var VRCREPLAY_SHARE = 'share link';
 var GIIKER_CONNECT = 'Click to connect';
 var GIIKER_RESET = 'Reset (Mark Solved)';
-var PROPERTY_SHOWAD = 'Show advistisements (take effect after reload)';
+var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
 var PROPERTY_GIIORI = 'Cube orientation';

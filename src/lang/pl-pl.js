@@ -538,5 +538,5 @@ var VRCREPLAY_ORI = 'raw ori|auto ori';
 var VRCREPLAY_SHARE = 'udostępnij link';
 var GIIKER_CONNECT = 'Kliknij, aby połączyć';
 var GIIKER_RESET = 'Resetuj (Oznacz jako rozwiązane)';
-var PROPERTY_SHOWAD = 'Show advistisements (take effect after reload)';
+var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
 var PROPERTY_GIIORI = 'Orientacja kostki';

@@ -21,7 +21,7 @@
 <li><strong>UI description</strong> - There are 6 buttons near the logo of csTimer: option, export, scramble, list times, donate, tools, click on the <strong>scramble</strong>, <strong>list times</strong>, <strong>tool</strong> to open the corresponding function panel.</li>
 <li><strong>Scramble panel</strong> - In the Scramble panel, you can select scramble type, set scramble length and case filter (if available), review previous scramble, generate next scramble.</li>
 <li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
-<li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
+<li><strong>Панель інструментів</strong> - В панелі інструментів, ви можете вибрати специфічні допоміжні функції, включаючи зображення скрамблу, генератори скрамблів, вирішувачі, інші види статистики, і т. п.</li>
 </ul>
 <h2>Гарячі клавіші</h2>
 <table class="table" style="display: inline-block;">
@@ -45,7 +45,7 @@
 <h2>Параметри деталей</h2>
 <ul>
 <li><strong data="opt_ahide">Hide All Elements When Timing</strong>. Ховати логотип та всі панелі під час збирання.</li>
-<li><strong data="opt_useMilli">Використовувати мілісекунди</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
+<li><strong data="opt_useMilli">Використовувати мілісекунди</strong>. Показувати цифру мілісекунд, незалежно від цієї функції внутрішня точність csTimer - 1 мілісекунда.</li>
 <li><strong data="opt_timeFormat">Формат часу</strong>. Формат часу для показу.</li>
 <li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
@@ -62,14 +62,14 @@
 <li><strong data="opt_bgImgS">background image</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">Розмір таймеру</strong>. Set the size of main timer.</li>
 <li><strong data="opt_smallADP">використовувати малий шрифт після десяткової точки</strong>. Use a smaller font size after the digital point in main timer.</li>
-<li><strong data="opt_useMouse">use mouse timer</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
+<li><strong data="opt_useMouse">використовувати мишу як таймер</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
 <li><strong data="opt_useIns">використовувати WCA інспекцію</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
-<li><strong data="opt_voiceIns">голосове попередження інспекції WCA</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
-<li><strong data="opt_voiceVol">Voice volume</strong>. Voice level of the alert above.</li>
+<li><strong data="opt_voiceIns">голосове попередження інспекції WCA</strong>. Сповіщати під час 8с/12с інспекції, щоб симулювати попередження судді в змаганнях WCA.</li>
+<li><strong data="opt_voiceVol">Voice volume</strong>. Гучність сповіщення вище.</li>
 <li><strong data="opt_input">entering in times with</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
 <li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
-<li><strong data="opt_timeU">timer update is</strong>. How timer is updated when timing.</li>
-<li><strong data="opt_preTime">time of keeping space down(second(s))</strong>. How long the space bar should be held before the timer turns green.</li>
+<li><strong data="opt_timeU">timer update is</strong>. Як таймер оновлюється під чат роботи.</li>
+<li><strong data="opt_preTime">time of keeping space down(second(s))</strong>. Як довго потрібно тримати пробіл, перед тим як таймер стане зеленим.</li>
 <li><strong data="opt_phases">мультифаза</strong>. Number of phases, press any key to mark a split point when timing.</li>
 <li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">Розмір скрамблу</strong>. Розмір тексту скрамбла.</li>
@@ -96,8 +96,8 @@
 <li><strong data="opt_disPrec">time distribution precision</strong>. Time interval for the time distribution tool.</li>
 <li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Розмір зображення скрамблу</strong>. Set the size of scramble image.</li>
-<li><strong data="opt_NTools">number of tools</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">use keyboard shortcut</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
+<li><strong data="opt_NTools">кількість інструментів</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
+<li><strong data="opt_useKSC">використовувати гарячі клавіші</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
 <li><strong data="opt_vrcSpeed">VRC base speed (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">multi-phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
 <li><strong data="opt_giiVRC">Show virtual bluetooth cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
@@ -114,8 +114,8 @@
 <li><strong data="tool_cfm">Підтвердити час</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">cross-session stats</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">Статистика</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">time distribution</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">time trend</strong>. Shows a trend curve of all solves in current session.</li>
+<li><strong data="tool_distribution">розподіл часу</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
+<li><strong data="tool_trend">тенденція часу</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">Зобразити скрамбл</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
 <li><strong data="tool_roux1">Solvers &gt; Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
