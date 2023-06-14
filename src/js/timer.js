@@ -177,7 +177,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setValue(val) {
-			setHtml(isRight ? rightDiv : mainDiv, val != undefined ? (pretty(val, true) + '<div class="difflabel"/>') : '--:--');
+			setHtml(isRight ? rightDiv : mainDiv, (val != undefined ? pretty(val, true) : '--:--') +
+				'<div class="insplabel">&#59062;</div><div class="difflabel"/>');
 		}
 
 		function setHtml(div, val) {

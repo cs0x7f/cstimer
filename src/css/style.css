@@ -542,12 +542,25 @@ a {
 	z-index: 10;
 }
 
-.insp.activetimer::after {
-	content: "\e6b6";
+.insplabel {
 	font-family: iconfont;
 	position: absolute;
 	font-size: 0.2em;
 	opacity: 0.65;
+	display: none;
+}
+
+.insp.activetimer {
+	position: relative;
+}
+
+.insp.activetimer > .insplabel {
+	display: inline-block;
+}
+
+#rtimer .insplabel {
+	top: -1.0em;
+	right: 0;
 }
 
 #timer .difflabel {
