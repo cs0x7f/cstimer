@@ -3,101 +3,108 @@
 // simplified size-balanced tree introduced by Qifeng Chen
 var sbtree = (function() {
 
-	function Node(key, value) {
+	var NULL_NODE = null;
+
+	function Node(key, value, left, right) {
 		this.k = key;
 		this.v = value;
-		this[0] = null;
-		this[1] = null;
-		this.cnt = 1;
+		this.left = left || NULL_NODE;
+		this.right = right || NULL_NODE;
+		this.size = 1;
 		this.sum = key;
 		this.sk2 = Math.pow(key, 2);
 	}
 
+	NULL_NODE = new Node(0, 0);
+	NULL_NODE.left = NULL_NODE;
+	NULL_NODE.right = NULL_NODE;
+	NULL_NODE.size = 0;
+
+	Node.prototype.get = function(dir) {
+		return dir ? this.right : this.left;
+	};
+
+	Node.prototype.set = function(dir, val) {
+		if (dir) {
+			this.right = val;
+		} else {
+			this.left = val;
+		}
+	};
+
 	function SBTree(comparator) {
-		this.root = null;
+		this.root = NULL_NODE;
 		this.cmp = comparator;
 	}
 
 	SBTree.prototype.find = function(key) {
 		var node = this.root;
-		while (node !== null) {
+		while (node != NULL_NODE) {
 			if (key == node.k) {
 				return node.v;
 			}
-			node = node[this.cmp(node.k, key) < 0 ^ 0];
+			node = node.get(this.cmp(node.k, key) < 0 ^ 0);
 		}
 		return undefined;
 	};
 
-	function size(node) {
-		return node == null ? 0 : node.cnt;
-	}
-
-	function sum(node) {
-		return node == null ? 0 : node.sum;
-	}
-
-	function sk2(node) {
-		return node == null ? 0 : node.sk2;
-	}
-
 	SBTree.prototype.cumSum = function(n_value) {
-		if (n_value >= size(this.root) || size(this.root) == 0) {
-			return sum(this.root);
+		if (n_value >= this.root.size || this.root.size == 0) {
+			return this.root.sum;
 		}
 		var node = this.root;
 		var ret = 0;
 		while (n_value > 0) {
-			var leftSize = size(node[0]);
+			var leftSize = node.get(0).size;
 			if (n_value < leftSize) {
-				node = node[0];
+				node = node.get(0);
 				continue;
 			}
-			ret += sum(node[0]);
+			ret += node.get(0).sum;
 			if (n_value == leftSize) {
 				return ret;
 			}
 			ret += node.k;
 			n_value -= leftSize + 1;
-			node = node[1];
+			node = node.get(1);
 		}
 		return ret;
 	};
 
 	SBTree.prototype.cumSk2 = function(n_value) {
-		if (n_value >= size(this.root) || size(this.root) == 0) {
-			return sk2(this.root);
+		if (n_value >= this.root.size || this.root.size == 0) {
+			return this.root.sk2;
 		}
 		var node = this.root;
 		var ret = 0;
 		while (n_value > 0) {
-			var leftSize = size(node[0]);
+			var leftSize = node.get(0).size;
 			if (n_value < leftSize) {
-				node = node[0];
+				node = node.get(0);
 				continue;
 			}
-			ret += sk2(node[0]);
+			ret += node.get(0).sk2;
 			if (n_value == leftSize) {
 				return ret;
 			}
 			ret += Math.pow(node.k, 2);
 			n_value -= leftSize + 1;
-			node = node[1];
+			node = node.get(1);
 		}
 		return ret;
 	};
 
 	SBTree.prototype.rank = function(nth) {
 		var node = this.root;
-		while (node) {
-			var leftSize = size(node[0]);
+		while (node != NULL_NODE) {
+			var leftSize = node.get(0).size;
 			if (nth < leftSize) {
-				node = node[0];
+				node = node.get(0);
 			} else if (nth == leftSize) {
 				return node.k;
 			} else {
 				nth -= leftSize + 1;
-				node = node[1];
+				node = node.get(1);
 			}
 		}
 		return nth < 0 ? -1e300 : 1e300;
@@ -106,13 +113,13 @@ var sbtree = (function() {
 	SBTree.prototype.rankOf = function(key) {
 		var node = this.root;
 		var rank = 0;
-		while (node) {
+		while (node != NULL_NODE) {
 			var cmp = this.cmp(node.k, key);
 			if (cmp < 0) {
-				rank += size(node[0]) + 1;
-				node = node[1];
+				rank += node.get(0).size + 1;
+				node = node.get(1);
 			} else {
-				node = node[0];
+				node = node.get(0);
 			}
 		}
 		return rank;
@@ -123,21 +130,21 @@ var sbtree = (function() {
 	};
 
 	function traverseDir(node, func, dir) {
-		return node == null || traverseDir(node[dir], func, dir) && func(node) && traverseDir(node[dir ^ 1], func, dir);
+		return node == NULL_NODE || traverseDir(node.get(dir), func, dir) && func(node) && traverseDir(node.get(dir ^ 1), func, dir);
 	}
 
 	SBTree.prototype.insertR = function(node, key, value) {
-		if (node === null) { // empty tree
+		if (node == NULL_NODE) { // empty tree
 			return new Node(key, value);
 		}
-		node.cnt += 1;
+		node.size += 1;
 		node.sum += key;
 		node.sk2 += Math.pow(key, 2);
 		var dir = this.cmp(node.k, key) < 0 ^ 0;
-		node[dir] = this.insertR(node[dir], key, value);
-		if (size(node[dir][dir]) > size(node[dir ^ 1])) {
+		node.set(dir, this.insertR(node.get(dir), key, value));
+		if (node.get(dir).get(dir).size > node.get(dir ^ 1).size) {
 			node = single_rotate(node, dir ^ 1);
-		} else if (size(node[dir][dir ^ 1]) > size(node[dir ^ 1])) {
+		} else if (node.get(dir).get(dir ^ 1).size > node.get(dir ^ 1).size) {
 			node = double_rotate(node, dir ^ 1);
 		}
 		return node;
@@ -154,19 +161,19 @@ var sbtree = (function() {
 	};
 
 	SBTree.prototype.removeR = function(node, key) {
-		if (node == null) {
-			return null;
+		if (node == NULL_NODE) {
+			return NULL_NODE;
 		}
-		node.cnt -= 1;
+		node.size -= 1;
 		node.sum -= key;
 		node.sk2 -= Math.pow(key, 2);
 		if (node.k == key) {
-			if (node[0] == null || node[1] == null) {
-				return node[node[0] == null ^ 0];
+			if (node.get(0) == NULL_NODE || node.get(1) == NULL_NODE) {
+				return node.get(node.get(0) == NULL_NODE ^ 0);
 			} else {
-				var heir = node[0];
-				while (heir[1] != null) {
-					heir = heir[1];
+				var heir = node.get(0);
+				while (heir.get(1) != NULL_NODE) {
+					heir = heir.get(1);
 				}
 				node.k = heir.k;
 				node.v = heir.v;
@@ -174,27 +181,27 @@ var sbtree = (function() {
 			}
 		}
 		var dir = this.cmp(node.k, key) < 0 ^ 0;
-		node[dir] = this.removeR(node[dir], key);
+		node.set(dir, this.removeR(node.get(dir), key));
 		return node;
 	};
 
 	function single_rotate(node, dir) {
-		var save = node[dir ^ 1];
-		node[dir ^ 1] = save[dir];
-		save[dir] = node;
+		var save = node.get(dir ^ 1);
+		node.set(dir ^ 1, save.get(dir));
+		save.set(dir, node);
 
-		save.cnt = node.cnt;
-		node.cnt = size(node[0]) + size(node[1]) + 1;
+		save.size = node.size;
+		node.size = node.get(0).size + node.get(1).size + 1;
 		save.sum = node.sum;
-		node.sum = sum(node[0]) + sum(node[1]) + node.k;
+		node.sum = node.get(0).sum + node.get(1).sum + node.k;
 		save.sk2 = node.sk2;
-		node.sk2 = sk2(node[0]) + sk2(node[1]) + Math.pow(node.k, 2);
+		node.sk2 = node.get(0).sk2 + node.get(1).sk2 + Math.pow(node.k, 2);
 
 		return save;
 	}
 
 	function double_rotate(node, dir) {
-		node[dir ^ 1] = single_rotate(node[dir ^ 1], dir ^ 1);
+		node.set(dir ^ 1, single_rotate(node.get(dir ^ 1), dir ^ 1));
 		return single_rotate(node, dir);
 	}
 
