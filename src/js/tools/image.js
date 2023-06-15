@@ -686,15 +686,15 @@ posit:
 				dim = 2;
 			}
 			var width = 50;
-			canvas.attr('width', (dim + 1) * width + 1);
-			canvas.attr('height', (dim + 1) * width + 1);
+			canvas.attr('width', (dim + 1.2) * width);
+			canvas.attr('height', (dim + 1.2) * width);
 			for (var i = 0; i < dim * dim; i++) {
 				var x = i % dim + 0.5;
 				var y = ~~(i / dim) + 0.5;
 				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i])] || '#888', [
 					[x, x + 1, x + 1, x],
 					[y, y, y + 1, y + 1]
-				], [width, 0, 0]);
+				], [width, 0.1, 0.1]);
 			}
 			for (var i = 0; i < dim * 4; i++) {
 				var x = i % dim;
@@ -702,15 +702,15 @@ posit:
 				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i + dim * dim])] || '#888', Rotate([
 					[x - dim / 2, x - dim / 2 + 1, (x - dim / 2 + 1) * 0.9, (x - dim / 2) * 0.9],
 					[dim / 2 + 0.05, dim / 2 + 0.05, dim / 2 + 0.5, dim / 2 + 0.5]
-				], -rot * PI / 2), [width, 0.5 + dim / 2, 0.5 + dim / 2]);
+				], -rot * PI / 2), [width, 0.6 + dim / 2, 0.6 + dim / 2]);
 			}
 			arrows = arrows || [];
 			for (var i = 0; i < arrows.length; i++) {
 				var arrow = arrows[i];
-				var x1 = arrow[0] % dim + 1;
-				var y1 = ~~(arrow[0] / dim) + 1;
-				var x2 = arrow[1] % dim + 1;
-				var y2 = ~~(arrow[1] / dim) + 1;
+				var x1 = arrow[0] % dim + 1.1;
+				var y1 = ~~(arrow[0] / dim) + 1.1;
+				var x2 = arrow[1] % dim + 1.1;
+				var y2 = ~~(arrow[1] / dim) + 1.1;
 				var length = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 				drawPolygon(ctx, '#000', Rotate([
 					[0.2, length - 0.4, length - 0.4, length - 0.1, length - 0.4, length - 0.4, 0.2],
