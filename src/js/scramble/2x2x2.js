@@ -143,7 +143,7 @@ var scramble_222 = (function(rn) {
 		if (!canvas) {
 			return [egcase[2], null, egllfilter[cases]];
 		}
-		image.llImage(egcase[2], null, canvas);
+		image.llImage.drawImage(egcase[2], null, canvas);
 	}
 
 	function getScramble(type, length, state) {

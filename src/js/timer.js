@@ -35,8 +35,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		virtual333.setEnable(type == 'v' || type == 'q');
 		virtual333.reset();
 		lcd.setEnable(type != 'i');
-		lcd.reset(type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC') != 'n');
-		keyboardTimer.reset();
+		lcd.reset(type == 'l' || type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC') != 'n');
+		keyboardTimer.reset(type);
 		inputTimer.setEnable(type == 'i');
 		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
@@ -422,6 +422,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					startTime = time;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					setStatus(getProp('phases'));
+					if (isTrain && tools.getCurPuzzle() == '333') {
+						var scr = tools.getCurScramble();
+						image.llImage.draw(3, scr[1], canvas[0]);
+					}
 				} else if (status == -4) {
 					startTime = now;
 					setStatus(-3);
@@ -464,11 +468,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					pressreadyId = setTimeout(pressReady, getProp('preTime'));
 				} else if (status == -1 && checkUseIns()) {
 					setStatus(-4);
+					resetTrain();
 				}
 			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
 				clearPressReady();
 				setStatus(-1);
 				lcd.fixDisplay(false, false);
+				resetTrain();
 			}
 			lcd.fixDisplay(true, isTrigger);
 			if (isTrigger) {
@@ -479,7 +485,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function pressReady() {
 			if (status == -1 || status == -3) {
 				if (status == -1) {
-					lcd.reset();
+					lcd.reset(isTrain);
+					resetTrain();
 				}
 				setStatus(-2);
 				pressreadyId = undefined;
@@ -487,12 +494,32 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function reset() {
+		var div = $('<div>');
+		var canvas = $('<canvas>');
+		var isTrain = false;
+
+		function reset(type) {
 			if (pressreadyId != undefined) {
 				clearTimeout(pressreadyId);
 				pressreadyId = undefined;
 			}
 			lastDown = lastStop = 0;
+			isTrain = type == 'l';
+			if (isTrain) {
+				resetTrain();
+			} else {
+				div.hide();
+			}
+		}
+
+		function resetTrain() {
+			if (!isTrain) {
+				return;
+			} else if (div.is(":hidden")) {
+				div.show().appendTo('#container');
+				div.empty().append(canvas);
+			}
+			image.llImage.drawImage("GGGGGGGGGGGGGGGGGGGGG", [], canvas[0]);
 		}
 
 		var ctrlStatus = 0x0;
@@ -1469,6 +1496,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 		switch (getProp('input')) {
 			case 't':
+			case 'l':
 				keyboardTimer.onkeydown(keyCode, e);
 				break;
 			case 's':
@@ -1505,6 +1533,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 		switch (getProp('input')) {
 			case 't':
+			case 'l':
 				keyboardTimer.onkeyup(keyCode, e);
 				break;
 			case 's':
@@ -1579,7 +1608,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'showIns', 0, PROPERTY_SHOWINS, [true], 1);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
-		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q', 'b'], PROPERTY_ENTERING_STR.split('|')], 1);
+		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q', 'b', 'l'], PROPERTY_ENTERING_STR.split('|').concat(['last layer train'])], 1);
 		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [20100, [1, 100, 1000, 10001, 10100, 11000, 20001, 20100, 21000], 'X|X.XX|X.XXX|X:XX|X:XX.XX|X:XX.XXX|X:XX:XX|X:XX:XX.XX|X:XX:XX.XXX'.split('|')], 1);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);

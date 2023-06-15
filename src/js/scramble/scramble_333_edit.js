@@ -472,7 +472,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		var caze = wvls_map[scrMgr.fixCase(cases, wvlsprobs)];
 		var fill = ['DGG', 'GDG', 'GGD'];
 		fill = fill[caze & 3] + fill[caze >> 8 & 3] + fill[caze >> 12 & 3];
-		image.llImage('3D6DDDBB0RR21G87G54GU'.replace(/[0-9]/g, function(v) {
+		image.llImage.drawImage('3D6DDDBB0RR21G87G54GU'.replace(/[0-9]/g, function(v) {
 			return fill[~~v];
 		}), null, canvas);
 	}
@@ -500,7 +500,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		fillc = fillc[caze[0] & 3] + fillc[caze[0] >> 8 & 3] + fillc[caze[0] >> 12 & 3];
 		var fille = ['DG', 'GD'];
 		fille = fille[caze[1] & 3] + fille[caze[1] >> 8 & 3] + fille[caze[1] >> 12 & 3];
-		image.llImage('6a0eDR3cR4dUFF21b87f5'.replace(/[0-9]/g, function(v) {
+		image.llImage.drawImage('6a0eDR3cR4dUFF21b87f5'.replace(/[0-9]/g, function(v) {
 			return fillc[~~v];
 		}).replace(/[a-z]/g, function(v) {
 			return fille[v.charCodeAt(0) - 'a'.charCodeAt(0)];
@@ -583,7 +583,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	function getCOLLImage(efill, cases, canvas) {
 		var face = coll_map[cases][2].replace(/e/g, efill || 'U');
-		image.llImage(face, null, canvas);
+		image.llImage.drawImage(face, null, canvas);
 	}
 
 	function getZZLLScramble() {
@@ -690,7 +690,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		if (!canvas) {
 			return llParam.concat([ttllfilter[cases]]);
 		}
-		image.llImage(llParam[0], llParam[1], canvas);
+		image.llImage.drawImage(llParam[0], llParam[1], canvas);
 	}
 
 	function getLSEScramble() {
@@ -789,7 +789,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		if (!canvas) {
 			return llParam.concat([pllfilter[cases]]);
 		}
-		image.llImage(llParam[0], llParam[1], canvas);
+		image.llImage.drawImage(llParam[0], llParam[1], canvas);
 	}
 
 	var oll_map = [
@@ -875,7 +875,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		if (!canvas) {
 			return [face, null, ollfilter[cases]];
 		}
-		image.llImage(face, null, canvas);
+		image.llImage.drawImage(face, null, canvas);
 	}
 
 	function getEOLineScramble() {

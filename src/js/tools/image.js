@@ -624,6 +624,7 @@ posit:
 
 		function genPosit(size, moveseq) {
 			var cnt = 0;
+			posit = [];
 			for (var i = 0; i < 6; i++) {
 				for (var f = 0; f < size * size; f++) {
 					posit[cnt++] = i;
@@ -644,7 +645,7 @@ posit:
 			return posit;
 		}
 
-		return function(size, moveseq) {
+		function draw(size, moveseq) {
 			genPosit(size, moveseq);
 
 			var imgSize = kernel.getProp('imgSize') / 50;
@@ -658,6 +659,11 @@ posit:
 			for (var i = 0; i < 6; i++) {
 				face(i, size);
 			}
+		}
+
+		return {
+			draw: draw,
+			genPosit: genPosit
 		}
 	})();
 
@@ -712,7 +718,27 @@ posit:
 				], Math.atan2(y2 - y1, x2 - x1)), [width, x1, y1]);
 			}
 		}
-		return drawImage;
+
+		function draw(size, moveseq, _canvas) {
+			var state = nnnImage.genPosit(size, moveseq);
+			var pieces = [];
+			for (var i = 0; i < size * size; i++) {
+				pieces.push("DLBURF"[state[3 * size * size + i]]);
+			}
+			for (var j = 0; j < 4; j++) {
+				var offset = [5, 4, 2, 1][j] * size * size;
+				for (var i = 0; i < size; i++) {
+					var ii = [i, i, size - 1 - i, size - 1 - i][j];
+					pieces.push("DLBURF"[state[offset + ii]]);
+				}
+			}
+			drawImage(pieces.join(''), [], _canvas);
+		}
+
+		return {
+			drawImage: drawImage,
+			draw: draw
+		}
 	})();
 
 	/**
@@ -1123,12 +1149,12 @@ posit:
 		var size;
 		for (size = 0; size < 12; size++) {
 			if (type == types_nnn[size]) {
-				nnnImage(size, scramble[1]);
+				nnnImage.draw(size, scramble[1]);
 				return true;
 			}
 		}
 		if (type == "cubennn") {
-			nnnImage(scramble[2], scramble[1]);
+			nnnImage.draw(scramble[2], scramble[1]);
 			return true;
 		}
 		if (type == "pyr") {
