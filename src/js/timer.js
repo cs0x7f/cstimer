@@ -495,7 +495,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		var div = $('<div>');
-		var canvas = $('<canvas>');
+		var canvas = $('<canvas style="height:100%;">');
 		var isTrain = false;
 
 		function reset(type) {
@@ -519,6 +519,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				div.show().appendTo('#container');
 				div.empty().append(canvas);
 			}
+			div.css('height', getProp('timerSize') * $('#logo').width() / 12 + 'px');
 			image.llImage.drawImage("GGGGGGGGGGGGGGGGGGGGG", [], canvas[0]);
 		}
 
