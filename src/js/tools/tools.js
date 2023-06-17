@@ -315,6 +315,17 @@ var tools = execMain(function() {
 		}
 	}
 
+	var lastTrain = false;
+
+	function isCurTrainScramble(scramble) {
+		var curTrain = !!/^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll))$/.exec((scramble || curScramble || [])[0]);
+		if (curTrain != lastTrain) {
+			lastTrain = curTrain;
+			kernel.setProp('isTrainScr', curTrain);
+		}
+		return !!curTrain;
+	}
+
 	return {
 		regTool: regTool,
 		getCurScramble: function() {
@@ -326,6 +337,7 @@ var tools = execMain(function() {
 		getSolutionSpan: getSolutionSpan,
 		scrambleType: scrambleType,
 		puzzleType: puzzleType,
+		isCurTrainScramble: isCurTrainScramble,
 		isPuzzle: isPuzzle
 	};
 });

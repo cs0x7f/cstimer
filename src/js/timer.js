@@ -1380,7 +1380,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					giikerVRC.resetVRC(true, true);
 					giikerVRC.setState(currentFacelet, ['U2', 'U2'], false);
 				}
-			}, /^(?:preScr|giiOri)$/);
+			}, /^(?:preScrT?|isTrainScr|giiOri)$/);
 		});
 
 		return {
@@ -1546,7 +1546,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
-	var resetCondition = "input|phases|preScr|giiOri|useMilli|showDiff|smallADP|giiVRC".split('|');
+	var resetCondition = "input|phases|preScrT?|isTrainScr|giiOri|useMilli|showDiff|smallADP|giiVRC".split('|');
 
 	$(function() {
 		container = $('#container');
@@ -1580,7 +1580,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
+		}, /^(?:input|phases|scrType|preScrT?|isTrainScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});

@@ -545,7 +545,7 @@ posit:
 					drawPolygon(ctx, colors[posit[(f * size + y) * size + x]], [
 						[i, i, i + 1, i + 1],
 						[j, j + 1, j + 1, j]
-					], [width, offx, offy]);
+					], [width, offx + 0.1, offy + 0.1]);
 				}
 			}
 		}
@@ -652,8 +652,8 @@ posit:
 			canvas.width(39 * imgSize + 'em');
 			canvas.height(29 * imgSize + 'em');
 
-			canvas.attr('width', 39 * size / 9 * width + 1);
-			canvas.attr('height', 29 * size / 9 * width + 1);
+			canvas.attr('width', (39 * size / 9 + 0.2) * width);
+			canvas.attr('height', (29 * size / 9 + 0.2) * width);
 
 			colors = kernel.getProp('colcube').match(colre);
 			for (var i = 0; i < 6; i++) {

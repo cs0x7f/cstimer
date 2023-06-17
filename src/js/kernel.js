@@ -1124,7 +1124,7 @@ var kernel = execMain(function() {
 
 	function parseScramble(scramble, moveMap, addPreScr) {
 		if (addPreScr) {
-			scramble = getProp('preScr') + ' ' + scramble;
+			scramble = getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr') + ' ' + scramble;
 		}
 		var moveseq = [];
 		var moves = scramble.split(' ');
@@ -1167,7 +1167,7 @@ var kernel = execMain(function() {
 	}
 
 	function getPreConj() { // TODO 24 cases, use map insetad of calculation
-		var preScr = getProp('preScr', '').split(' ');
+		var preScr = getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr', '').split(' ');
 		var cc = new mathlib.CubieCube();
 		for (var i = 0; i < preScr.length; i++) {
 			cc.selfMoveStr(preScr[i]);

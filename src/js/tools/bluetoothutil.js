@@ -542,7 +542,7 @@ var giikerutil = execMain(function(CubieCube) {
 		} else if (signal == 'property') {
 			if (['giiVRC', 'imgSize'].indexOf(value[0]) >= 0) {
 				renderStatus();
-			} else if (value[0] == 'preScr') {
+			} else if (/^(preScrT?|isTrainScr)$/.exec(value[0])) {
 				scrHinter.setScramble(curScramble);
 				if (curScramble && kernel.getProp('input') == 'g') {
 					scrHinter.checkState(curCubie);
@@ -591,7 +591,7 @@ var giikerutil = execMain(function(CubieCube) {
 		kernel.regListener('giiker', 'scramble', procSignal);
 		kernel.regListener('giiker', 'scrambling', procSignal);
 		kernel.regListener('giiker', 'scrambleX', procSignal);
-		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|imgSize|preScr)$/);
+		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|imgSize|preScrT?|isTrainScr)$/);
 		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
 	});
 
