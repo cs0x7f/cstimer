@@ -126,8 +126,8 @@ var giikerutil = execMain(function(CubieCube) {
 	var resetClick = $('<span>' + GIIKER_RESET + '</span>').addClass('click');
 	var algCubingClick = $('<a target="_blank">Raw(N/A)</a>').addClass('click');
 	var lastSolveClick = $('<a target="_blank">Pretty(N/A)</a>').addClass('click');
-	var canvas = $('<canvas>');
-	var canvasTd = $('<tr>').append($('<td colspan=2>').append(canvas));
+	var canvas = $('<canvas style="display:block;margin:auto;">');
+	var canvasTd = $('<tr>').append($('<td colspan=2 style="padding:0;">').append(canvas));
 	var deviceName = null;
 	var batteryIcon = '<span style="font-family:iconfont;">\ueaea</span> ';
 	var slopeIcon = '<span style="font-family:iconfont;">\ue6b6</span> ';
@@ -136,21 +136,30 @@ var giikerutil = execMain(function(CubieCube) {
 	var statusDiv = $('<table class="table">');
 
 	var drawState = (function() {
-		var faceOffsetX = [1, 2, 1, 1, 0, 3];
-		var faceOffsetY = [0, 1, 1, 2, 1, 1];
 		var colors = [];
 		var width = 30;
 		var ctx;
+		var hsq2 = Math.sqrt(0.5);
+		var trans = [
+			[1, -hsq2, 1 + hsq2, 0, hsq2, 0],
+			[hsq2, 0, 2, -hsq2, 1, hsq2],
+			[1, 0, 1, 0, 1, hsq2],
+			[1, 0, 1, 0, hsq2, 1 + hsq2],
+			[1, 0, 0, 0, 1, hsq2],
+			[1, 0, 2 + hsq2, 0, 1, 0]
+		];
 
 		function face(f, facelet) {
-			var offx = 10 / 3 * faceOffsetX[f],
-				offy = 10 / 3 * faceOffsetY[f];
+			var t = trans[f].slice();
+			for (var i = 0; i < t.length; i++) {
+				t[i] *= i % 3 == 2 ? 3 * width : width;
+			}
 			for (var x = 0; x < 3; x++) {
 				for (var y = 0; y < 3; y++) {
 					$.ctxDrawPolygon(ctx, colors["DLBURF".indexOf(facelet[(f * 3 + y) * 3 + x])], [
 						[x, x, x + 1, x + 1],
 						[y, y + 1, y + 1, y]
-					], [width, offx, offy]);
+					], t);
 				}
 			}
 		}
@@ -167,10 +176,10 @@ var giikerutil = execMain(function(CubieCube) {
 			canvasTd.show();
 			ctx = canvas[0].getContext('2d');
 			var imgSize = kernel.getProp('imgSize') / 60;
-			canvas.width(39 * imgSize + 'em');
-			canvas.height(29 * imgSize + 'em');
-			canvas.attr('width', 39 * 3 / 9 * width + 1);
-			canvas.attr('height', 29 * 3 / 9 * width + 1);
+			canvas.width((3 + hsq2) / (1 + hsq2 * 2) * 21 * imgSize + 'em');
+			canvas.height(21 * imgSize + 'em');
+			canvas.attr('width', (3 + hsq2) * 3 * width + 1);
+			canvas.attr('height', (1 + hsq2 * 2) * 3 * width + 1);
 			for (var i = 0; i < 6; i++) {
 				face(i, curState);
 			}
