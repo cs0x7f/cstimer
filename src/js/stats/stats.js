@@ -1633,6 +1633,17 @@ var stats = execMain(function(kpretty, round, kpround) {
 			table_ctrl.hideAll();
 		} else if (signal == 'button' && value[0] == 'stats' && value[1]) {
 			setTimeout(resultsHeight, 50);
+		} else if (signal == 'giirecons') {
+			var idx = times.length - 1;
+			if (idx < 0 || times[idx][1] != value[0]) {
+				return;
+			}
+			rollBackExec(idx, function() {
+				times[idx][4] = value[1];
+				timesExtra[idx] = null;
+			});
+			sessionManager.save(idx);
+			updateUtil(['giirecons', idx]);
 		}
 	}
 
@@ -1652,6 +1663,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
+		kernel.regListener('stats', 'giirecons', procSignal);
 
 		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]], 1);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true], 1);

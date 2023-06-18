@@ -315,7 +315,7 @@ var tools = execMain(function() {
 		}
 	}
 
-	var lastTrain = false;
+	var lastTrain = null;
 
 	function isCurTrainScramble(scramble) {
 		var curTrain = !!/^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll))$/.exec((scramble || curScramble || [])[0]);

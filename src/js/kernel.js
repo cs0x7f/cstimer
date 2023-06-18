@@ -1348,6 +1348,7 @@ var kernel = execMain(function() {
 		loadProp: property.load,
 		parseScramble: parseScramble,
 		getConjMoves: getConjMoves,
+		getPreConj: getPreConj,
 		blur: refocus,
 		ui: ui,
 		TwoLvMenu: TwoLvMenu,

@@ -80,9 +80,10 @@ var scrHinter = execMain(function(CubieCube) {
 		if (genState) {
 			toMoveFix = checkInSeq(state, genState, genScr);
 		}
-		if (toMoveFix == null) {
+		if (toMoveFix == null || toMoveFix.indexOf('`') == -1) {
 			toMoveRaw = checkInSeq(state, null, rawScr);
 			genState = null;
+			toMoveFix = null;
 		}
 		if (toMoveRaw == null && toMoveFix == null) {
 			genState = new CubieCube();
@@ -96,7 +97,8 @@ var scrHinter = execMain(function(CubieCube) {
 			genScr = kernel.parseScramble(genScr, "URFDLB");
 			toMoveFix = checkInSeq(state, genState, genScr);
 		}
-		kernel.pushSignal('scrfix', toMoveFix ? (rawScrTxt + '\n=> ' + toMoveFix) : toMoveRaw);
+		var toMove = toMoveFix ? (rawScrTxt + '\n=> ' + toMoveFix) : toMoveRaw;
+		kernel.pushSignal('scrfix', toMove + (toMove.indexOf('`') == -1 ? ' <span style="color:green">\u2714</span>' : ''));
 	}
 
 	function checkScramble(curCubie) {
@@ -157,7 +159,7 @@ var giikerutil = execMain(function(CubieCube) {
 			if (!canvas) {
 				return;
 			}
-			if (kernel.getProp('giiVRC') != 'n') {
+			if (kernel.getProp('giiVRC') != 'n' && kernel.getProp('input') == 'g') {
 				canvasTd.hide();
 				return;
 			}
@@ -177,10 +179,10 @@ var giikerutil = execMain(function(CubieCube) {
 	})();
 
 	function renderStatus() {
-		if (!(kernel.getProp('giiVRC') != 'n')) {
-			statusDiv.css('font-size', '60%');
-		} else {
+		if (kernel.getProp('giiVRC') != 'n' && kernel.getProp('input') == 'g') {
 			statusDiv.css('font-size', '');
+		} else {
+			statusDiv.css('font-size', '75%');
 		}
 		statusDiv.empty();
 		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick)));
@@ -352,6 +354,7 @@ var giikerutil = execMain(function(CubieCube) {
 			updateSlopeSpan();
 		}
 		if (curState == mathlib.SOLVED_FACELET) {
+			reconsSolve();
 			moveTsStart = moveTsList.length;
 			scrambleLength = 0;
 		}
@@ -365,7 +368,7 @@ var giikerutil = execMain(function(CubieCube) {
 			retState = hackedCubie.toFaceCube();
 		}
 		callback(retState, prevMoves, lastTs);
-		if (curScramble && kernel.getProp('input') == 'g' && timer.getCurTime() == 0) {
+		if (curScramble && tools.getCurPuzzle() == '333' && timer.getCurTime() == 0) {
 			scrHinter.checkState(curCubie);
 		}
 	}
@@ -441,7 +444,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function updateSlopeSpan() {
-		if (moveTsList.length - moveTsStart > 50 && moveTsStart > 0) {
+		if (moveTsList.length - moveTsStart > 50 && moveTsStart > 0 && moveTsList[moveTsStart - 1][2] < timer.getStartTime()) {
 			moveTsList = moveTsList.slice(moveTsStart);
 			moveTsStart = 0;
 		}
@@ -548,6 +551,57 @@ var giikerutil = execMain(function(CubieCube) {
 					scrHinter.checkState(curCubie);
 				}
 			}
+		} else if (signal == 'timestd' && !value[4]) {
+			toReconsSolve = [timer.getStartTime(), value[0][1], value[1]];
+			setTimeout(reconsSolve, 0);
+		}
+	}
+
+	var toReconsSolve = null;
+
+	function reconsSolve() {
+		if (!toReconsSolve) {
+			return;
+		}
+		var startTime = toReconsSolve[0];
+		var startIdx = moveTsList.length;
+		if (startIdx > 0 && moveTsList[startIdx - 1][2] > toReconsSolve[0] + toReconsSolve[1] + 1000) {
+			toReconsSolve = null;
+		}
+		for (var i = moveTsList.length - 1; i >= 0; i--) {
+			if (moveTsList[i][2] < startTime - 500) {
+				break;
+			}
+			startIdx = i;
+		}
+		if (startIdx == moveTsList.length) {
+			return;
+		}
+
+		var c1 = new mathlib.CubieCube();
+		var solvMoves = [];
+		var conj = mathlib.CubieCube.rotMulI[0][kernel.getPreConj()];
+		for (var i = startIdx; i < moveTsList.length; i++) {
+			var move = moveTsList[i].slice();
+			var m = mathlib.CubieCube.rotMulM[conj][move[0]];
+			move[0] = 'URFDLB'.charAt(~~(m/3)) + " 2'".charAt(m % 3);
+			solvMoves.push(move);
+			c1.selfMoveStr(move[0]);
+		}
+		solvMoves = tsLinearFix(solvMoves);
+		var sol = cubeutil.moveSeq2str(solvMoves);
+		kernel.pushSignal('giirecons', [toReconsSolve[2], [sol, '333']]);
+
+		var scrMoves = toReconsSolve[2].split(' ');
+		var chk = new mathlib.CubieCube();
+		for (var i = 0; i < scrMoves.length; i++) {
+			chk.selfMoveStr(scrMoves[i]);
+		}
+		var c2 = new mathlib.CubieCube();
+		c2.invFrom(c1);
+		if (chk.toFaceCube() == c2.toFaceCube()) {
+			console.log('cube solved');
+			toReconsSolve = null;
 		}
 	}
 
@@ -591,6 +645,7 @@ var giikerutil = execMain(function(CubieCube) {
 		kernel.regListener('giiker', 'scramble', procSignal);
 		kernel.regListener('giiker', 'scrambling', procSignal);
 		kernel.regListener('giiker', 'scrambleX', procSignal);
+		kernel.regListener('giiker', 'timestd', procSignal);
 		kernel.regListener('giiker', 'property', procSignal, /^(?:giiVRC|imgSize|preScrT?|isTrainScr)$/);
 		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
 	});

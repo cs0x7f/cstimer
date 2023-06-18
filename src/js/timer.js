@@ -438,6 +438,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function onkeydown(keyCode, isTrigger) {
+			if (DEBUG && !isTrigger) {
+				return;
+			}
 			var now = $.now();
 			if (now - lastDown < 200) {
 				return;
@@ -1550,7 +1553,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	$(function() {
 		container = $('#container');
-		bluetoothInstructDiv = $('.instruction');
+		bluetoothInstructDiv = $('.instruction').appendTo(kernel.temp);
 		regListener('timer', 'property', function(signal, value) {
 			if (value[0] == 'timerSize') {
 				container.css('font-size', value[1] + 'em');
@@ -1640,6 +1643,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		},
 		getCurTime: function(now) {
 			return status > 0 ? (now || $.now()) - startTime : 0;
+		},
+		getStartTime: function() {
+			return startTime || $.now();
 		}
 	};
 }, [kernel.regListener, kernel.regProp, kernel.getProp, kernel.pretty, kernel.ui, kernel.pushSignal]);
