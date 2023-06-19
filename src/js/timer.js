@@ -578,8 +578,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			for (var i = 0; i < arr.length; i++) {
 				var m = reg.exec(arr[i]);
 				if (m != null && m[4] != "") {
-					time = Math.round(3600000 * Math.floor(m[2]) + 60000 * Math.floor(m[3]) + 1000 * parseFloat(m[4]));
-					if (time == 0) {
+					time = ~~Math.round(3600000 * Math.floor(m[2]) + 60000 * Math.floor(m[3]) + 1000 * parseFloat(m[4]));
+					if (time <= 0) {
 						continue;
 					}
 					if (m[2] == '' && m[3] == '' && /^\d+$/.exec(m[4])) {
