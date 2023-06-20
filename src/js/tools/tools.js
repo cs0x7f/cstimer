@@ -191,6 +191,7 @@ var tools = execMain(function() {
 			}
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			curScramble = value;
+			kernel.setProp('isTrainScr', !!trainScrambleRe.exec((curScramble || [])[0]));
 			execFunc(-1, signal);
 		} else if (signal == 'button' && value[0] == 'tools') {
 			isEn = value[1];
@@ -245,6 +246,7 @@ var tools = execMain(function() {
 		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4]);
 		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
 		kernel.regProp('tools', 'toolsfunc', 5, PROPERTY_TOOLSFUNC, [defaultFunc], 1);
+		kernel.regProp('tools', 'isTrainScr', ~5, 'Is Train Scramble', [false], 0);
 		var funcStr = kernel.getProp('toolsfunc', defaultFunc);
 		if (funcStr.indexOf('[') == -1) {
 			funcStr = defaultFunc.replace('image', funcStr);
@@ -316,14 +318,10 @@ var tools = execMain(function() {
 	}
 
 	var lastTrain = null;
+	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|    6cp|l5ep|cdrll))$/;
 
 	function isCurTrainScramble(scramble) {
-		var curTrain = !!/^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll))$/.exec((scramble || curScramble || [])[0]);
-		if (curTrain != lastTrain) {
-			lastTrain = curTrain;
-			kernel.setProp('isTrainScr', curTrain);
-		}
-		return !!curTrain;
+		return !!trainScrambleRe.exec((scramble || curScramble || [])[0]);
 	}
 
 	return {
