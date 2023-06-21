@@ -50,4 +50,22 @@ var csTimerWorker = execBoth(function() {
 		}
 		postMessage([msgid, type, ret]);
 	};
+	if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+		module.exports = {
+			getScrambleTypes: function() {
+				var keys = [];
+				for (var key in scrMgr.scramblers) {
+					keys.push(key);
+				}
+				return keys;
+			},
+			getScramble: function() {
+				var scrambler = scrMgr.scramblers[arguments[0]];
+				return scrambler.apply(scrambler, arguments);
+			},
+			setGlobal: function(key, value) {
+				self[key] = value;
+			}
+		};
+	}
 });

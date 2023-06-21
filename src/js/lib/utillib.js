@@ -1,6 +1,7 @@
 'use strict';
 
-var isInWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope);
+var isInNode = (typeof process === 'object' && typeof require === 'function' && typeof global === 'object');
+var isInWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) || isInNode;
 
 function execBoth(funcMain, funcWorker, params) {
 	if (!isInWorker && funcMain) {
@@ -23,6 +24,9 @@ function execMain(func, params) {
 }
 
 execWorker(function() {
+	if (isInNode) {
+		global['self'] = global;
+	}
 	self.$ = {
 		isArray: Array.isArray || function(obj) {
 			return jQuery.type(obj) === "array";
