@@ -1763,6 +1763,14 @@ var mathlib = (function() {
 		return ret;
 	}
 
+	function idxArray(arr, idx) {
+		var ret = [];
+		for (var i = 0; i < arr.length; i++) {
+			ret.push(arr[i][idx]);
+		}
+		return ret;
+	}
+
 	Math.TAU = Math.PI * 2;
 
 	return {
@@ -1795,6 +1803,7 @@ var mathlib = (function() {
 		obj2str: obj2str,
 		str2obj: str2obj,
 		valuedArray: valuedArray,
+		idxArray: idxArray,
 		Solver: Solver,
 		rndPerm: rndPerm,
 		gSolver: gSolver,
