@@ -134,7 +134,7 @@ var battle = execMain(function() {
 
 	function joinRoom(rstRoomId) {
 		if (rstRoomId || !roomId) {
-			var val = prompt(TOOLS_BATTLE_JOINALERT + ' [a-zA-Z0-9]', roomId || (100 + mathlib.rn(900)));
+			var val = prompt(TOOLS_BATTLE_JOINALERT + ' [a-zA-Z0-9]', roomId || (100 + ~~(Math.random() * 900)));
 			if (!/^[0-9a-zA-Z]{3,20}$/.exec(val)) {
 				alert('invalid room ID');
 				return;
