@@ -239,6 +239,7 @@ var scrdata = [
 		['EG2', "222eg2", 0],
 		['TCLL+', "222tcp", 0],
 		['TCLL-', "222tcn", 0],
+		['LS', "222lsall", 0],
 		['Sin barra', "222nb", 0]
 	]],
 	['Cubo de 444', [

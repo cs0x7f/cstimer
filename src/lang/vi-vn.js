@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'ỦNG HỘ';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'dử dụng thời gian chuẩn bị của WCA';
 var PROPERTY_USEINS_STR = 'Luôn luôn|Ngoại trừ BLD|Không bao giờ';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Hiện một hình ảnh khi thời gian quan sát được bật';
 var PROPERTY_VOICEINS = 'Giọng nói cho thời gian chuẩn bị của WCA';
 var PROPERTY_VOICEINS_STR = 'Vô giới tính :)) |Nam giới|Nữ giới';
 var PROPERTY_VOICEVOL = 'Voice volume';
@@ -25,8 +25,8 @@ var PROPERTY_SCRALIGN = 'Vị trí của scramble';
 var PROPERTY_SCRALIGN_STR = 'Giữa|Trái|Phải';
 var PROPERTY_SCRFAST = 'Dùng công thức tráo nhanh cho 4x4x4 (không chính thức)';
 var PROPERTY_SCRKEYM = 'Đánh dấu (các) bước xoay quan trọng trong công thức tráo';
-var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK = 'Hành động khi bấm vào một cách tráo';
+var PROPERTY_SCRCLK_STR = 'Không|Sao Chép|Xáo tiếp theo';
 var PROPERTY_WNDSCR = 'Cách hiển thị thanh công thức tráo';
 var PROPERTY_WNDSTAT = 'Cách hiển thị thanh thống kê thời gian';
 var PROPERTY_WNDTOOL = 'Cách hiển thị bảng công cụ';
@@ -42,7 +42,7 @@ var EXPORT_INVID = 'Chỉ được viết chữ cái hoặc con số!';
 var EXPORT_ERROR = 'Có lỗi xảy ra...';
 var EXPORT_NODATA = 'không tìm thấy thông tin từ mã của bạn';
 var EXPORT_UPLOADED = 'thu thập thành công';
-var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
+var EXPORT_CODEPROMPT = 'Lưu code này,hoắc ghi code đã lưu để nhập vào';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Xuất Tài Khoản';
 var EXPORT_LOGINGGL = 'Đăng Nhập Bằng Tài Khoản Google';
@@ -65,11 +65,11 @@ var TOOLS_HUGESTATS = 'bắt đầu dấu cộng';
 var TOOLS_DISTRIBUTION = 'Thành tích ( kiểu 2)';
 var TOOLS_TREND = 'Thành tích ( kiểu 3)';
 var TOOLS_METRONOME = 'Đếm nhịp';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'Tái tạo';
 var TOOLS_RECONS_NODATA = 'Không tìm thấy cách giải.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_TRAINSTAT = 'Thông số luyện tập';
+var TOOLS_BLDHELPER = 'Hỗ trợ giải bịt mắt';
 var TOOLS_CFMTIME = 'Xác nhận';
 var TOOLS_SOLVERS = 'Công cụ giải';
 var TOOLS_DLYSTAT = 'Daily Statistics';
@@ -102,7 +102,7 @@ var OLCOMP_ANONYM = 'Anonym';
 var OLCOMP_ME = 'Me';
 var OLCOMP_WCAACCOUNT = 'Tài Khoản WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_WITHANONYM = 'Với tên giả';
 var PROPERTY_IMGSIZE = 'kích cớ hình vẽ scramble';
 var TIMER_INSPECT = 'Chuẩn bị';
 var TIMER_SOLVE = 'GIải';
@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = 'ẩn tất cả khi giải';
 var SCRAMBLE_LAST = 'trước';
 var SCRAMBLE_NEXT = 'sau';
 var SCRAMBLE_SCRAMBLE = ' tráo';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Tráo';
 var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
 var PROPERTY_VRCSPEED = 'Tốc độ ban đầu của rubik ảo (tốc độ xoay ban đầu)';
@@ -190,7 +190,7 @@ var scrdata = [
 		['3x3x3 cho những thằng đần', "333noob", 25],
 		['cạnh', "edges", 0],
 		['góc', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['Hỗ trợ giải bịt mắt', "nocache_333bldspec", 0],
 		['3x3 FT', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],
@@ -212,7 +212,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['Edge Orientation Line', "eoline", 0],
 		['solve dởm', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Xcross dễ', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -239,6 +239,7 @@ var scrdata = [
 		['EG2', "222eg2", 0],
 		['TCLL+', "222tcp", 0],
 		['TCLL-', "222tcn", 0],
+		['LS', "222lsall", 0],
 		['No Bar', "222nb", 0]
 	]],
 	['4x4x4', [
@@ -358,7 +359,7 @@ var scrdata = [
 		['Moyu', "redim", 8],
 		['Old', "redi", 20]
 	]],
-	['Ivy cube', [
+	['Rubik Ivy', [
 		['random state', "ivyso", 0],
 		['optimal', "ivyo", 0],
 		['random move', "ivy", 10]
@@ -409,11 +410,11 @@ var scrdata = [
 	]],
 	['Relays', [
 		['Nhiều 3x3x3s', "r3", 5],
-		['234 relay', "r234", 0],
+		['Tiếp sức 234', "r234", 0],
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
 		['234567 relay', "r234567", 0],
-		['234 relay (WCA)', "r234w", 0],
+		['Tiếp sức 234 (WCA)', "r234w", 0],
 		['2345 relay (WCA)', "r2345w", 0],
 		['23456 relay (WCA)', "r23456w", 0],
 		['234567 relay (WCA)', "r234567w", 0],
@@ -439,18 +440,18 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['Quay mặt trên cùng', 'Quay mặt dưới'],
+	['Quay mặt phải', 'Quay mặt trái'],
+	['Quay mặt trước mặt', 'Quay mặt đằng sau']
 ];
 var SCRAMBLE_NOOBSS = ' quay theo chiều kim đồn hồ 90 độ,| quay ngược theo chiều kim đồn hồ 90 độ,| quay 180 độ,';
-var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_TITLE = 'Cài đặt cách tráo';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'bạn có chắc muốn xóa mọi thời gian trong mục này?';
 var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
+var STATS_CFM_DELMUL = 'Số lần giải cần xóa trong phiên hiện tại?';
 var STATS_CFM_DELETE = 'Xóa thời gian này?';
 var STATS_COMMENT = 'bình luận';
 var STATS_REVIEW = 'Xem xét lại';
@@ -462,11 +463,11 @@ var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
 var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
+var STATS_SSMGR_DETAIL = 'Chi tiết phiên';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
-var STATS_SSMGR_ORDER = 'Order by scramble';
+var STATS_SSMGR_ORDER = 'Số thứ tự bằng cách tráo';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
-var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
+var STATS_SSMGR_SORTCFM = '%d lần giải sẽ được xắp xếp lại,đồng ý?';
 var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
@@ -484,9 +485,9 @@ var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Hiển thị chỉ số tuyệt đối trong thống kê';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_NAME = 'Tên bất kì';
+var STATS_XSESSION_SCR = 'Tráo bất kì';
+var STATS_XSESSION_CALC = 'Tính';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'In scramble trong thành tích';
 var PROPERTY_PRINTDATE = 'in ngày giải trong thống kê';
@@ -503,12 +504,12 @@ var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_DELMUL = 'cho phép xóa thời gian cùng 1 lúc';
 var PROPERTY_TOOLSFUNC = 'Chức Năng Được Chọn';
 var PROPERTY_TRIM = 'Number of solves trimmed at each side';
-var PROPERTY_TRIM_MED = 'Median';
+var PROPERTY_TRIM_MED = 'Trung bình';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
+var PROPERTY_TOOLPOS_STR = 'Dưới|Giữa|Trên';
+var PROPERTY_HIDEFULLSOL = 'Hiện cách giải theo thứ tự';
+var PROPERTY_IMPPREV = 'Thêm vào dữ liệu cũ';
 var PROPERTY_AUTOEXP = 'Tự Động Xuất (mỗi 100 lượt giải)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
