@@ -126,7 +126,12 @@ var giikerutil = execMain(function(CubieCube) {
 	var resetClick = $('<span>' + GIIKER_RESET + '</span>').addClass('click');
 	var algCubingClick = $('<a target="_blank">Raw(N/A)</a>').addClass('click');
 	var lastSolveClick = $('<a target="_blank">Pretty(N/A)</a>').addClass('click');
-	var canvas = $('<canvas style="display:block;margin:auto;">');
+	var canvas = $('<canvas>').css({
+		'display': 'block',
+		'box-sizing': 'content-box',
+		'margin': 'auto',
+		'padding': '5px'
+	});
 	var canvasTd = $('<tr>').append($('<td colspan=2 style="padding:0;">').append(canvas));
 	var deviceName = null;
 	var batteryIcon = '<span style="font-family:iconfont;">\ueaea</span> ';
@@ -139,20 +144,19 @@ var giikerutil = execMain(function(CubieCube) {
 		var colors = [];
 		var width = 30;
 		var ctx;
-		var hsq2 = Math.sqrt(0.5);
 		var trans = [
-			[1, -hsq2, 1 + hsq2, 0, hsq2, 0],
-			[hsq2, 0, 2, -hsq2, 1, hsq2],
-			[1, 0, 1, 0, 1, hsq2],
-			[1, 0, 1, 0, hsq2, 1 + hsq2],
-			[1, 0, 0, 0, 1, hsq2],
-			[1, 0, 2 + hsq2, 0, 1, 0]
+			[1, -0.5, 1.5, 0, 0.5, 0],
+			[0.5, 0, 3, -0.5, 1, 1.5],
+			[1, 0, 0, 0, 1, 1.5],
+			[1, 0.5, 5.5, 0, 0.5, 0],
+			[-0.5, 0, 7, -0.5, -1, 4.5],
+			[-1, 0, 10, 0, -1, 4.5]
 		];
 
 		function face(f, facelet) {
 			var t = trans[f].slice();
 			for (var i = 0; i < t.length; i++) {
-				t[i] *= i % 3 == 2 ? 3 * width : width;
+				t[i] *= width;
 			}
 			for (var x = 0; x < 3; x++) {
 				for (var y = 0; y < 3; y++) {
@@ -176,10 +180,10 @@ var giikerutil = execMain(function(CubieCube) {
 			canvasTd.show();
 			ctx = canvas[0].getContext('2d');
 			var imgSize = kernel.getProp('imgSize') / 60;
-			canvas.width((3 + hsq2) / (1 + hsq2 * 2) * 21 * imgSize + 'em');
-			canvas.height(21 * imgSize + 'em');
-			canvas.attr('width', (3 + hsq2) * 3 * width + 1);
-			canvas.attr('height', (1 + hsq2 * 2) * 3 * width + 1);
+			canvas.width((10 / 4.5 * 21 * imgSize) + 'em');
+			canvas.height((21 * imgSize) + 'em');
+			canvas.attr('width', 10 * width);
+			canvas.attr('height', 4.5 * width);
 			for (var i = 0; i < 6; i++) {
 				face(i, curState);
 			}
