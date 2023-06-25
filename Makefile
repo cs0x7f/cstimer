@@ -61,6 +61,7 @@ tools/roux1.js \
 tools/gsolver.js \
 tools/bluetoothutil.js \
 tools/metronome.js \
+tools/onlinecomp.js \
 tools/battle.js \
 tools/syncseed.js \
 tools/bldhelper.js \
