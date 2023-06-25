@@ -442,9 +442,9 @@ var onlinecomp = execMain(function() {
 
 	function getScrambles() {
 		if (solves.length == 0) {
-			return compScrambles.slice();
+			return Promise.resolve(compScrambles.slice());
 		} else {
-			return [];
+			return Promise.reject();
 		}
 	}
 
