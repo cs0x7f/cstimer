@@ -75,6 +75,10 @@ var scrHinter = execMain(function(CubieCube) {
 	}
 
 	function checkState(state) {
+		if (!rawScrTxt || (!DEBUG && !GiikerCube.isConnected())
+				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0) {
+			return;
+		}
 		var toMoveFix = null;
 		var toMoveRaw = null;
 		if (genState) {
@@ -381,9 +385,7 @@ var giikerutil = execMain(function(CubieCube) {
 			retState = hackedCubie.toFaceCube();
 		}
 		callback(retState, prevMoves, lastTs);
-		if (curScramble && tools.getCurPuzzle() == '333' && timer.getCurTime() == 0) {
-			scrHinter.checkState(curCubie);
-		}
+		scrHinter.checkState(curCubie);
 	}
 
 	function tsLinearFit(moveTsList, inv) {
@@ -552,17 +554,13 @@ var giikerutil = execMain(function(CubieCube) {
 				curScramble = "";
 			}
 			scrHinter.setScramble(curScramble);
-			if (curScramble && kernel.getProp('input') == 'g') {
-				scrHinter.checkState(curCubie);
-			}
+			scrHinter.checkState(curCubie);
 		} else if (signal == 'property') {
 			if (['giiVRC', 'imgSize'].indexOf(value[0]) >= 0) {
 				renderStatus();
 			} else if (/^(preScrT?|isTrainScr)$/.exec(value[0])) {
 				scrHinter.setScramble(curScramble);
-				if (curScramble && kernel.getProp('input') == 'g') {
-					scrHinter.checkState(curCubie);
-				}
+				scrHinter.checkState(curCubie);
 			}
 		} else if (signal == 'timestd' && !value[4]) {
 			toReconsSolve = [timer.getStartTime(), value[0][1], value[1]];
@@ -578,6 +576,7 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		var startTime = toReconsSolve[0];
 		var startIdx = moveTsList.length;
+		var toScramble = toReconsSolve[2];
 		if (startIdx > 0 && moveTsList[startIdx - 1][2] > toReconsSolve[0] + toReconsSolve[1] + 1000) {
 			toReconsSolve = null;
 		}
@@ -603,9 +602,9 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		solvMoves = tsLinearFix(solvMoves);
 		var sol = cubeutil.moveSeq2str(solvMoves);
-		kernel.pushSignal('giirecons', [toReconsSolve[2], [sol, '333']]);
+		kernel.pushSignal('giirecons', [toScramble, [sol, '333']]);
 
-		var scrMoves = toReconsSolve[2].split(' ');
+		var scrMoves = (toScramble || "").split(' ');
 		var chk = new mathlib.CubieCube();
 		for (var i = 0; i < scrMoves.length; i++) {
 			chk.selfMoveStr(scrMoves[i]);
@@ -613,7 +612,7 @@ var giikerutil = execMain(function(CubieCube) {
 		var c2 = new mathlib.CubieCube();
 		c2.invFrom(c1);
 		if (chk.toFaceCube() == c2.toFaceCube()) {
-			console.log('cube solved');
+			DEBUG && console.log('[bluetooth] recons clear, cube solved');
 			toReconsSolve = null;
 		}
 	}
