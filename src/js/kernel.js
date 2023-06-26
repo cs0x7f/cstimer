@@ -1123,6 +1123,7 @@ var kernel = execMain(function() {
 	var scrambleReg = /^([\d]+(?:-\d+)?)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
 
 	function parseScramble(scramble, moveMap, addPreScr) {
+		scramble = scramble || '';
 		if (addPreScr) {
 			scramble = getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr') + ' ' + scramble;
 		}
