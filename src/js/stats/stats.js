@@ -666,6 +666,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function detailTimeLine(idx, time, trimList) {
+		if (!time) {
+			return "N/A";
+		}
 		var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
 		if ($.inArray(idx, trimList) != -1) {
 			c = "(" + c + ")";
