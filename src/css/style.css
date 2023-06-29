@@ -711,7 +711,12 @@ div.helptable ul {
 #inputTimer {
 	font-size: 0.5em;
 	text-align: center;
-	width: 80%;
+	width: 60%;
+}
+
+.m #inputTimer {
+	position: relative;
+	right: 10%;
 }
 
 #scrambleTxt {

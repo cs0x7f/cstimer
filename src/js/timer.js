@@ -35,7 +35,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		virtual333.setEnable(type == 'v' || type == 'q');
 		virtual333.reset();
 		lcd.setEnable(type != 'i');
-		lcd.reset(type == 'l' || type == 'v' || type == 'q' || type == 'g' && getProp('giiVRC') != 'n');
+		lcd.reset(/^[ilvq]$/.exec(type) || type == 'g' && getProp('giiVRC') != 'n', type == 'i');
 		keyboardTimer.reset(type);
 		inputTimer.setEnable(type == 'i');
 		lcd.renderUtil();
@@ -210,7 +210,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function reset(right) {
+		function reset(right, isoAvg) {
 			isRight = right;
 			mainDiv.empty();
 			rightDiv.empty();
@@ -226,7 +226,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			setStaticAppend("", false);
 			setValue(0, isRight);
 			setRunning(false);
-			avgDiv.updatePos(isRight);
+			avgDiv.updatePos(isoAvg ? !isRight : isRight);
 		}
 
 		function getMulPhaseAppend(curProgress, totPhases) {
@@ -553,6 +553,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			onkeyup: function(keyCode, e) {
 				return onkeyup(keyCode, detectTrigger(keyCode, 1, e));
 			},
+			detectTrigger: detectTrigger,
 			reset: reset
 		}
 	})();
@@ -650,6 +651,49 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
+		var lastDown = 0;
+		var lastStop = 0;
+		function onkeyup(keyCode, isTrigger) {
+			var now = $.now();
+			if (!checkUseIns()) {
+				return;
+			} else if (isTrigger) {
+				if (status == 0) {
+					setStatus(-1);
+				} else if (status == -1 || status == -3) {
+					if (now - lastStop < 500) {
+						lcd.fixDisplay(false, isTrigger);
+						return;
+					}
+				} else if (status == -4) {
+					startTime = now;
+					setStatus(-3);
+				}
+			}
+			lcd.fixDisplay(false, isTrigger);
+			if (isTrigger) {
+				kernel.clrKey();
+			}
+		}
+
+		function onkeydown(keyCode, isTrigger) {
+			var now = $.now();
+			if (!checkUseIns()) {
+				return;
+			} else if (now - lastDown < 200) {
+				return;
+			} else if (status == -3 || keyCode == 27) {
+				setStatus(isTrigger ? 0 : -1);
+				lcd.fixDisplay(false, false);
+			} else if (isTrigger && status == -1) {
+				setStatus(-4);
+			}
+			lcd.fixDisplay(true, isTrigger);
+			if (isTrigger) {
+				kernel.clrKey();
+			}
+		}
+
 		$(function() {
 			$('#lcd').after(input);
 		});
@@ -657,6 +701,15 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		return {
 			setEnable: setEnable,
 			parseInput: parseInput,
+			onkeydown: function(keyCode, e) {
+				if (keyCode == 28) {
+					return;
+				}
+				return onkeydown(keyCode, keyboardTimer.detectTrigger(keyCode, 0, e));
+			},
+			onkeyup: function(keyCode, e) {
+				return onkeyup(keyCode, keyboardTimer.detectTrigger(keyCode, 1, e));
+			},
 			clear: function() {
 				input.val('');
 			}
@@ -1488,10 +1541,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var keyCode = getKeyCode(e);
 		var focusObj = $(document.activeElement);
 		if (focusObj.is('input, textarea, select')) {
-			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer' && keyCode == 13) {
-				inputTimer.parseInput();
+			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer') {
+				if (keyCode == 13) {
+					inputTimer.parseInput();
+				}
+			} else {
+				return;
 			}
-			return;
 		} else {
 			focusObj.blur();
 		}
@@ -1510,6 +1566,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				ganSmartTimer.onkeydown(keyCode, e);
 				break;
 			case 'i':
+				inputTimer.onkeydown(keyCode, e);
 				break;
 			case 'v':
 			case 'q':
@@ -1528,10 +1585,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var keyCode = getKeyCode(e);
 		var focusObj = $(document.activeElement);
 		if (focusObj.is('input, textarea, select')) {
-			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer' && keyCode == 13) {
-				inputTimer.clear();
+			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer') {
+				if (keyCode == 13) {
+					inputTimer.clear();
+				}
+			} else {
+				return;
 			}
-			return;
 		} else {
 			focusObj.blur();
 		}
@@ -1545,6 +1605,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				break;
 			case 'b':
 				ganSmartTimer.onkeyup(keyCode, e);
+				break;
+			case 'i':
+				inputTimer.onkeyup(keyCode, e);
 				break;
 		}
 	}
