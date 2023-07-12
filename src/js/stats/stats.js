@@ -133,33 +133,47 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var pattern = /.*/;
 		var patstr = '.*';
 		var filterTh = $('<th class="click">').html('&#8981;');
-		var timeTh = $('<th class="click">').html(STATS_TIME);
+		var timeTh = $('<th class="click">');
+		var len1Th = $('<th class="click">');
+		var len2Th = $('<th class="click">');
 		var shownIdxs = [];
 		var hheadIdx = 0;
 		var nextRank = null;
 
 		function changeRank(idx) {
-			if (nextRank) {
+			if (nextRank && nextRank['idx'] == idx) {
 				nextRank = null;
 				updateTable(false);
 				return;
 			}
-			if (idx == 0) {
-				var rank = [];
-				for (var i = 0; i < times.length; i++) {
-					rank[i] = i;
-				}
-				rank.sort(function(a, b) {
-					return TimeStat.dnfsort(times_stats_table.timeAt(b), times_stats_table.timeAt(a));
-				});
-				nextRank = {};
-				for (var i = 0; i < times.length - 1; i++) {
-					nextRank[rank[i + 1]] = rank[i];
-				}
-				nextRank[-1] = rank[times.length - 1];
-				nextRank[rank[0]] = -1;
-				nextRank[-2] = times.length;
+			var rank = [];
+			for (var i = 0; i < times.length; i++) {
+				rank[i] = i;
 			}
+			if (idx == 0) {
+				rank.sort(function(a, b) {
+					return TimeStat.dnfsort(times_stats_table.timeAt(a), times_stats_table.timeAt(b));
+				});
+			} else if (idx == 1 || idx == 2) {
+				var len = idx == 1 ? len1 : len2;
+				var runstat = times_stats_list.runAvgMean(0, times.length, len, (idx == 1 ? stat1 : stat2) > 0 ? undefined : 0);
+				rank.sort(function(a, b) {
+					if (Math.max(a, b) < len - 1) {
+						return 0;
+					} else if (Math.min(a, b) < len - 1) {
+						return a > b ? -1 : 1;
+					}
+					return TimeStat.dnfsort(runstat[a - len + 1][0], runstat[b - len + 1][0]);
+				});
+			}
+			nextRank = {};
+			for (var i = 0; i < times.length - 1; i++) {
+				nextRank[rank[i]] = rank[i + 1];
+			}
+			nextRank[-1] = rank[0];
+			nextRank[rank[times.length - 1]] = -1;
+			nextRank['len'] = times.length;
+			nextRank['idx'] = idx;
 			updateTable(false);
 		}
 
@@ -187,7 +201,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				curDim = Math.max(curDim, timesAt(i)[0].length - 1);
 			}
 			updateTitleRow();
-			if (nextRank && nextRank[-2] != times.length) {
+			if (nextRank && nextRank['len'] != times.length) {
 				clearFilter();
 			}
 			shownIdxs = [];
@@ -205,6 +219,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			filterTh.unbind('click').click(changePattern);
 			timeTh.unbind('click').click(changeRank.bind(null, 0));
+			len1Th.unbind('click').click(changeRank.bind(null, 1));
+			len2Th.unbind('click').click(changeRank.bind(null, 2));
 			updateAvgRow(curDim);
 			allUpdate && updateUtil(['table']);
 			scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
@@ -235,9 +251,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function updateTitleRow() {
-			title.empty().append(
-				filterTh, timeTh, '<th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
-			);
+			var rankIdx = nextRank ? nextRank['idx'] : -1;
+			timeTh.html(STATS_TIME + (rankIdx == 0 ? '*' : ''));
+			len1Th.html((stat1 > 0 ? 'ao' : 'mo') + len1 + (rankIdx == 1 ? '*' : ''));
+			len2Th.html((stat2 > 0 ? 'ao' : 'mo') + len2 + (rankIdx == 2 ? '*' : ''));
+			title.empty().append(filterTh, timeTh, len1Th, len2Th);
 			if (curDim > 1) {
 				for (var i = 0; i < curDim; i++) {
 					title.append('<th>P.' + (i + 1) + '</th>');
