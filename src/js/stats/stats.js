@@ -133,8 +133,45 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var pattern = /.*/;
 		var patstr = '.*';
 		var filterTh = $('<th class="click">').html('&#8981;');
+		var timeTh = $('<th class="click">').html(STATS_TIME);
 		var shownIdxs = [];
 		var hheadIdx = 0;
+		var nextRank = null;
+
+		function changeRank(idx) {
+			if (nextRank) {
+				nextRank = null;
+				updateTable(false);
+				return;
+			}
+			if (idx == 0) {
+				var rank = [];
+				for (var i = 0; i < times.length; i++) {
+					rank[i] = i;
+				}
+				rank.sort(function(a, b) {
+					return TimeStat.dnfsort(times_stats_table.timeAt(b), times_stats_table.timeAt(a));
+				});
+				nextRank = {};
+				for (var i = 0; i < times.length - 1; i++) {
+					nextRank[rank[i + 1]] = rank[i];
+				}
+				nextRank[-1] = rank[times.length - 1];
+				nextRank[rank[0]] = -1;
+				nextRank[-2] = times.length;
+			}
+			updateTable(false);
+		}
+
+		function nextIdx(idx) {
+			if (nextRank && (idx in nextRank)) {
+				return nextRank[idx];
+			} else if (idx == -1) {
+				return times.length - 1;
+			} else {
+				return idx - 1;
+			}
+		}
 
 		function filter(idx) {
 			var time = timesAt(idx);
@@ -150,8 +187,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 				curDim = Math.max(curDim, timesAt(i)[0].length - 1);
 			}
 			updateTitleRow();
+			if (nextRank && nextRank[-2] != times.length) {
+				clearFilter();
+			}
 			shownIdxs = [];
-			hheadIdx = times.length - 1;
+			hheadIdx = nextIdx(-1);
 			if (kernel.getProp('statinv')) {
 				table.empty().append(title, showAllRow, avgRow);
 			} else {
@@ -164,6 +204,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				showAllRow.unbind('click').click(table_ctrl.showAll).show();
 			}
 			filterTh.unbind('click').click(changePattern);
+			timeTh.unbind('click').click(changeRank.bind(null, 0));
 			updateAvgRow(curDim);
 			allUpdate && updateUtil(['table']);
 			scrollDiv.scrollTop(kernel.getProp('statinv') ? table[0].scrollHeight : 0);
@@ -183,17 +224,19 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function clearFilter() {
-			if (patstr == '.*') {
-				return;
+			if (patstr == '.*' && nextRank == null) {
+				return false;
 			}
 			patstr = '.*';
 			pattern = /.*/;
+			nextRank = null;
 			updateTable(false);
+			return true;
 		}
 
 		function updateTitleRow() {
 			title.empty().append(
-				filterTh, '<th>' + STATS_TIME + '</th><th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
+				filterTh, timeTh, '<th>' + (stat1 > 0 ? 'ao' : 'mo') + len1 + '</th><th>' + (stat2 > 0 ? 'ao' : 'mo') + len2 + '</th>'
 			);
 			if (curDim > 1) {
 				for (var i = 0; i < curDim; i++) {
@@ -202,13 +245,20 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 		}
 
-		function updateFrom(idxRow) {
-			var idx = idxRow.attr('data');
+		function updateFrom(idx) {
 			var endIdx = Math.min(idx + Math.max(len1, len2), times.length);
-			while (idx !== undefined && idx < endIdx && idx >= 0) {
-				getTimeRow(~~idx, curDim, idxRow);
-				idxRow = kernel.getProp('statinv') ? idxRow.next() : idxRow.prev();
-				idx = idxRow.attr('data');
+			var isStatInv = kernel.getProp('statinv');
+			var rows = avgRow.parent().children();
+			for (var i = 0; i < shownIdxs.length; i++) {
+				if (shownIdxs[i] < idx || shownIdxs[i] >= endIdx) {
+					continue;
+				}
+				var ii = isStatInv ? shownIdxs.length + 1 - i : 2 + i;
+				if (shownIdxs[i] != ~~rows.eq(ii).attr('data')) {
+					console.log('[stats] update from error', shownIdxs[i], ii, rows[ii]);
+					continue;
+				}
+				getTimeRow(shownIdxs[i], curDim, rows.eq(ii));
 			}
 			updateAvgRow(curDim);
 		}
@@ -221,7 +271,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					rows.push(getTimeRow(hheadIdx, curDim));
 					shownIdxs.push(hheadIdx);
 				}
-				hheadIdx--;
+				hheadIdx = nextIdx(hheadIdx);
 			}
 			if (kernel.getProp('statinv')) {
 				showAllRow.after(rows.reverse().join(""));
@@ -242,12 +292,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 				(kernel.getProp('statinv') ? showAllRow.next() : showAllRow.prev()).remove();
 				hheadIdx = shownIdxs.pop();
 			}
-			if (hheadIdx > 0) {
+			if (nextIdx(hheadIdx) >= 0) {
 				showAllRow.unbind('click').click(showAll).show();
 			}
 		}
 
 		function appendRow(idx) {
+			if (clearFilter()) {
+				return;
+			}
 			var row = getTimeRow(idx, curDim);
 			if (kernel.getProp('statinv')) {
 				avgRow.before(row);
@@ -261,7 +314,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (shownIdxs.length > MAX_ITEMS) {
 				table_ctrl.hideAll();
 			}
-			clearFilter();
 		}
 
 		return {
@@ -295,7 +347,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					timesExtra[cfmIdx] = null;
 				});
 				sessionManager.save(cfmIdx);
-				table_ctrl.updateFrom(cfmIdxRow);
+				table_ctrl.updateFrom(cfmIdx);
 				updateUtil(['comment', cfmIdx]);
 			} else {
 				timesAt(cfmIdx)[2] = cfmTxtR.val();
@@ -314,7 +366,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			if (which == 'p') {
 				var selected = {" OK ": 0, " +2 ": 2000, " DNF ": -1}[target.html()];
-				setPenalty(selected, cfmIdx, cfmIdxRow);
+				setPenalty(selected, cfmIdx);
 			} else if (which == 'd') {
 				if (delIdx(cfmIdx)) {
 					cfmIdx = undefined;
@@ -406,7 +458,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			kernel.showDialog(params, 'cfm', 'Solves No.' + (idx + 1));
 		}
 
-		function setPenalty(value, idx, idxRow) {
+		function setPenalty(value, idx) {
 			if (timesAt(idx)[0][0] == value) {
 				return;
 			}
@@ -415,7 +467,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				timesExtra[idx] = null;
 			});
 			sessionManager.save(idx);
-			table_ctrl.updateFrom(idxRow);
+			table_ctrl.updateFrom(idx);
 			updateUtil(['penalty', idx]);
 			if (idx == cfmIdx) {
 				genDiv();
@@ -427,7 +479,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (times.length == 0) {
 				return;
 			}
-			setPenalty(value, times.length - 1, kernel.getProp('statinv') ? avgRow.prev() : title.next());
+			setPenalty(value, times.length - 1);
 		}
 
 		var toolDiv;
