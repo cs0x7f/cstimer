@@ -318,6 +318,7 @@ var recons = execMain(function() {
 
 	function procClick(e) {
 		if (e.type == 'change') {
+			kernel.setProp('rcMthd', methodSelect.val());
 			update();
 			return;
 		}
@@ -400,6 +401,7 @@ var recons = execMain(function() {
 			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
 			methodSelect.append('<option value="' + methods[i][0] + '%">' + methods[i][1] + '%</option>');
 		}
+		methodSelect.val(kernel.getProp('rcMthd', 'cf4op'));
 	});
 
 	return {
