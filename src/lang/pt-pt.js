@@ -197,7 +197,7 @@ var scrdata = [
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['F2L', "f2l", 0],
+		['último slot + última camada', "lsll2", 0],
 		['última camada', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['último slot + última camada', "lsll2", 0],
+		['cruz resolvida', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['cruz fácil', "easyc", 3],
 		['easy xcross', "easyxc", 4]

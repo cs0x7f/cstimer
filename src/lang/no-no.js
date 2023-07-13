@@ -197,7 +197,7 @@ var scrdata = [
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['F2L', "f2l", 0],
+		['Siste F2L plass + Siste rad', "lsll2", 0],
 		['Siste rad', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['Siste F2L plass + Siste rad', "lsll2", 0],
+		['Krysset løst', "f2l", 0],
 		['EOLinje', "eoline", 0],
 		['lett kryss', "easyc", 3],
 		['easy xcross', "easyxc", 4]

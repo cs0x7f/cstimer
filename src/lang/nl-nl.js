@@ -197,7 +197,7 @@ var scrdata = [
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['F2L', "f2l", 0],
+		['Laatste slot + laatste laag', "lsll2", 0],
 		['Laatste laag', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['Laatste slot + laatste laag', "lsll2", 0],
+		['Kruis opgelost', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['Makkelijk kruis', "easyc", 3],
 		['eenvoudig xkruis', "easyxc", 4]

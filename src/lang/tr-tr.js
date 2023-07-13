@@ -197,7 +197,7 @@ var scrdata = [
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['F2L', "f2l", 0],
+		['son bölme + son katman', "lsll2", 0],
 		['son katman', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['son bölme + son katman', "lsll2", 0],
+		['cross çözülü', "f2l", 0],
 		['EO Çizgisi', "eoline", 0],
 		['kolay cross', "easyc", 3],
 		['easy xcross', "easyxc", 4]

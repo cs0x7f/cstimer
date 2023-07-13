@@ -197,7 +197,7 @@ var scrdata = [
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['F2L', "f2l", 0],
+		['最後一個F2L+頂層', "lsll2", 0],
 		['僅打亂頂層', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['最後一個F2L+頂層', "lsll2", 0],
+		['預先解好十字', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['簡單的十字', "easyc", 3],
 		['easy xcross', "easyxc", 4]

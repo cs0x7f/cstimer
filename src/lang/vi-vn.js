@@ -197,7 +197,7 @@ var scrdata = [
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['F2L', "f2l", 0],
+		['F2L cuối  + tầng 3', "lsll2", 0],
 		['tầng 3', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['F2L cuối  + tầng 3', "lsll2", 0],
+		['đã giải cross', "f2l", 0],
 		['Edge Orientation Line', "eoline", 0],
 		['solve dởm', "easyc", 3],
 		['Xcross dễ', "easyxc", 4]
