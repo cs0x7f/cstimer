@@ -880,7 +880,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function timeAtDim(dim, idx) {
-		var curTime = times[idx][0];
+		var curTime = (times[idx] || [[-1, 1]])[0];
 		if (curTime[0] == -1 || curTime.length <= dim) {
 			return -1;
 		}
