@@ -1634,7 +1634,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	var curScramble = "";
 
-	var stat1, stat2, len1, len2;
+	var stat1 = 5, stat2 = 12, len1 = 5, len2 = 12;
 
 	var curScrType = '333';
 
