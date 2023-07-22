@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Personalizirani statistički indikator';
 var PROPERTY_DELMUL = 'Omogući višestruko brisanje';
 var PROPERTY_TOOLSFUNC = 'Odabrane funkcije';
 var PROPERTY_TRIM = 'Broj slaganja "odrezanih" sa svake strane';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Medijan';
 var PROPERTY_STKHEAD = 'Koristi informacije Stackmat statusa';
 var PROPERTY_TOOLPOS = 'Tools panel position';

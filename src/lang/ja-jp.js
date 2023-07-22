@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'カスタム統計指標';
 var PROPERTY_DELMUL = '複数削除を有効にする';
 var PROPERTY_TOOLSFUNC = '機能選択';
 var PROPERTY_TRIM = '片側で除外するソルブ数';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = '中央値';
 var PROPERTY_STKHEAD = 'スタックマットのステータス情報を利用する';
 var PROPERTY_TOOLPOS = 'Tools panel position';

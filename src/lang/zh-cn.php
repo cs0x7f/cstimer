@@ -80,7 +80,7 @@
 <li><strong data="opt_scrFast">四阶魔方使用快速打乱（非官方）</strong>. WCA官方的4x4x4打乱需要大量的计算资源，可以通过勾选此选项来启用4x4x4随即转动打乱代替。</li>
 <li><strong data="opt_scrKeyM">标记打乱中的关键转动</strong>. 标记打乱中的关键步骤，例如对于SQ1打乱会标记处让形状离开正方形的那一步。</li>
 <li><strong data="opt_scrClk">点击打乱时的动作</strong>. 当您点击打乱公式时触发的行为，复制打乱或生成下一个打乱公式。</li>
-<li><strong data="opt_trim">首尾各删去几个成绩</strong>. 当计算去尾平均时从最好和最坏处舍弃的成绩比例。</li>
+<li><strong data="opt_trim">删去几个最好成绩</strong>. 当计算去尾平均时从最好和最坏处舍弃的成绩比例。</li>
 <li><strong data="opt_statsum">成绩列表前显示摘要</strong>. 在成绩列表前显示分组统计表。</li>
 <li><strong data="opt_printScr">成绩统计中显示打乱</strong>. 在轮次统计中显示打乱公式。</li>
 <li><strong data="opt_printDate">成绩统计中显示日期</strong>. 在轮次统计中显示还原时间日期。</li>

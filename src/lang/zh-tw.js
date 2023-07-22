@@ -504,6 +504,7 @@ var PROPERTY_STATALU = '自訂統計指標';
 var PROPERTY_DELMUL = '允許同時刪除多個成績';
 var PROPERTY_TOOLSFUNC = '選擇的功能';
 var PROPERTY_TRIM = '刪減數據中的資料數';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = '中位數';
 var PROPERTY_STKHEAD = '使用stackmat狀態資訊';
 var PROPERTY_TOOLPOS = 'Tools panel position';

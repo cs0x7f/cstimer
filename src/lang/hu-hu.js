@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Személyre szabott statisztikai jelölők';
 var PROPERTY_DELMUL = 'Több elem törlésének engedélyezése';
 var PROPERTY_TOOLSFUNC = 'Kiválasztott Funkciók';
 var PROPERTY_TRIM = 'A kétoldalt levágott megoldások száma';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Medián';
 var PROPERTY_STKHEAD = 'A Stackmat státuszának használata';
 var PROPERTY_TOOLPOS = 'Tools panel position';

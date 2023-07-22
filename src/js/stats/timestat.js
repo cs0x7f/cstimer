@@ -9,15 +9,25 @@ var TimeStat = execMain(function() {
 		this.reset(timesLen);
 	}
 
-	function getNTrim(n) {
-		var ntrim = kernel.getProp('trim', 'p5');
+	function getNTrim(n, ntrim) {
 		if (ntrim[0] == 'p') {
 			return Math.ceil(n / 100 * ntrim.slice(1));
 		} else if (ntrim == 'm') {
-			return Math.max(0, (n - 1) >> 1);
+			return Math.max(0, n >> 1);
 		} else {
 			return ~~ntrim;
 		}
+	}
+
+	function getNTrimLR(n) {
+		var ntrim = kernel.getProp('trim', 'p5');
+		var ntrimr = kernel.getProp('trimr', 'a');
+		var triml = getNTrim(n, ntrim);
+		var trimr = getNTrim(n, ntrimr == 'a' ? ntrim : ntrimr);
+		if (triml + trimr == n) {
+			return [Math.max(triml - 1, 0), Math.max(trimr - 1, 0)]
+		}
+		return [triml, trimr];
 	}
 
 	TimeStat.dnfsort = function(a, b) {
@@ -94,8 +104,8 @@ var TimeStat = execMain(function() {
 			if (this.timesLen < size) {
 				break;
 			}
-			var trim = this.avgSizes[j] < 0 ? 0 : getNTrim(size);
-			var neff = size - 2 * trim;
+			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
+			var neff = size - trimlr[0] - trimlr[1];
 			var rbt = this.treesAvg[j] || sbtree.tree(this.timeSort);
 			if (this.timesLen == size) {
 				for (var k = 0; k < size; k++) {
@@ -105,9 +115,9 @@ var TimeStat = execMain(function() {
 			} else {
 				rbt.remove(this.timeAt(i - size)).insert(t, i);
 			}
-			var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
-			var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
-			var curVal = [(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
+			var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
+			var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
+			var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
 			if (this.timeSort(curVal[0], this.bestAvg(j, 0)) < 0) {
 				if (this.bestAvg(j, 0) >= 0 && !next) {
 					bestHintList.push((this.avgSizes[j] > 0 ? "ao" : "mo") + size);
@@ -155,11 +165,11 @@ var TimeStat = execMain(function() {
 			var rbt = this.treesAvg[j];
 			rbt.remove(t).insert(this.timeAt(i - size), i - size);
 			if (!next) {
-				var trim = this.avgSizes[j] < 0 ? 0 : getNTrim(size);
-				var neff = size - 2 * trim;
-				var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
-				var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
-				var curVal = [(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)];
+				var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
+				var neff = size - trimlr[0] - trimlr[1];
+				var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
+				var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
+				var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
 				this.lastAvg[j] = curVal;
 			}
 			if (this.bestAvg(j, 4) == i - size + 1) {
@@ -177,12 +187,12 @@ var TimeStat = execMain(function() {
 			if (this.timesLen < size) {
 				break;
 			}
-			var trim = this.avgSizes[j] < 0 ? 0 : getNTrim(size);
-			var neff = size - 2 * trim;
+			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
+			var neff = size - trimlr[0] - trimlr[1];
 			var rbt = this.treesAvg[j] || sbtree.tree(this.timeSort);
 			var toRemove = this.timeAt(this.timesLen - size);
-			var left = trim;
-			var right = size - trim - 1;
+			var left = trimlr[0];
+			var right = size - trimlr[1] - 1;
 			if (this.timeSort(toRemove, rbt.rank(left)) < 0) {
 				left += 1;
 				toRemove = 0;
@@ -241,31 +251,29 @@ var TimeStat = execMain(function() {
 	//ret length: length - nsolves + 1
 	TimeStat.prototype.runAvgMean = function(start, length, size, trim) {
 		size = size || length;
-		if (trim === undefined) {
-			trim = getNTrim(size);
-		}
 		if (start < 0 || start + length > this.timesLen) {
 			return;
 		}
-		if (size - trim <= 0) {
+		var trimlr = trim == 0 ? [0, 0] : getNTrimLR(size);
+		if (size - trimlr[0] - trimlr[1] <= 0) {
 			return [-1, 0, -1, -1];
 		}
 		var rbt = sbtree.tree(this.timeSort);
 		for (var j = 0; j < size; j++) {
 			rbt.insert(this.timeAt(start + j), j);
 		}
-		var neff = size - 2 * trim;
-		var sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
-		var variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
+		var neff = size - trimlr[0] - trimlr[1];
+		var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
+		var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
 		var ret = [
-			[(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)]
+			[(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])]
 		];
 		var start0 = start - size;
 		for (var i = size; i < length; i++) {
 			rbt.remove(this.timeAt(start0 + i)).insert(this.timeAt(start + i), j);
-			sum = rbt.cumSum(size - trim) - rbt.cumSum(trim);
-			variance = Math.sqrt((rbt.cumSk2(size - trim) - rbt.cumSk2(trim) - sum * sum / neff) / (neff - 1)) / 1000;
-			ret.push([(rbt.rankOf(-1) < size - trim) ? -1 : sum / neff, variance, rbt.rank(trim - 1), rbt.rank(size - trim)]);
+			sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
+			variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
+			ret.push([(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])]);
 		}
 		return ret;
 	}
@@ -273,7 +281,8 @@ var TimeStat = execMain(function() {
 	TimeStat.prototype.getTrimList = function(start, nsolves, thresL, thresR) {
 		var trimlList = [];
 		var trimrList = [];
-		var trim = getNTrim(nsolves);
+		var trimlr = getNTrimLR(nsolves);
+		thresL = thresL < -2 ? 0 : thresL;
 		for (var i = 0; i < nsolves; i++) {
 			var t = this.timeAt(start + i);
 			var cmpl = this.timeSort(t, thresL);
@@ -282,13 +291,13 @@ var TimeStat = execMain(function() {
 				trimlList.push(i);
 			} else if (cmpr < 0) {
 				trimrList.push(i);
-			} else if (cmpl == 0 && trimlList.length < trim) {
+			} else if (cmpl == 0 && trimlList.length < trimlr[0]) {
 				trimlList.unshift(i);
-			} else if (cmpr == 0 && trimrList.length < trim) {
+			} else if (cmpr == 0 && trimrList.length < trimlr[1]) {
 				trimrList.unshift(i);
 			}
 		}
-		return trimlList.slice(-trim).concat(trimrList.slice(-trim));
+		return trimlList.slice(trimlList.length - trimlr[0]).concat(trimrList.slice(trimrList.length - trimlr[1]));
 	}
 
 	return TimeStat;

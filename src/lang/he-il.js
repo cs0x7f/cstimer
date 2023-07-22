@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'אינדקטור סטטיסטי מותאם אישית';
 var PROPERTY_DELMUL = 'להפעיל מחיקה מרובה';
 var PROPERTY_TOOLSFUNC = 'הפונקציות שנבחרו';
 var PROPERTY_TRIM = 'כמות פתירות חתוכה מכל צד';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'חציון';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
 var PROPERTY_TOOLPOS = 'Tools panel position';

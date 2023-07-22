@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Niestandardowy wskaźnik statystyczny';
 var PROPERTY_DELMUL = 'Włącz usuwanie wielu wierszy';
 var PROPERTY_TOOLSFUNC = 'Wybrane funkcje';
 var PROPERTY_TRIM = 'Liczba ułożeń niebranych pod uwagę';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Mediana';
 var PROPERTY_STKHEAD = 'Użyj informacji o stanie Stackmat';
 var PROPERTY_TOOLPOS = 'Pozycja panelu narzędzi';

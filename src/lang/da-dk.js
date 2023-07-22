@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Tilpasset statistisk indikator';
 var PROPERTY_DELMUL = 'Tillad flere sletninger';
 var PROPERTY_TOOLSFUNC = 'Valgte funktioner';
 var PROPERTY_TRIM = 'Antal af løsninger fjernet på hver side';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Brug Stackmat status information';
 var PROPERTY_TOOLPOS = 'Tools panel position';

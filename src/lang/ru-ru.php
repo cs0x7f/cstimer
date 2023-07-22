@@ -80,7 +80,7 @@
 <li><strong data="opt_scrFast">Использовать быстрый скрамбл для 4х4х4(неофициально)</strong>. Официальный WCA метод скрамблинга требует огромных вычислительных ресурсов, выберите эту опцию, чтобы использовать скрамблинг случайными поворотами.</li>
 <li><strong data="opt_scrKeyM">Главный(ые) ход(ы) в скрамбле</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Действие при нажатии на скрамбл</strong>. Поведение когда нажимается текст скрамбла - копировать скрамбл или сгенерировать новый скрамбл.</li>
-<li><strong data="opt_trim">Number of solves trimmed at each side</strong>. Количество сборок от лучших до худших которые не учитывается при расчете среднего</li>
+<li><strong data="opt_trim">Number of solves trimmed at better side</strong>. Количество сборок от лучших до худших которые не учитывается при расчете среднего</li>
 <li><strong data="opt_statsum">как суммарный после списка времени</strong>. Показывать окно статистики перед списком времени.</li>
 <li><strong data="opt_printScr">печатать скрамблы в статистику</strong>. Print scramble in round statistics dialog.</li>
 <li><strong data="opt_printDate">Добавлять дату сборки в статистику</strong>. Print solving date in round statistics dialog.</li>

@@ -80,7 +80,7 @@
 <li><strong data="opt_scrFast">Použít rychlí scramble pro 4x4x4(neoficiální)</strong>. Oficiální scrambly pro 4x4x4 jsou náročné na vygenerování. Tato možnost změní scrambly pro 4x4x4 na random-move.</li>
 <li><strong data="opt_scrKeyM">Klíčovy krok pohybů v zamíchání</strong>. Cube</li>
 <li><strong data="opt_scrClk">Akce při kliknutí na scramble</strong>. Co se stane, kliknete-li na scramble. Zkopíruje aktuální, či vygeneruje další.</li>
-<li><strong data="opt_trim">Počet složení použitích na každé straně</strong>. Kolik nejhorších/nejlepších solvů solvů se škrtá při počítání průměru.</li>
+<li><strong data="opt_trim">Počet nejhorších/nejlepších nepočítaných solvů</strong>. Kolik nejhorších/nejlepších solvů solvů se škrtá při počítání průměru.</li>
 <li><strong data="opt_statsum">zobrazit shrnutí před časovím listem</strong>. Statistiky před seznamem časů.</li>
 <li><strong data="opt_printScr">zobrazit zamíchání ve statistikách</strong>. Vypsat scramble ve statistikách kola.</li>
 <li><strong data="opt_printDate">zobrazit datum složení ve statistikách</strong>. Viz výše pro datum složení.</li>

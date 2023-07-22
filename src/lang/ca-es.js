@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Indicador d\'estadística personalitzat';
 var PROPERTY_DELMUL = 'Habilitar Esborrat Multiple';
 var PROPERTY_TOOLSFUNC = 'Funcions seleccionades';
 var PROPERTY_TRIM = 'Nombre de resolucions no contants a cada costat';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Mitjana';
 var PROPERTY_STKHEAD = 'Utilitzar Informació d\'Estat de Stackmat';
 var PROPERTY_TOOLPOS = 'Tools panel position';

@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Indicador estadístico personalizado';
 var PROPERTY_DELMUL = 'Habilitar eliminación múltiple';
 var PROPERTY_TOOLSFUNC = 'Funciones seleccionadas';
 var PROPERTY_TRIM = 'Cantidad de soluciones recortadas a cada lado';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Media';
 var PROPERTY_STKHEAD = 'Usar información de estado de Stackmat';
 var PROPERTY_TOOLPOS = 'Tools panel position';

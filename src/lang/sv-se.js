@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Anpassad statistiskindikator';
 var PROPERTY_DELMUL = 'Aktivera flera borttagningar';
 var PROPERTY_TOOLSFUNC = 'Valda Funktioner';
 var PROPERTY_TRIM = 'Antal lösningar trimmade på varje sida';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Använd Stackmatstatusinformation';
 var PROPERTY_TOOLPOS = 'Tools panel position';

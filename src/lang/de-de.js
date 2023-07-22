@@ -504,6 +504,7 @@ var PROPERTY_STATALU = 'Angepasster statistischer Indikator';
 var PROPERTY_DELMUL = 'Mehrfach-Löschung aktivieren';
 var PROPERTY_TOOLSFUNC = 'Ausgewählte Funktionen';
 var PROPERTY_TRIM = 'Anzahl der Versuche, die auf beiden Seiten getrimmt wurden';
+var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Benutze die Stackmat Statusinformationen';
 var PROPERTY_TOOLPOS = 'Tools panel position';

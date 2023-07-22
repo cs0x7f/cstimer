@@ -1668,10 +1668,11 @@ var stats = execMain(function(kpretty, round, kpround) {
 				updateStatalU(statal == 'u' ? kernel.getProp('statalu') : statal);
 			} else if (value[0] == 'statalu') {
 				updateStatalU(value[1]);
-			} else if (value[0] == 'trim') {
+			} else if (value[0] == 'trim' || value[0] == 'trimr') {
 				times_stats_table.reset(times.length);
 				times_stats_list.reset(times.length);
 				crossSessionStats.updateStatal(avgSizes);
+				table_ctrl.updateTable(false);
 				updateUtil(['property', value[0]]);
 			} else if (value[0] == 'view') {
 				resultsHeight();
@@ -1732,13 +1733,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trim|view|wndStat|sr_.*)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
 		kernel.regListener('stats', 'giirecons', procSignal);
-
-		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['1', 'p1', 'p5', 'p10', 'p20', 'm'], ['1', '1%', '5%', '10%', '20%', PROPERTY_TRIM_MED]], 1);
+		kernel.regProp('stats', 'trim', 1, PROPERTY_TRIM, ['p5', ['0', '1', 'p1', 'p5', 'p10', 'p20', 'm'], ['0', '1', '1%', '5%', '10%', '20%', '50%/' + PROPERTY_TRIM_MED]], 1);
+		kernel.regProp('stats', 'trimr', 1, PROPERTY_TRIMR, ['a', ['a', '0', '1', 'p1', 'p5', 'p10', 'p20', 'm'], ['auto', '0', '1', '1%', '5%', '10%', '20%', '50%/' + PROPERTY_TRIM_MED]], 1);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true], 1);
 		kernel.regProp('stats', 'statthres', 0, PROPERTY_STATTHRES, [false], 1);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true], 1);
