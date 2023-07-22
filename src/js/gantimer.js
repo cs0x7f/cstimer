@@ -24,6 +24,7 @@ var GanTimerDriver = execMain(function () {
 	var GAN_TIMER_SERVICE = '0000fff0-0000-1000-8000-00805f9b34fb';
 	var GAN_TIMER_STATE_CHARACTERISTIC = '0000fff5-0000-1000-8000-00805f9b34fb';
 
+	var bluetoothDevice;       // current bluetooth device
 	var stateUpdateCallback;   // callback function invoked on timer state update
 	var stateCharacteristic;   // timer state bluetooth characteristic object
 
@@ -102,23 +103,49 @@ var GanTimerDriver = execMain(function () {
 				stateUpdateCallback(buildTimerEvent(data));
 			}
 		} else {
-			console.log("GanTimerDriver: Invalid event data received from Timer: " + hexdump(data));
+			console.log("[GanTimerDriver] Invalid event data received from Timer: " + hexdump(data));
 		}
 	}
 
 	// handle disconnection when timer is is powered off or something like that
 	function handleUnexpectedDisconnection() {
-		if (stateCharacteristic) {
-			stateCharacteristic.removeEventListener('characteristicvaluechanged', handleStateCharacteristicUpdate);
-			stateCharacteristic = undefined;
-		}
-		if (typeof stateUpdateCallback == 'function') {
-			stateUpdateCallback({ state: GanTimerState.DISCONNECT });
-		}
+		disconnectImpl().then(function () {
+			if (typeof stateUpdateCallback == 'function') {
+				stateUpdateCallback({ state: GanTimerState.DISCONNECT });
+			}
+		});
+	}
+
+	// Wait until target device start sending bluetooth advertisiment packets
+	function waitUntilDeviceAvailable(device) {
+		var abortController = new AbortController();
+		return new Promise(function (resolve, reject) {
+			if (!device.watchAdvertisements) {
+				reject("Bluetooth Advertisements API is not supported by this browser");
+			} else {
+				var onAdvEvent = function (event) {
+					DEBUG && console.log('[GanTimerDriver] received advertisement packet from device', event);
+					delete device.stopWaiting;
+					device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+					resolve(device);
+				};
+				device.stopWaiting = function () {
+					DEBUG && console.log('[GanTimerDriver] cancel waiting for device advertisements');
+					delete device.stopWaiting;
+					device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+				}
+				device.addEventListener('advertisementreceived', onAdvEvent);
+				device.watchAdvertisements({ signal: abortController.signal });
+				DEBUG && console.log('[GanTimerDriver] start waiting for device advertisement packet');
+			}
+		});
 	}
 
 	// perform connection to bluetooth device and characteristic
-	function connectImpl() {
+	// if reconnect == true then no device selection dialog will popup and previously selected device will be reused
+	function connectImpl(reconnect) {
 
 		if (!window.navigator.bluetooth) {
 			return Promise.reject("Bluetooth API is not supported by this browser. Try fresh Chrome version!");
@@ -132,6 +159,10 @@ var GanTimerDriver = execMain(function () {
 			if (!available)
 				return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
 		}).then(function () {
+			DEBUG && console.log('[GanTimerDriver] requesting for bluetooth device, reconnect = ' + !!reconnect);
+			if (bluetoothDevice && reconnect) {
+				return waitUntilDeviceAvailable(bluetoothDevice);
+			}
 			return navigator.bluetooth.requestDevice({
 				filters: [
 					{ namePrefix: "GAN" },
@@ -141,13 +172,18 @@ var GanTimerDriver = execMain(function () {
 				optionalServices: [GAN_TIMER_SERVICE]
 			});
 		}).then(function (device) {
+			DEBUG && console.log('[GanTimerDriver] connecting to GATT server');
+			bluetoothDevice = device;
 			device.addEventListener('gattserverdisconnected', handleUnexpectedDisconnection);
 			return device.gatt.connect();
 		}).then(function (gatt) {
+			DEBUG && console.log('[GanTimerDriver] getting timer primary service');
 			return gatt.getPrimaryService(GAN_TIMER_SERVICE);
 		}).then(function (service) {
+			DEBUG && console.log('[GanTimerDriver] getting timer state characteristic');
 			return service.getCharacteristic(GAN_TIMER_STATE_CHARACTERISTIC);
 		}).then(function (characteristic) {
+			DEBUG && console.log('[GanTimerDriver] start listening to state characteristic value updates');
 			stateCharacteristic = characteristic;
 			stateCharacteristic.addEventListener('characteristicvaluechanged', handleStateCharacteristicUpdate);
 			stateCharacteristic.startNotifications();
@@ -157,10 +193,14 @@ var GanTimerDriver = execMain(function () {
 
 	// manual disconnect from timer device
 	function disconnectImpl() {
+		if (bluetoothDevice && bluetoothDevice.stopWaiting) {
+			bluetoothDevice.stopWaiting();
+		}
 		if (stateCharacteristic) {
+			DEBUG && console.log('[GanTimerDriver] disconnecting from timer device');
 			stateCharacteristic.service.device.removeEventListener('gattserverdisconnected', handleUnexpectedDisconnection);
 			stateCharacteristic.removeEventListener('characteristicvaluechanged', handleStateCharacteristicUpdate);
-			return stateCharacteristic.stopNotifications().then(function() {
+			return stateCharacteristic.stopNotifications().catch($.noop).finally(function () {
 				stateCharacteristic.service.device.gatt.disconnect();
 				stateCharacteristic = undefined;
 			});
@@ -169,12 +209,17 @@ var GanTimerDriver = execMain(function () {
 		}
 	}
 
+	function isConnectedImpl() {
+		return !!stateCharacteristic;
+	}
+
 	function setStateUpdateCallbackImpl(callback) {
 		stateUpdateCallback = callback;
 	}
 
 	return {
 		connect: connectImpl, // connect to timer device
+		isConnected: isConnectedImpl, // check connection status
 		disconnect: disconnectImpl, // disconnect from timer device
 		setStateUpdateCallback: setStateUpdateCallbackImpl // register callback invoked on timer state update
 	};

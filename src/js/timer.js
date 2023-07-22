@@ -831,6 +831,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function onGanTimerEvent(timerEvent) {
 			if (!enable)
 				return;
+			DEBUG && console.log('[gantimer] timer event received', GanTimerState[timerEvent.state], timerEvent);
 			switch (timerEvent.state) {
 				case GanTimerState.HANDS_ON: // both hands placed on timer
 					lcd.color('#f00');
@@ -880,35 +881,75 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					setStatus(-1);
 					lcd.renderUtil();
 					lcd.fixDisplay(false, true);
+					reconnectTimer();
 					break;
 			}
 
+		}
+
+		function reconnectTimer() {
+			$.delayExec('ganTimerReconnect', function () {
+				DEBUG && console.log('[gantimer] attempting to reconnect timer device');
+				connectTimer(true);
+			}, 2500);
+		}
+
+		function connectTimer(reconnect) {
+			GanTimerDriver.connect(reconnect).then(function () {
+				DEBUG && console.log('[gantimer] timer device successfully connected');
+				GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
+				hardTime = 0;
+				setStatus(-1);
+				lcd.reset();
+				lcd.renderUtil();
+				lcd.fixDisplay(false, true);
+			}).catch(function (err) {
+				DEBUG && console.log('[gantimer] failed to connect to timer', err);
+				if (!reconnect) {
+					alert(err);
+				}
+			});
+		}
+
+		function showConnectionDialog() {
+			var inspMsg = $('<div>').addClass('click')
+				.append('If you have enabled WCA inspection in settings,<br>use GAN logo button right on the timer to start/cancel inspection.');
+			var dialogMsg = $('<div>')
+				.append('<br><br>')
+				.append('<b>Press OK to connect to GAN Smart Timer</b>')
+				.append('<br><br>')
+				.append(inspMsg)
+				.append(bluetoothInstructDiv);
+			disconnectTimer().then(function () {
+				kernel.showDialog([dialogMsg, function () {
+					connectTimer();
+				}, 0, 0], 'share', 'GAN Smart Timer');
+			});
+		}
+
+		function disconnectTimer() {
+			return GanTimerDriver.disconnect();
 		}
 
 		function setEnableImpl(input) {
 			enable = input == 'b';
 			if (enable) {
 				hardTime = undefined;
-				kernel.showDialog([$('<div><br><br><b>Press OK to connect to GAN Smart Timer</b><br><br>If you have enabled WCA inspections in settings, use GAN Smart Timer RESET button to start/cancel inspection timer.</div>').append(bluetoothInstructDiv), function () {
-					GanTimerDriver.connect().then(function () {
-						GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
-						hardTime = 0;
-						setStatus(-1);
-						lcd.reset();
-						lcd.renderUtil();
-						lcd.fixDisplay(false, true);
-					}).catch(function (err) {
-						alert(err);
-					});
-				}, 0, 0], 'share', 'GAN Smart Timer');
+				showConnectionDialog();
 			} else {
-				GanTimerDriver.disconnect();
+				disconnectTimer();
+			}
+		}
+
+		function onKeyUpImpl(keyCode) {
+			if (keyCode == 32 && !GanTimerDriver.isConnected()) {
+				showConnectionDialog();
 			}
 		}
 
 		return {
 			setEnable: setEnableImpl,
-			onkeyup: $.noop,
+			onkeyup: onKeyUpImpl,
 			onkeydown: $.noop
 		};
 
