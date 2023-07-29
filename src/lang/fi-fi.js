@@ -45,9 +45,9 @@ var EXPORT_UPLOADED = 'Ladattu onnistuneesti';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
+var EXPORT_LOGINGGL = 'Kirjaudu käyttäen Google-tiliä';
+var EXPORT_LOGINWCA = 'Kirjaudu käyttäen WCA-tiliä';
+var EXPORT_LOGOUTCFM = 'Kirjaudu ulos?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SEKOITA';
@@ -62,13 +62,13 @@ var TOOLS_GIIKER = 'Bluetooth kuutio';
 var TOOLS_IMAGE = 'piirrä sekoitus';
 var TOOLS_STATS = 'Tilastot';
 var TOOLS_HUGESTATS = 'cross-session stats';
-var TOOLS_DISTRIBUTION = 'time distribution';
-var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
+var TOOLS_DISTRIBUTION = 'ajan jakautuminen';
+var TOOLS_TREND = 'ajan trendi';
+var TOOLS_METRONOME = 'metronomi';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_TRAINSTAT = 'Harj. statistiikka';
 var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Vahvista aika';
 var TOOLS_SOLVERS = 'Solvers';
@@ -127,9 +127,9 @@ var PROPERTY_FONTCOLOR_STR = 'black|white';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
 var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
-var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
+var PROPERTY_FORMAT = 'ajan muoto';
+var PROPERTY_USEKSC = 'käytä pikanäppäimiä';
+var PROPERTY_NTOOLS = 'työkalujen määrä';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
 var SCRAMBLE_LAST = 'last';
 var SCRAMBLE_NEXT = 'next';
@@ -188,8 +188,8 @@ var scrdata = [
 		["random state (WCA)", "333", 0],
 		['random move', "333o", 25],
 		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['vain reunat', "edges", 0],
+		['vain kulmat', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
@@ -253,7 +253,7 @@ var scrdata = [
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['5x5x5 reunat', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
 	"kernel": 'global',

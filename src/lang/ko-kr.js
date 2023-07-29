@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = '최신이 아닌 데이터 가져오기';
 var PROPERTY_AUTOEXP = '자동 내보내기 (해법 100개 마다)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
 var PROPERTY_SCRASIZE = '자동 섞기 크기';
 var MODULE_NAMES = {
 	"kernel": '전역',

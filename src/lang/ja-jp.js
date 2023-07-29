@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = '解法を段階的に表示';
 var PROPERTY_IMPPREV = '最新でないデータをインポート';
 var PROPERTY_AUTOEXP = 'オートエクスポート (100ソルブごと)';
-var PROPERTY_AUTOEXP_OPT = '保存しない|ファイルに保存|csTimer IDに保存|WCAアカウントに保存';
+var PROPERTY_AUTOEXP_OPT = '保存しない|ファイルに保存|csTimer IDに保存|WCAアカウントに保存|Googleアカウントに保存';
 var PROPERTY_SCRASIZE = '自動スクランブルのサイズ';
 var MODULE_NAMES = {
 	"kernel": 'グローバル',

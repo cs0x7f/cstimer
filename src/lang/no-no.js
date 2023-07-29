@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Vis løsning progressivt';
 var PROPERTY_IMPPREV = 'Importer ikke-nyeste data';
 var PROPERTY_AUTOEXP = 'Automatisk eksport (hver 100 gang)';
-var PROPERTY_AUTOEXP_OPT = 'Aldri|til fil|Med CsTimer ID|Med WCA bruker';
+var PROPERTY_AUTOEXP_OPT = 'Aldri|til fil|Med CsTimer ID|Med WCA bruker|Med Google bruker';
 var PROPERTY_SCRASIZE = 'Automatisk blandingsstørrelse';
 var MODULE_NAMES = {
 	"kernel": 'Globalt',

@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Dưới|Giữa|Trên';
 var PROPERTY_HIDEFULLSOL = 'Hiện cách giải theo thứ tự';
 var PROPERTY_IMPPREV = 'Thêm vào dữ liệu cũ';
 var PROPERTY_AUTOEXP = 'Tự Động Xuất (mỗi 100 lượt giải)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
 	"kernel": 'toàn cầu',

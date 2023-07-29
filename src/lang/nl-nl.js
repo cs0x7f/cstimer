@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = 'Verberg Alle Elementen wanneer je aan het timen bent';
 var SCRAMBLE_LAST = 'Laatste';
 var SCRAMBLE_NEXT = 'Volgende';
 var SCRAMBLE_SCRAMBLE = ' Scramble';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Mixen';
 var SCRAMBLE_LENGTH = 'Lengte';
 var SCRAMBLE_INPUT = 'Scramble(s) invoeren';
 var PROPERTY_VRCSPEED = 'VRC basissnelheid (tps)';
@@ -192,7 +192,7 @@ var scrdata = [
 		['Alleen hoeken', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Aangepast', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
@@ -445,7 +445,7 @@ var SCRAMBLE_NOOBST = [
 	['Draai de voorkant', 'Draai de achterkant']
 ];
 var SCRAMBLE_NOOBSS = ' 90 graden met de klok mee,| 90 graden tegen de klok in,| 180 graden,';
-var SCROPT_TITLE = 'Scramble Options';
+var SCROPT_TITLE = 'Scramble Opties';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Importeer niet-nieuwste gegevens';
 var PROPERTY_AUTOEXP = 'Automatisch exporteren (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Nooit|Naar bestand|Met csTimer ID|Met WCA Account';
+var PROPERTY_AUTOEXP_OPT = 'Nooit|Naar bestand|Met csTimer ID|Met WCA Account|Met Google Account';
 var PROPERTY_SCRASIZE = 'Automatische scramble grootte';
 var MODULE_NAMES = {
 	"kernel": 'Global',

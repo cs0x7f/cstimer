@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Mostrar la solución progresivamente';
 var PROPERTY_IMPPREV = 'Importar datos no actualizados';
 var PROPERTY_AUTOEXP = 'Auto Exportación (por 100 soluciones)';
-var PROPERTY_AUTOEXP_OPT = 'Nunca|A archivo|Con csTimer ID|Con cuenta WCA';
+var PROPERTY_AUTOEXP_OPT = 'Nunca|A archivo|Con csTimer ID|Con cuenta WCA|Con cuenta Google';
 var PROPERTY_SCRASIZE = 'Tamaño de la mezcla automático';
 var MODULE_NAMES = {
 	"kernel": 'Global',

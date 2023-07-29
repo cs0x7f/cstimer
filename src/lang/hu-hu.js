@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'A megoldás lépésenkénti mutatása';
 var PROPERTY_IMPPREV = 'A régebbi adatok importálása';
 var PROPERTY_AUTOEXP = 'Automatikus exportálás (100 kirakásonként)';
-var PROPERTY_AUTOEXP_OPT = 'Soha|File-ba|csTimer ID-val|WCA fiókkal';
+var PROPERTY_AUTOEXP_OPT = 'Soha|File-ba|csTimer ID-val|WCA fiókkal|Google fiókkal';
 var PROPERTY_SCRASIZE = 'Automatikus keverésméret';
 var MODULE_NAMES = {
 	"kernel": 'globális',

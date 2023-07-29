@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Prikaži progresivno rješenje';
 var PROPERTY_IMPPREV = 'Uvezi ne najnovije podatke';
 var PROPERTY_AUTOEXP = 'Automatsko izvezivanje (po 100 slaganja)';
-var PROPERTY_AUTOEXP_OPT = 'Nikad|U datoteku|S csTimer IDjem|S WCA Računom';
+var PROPERTY_AUTOEXP_OPT = 'Nikad|U datoteku|S csTimer IDjem|S WCA Računom|S Google Računom';
 var PROPERTY_SCRASIZE = 'Automatska veličina scramblea';
 var MODULE_NAMES = {
 	"kernel": 'globalno',

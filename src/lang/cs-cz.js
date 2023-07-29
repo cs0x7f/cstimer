@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Ukázat řešení postupně';
 var PROPERTY_IMPPREV = 'Importovat ne-poslední data';
 var PROPERTY_AUTOEXP = 'Automatický export dat (po 100 solvech)';
-var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s csTimer ID|S účtem WCA';
+var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s csTimer ID|S účtem WCA|S účtem Google';
 var PROPERTY_SCRASIZE = 'Automatická velikost scramblu';
 var MODULE_NAMES = {
 	"kernel": 'globální',

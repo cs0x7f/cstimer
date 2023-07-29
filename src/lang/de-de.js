@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Zeige die Lösungen schrittweise an';
 var PROPERTY_IMPPREV = 'Veraltete Daten importieren?';
 var PROPERTY_AUTOEXP = 'Autoexport (alle 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Nie|In Datei|Mit csTimer ID|Mit WCA Account';
+var PROPERTY_AUTOEXP_OPT = 'Nie|In Datei|Mit csTimer ID|Mit WCA Account|Mit Google Account';
 var PROPERTY_SCRASIZE = 'Automatische Scramble Größe';
 var MODULE_NAMES = {
 	"kernel": 'global',

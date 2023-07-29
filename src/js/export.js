@@ -297,43 +297,45 @@ var exportFunc = execMain(function() {
 		});
 	}
 
-	function uploadDataGGL() {
-		var gglToken = getDataId('gglData', 'access_token');
+	function uploadDataGGL(gglToken) {
+		gglToken = gglToken || getDataId('gglData', 'access_token');
 		if (!gglToken) {
-			return;
+			return Promise.reject('Invalid Account');
 		}
 		outServGGL.html('Create File...');
-		$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', {
-			'type': 'POST',
-			'contentType': 'application/json',
-			'data': JSON.stringify({
-				'parents': ['appDataFolder'],
-				'name': 'cstimer.txt'
-			}),
-			'beforeSend': function(xhr) {
-				xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
-			}
-		}).success(function(data, status, xhr) {
-			var uploadUrl = xhr.getResponseHeader('location');
-			outServGGL.html('Uploading Data...');
-			$.ajax(uploadUrl, {
-				'type': 'PUT',
-				'contentType': 'text/plain',
-				'data': LZString.compressToEncodedURIComponent(expString)
+		return new Promise(function(resolve, reject) {
+			$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', {
+				'type': 'POST',
+				'contentType': 'application/json',
+				'data': JSON.stringify({
+					'parents': ['appDataFolder'],
+					'name': 'cstimer.txt'
+				}),
+				'beforeSend': function(xhr) {
+					xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
+				}
 			}).success(function(data, status, xhr) {
-				alert('Export Success');
-				updateUserInfoFromGGL();
+				var uploadUrl = xhr.getResponseHeader('location');
+				outServGGL.html('Uploading Data...');
+				$.ajax(uploadUrl, {
+					'type': 'PUT',
+					'contentType': 'text/plain',
+					'data': LZString.compressToEncodedURIComponent(expString)
+				}).success(function(data, status, xhr) {
+					updateUserInfoFromGGL();
+					resolve();
+				}).error(function(data, status, xhr) {
+					logoutFromGGL();
+					reject(EXPORT_ERROR);
+				});
 			}).error(function(data, status, xhr) {
-				alert(EXPORT_ERROR);
 				logoutFromGGL();
+				if (data.status == 401) {
+					reject('Timeout, Please Re-login');
+				} else {
+					reject(EXPORT_ERROR);
+				}
 			});
-		}).error(function(data, status, xhr) {
-			if (data.status == 401) {
-				alert('Timeout, Please Re-login');
-			} else {
-				alert(EXPORT_ERROR);
-			}
-			logoutFromGGL();
 		});
 	}
 
@@ -441,7 +443,13 @@ var exportFunc = execMain(function() {
 			gglDataTd.html('Name: ' + me['displayName'] + '<br>' + 'Email: ' + me['emailAddress']);
 			gglDataTr.click(logoutFromGGL.bind(undefined, true)).addClass('click');
 			inServGGL.addClass('click').click(downloadDataGGL);
-			outServGGL.addClass('click').click(uploadDataGGL);
+			outServGGL.addClass('click').click(function() {
+				uploadDataGGL().then(function() {
+					alert('Export Success');
+				}).reject(function(errmsg) {
+					alert(errmsg);
+				});
+			});
 		}
 	}
 
@@ -462,7 +470,7 @@ var exportFunc = execMain(function() {
 	}
 
 	function procSignal(signal, value) {
-		if (signal == 'atexpa') {
+		if (value[0] == 'atexpa') {
 			if (value[1] == 'id') {
 				var id = getDataId('locData', 'id');
 				if (!isValidId(id) || value[2] == 'modify') {
@@ -483,6 +491,13 @@ var exportFunc = execMain(function() {
 					kernel.setProp('atexpa', 'n');
 					return;
 				}
+			} else if (value[1] == 'ggl') {
+				if (!getDataId('gglData', 'access_token')) {
+					alert('Please Login with Google Account in Export Panel First');
+					kernel.setProp('atexpa', 'n');
+					return;
+				}
+
 			}
 		} else if (signal == 'export') {
 			if (value[1] == 'wcaData') {
@@ -532,6 +547,18 @@ var exportFunc = execMain(function() {
 					tmpFile[0].click();
 					tmpFile.remove();
 				}
+			} else if (atexpa == 'ggl') {
+				var gglToken = getDataId('gglData', 'access_token');
+				if (!gglToken) {
+					logohint.push('Auto Export Abort');
+					kernel.setProp('atexpa', 'n');
+					return;
+				}
+				uploadDataGGL(gglToken).then(function() {
+					logohint.push('Auto Export Success');
+				}, function() {
+					logohint.push('Auto Export Failed');
+				});
 			}
 		});
 		exportTid = 0;
@@ -554,7 +581,7 @@ var exportFunc = execMain(function() {
 		kernel.regListener('export', 'time', newTimePushed);
 		kernel.regListener('export', 'property', procSignal, /^atexpa$/);
 		kernel.regListener('export', 'export', procSignal, /^account$/);
-		kernel.regProp('kernel', 'atexpa', 1, PROPERTY_AUTOEXP, ['n', ['n', 'f', 'id', 'wca'], PROPERTY_AUTOEXP_OPT.split('|')]);
+		kernel.regProp('kernel', 'atexpa', 1, PROPERTY_AUTOEXP, ['n', ['n', 'f', 'id', 'wca', 'ggl'], PROPERTY_AUTOEXP_OPT.split('|')]);
 		kernel.regProp('kernel', 'atexpi', ~1, 'Auto Export Interval (Solves)', [100, [50, 100, 200, 500], ['50', '100', '200', '500']]);
 		kernel.regProp('kernel', 'expp', 0, PROPERTY_IMPPREV, [false]);
 

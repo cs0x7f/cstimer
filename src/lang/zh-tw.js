@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = '逐步顯示解法';
 var PROPERTY_IMPPREV = '載入更舊的數據';
 var PROPERTY_AUTOEXP = '(每100轉)自動匯出';
-var PROPERTY_AUTOEXP_OPT = '從不|匯出成檔案|使用csTimer ID|使用WCA帳號';
+var PROPERTY_AUTOEXP_OPT = '從不|匯出成檔案|使用csTimer ID|使用WCA帳號|使用Google帳號';
 var PROPERTY_SCRASIZE = '自動調整打亂字體大小';
 var MODULE_NAMES = {
 	"kernel": '全域',

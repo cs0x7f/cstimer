@@ -504,7 +504,7 @@ var PROPERTY_STATALU = 'Indicateur de statistiques personnalisé';
 var PROPERTY_DELMUL = 'Activer la suppression multiple';
 var PROPERTY_TOOLSFUNC = 'Fonctions sélectionnées';
 var PROPERTY_TRIM = 'Nombre de résolutions élaguées à chaque extrémité.';
-var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
+var PROPERTY_TRIMR = 'Nombre de résolutions élaguées parmi les pires';
 var PROPERTY_TRIM_MED = 'Médiane';
 var PROPERTY_STKHEAD = 'Utiliser les informations d\'état du Stackmat';
 var PROPERTY_TOOLPOS = 'Position du panneau Outils';
@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bas|Flottant|Haut';
 var PROPERTY_HIDEFULLSOL = 'Afficher la solution progressivement';
 var PROPERTY_IMPPREV = 'Importer d\'anciennes données';
 var PROPERTY_AUTOEXP = 'Exportation automatique (par 100 résolutions)';
-var PROPERTY_AUTOEXP_OPT = 'Jamais|Fichier|ID csTimer|Compte WCA';
+var PROPERTY_AUTOEXP_OPT = 'Jamais|Fichier|ID csTimer|Compte WCA|Compte Google';
 var PROPERTY_SCRASIZE = 'Taille du mélange automatique';
 var MODULE_NAMES = {
 	"kernel": 'Global',

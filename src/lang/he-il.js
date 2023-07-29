@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'יבא מידע לא עדכני';
 var PROPERTY_AUTOEXP = 'יצוא אוטומטי (כל 100 פתירות)';
-var PROPERTY_AUTOEXP_OPT = 'אף פעם|לקובץ|עם משתמש csTimer|עם משתמש WCA';
+var PROPERTY_AUTOEXP_OPT = 'אף פעם|לקובץ|עם משתמש csTimer|עם משתמש WCA|עם משתמש Google';
 var PROPERTY_SCRASIZE = 'גודל ערבוב אוטומטי';
 var MODULE_NAMES = {
 	"kernel": 'גלובלי',

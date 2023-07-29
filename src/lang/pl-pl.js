@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Pokaż stopniowo rozwiązanie';
 var PROPERTY_IMPPREV = 'Importuj starsze dane';
 var PROPERTY_AUTOEXP = 'Automatyczny eksport (co 100 rozwiązań)';
-var PROPERTY_AUTOEXP_OPT = 'Nie eksportuj|Do pliku|przy użyciu csTimer ID|przy użyciu konta WCA';
+var PROPERTY_AUTOEXP_OPT = 'Nie eksportuj|Do pliku|przy użyciu csTimer ID|przy użyciu konta WCA|przy użyciu konta Google';
 var PROPERTY_SCRASIZE = 'Automatyczny rozmiar scrambla';
 var MODULE_NAMES = {
 	"kernel": 'globalnie',

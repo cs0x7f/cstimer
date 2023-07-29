@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Vis løsning progressivt';
 var PROPERTY_IMPPREV = 'Importer ikke-seneste data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 løsning)';
-var PROPERTY_AUTOEXP_OPT = 'Aldrig|Til fil|Med csTimer ID|Med WCA konto';
+var PROPERTY_AUTOEXP_OPT = 'Aldrig|Til fil|Med csTimer ID|Med WCA konto|Med Google konto';
 var PROPERTY_SCRASIZE = 'Automatisk blandingsstørrelse';
 var MODULE_NAMES = {
 	"kernel": 'global',

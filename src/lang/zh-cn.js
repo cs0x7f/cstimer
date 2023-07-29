@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = '下面|浮动|上面';
 var PROPERTY_HIDEFULLSOL = '逐步显示解法';
 var PROPERTY_IMPPREV = '导入非最新数据';
 var PROPERTY_AUTOEXP = '自动导出（每100次还原）';
-var PROPERTY_AUTOEXP_OPT = '从不|到文件|用csTimer账号|用WCA账号';
+var PROPERTY_AUTOEXP_OPT = '从不|到文件|用csTimer账号|用WCA账号|用Google账号';
 var PROPERTY_SCRASIZE = '自动打乱字体大小';
 var MODULE_NAMES = {
 	"kernel": '全局',

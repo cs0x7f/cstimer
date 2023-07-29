@@ -512,7 +512,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Mostrar resolució progressivament';
 var PROPERTY_IMPPREV = 'Importar dades no més recents';
 var PROPERTY_AUTOEXP = 'Exportar automàticament (per cada 100 resolucions)';
-var PROPERTY_AUTOEXP_OPT = 'Mai|A un Arxiu|Amb ID csTimer|Amb un compte WCA';
+var PROPERTY_AUTOEXP_OPT = 'Mai|A un Arxiu|Amb ID csTimer|Amb un compte WCA|Amb un compte Google';
 var PROPERTY_SCRASIZE = 'Tamany automàtic de barreja';
 var MODULE_NAMES = {
 	"kernel": 'Global',
