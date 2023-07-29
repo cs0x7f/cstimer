@@ -42,6 +42,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.fixDisplay(false, true);
 	}
 
+	var timerColors = ['#f00', '#0d0', '#dd0', '#080', '#f00'];
+
 	var voicen = {
 		play: $.noop
 	};
@@ -154,17 +156,17 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		function fixDisplay(isKeyDown, isSpace) {
 			var run = false;
 			if (status == 0) {
-				lcd.color('red');
+				lcd.color('r');
 			} else if (status == -1 || status == -4) {
-				setColor(isKeyDown && isSpace ? (checkUseIns() ? '#0d0' : '#f00') : '');
+				setColor(isKeyDown && isSpace ? (checkUseIns() ? 'g' : 'r') : '');
 			} else if (status == -2) {
-				setColor(isKeyDown && isSpace ? '#0d0' : '');
+				setColor(isKeyDown && isSpace ? 'g' : '');
 				run = checkUseIns();
 			} else if (status == -3) {
-				setColor(isKeyDown && isSpace ? '#dd0' : '#f00');
+				setColor(isKeyDown && isSpace ? 'y' : 'r');
 				run = true;
 			} else {
-				setColor(isKeyDown ? '#0d0' : '');
+				setColor(isKeyDown ? 'g' : '');
 				run = true;
 			}
 			ui.setAutoShow(status == 0 || status == -1);
@@ -172,6 +174,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setColor(val) {
+			if (/^[rgy]$/.exec(val)) {
+				val = timerColors['rgy'.indexOf(val)];
+			}
 			mainDiv.css('color', val);
 			rightDiv.css('color', val);
 		}
@@ -272,7 +277,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						var label = $('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(lastTime[1] - curTime[1])) + ')');
 						var color = getProp('showDiff');
 						if (diff != 0 && color != 'b') {
-							label.css('color', (diff > 0) == (color == 'gr') ? 'green' : 'red');
+							label.css('color', (diff > 0) == (color == 'gr') ? timerColors[3] : timerColors[4]);
 						}
 					}
 				}
@@ -763,11 +768,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function timerDisplay(state) {
 			if (state.greenLight) {
-				lcd.color('#0d0');
+				lcd.color('g');
 			} else if (state.rightHand && state.leftHand) {
-				lcd.color('#f00');
+				lcd.color('r');
 			} else if (status == -4) {
-				lcd.color('#0d0');
+				lcd.color('g');
 			} else {
 				lcd.color('');
 			}
@@ -834,13 +839,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			DEBUG && console.log('[gantimer] timer event received', GanTimerState[timerEvent.state], timerEvent);
 			switch (timerEvent.state) {
 				case GanTimerState.HANDS_ON: // both hands placed on timer
-					lcd.color('#f00');
+					lcd.color('r');
 					break;
 				case GanTimerState.HANDS_OFF: // hands removed from timer before grace period expired
 					lcd.fixDisplay(false, true);
 					break;
 				case GanTimerState.GET_SET:   // grace period expired and timer is ready to start
-					lcd.color('#0d0');
+					lcd.color('g');
 					break;
 				case GanTimerState.IDLE: // timer reset button pressed
 					inspectionTime = 0;
@@ -1653,7 +1658,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
-	var resetCondition = "input|phases|preScrT?|isTrainScr|giiOri|useMilli|showDiff|smallADP|giiVRC".split('|');
+	var resetCondition = "input|phases|preScrT?|isTrainScr|giiOri|useMilli|showDiff|smallADP|giiVRC|col-timer".split('|');
 
 	$(function() {
 		container = $('#container');
@@ -1684,10 +1689,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (['useIns', 'scrType', 'showIns'].indexOf(value[0]) >= 0) {
 				lcd.renderUtil();
 			}
+			if (value[0] == 'col-timer') {
+				timerColors = (value[1] || '#f00#0d0#dd0#080#f00').match(/#[0-9a-fA-F]{3}/g);
+			}
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScrT?|isTrainScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns)$/);
+		}, /^(?:input|phases|scrType|preScrT?|isTrainScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns|col-timer)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});
@@ -1725,6 +1733,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('kernel', 'showDiff', 1, SHOW_DIFF_LABEL, ['rg', ['rg', 'gr', 'b', 'n'], SHOW_DIFF_LABEL_STR.split('|')], 1);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100], 1);
 		regProp('ui', 'smallADP', 0, PROPERTY_SMALLADP, [true], 1);
+		timerColors = kernel.getProp('col-timer', '#f00#0d0#dd0#080#f00').match(/#[0-9a-fA-F]{3}/g);
 	});
 
 	var fobj;
