@@ -219,6 +219,26 @@ execMain(function() {
 		}
 	})();
 
+	$.waitUser = (function() {
+		var callbacks = [];
+
+		function reg(func) {
+			callbacks.push(func);
+		}
+
+		function call() {
+			for (var i = 0; i < callbacks.length; i++) {
+				callbacks[i]();
+			}
+			callbacks = [];
+		}
+
+		return {
+			reg: reg,
+			call: call
+		}
+	})();
+
 	if ('serviceWorker' in navigator) {
 		$(function() {
 			navigator.serviceWorker.register('sw.js');

@@ -1209,6 +1209,7 @@ var kernel = execMain(function() {
 		wndCtn.appendTo('body');
 
 		$(document).keydown(function(e) {
+			$.waitUser.call();
 			keyback = true;
 			pushSignal('keydown', e);
 			timer.onkeydown(e);
@@ -1222,6 +1223,7 @@ var kernel = execMain(function() {
 		});
 
 		$('#container').bind('touchstart', function(e) {
+			$.waitUser.call();
 			if ($(e.target).is('.click')) {
 				return;
 			}
@@ -1252,6 +1254,7 @@ var kernel = execMain(function() {
 		 * so we add the mouse timer function to support such devices.
 		 */
 		$('#container').mousedown(function(e) {
+			$.waitUser.call();
 			if ($(e.target).is('.click')) {
 				return;
 			}
