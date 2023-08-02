@@ -103,11 +103,10 @@ langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))
 
 version := $(shell git describe --tags --always 2>/dev/null || echo Unspecified)
 
-all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) $(dest)/cache.manifest $(dest)/sw.js version
+all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) version $(dest)/cache.manifest $(dest)/sw.js
 
 version: $(langPHP)
 	@echo "Build Version: $(version)"
-	@cp $(src)/lang/langDet.php $(dest)/lang/langDet.php
 	@sed -i 's/\$$version = "[^"]*"/\$$version = "$(version)"/g' $(dest)/lang/langDet.php
 
 clean:
@@ -139,15 +138,15 @@ $(langJS): $(dest)/lang/%: $(src)/lang/%
 	@echo $@
 	@$(compile) $< --js_output_file $@
 
-$(dest)/cache.manifest: $(cache)
+$(dest)/cache.manifest: $(cache) version
 	@echo $@
 	@sed -i '$$d' $@
 	@echo -n \# MD5= >> $@
 	@cat $(cache) | md5sum | awk '{print $$1}' >> $@
 
-$(dest)/sw.js: $(cache)
+$(dest)/sw.js: $(cache) version
 	@echo $@
 	@sed -i '$$d' $@
 	@echo 'var CACHE_NAME = "cstimer_cache_'`cat $(cache) | md5sum | awk '{print $$1}'`'";' >> $@
 
-.PHONY: all
+.PHONY: all clean version
