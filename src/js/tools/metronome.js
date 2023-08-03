@@ -31,15 +31,24 @@ var metronome = execMain(function() {
 			.append('<br />', $('<label>').append(beepButton, '<span class="click"> Beep at</span>'), '<br />', beepInput);
 
 		bpmInput.unbind().on("input", function() {
+			$.waitUser.call();
+			if (!context) {
+				return;
+			}
 			bgmOutput.html(format(bpmInput.val()));
 			playAudio();
 		});
 		volInput.unbind().on("input", function() {
+			$.waitUser.call();
+			if (!context) {
+				return;
+			}
 			volOutput.html(format(volInput.val()));
 			vol.gain.value = volInput.val() / 100.0;
 		});
 		button.html(isEnable ? 'Stop!' : 'Start!');
 		button.unbind().click(function() {
+			$.waitUser.call();
 			isEnable = !isEnable;
 			button.html(isEnable ? 'Stop!' : 'Start!');
 			playAudio();
@@ -72,6 +81,9 @@ var metronome = execMain(function() {
 	}
 
 	function playTick(freq) {
+		if (!context) {
+			return;
+		}
 		var osc = context.createOscillator();
 		osc.type = 'sine';
 		osc.frequency.value = freq || 440;
@@ -84,7 +96,10 @@ var metronome = execMain(function() {
 	var beepTimes = [];
 	var beepIdx = 0;
 
-	function beepChange() {
+	function beepChange(e) {
+		if (e) {
+			$.waitUser.call();
+		}
 		if (!beepButton.prop('checked')) {
 			stopBeep();
 		} else {
@@ -138,10 +153,12 @@ var metronome = execMain(function() {
 		kernel.regProp('tools', 'beepAt', ~5, 'Beep At', ['5,10,15,20']);
 		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 		if (AudioContext !== undefined) {
-			context = new AudioContext();
-			vol = context.createGain()
-			vol.gain.value = 0.3;
-			vol.connect(context.destination);
+			$.waitUser.reg(function() {
+				context = new AudioContext();
+				vol = context.createGain()
+				vol.gain.value = 0.3;
+				vol.connect(context.destination);
+			});
 			tools.regTool('mtrnm', TOOLS_METRONOME, execFunc);
 		}
 		initBeep();

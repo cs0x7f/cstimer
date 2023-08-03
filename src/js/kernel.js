@@ -490,12 +490,14 @@ var kernel = execMain(function() {
 			}
 			if (values[1] != undefined) {
 				buttons.append(OK.unbind("click").click(function() {
+					$.waitUser.call();
 					values[1] && values[1]();
 					hideDialog();
 				}));
 			}
 			if (values[2] != undefined) {
 				buttons.append(CAN.unbind("click").click(function() {
+					$.waitUser.call();
 					values[2] && values[2]();
 					hideDialog();
 				}));
@@ -503,6 +505,7 @@ var kernel = execMain(function() {
 			gray.unbind("click");
 			if (values[3] != undefined) {
 				gray.click(function() {
+					$.waitUser.call();
 					values[3] && values[3]();
 					hideDialog();
 				});
@@ -510,6 +513,7 @@ var kernel = execMain(function() {
 			for (var i=4; i<values.length; i++) {
 				buttons.append($('<input type="button" class="buttonOK">').val(values[i][0]).unbind("click").click((function(func) {
 					return function() {
+						$.waitUser.call();
 						if (func()) {
 							hideDialog();
 						}
