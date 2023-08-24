@@ -341,7 +341,8 @@ var scrdata = [
 		['tilfældig træk', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0]
+		['random state', "klmso", 0],
+		['Pochmann', "klmp", 30]
 	]],
 	['Cmetrik', [
 		[' ', "cm3", 25]

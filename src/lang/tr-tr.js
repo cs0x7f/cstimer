@@ -341,7 +341,8 @@ var scrdata = [
 		['Rastgele hamle', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0]
+		['random state', "klmso", 0],
+		['Pochmann', "klmp", 30]
 	]],
 	['Smetrik', [
 		[' ', "cm3", 25]

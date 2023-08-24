@@ -341,7 +341,8 @@ var scrdata = [
 		['nasumični potez', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0]
+		['random state', "klmso", 0],
+		['Pochmann', "klmp", 30]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]

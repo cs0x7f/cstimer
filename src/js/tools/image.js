@@ -22,13 +22,21 @@ var image = execMain(function() {
 		var off2Y = off1Y + Math.sin(PI * 0.1) * 1 * efrac2;
 		var cornX = [0, d2x, 0, -d2x];
 		var cornY = [-1, -(1 + cfrac) / 2, -cfrac, -(1 + cfrac) / 2];
+		var cornX2 = [0, Math.sin(PI * 0.4) / 2, 0, -Math.sin(PI * 0.4) / 2];
+		var cornY2 = [-1, -(1 + Math.cos(PI * 0.4)) / 2, -Math.cos(PI * 0.4), -(1 + Math.cos(PI * 0.4)) / 2];
 		var edgeX = [Math.cos(PI * 0.1) - d2x, d2x, 0, Math.sin(PI * 0.4) * cfrac];
 		var edgeY = [-Math.sin(PI * 0.1) + (cfrac - 1) / 2, -(1 + cfrac) / 2, -cfrac, -Math.cos(PI * 0.4) * cfrac];
 		var centX = [Math.sin(PI * 0.0) * cfrac, Math.sin(PI * 0.4) * cfrac, Math.sin(PI * 0.8) * cfrac, Math.sin(PI * 1.2) * cfrac, Math.sin(PI * 1.6) * cfrac];
 		var centY = [-Math.cos(PI * 0.0) * cfrac, -Math.cos(PI * 0.4) * cfrac, -Math.cos(PI * 0.8) * cfrac, -Math.cos(PI * 1.2) * cfrac, -Math.cos(PI * 1.6) * cfrac];
 		var colors = ['#fff', '#d00', '#060', '#81f', '#fc0', '#00b', '#ffb', '#8df', '#f83', '#7e0', '#f9f', '#999'];
 
-		function drawFace(state, baseIdx, trans, rot) {
+		function drawFace(state, baseIdx, trans, rot, isKLO) {
+			if (isKLO) {
+				for (var i = 0; i < 5; i++) {
+					drawPolygon(ctx, colors[state[baseIdx + i]], Rotate([cornX2, cornY2], PI * 2 / 5 * i + rot), trans);
+				}
+				return;
+			}
 			for (var i = 0; i < 5; i++) {
 				drawPolygon(ctx, colors[state[baseIdx + i]], Rotate([cornX, cornY], PI * 2 / 5 * i + rot), trans);
 				drawPolygon(ctx, colors[state[baseIdx + i + 5]], Rotate([edgeX, edgeY], PI * 2 / 5 * i + rot), trans);
@@ -36,7 +44,7 @@ var image = execMain(function() {
 			drawPolygon(ctx, colors[state[baseIdx + 10]], Rotate([centX, centY], rot), trans);
 		}
 
-		return function(moveseq) {
+		return function(moveseq, isKLO) {
 			colors = kernel.getProp('colmgm').match(colre);
 			var state = [];
 			for (var i = 0; i < 12; i++) {
@@ -58,18 +66,18 @@ var image = execMain(function() {
 			canvas.height(3.5 * imgSize + 'em');
 			canvas.attr('width', 9.8 * width);
 			canvas.attr('height', 4.9 * width);
-			drawFace(state, 0, [width, off1X + 0 * efrac2, off1Y + 0 * efrac2], PI * 0.0);
-			drawFace(state, 11, [width, off1X + Math.cos(PI * 0.1) * efrac2, off1Y + Math.sin(PI * 0.1) * efrac2], PI * 0.2);
-			drawFace(state, 22, [width, off1X + Math.cos(PI * 0.5) * efrac2, off1Y + Math.sin(PI * 0.5) * efrac2], PI * 0.6);
-			drawFace(state, 33, [width, off1X + Math.cos(PI * 0.9) * efrac2, off1Y + Math.sin(PI * 0.9) * efrac2], PI * 1.0);
-			drawFace(state, 44, [width, off1X + Math.cos(PI * 1.3) * efrac2, off1Y + Math.sin(PI * 1.3) * efrac2], PI * 1.4);
-			drawFace(state, 55, [width, off1X + Math.cos(PI * 1.7) * efrac2, off1Y + Math.sin(PI * 1.7) * efrac2], PI * 1.8);
-			drawFace(state, 66, [width, off2X + Math.cos(PI * 0.7) * efrac2, off2Y + Math.sin(PI * 0.7) * efrac2], PI * 0.0);
-			drawFace(state, 77, [width, off2X + Math.cos(PI * 0.3) * efrac2, off2Y + Math.sin(PI * 0.3) * efrac2], PI * 1.6);
-			drawFace(state, 88, [width, off2X + Math.cos(PI * 1.9) * efrac2, off2Y + Math.sin(PI * 1.9) * efrac2], PI * 1.2);
-			drawFace(state, 99, [width, off2X + Math.cos(PI * 1.5) * efrac2, off2Y + Math.sin(PI * 1.5) * efrac2], PI * 0.8);
-			drawFace(state, 110, [width, off2X + Math.cos(PI * 1.1) * efrac2, off2Y + Math.sin(PI * 1.1) * efrac2], PI * 0.4);
-			drawFace(state, 121, [width, off2X + 0 * efrac2, off2Y + 0 * efrac2], PI * 1.0);
+			drawFace(state, 0, [width, off1X + 0 * efrac2, off1Y + 0 * efrac2], PI * 0.0, isKLO);
+			drawFace(state, 11, [width, off1X + Math.cos(PI * 0.1) * efrac2, off1Y + Math.sin(PI * 0.1) * efrac2], PI * 0.2, isKLO);
+			drawFace(state, 22, [width, off1X + Math.cos(PI * 0.5) * efrac2, off1Y + Math.sin(PI * 0.5) * efrac2], PI * 0.6, isKLO);
+			drawFace(state, 33, [width, off1X + Math.cos(PI * 0.9) * efrac2, off1Y + Math.sin(PI * 0.9) * efrac2], PI * 1.0, isKLO);
+			drawFace(state, 44, [width, off1X + Math.cos(PI * 1.3) * efrac2, off1Y + Math.sin(PI * 1.3) * efrac2], PI * 1.4, isKLO);
+			drawFace(state, 55, [width, off1X + Math.cos(PI * 1.7) * efrac2, off1Y + Math.sin(PI * 1.7) * efrac2], PI * 1.8, isKLO);
+			drawFace(state, 66, [width, off2X + Math.cos(PI * 0.7) * efrac2, off2Y + Math.sin(PI * 0.7) * efrac2], PI * 0.0, isKLO);
+			drawFace(state, 77, [width, off2X + Math.cos(PI * 0.3) * efrac2, off2Y + Math.sin(PI * 0.3) * efrac2], PI * 1.6, isKLO);
+			drawFace(state, 88, [width, off2X + Math.cos(PI * 1.9) * efrac2, off2Y + Math.sin(PI * 1.9) * efrac2], PI * 1.2, isKLO);
+			drawFace(state, 99, [width, off2X + Math.cos(PI * 1.5) * efrac2, off2Y + Math.sin(PI * 1.5) * efrac2], PI * 0.8, isKLO);
+			drawFace(state, 110, [width, off2X + Math.cos(PI * 1.1) * efrac2, off2Y + Math.sin(PI * 1.1) * efrac2], PI * 0.4, isKLO);
+			drawFace(state, 121, [width, off2X + 0 * efrac2, off2Y + 0 * efrac2], PI * 1.0, isKLO);
 			if (ctx) {
 				ctx.fillStyle = "#000";
 				ctx.font = "20px serif";
@@ -1173,8 +1181,8 @@ posit:
 			clkImage(scramble[1]);
 			return true;
 		}
-		if (type == "mgm") {
-			mgmImage(scramble[1]);
+		if (type == "mgm" || type == "klm") {
+			mgmImage(scramble[1], type == "klm");
 			return true;
 		}
 		if (type == "fto") {

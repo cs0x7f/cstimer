@@ -5,7 +5,7 @@ var ABOUT_LANG = 'O programe';
 var ZOOM_LANG = 'Lupa';
 var BUTTON_TIME_LIST = 'SEZNAM ČASOV';
 var BUTTON_OPTIONS = 'MOŽNOSŤ';
-var BUTTON_EXPORT = 'IZPIŠI';
+var BUTTON_EXPORT = 'EXPORTOVAŤ';
 var BUTTON_DONATE = 'prispieť';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'Používať WCA inšpekciu';
@@ -18,7 +18,7 @@ var PROPERTY_PHASES = 'multi-phase';
 var PROPERTY_TIMERSIZE = 'timer size';
 var PROPERTY_USEMILLI = 'používať milisekundy';
 var PROPERTY_SMALLADP = 'use small font after decimal point';
-var PROPERTY_SCRSIZE = 'Velkosť zamiešania';
+var PROPERTY_SCRSIZE = 'Veľkosť zamiešania';
 var PROPERTY_SCRMONO = 'monospaced scramble';
 var PROPERTY_SCRLIM = 'Limit the height of scramble area';
 var PROPERTY_SCRALIGN = 'Alignment of scramble area';
@@ -51,10 +51,10 @@ var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
-var BUTTON_TOOLS = 'TOOLS';
+var BUTTON_TOOLS = 'NÁSTROJE';
 var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
 var TOOLS_SELECTFUNC = 'Funkcia';
-var TOOLS_CROSS = 'cross';
+var TOOLS_CROSS = 'kríž';
 var TOOLS_EOLINE = 'EOLine';
 var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
@@ -99,8 +99,8 @@ var OLCOMP_SUBMITAS = 'Submit As: ';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
 var OLCOMP_OLCOMP = 'Online Competition';
 var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
-var OLCOMP_WCAACCOUNT = 'WCA Account';
+var OLCOMP_ME = 'Ja';
+var OLCOMP_WCAACCOUNT = 'WCA účet';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
 var PROPERTY_IMGSIZE = 'Scramble Image Size';
@@ -123,13 +123,13 @@ var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material 
 var COLOR_EXPORT = 'Please save the string for import';
 var COLOR_IMPORT = 'Please input the string exported';
 var COLOR_FAIL = 'Incorrect Data, Import Failed';
-var PROPERTY_FONTCOLOR_STR = 'black|white';
+var PROPERTY_FONTCOLOR_STR = 'čierna|biela';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
 var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'time format';
 var PROPERTY_USEKSC = 'use keyboard shortcut';
-var PROPERTY_NTOOLS = 'number of tools';
+var PROPERTY_NTOOLS = 'Počet nástrojov';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
 var SCRAMBLE_LAST = 'last';
 var SCRAMBLE_NEXT = 'next';
@@ -188,8 +188,8 @@ var scrdata = [
 		["random state (WCA)", "333", 0],
 		['random move', "333o", 25],
 		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['Iba hrany', "edges", 0],
+		['Iba rohy', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
@@ -198,7 +198,7 @@ var scrdata = [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
 		['last slot + last layer', "lsll2", 0],
-		['last layer', "ll", 0],
+		['Posledná vrstva', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
 		['CLL', "cll", 0],
@@ -209,7 +209,7 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['cross solved', "f2l", 0],
+		['Zložený kríž', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['easy cross', "easyc", 3],
 		['easy xcross', "easyxc", 4]
@@ -247,7 +247,7 @@ var scrdata = [
 		['random move', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 8],
+		['4x4x4 hrany', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
@@ -341,7 +341,8 @@ var scrdata = [
 		['random move', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0]
+		['random state', "klmso", 0],
+		['Pochmann', "klmp", 30]
 	]],
 	['Cmetrick', [
 		[' ', "cm3", 25]
@@ -453,9 +454,9 @@ var STATS_CFM_RESET = 'reset all times in this session?';
 var STATS_CFM_DELSS = 'delete session [%s]?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
 var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
+var STATS_COMMENT = 'Komentár';
 var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Dátum';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'Current Round Statistics';
 var STATS_CURSESSION = 'Current Session Statistics';
@@ -520,8 +521,8 @@ var MODULE_NAMES = {
 	"color": 'color',
 	"timer": 'timer',
 	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools',
+	"stats": 'štatistiky',
+	"tools": 'Nástroje',
 	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'please input image\'s url';
@@ -543,4 +544,4 @@ var VRCREPLAY_SHARE = 'share link';
 var GIIKER_CONNECT = 'Click to connect';
 var GIIKER_RESET = 'Reset (Mark Solved)';
 var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var PROPERTY_GIIORI = 'Orientácia kocky';

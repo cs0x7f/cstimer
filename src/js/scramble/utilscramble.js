@@ -403,6 +403,8 @@
 				return pochscramble(10, Math.ceil(len / 10));
 			case "mgmc": // Megaminx (Carrot)
 				return carrotscramble(10, Math.ceil(len / 10));
+			case "klmp": // Kilominx (Pochmann)
+				return pochscramble(10, Math.ceil(len / 10));
 			case "heli":
 				return adjScramble(["UF", "UR", "UB", "UL", "FR", "BR", "BL", "FL", "DF", "DR", "DB", "DL"], [0x09a, 0x035, 0x06a, 0x0c5, 0x303, 0x606, 0xc0c, 0x909, 0xa90, 0x530, 0xa60, 0x5c0], len);
 			case "redi":
@@ -471,6 +473,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

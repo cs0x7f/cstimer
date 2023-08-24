@@ -341,7 +341,8 @@ var scrdata = [
 		['隨機步驟', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0]
+		['random state', "klmso", 0],
+		['Pochmann', "klmp", 30]
 	]],
 	['Cmetric', [
 		[' ', "cm3", 25]
