@@ -3,7 +3,7 @@
 <h2>Introduktion</h2>
 <p>csTimer er et professionelt stopur designet til hurtigløsere af professorterninger, der giver:</p>
 <ul>
-<li>Mængden af blandingsalgoritmer, herunder <strong>alle WCA-officielle begivenheder</strong>varianter af specielle terninger, <strong>træningsbladninger</strong> for specifikke deltrin (f. eks. . <strong>F2L, OLL, PLL, ZBLL</strong>, og kan filtrere tilfælde) osv.</li>
+<li>Mængden af blandingsalgoritmer, herunder <strong>alle WCA-officielle begivenheder</strong>varianter af specielle terninger, <strong>træningsblandinger</strong> for specifikke deltrin (f. eks. . <strong>F2L, OLL, PLL, ZBLL</strong>, og kan filtrere tilfælde) osv.</li>
 <li>Mange statistikfunktioner, understøttelse af <strong>tidsdelt tiddstagning</strong>; <strong>Uendeligt antal sessioner</strong>, sessions-opdeling/sammenskædning osv.</li>
 <li>Adskillelige muligheder, som <strong>Kryds, Xkryds, 2x2x2 side, Skæv side, SQ1 form</strong>, for læring eller træning af disse deltring</li>
 <li>Andre tillægsværktøj, som for eksempel blandingsbillede, 8-sekunders inspektion (stemme) advarsel, metronom, parti-blandingsgenerator osv.</li>
@@ -80,7 +80,7 @@
 <li><strong data="opt_scrFast">Brug hurtig blanding til 4x4x4 (ikke officiel)</strong>. Oficielle WCA blandinger kræver mange beregnings resurser. Brug denne indstilling for tilfældig blanding af 4x4x4.</li>
 <li><strong data="opt_scrKeyM">Marker nøgle rotationer i blanding</strong>. Marker et nøgletræk i blandingen, f.eks. det træk, der tager tilstanden væk fra dets firkantede form i SQ1-blandinger.</li>
 <li><strong data="opt_scrClk">Handling ved klik på blanding</strong>. Handling når du klikker på blandingsteksten; Kopiér blanding eller generer næste blanding.</li>
-<li><strong data="opt_trim">Antal af løsninger fjernet på hver side</strong>. Antal af løsninger fjernet i top og bund af løsninger ved beregning af gennemsnit.</li>
+<li><strong data="opt_trim">Antal af de bedste løsninger fjernet</strong>. Antal af løsninger fjernet i top og bund af løsninger ved beregning af gennemsnit.</li>
 <li><strong data="opt_statsum">vis sammendrag inden tidslisten</strong>. Vis statistiktabellen før tidslisten.</li>
 <li><strong data="opt_printScr">print blanding(erne) i statistikker</strong>. Udskriv blanding i statistik.</li>
 <li><strong data="opt_printDate">Udskriv løsningsdato i statistik</strong>. Udskriv løsningdato i statistik.</li>
@@ -116,7 +116,7 @@
 <li><strong data="tool_distribution">Tidsfordeling</strong>. Tidsfordeling og stabilitetsanalyse, &lt;X Y/Z betyder, at der i alt Y løsninger mindre end X sekunder, og alle de nyeste Z løsninger er mindre end X sekunder i nuværende session.</li>
 <li><strong data="tool_trend">Tidsudvikling</strong>. Viser en trendkurve for alle løsninger i den aktuelle session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Tæl antallet af løsninger pr. dag/uge/måned/år.</li>
-<li><strong data="tool_image">tegn blanding</strong>. Blandingsbillede for at bekræfte en korrekt blanding, alle WCA terninger understøttes.</li>
+<li><strong data="tool_image">vis blanding</strong>. Blandingsbillede for at bekræfte en korrekt blanding, alle WCA terninger understøttes.</li>
 <li><strong data="tool_roux1">Løsere &gt; løs Roux S1</strong>. Roux 1 trings løser, som løser en 1x2x3 blok.</li>
 <li><strong data="tool_eoline">Løsere &gt; løs EOLine</strong>. EO linje løser, som løser orienteringer af alle 12 kanter, og positioner af DF og DB kanter.</li>
 <li><strong data="tool_cross">Løsere &gt; løs kryds</strong>. Kryds løser, som løser DF, DL, DR, DB kanter.</li>
@@ -129,9 +129,9 @@
 <li><strong data="tool_pyrv">Løsere &gt; Pyraminx V</strong>. Pyraminx V løser, som løser tre hjørner og to kanter og former et 'V' mønster til pyraminx.</li>
 <li><strong data="tool_skbl1">Løsere &gt; Skewb Face</strong>. Skewb side solver, som løser et lag af skewb, dvs. 1 midt og 4 nabohjørner.</li>
 <li><strong data="tool_giikerutil">Bluetooth Terning</strong>. Hjælpeværktøj til bluetooth-terning, som er i stand til at vise nuværende status, batteristrøm, rekonstruktion i realtid osv.</li>
-<li><strong data="tool_mtrnm">metronom</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Regulær blanding</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_mtrnm">metronom</strong>. Metronom, ud over at bippe ved en bestemt frekvens, kan du også få den til at bippe et bestemt tidsinterval efter at du har startet løsningen.</li>
+<li><strong data="tool_syncseed">Regulær blanding</strong>. Du kan få samme blandinger som en ven hvis i sætter samme seed</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Hjælpeværktøj til Stackmat, som er i stand til at se status, styrke og støjniveau på signalet, osv.</li>
 </ul>
 <h2>Links</h2>
 <ul>
@@ -160,11 +160,11 @@
 <p>Mange TAK for din donation</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>I tilfælde af fejl skal du kontrollere, at Bluetooth er aktiveret på dit system!</strong></p>
+<p>Browseren skal understøtte Web Bluetooth API. Overvej at bruge kompatibel browser, det bedste valg er:</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome på macOS, Linux, Android eller Windows</li>
+<li>Bluefy på iOS</li>
 </ul>
-<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+<p>Du kan også tjekke <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for komplet liste over forskellige browsere og understøttede Web Bluetooth API funktioner.</p>
 </div>

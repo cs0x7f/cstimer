@@ -1,5 +1,5 @@
 <?php
-$version = "2023.08.24";
+$version = "2023.09.22";
 
 function prefered_language($available_languages, $req_lang) {
   if ($req_lang == "auto" && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -30,7 +30,7 @@ if ($req_lang == "cn") {
   $req_lang = "zh-cn";
 }
 
-$lang = prefered_language(array("en-us", "ar-sa", "ca-es", "cs-cz", "da-dk", "de-de", "el-gr", "es-es", "fa-ir", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "nl-nl", "no-no", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sk-sk", "sr-sp", "sv-se", "tr-tr", "uk-ua", "vi-vn", "zh-cn", "zh-tw"), $req_lang);
+$lang = prefered_language(array("en-us", "ar-sa", "ca-es", "cs-cz", "da-dk", "de-de", "el-gr", "es-es", "fa-ir", "fi-fi", "fr-fr", "he-il", "hr-hr", "hu-hu", "it-it", "ja-jp", "ko-kr", "lv-lv", "nl-nl", "no-no", "pl-pl", "pt-pt", "ro-ro", "ru-ru", "sk-sk", "sr-sp", "sv-se", "tr-tr", "uk-ua", "vi-vn", "zh-cn", "zh-tw"), $req_lang);
 
 if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
@@ -83,6 +83,9 @@ if ($lang == "en-us") { ?>
 <?php } else if ($lang == "ko-kr") { ?>
   <meta name="keywords" content="타이머, cstimer, 루빅스 큐브 타이머, 온라인 타이머, 웹 타이머">
   <title> csTimer - 큐브 연습용 초시계 </title>
+<?php } else if ($lang == "lv-lv") { ?>
+  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <title> csTimer - Professional Rubik's Cube Speedsolving/Training Timer </title>
 <?php } else if ($lang == "nl-nl") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, webtimer">
   <title> csTimer - Professional Rubik's Kubus Snelheid/Training Timer </title>
@@ -131,8 +134,8 @@ if ($lang == "en-us") { ?>
 <?php } ?>
   <script type="text/javascript">
 var CSTIMER_VERSION = '<?php echo $version; ?>';
-var LANG_SET = '|en-us|ar-sa|ca-es|cs-cz|da-dk|de-de|el-gr|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|nl-nl|no-no|pl-pl|pt-pt|ro-ro|ru-ru|sk-sk|sr-sp|sv-se|tr-tr|uk-ua|vi-vn|zh-cn|zh-tw';
-var LANG_STR = 'English|العربية|Català|Čeština|Dansk|Deutsch|Ελληνικά|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Nederlands|Norsk|Polski|Português|Română|Pусский|Slovenčina|Српски|Svenska|Türkçe|Українська|Tiếng Việt|简体中文|繁體中文';
+var LANG_SET = '|en-us|ar-sa|ca-es|cs-cz|da-dk|de-de|el-gr|es-es|fa-ir|fi-fi|fr-fr|he-il|hr-hr|hu-hu|it-it|ja-jp|ko-kr|lv-lv|nl-nl|no-no|pl-pl|pt-pt|ro-ro|ru-ru|sk-sk|sr-sp|sv-se|tr-tr|uk-ua|vi-vn|zh-cn|zh-tw';
+var LANG_STR = 'English|العربية|Català|Čeština|Dansk|Deutsch|Ελληνικά|Español|فارسی|Suomi|Français|עברית|Hrvatski|Magyar|Italiano|日本語|한국어|Angļu|Nederlands|Norsk|Polski|Português|Română|Pусский|Slovenčina|Српски|Svenska|Türkçe|Українська|Tiếng Việt|简体中文|繁體中文';
 var LANG_CUR = '<?php echo $lang; ?>';
 <?php include('lang/'.$lang.'.js');?>
   </script>

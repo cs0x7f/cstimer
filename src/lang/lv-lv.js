@@ -1,47 +1,47 @@
-var OK_LANG = 'OK';
-var CANCEL_LANG = 'Anulare';
-var RESET_LANG = 'Resetare';
-var ABOUT_LANG = 'Despre';
-var ZOOM_LANG = 'Marire';
-var BUTTON_TIME_LIST = 'LISTĂ de<br>ori';
-var BUTTON_OPTIONS = 'OPTIUNI';
-var BUTTON_EXPORT = 'EXPORT';
-var BUTTON_DONATE = 'DONEAZA';
+var OK_LANG = 'Labi';
+var CANCEL_LANG = 'Atcelt';
+var RESET_LANG = 'Reset';
+var ABOUT_LANG = 'About';
+var ZOOM_LANG = 'Zoom';
+var BUTTON_TIME_LIST = 'LIST<br>TIMES';
+var BUTTON_OPTIONS = 'OPCIJA';
+var BUTTON_EXPORT = 'EKSPORTĒT';
+var BUTTON_DONATE = 'ZIEDOT';
 var PROPERTY_SR = 'With session';
-var PROPERTY_USEINS = 'utilizaţi inspectie WCA';
-var PROPERTY_USEINS_STR = 'Întotdeauna|cu excepţia BLD|niciodată';
-var PROPERTY_SHOWINS = 'Arată o pictogramă atunci când se inspectează';
-var PROPERTY_VOICEINS = 'alerta vocala de la inspectie WCA';
-var PROPERTY_VOICEINS_STR = 'Niciuna|voce masculina|voce feminina';
+var PROPERTY_USEINS = 'izmantot WCA inspekciju';
+var PROPERTY_USEINS_STR = 'Always|Except BLD|Never';
+var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_VOICEINS = 'voice alert of WCA inspection';
+var PROPERTY_VOICEINS_STR = 'none|male voice|female voice';
 var PROPERTY_VOICEVOL = 'Voice volume';
-var PROPERTY_PHASES = 'mai multe faze';
-var PROPERTY_TIMERSIZE = 'marimea timer-urui';
-var PROPERTY_USEMILLI = 'utilizeaza milisecunde';
-var PROPERTY_SMALLADP = 'A se utiliza font mic după zecimală';
-var PROPERTY_SCRSIZE = 'Mărimea amestecării.';
-var PROPERTY_SCRMONO = 'amestecare monospațiată';
-var PROPERTY_SCRLIM = 'Limitează înălțimea zonei de amestecare';
-var PROPERTY_SCRALIGN = 'Alinierea zonei amestecării';
-var PROPERTY_SCRALIGN_STR = 'centru|stânga|dreapta';
-var PROPERTY_SCRFAST = 'Amestecare rapida pentru 4x4x4 (non-oficială)';
-var PROPERTY_SCRKEYM = 'Etichetați mișcarea (mutările) cheii în amestecare';
+var PROPERTY_PHASES = 'multi-phase';
+var PROPERTY_TIMERSIZE = 'timer size';
+var PROPERTY_USEMILLI = 'izmanto millisekundes';
+var PROPERTY_SMALLADP = 'use small font after decimal point';
+var PROPERTY_SCRSIZE = 'scramble size';
+var PROPERTY_SCRMONO = 'monospaced scramble';
+var PROPERTY_SCRLIM = 'Limit the height of scramble area';
+var PROPERTY_SCRALIGN = 'Alignment of scramble area';
+var PROPERTY_SCRALIGN_STR = 'center|left|right';
+var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
+var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
 var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
-var PROPERTY_WNDSCR = 'Stil afișare panou de amestecare';
-var PROPERTY_WNDSTAT = 'Stil afișare panou de statistici';
-var PROPERTY_WNDTOOL = 'Stil afișare panou de unelte';
-var PROPERTY_WND_STR = 'Normal|Flat';
-var EXPORT_DATAEXPORT = 'Importare/Exportare date';
-var EXPORT_TOFILE = 'Exportă într-un fișier...';
-var EXPORT_FROMFILE = 'Importare din fișier';
-var EXPORT_TOSERV = 'Exportă pe server';
-var EXPORT_FROMSERV = 'Importă de pe server';
-var EXPORT_FROMOTHER = 'Importă sesiunea(ile) din alte cronometre';
-var EXPORT_USERID = 'Te rugăm să introduci contul tău (doar alfabet sau număr)';
-var EXPORT_INVID = 'Doar litere sau numere sunt permise!';
-var EXPORT_ERROR = 'Au apărut unele erori...';
-var EXPORT_NODATA = 'Nu s-au găsit date despre contul tău';
-var EXPORT_UPLOADED = 'Încărcare reușită';
+var PROPERTY_WNDSCR = 'Scramble panel display style';
+var PROPERTY_WNDSTAT = 'Statistics panel display style';
+var PROPERTY_WNDTOOL = 'Tools panel display style';
+var PROPERTY_WND_STR = 'Normāls|Plats';
+var EXPORT_DATAEXPORT = 'Datu Importu/Eksportu';
+var EXPORT_TOFILE = 'Eksportēt uz failu';
+var EXPORT_FROMFILE = 'Import from file';
+var EXPORT_TOSERV = 'Eksportēt uz serveri';
+var EXPORT_FROMSERV = 'Importēt no servera';
+var EXPORT_FROMOTHER = 'Import session(s) from other timers';
+var EXPORT_USERID = 'Please input your account (only alphabet or number)';
+var EXPORT_INVID = 'Only alphabet or number is allowed!';
+var EXPORT_ERROR = 'Some errors occurred...';
+var EXPORT_NODATA = 'No data found for your account';
+var EXPORT_UPLOADED = 'Uploaded successfully';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
 var EXPORT_ACCOUNT = 'Export Accounts';
@@ -50,34 +50,34 @@ var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
-var BUTTON_SCRAMBLE = 'AMEST-<br>ECARE';
-var BUTTON_TOOLS = 'UNELTE';
-var IMAGE_UNAVAILABLE = 'Indisponibil pentru acest tip de amestecare';
-var TOOLS_SELECTFUNC = 'Funcţie';
-var TOOLS_CROSS = 'cruce';
+var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
+var BUTTON_TOOLS = 'TOOLS';
+var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
+var TOOLS_SELECTFUNC = 'Funkcija';
+var TOOLS_CROSS = 'cross';
 var TOOLS_EOLINE = 'EOLine';
 var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
-var TOOLS_GIIKER = 'Cub Bluetooth';
-var TOOLS_IMAGE = 'desenează amestec';
-var TOOLS_STATS = 'Statistici';
-var TOOLS_HUGESTATS = 'statisticile sesiunilor';
-var TOOLS_DISTRIBUTION = 'distribuția timpului';
-var TOOLS_TREND = 'trend timp';
-var TOOLS_METRONOME = 'Metronom';
-var TOOLS_RECONS = 'Reconstrucție';
+var TOOLS_GIIKER = 'Bluetooth Cube';
+var TOOLS_IMAGE = 'draw scramble';
+var TOOLS_STATS = 'Statistics';
+var TOOLS_HUGESTATS = 'cross-session stats';
+var TOOLS_DISTRIBUTION = 'time distribution';
+var TOOLS_TREND = 'time trend';
+var TOOLS_METRONOME = 'metronome';
+var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Statistici Antrenare';
-var TOOLS_BLDHELPER = 'Ajutor BLD';
-var TOOLS_CFMTIME = 'Confirmă timpul';
+var TOOLS_TRAINSTAT = 'Training Stat.';
+var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_CFMTIME = 'Confirm time';
 var TOOLS_SOLVERS = 'Solvers';
 var TOOLS_DLYSTAT = 'Daily Statistics';
 var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
 var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
 var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
 var TOOLS_SYNCSEED = 'Common Scramble';
-var TOOLS_SYNCSEED_SEED = 'Seed';
+var TOOLS_SYNCSEED_SEED = 'Sēkla';
 var TOOLS_SYNCSEED_INPUT = 'Input Seed';
 var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
@@ -93,53 +93,53 @@ var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
 var OLCOMP_UPDATELIST = 'Update Competition List';
 var OLCOMP_VIEWRESULT = 'View Result';
 var OLCOMP_VIEWMYRESULT = 'My History';
-var OLCOMP_START = 'Start!';
+var OLCOMP_START = 'Sāc!';
 var OLCOMP_SUBMIT = 'Submit!';
 var OLCOMP_SUBMITAS = 'Submit As: ';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
 var OLCOMP_OLCOMP = 'Online Competition';
 var OLCOMP_ANONYM = 'Anonym';
-var OLCOMP_ME = 'Me';
+var OLCOMP_ME = 'Es';
 var OLCOMP_WCAACCOUNT = 'WCA Account';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'With Anonym';
-var PROPERTY_IMGSIZE = 'Mărimea imaginii amestecării';
-var TIMER_INSPECT = 'Inspectați';
-var TIMER_SOLVE = 'Rezolvă';
-var PROPERTY_USEMOUSE = 'folosește cronometrul mouse-ului';
-var PROPERTY_TIMEU = 'actualizarea temporizatorului este';
+var PROPERTY_IMGSIZE = 'Scramble Image Size';
+var TIMER_INSPECT = 'inspekcija';
+var TIMER_SOLVE = 'solve';
+var PROPERTY_USEMOUSE = 'use mouse timer';
+var PROPERTY_TIMEU = 'timer update is';
 var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
-var PROPERTY_PRETIME = 'timpul de menținere a spațiului în minus (secunde))';
-var PROPERTY_ENTERING = 'intrând în timpuri cu';
+var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
+var PROPERTY_ENTERING = 'entering in times with';
 var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|bluetooth|qCube|GanTimer|last layer training';
 var PROPERTY_INTUNIT = 'Unit when entering an integer';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
-var PROPERTY_COLOR = 'Alegeți culoarea temei';
-var PROPERTY_COLORS = 'Culoarea fontului|Culoarea fundalului|Culoarea bordului|Culoarea butonului|Culoarea link-ului|Culoarea logo-ului|Culoarea fundalul logo-ului';
-var PROPERTY_VIEW = 'Stilul UI-ului este';
-var PROPERTY_VIEW_STR = 'Automatic|Mobil|Desktop';
+var PROPERTY_COLOR = 'select color theme';
+var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
+var PROPERTY_VIEW = 'UI style is';
+var PROPERTY_VIEW_STR = 'Auto|Mobile|Desktop';
 var PROPERTY_UIDESIGN = 'UI design is';
 var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
-var COLOR_EXPORT = 'Vă rugăm salvați șirul pentru importare';
-var COLOR_IMPORT = 'Vă rugăm introduceți șirul exportat';
-var COLOR_FAIL = 'Dete incorecte, import nereușit';
-var PROPERTY_FONTCOLOR_STR = 'negru|alb';
-var PROPERTY_COLOR_STR = 'Manual|importare/exportare|aleatoriu|stilul1|stilul2|stilul3|închis|deschis|stilul6|închis solarizat|deschis solarizat';
-var PROPERTY_FONT = 'Alegeți fontul cronometrului';
-var PROPERTY_FONT_STR = 'Digital aleatoriu|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'Formatul timpului';
-var PROPERTY_USEKSC = 'Folosește scurtătura tastaturii';
-var PROPERTY_NTOOLS = 'Număr de unelte';
-var PROPERTY_AHIDE = 'Ascunde elementele in timpul cronometrării';
-var SCRAMBLE_LAST = 'ultimul';
-var SCRAMBLE_NEXT = 'următor';
-var SCRAMBLE_SCRAMBLE = ' amestec';
-var SCRAMBLE_SCRAMBLING = 'Amestecând';
-var SCRAMBLE_LENGTH = 'lungime';
-var SCRAMBLE_INPUT = 'Adaugați amestec(uri)';
-var PROPERTY_VRCSPEED = 'Viteza de bază VRC (tps)';
-var PROPERTY_VRCMP = 'Multi-fază';
-var PROPERTY_VRCMPS = 'Niciuna|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
+var COLOR_EXPORT = 'Please save the string for import';
+var COLOR_IMPORT = 'Please input the string exported';
+var COLOR_FAIL = 'Incorrect Data, Import Failed';
+var PROPERTY_FONTCOLOR_STR = 'melns|balts';
+var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
+var PROPERTY_FONT = 'select timer\'s font';
+var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
+var PROPERTY_FORMAT = 'laika formātu';
+var PROPERTY_USEKSC = 'use keyboard shortcut';
+var PROPERTY_NTOOLS = 'number of tools';
+var PROPERTY_AHIDE = 'Hide All Elements When Timing';
+var SCRAMBLE_LAST = 'pēdējais';
+var SCRAMBLE_NEXT = 'nākamais';
+var SCRAMBLE_SCRAMBLE = ' scramble';
+var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_LENGTH = 'garums';
+var SCRAMBLE_INPUT = 'Input Scramble(s)';
+var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
+var PROPERTY_VRCMP = 'multi-phase';
+var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
 var PROPERTY_GIISOK_DELAYS = '2s|3s|4s|5s|Never|Correctly scrambled';
@@ -166,7 +166,7 @@ var scrdata = [
 		['3x3 bld', "333ni", 0],
 		['3x3 fm', "333fm", 0],
 		['3x3 oh', "333oh", 0],
-		['clock', "clkwca", 0],
+		['pulkstenis', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['skewb', "skbso", 0],
@@ -190,7 +190,7 @@ var scrdata = [
 		['3x3x3 for noobs', "333noob", 25],
 		['edges only', "edges", 0],
 		['corners only', "corners", 0],
-		['Ajutor BLD', "nocache_333bldspec", 0],
+		['BLD Helper', "nocache_333bldspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],
@@ -269,7 +269,7 @@ var scrdata = [
 		['suffix', "777s", 100],
 		['7x7x7 edges', "7edge", 8]
 	]],
-	['Clock', [
+	['Pulkstenis', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['optimal', "clko", 0],
@@ -279,7 +279,7 @@ var scrdata = [
 	['Megaminx', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
-		['old style', "mgmo", 70],
+		['vecā stila', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
 		['last slot + last layer', "mlsll", 0],
 		['PLL', "mgmpll", 0],
@@ -305,7 +305,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===ALTELE===', [
+	['===CITS===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -323,7 +323,7 @@ var scrdata = [
 	]],
 	['LxMxN', [
 		['1x3x3 (Floppy Cube)', "133", 0],
-		['2x2x2(Cub Tower)', "223", 0],
+		['2x2x3 (Tower Cube)', "223", 0],
 		['2x3x3 (Domino)', "233", 25],
 		['3x3x4', "334", 40],
 		['3x3x5', "335", 25],
@@ -358,7 +358,7 @@ var scrdata = [
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],
-		['Vechi', "redi", 20]
+		['vecs', "redi", 20]
 	]],
 	['Ivy cube', [
 		['random state', "ivyso", 0],
@@ -368,9 +368,9 @@ var scrdata = [
 	['Master Pyraminx', [
 		[' ', "mpyr", 42]
 	]],
-	['Pyraminx Cristal', [
+	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
-		['stil vechi', "prco", 70]
+		['old style', "prco", 70]
 	]],
 	['Siamese Cube', [
 		['1x1x3 block', "sia113", 25],
@@ -389,7 +389,7 @@ var scrdata = [
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Altele', [
+	['Cits', [
 		['FTO (Face-Turning Octahedron)', "fto", 30]
 	]],
 	['===SPECIAL===', [
@@ -402,7 +402,7 @@ var scrdata = [
 		['3-generator F,R,U', "3gen_F", 25],
 		['3-generator R,U,L', "3gen_L", 25],
 		['3-generator R,r,U', "RrU", 25],
-		['Doar jumătate de întoarceri', "half", 25],
+		['half turns only', "half", 25],
 		['last slot + last layer (old)', "lsll", 15]
 	]],
 	['Bandaged Cube', [
@@ -421,7 +421,7 @@ var scrdata = [
 		['234567 relay (WCA)', "r234567w", 0],
 		['Mini Guildford', "rmngf", 0]
 	]],
-	['===JOKES===', [
+	['===JOKI===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -447,13 +447,13 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
 var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
+var SCROPT_BTNALL = 'Pilns';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'reset all times in this session?';
 var STATS_CFM_DELSS = 'delete session [%s]?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
+var STATS_CFM_DELETE = 'izdzēst šo laiku?';
 var STATS_COMMENT = 'Comment';
 var STATS_REVIEW = 'Review';
 var STATS_DATE = 'Date';
@@ -463,7 +463,7 @@ var STATS_CURSESSION = 'Current Session Statistics';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
 var STATS_EXPORTCSV = 'Export CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
+var STATS_SSMGR_NAME = 'Vārds';
 var STATS_SSMGR_DETAIL = 'Session Details';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
 var STATS_SSMGR_ORDER = 'Order by scramble';
@@ -472,12 +472,12 @@ var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
 var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
-var STATS_AVG = 'mean';
+var STATS_AVG = 'nozīmē';
 var STATS_SUM = 'sum';
 var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
-var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
+var STATS_TIME = 'laiks';
+var STATS_SESSION = 'Sesija';
+var STATS_SESSION_NAME = 'Rediģēt sesijas vārdu';
 var STATS_SESSION_NAMEC = 'Name of the new session';
 var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:|solving from %s to %e|Totally spent: %d|target';
 var STATS_PREC = 'time distribution precision';
@@ -486,7 +486,7 @@ var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_NAME = 'jebkādu vārdu';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
@@ -516,13 +516,13 @@ var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'display',
-	"color": 'color',
-	"timer": 'timer',
+	"kernel": 'globāli',
+	"ui": 'displejs',
+	"color": 'krāsa',
+	"timer": 'taimeris',
 	"scramble": 'scramble',
 	"stats": 'statistics',
-	"tools": 'tools',
+	"tools": 'rīki',
 	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'please input image\'s url';

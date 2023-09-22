@@ -44,7 +44,7 @@
 <h2>설정 세부정보</h2>
 <ul>
 <li><strong data="opt_ahide">시간 측정 중 모든 창 숨기기</strong>. 타이머가 작동할 때 로고와 모든 창을 숨깁니다.</li>
-<li><strong data="opt_useMilli">0.001초 단위 사용</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
+<li><strong data="opt_useMilli">0.001초 단위 사용</strong>. 선택 여부와 관계 없이, csTimer의 내부 시간 측정 방식은 0.001초 단위입니다.</li>
 <li><strong data="opt_timeFormat">시간 표시 형식</strong>. 시간을 표시하는 형식.</li>
 <li><strong data="opt_atexpa">자동 내보내기 (해법 100개 마다)</strong>. 이 설정을 선택하면, csTimer가 해법 100회마다 지정된 장소, 로컬 파일, csTimer 서버 또는 구글 스토리지에 기록을 자동으로 내보냅니다.</li>
 <li><strong data="opt_expp">최신이 아닌 데이터 가져오기</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>

@@ -16,6 +16,7 @@
 <a class="click" href="?lang=it-it">Italiano</a>&nbsp;
 <a class="click" href="?lang=ja-jp">日本語</a>&nbsp;
 <a class="click" href="?lang=ko-kr">한국어</a>&nbsp;
+<a class="click" href="?lang=lv-lv">Angļu</a>&nbsp;
 <a class="click" href="?lang=nl-nl">Nederlands</a>&nbsp;
 <a class="click" href="?lang=no-no">Norsk</a>&nbsp;
 <a class="click" href="?lang=pl-pl">Polski</a>&nbsp;

@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'Doner';
 var PROPERTY_SR = 'Med session';
 var PROPERTY_USEINS = 'brug WCA inspektion';
 var PROPERTY_USEINS_STR = 'Altid|Undtagen BLD|Aldrig';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Vis et ikon når inspektion er aktiveret';
 var PROPERTY_VOICEINS = 'stemme advarsel af WCA inspektion';
 var PROPERTY_VOICEINS_STR = 'ingen|mandlig stemme|kvindelig stemme';
 var PROPERTY_VOICEVOL = 'Stemme lydstyrke';
@@ -59,37 +59,37 @@ var TOOLS_EOLINE = 'løs EOLine';
 var TOOLS_ROUX1 = 'løs Roux S1';
 var TOOLS_222FACE = '2x2x2 side';
 var TOOLS_GIIKER = 'Bluetooth Terning';
-var TOOLS_IMAGE = 'tegn blanding';
+var TOOLS_IMAGE = 'vis blanding';
 var TOOLS_STATS = 'Statistiker';
 var TOOLS_HUGESTATS = 'Krydssessions statistik';
 var TOOLS_DISTRIBUTION = 'Tidsfordeling';
 var TOOLS_TREND = 'Tidsudvikling';
 var TOOLS_METRONOME = 'metronom';
-var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
-var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_RECONS = 'Rekonstruer';
+var TOOLS_RECONS_NODATA = 'Ingen løsning fundet.';
+var TOOLS_RECONS_TITLE = 'inspektion|løsning|træk|tps';
+var TOOLS_TRAINSTAT = 'Træningsstatistik';
+var TOOLS_BLDHELPER = 'BLD hjælper';
 var TOOLS_CFMTIME = 'Bekræft tid';
 var TOOLS_SOLVERS = 'Løsere';
-var TOOLS_DLYSTAT = 'Daily Statistics';
-var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT = 'Daglig statistik';
+var TOOLS_DLYSTAT1 = 'Periode|Start af dag|uge';
+var TOOLS_DLYSTAT_OPT1 = 'dag|uge|måned|år';
+var TOOLS_DLYSTAT_OPT2 = 'Søn|Man|Tir|Ons|Tor|Fre|Lør';
 var TOOLS_SYNCSEED = 'Regulær blanding';
 var TOOLS_SYNCSEED_SEED = 'Frø';
 var TOOLS_SYNCSEED_INPUT = 'Input frø';
 var TOOLS_SYNCSEED_30S = 'Brug 30s Frø';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
+var TOOLS_SYNCSEED_HELP = 'Hvis aktiveret, vil blanding kun afhænge af seed og blandingsindstillinger.';
 var TOOLS_SYNCSEED_DISABLE = 'Deaktivér nuværende frø?';
 var TOOLS_SYNCSEED_INPUTA = 'Indtast en værdi ([a-z][A-Z][0-9]) som frø';
 var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
-var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_BATTLE_HEAD = 'Rum|Deltag i rum';
+var TOOLS_BATTLE_TITLE = 'Rang|Status|Tid';
+var TOOLS_BATTLE_STATUS = 'Klar|Inspicér|Løs|Løst|Tabt';
+var TOOLS_BATTLE_INFO = 'Deltag i et kamplokale med din ven, så kan i kæmpe sammen.';
+var TOOLS_BATTLE_JOINALERT = 'Angiv rum ID';
+var TOOLS_BATTLE_LEAVEALERT = 'Forlad nuværende rum';
 var OLCOMP_UPDATELIST = 'Opdater konkurrenceliste';
 var OLCOMP_VIEWRESULT = 'Vis Resultat';
 var OLCOMP_VIEWMYRESULT = 'Min Historik';
@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = 'Gem alle elementer når du tager tid';
 var SCRAMBLE_LAST = 'sidste';
 var SCRAMBLE_NEXT = 'næste';
 var SCRAMBLE_SCRAMBLE = 'blanding';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Blander';
 var SCRAMBLE_LENGTH = 'længde';
 var SCRAMBLE_INPUT = 'input blanding(er)';
 var PROPERTY_VRCSPEED = 'VRC base hastighed (TPS)';
@@ -149,10 +149,10 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4 osv.|(U U\')2, (U\' U)2, osv.|Aldrig';
 var PROPERTY_GIISBEEP = 'Bip ved blandet markering ';
 var PROPERTY_GIIRST = 'Nulstil bluetooth terning ved tilslutning';
 var PROPERTY_GIIRSTS = 'Altid|Spørg|Aldrig';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
-var PROPERTY_GIIMODES = 'Normal|Training';
-var PROPERTY_VRCAH = 'Useless pieces in huge cube';
-var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
+var PROPERTY_GIIMODE = 'Blueetooth Cube Mode';
+var PROPERTY_GIIMODES = 'Normal|Træning';
+var PROPERTY_VRCAH = 'Ubrugelige dele i stor terning';
+var PROPERTY_VRCAHS = 'Skjul|Kant|Farve|Vis';
 var CONFIRM_GIIRST = 'Nulstil bluetooth terning som løst?';
 var PROPERTY_GIIAED = 'Automatisk hardware fejl opdagelse';
 var scrdata = [
@@ -190,9 +190,9 @@ var scrdata = [
 		['3x3x3 til nybegyndere', "333noob", 25],
 		['kun kanter', "edges", 0],
 		['kun hjørner', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['BLD hjælper', "nocache_333bldspec", 0],
 		['3x3 FT', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Brugertilpasset', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
@@ -212,7 +212,7 @@ var scrdata = [
 		['Krydset løst', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['Nemt kryds', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Let xcross', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -446,10 +446,10 @@ var SCRAMBLE_NOOBST = [
 	['vend front siden', 'vend bagsiden']
 ];
 var SCRAMBLE_NOOBSS = 'med uret af 90 grader,| mod uret af 90 grader,| af 180 degrees,';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_TITLE = 'Indstillinger for blanding';
+var SCROPT_BTNALL = 'Komplet';
+var SCROPT_BTNNONE = 'Nulstil';
+var SCROPT_EMPTYALT = 'Vælg mindst en case';
 var STATS_CFM_RESET = 'Nulstil alle tider i denne session??';
 var STATS_CFM_DELSS = 'slet session [%s]?';
 var STATS_CFM_DELMUL = 'Antallet af slettede værdier fra nuværende indeks?';
@@ -498,18 +498,18 @@ var PROPERTY_SCR2SS = 'Opret ny session, når du skifter blandings type';
 var PROPERTY_SS2SCR = 'Gendan blandingstype, når du skifter session';
 var PROPERTY_SS2PHASES = 'gendan multi-fase-tidstagning ved skift af session';
 var PROPERTY_STATINV = 'Omvendt tidsliste';
-var PROPERTY_STATSSUM = 'Show sum in time list';
-var PROPERTY_STATTHRES = 'Show target time for session best';
+var PROPERTY_STATSSUM = 'Vis sum i tidslisten';
+var PROPERTY_STATTHRES = 'Vis måltid for sessionen bedst';
 var PROPERTY_STATAL = 'Statistiske indikatorer';
 var PROPERTY_STATALU = 'Tilpasset statistisk indikator';
 var PROPERTY_DELMUL = 'Tillad flere sletninger';
 var PROPERTY_TOOLSFUNC = 'Valgte funktioner';
-var PROPERTY_TRIM = 'Antal af løsninger fjernet på hver side';
-var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
+var PROPERTY_TRIM = 'Antal af de bedste løsninger fjernet';
+var PROPERTY_TRIMR = 'Antal af de værste løsninger fjernet';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Brug Stackmat status information';
-var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
+var PROPERTY_TOOLPOS = 'Værktøjspanel position';
+var PROPERTY_TOOLPOS_STR = 'Bund|Flydende|Top';
 var PROPERTY_HIDEFULLSOL = 'Vis løsning progressivt';
 var PROPERTY_IMPPREV = 'Importer ikke-seneste data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 løsning)';
@@ -531,17 +531,17 @@ var BGIMAGE_OPACITY = 'baggrunds billede gennemsigtigheds';
 var BGIMAGE_IMAGE = 'baggrunds billede';
 var BGIMAGE_IMAGE_STR = 'ingen|manual|CCT';
 var SHOW_AVG_LABEL = 'Vis Gns Etiket';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
-var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
+var SHOW_DIFF_LABEL = 'Vis tidsforskel';
+var SHOW_DIFF_LABEL_STR = '-Grøn+Rød|-Red+Grøn|Normal|Ingen';
 var USE_LOGOHINT = 'Tip beskeder i logo';
 var TOOLS_SCRGEN = 'BlandingsGenerator';
 var SCRGEN_NSCR = 'Nummere af blandinger';
 var SCRGEN_PRE = 'præfiks';
 var SCRGEN_GEN = 'Frembringe Blandinger!';
-var VRCREPLAY_TITLE = 'Virtual Replay';
-var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
-var GIIKER_RESET = 'Reset (Mark Solved)';
-var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var VRCREPLAY_TITLE = 'Virtuel Replay';
+var VRCREPLAY_ORI = 'rå ori|auto ori';
+var VRCREPLAY_SHARE = 'Del link';
+var GIIKER_CONNECT = 'Klik for at oprette forbindelse';
+var GIIKER_RESET = 'Nulstil (Markér Løst)';
+var PROPERTY_SHOWAD = 'Vis reklamer (træder i kraft efter genindlæsning)';
+var PROPERTY_GIIORI = 'Terningens orientering';

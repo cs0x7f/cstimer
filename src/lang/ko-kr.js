@@ -543,5 +543,5 @@ var VRCREPLAY_ORI = 'raw ori|auto ori';
 var VRCREPLAY_SHARE = 'share link';
 var GIIKER_CONNECT = 'Click to connect';
 var GIIKER_RESET = 'Reset (Mark Solved)';
-var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
+var PROPERTY_SHOWAD = '광고 보이기 (새로고침 시 적용)';
 var PROPERTY_GIIORI = 'Cube orientation';
