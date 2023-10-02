@@ -417,8 +417,14 @@ var caseStat = execMain(function() {
 	var div = $('<div style="font-size:0.9em;" />');
 	var table = $('<table class="table">');
 	var methodSelect = $('<select>');
-	var tableTh = $('<tr>').append($('<th colspan=2 style="padding:0;">').append(methodSelect),
-		'<th>N</th><th>' + titleStr[0] + '</th><th>' + titleStr[1] + '</th><th>' + titleStr[2] + '</th><th>' + titleStr[3] + '</th>');
+	var tableTh = $('<tr>').append(
+		$('<th>').attr('colspan', 2).css('padding', '0').append(methodSelect),
+		$('<th>').addClass('click').attr('data-sort-column', 2).append('N'),
+		$('<th>').addClass('click').attr('data-sort-column', 5).append(titleStr[0]),
+		$('<th>').addClass('click').attr('data-sort-column', 6).append(titleStr[1]),
+		$('<th>').addClass('click').attr('data-sort-column', 7).append(titleStr[2]),
+		$('<th>').addClass('click').attr('data-sort-column', 8).append(titleStr[3])
+	);
 
 	function update() {
 		if (!isEnable) {
@@ -445,20 +451,20 @@ var caseStat = execMain(function() {
 		}
 
 		var trTpl =
-			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">$0</td>' +
+			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">$1</td>' +
 			'<td rowspan=2 style="padding:0"><canvas/></td>' +
-			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">$1</td>' +
+			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">$2</td>' +
 			'<td colspan=4 style="padding:0;">' +
-			'<span class="cntbar sty2" style="height:0.25em;float:left;border:none;width:$2%;">&nbsp;</span>' +
-			'<span class="cntbar" style="height:0.25em;float:left;border:none;width:$3%;">&nbsp;</span></td></tr>' +
+			'<span class="cntbar sty2" style="height:0.25em;float:left;border:none;width:$3%;">&nbsp;</span>' +
+			'<span class="cntbar" style="height:0.25em;float:left;border:none;width:$4%;">&nbsp;</span></td></tr>' +
 			'<tr>' +
-			'<td style="padding-bottom:0;padding-top:0;">$4</td>' +
 			'<td style="padding-bottom:0;padding-top:0;">$5</td>' +
 			'<td style="padding-bottom:0;padding-top:0;">$6</td>' +
 			'<td style="padding-bottom:0;padding-top:0;">$7</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">$8</td>' +
 			'</tr>';
 
-		table.empty().append(tableTh);
+		table.empty().append(tableTh.unbind('click').click(procHeaderClick));
 
 		var maxSubt = 0;
 		for (var i = ident[2]; i < ident[3]; i++) {
@@ -468,15 +474,15 @@ var caseStat = execMain(function() {
 			maxSubt = Math.max(maxSubt, (caseCnts[i][1] + caseCnts[i][2]) / caseCnts[i][0]);
 		}
 
+		var trdata = [];
 		for (var i = ident[2]; i < ident[3]; i++) {
 			if (!caseCnts[i]) {
 				continue;
 			}
 			var caseCnt = caseCnts[i];
-			var tr = $('<tr>');
 			var param = ident[1](i);
-
-			var trdata = [
+			trdata.push([
+				i,
 				param[2],
 				caseCnt[0],
 				caseCnt[1] / caseCnt[0] / maxSubt * 100,
@@ -485,12 +491,21 @@ var caseStat = execMain(function() {
 				kernel.pretty(caseCnt[2] / caseCnt[0]),
 				Math.round(caseCnt[3] / caseCnt[0] * 10) / 10,
 				Math.round(caseCnt[3] / (caseCnt[1] + caseCnt[2]) * 10000) / 10
-			];
-			var curTr = trTpl;
-			for (var j = 0; j < 8; j++) {
-				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), trdata[j]);
-			}
+			]);
+		}
 
+		var sortCol = kernel.getProp('rcCaseSortCol', 2);
+		var sortDir = kernel.getProp('rcCaseSortDir', 'desc');
+		trdata.sort(function (a, b) {
+			if (sortDir == 'desc') [a, b] = [b, a];
+			return a[sortCol] - b[sortCol];
+		});
+
+		for (var row of trdata) {
+			var curTr = trTpl;
+			for (var j = 0; j < row.length; j++) {
+				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), row[j]);
+			}
 			curTr = $(curTr);
 			var canvas = curTr.find('canvas');
 			canvas.css({
@@ -498,20 +513,30 @@ var caseStat = execMain(function() {
 				'height': '2em',
 				'display': 'block'
 			});
-			ident[1](i, canvas);
+			ident[1](row[0], canvas);
 			table.append(curTr);
 		}
-		methodSelect.unbind('change').change(procClick);
+		methodSelect.unbind('change').change(procMethodChange);
 		if (nvalid == 0) {
 			tableTh.after('<tr><td colspan=7>' + TOOLS_RECONS_NODATA + '</td></tr>');
 			return;
 		}
 	}
 
-	function procClick(e) {
-		if (e.type == 'change') {
+	function procMethodChange(e) {
+		kernel.setProp('rcCaseMthd', methodSelect.val());
+		update();
+	}
+
+	function procHeaderClick(e) {
+		var sortCol = $(e.target).data('sort-column');
+		if (sortCol) {
+			var prevSortCol = kernel.getProp('rcCaseSortCol');
+			kernel.setProp('rcCaseSortCol', sortCol);
+			if (prevSortCol == sortCol) {
+				kernel.setProp('rcCaseSortDir', kernel.getProp('rcCaseSortDir') == 'desc' ? 'asc' : 'desc');
+			}
 			update();
-			return;
 		}
 	}
 
@@ -555,6 +580,7 @@ var caseStat = execMain(function() {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
 			stats.regExtraInfo('recons_cf4op_' + methods[i], calcCaseExtra.bind(null, methods[i]));
 		}
+		methodSelect.val(kernel.getProp('rcCaseMthd', 'PLL'));
 	});
 });
 
