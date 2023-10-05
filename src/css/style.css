@@ -800,6 +800,18 @@ div.helptable ul {
 	bottom: 20%;
 }
 
+.dialogcasestats {
+	left: 30%;
+	right: 30%;
+	top: 15%;
+	bottom: 15%;
+}
+
+.dialogcasestats .table {
+	width: 100%;
+	font-size: 1.5em;
+}
+
 .dialogssmgr {
 	left: 15%;
 	right: 15%;
@@ -1109,7 +1121,7 @@ html.m .mhide, html:not(.m) .mshow {
 	font-size: 1.2em;
 }
 
-.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {
+.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogcasestats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {
 	left: 5%;
 	right: 5%;
 }

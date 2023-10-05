@@ -184,7 +184,7 @@ var recons = execMain(function() {
 				isPercent ? Math.round(val[2] / sumSubt * 1000) / 10 + '%' : kernel.pretty(val[2]),
 				Math.round(val[3] * 10) / 10,
 				val[3] > 0 && val[1] + val[2] > 0 ? Math.round(val[3] / (val[1] + val[2]) * 10000 ) / 10 : 'N/A',
-				''
+				['oll', 'pll'].indexOf(val[0]) != -1 ? 'click' : ''
 			];
 			var curTr = trTpl;
 			for (var j = 0; j < 9; j++) {
@@ -316,6 +316,47 @@ var recons = execMain(function() {
 		}
 	}
 
+	var casesDialogContent = $('<div>').css('padding', '1em');
+	var casesDataLink = $('<a>').css('display', 'none');
+	var casesDialog = $('<div>').append(casesDialogContent, casesDataLink);
+
+	function exportCaseStatsData() {
+		var [method, data] = caseStat.update();
+		data = data.map(function (c) {
+			return {
+				caseId: c[0],
+				caseName: c[1],
+				count: c[2],
+				inspPct: Number(c[3]),
+				execPct: Number(c[4]),
+				insp: Number(c[5]),
+				exec: Number(c[6]),
+				turns: Number(c[7]),
+				tps: Number(c[8]),
+				caseImage: c[9]
+			}
+		});
+		var blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+		var url = URL.createObjectURL(blob);
+		casesDataLink.attr({
+			href: url,
+			download: method + '_cases_stats.json'
+		}).get(0).click();
+		setTimeout(function () {
+			URL.revokeObjectURL(blob);
+		}, 5000);
+		return false;
+	}
+
+	function showCasesDialog(method) {
+		kernel.setProp('rcCaseMthd', method);
+		caseStat.execFunc(casesDialogContent);
+		var onCloseDialog = function () {
+			caseStat.execFunc();
+		}
+		kernel.showDialog([casesDialog, onCloseDialog, undefined, onCloseDialog, [EXPORT_TOFILE, exportCaseStatsData]], 'casestats', 'Cases Stats');
+	}
+
 	function procClick(e) {
 		if (e.type == 'change') {
 			kernel.setProp('rcMthd', methodSelect.val());
@@ -323,6 +364,9 @@ var recons = execMain(function() {
 			return;
 		}
 		var target = $(e.target);
+		if (['oll', 'pll'].indexOf(target.text()) != -1) {
+			return showCasesDialog(target.text().toUpperCase());
+		}
 		if (!target.is('.click') || target.is('.exturl')) {
 			return;
 		}
@@ -452,7 +496,7 @@ var caseStat = execMain(function() {
 
 		var trTpl =
 			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">$1</td>' +
-			'<td rowspan=2 style="padding:0"><canvas/></td>' +
+			'<td rowspan=2 style="padding:0;width:2em;"><canvas/></td>' +
 			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">$2</td>' +
 			'<td colspan=4 style="padding:0;">' +
 			'<span class="cntbar sty2" style="height:0.25em;float:left;border:none;width:$3%;">&nbsp;</span>' +
@@ -514,13 +558,15 @@ var caseStat = execMain(function() {
 				'display': 'block'
 			});
 			ident[1](row[0], canvas);
+			row.push(canvas.get(0).toDataURL());
 			table.append(curTr);
 		}
 		methodSelect.unbind('change').change(procMethodChange);
 		if (nvalid == 0) {
 			tableTh.after('<tr><td colspan=7>' + TOOLS_RECONS_NODATA + '</td></tr>');
-			return;
+			return [method, []];
 		}
+		return [method, trdata];
 	}
 
 	function procMethodChange(e) {
@@ -548,6 +594,7 @@ var caseStat = execMain(function() {
 			return;
 		}
 		fdiv.empty().append(div.append(table));
+		methodSelect.val(kernel.getProp('rcCaseMthd', 'PLL'));
 		update();
 	}
 
@@ -580,8 +627,13 @@ var caseStat = execMain(function() {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
 			stats.regExtraInfo('recons_cf4op_' + methods[i], calcCaseExtra.bind(null, methods[i]));
 		}
-		methodSelect.val(kernel.getProp('rcCaseMthd', 'PLL'));
 	});
+
+	return {
+		execFunc: execFunc,
+		update: update
+	}
+
 });
 
 var scatter = execMain(function() {
