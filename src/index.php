@@ -84,7 +84,7 @@
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
   <script type="text/javascript" src="js/twisty/qcubennn.js"></script>
   <script type="text/javascript" src="js/twisty/qcubeminx.js"></script>
-  <script type="text/javascript" src="js/injection.js"></script>
+  <script type="text/javascript" src="js/iframe-api.js"></script>
 </head>
 <body>
 <div id="leftbar">

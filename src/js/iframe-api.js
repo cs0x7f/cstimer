@@ -5,7 +5,6 @@ window.api = {
       callback({ reconstruction });
     });
   },
-
   pushScrambles: window._pushScrambles,
   hideUi: function () {
     const styles = `
@@ -13,8 +12,11 @@ window.api = {
         visibility: hidden !important;
       }
     `;
-    const styleSheet = document.createElement("style")
-    styleSheet.innerText = styles
-    document.head.appendChild(styleSheet)
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = styles;
+    document.head.appendChild(styleSheet);
+  },
+  setInputModeToVirtual: function () {
+    window.kernel.setProp("input", "v");
   },
 };
