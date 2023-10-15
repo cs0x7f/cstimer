@@ -470,7 +470,7 @@ var scramble = execMain(function(rn, rndEl) {
 			return inputScramble.length != 0;
 		}
 
-    window.injectScrambles = function (str) {
+    window._pushScrambles = function (str) {
       parseInput(str);
       loadType("input");
     };

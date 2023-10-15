@@ -1,10 +1,20 @@
-// also see "window.injectScrambles"
+window.api = {
+  solveListener: function (callback) {
+    kernel.regListener("api", "time", (...args) => {
+      const reconstruction = args[1][4][0];
+      callback({ reconstruction });
+    });
+  },
 
-window.injectSolveListener = function (callback) {
-  kernel.regListener("injection", "time", (...args) => {
-    const reconstruction = args[1][4][0]
-    callback({ reconstruction });
-    // callback(args);
-    // console.log(args)
-  });
+  pushScrambles: window._pushScrambles,
+  hideUi: function () {
+    const styles = `
+      #wndctn > div, .dialog, #gray {
+        visibility: hidden !important;
+      }
+    `;
+    const styleSheet = document.createElement("style")
+    styleSheet.innerText = styles
+    document.head.appendChild(styleSheet)
+  },
 };
