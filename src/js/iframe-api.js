@@ -1,11 +1,14 @@
 window.api = {
-  solveListener: function (callback) {
+  regSolvesListener: function (callback) {
     kernel.regListener("api", "time", (...args) => {
       const reconstruction = args[1][4][0];
       callback({ reconstruction });
     });
   },
-  pushScrambles: window._pushScrambles,
+  importScrambles: window._importScrambles,
+  importColor: function (color) {
+    window.kernel.ui.importColor(color);
+  },
   hideUi: function () {
     const styles = `
       #wndctn > div, .dialog, #gray {

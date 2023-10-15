@@ -892,7 +892,8 @@ var kernel = execMain(function() {
 			hide: hide,
 			show: show,
 			isPop: function(){return isPopup;},
-			toggleLeftBar: toggleLeftBar
+			toggleLeftBar: toggleLeftBar,
+      importColor: importColor
 		};
 	})();
 
