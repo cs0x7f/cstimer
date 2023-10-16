@@ -1,8 +1,10 @@
 window.api = {
   regSolvesListener: function (callback) {
-    kernel.regListener("api", "time", (...args) => {
-      const reconstruction = args[1][4][0];
-      callback({ reconstruction });
+    kernel.regListener("api", "time", (_, time) => {
+      callback({
+        reconstruction: time[4][0],
+        time: time[2][1],
+      });
     });
   },
   importScrambles: window._importScrambles,
