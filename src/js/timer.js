@@ -1095,6 +1095,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				[]
 			];
 		}
+    window._scrambleVirtual = function() {
+      scrambleIt()
+      setStatus(-3); // inspection
+    }
 
 		function onkeydown(keyCode) {
 			if (puzzleObj == undefined) {
