@@ -41,6 +41,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
 	}
+  window._resetTimer = reset;
 
 	var timerColors = ['#f00', '#0d0', '#dd0', '#080', '#f00'];
 

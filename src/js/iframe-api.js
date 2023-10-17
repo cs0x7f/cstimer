@@ -9,9 +9,14 @@ window.api = (function () {
   }
 
   function importScrambles(arr) {
+    // TODO auto reveal 1st scramble
+    kernel.hideDialog()
     window._clearSession()
+
     const str = arr.join("\n");
     window._importScrambles(str);
+
+    window._resetTimer()
   }
 
   function tweakStyles() {
@@ -54,5 +59,6 @@ window.api = (function () {
       regSolvesListener(solvesListener);
       importScrambles(scrambles);
     },
+    importScrambles
   };
 })();
