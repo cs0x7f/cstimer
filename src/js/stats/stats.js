@@ -1094,6 +1094,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 			table_ctrl.updateTable(true);
 			kernel.blur();
 		}
+    window._clearSession = function () {
+			times = [];
+			timesExtra = [];
+			times_stats_table.reset();
+			times_stats_list.reset();
+			save();
+			table_ctrl.updateTable(true);
+			kernel.blur();
+    }
 
 		function renameSession(ssidx, isCreate) {
 			if (ssidx === undefined) {

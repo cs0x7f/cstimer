@@ -1,27 +1,58 @@
-window.api = {
-  regSolvesListener: function (callback) {
+window.api = (function () {
+  function regSolvesListener(callback) {
     kernel.regListener("api", "time", (_, time) => {
       callback({
         reconstruction: time[4][0],
         time: time[2][1],
       });
     });
-  },
-  importScrambles: window._importScrambles,
-  importColor: function (color) {
-    window.kernel.ui.importColor(color);
-  },
-  hideUi: function () {
+  }
+
+  function importScrambles(arr) {
+    window._clearSession()
+    const str = arr.join("\n");
+    window._importScrambles(str);
+  }
+
+  function tweakStyles() {
     const styles = `
-      #wndctn > div, .dialog, #gray {
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap');
+
+      #wndctn > div, .dialog, #gray, #avgstr, .difflabel {
         visibility: hidden !important;
+        position: absolute;
+      }
+      body {
+        background-color: #11191F !important;
+      }
+      .click {
+        color: #A0A3A5 !important;
+      }
+      .activetimer {
+        color: #FFFFFF !important;
+      }
+      .click, .activetimer {
+        font-family: 'Space Grotesk', sans-serif !important;
+      }
+      .click {
+        font-size: 24px !important;
       }
     `;
     const styleSheet = document.createElement("style");
     styleSheet.innerText = styles;
     document.head.appendChild(styleSheet);
-  },
-  setInputModeToVirtual: function () {
+  }
+
+  function setInputModeToVirtual() {
     window.kernel.setProp("input", "v");
-  },
-};
+  }
+
+  return {
+    setup: function (solvesListener, scrambles) {
+      tweakStyles();
+      setInputModeToVirtual();
+      regSolvesListener(solvesListener);
+      importScrambles(scrambles);
+    },
+  };
+})();
