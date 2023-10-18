@@ -14,11 +14,10 @@ window.api = (function () {
     });
   }
 
-  function importScrambles(arr) {
+  function importScramble(str) {
     kernel.hideDialog();
     window._clearSession();
 
-    const str = arr.join("\n");
     window._importScrambles(str);
 
     window._resetTimer();
@@ -61,12 +60,11 @@ window.api = (function () {
   }
 
   return {
-    setup: function (solvesListener, scrambles) {
+    setup: function (solvesListener) {
       tweakStyles();
       setInputModeToVirtual();
       regSolvesListener(solvesListener);
-      importScrambles(scrambles);
     },
-    importScrambles,
+    importScramble: importScramble,
   };
 })();
