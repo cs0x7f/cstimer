@@ -1,6 +1,12 @@
 window.api = (function () {
   function regSolvesListener(callback) {
     kernel.regListener("api", "time", (_, time) => {
+      const dnf = time[2][0] === -1;
+      if (dnf) {
+        callback({ dnf: true });
+        return
+      }
+
       callback({
         reconstruction: time[4][0],
         time: time[2][1],
