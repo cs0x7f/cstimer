@@ -854,7 +854,7 @@ var kernel = execMain(function() {
 			if (location.protocol != 'https:') {
 				document.title = '[UNSAFE] ' + document.title;
 			}
-			if (navigator.wakeLock && navigator.wakeLock.request) {
+			// if (navigator.wakeLock && navigator.wakeLock.request) {
 				// var requestWakeLock = function () {
 				// 	return navigator.wakeLock.request('screen').then(function (lock) {
 				// 		DEBUG && console.log('[ui]', 'Screen Wake Lock is active');
@@ -869,7 +869,7 @@ var kernel = execMain(function() {
 				// 		requestWakeLock();
 				// 	}
 				// });
-			}
+			// }
 		});
 
 		return {

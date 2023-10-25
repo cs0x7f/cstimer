@@ -28,7 +28,8 @@
   <!-- VSCUBING INTEGRATION -->
   <link rel='stylesheet' type='text/css' href='vscubing/integration.css'>
   <script type="text/javascript" src="vscubing/integration.js"></script>
-<?php include('baidutongji.php') ?>
+    <?php // include('baidutongji.php')
+    ?>
 </head>
 <body>
 <div id="leftbar">
