@@ -17,13 +17,7 @@ const api = (function () {
   function importScramble(str) {
     kernel.hideDialog();
     window._clearSession();
-
-    window._importScrambles(str);
-
-    window._resetTimer();
-    setTimeout(() => {
-      window._scrambleVirtual();
-    }, 0);
+    window._scrambleVirtual(str);
   }
 
   function setInputModeToVirtual() {
