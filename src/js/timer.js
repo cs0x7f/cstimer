@@ -1123,16 +1123,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				}
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
 				if (keyCode == 27 || keyCode == 28) { //ESC
-					var recordDNF = status >= 1;
-					lcd.setStaticAppend('');
-					setStatus(-1);
-					reset();
-					$('#lcd').css({'visibility': 'unset'}); // disable dragging
-					lcd.fixDisplay(false, true);
-					if (recordDNF) {
-						rawMoves.reverse();
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
-					}
+					// var recordDNF = status >= 1;
+					// lcd.setStaticAppend('');
+					// setStatus(-1);
+					// reset();
+					// $('#lcd').css({'visibility': 'unset'}); // disable dragging
+					// lcd.fixDisplay(false, true);
+					// if (recordDNF) {
+					// 	rawMoves.reverse();
+					// 	pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
+					// }
 				} else {
 					var mappedCode = help.getMappedCode(keyCode);
 					var a = {
