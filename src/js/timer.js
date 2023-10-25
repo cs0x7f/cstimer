@@ -1080,7 +1080,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		function scrambleIt(forcedScramble) {
 			reset();
-			var scramble = forcedScramble || curScramble;
+			var scramble = forcedScramble ?? curScramble;
 			if (/^r\d+$/.exec(curScrType)) {
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
 				fixRelayCounter();
