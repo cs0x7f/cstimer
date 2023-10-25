@@ -1058,6 +1058,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			options['style'] = getProp('input');
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
 				puzzleObj = ret;
+
+        if (window._awaitingPuzzleObjFn) {
+          window._awaitingPuzzleObjFn()
+        }
+
 				if (isInit && !puzzleObj) {
 					div.css('height', '');
 					div.html('--:--');
@@ -1095,8 +1100,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			];
 		}
     window._scrambleVirtual = function(scramble) {
-      scrambleIt(scramble)
-      setStatus(-3); // inspection
+      window.focus()
+      if (puzzleObj) {
+        scrambleIt(scramble)
+        setStatus(-3); // inspection 
+        return
+      }
+      window._awaitingPuzzleObjFn = () => {
+        scrambleIt(scramble)
+        setStatus(-3); // inspection
+      }
     }
 
 		function onkeydown(keyCode) {
