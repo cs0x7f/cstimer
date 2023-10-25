@@ -30,14 +30,14 @@ const api = (function () {
     importScramble,
   };
 })();
-const POST_MESSAGE_SOURCE = "vs-solver-integration";
+const POST_MESSAGE_SOURCE = 'vs-solver-integration'
 
 window.addEventListener("load", () => {
   api.setInputModeToVirtual();
 });
 
 api.regSolvesListener((result) => {
-  parent.postMessage({ source: POST_MESSAGE_SOURCE, payload: result }, "*");
+  parent.postMessage({source: POST_MESSAGE_SOURCE, payload: result}, '*');
 });
 
 window.addEventListener(
