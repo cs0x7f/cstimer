@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
+
+#wndctn > div,
+.dialog,
+#gray,
+#avgstr,
+.difflabel {
+  visibility: hidden !important;
+  position: absolute;
+}
+body {
+  background-color: #11191f !important;
+}
+.click {
+  color: #a0a3a5 !important;
+}
+.activetimer {
+  color: #ffffff !important;
+}
+.click,
+.activetimer {
+  font-family: "Space Grotesk", sans-serif !important;
+}
+.click {
+  font-size: 24px !important;
+}

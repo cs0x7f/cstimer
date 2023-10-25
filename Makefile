@@ -103,7 +103,7 @@ langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))
 
 version := $(shell git describe --tags --always 2>/dev/null || echo Unspecified)
 
-all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) version $(dest)/cache.manifest $(dest)/sw.js
+all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) version $(dest)/cache.manifest $(dest)/sw.js vscubing
 
 version: $(langPHP)
 	@echo "Build Version: $(version)"
@@ -148,5 +148,13 @@ $(dest)/sw.js: $(cache) version
 	@echo $@
 	@sed -i '$$d' $@
 	@echo 'var CACHE_NAME = "cstimer_cache_'`cat $(cache) | md5sum | awk '{print $$1}'`'";' >> $@
+
+vscubingSrc = $(addprefix $(src)/vscubing/, \
+	integration.css \
+	integration.js)
+
+vscubing: $(vscubingSrc)
+	cp $(src)/vscubing/integration.js $(dest)/vscubing/integration.js
+	cp $(src)/vscubing/integration.css $(dest)/vscubing/integration.css
 
 .PHONY: all clean version

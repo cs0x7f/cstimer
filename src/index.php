@@ -84,7 +84,9 @@
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
   <script type="text/javascript" src="js/twisty/qcubennn.js"></script>
   <script type="text/javascript" src="js/twisty/qcubeminx.js"></script>
-  <script type="text/javascript" src="js/iframe-api.js"></script>
+
+  <script type="text/javascript" src="vscubing/integration.js"></script>
+  <link rel='stylesheet' type='text/css' href='vscubing/integration.css'>
 </head>
 <body>
 <div id="leftbar">
