@@ -36,25 +36,25 @@ const api = (function () {
     importScramble,
   };
 })();
+const POST_MESSAGE_SOURCE = 'vs-solver-integration'
 
 window.addEventListener("load", () => {
   api.setInputModeToVirtual();
 });
 
-// api.regSolvesListener((result) => {
-//   parent.postMessage(result);
-// });
+api.regSolvesListener((result) => {
+  parent.postMessage({source: POST_MESSAGE_SOURCE, payload: result}, '*');
+});
 
 window.addEventListener(
   "message",
   (event) => {
-    if (event.data.source !== "vs-integration") {
+    const { source, scramble } = event.data;
+    if (source !== POST_MESSAGE_SOURCE) {
       return;
     }
 
-    const { scramble, onSolve } = event.data;
     api.importScramble(scramble);
-    api.regSolvesListener(onSolve);
   },
   false,
 );
