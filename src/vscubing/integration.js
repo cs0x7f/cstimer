@@ -7,8 +7,13 @@ const api = (function () {
         return;
       }
 
+      const csReconstruction = time[4][0];
+      const algCubingReconstruction = csReconstruction
+        .replace(/@(\d+)/g, "/*$1*/")
+        .replace(/-/g, "&#45;");
+
       callback({
-        reconstruction: time[4][0],
+        reconstruction: algCubingReconstruction,
         timeMs: time[2][1],
       });
     });
@@ -24,7 +29,7 @@ const api = (function () {
     setTimeout(() => {
       window._scrambleVirtual();
     }, 0);
-    window.focus()
+    window.focus();
   }
 
   function setInputModeToVirtual() {
@@ -37,14 +42,14 @@ const api = (function () {
     importScramble,
   };
 })();
-const POST_MESSAGE_SOURCE = 'vs-solver-integration'
+const POST_MESSAGE_SOURCE = "vs-solver-integration";
 
 window.addEventListener("load", () => {
   api.setInputModeToVirtual();
 });
 
 api.regSolvesListener((result) => {
-  parent.postMessage({source: POST_MESSAGE_SOURCE, payload: result}, '*');
+  parent.postMessage({ source: POST_MESSAGE_SOURCE, payload: result }, "*");
 });
 
 window.addEventListener(
