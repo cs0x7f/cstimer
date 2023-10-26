@@ -1060,8 +1060,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
 				puzzleObj = ret;
 
-        if (window._awaitingPuzzleFn) window._awaitingPuzzleFn()
-
 				if (isInit && !puzzleObj) {
 					div.css('height', '');
 					div.html('--:--');
@@ -1082,14 +1080,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function scrambleIt() {
+		function scrambleIt(forcedScramble) {
 			reset();
 			var scramble = curScramble;
 			if (/^r\d+$/.exec(curScrType)) {
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
 				fixRelayCounter();
 			}
-			scramble = puzzleObj.parseScramble(scramble, true);
+			scramble = puzzleObj.parseScramble(forcedScramble || scramble, true);
 			isReseted = false;
 
 			puzzleObj.applyMoves(scramble);
@@ -1098,16 +1096,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				[]
 			];
 		}
-    window._scrambleVirtual = function() {
+    window._scrambleVirtual = function(scramble) {
       if (puzzleObj) {
-        scrambleIt()
+        scrambleIt(scramble)
         setStatus(-3); // inspection
         return
-      }
-
-      window._awaitingPuzzleFn = () => {
-        onkeydown(32)
-        window._awaitingPuzzleFn = undefined
       }
     }
 

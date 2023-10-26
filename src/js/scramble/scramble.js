@@ -470,11 +470,6 @@ var scramble = execMain(function(rn, rndEl) {
 			return inputScramble.length != 0;
 		}
 
-    window._importScrambles = function (str) {
-      parseInput(str);
-      loadType("input");
-    };
-
 		return {
 			next: next,
 			clear: clear
