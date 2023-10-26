@@ -4,7 +4,8 @@
 .dialog,
 #gray,
 #avgstr,
-.difflabel {
+.difflabel,
+.touchcube {
   visibility: hidden !important;
   position: absolute;
 }
