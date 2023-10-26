@@ -79,7 +79,7 @@ execMain(function() {
 		window.localStorage = {};
 	}
 
-	if (!('properties' in localStorage) && location.protocol != 'https:' && location.hostname != 'localhost') {
+	if (!('properties' in localStorage) && location.protocol != 'https:' && location.hostname != 'localhost' && location.hostname !== '127.0.0.1') {
 		location.href = 'https:' + location.href.substring(location.protocol.length);
 	}
 

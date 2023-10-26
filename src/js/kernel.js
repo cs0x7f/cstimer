@@ -1323,7 +1323,7 @@ var kernel = execMain(function() {
 		}
 	}
 
-	$(cleanLocalStorage);
+	// $(cleanLocalStorage);
 
 	function round(val) {
 		if (val <= 0) {
