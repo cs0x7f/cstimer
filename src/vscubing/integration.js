@@ -24,6 +24,7 @@ const api = (function () {
     setTimeout(() => {
       window._scrambleVirtual();
     }, 0);
+    window.focus()
   }
 
   function setInputModeToVirtual() {
