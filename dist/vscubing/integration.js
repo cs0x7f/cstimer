@@ -53,11 +53,9 @@ const POST_MESSAGE_SOURCE = "vs-solver-integration";
 api.hackForFreshLocalStorage();
 window.addEventListener("load", () => {
   api.setInputModeToVirtual();
-  api.importScramble("R");
 });
 
 api.regSolvesListener((result) => {
-  console.log(result.reconstruction);
   parent.postMessage({ source: POST_MESSAGE_SOURCE, payload: result }, "*");
 });
 
