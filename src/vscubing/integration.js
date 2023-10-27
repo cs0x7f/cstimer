@@ -8,13 +8,8 @@ const api = (function () {
       }
 
       const csReconstruction = time[4][0];
-      const algCubingReconstruction = csReconstruction.replace(
-        /@(\d+)/g,
-        "/*$1*/",
-      );
-
       callback({
-        reconstruction: algCubingReconstruction,
+        reconstruction: getAlgCubingReconstruction(csReconstruction),
         timeMs: time[2][1],
       });
     });
@@ -71,3 +66,13 @@ window.addEventListener(
   },
   false,
 );
+
+function getAlgCubingReconstruction(csReconstruction) {
+  return csReconstruction
+    .replace(/@(\d+)/g, "/*$1*/")
+    .replace(/2-2Lw|2-2Rw'/g, "M")
+    .replace(/2-2Rw/g, "M'")
+    .replace(/2-2Fw/g, "S")
+    .replace(/2-2Uw'/g, "E")
+    .replace(/2-2Uw/g, "E'");
+}
