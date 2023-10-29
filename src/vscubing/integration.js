@@ -1,5 +1,5 @@
 const api = (function () {
-  function regSolvesListener(callback) {
+  function regSolveFinishListener(callback) {
     kernel.regListener("api", "time", (_, time) => {
       const dnf = time[2][0] === -1;
       if (dnf) {
@@ -12,6 +12,14 @@ const api = (function () {
         reconstruction: getAlgCubingReconstruction(csReconstruction),
         timeMs: time[2][1],
       });
+    });
+  }
+
+  function regStartTimeListener(callback) {
+    kernel.regListener("api", "timerStatus", (_, status) => {
+      if (status === 1) {
+        callback();
+      }
     });
   }
 
@@ -39,7 +47,8 @@ const api = (function () {
   return {
     setInputModeToVirtual,
     hackForFreshLocalStorage,
-    regSolvesListener,
+    regSolveFinishListener,
+    regStartTimeListener,
     importScramble,
   };
 })();
@@ -50,8 +59,15 @@ window.addEventListener("load", () => {
   api.setInputModeToVirtual();
 });
 
-api.regSolvesListener((result) => {
-  parent.postMessage({ source: POST_MESSAGE_SOURCE, payload: result }, "*");
+api.regSolveFinishListener((result) => {
+  parent.postMessage(
+    { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
+    "*",
+  );
+});
+
+api.regStartTimeListener(() => {
+  parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "timeStart" }, "*");
 });
 
 window.addEventListener(

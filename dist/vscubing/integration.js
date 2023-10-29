@@ -15,6 +15,14 @@ const api = (function () {
     });
   }
 
+  function regStartTimeListener(callback) {
+    kernel.regListener("api", "timerStatus", (_, status) => {
+      if (status === 1) {
+        callback();
+      }
+    });
+  }
+
   function importScramble(str) {
     kernel.hideDialog();
     window._clearSession();
@@ -40,6 +48,7 @@ const api = (function () {
     setInputModeToVirtual,
     hackForFreshLocalStorage,
     regSolvesListener,
+    regStartTimeListener,
     importScramble,
   };
 })();
@@ -51,7 +60,14 @@ window.addEventListener("load", () => {
 });
 
 api.regSolvesListener((result) => {
-  parent.postMessage({ source: POST_MESSAGE_SOURCE, payload: result }, "*");
+  parent.postMessage(
+    { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
+    "*",
+  );
+});
+
+api.regStartTimeListener(() => {
+  parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "timeStart" }, "*");
 });
 
 window.addEventListener(
