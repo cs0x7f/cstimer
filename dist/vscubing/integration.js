@@ -1,5 +1,5 @@
 const api = (function () {
-  function regSolvesListener(callback) {
+  function regSolveFinishListener(callback) {
     kernel.regListener("api", "time", (_, time) => {
       const dnf = time[2][0] === -1;
       if (dnf) {
@@ -47,7 +47,7 @@ const api = (function () {
   return {
     setInputModeToVirtual,
     hackForFreshLocalStorage,
-    regSolvesListener,
+    regSolveFinishListener,
     regStartTimeListener,
     importScramble,
   };
@@ -59,7 +59,7 @@ window.addEventListener("load", () => {
   api.setInputModeToVirtual();
 });
 
-api.regSolvesListener((result) => {
+api.regSolveFinishListener((result) => {
   parent.postMessage(
     { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
     "*",
