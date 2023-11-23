@@ -1755,7 +1755,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false], 1);
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true], 1);
 		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false], 1);
-		kernel.regProp('stats', 'hlpbs', 1, 'Highlight PBs', ['fc0b', ['f40b', 'none'], ['highlight', 'none']], 1);
+		kernel.regProp('stats', 'hlpbs', 1, 'Highlight PBs', ['f40b', ['f40b', 'none'], ['highlight', 'none']], 1);
 
 		div.append(
 			statOptDiv.append(
