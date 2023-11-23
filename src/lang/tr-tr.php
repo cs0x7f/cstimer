@@ -1,6 +1,6 @@
 <h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
+<h2>Giriş</h2>
 <p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
 <ul>
 <li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
@@ -48,11 +48,11 @@
 <li><strong data="opt_timeFormat">zaman biçimi</strong>. Time format to display.</li>
 <li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
+<li><strong data="opt_useLogo">Logodaki ipucu mesajları</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">ortalama göstergesini göster</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">Yakınlaştır</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">kronometrenin yazı tipini seç</strong>. Font of the main timer.</li>
-<li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
+<li><strong data="opt_uidesign">Arayüz Tasarımı</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
 <li><strong data="opt_view">UI stili</strong>. Switch between desktop and mobile views.</li>
 <li><strong data="opt_wndScr">Karıştırma paneli görünüm stili</strong>. Make scramble panel embedded into background.</li>
 <li><strong data="opt_wndStat">Karıştırma paneli görünüm stili</strong>. Make list times panel embedded into background.</li>
@@ -66,7 +66,7 @@
 <li><strong data="opt_voiceIns">WCA incelemesi ses uyarısı</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
 <li><strong data="opt_voiceVol">Ses düzeyi</strong>. Voice level of the alert above.</li>
 <li><strong data="opt_input">süreleri girmek için kullan</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
-<li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
+<li><strong data="opt_intUN">Süre giriş formatı</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
 <li><strong data="opt_timeU">kronometre güncellemesi</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">boşluk tuşuna basılı tutma süresi(saniye)</strong>. How long the space bar should be held before the timer turns green.</li>
 <li><strong data="opt_phases">çok zamanlı</strong>. Number of phases, press any key to mark a split point when timing.</li>
@@ -75,7 +75,7 @@
 <li><strong data="opt_scrASize">Otomatik Karıştırma Boyutu</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
 <li><strong data="opt_scrMono">eş aralıklı karıştırma</strong>. Use monospaced font for scramble text.</li>
 <li><strong data="opt_scrLim">karıştırma bölgesinin yüksekliğini limitle</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
-<li><strong data="opt_scrAlign">karıştırma bölgesi ayarlaması</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
+<li><strong data="opt_scrAlign">Karıştırma bölgesi hizası</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrFast">4x4x4 için hızlı karışım kullanma (resmi değil)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Karıştırmada anahtar hareket(ler)ini etiketleyin</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
@@ -86,7 +86,7 @@
 <li><strong data="opt_printDate">print solving date in statistics</strong>. Print solving date in round statistics dialog.</li>
 <li><strong data="opt_imrename">Sezon oluşturulduğunda yeniden adlandır</strong>. Immediately rename a session after creating it.</li>
 <li><strong data="opt_scr2ss">karıştırma türü değişince yeni sezon oluştur</strong>. When switching scramble type, a new session will be created.</li>
-<li><strong data="opt_statinv">Inverse time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
+<li><strong data="opt_statinv">Ters süre listesi</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
 <li><strong data="opt_statclr">Enable session emptying</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
 <li><strong data="opt_absidx">Show absolute index in statistics report</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
 <li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>

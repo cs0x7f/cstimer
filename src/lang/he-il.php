@@ -48,7 +48,7 @@
 <li><strong data="opt_timeFormat">פורמט זמן</strong>. פורמט הזמן להציג</li>
 <li><strong data="opt_atexpa">יצוא אוטומטי (כל 100 פתירות)</strong>. אם יסומן, csTimer ייצא את הפתירות אוטומטית כל 100 פתירות למיקום ספציפי, קובץ מקומי, שרת csTimer, או אחסון גוגל.</li>
 <li><strong data="opt_expp">יבא מידע לא עדכני</strong>. אם הוספתם כמה גיבויים, אפשר להעלות  אחד מעשרה גיבויים הכי מחודשים. אם בטעות מעלים גיבוי ריק, האופציה הזות תעזור להחזיר את הזמנים.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
+<li><strong data="opt_useLogo">Hint messages in logo</strong>. הלוגו של csTimer ישמש כפאנל תצוגת מידע שמבקש מידע מגוונים שעשוי להתעניין בו, כגון שבירת PB.</li>
 <li><strong data="opt_showAvg">הראה ממוצע מתחת לטיימר</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">שנה מרחק מתצוגה</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">תבחר גופן לטיימר</strong>. Font of the main timer.</li>

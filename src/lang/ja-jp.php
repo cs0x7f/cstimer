@@ -129,9 +129,9 @@
 <li><strong data="tool_pyrv">ソルバー &gt; Pyraminx V</strong>. ピラミンクスのVソルバーです。3つのコーナーと2つのエッジを解き、'V'のパターンを作ります。</li>
 <li><strong data="tool_skbl1">ソルバー &gt; Skewb Face</strong>. スキューブの一面ソルバーです。具体的には、1つのセンターとそれに対応する4つのコーナーを揃えます。</li>
 <li><strong data="tool_giikerutil">Giiker キューブ</strong>. スマートキューブの補助ツールです。現在の状態や、バッテリー残量や、リアルタイムのreconstructionなどを表示します。</li>
-<li><strong data="tool_mtrnm">メトロノーム</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">共通スクランブル</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_mtrnm">メトロノーム</strong>. 特定の周期で音を鳴らすメトロノームです。ソルブ開始から特定の時間が経過したときにも音を鳴らせます。</li>
+<li><strong data="tool_syncseed">共通スクランブル</strong>. 共通のシードを設定して友達と同じスクランブルを使用します。</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. スタックタイマーの補助ツールです。接続状態を確認したり、信号強度やノイズレベルなどを表示できます。</li>
 </ul>
 <h2>リンク</h2>
 <ul>
@@ -160,11 +160,11 @@
 <p>ご寄付いただきありがとうございます！</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>接続ができない場合、お使いのシステムでBluetoothが有効になっていることを確認してください！</strong></p>
+<p>お使いのブラウザがWeb Bluetooth APIをサポートしている必要があります。 下記のような互換性のあるブラウザを使用してください。</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome (macOS, Linux, Android, Windowsの場合)</li>
+<li>Bluefy (iOSの場合)</li>
 </ul>
-<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+<p>また、<a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Groupの実装状況</a>から、各ブラウザのWeb Bluetooth APIのサポート状況の一覧を確認できます。</p>
 </div>

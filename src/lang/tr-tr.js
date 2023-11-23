@@ -7,10 +7,10 @@ var BUTTON_TIME_LIST = 'Süre<br>listesi';
 var BUTTON_OPTIONS = 'Ayarlar';
 var BUTTON_EXPORT = 'Dışa aktar';
 var BUTTON_DONATE = 'Bağış yap';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'Bu oturumda';
 var PROPERTY_USEINS = 'WCA inecelemesi kullan';
 var PROPERTY_USEINS_STR = 'Herzaman|BLD Dışında|Hiçbirzaman';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'İnceleme etkinken ikon göster';
 var PROPERTY_VOICEINS = 'WCA incelemesi ses uyarısı';
 var PROPERTY_VOICEINS_STR = 'hiçbiri|erkek sesi|kadın sesi';
 var PROPERTY_VOICEVOL = 'Ses düzeyi';
@@ -21,16 +21,16 @@ var PROPERTY_SMALLADP = 'noktadan sonra küçük karakter kullan';
 var PROPERTY_SCRSIZE = 'karıştırma bouyutu';
 var PROPERTY_SCRMONO = 'eş aralıklı karıştırma';
 var PROPERTY_SCRLIM = 'karıştırma bölgesinin yüksekliğini limitle';
-var PROPERTY_SCRALIGN = 'karıştırma bölgesi ayarlaması';
+var PROPERTY_SCRALIGN = 'Karıştırma bölgesi hizası';
 var PROPERTY_SCRALIGN_STR = 'merkez|sol|sağ';
 var PROPERTY_SCRFAST = '4x4x4 için hızlı karışım kullanma (resmi değil)';
 var PROPERTY_SCRKEYM = 'Karıştırmada anahtar hareket(ler)ini etiketleyin';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';
-var PROPERTY_SCRCLK_STR = 'None|Copy|Next scramble';
+var PROPERTY_SCRCLK_STR = 'Hiçbiri|Kopyala|Sonraki karıştırma';
 var PROPERTY_WNDSCR = 'Karıştırma paneli görünüm stili';
 var PROPERTY_WNDSTAT = 'Karıştırma paneli görünüm stili';
 var PROPERTY_WNDTOOL = 'Aletler Paneli Görünüm Stili';
-var PROPERTY_WND_STR = 'Normal|Flat';
+var PROPERTY_WND_STR = 'Normal|Düz';
 var EXPORT_DATAEXPORT = 'veri içe aktar/dışa aktar';
 var EXPORT_TOFILE = 'dosyaya aktar';
 var EXPORT_FROMFILE = 'dosyadan aktar';
@@ -43,12 +43,12 @@ var EXPORT_ERROR = 'Bir hata oluştu...';
 var EXPORT_NODATA = 'Hesabınız için veri bulunamadı';
 var EXPORT_UPLOADED = 'Yükleme başarılı';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
-var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
-var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_ONLYOPT = 'Sadece Ayarları Dışa Aktar/İçe Aktar';
+var EXPORT_ACCOUNT = 'Hesapları dışa aktar';
+var EXPORT_LOGINGGL = 'Google hesabı ile Giriş yap';
+var EXPORT_LOGINWCA = 'WCA hesabı ile Giriş yap';
+var EXPORT_LOGOUTCFM = 'Çıkış yapmak istiyor musunuz?';
+var EXPORT_LOGINAUTHED = 'Yetkilendirildi<br>Veriler Alınıyor...';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'karış-<br>tırma';
 var BUTTON_TOOLS = 'Yardımcılar';
@@ -65,17 +65,17 @@ var TOOLS_HUGESTATS = 'Haç-Oturum istatistikler';
 var TOOLS_DISTRIBUTION = 'Süre dağılımı';
 var TOOLS_TREND = 'Süre grafiği';
 var TOOLS_METRONOME = 'Metronom';
-var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_RECONS = 'Çözümleme';
+var TOOLS_RECONS_NODATA = 'Çözüm bulunamadı.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_TRAINSTAT = 'Antrenman İstatistikleri';
+var TOOLS_BLDHELPER = 'Gözü Bağlı Yardımcısı';
 var TOOLS_CFMTIME = 'Süreyi doğrula';
 var TOOLS_SOLVERS = 'Çözücüler';
-var TOOLS_DLYSTAT = 'Daily Statistics';
-var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT = 'Günlük İstatistikler';
+var TOOLS_DLYSTAT1 = 'Periyot|Gün Başlangıcı|Hafta';
+var TOOLS_DLYSTAT_OPT1 = 'Gün|Hafta|Ay|Yıl';
+var TOOLS_DLYSTAT_OPT2 = 'Paz|Pzt|Sal|Çrş|Prş|Cum|Cmt';
 var TOOLS_SYNCSEED = 'Yaygın Karışım';
 var TOOLS_SYNCSEED_SEED = 'Tohum';
 var TOOLS_SYNCSEED_INPUT = 'Giriş Tohumu';
@@ -83,26 +83,26 @@ var TOOLS_SYNCSEED_30S = 'Use 30s Seed';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = 'Disable current seed?';
 var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
-var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_BATTLE = 'Çevrimiçi Mücadele';
+var TOOLS_BATTLE_HEAD = 'Oda|Odaya Katıl';
+var TOOLS_BATTLE_TITLE = 'Sıra|Durum|Zaman';
+var TOOLS_BATTLE_STATUS = 'Hazır|İnceleme|Çözülüyor|Çözüldü|Kayıp';
+var TOOLS_BATTLE_INFO = 'Arkadaşınızla mücadele odasına katılın, sonra birlikte mücadele edeceksiniz.';
+var TOOLS_BATTLE_JOINALERT = 'Lütfen Oda ID\'si girin';
+var TOOLS_BATTLE_LEAVEALERT = 'Mevcut odadan ayrıl';
 var OLCOMP_UPDATELIST = 'Yarışma Listesini Yenile';
-var OLCOMP_VIEWRESULT = 'View Result';
+var OLCOMP_VIEWRESULT = 'Sonuçları Görüntüle';
 var OLCOMP_VIEWMYRESULT = 'Geçmişim';
-var OLCOMP_START = 'Start!';
+var OLCOMP_START = 'Başlat!';
 var OLCOMP_SUBMIT = 'Gönder';
 var OLCOMP_SUBMITAS = 'Olarak Gönder:';
 var OLCOMP_WCANOTICE = 'Submit As Your WCA Account? (Relogin if not recognized after submitting)';
 var OLCOMP_OLCOMP = 'Online Yarışma';
-var OLCOMP_ANONYM = 'Anonym';
+var OLCOMP_ANONYM = 'Anonim';
 var OLCOMP_ME = 'Ben';
 var OLCOMP_WCAACCOUNT = 'WCA hesabı';
 var OLCOMP_ABORT = 'Abort competition and show results?';
-var OLCOMP_WITHANONYM = 'With Anonym';
+var OLCOMP_WITHANONYM = 'Anonim Olarak';
 var PROPERTY_IMGSIZE = 'Karıştırma resmi boyutu';
 var TIMER_INSPECT = 'incele';
 var TIMER_SOLVE = 'çöz';
@@ -111,15 +111,15 @@ var PROPERTY_TIMEU = 'kronometre güncellemesi';
 var PROPERTY_TIMEU_STR = 'güncelle|0.1s|saniye|inceleme|hiçbiri';
 var PROPERTY_PRETIME = 'boşluk tuşuna basılı tutma süresi(saniye)';
 var PROPERTY_ENTERING = 'süreleri girmek için kullan';
-var PROPERTY_ENTERING_STR = 'kronometre|yazma|stackmat|MoYuTimer|sanal|Bluetooth|qCube|GanTimer|last layer training';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_ENTERING_STR = 'Kronometre|Yazarak|Stackmat|MoYuTimer|Sanal Küp|Bluetooth|qCube|GanTimer|Son katman çalışması';
+var PROPERTY_INTUNIT = 'Süre giriş formatı';
+var PROPERTY_INTUNIT_STR = 'saniye|santisaniye|milisaniye';
 var PROPERTY_COLOR = 'renk teması seç';
 var PROPERTY_COLORS = 'yazı rengi|arkaplan rengi|panel rengi|buton rengi|bağlantı rengi|Logo rengi|Logo arkaplan rengi';
 var PROPERTY_VIEW = 'UI stili';
 var PROPERTY_VIEW_STR = 'Otomatik|Mobil|Masaüstü';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
+var PROPERTY_UIDESIGN = 'Arayüz Tasarımı';
+var PROPERTY_UIDESIGN_STR = 'Normal|Materyal Tasarım| Gölgesiz Normal| Gölgesiz Materyal Tasarım';
 var COLOR_EXPORT = 'Lütfen içe aktarma için stringi koruyun';
 var COLOR_IMPORT = 'Dışa aktarılan stringi girin';
 var COLOR_FAIL = 'İçe aktarma başarısız oldu, yanlış veri';
@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = 'Zaman tutulurken her şeyi gizle';
 var SCRAMBLE_LAST = 'önceki';
 var SCRAMBLE_NEXT = 'sonraki';
 var SCRAMBLE_SCRAMBLE = 'karıştırma';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Karıştırma';
 var SCRAMBLE_LENGTH = 'uzunluk';
 var SCRAMBLE_INPUT = 'karıştırma(lar) içe aktar';
 var PROPERTY_VRCSPEED = 'VRC temelli hız (tps)';
@@ -149,10 +149,10 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4, vs.|(U U\') 2, (U\' U) 2, vs.|Hiçbirzaman'
 var PROPERTY_GIISBEEP = 'karıştırma işaretlendiğinde beep yap';
 var PROPERTY_GIIRST = 'bluetooth\'u kübü çözülmüş olarak resetle';
 var PROPERTY_GIIRSTS = 'herzaman|komut istemi|hiçbirzaman';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
-var PROPERTY_GIIMODES = 'Normal|Training';
+var PROPERTY_GIIMODE = 'Bluetooth Küp Modu';
+var PROPERTY_GIIMODES = 'Normal|Antrenman';
 var PROPERTY_VRCAH = 'Useless pieces in huge cube';
-var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
+var PROPERTY_VRCAHS = 'Gizle|Kenar|Renk|Göster';
 var CONFIRM_GIIRST = 'bluetooth\'u kübü çözülmüş olarak resetle';
 var PROPERTY_GIIAED = 'otomatik donanım hatası algılama';
 var scrdata = [
@@ -178,7 +178,7 @@ var scrdata = [
 	['İçe aktar', [
 		['Dış', "input", 0],
 		['Yarışma', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['Çevrimiçi Mücadele', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -190,9 +190,9 @@ var scrdata = [
 		['yeniler için 3x3', "333noob", 25],
 		['sadece kenarlar', "edges", 0],
 		['sadece köşeler', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['Gözü Bağlı Yardımcısı', "nocache_333bldspec", 0],
 		['3x3 ayakla', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Özel', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
@@ -212,7 +212,7 @@ var scrdata = [
 		['cross çözülü', "f2l", 0],
 		['EO Çizgisi', "eoline", 0],
 		['kolay cross', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Kolay xcross', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -447,8 +447,8 @@ var SCRAMBLE_NOOBST = [
 ];
 var SCRAMBLE_NOOBSS = ' saat yönüne 90 derece çevir,| saatin tersi yönüne 90 derece çevir,| 180 derece çevir,';
 var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
+var SCROPT_BTNALL = 'Tümü';
+var SCROPT_BTNNONE = 'Temizle';
 var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'bu sezondaki tüm süreleri sıfırla?';
 var STATS_CFM_DELSS = 'Oturumu sil [%s]';
@@ -461,11 +461,11 @@ var STATS_SSSTAT = '1-solve stat.';
 var STATS_CURROUND = 'Şu anki tur istatistikleri';
 var STATS_CURSESSION = 'Şu anki sezon istatistikleri';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
+var STATS_EXPORTCSV = 'Dışa Aktar (CSV)';
+var STATS_SSMGR_TITLE = 'Oturum Yöneticisi';
 var STATS_SSMGR_NAME = 'İsim';
 var STATS_SSMGR_DETAIL = 'Oturum Ayrıntıları';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
+var STATS_SSMGR_OPS = 'Yeniden Adlandır|Oluştur|Böl|Birleştir|Sil|Sırala';
 var STATS_SSMGR_ORDER = 'Order by scramble';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
@@ -473,7 +473,7 @@ var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'genel ortalama';
-var STATS_SUM = 'sum';
+var STATS_SUM = 'Toplam';
 var STATS_SOLVE = 'çözüm';
 var STATS_TIME = 'süre';
 var STATS_SESSION = 'sezon';
@@ -485,10 +485,10 @@ var STATS_PREC_STR = 'otomatik|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'liste %d türü|liste %d uzunluğu|ortalama|genel ortalama';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
-var STATS_XSESSION_SCR = 'any scramble';
-var STATS_XSESSION_CALC = 'Calc';
+var STATS_XSESSION_DATE = 'herhangi bir zaman|son 24 saat|son 7 gün|son 30 gün|son 365 gün';
+var STATS_XSESSION_NAME = 'herhangi bir oturum';
+var STATS_XSESSION_SCR = 'herhangi bir karıştırma';
+var STATS_XSESSION_CALC = 'Hesapla';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'karıştırmaları istatistiklerde göster';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
@@ -497,19 +497,19 @@ var PROPERTY_IMRENAME = 'Sezon oluşturulduğunda yeniden adlandır';
 var PROPERTY_SCR2SS = 'karıştırma türü değişince yeni sezon oluştur';
 var PROPERTY_SS2SCR = 'sezon değişirken karıştırma türünü koru';
 var PROPERTY_SS2PHASES = 'sezon değişirken çok zamanlı kronometreyi koru';
-var PROPERTY_STATINV = 'Inverse time list';
-var PROPERTY_STATSSUM = 'Show sum in time list';
+var PROPERTY_STATINV = 'Ters süre listesi';
+var PROPERTY_STATSSUM = 'Listede toplam süreyi göster';
 var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'İstatistik göstergeleri';
 var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_DELMUL = 'Çoklu silmeye izin ver';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_TOOLSFUNC = 'Seçili Fonksiyonlar';
 var PROPERTY_TRIM = 'Number of solves trimmed at better side';
 var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
-var PROPERTY_TRIM_MED = 'Median';
+var PROPERTY_TRIM_MED = 'Medyan';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
-var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
+var PROPERTY_TOOLPOS = 'Araçlar Paneli Pozisyonu';
+var PROPERTY_TOOLPOS_STR = 'Alt|Kayan|Üst';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
@@ -523,7 +523,7 @@ var MODULE_NAMES = {
 	"scramble": 'karıştırma',
 	"stats": 'istatistikler',
 	"tools": 'yardımcılar',
-	"vrc": 'virtual&<br>bluetooth'
+	"vrc": 'Sanal&<br>Bluetooth'
 };
 var BGIMAGE_URL = 'lütfen resim url\'sini girin';
 var BGIMAGE_INVALID = 'geçersiz url';
@@ -531,17 +531,17 @@ var BGIMAGE_OPACITY = 'arkaplan resmi şeffaflığı';
 var BGIMAGE_IMAGE = 'arkaplan resmi';
 var BGIMAGE_IMAGE_STR = 'hiçbiri|manual|CCT';
 var SHOW_AVG_LABEL = 'ortalama göstergesini göster';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
-var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
-var USE_LOGOHINT = 'Hint messages in logo';
+var SHOW_DIFF_LABEL = 'Süre Farkını Göster';
+var SHOW_DIFF_LABEL_STR = '-Yeşil +Kırmızı|-Kırmızı +Yeşil|Normal|Hiçbiri';
+var USE_LOGOHINT = 'Logodaki ipucu mesajları';
 var TOOLS_SCRGEN = 'karıştırma oluşturucu';
 var SCRGEN_NSCR = 'karıştırmaların sayısı';
 var SCRGEN_PRE = 'karıştırma öncesi';
 var SCRGEN_GEN = 'karıştırma oluştur!';
-var VRCREPLAY_TITLE = 'Virtual Replay';
+var VRCREPLAY_TITLE = 'Sanal Yeniden Oynatma';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
+var VRCREPLAY_SHARE = 'Bağlantıyı paylaş';
+var GIIKER_CONNECT = 'Bağlanmak için tıklayın';
 var GIIKER_RESET = 'Reset (Mark Solved)';
-var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var PROPERTY_SHOWAD = 'Reklamları göster (sayfayı yeniledikten sonra etkili olur)';
+var PROPERTY_GIIORI = 'Küp Oryantasyonu';

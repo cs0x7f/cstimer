@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'ПОЖЕРТ-<br>ВОВАТЬ';
 var PROPERTY_SR = 'С сессией';
 var PROPERTY_USEINS = 'использовать WCA инспекцию';
 var PROPERTY_USEINS_STR = 'Всегда|Кроме блд|Никогда';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Показывать значок, когда проверка включена';
 var PROPERTY_VOICEINS = 'голосовое предупреждение при инспекции';
 var PROPERTY_VOICEINS_STR = 'нет|мужской голос|женский голос';
 var PROPERTY_VOICEVOL = 'Громкость голоса';
@@ -65,31 +65,31 @@ var TOOLS_HUGESTATS = 'межсессионная статистика';
 var TOOLS_DISTRIBUTION = 'распределение времени';
 var TOOLS_TREND = 'тенденция времени';
 var TOOLS_METRONOME = 'метроном';
-var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
-var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_RECONS = 'Реконструкция';
+var TOOLS_RECONS_NODATA = 'Решение не найдено.';
+var TOOLS_RECONS_TITLE = 'осмотр|сборка|вращений|тпс';
+var TOOLS_TRAINSTAT = 'Статистика практики';
+var TOOLS_BLDHELPER = 'Помощник для слепой сборки';
 var TOOLS_CFMTIME = 'Подтвердить время';
 var TOOLS_SOLVERS = 'Cборщики';
-var TOOLS_DLYSTAT = 'Daily Statistics';
-var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT = 'Ежедневная статистика';
+var TOOLS_DLYSTAT1 = 'Период|Начало дня|Неделя';
+var TOOLS_DLYSTAT_OPT1 = 'день|неделя|месяц|год';
+var TOOLS_DLYSTAT_OPT2 = 'Вс|Пн|Вт|Ср|Чт|Пт|Сб';
 var TOOLS_SYNCSEED = 'Обычный скрамбл';
 var TOOLS_SYNCSEED_SEED = 'Ключ';
 var TOOLS_SYNCSEED_INPUT = 'Введите ключ';
 var TOOLS_SYNCSEED_30S = 'Используйте 30-секундный ключ';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
+var TOOLS_SYNCSEED_HELP = 'Если включено, скрамбл будет зависеть только от сида и настроек скрамбла.';
 var TOOLS_SYNCSEED_DISABLE = 'Выключить текущий ключ?';
-var TOOLS_SYNCSEED_INPUTA = 'Input a value (a-zA-Z0-9) as seed';
-var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
-var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_SYNCSEED_INPUTA = 'Введите значение (a-zA-Z0-9) (сид)';
+var TOOLS_BATTLE = 'Онлайн битва';
+var TOOLS_BATTLE_HEAD = 'Комната|Присоединиться к комнате';
+var TOOLS_BATTLE_TITLE = 'Ранг|Статус|Время';
+var TOOLS_BATTLE_STATUS = 'Готово|Осмотр|Решение|Решено|Потеряно';
+var TOOLS_BATTLE_INFO = 'Присоединяйтесь к комнате для баттла со своим другом, тогда вы будете сражаться вместе.';
+var TOOLS_BATTLE_JOINALERT = 'Пожалуйста, введите ID комнаты';
+var TOOLS_BATTLE_LEAVEALERT = 'Покинуть текущую комнату';
 var OLCOMP_UPDATELIST = 'Обновить список соревнований';
 var OLCOMP_VIEWRESULT = 'Посмотреть результат';
 var OLCOMP_VIEWMYRESULT = 'Моя история';
@@ -112,8 +112,8 @@ var PROPERTY_TIMEU_STR = 'обновление|0.1с|секунды|рассмо
 var PROPERTY_PRETIME = 'время пространства(секунд)';
 var PROPERTY_ENTERING = 'вставлять время с';
 var PROPERTY_ENTERING_STR = 'таймер|писать|stackmat|MoYuTimer|виртуально|Bluetooth|qCube|GanTimer|last layer training';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
-var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
+var PROPERTY_INTUNIT = 'Единица измерения при вводе целого числа';
+var PROPERTY_INTUNIT_STR = 'секунда|наносекунда|миллисекунда';
 var PROPERTY_COLOR = 'выбрать цветовую тему';
 var PROPERTY_COLORS = 'цвет шрифта|цвет фона|цвет стола|цвет кнопок|цвет ссылки|цвет Лого|фоновый цвет Лого';
 var PROPERTY_VIEW = 'Стиль интерфейса';
@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = 'скрывать все элементы когда идё
 var SCRAMBLE_LAST = 'последний';
 var SCRAMBLE_NEXT = 'следующий';
 var SCRAMBLE_SCRAMBLE = ' скрамбл';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Скрамблинг';
 var SCRAMBLE_LENGTH = 'длина';
 var SCRAMBLE_INPUT = 'Вставить Скрамбл(ы)';
 var PROPERTY_VRCSPEED = 'Стандартная скорость вращение виртуального куба(вращений в секунду)';
@@ -149,10 +149,10 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4 и т.д.|(U U\')2, (U\' U)2 и т.д.|Ни�
 var PROPERTY_GIISBEEP = 'Бикать, когда помечено заскрамбленным';
 var PROPERTY_GIIRST = 'Сбросить Giiker куб при подключении';
 var PROPERTY_GIIRSTS = 'Всегда|оперативно|никогда';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
-var PROPERTY_GIIMODES = 'Normal|Training';
-var PROPERTY_VRCAH = 'Useless pieces in huge cube';
-var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
+var PROPERTY_GIIMODE = 'Режим Bluetooth Cube';
+var PROPERTY_GIIMODES = 'Обычный|Тренировка';
+var PROPERTY_VRCAH = 'Бесполезные части в огромном кубе';
+var PROPERTY_VRCAHS = 'Спрятать|Окаймление|Цвет|Показать';
 var CONFIRM_GIIRST = 'Сбросить Giiker куб как собранный?';
 var PROPERTY_GIIAED = 'Автоопределение аппаратной ошибки';
 var scrdata = [
@@ -178,7 +178,7 @@ var scrdata = [
 	['Загрузить', [
 		['Внешний', "input", 0],
 		['Соревнование', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['Онлайн битва', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -190,9 +190,9 @@ var scrdata = [
 		['3x3x3 для нубов', "333noob", 25],
 		['только ребра', "edges", 0],
 		['только углы', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['Помощник для слепой сборки', "nocache_333bldspec", 0],
 		['3х3 ногами', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Пользовательское', "333custom", 0]
 	]],
 	['3х3х3 CFOP', [
 		['PLL', "pll", 0],
@@ -212,7 +212,7 @@ var scrdata = [
 		['собранный крест', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['легкий крест', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['легкий икс-кросс', "easyxc", 4]
 	]],
 	['3х3х3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -240,7 +240,7 @@ var scrdata = [
 		['TCLL+', "222tcp", 0],
 		['TCLL-', "222tcn", 0],
 		['LS', "222lsall", 0],
-		['No Bar', "222nb", 0]
+		['Без панели', "222nb", 0]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -446,10 +446,10 @@ var SCRAMBLE_NOOBST = [
 	['повернуть заднюю грань', 'повернуть заднюю грань']
 ];
 var SCRAMBLE_NOOBSS = ' по часовой стрелке на 90 градусов,| против часовой стрелки на 90 градусов,| на 180 градусов,';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_TITLE = 'Параметры скрамбла';
+var SCROPT_BTNALL = 'Полный';
+var SCROPT_BTNNONE = 'Очистить';
+var SCROPT_EMPTYALT = 'Пожалуйста, выберите по крайней мере один случай';
 var STATS_CFM_RESET = 'перезагрузить все время в этой сессии?';
 var STATS_CFM_DELSS = 'удалить сессию[%s]?';
 var STATS_CFM_DELMUL = 'Количество Удаленных Величин В Текущем Индексе?';
@@ -457,7 +457,7 @@ var STATS_CFM_DELETE = 'удалить это время?';
 var STATS_COMMENT = 'Комментарий';
 var STATS_REVIEW = 'Обзор';
 var STATS_DATE = 'Дата';
-var STATS_SSSTAT = '1-solve stat.';
+var STATS_SSSTAT = 'Статистика 1 сборки';
 var STATS_CURROUND = 'Статистика Текущего Раунда';
 var STATS_CURSESSION = 'Статистика Текущей Сессии';
 var STATS_CURSPLIT = 'Фаза %d текущей статистики сеанса';
@@ -473,7 +473,7 @@ var STATS_ALERTMG = 'Объединить все времена в сеансе 
 var STATS_PROMPTSPL = 'Количество последних сборок, отделенных от сессии [%s]?';
 var STATS_ALERTSPL = 'Разделить или оставить хотя-бы одно время';
 var STATS_AVG = 'среднее';
-var STATS_SUM = 'sum';
+var STATS_SUM = 'сумма';
 var STATS_SOLVE = 'сборка';
 var STATS_TIME = 'время';
 var STATS_SESSION = 'Сессия';
@@ -489,7 +489,7 @@ var STATS_XSESSION_DATE = 'любое время|за последние 24 ча
 var STATS_XSESSION_NAME = 'любое название';
 var STATS_XSESSION_SCR = 'любой скрамбл';
 var STATS_XSESSION_CALC = 'Калькулятор';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_RSFORSS = 'Показывать статистику при нажатии на номер сборки';
 var PROPERTY_PRINTSCR = 'печатать скрамблы в статистику';
 var PROPERTY_PRINTDATE = 'Добавлять дату сборки в статистику';
 var PROPERTY_SUMMARY = 'как суммарный после списка времени';
@@ -498,20 +498,20 @@ var PROPERTY_SCR2SS = 'создавать новую сессию при изм�
 var PROPERTY_SS2SCR = 'восстанавливать тип скрамбла при измене типа сессии';
 var PROPERTY_SS2PHASES = 'восстанавливать время мульти-фазы при смене сессии';
 var PROPERTY_STATINV = 'обратный список времени';
-var PROPERTY_STATSSUM = 'Show sum in time list';
-var PROPERTY_STATTHRES = 'Show target time for session best';
+var PROPERTY_STATSSUM = 'Показать сумму в списке времени';
+var PROPERTY_STATTHRES = 'Показывать целевое время лучшей сборки сеанса';
 var PROPERTY_STATAL = 'Статистические индикаторы';
 var PROPERTY_STATALU = 'Настраиваемый индикатор статистики';
 var PROPERTY_DELMUL = 'Включить множественное удаление';
 var PROPERTY_TOOLSFUNC = 'Выбранные функции';
-var PROPERTY_TRIM = 'Number of solves trimmed at better side';
-var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
+var PROPERTY_TRIM = 'Кол-во лучших сборок, не учитываемых при подсчете среднего времени';
+var PROPERTY_TRIMR = 'Кол-во худших сборок, не учитываемых при подсчете среднего времени';
 var PROPERTY_TRIM_MED = 'Среднее';
 var PROPERTY_STKHEAD = 'Использовать информацию о статусе Stackmat';
-var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
-var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
-var PROPERTY_IMPPREV = 'Import non-latest data';
+var PROPERTY_TOOLPOS = 'Положение панели инструментов';
+var PROPERTY_TOOLPOS_STR = 'Снизу|Плавающее|Сверху';
+var PROPERTY_HIDEFULLSOL = 'Показывать решение постепенно';
+var PROPERTY_IMPPREV = 'Импортировать не новейшие данные';
 var PROPERTY_AUTOEXP = 'Авто-экспорт (по 100 сборок)';
 var PROPERTY_AUTOEXP_OPT = 'Никогда|В Файл|С csTimer ID|С аккаунтом WCA|С аккаунтом Google';
 var PROPERTY_SCRASIZE = 'Размер автоматического скрамбла';
@@ -531,17 +531,17 @@ var BGIMAGE_OPACITY = 'прозрачность фонового изображ�
 var BGIMAGE_IMAGE = 'фоновое изображение';
 var BGIMAGE_IMAGE_STR = 'нет|мануал|CCT';
 var SHOW_AVG_LABEL = 'Показывать Таблицу Avg';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
-var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
+var SHOW_DIFF_LABEL = 'Показать метку разницы';
+var SHOW_DIFF_LABEL_STR = '-Зеленый+Красный|-Красный+Зеленый|Нормальный|Нет';
 var USE_LOGOHINT = 'Подсказки в логотипе';
 var TOOLS_SCRGEN = 'ГенераторСкрамблов';
 var SCRGEN_NSCR = 'Количество скрамблов';
 var SCRGEN_PRE = 'префикс';
 var SCRGEN_GEN = 'Генерировать скрамблы!';
-var VRCREPLAY_TITLE = 'Virtual Replay';
-var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
-var GIIKER_RESET = 'Reset (Mark Solved)';
+var VRCREPLAY_TITLE = 'Виртуальный повтор';
+var VRCREPLAY_ORI = 'свежее ori|автоматическое ori';
+var VRCREPLAY_SHARE = 'поделиться ссылкой';
+var GIIKER_CONNECT = 'Нажмите, чтобы подключиться';
+var GIIKER_RESET = 'Сбросить (отметить как собранный)';
 var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
 var PROPERTY_GIIORI = 'Cube orientation';

@@ -47,7 +47,7 @@
 <li><strong data="opt_useMilli">использовать миллисекунды</strong>. Отображать цифру миллисекунды. Внутренняя точность csTimer составляет 1 миллисекунду независимо от настройки.</li>
 <li><strong data="opt_timeFormat">формат времени</strong>. Формат времени для отображения.</li>
 <li><strong data="opt_atexpa">Авто-экспорт (по 100 сборок)</strong>. Если отмечено, csTimer автоматически будет экспортировать сборки каждые 100 сборок в указанное место, локальный файл, сервер csTimer или Google Storage.</li>
-<li><strong data="opt_expp">Import non-latest data</strong>. Если вы загрузили несколько резервных копий, вы можете импортировать одну из 10 последних загруженных. Если вы случайное загрузите пустую резервную копию, эта опция поможет вам восстановить свои сборки.</li>
+<li><strong data="opt_expp">Импортировать не новейшие данные</strong>. Если вы загрузили несколько резервных копий, вы можете импортировать одну из 10 последних загруженных. Если вы случайное загрузите пустую резервную копию, эта опция поможет вам восстановить свои сборки.</li>
 <li><strong data="opt_useLogo">Подсказки в логотипе</strong>. Логотип csTimer будет служить в качестве информационной панели показывающей информацию которая может быть вам интересна, например при новом личном рекорде.</li>
 <li><strong data="opt_showAvg">Показывать Таблицу Avg</strong>. Две строки будут показываться ниже основного таймера с двумя средними, по умолчанию - Ao5 и Ao12</li>
 <li><strong data="opt_zoom">Увеличить</strong>. Вы можете настроить размеры всех элементов с помощью этой опции.</li>
@@ -66,7 +66,7 @@
 <li><strong data="opt_voiceIns">голосовое предупреждение при инспекции</strong>. Предупреждать после 8/12 секунд инспекции, имитируя предупреждение от судьи в соревнованиях WCA.</li>
 <li><strong data="opt_voiceVol">Громкость голоса</strong>. Громкость предупреждающего голоса.</li>
 <li><strong data="opt_input">вставлять время с</strong>. csTimer может добавлять сборки разными способами, кроме клавиатуры он поддерживает ввод вручную, автоматическую запись времени из стакмата и подключение к смарт-кубу по bluetooth</li>
-<li><strong data="opt_intUN">Unit when entering an integer</strong>. Когда вы вводите целое число XXX в поле ввода, что означает, XXX секунд или XXX наносекунд, или XXX миллисекунд?</li>
+<li><strong data="opt_intUN">Единица измерения при вводе целого числа</strong>. Когда вы вводите целое число XXX в поле ввода, что означает, XXX секунд или XXX наносекунд, или XXX миллисекунд?</li>
 <li><strong data="opt_timeU">обновление таймера</strong>. Как часто обновляется таймер.</li>
 <li><strong data="opt_preTime">время пространства(секунд)</strong>. Как долго пробел должен удерживаться перед тем, как таймер станет зелёным.</li>
 <li><strong data="opt_phases">число этапов</strong>. Количество фаз, нажмите любую клавишу, чтобы отметить разделение</li>
@@ -80,7 +80,7 @@
 <li><strong data="opt_scrFast">Использовать быстрый скрамбл для 4х4х4(неофициально)</strong>. Официальный WCA метод скрамблинга требует огромных вычислительных ресурсов, выберите эту опцию, чтобы использовать скрамблинг случайными поворотами.</li>
 <li><strong data="opt_scrKeyM">Главный(ые) ход(ы) в скрамбле</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Действие при нажатии на скрамбл</strong>. Поведение когда нажимается текст скрамбла - копировать скрамбл или сгенерировать новый скрамбл.</li>
-<li><strong data="opt_trim">Number of solves trimmed at better side</strong>. Количество сборок от лучших до худших которые не учитывается при расчете среднего</li>
+<li><strong data="opt_trim">Кол-во лучших сборок, не учитываемых при подсчете среднего времени</strong>. Количество сборок от лучших до худших которые не учитывается при расчете среднего</li>
 <li><strong data="opt_statsum">как суммарный после списка времени</strong>. Показывать окно статистики перед списком времени.</li>
 <li><strong data="opt_printScr">печатать скрамблы в статистику</strong>. Print scramble in round statistics dialog.</li>
 <li><strong data="opt_printDate">Добавлять дату сборки в статистику</strong>. Print solving date in round statistics dialog.</li>
@@ -89,11 +89,11 @@
 <li><strong data="opt_statinv">обратный список времени</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
 <li><strong data="opt_statclr">Включить удаление сессии</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
 <li><strong data="opt_absidx">Показать абсолютный индекс в отчете статистики</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
+<li><strong data="opt_rsfor1s">Показывать статистику при нажатии на номер сборки</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
 <li><strong data="opt_statal">Статистические индикаторы</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">Включить множественное удаление</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">точное распределение времени</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
+<li><strong data="opt_solSpl">Показывать решение постепенно</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Размер изображения скрамбла</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">количество инструментов</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">использовать сокращение на клавиатуре</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
@@ -102,24 +102,24 @@
 <li><strong data="opt_giiVRC">Показать виртуальный Giiker Cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Отметить заскрамбленным если</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Отметить заскрамбленным с помощью пробела</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
-<li><strong data="opt_giiSM">Отметить заскрамбленным, делая</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
+<li><strong data="opt_giiSM">Отметить заскрамбленным, делая</strong>. Используйте специальную последовательность ходов на кубе Bluetooth, чтобы пометить его как заскрамбленный.</li>
 <li><strong data="opt_giiBS">Бикать, когда помечено заскрамбленным</strong>. Beep when some of scramble-finish signal is triggered.</li>
-<li><strong data="opt_giiRST">Сбросить Giiker куб при подключении</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
-<li><strong data="opt_giiAED">Автоопределение аппаратной ошибки</strong>. Some bluetooth cubes will loss some of moves due to hardware failure, csTimer will try to detect such case.</li>
+<li><strong data="opt_giiRST">Сбросить Giiker куб при подключении</strong>. При подключении к кубу Bluetooth, csTimer определит, собран ли он; если нет, то могут возникнуть некоторые проблемы с оборудованием, либо куб действительно не собран.</li>
+<li><strong data="opt_giiAED">Автоопределение аппаратной ошибки</strong>. Некоторые кубы Bluetooth теряют некоторые ходы из-за сбоя оборудования, csTimer старается обнаруживать такие случаи.</li>
 </ul>
 <h2>Подробности инструментов</h2>
 <ul>
 <li><strong data="tool_scrgen">ГенераторСкрамблов</strong>. Вы можете сгенерировать до 999 скрамблов одним кликом при помощи этого инструмента.</li>
-<li><strong data="tool_cfm">Подтвердить время</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
-<li><strong data="tool_hugestats">межсессионная статистика</strong>. You are able to do cross-session statistics with this tool.</li>
-<li><strong data="tool_stats">Статистика</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">распределение времени</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">тенденция времени</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
-<li><strong data="tool_image">нарисовать скрамбл</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">Cборщики &gt; собрать Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Cборщики &gt; собрать EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Cборщики &gt; собрать крест</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
+<li><strong data="tool_cfm">Подтвердить время</strong>. Инструмент для просмотра текущих решений с его комментарием, скрамблом, дата и реконструкция, если таковые имеются; это также диалоговое окно, видимое при нажатие на решение.</li>
+<li><strong data="tool_hugestats">межсессионная статистика</strong>. Вы можете использовать межсессионную статистику с помощью этого инструмента.</li>
+<li><strong data="tool_stats">Статистика</strong>. Таблица со статистикой, похожая на таблицу в панели времени списка.</li>
+<li><strong data="tool_distribution">распределение времени</strong>. Анализ стабильности и распределения времени, &lt;X Y/Z означает, что есть в сумме Z сборок менее X секунд, и последние Y сборок в сессии также меньше X секунд.</li>
+<li><strong data="tool_trend">тенденция времени</strong>. Показывает кривую тренда всех сборок в текущей сессии.</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. Количество решений за каждый день/неделю/месяц/год.</li>
+<li><strong data="tool_image">нарисовать скрамбл</strong>. Изображение скрамбла для проверки правильности, поддерживаются все WCA головоломки.</li>
+<li><strong data="tool_roux1">Cборщики &gt; собрать Roux S1</strong>. Сборщик первого шага Roux, который решает блок 1x2x3.</li>
+<li><strong data="tool_eoline">Cборщики &gt; собрать EOLine</strong>. Сборщик линии EO, расставляющий ориентацию всех 12 ребер, а также позиции ребер DF и DB.</li>
+<li><strong data="tool_cross">Cборщики &gt; собрать крест</strong>. Сборщик креста, который решает ребра DF, DL, DR, DB.</li>
 <li><strong data="tool_222face">Cборщики &gt; Сторона 2х2х2</strong>. Сборщик стороны 2х2х2, который собирает сторону куба 2х2х2.</li>
 <li><strong data="tool_333cf">Cборщики &gt; Cross + F2L</strong>. Сборщик креста и F2L, собирающий крест и 4 пары при помощи компьютерного поиска, поэтому решение может быть далеко от человеческого.</li>
 <li><strong data="tool_333roux">Cборщики &gt; Roux S1 + S2</strong>. Сборщик Ру 1-го и 2-го, который сначала решает 1x2x3 блок на левой стороне и затем делает еще 1 блок 1x2x3 на правой стороне с помощью движений R, M, r, U.</li>
@@ -129,9 +129,9 @@
 <li><strong data="tool_pyrv">Cборщики &gt; Pyraminx V</strong>. Сборщик V для пирамидки, который сначала собирает 3 угла и 2 ребра в форму буквы 'V' для пирамидки.</li>
 <li><strong data="tool_skbl1">Cборщики &gt; Skewb Face</strong>. Сборщик стороны скьюба, который собирает его слой, а точнее, 1 центр и 4 соседние угла.</li>
 <li><strong data="tool_giikerutil">Giiker Cube</strong>. Дополнительный инструмент для Bluetooth-куба, который способен показать состояние, зарядку, реконструкцию в режиме реального времени и т.д.</li>
-<li><strong data="tool_mtrnm">метроном</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Обычный скрамбл</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_mtrnm">метроном</strong>. Вы можете заставить метроном, помимо издавания звуков на специальной частоте, издавать звуки в определенное время даже после начала сборки.</li>
+<li><strong data="tool_syncseed">Обычный скрамбл</strong>. Использование одного и того же скрамбла с друзьями при установке общего сида.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Дополнительный инструмент для Stackmat, способный просматривать статус, мощность и шум сигнала, и т.д.</li>
 </ul>
 <h2>Ссылки</h2>
 <ul>
@@ -160,11 +160,11 @@
 <p>Ещё раз спасибо за пожертвование!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>В случае сбоя проверьте, что Bluetooth включен в вашей системе!</strong></p>
+<p>Браузер, который вы используете, должен поддерживать Web Bluetooth API. Задумайтесь об использование совместимого браузера, лучший выбор:</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome на macOS, Linux, Android или Windows</li>
+<li>Bluefy на iOS</li>
 </ul>
-<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+<p>Также вы можете проверить статус <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group</a> для получения полного списка различных браузеров и поддерживаемых функций Web Bluetooth API.</p>
 </div>

@@ -1,5 +1,5 @@
 <?php
-$version = "2023.09.22";
+$version = "2023.11.24";
 
 function prefered_language($available_languages, $req_lang) {
   if ($req_lang == "auto" && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -114,7 +114,7 @@ if ($lang == "en-us") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
   <title> csTimer - Professionell Rubiks kub speedsolving/tränings timer </title>
 <?php } else if ($lang == "tr-tr") { ?>
-  <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">
+  <meta name="keywords" content="sayaç, cstimer, rübik küp sayacı, çevrimiçi sayaç, web sayacı">
   <title> csTimer - profesyonel Rubik Küpü Çözüm/Antreman Kronometresi </title>
 <?php } else if ($lang == "uk-ua") { ?>
   <meta name="keywords" content="timer, cstimer, rubiks cube timer, online timer, web timer">

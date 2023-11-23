@@ -65,14 +65,14 @@ var TOOLS_HUGESTATS = 'estadísticas de la sesión de cruz';
 var TOOLS_DISTRIBUTION = 'Distribución de tiempos';
 var TOOLS_TREND = 'Tendencia del tiempo';
 var TOOLS_METRONOME = 'Metrónomo';
-var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_RECONS = 'Reconstruir';
+var TOOLS_RECONS_NODATA = 'No se encontró ninguna solución.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Training Stat.';
 var TOOLS_BLDHELPER = 'BLD Helper';
 var TOOLS_CFMTIME = 'Confirmar tiempo ';
 var TOOLS_SOLVERS = 'Solucionadores';
-var TOOLS_DLYSTAT = 'Daily Statistics';
+var TOOLS_DLYSTAT = 'Estadísticas diarias';
 var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
 var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
 var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
@@ -83,7 +83,7 @@ var TOOLS_SYNCSEED_30S = 'Usar semilla de 30s';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = '¿Desactivar la semilla actual?';
 var TOOLS_SYNCSEED_INPUTA = 'Ingrese un valor (a-zA-Z0-9) como semilla';
-var TOOLS_BATTLE = 'Online battle';
+var TOOLS_BATTLE = 'Batalla en línea';
 var TOOLS_BATTLE_HEAD = 'Room|Join Room';
 var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
 var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
@@ -111,7 +111,7 @@ var PROPERTY_TIMEU = 'Frecuencia del cronómetro';
 var PROPERTY_TIMEU_STR = 'normal|0.1s|segundos|solo inspección|nada';
 var PROPERTY_PRETIME = 'Tiempo manteniendo la barra espaciadora (en segundo(s))';
 var PROPERTY_ENTERING = 'Introducir tiempos con';
-var PROPERTY_ENTERING_STR = 'teclado|manualmente|stackmat|MoYuTimer|virtual|Bluetooth|qCube|GanTimer|last layer training';
+var PROPERTY_ENTERING_STR = 'teclado|manualmente|stackmat|MoYuTimer|virtual|bluetooth|qCube|GanTimer|last layer training';
 var PROPERTY_INTUNIT = 'Unidad al introducir un entero';
 var PROPERTY_INTUNIT_STR = 'segundo|centísegundo|milisegundo';
 var PROPERTY_COLOR = 'Selecciona el color';
@@ -150,7 +150,7 @@ var PROPERTY_GIISBEEP = 'Sonar cuando el cubo esté scrambleado';
 var PROPERTY_GIIRST = 'Resetear el cubo Bluetooth cuando se conecte';
 var PROPERTY_GIIRSTS = 'Siempre|Rápido|Nunca';
 var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
-var PROPERTY_GIIMODES = 'Normal|Training';
+var PROPERTY_GIIMODES = 'Normal|Entrenamiento';
 var PROPERTY_VRCAH = 'Useless pieces in huge cube';
 var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
 var CONFIRM_GIIRST = '¿Marcar cubo Bluetooth como resuelto?';
@@ -178,7 +178,7 @@ var scrdata = [
 	['Introducir', [
 		['外部', "input", 0],
 		['Competencia', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['Batalla en línea', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -449,7 +449,7 @@ var SCRAMBLE_NOOBSS = ' en sentido horario 90 grados,| en sentido antihorario 90
 var SCROPT_TITLE = 'Scramble Options';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_EMPTYALT = 'Por favor, seleccione al menos un caso';
 var STATS_CFM_RESET = '¿Desea reiniciar todos los tiempos de la sesión?';
 var STATS_CFM_DELSS = '¿Seguro que quieres eliminar la sesión [%s]?';
 var STATS_CFM_DELMUL = '¿Cuántos valores quieres eliminar desde este tiempo?';
@@ -540,7 +540,7 @@ var SCRGEN_PRE = 'Prefijo';
 var SCRGEN_GEN = 'Generar mezclas';
 var VRCREPLAY_TITLE = 'Virtual Replay';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
+var VRCREPLAY_SHARE = 'compartir enlace';
 var GIIKER_CONNECT = 'Clica aquí para conectar';
 var GIIKER_RESET = 'Reset (Mark Solved)';
 var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';

@@ -131,8 +131,8 @@
 <li><strong data="tool_skbl1">Solucionadores &gt; Skewb Face</strong>. Resolución de la cara Skewb, que resuelve una capa de Skewb, más específicamente, 1 centro y 4 esquinas adyacentes.</li>
 <li><strong data="tool_giikerutil">Cubo Giiker</strong>. Herramienta auxiliar para el cubo bluetooth, que es capaz de mostrar el estado actual, la potencia de la batería, la reconstrucción en tiempo real, etc.</li>
 <li><strong data="tool_mtrnm">Metrónomo</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Mezclado común</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_syncseed">Mezclado común</strong>. Utilizar las mismas mezclas con amigos al establecer una semilla común.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Herramienta auxiliar para Stackmat, que es capaz de ver el estado, potencia y nivel de ruido de la señal, etc.</li>
 </ul>
 <h2>Enlaces</h2>
 <ul>
@@ -161,11 +161,11 @@
 <p>¡Muchas gracias otra vez por la donación!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>¡En caso de fallo, compruebe que el Bluetooth está activado en tu sistema!</strong></p>
+<p>El navegador que estás utilizando debe ser compatible con Web Bluetooth API. Considere el uso del navegador compatible, la mejor opción es:</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome en macOS, Linux, Android o Windows</li>
+<li>Bluefy en iOS</li>
 </ul>
 <p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
 </div>

@@ -10,7 +10,7 @@ var BUTTON_DONATE = '寄付';
 var PROPERTY_SR = 'セッションごと';
 var PROPERTY_USEINS = 'WCA インスペクションの使用';
 var PROPERTY_USEINS_STR = '常に利用する|BLD以外で利用|利用しない';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'インスペクション中にアイコンを表示する';
 var PROPERTY_VOICEINS = 'WCA インスペクションの音声警告';
 var PROPERTY_VOICEINS_STR = '利用しない|男性の声|女性の声';
 var PROPERTY_VOICEVOL = '音量';
@@ -66,30 +66,30 @@ var TOOLS_DISTRIBUTION = 'タイム分布';
 var TOOLS_TREND = 'タイムトレンド';
 var TOOLS_METRONOME = 'メトロノーム';
 var TOOLS_RECONS = 'Reconstruct';
-var TOOLS_RECONS_NODATA = 'No solution found.';
+var TOOLS_RECONS_NODATA = '解法が見つかりませんでした。';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_TRAINSTAT = 'トレーニング統計';
+var TOOLS_BLDHELPER = 'BLDヘルパー';
 var TOOLS_CFMTIME = 'タイム確認';
 var TOOLS_SOLVERS = 'ソルバー';
-var TOOLS_DLYSTAT = 'Daily Statistics';
-var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT = '日別の統計';
+var TOOLS_DLYSTAT1 = '期間|開始日|週';
+var TOOLS_DLYSTAT_OPT1 = '日|週|月|年';
+var TOOLS_DLYSTAT_OPT2 = '日|月|火|水|木|金|土';
 var TOOLS_SYNCSEED = '共通スクランブル';
 var TOOLS_SYNCSEED_SEED = 'シード値';
 var TOOLS_SYNCSEED_INPUT = 'シード値の入力';
 var TOOLS_SYNCSEED_30S = '30秒シード値の利用';
-var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
+var TOOLS_SYNCSEED_HELP = '有効な場合、スクランブルはシードとスクランブル設定のみに依存します。';
 var TOOLS_SYNCSEED_DISABLE = '現在のシード値を無効にしますか？';
 var TOOLS_SYNCSEED_INPUTA = 'シード値の値 (a-zA-Z0-9) を入力';
-var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
-var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_BATTLE = 'オンライン対戦';
+var TOOLS_BATTLE_HEAD = 'ルーム|ルームに参加';
+var TOOLS_BATTLE_TITLE = '順位|状態|タイム';
+var TOOLS_BATTLE_STATUS = '準備完了|インスペクション|ソルブ中|ソルブ完了|切断';
+var TOOLS_BATTLE_INFO = '友達と同じルームに参加し、対戦することができます。';
+var TOOLS_BATTLE_JOINALERT = 'ルームIDを入力してください';
+var TOOLS_BATTLE_LEAVEALERT = '現在のルームを離れる';
 var OLCOMP_UPDATELIST = '大会リストの更新';
 var OLCOMP_VIEWRESULT = '結果表示';
 var OLCOMP_VIEWMYRESULT = '履歴';
@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = '記録中はすべての要素を非表示にする';
 var SCRAMBLE_LAST = '前';
 var SCRAMBLE_NEXT = '次';
 var SCRAMBLE_SCRAMBLE = 'スクランブル';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'スクランブル';
 var SCRAMBLE_LENGTH = '長さ';
 var SCRAMBLE_INPUT = 'スクランブルの入力';
 var PROPERTY_VRCSPEED = 'VRCの基本速度(tps)';
@@ -149,10 +149,10 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4, など|(U U\')2, (U\' U)2, など|行わな
 var PROPERTY_GIISBEEP = 'スクランブルされたときにビープ音を鳴らす';
 var PROPERTY_GIIRST = '接続時にGiikerキューブをリセットする';
 var PROPERTY_GIIRSTS = '常に|プロンプトを表示|行わない';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
-var PROPERTY_GIIMODES = 'Normal|Training';
-var PROPERTY_VRCAH = 'Useless pieces in huge cube';
-var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
+var PROPERTY_GIIMODE = 'Bluetoothキューブモード';
+var PROPERTY_GIIMODES = '通常|トレーニング';
+var PROPERTY_VRCAH = '巨大なキューブにおける重要でないパーツ';
+var PROPERTY_VRCAHS = '隠す|ボーダー|色|表示';
 var CONFIRM_GIIRST = 'Giikerキューブをソルブ状態にリセットしますか？';
 var PROPERTY_GIIAED = 'ハードウェアエラーの自動検知';
 var scrdata = [
@@ -178,7 +178,7 @@ var scrdata = [
 	['入力', [
 		['外部', "input", 0],
 		['大会', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['オンライン対戦', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -190,9 +190,9 @@ var scrdata = [
 		['3x3x3 for noobs', "333noob", 25],
 		['エッジのみ', "edges", 0],
 		['コーナーのみ', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['BLDヘルパー', "nocache_333bldspec", 0],
 		['3x3足', "333ft", 0],
-		['Custom', "333custom", 0]
+		['カスタム', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
@@ -446,10 +446,10 @@ var SCRAMBLE_NOOBST = [
 	['turn the front face', 'turn the back face']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
-var SCROPT_EMPTYALT = 'Please select at least one case';
+var SCROPT_TITLE = 'スクランブル設定';
+var SCROPT_BTNALL = '全選択';
+var SCROPT_BTNNONE = '選択解除';
+var SCROPT_EMPTYALT = '少なくとも1つのケースを選択してください';
 var STATS_CFM_RESET = 'このセッションの全タイムをリセットしますか？';
 var STATS_CFM_DELSS = 'セッション [%s] を削除しますか？';
 var STATS_CFM_DELMUL = '現在のインデックスから削除する値の個数は？';
@@ -473,7 +473,7 @@ var STATS_ALERTMG = 'セッション [%f] のすべてのタイムをセッシ�
 var STATS_PROMPTSPL = 'セッション [%s] から分割する最新のタイム数';
 var STATS_ALERTSPL = '少なくとも１つのタイムを残すか、分割する必要があります';
 var STATS_AVG = '平均';
-var STATS_SUM = 'sum';
+var STATS_SUM = '合計';
 var STATS_SOLVE = 'ソルブ';
 var STATS_TIME = 'タイム';
 var STATS_SESSION = 'セッション';
@@ -498,18 +498,18 @@ var PROPERTY_SCR2SS = 'スクランブルのタイプを変更したとき新し
 var PROPERTY_SS2SCR = 'セッションを切り替えたときスクランブルを元に戻す';
 var PROPERTY_SS2PHASES = 'セッションを切り替えたときマルチフェイズの記録を元に戻す';
 var PROPERTY_STATINV = '逆順のタイム一覧';
-var PROPERTY_STATSSUM = 'Show sum in time list';
-var PROPERTY_STATTHRES = 'Show target time for session best';
+var PROPERTY_STATSSUM = 'タイム一覧に合計を表示';
+var PROPERTY_STATTHRES = 'セッションベスト記録のための目標タイムを表示';
 var PROPERTY_STATAL = '統計指標';
 var PROPERTY_STATALU = 'カスタム統計指標';
 var PROPERTY_DELMUL = '複数削除を有効にする';
 var PROPERTY_TOOLSFUNC = '機能選択';
 var PROPERTY_TRIM = '片側で除外するソルブ数';
-var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
+var PROPERTY_TRIMR = 'ワースト記録側から除外するソルブ数';
 var PROPERTY_TRIM_MED = '中央値';
 var PROPERTY_STKHEAD = 'スタックマットのステータス情報を利用する';
-var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
+var PROPERTY_TOOLPOS = 'ツールパネルの位置';
+var PROPERTY_TOOLPOS_STR = '下|フロート|上';
 var PROPERTY_HIDEFULLSOL = '解法を段階的に表示';
 var PROPERTY_IMPPREV = '最新でないデータをインポート';
 var PROPERTY_AUTOEXP = 'オートエクスポート (100ソルブごと)';
@@ -531,17 +531,17 @@ var BGIMAGE_OPACITY = '背景画像の透過度';
 var BGIMAGE_IMAGE = '背景画像';
 var BGIMAGE_IMAGE_STR = 'なし|マニュアル|CCT';
 var SHOW_AVG_LABEL = 'アベレージのラベルを表示';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
-var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
+var SHOW_DIFF_LABEL = '差分のラベルを表示';
+var SHOW_DIFF_LABEL_STR = '-緑+赤|-赤+緑|通常|なし';
 var USE_LOGOHINT = 'ロゴにメッセージヒントを表示';
 var TOOLS_SCRGEN = 'スクランブルジェネレーター';
 var SCRGEN_NSCR = 'スクランブル数';
 var SCRGEN_PRE = 'プレフィクス';
 var SCRGEN_GEN = 'スクランブル生成！';
-var VRCREPLAY_TITLE = 'Virtual Replay';
-var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
-var GIIKER_RESET = 'Reset (Mark Solved)';
-var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
-var PROPERTY_GIIORI = 'Cube orientation';
+var VRCREPLAY_TITLE = '仮想リプレイ';
+var VRCREPLAY_ORI = '元の向き|自動の向き';
+var VRCREPLAY_SHARE = 'リンクを共有';
+var GIIKER_CONNECT = 'クリックして接続';
+var GIIKER_RESET = 'リセット (ソルブ済み)';
+var PROPERTY_SHOWAD = '広告を表示 (リロード後に有効)';
+var PROPERTY_GIIORI = 'キューブの向き';
