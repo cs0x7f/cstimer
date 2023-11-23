@@ -53,6 +53,7 @@ var TimeStat = execMain(function() {
 			return;
 		}
 		this._bestAvg = [];
+		this._bestAvg[this.avgSizes.length] = [];
 		this.lastAvg = [];
 		this.treesAvg = [];
 		this.tree = sbtree.tree(this.timeSort);
@@ -79,6 +80,27 @@ var TimeStat = execMain(function() {
 		return ret;
 	}
 
+	TimeStat.prototype.isBestAvg = function(idx, start) {
+		if (!this._bestAvg) {
+			return false;
+		}
+		var arr = this._bestAvg[idx] || [];
+		var l = 0;
+		var r = arr.length - 1;
+		while (l <= r) {
+			var m = (l + r) >> 1;
+			var ref = arr[m][4];
+			if (ref > start) {
+				r = m - 1;
+			} else if (ref < start) {
+				l = m + 1;
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	TimeStat.prototype.doPushed = function(silent, next) {
 		var bestHintList = [];
 
@@ -97,6 +119,9 @@ var TimeStat = execMain(function() {
 			if (this.timeSort(t, prevBest) < 0 && prevBest != -1) {
 				bestHintList.push('single');
 			}
+		}
+		if (this.timeSort(t, this.bestAvg(this.avgSizes.length, 0)) < 0) {
+			this._bestAvg[this.avgSizes.length].push([t, 0, t, t, i]);
 		}
 
 		for (var j = 0; j < this.avgSizes.length; j++) {
@@ -175,6 +200,9 @@ var TimeStat = execMain(function() {
 			if (this.bestAvg(j, 4) == i - size + 1) {
 				this._bestAvg[j].pop();
 			}
+		}
+		if (this.bestAvg(this.avgSizes.length, 4) == i) {
+			this._bestAvg[this.avgSizes.length].pop();
 		}
 		this.timesLen--;
 	}

@@ -170,7 +170,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			for (var i = 0; i < times.length - 1; i++) {
 				nextRank[rank[i]] = rank[i + 1];
 			}
-			nextRank[-1] = rank[0];
+			nextRank[-2] = rank[0];
 			nextRank[rank[times.length - 1]] = -1;
 			nextRank['len'] = times.length;
 			nextRank['idx'] = idx;
@@ -180,7 +180,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function nextIdx(idx) {
 			if (nextRank && (idx in nextRank)) {
 				return nextRank[idx];
-			} else if (idx == -1) {
+			} else if (idx == -2) {
 				return times.length - 1;
 			} else {
 				return idx - 1;
@@ -205,7 +205,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				clearFilter();
 			}
 			shownIdxs = [];
-			hheadIdx = nextIdx(-1);
+			hheadIdx = nextIdx(-2);
 			if (kernel.getProp('statinv')) {
 				table.empty().append(title, showAllRow, avgRow);
 			} else {
@@ -577,11 +577,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function getTimeRow(i, dim, tr) {
 		var time = timesAt(i);
 		var curTime = time[0];
+		times_stats_list.genStats();
+		var st0pb = times_stats_list.isBestAvg(2, i);
+		var st1pb = times_stats_list.isBestAvg(0, i - len1 + 1);
+		var st2pb = times_stats_list.isBestAvg(1, i - len2 + 1);
 
 		var ret = [];
-
 		ret.push('<td class="times">' + (time[2] && "*") + (i + 1) + '</td>');
-		ret.push('<td class="times">' + pretty(curTime, false) + '</td>');
+		ret.push('<td class="times' + (st0pb ? ' pb' : '') + '">' + pretty(curTime, false) + '</td>');
 
 		var statSrc = kernel.getProp('statsrc', 't');
 		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
@@ -593,8 +596,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var st1 = times_stats_table.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
 		var st2 = times_stats_table.runAvgMean(i - len2 + 1, len2, 0, stat2 > 0 ? undefined : 0);
 		ret.push(
-			'<td' + (st1 ? ' class="times"' : "") + '>' + (st1 ? prettyFunc[1](st1[0][0]) : "-") + '</td>' +
-			'<td' + (st2 ? ' class="times"' : "") + '>' + (st2 ? prettyFunc[1](st2[0][0]) : "-") + '</td>'
+			'<td' + (st1 ? ' class="times' + (st1pb ? ' pb' : '') + '"' : "") + '>' + (st1 ? prettyFunc[1](st1[0][0]) : "-") + '</td>' +
+			'<td' + (st2 ? ' class="times' + (st2pb ? ' pb' : '') + '"' : "") + '>' + (st2 ? prettyFunc[1](st2[0][0]) : "-") + '</td>'
 		);
 		if (dim > 1) {
 			ret.push('<td>' + kpretty(curTime[curTime.length - 1]) + '</td>');
@@ -898,7 +901,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	var avgSizes = [-3, 5, 12, 50, 100, 1000];
 	var times_stats_table = new TimeStat(avgSizes, 0, timeAt);
-	var times_stats_list = new TimeStat([], 0, timeAt);
+	var times_stats_list = new TimeStat([5, 12], 0, timeAt);
 
 	function getSortedTimesByDate(times) {
 		var sorted = [];
@@ -1627,7 +1630,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		avgSizes = avgSizesNew;
 		times_stats_table = new TimeStat(avgSizes, times.length, getTableTimeAt());
 		times_stats_table.prettyFunc = getMetricPretty();
-		times_stats_list = new TimeStat([], times.length, timeAt);
+		times_stats_list = new TimeStat([stat1, stat2], times.length, timeAt);
 		crossSessionStats.updateStatal(avgSizes);
 		updateUtil(['statal', statal]);
 	}
@@ -1690,6 +1693,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				resultsHeight();
 			} else if (value[0] == 'sr_statal') {
 				kernel.setProp('sr_statalu', value[1]);
+			} else if (value[0] == 'hlpbs') {
+				table.removeClass('f40b none').addClass(value[1]);
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
@@ -1733,7 +1738,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|sr_.*)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|hlpbs|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
@@ -1750,6 +1755,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false], 1);
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true], 1);
 		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false], 1);
+		kernel.regProp('stats', 'hlpbs', 1, 'Highlight PBs', ['fc0b', ['f40b', 'none'], ['highlight', 'none']], 1);
 
 		div.append(
 			statOptDiv.append(

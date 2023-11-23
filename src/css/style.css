@@ -515,6 +515,11 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	border-radius: 0.15em;
 }
 
+.f40b .times.pb {
+	color: #f40;
+	font-weight: bold;
+}
+
 a {
 	color: inherit;
 }
