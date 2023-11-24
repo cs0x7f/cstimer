@@ -520,6 +520,10 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	font-weight: bold;
 }
 
+.linkb .times.pb, .normb .times.pb {
+	font-weight: bold;
+}
+
 a {
 	color: inherit;
 }

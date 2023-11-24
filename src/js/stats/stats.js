@@ -1694,7 +1694,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			} else if (value[0] == 'sr_statal') {
 				kernel.setProp('sr_statalu', value[1]);
 			} else if (value[0] == 'hlpbs') {
-				table.removeClass('f40b none').addClass(value[1]);
+				table.removeClass('f40b linkb normb none').addClass(value[1]);
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
@@ -1755,7 +1755,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false], 1);
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true], 1);
 		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false], 1);
-		kernel.regProp('stats', 'hlpbs', 1, 'Highlight PBs', ['f40b', ['f40b', 'none'], ['highlight', 'none']], 1);
+		kernel.regProp('stats', 'hlpbs', 1, 'Highlight PBs', ['f40b', ['f40b', 'linkb', 'normb', 'none'], ['as wca', 'as link', 'bolder', 'none']], 1);
 
 		div.append(
 			statOptDiv.append(
