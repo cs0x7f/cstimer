@@ -52,6 +52,12 @@ var tools = execMain(function() {
 		}
 	}
 
+	function carrot2poch(scramble) {
+		return scramble.replace(/([+-])([+-]) /g, function(m, p1, p2) {
+			return 'R' + p1 + p1 + ' D' + p2 + p2 + ' ';
+		});
+	}
+
 	function isPuzzle(puzzle, scramble) {
 		scramble = scramble || curScramble;
 		var scrPuzzle = puzzleType(scramble[0]);
@@ -109,7 +115,7 @@ var tools = execMain(function() {
 			return "sq1";
 		} else if (/^clk(wca|o)$/.exec(scrambleType)) {
 			return "clk";
-		} else if (/^(mgmp|mgmo|minx2g|mlsll|mgmpll|mgmll)$/.exec(scrambleType)) {
+		} else if (/^(mgmp|mgmo|mgmc|minx2g|mlsll|mgmpll|mgmll)$/.exec(scrambleType)) {
 			return "mgm";
 		} else if (/^(klmso|klmp)$/.exec(scrambleType)) {
 			return "klm";
@@ -337,6 +343,7 @@ var tools = execMain(function() {
 		getSolutionSpan: getSolutionSpan,
 		scrambleType: scrambleType,
 		puzzleType: puzzleType,
+		carrot2poch: carrot2poch,
 		isCurTrainScramble: isCurTrainScramble,
 		isPuzzle: isPuzzle
 	};
