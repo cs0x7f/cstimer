@@ -446,7 +446,7 @@ var exportFunc = execMain(function() {
 			outServGGL.addClass('click').click(function() {
 				uploadDataGGL().then(function() {
 					alert('Export Success');
-				}).reject(function(errmsg) {
+				}, function(errmsg) {
 					alert(errmsg);
 				});
 			});

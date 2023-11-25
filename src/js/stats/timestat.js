@@ -127,7 +127,7 @@ var TimeStat = execMain(function() {
 		for (var j = 0; j < this.avgSizes.length; j++) {
 			var size = Math.abs(this.avgSizes[j]);
 			if (this.timesLen < size) {
-				break;
+				continue;
 			}
 			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
 			var neff = size - trimlr[0] - trimlr[1];
@@ -180,7 +180,7 @@ var TimeStat = execMain(function() {
 		for (var j = 0; j < this.avgSizes.length; j++) {
 			var size = Math.abs(this.avgSizes[j]);
 			if (this.timesLen < size) {
-				break;
+				continue;
 			} else if (this.timesLen == size) {
 				this.lastAvg[j] = null;
 				this.treesAvg[j] = null;
@@ -213,7 +213,7 @@ var TimeStat = execMain(function() {
 		for (var j = 0; j < this.avgSizes.length; j++) {
 			var size = Math.abs(this.avgSizes[j]);
 			if (this.timesLen < size) {
-				break;
+				continue;
 			}
 			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
 			var neff = size - trimlr[0] - trimlr[1];
