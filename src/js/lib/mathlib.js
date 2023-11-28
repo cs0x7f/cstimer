@@ -687,14 +687,12 @@ var mathlib = (function() {
 		}
 	})();
 
-	function schreierSims(gen, shuffle) {
+	function SchreierSims(gen, shuffle) {
 		this.sgs = [];
 		this.sgsi = [];
 		this.Tk = [];
-		this.gen = gen;
-		this.invMap = {};
-		var n = gen[0].length;
 		this.e = [];
+		var n = gen[0].length;
 		for (var i = 0; i < n; i++) {
 			this.e[i] = i;
 		}
@@ -712,9 +710,12 @@ var mathlib = (function() {
 			}
 			this.knutha(n - 1, g);
 		}
+		// for minkwitz algorithm
+		// this.invMap = {};
+		// this.gen = gen;
 	}
 
-	schreierSims.prototype.permMult = function(permA, permB) {
+	SchreierSims.prototype.permMult = function(permA, permB) {
 		var ret = [];
 		for (var i = 0; i < permA.length; i++) {
 			ret[i] = permB[permA[i]];
@@ -722,7 +723,7 @@ var mathlib = (function() {
 		return ret;
 	}
 
-	schreierSims.prototype.permInv = function(perm) {
+	SchreierSims.prototype.permInv = function(perm) {
 		var ret = [];
 		for (var i = 0; i < perm.length; i++) {
 			ret[perm[i]] = i;
@@ -730,7 +731,7 @@ var mathlib = (function() {
 		return ret;
 	}
 
-	schreierSims.prototype.isMember = function(p, depth) {
+	SchreierSims.prototype.isMember = function(p, depth) {
 		depth = depth || 0;
 		for (var i = p.length - 1; i >= depth; i--) {
 			var j = p[i];
@@ -744,7 +745,87 @@ var mathlib = (function() {
 		return true;
 	}
 
-	schreierSims.prototype.minkwitz = function() {
+	SchreierSims.prototype.knutha = function(k, p) {
+		this.Tk[k].push(p);
+		for (var i = 0; i < this.sgs[k].length; i++) {
+			if (this.sgs[k][i]) {
+				this.knuthb(k, this.permMult(this.sgs[k][i], p));
+			}
+		}
+	}
+
+	SchreierSims.prototype.knuthb = function(k, p) {
+		var j = p[k];
+		if (!this.sgs[k][j]) {
+			this.sgs[k][j] = p;
+			this.sgsi[k][j] = this.permInv(p);
+			for (var i = 0; i < this.Tk[k].length; i++) {
+				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
+			}
+			return;
+		}
+		var p2 = this.permMult(p, this.sgsi[k][j]);
+		if (!this.isMember(p2)) {
+			this.knutha(k - 1, p2);
+		}
+	}
+
+	SchreierSims.prototype.size = function() {
+		var n = this.sgs.length;
+		var size = 1;
+		for (var j = 0; j < n; j++) {
+			var cnt = 0;
+			for (var k = 0; k < n; k++) {
+				if (this.sgs[j][k]) {
+					cnt++;
+				}
+			}
+			size *= cnt;
+		}
+		return size;
+	}
+
+	SchreierSims.prototype.minElem = function(p, depth) {
+		depth = depth || 0;
+		p = this.permInv(p);
+		for (var i = p.length - 1; i >= depth; i--) {
+			var maxi = -1;
+			var j = i;
+			for (var m = 0; m <= i; m++) {
+				if (this.sgs[i][m] && p[this.sgs[i][m][i]] > maxi) {
+					maxi = p[this.sgs[i][m][i]];
+					j = m;
+				}
+			}
+			if (j !== i) {
+				p = this.permMult(this.sgs[i][j], p);
+			}
+		}
+		return this.permInv(p);
+	}
+
+	SchreierSims.prototype.rndElem = function() {
+		var perm = this.e.slice();
+		for (var i = this.e.length - 1; i >= 0; i--) {
+			var cnt = 0;
+			var p = 0;
+			for (var j = 0; j <= i; j++) {
+				if (!this.sgs[i][j]) {
+					continue;
+				}
+				if (rn(++cnt) < 1) {
+					p = j;
+				}
+			}
+			if (p !== i) {
+				perm = this.permMult(perm, this.sgsi[i][p]);
+			}
+		}
+		return perm;
+	}
+
+	/*
+	SchreierSims.prototype.minkwitz = function() {
 		var words = [];
 		var maxl = 8;
 		var toFill = 0;
@@ -922,7 +1003,7 @@ var mathlib = (function() {
 		window.sgs1 = this;
 	}
 
-	schreierSims.prototype.getGen = function(p) {
+	SchreierSims.prototype.getGen = function(p) {
 		var ret = [];
 		for (var i = p.length - 1; i >= 0; i--) {
 			var j = p[i];
@@ -937,52 +1018,12 @@ var mathlib = (function() {
 		return ret.reverse();
 	}
 
-	schreierSims.prototype.knutha = function(k, p) {
-		this.Tk[k].push(p);
-		for (var i = 0; i < this.sgs[k].length; i++) {
-			if (this.sgs[k][i]) {
-				this.knuthb(k, this.permMult(this.sgs[k][i], p));
-			}
-		}
-	}
-
-	schreierSims.prototype.knuthb = function(k, p) {
-		var j = p[k];
-		if (!this.sgs[k][j]) {
-			this.sgs[k][j] = p;
-			this.sgsi[k][j] = this.permInv(p);
-			for (var i = 0; i < this.Tk[k].length; i++) {
-				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
-			}
-			return;
-		}
-		var p2 = this.permMult(p, this.sgsi[k][j]);
-		if (!this.isMember(p2)) {
-			this.knutha(k - 1, p2);
-		}
-	}
-
-	schreierSims.prototype.size = function() {
-		var n = this.sgs.length;
-		var size = 1;
-		for (var j = 0; j < n; j++) {
-			var cnt = 0;
-			for (var k = 0; k < n; k++) {
-				if (this.sgs[j][k]) {
-					cnt++;
-				}
-			}
-			size *= cnt;
-		}
-		return size;
-	}
-
-	schreierSims.prototype.intersect = function(other, thres) {
+	SchreierSims.prototype.intersect = function(other, thres) {
 		if (this.size() > other.size()) {
 			return other.intersect(this, thres);
 		}
 		thres = thres || 100000;
-		var ret = new schreierSims([this.sgs[0][0]]);
+		var ret = new SchreierSims([this.sgs[0][0]]);
 		var n = this.sgs.length;
 		ret.cnt = 0;
 		for (var i = 0; i < n; i++) {
@@ -1023,7 +1064,7 @@ var mathlib = (function() {
 		return ret;
 	}
 
-	schreierSims.prototype.enumDFS = function(depth, perm, callback, checkFunc) {
+	SchreierSims.prototype.enumDFS = function(depth, perm, callback, checkFunc) {
 		if (checkFunc && !checkFunc(depth + 1, perm)) {
 			return;
 		}
@@ -1041,29 +1082,10 @@ var mathlib = (function() {
 		}
 	}
 
-	schreierSims.prototype.enum = function(callback) {
+	SchreierSims.prototype.enum = function(callback) {
 		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
 	}
-
-	schreierSims.prototype.rndElem = function() {
-		var perm = this.e.slice();
-		for (var i = this.e.length - 1; i >= 0; i--) {
-			var cnt = 0;
-			var p = 0;
-			for (var j = 0; j <= i; j++) {
-				if (!this.sgs[i][j]) {
-					continue;
-				}
-				if (rn(++cnt) < 1) {
-					p = j;
-				}
-			}
-			if (p !== i) {
-				perm = this.permMult(perm, this.sgsi[i][p]);
-			}
-		}
-		return perm;
-	}
+	*/
 
 	function createPrun(prun, init, size, maxd, doMove, N_MOVES, N_POWER, N_INV) {
 		var isMoveTable = $.isArray(doMove);
@@ -1399,23 +1421,29 @@ var mathlib = (function() {
 
 	_ = gSolver.prototype;
 
+	/*
 	_.calcNumOfStates = function() {
 		var len = this.solvedStates[0].length;
 		var genMove = [];
 		for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
 			var state = [];
-			for (var i=0; i<len; i++) {
+			for (var i = 0; i < len; i++) {
 				state.push(i + 32);
 			}
 			var newState = this.doMove(String.fromCharCode.apply(null, state), this.movesList[moveIdx][0]);
-			if (!newState || newState in this.prunTable) {
+			if (!newState) {
 				continue;
 			}
-			for (var i=0; i<len; i++) {
+			for (var i = 0; i < len; i++) {
 				state[i] = newState.charCodeAt(i) - 32;
 			}
 			genMove.push(state);
 		}
+		console.log(genMove);
+		var sgsObj = new SchreierSims(genMove);
+		console.log(sgsObj.size());
+		return sgsObj;
+
 		var genColor = [];
 		var state = this.solvedStates[0];
 		var e = [];
@@ -1437,8 +1465,8 @@ var mathlib = (function() {
 				}
 			}
 		}
-		/*
-		var sgsObj = new schreierSims(genMove);
+
+		var sgsObj = new SchreierSims(genMove);
 		sgsObj.minkwitz();
 		var perm = e.slice();
 		var initMv = [];
@@ -1451,7 +1479,7 @@ var mathlib = (function() {
 		var move2str = function(v) { return "URFDLB"[~~(v/3)] + " 2'"[v%3]; };
 		sol = $.map(Array.prototype.concat.apply([], sol).reverse(), move2str).join(' ');
 		console.log($.map(initMv.reverse(), move2str).join(' '), '\n', sol);
-		*/
+
 		var sgs0, sgs1, sgs01;
 		for (var r = 0; r < 100; r++) {
 			var shuffle = [];
@@ -1464,8 +1492,8 @@ var mathlib = (function() {
 				shuffle[i] = shuffle[j];
 				shuffle[j] = tmp;
 			}
-			sgs0 = new schreierSims(genColor, shuffle);
-			sgs1 = new schreierSims(genMove, shuffle);
+			sgs0 = new SchreierSims(genColor, shuffle);
+			sgs1 = new SchreierSims(genMove, shuffle);
 			sgs01 = sgs0.intersect(sgs1);
 			if (sgs01.cnt != -1) {
 				console.log(r);
@@ -1474,6 +1502,7 @@ var mathlib = (function() {
 		}
 		console.log(sgs01.cnt, sgs0.size(), sgs1.size(), sgs01.size(), sgs1.size() / sgs01.size());
 	};
+	*/
 
 	_.updatePrun = function(targetDepth) {
 		targetDepth = targetDepth === undefined ? this.prunDepth + 1 : targetDepth;
@@ -1788,7 +1817,7 @@ var mathlib = (function() {
 		circle: circle,
 		circleOri: circleOri,
 		acycle: acycle,
-		schreierSims: schreierSims,
+		SchreierSims: SchreierSims,
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		minx: minx,
