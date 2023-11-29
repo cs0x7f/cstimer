@@ -581,23 +581,25 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var st0pb = times_stats_list.isBestAvg(2, i);
 		var st1pb = times_stats_list.isBestAvg(0, i - len1 + 1);
 		var st2pb = times_stats_list.isBestAvg(1, i - len2 + 1);
+		var tdtm = '<td class="times">';
+		var tdpb = '<td class="times pb">';
 
 		var ret = [];
 		ret.push('<td class="times">' + (time[2] && "*") + (i + 1) + '</td>');
-		ret.push('<td class="times' + (st0pb ? ' pb' : '') + '">' + pretty(curTime, false) + '</td>');
+		ret.push((st0pb ? tdpb : tdtm) + pretty(curTime, false) + '</td>');
 
 		var statSrc = kernel.getProp('statsrc', 't');
 		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
 		if (statSrc[0] != 't') {
 			ret.pop();
-			ret.push('<td class="times">' + '<span style="opacity:0.5">' + pretty(curTime, false) + '</span> ' + prettyFunc[0](times_stats_table.timeAt(i)).split(' ')[0] + '</td>');
+			ret.push((st0pb ? tdpb : tdtm) + '<span style="opacity:0.5">' + pretty(curTime, false) + '</span> ' + prettyFunc[0](times_stats_table.timeAt(i)).split(' ')[0] + '</td>');
 		}
 
 		var st1 = times_stats_table.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
 		var st2 = times_stats_table.runAvgMean(i - len2 + 1, len2, 0, stat2 > 0 ? undefined : 0);
 		ret.push(
-			'<td' + (st1 ? ' class="times' + (st1pb ? ' pb' : '') + '"' : "") + '>' + (st1 ? prettyFunc[1](st1[0][0]) : "-") + '</td>' +
-			'<td' + (st2 ? ' class="times' + (st2pb ? ' pb' : '') + '"' : "") + '>' + (st2 ? prettyFunc[1](st2[0][0]) : "-") + '</td>'
+			(st1 ? (st1pb ? tdpb : tdtm) + prettyFunc[1](st1[0][0]) : '<td>-') + '</td>' +
+			(st2 ? (st2pb ? tdpb : tdtm) + prettyFunc[1](st2[0][0]) : '<td>-') + '</td>'
 		);
 		if (dim > 1) {
 			ret.push('<td>' + kpretty(curTime[curTime.length - 1]) + '</td>');
