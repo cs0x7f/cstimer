@@ -688,8 +688,14 @@ var mathlib = (function() {
 	})();
 
 	function SchreierSims(gen, shuffle) {
+		if (gen.sgs) {
+			this.copy(gen);
+			return;
+		}
 		this.sgs = [];
 		this.sgsi = [];
+		this.t2i = [];
+		this.i2t = [];
 		this.Tk = [];
 		this.e = [];
 		var n = gen[0].length;
@@ -699,9 +705,12 @@ var mathlib = (function() {
 		for (var i = 0; i < n; i++) {
 			this.sgs.push([]);
 			this.sgsi.push([]);
+			this.t2i.push([]);
+			this.i2t.push([i]);
 			this.Tk.push([]);
 			this.sgs[i][i] = this.e;
 			this.sgsi[i][i] = this.e;
+			this.t2i[i][i] = 0;
 		}
 		for (var i = 0; i < gen.length; i++) {
 			var g = gen[i];
@@ -713,6 +722,23 @@ var mathlib = (function() {
 		// for minkwitz algorithm
 		// this.invMap = {};
 		// this.gen = gen;
+	}
+
+	SchreierSims.prototype.copy = function(obj) {
+		this.sgs = [];
+		this.sgsi = [];
+		this.t2i = [];
+		this.i2t = [];
+		this.Tk = [];
+		this.e = obj.e;
+		var n = this.e.length;
+		for (var i = 0; i < n; i++) {
+			this.sgs[i] = obj.sgs[i].slice();
+			this.sgsi[i] = obj.sgsi[i].slice();
+			this.t2i[i] = obj.t2i[i].slice();
+			this.i2t[i] = obj.i2t[i].slice();
+			this.Tk[i] = obj.Tk[i].slice();
+		}
 	}
 
 	SchreierSims.prototype.permMult = function(permA, permB) {
@@ -733,16 +759,38 @@ var mathlib = (function() {
 
 	SchreierSims.prototype.isMember = function(p, depth) {
 		depth = depth || 0;
+		var idx = 0;
 		for (var i = p.length - 1; i >= depth; i--) {
 			var j = p[i];
-			if (!this.sgs[i][j]) {
-				return false;
-			}
 			if (j !== i) {
+				if (!this.sgs[i][j]) {
+					return -1;
+				}
 				p = this.permMult(p, this.sgsi[i][j]);
 			}
+			idx = idx * this.i2t[i].length + this.t2i[i][j];
 		}
-		return true;
+		return idx;
+	}
+
+	SchreierSims.prototype.isMember2 = function(p, depth) {
+		depth = depth || 0;
+		var idx = 0;
+		var ps = [];
+		for (var i = p.length - 1; i >= depth; i--) {
+			var j = p[i];
+			for (var k = 0; k < ps.length; k++) {
+				j = ps[k][j];
+			}
+			if (j !== i) {
+				if (!this.sgs[i][j]) {
+					return -1;
+				}
+				ps.push(this.sgsi[i][j]);
+			}
+			idx = idx * this.i2t[i].length + this.t2i[i][j];
+		}
+		return idx;
 	}
 
 	SchreierSims.prototype.knutha = function(k, p) {
@@ -759,13 +807,15 @@ var mathlib = (function() {
 		if (!this.sgs[k][j]) {
 			this.sgs[k][j] = p;
 			this.sgsi[k][j] = this.permInv(p);
+			this.t2i[k][j] = this.i2t[k].length;
+			this.i2t[k].push(j);
 			for (var i = 0; i < this.Tk[k].length; i++) {
 				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
 			}
 			return;
 		}
 		var p2 = this.permMult(p, this.sgsi[k][j]);
-		if (!this.isMember(p2)) {
+		if (this.isMember(p2) < 0) {
 			this.knutha(k - 1, p2);
 		}
 	}
@@ -789,10 +839,11 @@ var mathlib = (function() {
 		depth = depth || 0;
 		p = this.permInv(p);
 		for (var i = p.length - 1; i >= depth; i--) {
-			var maxi = -1;
+			var maxi = p[i];
 			var j = i;
-			for (var m = 0; m <= i; m++) {
-				if (this.sgs[i][m] && p[this.sgs[i][m][i]] > maxi) {
+			for (var k = 0; k < this.i2t[i].length; k++) {
+				var m = this.i2t[i][k];
+				if (p[this.sgs[i][m][i]] > maxi) {
 					maxi = p[this.sgs[i][m][i]];
 					j = m;
 				}
@@ -822,6 +873,607 @@ var mathlib = (function() {
 			}
 		}
 		return perm;
+	}
+
+	function CanonSeqGen(gens) {
+		this.gens = gens;
+		this.glen = gens.length;
+		this.trieNodes = [null];
+		this.trieNodes.push([]);
+	}
+
+	CanonSeqGen.prototype.permMult = function(permA, permB) {
+		var ret = [];
+		for (var i = 0; i < permA.length; i++) {
+			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	CanonSeqGen.prototype.addSkipSeq = function(seq) {
+		var node = 1;
+		for (var i = 0; i < seq.length; i++) {
+			var next = ~~this.trieNodes[node][seq[i]];
+			if (next == -1) {
+				return;
+			}
+			if (i == seq.length - 1) {
+				this.trieNodes[node][seq[i]] = -1;
+				break;
+			}
+			if (next <= 0) { // empty node, create a new node
+				next = this.trieNodes.length;
+				this.trieNodes.push([]);
+				this.trieNodes[node][seq[i]] = next;
+				for (var m = 0; m < this.glen; m++) {
+					this.updateNext(seq.slice(0, i + 1).concat(m));
+				}
+			}
+			node = next;
+		}
+	}
+
+	CanonSeqGen.prototype.traversalTrie = function(node, seq, callback) {
+		if (node <= 0) {
+			return;
+		}
+		for (var i = 0; i < this.glen; i++) {
+			seq.push(i);
+			this.traversalTrie(~~this.trieNodes[node][i], seq, callback)
+			seq.pop();
+		}
+		callback(node, seq);
+	}
+
+	CanonSeqGen.prototype.updateNext = function(seq) {
+		var node = 1;
+		for (var i = 0; i < seq.length; i++) {
+			var next = ~~this.trieNodes[node][seq[i]];
+			if (next == 0) {
+				next = this.updateNext(seq.slice(1, i + 1));
+				next = next > 0 ? ~next : next;
+				this.trieNodes[node][seq[i]] = next;
+			}
+			if (next == -1) {
+				return -1;
+			} else if (next < 0) {
+				next = ~next;
+			}
+			node = next;
+		}
+		return node;
+	}
+
+	CanonSeqGen.prototype.refillNext = function() {
+		// clear next nodes
+		this.traversalTrie(1, [], function(node, seq) {
+			for (var i = 0; i < this.glen; i++) {
+				var next = ~~this.trieNodes[node][i];
+				if (next != -1 && next <= node) { // skip or to sub-trie
+					this.trieNodes[node][i] = 0;
+				}
+			}
+		}.bind(this));
+		// calculate next nodes
+		this.traversalTrie(1, [], function(node, seq) {
+			for (var i = 0; i < this.glen; i++) {
+				if ((i & 0x1f) == 0) {
+					this.trieNodes[node][this.glen + (i >> 5)] = 0;
+				}
+				var next = ~~this.trieNodes[node][i];
+				if (next != -1 && next <= node) { // skip or to sub-trie
+					this.updateNext(seq.concat(i));
+				}
+				if (~~this.trieNodes[node][i] == -1) {
+					this.trieNodes[node][this.glen + (i >> 5)] |= 1 << (i & 0x1f);
+				}
+			}
+		}.bind(this));
+	}
+
+	/*
+	CanonSeqGen.prototype.finalize = function() {
+		var diff = [];
+		for (var i = 1; i < this.trieNodes.length; i++) {
+			diff[i] = [];
+		}
+		var changed = true;
+		while (changed) {
+			changed = false;
+			for (var node1 = 1; node1 < this.trieNodes.length; node1++) {
+				for (var node2 = 1; node2 < node1; node2++) {
+					if (diff[node1][node2]) {
+						continue;
+					}
+					for (var i = 0; i < this.glen; i++) {
+						var next1 = ~~this.trieNodes[node1][i];
+						var next2 = ~~this.trieNodes[node2][i];
+						if (next1 == -1 && next2 == -1) {
+							continue;
+						}
+						if ((next1 == -1) != (next2 == -1)) {
+							diff[node1][node2] = true;
+							changed = true;
+							break;
+						}
+						next1 ^= next1 >> 31;
+						next2 ^= next2 >> 31;
+						if (next1 != next2 && diff[Math.max(next1, next2)][Math.min(next1, next2)]) {
+							diff[node1][node2] = true;
+							changed = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		var nodeMap = [0];
+		var idx = 1;
+		for (var i = 1; i < this.trieNodes.length; i++) {
+			nodeMap[i] = i;
+			for (var j = 1; j < i; j++) {
+				if (!diff[i][j]) {
+					nodeMap[i] = nodeMap[j];
+				}
+			}
+			if (nodeMap[i] == i) {
+				nodeMap[i] = idx;
+				idx++;
+			}
+		}
+		for (var node = 1; node < this.trieNodes.length; node++) {
+			for (var i = 0; i < this.glen; i++) {
+				var next = ~~this.trieNodes[node][i];
+				var old = next ^ (next >> 31);
+				this.trieNodes[node][i] = nodeMap[old] ^ (next >> 31);
+			}
+		}
+		for (var i = 1; i < this.trieNodes.length; i++) {
+			this.trieNodes[nodeMap[i]] = this.trieNodes[i];
+		}
+		while (this.trieNodes.length > idx) {
+			this.trieNodes.pop();
+		}
+		console.log(diff, nodeMap, idx);
+	}
+	*/
+
+	CanonSeqGen.prototype.countSeq = function(depth) {
+		var counts = [0, 1];
+		var ret = [1];
+		for (var d = 0; d < depth; d++) {
+			var newCounts = [];
+			var depthCnt = 0;
+			for (var node = 1; node < this.trieNodes.length; node++) {
+				var curCount = counts[node] || 0;
+				if (curCount == 0) {
+					continue;
+				}
+				for (var i = 0; i < this.glen; i++) {
+					var next = ~~this.trieNodes[node][i];
+					if (next != -1) {
+						next = next < 0 ? ~next : next;
+						newCounts[next] = (newCounts[next] || 0) + curCount;
+						depthCnt += curCount;
+					}
+				}
+			}
+			counts = newCounts;
+			ret.push(depthCnt);
+		}
+		return ret;
+	}
+
+	CanonSeqGen.prototype.countSeqMove = function(depth, moveTable, initState) {
+		var counts = [];
+		counts[initState * this.trieNodes.length + 1 - 1] = 1;
+		var ret = [];
+		for (var d = 0; d < depth; d++) {
+			var newCounts = [];
+			var depthCnts = [];
+			var depthCnt = 0;
+			for (var state = 0; state < moveTable[0].length; state++) {
+				for (var node = 1; node < this.trieNodes.length; node++) {
+					var curCount = counts[state * this.trieNodes.length + node - 1] || 0;
+					if (curCount == 0) {
+						continue;
+					}
+					for (var i = 0; i < this.glen; i++) {
+						var next = ~~this.trieNodes[node][i];
+						if (next != -1) {
+							next = next < 0 ? ~next : next;
+							var newState = moveTable[i][state];
+							var idx = newState * this.trieNodes.length + next - 1;
+							newCounts[idx] = (newCounts[idx] || 0) + curCount;
+							depthCnts[newState] = (depthCnts[newState] || 0) + curCount;
+							depthCnt += curCount;
+						}
+					}
+				}
+			}
+			counts = newCounts;
+			ret.push(depthCnts, depthCnt);
+		}
+		return ret;
+	}
+
+	CanonSeqGen.prototype.initTrie = function(depth) {
+		this.trieNodes = [null];
+		this.trieNodes.push([]);
+		this.refillNext();
+		var e = [];
+		for (var i = 0; i < this.gens[0].length; i++) {
+			e[i] = i;
+		}
+		var visited = new Map();
+		for (var seqlen = 0; seqlen <= depth; seqlen++) {
+			this.searchSkip(e, seqlen, [], 1, visited);
+			this.refillNext();
+		}
+	}
+
+	CanonSeqGen.prototype.searchSkip = function(perm, maxl, seq, node, visited) {
+		if (maxl == 0) {
+			var key = String.fromCharCode.apply(null, perm);
+			if (visited.has(key)) {
+				// console.log('find skip seq', seq, 'replaced by', visited.get(key));
+				this.addSkipSeq(seq);
+			} else {
+				visited.set(key, seq.slice());
+			}
+			return;
+		}
+		for (var i = 0; i < this.glen; i++) {
+			var next = this.trieNodes[node][i];
+			if (next == -1) {
+				continue;
+			} else if (next < 0) {
+				next = ~next;
+			}
+			var gen = this.gens[i];
+			var permNew = this.permMult(gen, perm);
+			seq.push(i);
+			this.searchSkip(permNew, maxl - 1, seq, next, visited);
+			seq.pop();
+		}
+	}
+
+	function SubgroupSolver(genG, genH) {
+		this.genG = genG;
+		this.genH = genH;
+	}
+
+	SubgroupSolver.prototype.permHash = function(perm) {
+		return String.fromCharCode.apply(null, perm);
+	}
+
+	SubgroupSolver.prototype.cosetHash = function(perm) {
+		return this.sgsH == null ? this.sgsG.isMember2(this.sgsG.permInv(perm), this.sgsHdepth) : this.permHash(this.sgsH.minElem(perm));
+	}
+
+	SubgroupSolver.prototype.initTables = function(maxCosetSize) {
+		if (this.coset2idx) {
+			return;
+		}
+		maxCosetSize = maxCosetSize || 100000;
+
+		var cosetSize = 1;
+		this.sgsG = new SchreierSims(this.genG);
+		if (this.genH) {
+			this.sgsH = new SchreierSims(this.genH);
+			cosetSize = this.sgsG.size() / this.sgsH.size();
+		} else {
+			this.sgsH = null;
+			this.sgsHdepth = 0;
+			for (var i = this.sgsG.e.length - 1; i >= 0; i--) {
+				if (cosetSize * this.sgsG.i2t[i].length > maxCosetSize) {
+					break;
+				}
+				this.sgsHdepth = i;
+				cosetSize *= this.sgsG.i2t[i].length;
+			}
+			/*
+			console.log('target space:', cosetSize);
+			var genH = [];
+			for (var i = this.sgsHdepth - 1; i >= 0; i--) {
+				for (var j = 1; j < this.sgsG.i2t[i].length; j++) {
+					genH.push(this.sgsG.sgs[i][this.sgsG.i2t[i][j]]);
+				}
+			}
+			this.sgsH = new SchreierSims(genH);
+			cosetSize = this.sgsG.size() / this.sgsH.size();
+			*/
+		}
+		DEBUG && console.log('[Subgroup Solver] coset space:', cosetSize);
+
+		this.genEx = [];
+		this.genExMap = [];
+		var genExSet = new Set();
+		genExSet.add(this.permHash(this.sgsG.e));
+		for (var i = 0; i < this.genG.length; i++) {
+			var perm = this.genG[i];
+			var pow = 1;
+			while (true) {
+				var key = this.permHash(perm);
+				if (genExSet.has(key)) {
+					break;
+				}
+				genExSet.add(key);
+				this.genEx.push(perm);
+				this.genExMap.push([i, pow]);
+				perm = this.sgsG.permMult(this.genG[i], perm);
+				pow++;
+			}
+		}
+
+		this.canon = new CanonSeqGen(this.genEx);
+		this.canon.initTrie(2);
+
+		this.moveTable = [];
+		for (var j = 0; j < this.genEx.length; j++) {
+			this.moveTable[j] = [];
+		}
+		this.idx2coset = [this.sgsG.e];
+		this.coset2idx = {};
+		var tt = +new Date;
+		this.coset2idx[this.cosetHash(this.sgsG.e)] = 0;
+		var sumPrun = 0;
+		for (var i = 0; i < this.idx2coset.length; i++) {
+			if (i > cosetSize) {
+				console.log('ERROR!');
+				break;
+			}
+			var perm = this.idx2coset[i];
+			for (var j = 0; j < this.genEx.length; j++) {
+				if (this.genExMap[j][1] != 1) {
+					continue;
+				}
+				var newp = this.sgsG.permMult(this.genEx[j], perm);
+				var key = this.cosetHash(newp);
+				if (!(key in this.coset2idx)) {
+					this.coset2idx[key] = this.idx2coset.length;
+					this.idx2coset.push(newp);
+				}
+				this.moveTable[j][i] = this.coset2idx[key];
+			}
+		}
+		var stdMove = null;
+		for (var j = 0; j < this.genEx.length; j++) {
+			if (this.genExMap[j][1] == 1) {
+				stdMove = this.moveTable[j];
+				continue;
+			}
+			for (var i = 0; i < this.idx2coset.length; i++) {
+				this.moveTable[j][i] = stdMove[this.moveTable[j - 1][i]];
+			}
+		}
+		this.prunTable = this.initPrunTable(0);
+		DEBUG && console.log('[Subgroup Solver] prun table size:', this.prunTable.length);
+	}
+
+	SubgroupSolver.prototype.search = function(perm, callback, minl, MAXL) {
+		this.initTables();
+		if (this.sgsG.isMember(perm) < 0) {
+			console.log('[Subgroup Solver] NOT A MEMBER OF G');
+			return;
+		}
+		var pidx = this.coset2idx[this.cosetHash(perm)];
+		if (!pidx && pidx !== 0) {
+			console.log('[Subgroup Solver] ERROR!');
+			return;
+		}
+		this.moves = [];
+		minl = minl || 0;
+		for (var maxl = minl; maxl < (MAXL + 1 || 99); maxl++) {
+			if (this.idaSearch(pidx, maxl, 1, this.prunTable, callback)) {
+				break;
+			}
+		}
+	}
+
+	SubgroupSolver.prototype.idaSearch = function(pidx, maxl, lm, prunTable, callback) {
+		if (prunTable[pidx] > maxl) {
+			return false;
+		}
+		if (maxl == 0) {
+			return callback(this.moves);
+		}
+		var node = this.canon.trieNodes[lm];
+		var mask = 0;
+		for (var midx = 0, len = this.genEx.length; midx < len; midx++) {
+			if ((midx & 0x1f) == 0) {
+				mask = node[this.genEx.length + (midx >> 5)];
+			}
+			if (mask & 1 << midx) {
+				continue;
+			}
+			var newpidx = this.moveTable[midx][pidx];
+			if (prunTable[newpidx] >= maxl) {
+				continue;
+			}
+			var nextCanon = node[midx];
+			nextCanon ^= nextCanon >> 31;
+			this.moves.push(midx);
+			var ret = this.idaSearch(newpidx, maxl - 1, nextCanon, prunTable, callback);
+			this.moves.pop();
+			if (ret) {
+				return ret;
+			}
+		}
+		return false;
+	}
+
+	SubgroupSolver.movePermCache = function(permMult, initPerm, movePerms) {
+		this.permCaches = [initPerm];
+		this.moveCaches = [-1];
+		this.permMult = permMult;
+		this.movePerms = movePerms;
+	}
+
+	SubgroupSolver.movePermCache.prototype.getPerm = function(moves) {
+		var j = 0;
+		while (j < moves.length && moves[j] == this.moveCaches[j]) {
+			j++;
+		}
+		while (j < moves.length) {
+			this.permCaches[j + 1] = this.permMult(this.movePerms[moves[j]], this.permCaches[j]);
+			this.moveCaches[j] = moves[j];
+			j++;
+		}
+		this.moveCaches[j] = -1;
+		return this.permCaches[j];
+	}
+
+	SubgroupSolver.prototype.initPrunTable = function(solvedIdx) {
+		var prunTable = [];
+		for (var i = 0; i < this.idx2coset.length; i++) {
+			prunTable[i] = -1;
+		}
+		prunTable[solvedIdx] = 0;
+		var fill = 1;
+		var cur = 0;
+		while (fill < prunTable.length) {
+			for (var idx = 0; idx < this.idx2coset.length; idx++) {
+				if (prunTable[idx] != cur) {
+					continue;
+				}
+				for (var j = 0; j < this.genEx.length; j++) {
+					var newIdx = this.moveTable[j][idx];
+					if (prunTable[newIdx] == -1) {
+						prunTable[newIdx] = cur + 1;
+						fill++;
+					}
+				}
+			}
+			cur++;
+		}
+		return prunTable;
+	}
+
+	SubgroupSolver.prototype.DissectionSolve = function(perm, maxl, onlyIDA) {
+		this.initTables();
+		if (this.sgsG.isMember(perm) < 0) {
+			console.log('[Subgroup Solver] NOT A MEMBER OF G');
+			return;
+		}
+		var pidx = this.coset2idx[this.cosetHash(perm)];
+		if (!pidx && pidx !== 0) {
+			console.log('[Subgroup Solver] ERROR!');
+			return;
+		}
+		var solution = null;
+		var prunTable2 = null;
+		for (var depth = 0; depth <= maxl; depth++) {
+			if (onlyIDA || depth <= this.prunTable[this.prunTable.length - 1]) {
+				var mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, perm, this.genEx);
+				this.moves = [];
+				this.idaSearch(pidx, depth, 1, this.prunTable, function(moves) {
+					var finalPerm = mpcache.getPerm(moves);
+					for (var i = 0; i < finalPerm.length; i++) {
+						if (finalPerm[i] != i) {
+							return;
+						}
+					}
+					solution = moves.slice();
+					return true;
+				}.bind(this));
+				if (solution != null) {
+					return solution;
+				}
+				continue;
+			}
+			var mid = ~~(depth / 2);
+			if (!prunTable2) {
+				prunTable2 = this.initPrunTable(pidx);
+			}
+			var mpcnt = 0;
+			var mpsizes = [];
+			var s1tot = 0;
+			var s2tot = 0;
+			for (var mpidx = 0; mpidx < this.idx2coset.length; mpidx++) {
+				//pidx at mid == mpidx
+				if (this.prunTable[mpidx] > mid || prunTable2[mpidx] > depth - mid) {
+					continue;
+				}
+				mpcnt++;
+
+				// search from mpidx to 0
+				this.moves = [];
+				var visited = new Map();
+				var size1 = 0;
+				var size2 = 0;
+				var mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, this.sgsG.e, this.genEx);
+				this.idaSearch(mpidx, mid, 1, this.prunTable, function(moves) {
+					var finalPerm = mpcache.getPerm(moves);
+					var key = this.permHash(finalPerm);
+					size1++;
+					if (!visited.has(key)) {
+						visited.set(key, moves.slice());
+					}
+				}.bind(this));
+
+				//search from mpidx to pidx
+				var permi = this.sgsG.permInv(perm);
+				this.moves = [];
+				mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, this.sgsG.e, this.genEx);
+				this.idaSearch(mpidx, depth - mid, 1, prunTable2, function(moves) {
+					var finalPerm = mpcache.getPerm(moves);
+					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
+					var toCheck = this.sgsG.permMult(permi, finalPerm);
+					var key = this.permHash(toCheck);
+					size2++;
+					if (visited.has(key)) {
+						solution = [visited.get(key), moves.slice()];
+						return true;
+					}
+				}.bind(this));
+				mpsizes.push([mpidx, size1, size2]);
+				s1tot += size1;
+				s2tot += size2;
+				if (solution) {
+					break;
+				}
+			}
+			mpsizes.sort(function(a, b) { return b[1] + b[2] - a[1] - a[2]});
+			for (var i = 0; i < 20 && i < mpsizes.length; i++) {
+				var mpidx = mpsizes[i][0];
+				var size1 = mpsizes[i][1];
+				var size2 = mpsizes[i][2];
+				DEBUG && console.log('[Subgroup Solver] dissection, ', mpidx, 
+					'mid=', mid, 
+					'dep-mid=', depth - mid, 
+					's1=', size1, 's2=', size2,
+					's1t=', s1tot, 's2t=', s2tot,
+					'prun1=', this.prunTable[mpidx],
+					'prun2=', prunTable2[mpidx]);
+			}
+			if (solution) {
+				break;
+			}
+		}
+		return solution;
+	}
+
+	SubgroupSolver.prototype.godsAlgo = function(depth) {
+		this.initTables();
+		var stateCnt = 0;
+		for (var i = 0; i < this.idx2coset.length; i++) {
+			var perm = this.idx2coset[i];
+			var visited = new Set();
+			var mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, perm, this.genEx);
+			for (var maxl = 0; maxl <= depth; maxl++) {
+				this.moves = [];
+				this.idaSearch(i, maxl, 1, this.prunTable, function(moves) {
+					var finalPerm = mpcache.getPerm(moves);
+					var key = this.permHash(finalPerm);
+					if (!visited.has(key)) {
+						stateCnt++;
+						visited.add(key);
+					}
+				}.bind(this));
+			}
+		}
+		return stateCnt;
 	}
 
 	/*
@@ -1215,189 +1867,6 @@ var mathlib = (function() {
 			}
 		}
 		return false;
-	};
-
-	function identity(state) {
-		return state;
-	}
-
-	function phSolver(solvedStates, doMove, moves, prunHashs, isPartial) {
-		this.solvedStates = solvedStates;
-		this.doMove = doMove;
-		this.movesList = [];
-		for (var move in moves) {
-			this.movesList.push([move, moves[move]]);
-		}
-		this.state2Idxs = [];
-		this.moveTables = [];
-		this.prunTables = [];
-		this.isPartial = isPartial || false;
-		this.prunHashs = prunHashs || [identity];
-	}
-
-	_ = phSolver.prototype;
-
-	_.initPrun = function() {
-		if (this.moveTables.length != 0) {
-			return;
-		}
-		for (var idx = 0; idx < this.prunHashs.length; idx++) {
-			var state2Idx = {};
-			var moveTable = [null];
-			var prunTable = [];
-			for(var i = 0; i < this.solvedStates.length; i++) {
-				var state = this.prunHashs[idx](this.solvedStates[i]);
-				if (state in state2Idx) {
-					continue;
-				}
-				state2Idx[state] = moveTable.length << 8;
-				moveTable.push(state);
-			}
-			var head = 1;
-			var curDepth = 0;
-			var t = +new Date;
-			while (head != moveTable.length) {
-				var state = moveTable[head];
-				var prun = (state2Idx[state] & 0xff) + 1;
-				if (prun != curDepth) {
-					DEBUG && console.log('[phSolver] initPrun', curDepth, moveTable.length - 1, +new Date - t);
-					curDepth = prun;
-					prunTable.push(moveTable.length - 1); // if idx > prunTable[i] then prun(idx) > i
-				}
-				var curTable = [];
-				for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
-					var newState = this.doMove(state, this.movesList[moveIdx][0]);
-					if (!newState) {
-						continue;
-					}
-					if (!(newState in state2Idx)) {
-						state2Idx[newState] = moveTable.length << 8 | prun;
-						moveTable.push(newState);
-					}
-					var newIdx = state2Idx[newState] >> 8;
-					curTable[moveIdx] = newIdx;
-				}
-				moveTable[head] = curTable;
-				head++;
-			}
-			this.moveTables[idx] = moveTable;
-			this.prunTables[idx] = prunTable;
-			this.state2Idxs[idx] = state2Idx;
-		}
-	}
-
-	_.search = function(state, minl, MAXL) {
-		this.initPrun();
-		this.sol = [];
-		this.subOpt = false;
-		this.rawState = state;
-		this.state = [];
-		for (var idx = 0; idx < this.prunHashs.length; idx++) {
-			var hstate = this.prunHashs[idx](state);
-			this.state.push(this.state2Idxs[idx][hstate] >> 8);
-		}
-		this.visited = {};
-		this.maxl = minl = minl || 0;
-		return this.searchNext(MAXL);
-	};
-
-	_.searchNext = function(MAXL, cost) {
-		this.initPrun();
-		MAXL = (MAXL + 1) || 99;
-		this.prevSolStr = this.solArr ? this.solArr.join(',') : null;
-		this.solArr = null;
-		this.cost = cost || -1;
-		for (; this.maxl < MAXL; this.maxl++) {
-			if (this.cost == 0) {
-				return null;
-			}
-			if (this.idaSearch(this.state, this.maxl, null, 0)) {
-				break;
-			}
-		}
-		return this.solArr;
-	}
-
-	_.idaSearch = function(state, maxl, lm, depth) {
-		if (this.getPruning(state) > maxl) {
-			return false;
-		}
-		if (maxl == 0) {
-			var rawState = this.rawState;
-			var solArr = [];
-			var curVisited = [];
-			for (var i = 0; i < this.sol.length; i++) {
-				var move = this.movesList[this.sol[i]][0];
-				rawState = this.doMove(rawState, move);
-				solArr.push(move);
-				curVisited.push(rawState);
-				if (!this.subOpt && rawState in this.visited && this.visited[state] < depth) {
-					return false;
-				}
-			}
-			if (this.solvedStates.indexOf(rawState) == -1) {
-				return false;
-			}
-			for (var i = 0; i < curVisited.length; i++) {
-				this.visited[curVisited[i]] = i;
-			}
-			this.subOpt = true;
-			if (solArr.join(',') == this.prevSolStr) {
-				return false;
-			}
-			this.solArr = solArr;
-			return true;
-		}
-		if (this.cost >= 0) {
-			if (this.cost == 0) {
-				return true;
-			}
-			this.cost--;
-		}
-		var lastMove = lm == null ? '' : this.movesList[lm][0];
-		var lastAxisFace = lm == null ? -1 : this.movesList[lm][1];
-		for (var moveIdx = this.sol[depth] || 0; moveIdx < this.movesList.length; moveIdx++) {
-			var moveArgs = this.movesList[moveIdx];
-			var axisface = moveArgs[1] ^ lastAxisFace;
-			var move = moveArgs[0];
-			if (axisface == 0 ||
-				(axisface & 0xf) == 0 && move <= lastMove) {
-				continue;
-			}
-			var isSkip = false;
-			var isEqual = true;
-			var newState = [];
-			for (var i = 0; i < state.length; i++) {
-				var val = this.moveTables[i][state[i]][moveIdx];
-				if (!val) {
-					isSkip = true;
-					break;
-				} else if (val != state[i]) {
-					isEqual = false;
-				}
-				newState.push(val);
-			}
-			if (isSkip || isEqual && !this.isPartial) {
-				continue;
-			}
-			this.sol[depth] = moveIdx;
-			if (this.idaSearch(newState, maxl - 1, moveIdx, depth + 1)) {
-				return true;
-			}
-			this.sol.pop();
-		}
-		return false;
-	};
-
-	_.getPruning = function(state) {
-		var prun = 0;
-		for (var i = 0; i < state.length; i++) {
-			var prunTable = this.prunTables[i];
-			while (prunTable[prun] < state[i]) {
-				prun++;
-			}
-		}
-		return prun;
 	};
 
 	// state: string not null
@@ -1818,6 +2287,7 @@ var mathlib = (function() {
 		circleOri: circleOri,
 		acycle: acycle,
 		SchreierSims: SchreierSims,
+		SubgroupSolver: SubgroupSolver,
 		createPrun: createPrun,
 		CubieCube: CubieCube,
 		minx: minx,
@@ -1836,7 +2306,6 @@ var mathlib = (function() {
 		Solver: Solver,
 		rndPerm: rndPerm,
 		gSolver: gSolver,
-		phSolver: phSolver,
 		getSeed: randGen.getSeed,
 		setSeed: randGen.setSeed
 	};
