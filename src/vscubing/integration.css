@@ -25,3 +25,23 @@ body {
 .click {
   font-size: 24px !important;
 }
+@media screen and (max-width: 1000px) {
+  #timer {
+    width: 100% !important;
+    left: 0 !important;
+  }
+  #rtimer {
+    bottom: 0 !important;
+    height: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    padding-bottom: 8px !important;
+    transform: translateX(-50%) !important;
+  }
+}
+@media screen and (max-width: 782px) {
+  canvas {
+    max-width: 360px;
+    min-width: 320px;
+  }
+}
