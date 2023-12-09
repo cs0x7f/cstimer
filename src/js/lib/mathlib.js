@@ -696,6 +696,7 @@ var mathlib = (function() {
 		this.sgsi = [];
 		this.t2i = [];
 		this.i2t = [];
+		this.keyIdx = [];
 		this.Tk = [];
 		this.e = [];
 		var n = gen[0].length;
@@ -729,6 +730,7 @@ var mathlib = (function() {
 		this.sgsi = [];
 		this.t2i = [];
 		this.i2t = [];
+		this.keyIdx = obj.keyIdx.slice();
 		this.Tk = [];
 		this.e = obj.e;
 		var n = this.e.length;
@@ -745,6 +747,18 @@ var mathlib = (function() {
 		var ret = [];
 		for (var i = 0; i < permA.length; i++) {
 			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	SchreierSims.prototype.permMMultKey = function(perms) {
+		var ret = [];
+		for (var i = 0; i < this.keyIdx.length; i++) {
+			var idx = this.keyIdx[i];
+			for (var j = 0; j < perms.length; j++) {
+				idx = perms[j][idx];
+			}
+			ret[i] = idx;
 		}
 		return ret;
 	}
@@ -809,6 +823,9 @@ var mathlib = (function() {
 			this.sgsi[k][j] = this.permInv(p);
 			this.t2i[k][j] = this.i2t[k].length;
 			this.i2t[k].push(j);
+			if (this.i2t[k].length == 2) {
+				this.keyIdx.push(k);
+			}
 			for (var i = 0; i < this.Tk[k].length; i++) {
 				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
 			}
@@ -1205,14 +1222,12 @@ var mathlib = (function() {
 				pow++;
 			}
 		}
+		this.glen = this.genEx.length;
 
 		this.canon = new CanonSeqGen(this.genEx);
 		this.canon.initTrie(2);
 
 		this.moveTable = [];
-		for (var j = 0; j < this.genEx.length; j++) {
-			this.moveTable[j] = [];
-		}
 		this.idx2coset = [this.sgsG.e];
 		this.coset2idx = {};
 		var tt = +new Date;
@@ -1224,7 +1239,7 @@ var mathlib = (function() {
 				break;
 			}
 			var perm = this.idx2coset[i];
-			for (var j = 0; j < this.genEx.length; j++) {
+			for (var j = 0; j < this.glen; j++) {
 				if (this.genExMap[j][1] != 1) {
 					continue;
 				}
@@ -1234,120 +1249,96 @@ var mathlib = (function() {
 					this.coset2idx[key] = this.idx2coset.length;
 					this.idx2coset.push(newp);
 				}
-				this.moveTable[j][i] = this.coset2idx[key];
+				this.moveTable[i * this.glen + j] = this.coset2idx[key];
 			}
 		}
 		var stdMove = null;
-		for (var j = 0; j < this.genEx.length; j++) {
+		for (var j = 0; j < this.glen; j++) {
 			if (this.genExMap[j][1] == 1) {
-				stdMove = this.moveTable[j];
+				stdMove = j;
 				continue;
 			}
 			for (var i = 0; i < this.idx2coset.length; i++) {
-				this.moveTable[j][i] = stdMove[this.moveTable[j - 1][i]];
+				this.moveTable[i * this.glen + j] = this.moveTable[this.moveTable[i * this.glen + j - 1] * this.glen + stdMove];
 			}
 		}
 		this.prunTable = this.initPrunTable(0);
-		DEBUG && console.log('[Subgroup Solver] prun table size:', this.prunTable.length);
+		DEBUG && console.log('[Subgroup Solver] prun table size:', this.prunTable[0].length);
 	}
 
-	SubgroupSolver.prototype.search = function(perm, callback, minl, MAXL) {
-		this.initTables();
-		if (this.sgsG.isMember(perm) < 0) {
-			console.log('[Subgroup Solver] NOT A MEMBER OF G');
-			return;
-		}
-		var pidx = this.coset2idx[this.cosetHash(perm)];
-		if (!pidx && pidx !== 0) {
-			console.log('[Subgroup Solver] ERROR!');
-			return;
-		}
-		this.moves = [];
-		minl = minl || 0;
-		for (var maxl = minl; maxl < (MAXL + 1 || 99); maxl++) {
-			if (this.idaSearch(pidx, maxl, 1, this.prunTable, callback)) {
-				break;
-			}
-		}
-	}
-
-	SubgroupSolver.prototype.idaSearch = function(pidx, maxl, lm, prunTable, callback) {
-		if (prunTable[pidx] > maxl) {
+	SubgroupSolver.prototype.idaSearch = function(pidx, maxl, lm, moves, prunTable, callback) {
+		var nodePrun = prunTable[0][pidx];
+		if (nodePrun > maxl) {
 			return false;
 		}
 		if (maxl == 0) {
-			return callback(this.moves);
+			return callback(moves);
 		}
 		var node = this.canon.trieNodes[lm];
-		var mask = 0;
-		for (var midx = 0, len = this.genEx.length; midx < len; midx++) {
-			if ((midx & 0x1f) == 0) {
-				mask = node[this.genEx.length + (midx >> 5)];
-			}
-			if (mask & 1 << midx) {
-				continue;
-			}
-			var newpidx = this.moveTable[midx][pidx];
-			if (prunTable[newpidx] >= maxl) {
-				continue;
-			}
-			var nextCanon = node[midx];
-			nextCanon ^= nextCanon >> 31;
-			this.moves.push(midx);
-			var ret = this.idaSearch(newpidx, maxl - 1, nextCanon, prunTable, callback);
-			this.moves.pop();
-			if (ret) {
-				return ret;
+		var glenBase = pidx * ((this.glen + 31) >> 5);
+
+		for (var mbase = 0; mbase < this.glen; mbase += 32) {
+			var mask = node[this.glen + (mbase >> 5)];
+			mask |= (nodePrun >= maxl - 1) ? prunTable[nodePrun - maxl + 2][glenBase + (mbase >> 5)] : 0;
+			mask = ~mask & ((1 << Math.min(32, this.glen - mbase)) - 1);
+			while (mask != 0) {
+				var midx = 31 - Math.clz32(mask);
+				mask -= 1 << midx;
+				midx += mbase;
+
+				var newpidx = this.moveTable[pidx * this.glen + midx];
+				if (DEBUG && prunTable[0][newpidx] >= maxl) {
+					debugger;
+				}
+				var nextCanon = node[midx];
+				moves.push(midx);
+				var ret = this.idaSearch(newpidx, maxl - 1, nextCanon ^ (nextCanon >> 31), moves, prunTable, callback);
+				moves.pop();
+				if (ret) {
+					return ret;
+				}
 			}
 		}
 		return false;
 	}
 
-	SubgroupSolver.movePermCache = function(permMult, initPerm, movePerms) {
-		this.permCaches = [initPerm];
-		this.moveCaches = [-1];
-		this.permMult = permMult;
-		this.movePerms = movePerms;
-	}
-
-	SubgroupSolver.movePermCache.prototype.getPerm = function(moves) {
-		var j = 0;
-		while (j < moves.length && moves[j] == this.moveCaches[j]) {
-			j++;
-		}
-		while (j < moves.length) {
-			this.permCaches[j + 1] = this.permMult(this.movePerms[moves[j]], this.permCaches[j]);
-			this.moveCaches[j] = moves[j];
-			j++;
-		}
-		this.moveCaches[j] = -1;
-		return this.permCaches[j];
-	}
-
 	SubgroupSolver.prototype.initPrunTable = function(solvedIdx) {
 		var prunTable = [];
+		var fartherMask = [];
+		var nocloserMask = [];
+		var maskBase = (this.glen + 31) >> 5;
 		for (var i = 0; i < this.idx2coset.length; i++) {
 			prunTable[i] = -1;
 		}
 		prunTable[solvedIdx] = 0;
 		var fill = 1;
+		var lastfill = 0;
 		var cur = 0;
-		while (fill < prunTable.length) {
+		while (fill != lastfill) {
+			lastfill = fill;
 			for (var idx = 0; idx < this.idx2coset.length; idx++) {
 				if (prunTable[idx] != cur) {
 					continue;
 				}
-				for (var j = 0; j < this.genEx.length; j++) {
-					var newIdx = this.moveTable[j][idx];
+				for (var j = 0; j < this.glen; j++) {
+					var newIdx = this.moveTable[idx * this.glen + j];
+					var newPrun = prunTable[newIdx];
 					if (prunTable[newIdx] == -1) {
 						prunTable[newIdx] = cur + 1;
+						newPrun = cur + 1;
 						fill++;
+					}
+					if (newPrun > cur) {
+						fartherMask[idx * maskBase + (j >> 5)] |= 1 << (j & 0x1f);
+					}
+					if (newPrun >= cur) {
+						nocloserMask[idx * maskBase + (j >> 5)] |= 1 << (j & 0x1f);
 					}
 				}
 			}
 			cur++;
 		}
-		return prunTable;
+		return [prunTable, fartherMask, nocloserMask];
 	}
 
 	SubgroupSolver.prototype.DissectionSolve = function(perm, maxl, onlyIDA) {
@@ -1364,19 +1355,27 @@ var mathlib = (function() {
 		var solution = null;
 		var prunTable2 = null;
 		for (var depth = 0; depth <= maxl; depth++) {
-			if (onlyIDA || depth <= this.prunTable[this.prunTable.length - 1]) {
-				var mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, perm, this.genEx);
-				this.moves = [];
-				this.idaSearch(pidx, depth, 1, this.prunTable, function(moves) {
-					var finalPerm = mpcache.getPerm(moves);
-					for (var i = 0; i < finalPerm.length; i++) {
-						if (finalPerm[i] != i) {
+			var tt = performance.now();
+			var s1tot = 0;
+			var s2tot = 0;
+			if (onlyIDA || depth <= this.prunTable[0][this.prunTable[0].length - 1]) {
+				this.idaSearch(pidx, depth, 1, [], this.prunTable, function(moves) {
+					s1tot++;
+					var perms = [];
+					for (var k = 0; k < moves.length; k++) {
+						perms.push(this.genEx[moves[moves.length - k - 1]]);
+					}
+					perms.push(perm);
+					var finalPermKey = this.sgsG.permMMultKey(perms);
+					for (var k = 0; k < this.sgsG.keyIdx.length; k++) {
+						if (finalPermKey[k] != this.sgsG.keyIdx[k]) {
 							return;
 						}
 					}
 					solution = moves.slice();
 					return true;
 				}.bind(this));
+				DEBUG && console.log('[Subgroup Solver] ida ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', performance.now() - tt);
 				if (solution != null) {
 					return solution;
 				}
@@ -1388,24 +1387,24 @@ var mathlib = (function() {
 			}
 			var mpcnt = 0;
 			var mpsizes = [];
-			var s1tot = 0;
-			var s2tot = 0;
 			for (var mpidx = 0; mpidx < this.idx2coset.length; mpidx++) {
 				//pidx at mid == mpidx
-				if (this.prunTable[mpidx] > mid || prunTable2[mpidx] > depth - mid) {
+				if (this.prunTable[0][mpidx] > mid || prunTable2[0][mpidx] > depth - mid) {
 					continue;
 				}
 				mpcnt++;
 
 				// search from mpidx to 0
-				this.moves = [];
 				var visited = new Map();
 				var size1 = 0;
 				var size2 = 0;
-				var mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, this.sgsG.e, this.genEx);
-				this.idaSearch(mpidx, mid, 1, this.prunTable, function(moves) {
-					var finalPerm = mpcache.getPerm(moves);
-					var key = this.permHash(finalPerm);
+				this.idaSearch(mpidx, mid, 1, [], this.prunTable, function(moves) {
+					var perms = [];
+					for (var k = 0; k < moves.length; k++) {
+						perms.push(this.genEx[moves[moves.length - k - 1]]);
+					}
+					var finalPermKey = this.sgsG.permMMultKey(perms);
+					var key = this.permHash(finalPermKey);
 					size1++;
 					if (!visited.has(key)) {
 						visited.set(key, moves.slice());
@@ -1414,13 +1413,14 @@ var mathlib = (function() {
 
 				//search from mpidx to pidx
 				var permi = this.sgsG.permInv(perm);
-				this.moves = [];
-				mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, this.sgsG.e, this.genEx);
-				this.idaSearch(mpidx, depth - mid, 1, prunTable2, function(moves) {
-					var finalPerm = mpcache.getPerm(moves);
+				this.idaSearch(mpidx, depth - mid, 1, [], prunTable2, function(moves) {
 					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
-					var toCheck = this.sgsG.permMult(permi, finalPerm);
-					var key = this.permHash(toCheck);
+					var perms = [permi];
+					for (var k = 0; k < moves.length; k++) {
+						perms.push(this.genEx[moves[moves.length - k - 1]]);
+					}
+					var finalPermKey = this.sgsG.permMMultKey(perms);
+					var key = this.permHash(finalPermKey);
 					size2++;
 					if (visited.has(key)) {
 						solution = [visited.get(key), moves.slice()];
@@ -1434,19 +1434,7 @@ var mathlib = (function() {
 					break;
 				}
 			}
-			mpsizes.sort(function(a, b) { return b[1] + b[2] - a[1] - a[2]});
-			for (var i = 0; i < 20 && i < mpsizes.length; i++) {
-				var mpidx = mpsizes[i][0];
-				var size1 = mpsizes[i][1];
-				var size2 = mpsizes[i][2];
-				DEBUG && console.log('[Subgroup Solver] dissection, ', mpidx, 
-					'mid=', mid, 
-					'dep-mid=', depth - mid, 
-					's1=', size1, 's2=', size2,
-					's1t=', s1tot, 's2t=', s2tot,
-					'prun1=', this.prunTable[mpidx],
-					'prun2=', prunTable2[mpidx]);
-			}
+			DEBUG && console.log('[Subgroup Solver] dis ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', performance.now() - tt);
 			if (solution) {
 				break;
 			}
@@ -1460,12 +1448,14 @@ var mathlib = (function() {
 		for (var i = 0; i < this.idx2coset.length; i++) {
 			var perm = this.idx2coset[i];
 			var visited = new Set();
-			var mpcache = new SubgroupSolver.movePermCache(this.sgsG.permMult, perm, this.genEx);
 			for (var maxl = 0; maxl <= depth; maxl++) {
-				this.moves = [];
-				this.idaSearch(i, maxl, 1, this.prunTable, function(moves) {
-					var finalPerm = mpcache.getPerm(moves);
-					var key = this.permHash(finalPerm);
+				this.idaSearch(i, maxl, 1, [], this.prunTable, function(moves) {
+					var perms = [];
+					for (var k = 0; k < moves.length; k++) {
+						perms.push(this.genEx[moves[moves.length - k - 1]]);
+					}
+					var finalPermKey = this.sgsG.permMMultKey(perms);
+					var key = this.permHash(finalPermKey);
 					if (!visited.has(key)) {
 						stateCnt++;
 						visited.add(key);
