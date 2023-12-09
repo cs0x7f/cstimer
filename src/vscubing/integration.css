@@ -29,6 +29,7 @@ body {
   #timer {
     width: 100% !important;
     left: 0 !important;
+    padding-bottom: 0 !important;
   }
   #rtimer {
     bottom: 0 !important;
