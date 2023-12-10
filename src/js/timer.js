@@ -275,8 +275,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				} else {
 					lcd.val(isCleared ? 0 : (curTime[1] || 0));
 					if (!isCleared && curTime[1] && lastTime && lastTime[1] && getProp('showDiff') != 'n') {
-						var diff = curTime[1] - lastTime[1];
-						var label = $('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(lastTime[1] - curTime[1])) + ')');
+						var mul = kernel.getProp('useMilli') ? 1 : 10;
+						var diff = (~~(curTime[1] / mul) - ~~(lastTime[1] / mul)) * mul;
+						var label = $('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(diff)) + ')');
 						var color = getProp('showDiff');
 						if (diff != 0 && color != 'b') {
 							label.css('color', (diff > 0) == (color == 'gr') ? timerColors[3] : timerColors[4]);
