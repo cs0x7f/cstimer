@@ -583,7 +583,7 @@ var GiikerCube = execMain(function() {
 			for (var i = moveDiff - 1; i >= 0; i--) {
 				calcTs += timeOffs[i];
 			}
-			if (Math.abs(locTime - calcTs) > 2000) {
+			if (!deviceTime || Math.abs(locTime - calcTs) > 2000) {
 				DEBUG && console.log('[gancube]', 'time adjust', locTime - calcTs, '@', locTime);
 				deviceTime += locTime - calcTs;
 			}
@@ -774,6 +774,7 @@ var GiikerCube = execMain(function() {
 				result = _chrct_v2read.stopNotifications().catch($.noop);
 				_chrct_v2read = null;
 			}
+			deviceName = null;
 			deviceMac = null;
 			prevMoves = [];
 			timeOffs = [];
@@ -781,7 +782,10 @@ var GiikerCube = execMain(function() {
 			curCubie = new mathlib.CubieCube();
 			latestFacelet = mathlib.SOLVED_FACELET;
 			deviceTime = 0;
+			deviceTimeOffset = 0;
+			moveCnt = -1;
 			prevMoveCnt = -1;
+			movesFromLastCheck = 1000;
 			batteryLevel = 100;
 			return result;
 		}
