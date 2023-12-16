@@ -29,12 +29,14 @@ var recons = execMain(function() {
 		}
 		this.moveCnt += (this.lastPow & amask) == amask ? 0 : 1;
 		this.lastPow |= amask;
+		this.moves.push(move);
 	}
 
 	MoveCounter.prototype.clear = function() {
 		this.lastPow = 0;
 		this.lastMove = -3;
 		this.moveCnt = 0;
+		this.moves = [];
 	}
 
 	function getMoveCnt(sol) {
@@ -65,7 +67,7 @@ var recons = execMain(function() {
 		}
 		c.selfConj();
 		var facelet = c.toFaceCube();
-		var data = []; //[[start, firstMove, end, moveCnt], [start, firstMove, end, moveCnt], ...]
+		var data = []; //[[start, firstMove, end, moveCnt, stepTransCubie, stepMoves, effMoves], [...], ...]
 		var cnter = new MoveCounter();
 		var startCubieI = new mathlib.CubieCube();
 		startCubieI.invFrom(c);
@@ -89,9 +91,9 @@ var recons = execMain(function() {
 				var transCubie = new mathlib.CubieCube();
 				mathlib.CubieCube.EdgeMult(startCubieI, c, transCubie);
 				mathlib.CubieCube.CornMult(startCubieI, c, transCubie);
-				data[--progress] = [tsStart, tsFirst, c.tstamp, cnter.moveCnt, transCubie, stepMoves];
+				data[--progress] = [tsStart, tsFirst, c.tstamp, cnter.moveCnt, transCubie, stepMoves, cnter.moves.slice()];
 				while (progress > curProg) {
-					data[--progress] = [c.tstamp, c.tstamp, c.tstamp, 0, new mathlib.CubieCube(), []];
+					data[--progress] = [c.tstamp, c.tstamp, c.tstamp, 0, new mathlib.CubieCube(), [], []];
 				}
 				startCubieI.invFrom(c);
 				tsStart = c.tstamp;
@@ -100,6 +102,33 @@ var recons = execMain(function() {
 				tsFirst = 1e9;
 			}
 		}
+
+		for (var i = 0; i < data.length; i++) {
+			if (data[i][3] != 1) {
+				continue;
+			}
+			var j = i + 1;
+			while (j < data.length && data[j][3] == 0) {
+				j++;
+			}
+			if (j == data.length) {
+				break;
+			}
+			cnter.clear();
+			var ts = data[i][2];
+			Array.prototype.push.apply(data[j][5], data[i][5]);
+			Array.prototype.push.apply(data[j][6], data[i][6]);
+			for (var m = 0; m < data[j][6].length; m++) {
+				cnter.push(data[j][6][m]);
+			}
+			for (var m = 0; m < data[i][5].length; m++) {
+				data[j][4].selfMoveStr(data[i][5][m][0], false);
+			}
+			data[j][2] = ts;
+			data[j][3] = cnter.moveCnt;
+			data[i] = [ts, ts, ts, 0, new mathlib.CubieCube(), [], []];
+		}
+
 		var stepCount = cubeutil.getStepCount(method);
 		var rawMoves = [];
 		for (var i = 0; i < stepCount; i++) {
