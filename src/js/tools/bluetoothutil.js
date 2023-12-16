@@ -245,6 +245,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	var callback = $.noop;
+	var evtCallback = $.noop;
 
 	var curRawState = mathlib.SOLVED_FACELET;
 	var curRawCubie = new CubieCube();
@@ -483,10 +484,11 @@ var giikerutil = execMain(function(CubieCube) {
 		updateAlgClick(lastSolveClick, "Pretty", kernel.getConjMoves(curScramble), solve)
 	}
 
-	function evtCallback(info, event) {
+	function giikerEvtCallback(info, event) {
 		if (info == 'disconnect') {
 			logohint.push('Bluetooth disconnected!');
 			renderStatus();
+			return typeof evtCallback == 'function' && evtCallback(info, event);
 		}
 	}
 
@@ -501,6 +503,9 @@ var giikerutil = execMain(function(CubieCube) {
 		solvedStateInv = new CubieCube();
 		moveTsList = [];
 		moveTsStart = 0;
+		scrambleLength = 0;
+		hackedSolvedCubieInv = null;
+		hackedCubie = new CubieCube();
 		slopeTd.html(slopeIcon + '0%');
 		updateAlgClick(algCubingClick, "Raw(N/A)");
 		updateAlgClick(lastSolveClick, "Pretty(N/A)");
@@ -512,7 +517,7 @@ var giikerutil = execMain(function(CubieCube) {
 		curRawCubie.fromFacelet(curRawState);
 		solvedStateInv.invFrom(curRawCubie);
 		GiikerCube.setCallback(giikerCallback);
-		GiikerCube.setEventCallback(evtCallback);
+		GiikerCube.setEventCallback(giikerEvtCallback);
 		if (!GiikerCube.isConnected()) {
 			return GiikerCube.init().then(function () {
 				logohint.push('Bluetooth successfully connected!');
@@ -525,7 +530,7 @@ var giikerutil = execMain(function(CubieCube) {
 	function stop() {
 		if (GiikerCube.isConnected()) {
 			return GiikerCube.stop().then(function () {
-				evtCallback('disconnect');
+				giikerEvtCallback('disconnect');
 			});
 		} else {
 			return Promise.resolve();
@@ -665,6 +670,9 @@ var giikerutil = execMain(function(CubieCube) {
 	return {
 		setCallback: function(func) {
 			callback = func;
+		},
+		setEventCallback: function(func) {
+			evtCallback = func;
 		},
 		markSolved: markSolved,
 		checkScramble: checkScramble,

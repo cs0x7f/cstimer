@@ -1661,6 +1661,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	}
 
+	function giikerEvtCallback(info, event) {
+		if (info == 'disconnect') {
+			DEBUG && console.log("Bluetooth Cube is disconnected");
+			$(document).trigger($.Event('keydown', { which: 27 }));
+		}
+	}
+
 	var resetCondition = "input|phases|preScrT?|isTrainScr|giiOri|useMilli|showDiff|smallADP|giiVRC|col-timer".split('|');
 
 	$(function() {
@@ -1679,6 +1686,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				stackmatTimer.setEnable(value[1]);
 				giikerTimer.setEnable(value[1]);
 				ganSmartTimer.setEnable(value[1]);
+				giikerutil.setEventCallback(giikerEvtCallback);
 			}
 			if (value[0] == 'showAvg') {
 				avgDiv.showAvgDiv(value[1]);
