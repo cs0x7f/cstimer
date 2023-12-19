@@ -26,6 +26,7 @@ var GiikerCube = execMain(function() {
 		var deviceName;
 
 		function init(device) {
+			clear();
 			deviceName = device.name.startsWith('Gi') ? 'Giiker' : 'Mi Smart';
 			return device.gatt.connect().then(function(gatt) {
 				_gatt = gatt;
@@ -143,6 +144,9 @@ var GiikerCube = execMain(function() {
 		}
 
 		function getBatteryLevel() {
+			if (!_gatt) {
+				return Promise.reject("Bluetooth Cube is not connected");
+			}
 			var _service;
 			var _read;
 			var _resolve;
@@ -169,11 +173,23 @@ var GiikerCube = execMain(function() {
 			});
 		}
 
+		function clear() {
+			var result = Promise.resolve();
+			if (_chrct) {
+				_chrct.removeEventListener('characteristicvaluechanged', onStateChanged);
+				result = _chrct.stopNotifications().catch($.noop);
+				_chrct = null;
+			}
+			_gatt = null;
+			deviceName = null;
+			return result;
+		}
+
 		return {
 			init: init,
 			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_RW],
 			getBatteryLevel: getBatteryLevel,
-			clear: $.noop
+			clear: clear
 		}
 	})();
 
@@ -645,6 +661,9 @@ var GiikerCube = execMain(function() {
 		}
 
 		function getBatteryLevel() {
+			if (!_gatt) {
+				return Promise.reject("Bluetooth Cube is not connected");
+			}
 			if (_service_v2data) {
 				return Promise.resolve([batteryLevel, deviceName + '*']);
 			} else if (_chrct_f7) {
@@ -765,15 +784,16 @@ var GiikerCube = execMain(function() {
 		$.parseV2Data = parseV2Data; // for debug
 
 		function clear() {
-			_service_data = null;
-			_service_meta = null;
-			_service_v2data = null;
 			var result = Promise.resolve();
 			if (_chrct_v2read) {
 				_chrct_v2read.removeEventListener('characteristicvaluechanged', onStateChangedV2);
 				result = _chrct_v2read.stopNotifications().catch($.noop);
 				_chrct_v2read = null;
 			}
+			_service_data = null;
+			_service_meta = null;
+			_service_v2data = null;
+			_gatt = null;
 			deviceName = null;
 			deviceMac = null;
 			prevMoves = [];
@@ -815,6 +835,7 @@ var GiikerCube = execMain(function() {
 		var WRITE_STATE = 51;
 
 		function init(device) {
+			clear();
 			_deviceName = device.name.startsWith('GoCube') ? 'GoCube' : 'Rubiks Connected'
 			return device.gatt.connect().then(function(gatt) {
 				_gatt = gatt;
@@ -917,15 +938,36 @@ var GiikerCube = execMain(function() {
 
 
 		function getBatteryLevel() {
+			if (!_write) {
+				return Promise.reject("Bluetooth Cube is not connected");
+			}
 			_write.writeValue(new Uint8Array([WRITE_BATTERY]).buffer);
-			return Promise.resolve([_batteryLevel, _deviceName]);
+			return new Promise(function (resolve) {
+				$.delayExec('getBatteryLevel', function () {
+					resolve([_batteryLevel, _deviceName]);
+				}, 1000);
+			});
+		}
+
+		function clear() {
+			var result = Promise.resolve();
+			if (_read) {
+				_read.removeEventListener('characteristicvaluechanged', onStateChanged);
+				result = _read.stopNotifications().catch($.noop);
+				_read = null;
+			}
+			_write = null;
+			_service = null;
+			_gatt = null;
+			_deviceName = null;
+			return result;
 		}
 
 		return {
 			init: init,
 			opservs: [SERVICE_UUID],
 			getBatteryLevel: getBatteryLevel,
-			clear: $.noop
+			clear: clear
 		};
 	})();
 
@@ -946,6 +988,7 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_GYRO = '00001004' + UUID_SUFFIX;
 
 		function init(device) {
+			clear();
 			_deviceName = device.name;
 			return device.gatt.connect().then(function(gatt) {
 				_gatt = gatt;
@@ -956,7 +999,7 @@ var GiikerCube = execMain(function() {
 			}).then(function(chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
-					DEBUG && console.log('[moyucube] init find chrct', chrct.uuid);
+					DEBUG && console.log('[moyucube]', 'init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_WRITE)) {
 						_chrct_write = chrct;
 					} else if (matchUUID(chrct.uuid, CHRCT_UUID_READ)) {
@@ -968,9 +1011,9 @@ var GiikerCube = execMain(function() {
 					}
 				}
 			}).then(function() {
-				_chrct_read.addEventListener('characteristicvaluechanged', onStateChanged.bind(null, 'read'));
-				_chrct_turn.addEventListener('characteristicvaluechanged', onStateChanged.bind(null, 'turn'));
-				_chrct_gyro.addEventListener('characteristicvaluechanged', onStateChanged.bind(null, 'gyro'));
+				_chrct_read.addEventListener('characteristicvaluechanged', onReadEvent);
+				_chrct_turn.addEventListener('characteristicvaluechanged', onTurnEvent);
+				_chrct_gyro.addEventListener('characteristicvaluechanged', onGyroEvent);
 				_chrct_read.startNotifications();
 				_chrct_turn.startNotifications();
 				_chrct_gyro.startNotifications();
@@ -983,11 +1026,19 @@ var GiikerCube = execMain(function() {
 		var prevCubie = new mathlib.CubieCube();
 		var timeOffset = 0;
 
-		function onStateChanged(key, event) {
-			if (key != 'turn') {
-				return;
-			}
+		function onReadEvent(event) {
 			var value = event.target.value;
+			DEBUG && console.log('[moyucube]', 'Received read event', value);
+		}
+
+		function onGyroEvent(event) {
+			var value = event.target.value;
+			DEBUG && console.log('[moyucube]', 'Received gyro event', value);
+		}
+
+		function onTurnEvent(event) {
+			var value = event.target.value;
+			DEBUG && console.log('[moyucube]', 'Received turn event', value);
 			parseTurn(value);
 		}
 
@@ -1027,7 +1078,7 @@ var GiikerCube = execMain(function() {
 				// 	calcTs = locTime;
 				// }
 				var m = axis * 3 + pow;
-				DEBUG && console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
+				DEBUG && console.log('[moyucube]', 'move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
 				mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				curFacelet = curCubie.toFaceCube();
@@ -1038,11 +1089,40 @@ var GiikerCube = execMain(function() {
 			}
 		}
 
+		function getBatteryLevel() {
+			if (!_gatt) {
+				return Promise.reject("Bluetooth Cube is not connected");
+			}
+			Promise.resolve([100, _deviceName]);
+		}
+
+		function clear() {
+			var result = Promise.resolve();
+			if (_chrct_read || _chrct_turn || _chrct_gyro) {
+				_chrct_read && _chrct_read.removeEventListener('characteristicvaluechanged', onReadEvent);
+				_chrct_turn && _chrct_turn.removeEventListener('characteristicvaluechanged', onTurnEvent);
+				_chrct_gyro && _chrct_gyro.removeEventListener('characteristicvaluechanged', onGyroEvent);
+				result = Promise.all([
+					_chrct_read && _chrct_read.stopNotifications().catch($.noop),
+					_chrct_turn && _chrct_turn.stopNotifications().catch($.noop),
+					_chrct_gyro && _chrct_gyro.stopNotifications().catch($.noop),
+				]);
+				_chrct_read = null;
+				_chrct_turn = null;
+				_chrct_gyro = null;
+			}
+			_chrct_write = null;
+			_service = null;
+			_gatt = null;
+			_deviceName = null;
+			return result;
+		}
+
 		return {
 			init: init,
 			opservs: [SERVICE_UUID],
-			getBatteryLevel: $.noop,
-			clear: $.noop
+			getBatteryLevel: getBatteryLevel,
+			clear: clear
 		}
 	})();
 
