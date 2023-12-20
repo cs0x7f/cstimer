@@ -237,7 +237,7 @@ var scramble = execMain(function(rn, rndEl) {
 			len = ~~m[2];
 		}
 		if (forDisplay) {
-			var scrTxtLen = scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1').length;
+			var scrTxtLen = scramble.replace(/<[^>]*>/g, '').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1').length;
 			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scrTxtLen, 10), 0.30) * 20) / 20) : 1;
 			sdiv.css('font-size', fontSize + 'em');
 			DEBUG && console.log('[scrFontSize]', fontSize);
