@@ -738,6 +738,25 @@ div.helptable ul {
 	max-height: 80vh;
 }
 
+#scrambleTxt .smrtScrDim {
+	filter: opacity(50%) blur(1px);
+}
+
+#scrambleTxt .smrtScrMrk {
+	color: #0d0;
+	font-size: 75%;
+}
+
+#scrambleTxt .smrtScrDim,
+#scrambleTxt .smrtScrCur,
+#scrambleTxt .smrtScrAct,
+#scrambleTxt .smrtScrMrk {
+	border-radius: 15% / 30%;
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+	display: inline-block;
+}
+
 #scrambleTxt.limit {
 	max-height: 150px;
 	max-height: 10.5rem;

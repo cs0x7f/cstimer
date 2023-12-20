@@ -592,6 +592,7 @@ var kernel = execMain(function() {
 
 		var csstmp =
 			"html,body,textarea,#leftbar{color:?;background-color:?}" +
+			".smrtScrCur{color:?;background-color:?}" +
 			"#leftbar{border-color:?}" +
 			"#logo{color:?;border-color:?;background-color:?}" +
 			".mybutton,.tab,.cntbar{border-color:?}" +
@@ -624,7 +625,7 @@ var kernel = execMain(function() {
 
 		// var cur_color = ["#000", "#efc", "#cda", "#ff0", "#dd0", "#000", "#dbb", "#fdd", "#fbb", "#000", "#dbb", "#00f", "#dbb"];
 		var cur_color = ["#000", "#efc", "#fdd", "#fbb", "#dbb", "#ff0", "#000"];
-		var col_map = [0, 1, 1|0x220, 5, 5|0x220, 6, 2|0x220, 2, 3, 0, 2|0x220, 4, 2|0x220, 1|0x220, 0, 2|0xef0, 2|0x220, 2|0x110, 0];
+		var col_map = [0, 1, 2, 0, 1|0x220, 5, 5|0x220, 6, 2|0x220, 2, 3, 0, 2|0x220, 4, 2|0x220, 1|0x220, 0, 2|0xef0, 2|0x220, 2|0x110, 0];
 		var col_props = ['font', 'back', 'board', 'button', 'link', 'logo', 'logoback'];
 
 		function useColorTemplate(value) {

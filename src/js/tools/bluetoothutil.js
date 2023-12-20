@@ -64,12 +64,11 @@ var scrHinter = execMain(function(CubieCube) {
 			if (next == 0 && i == 0) {
 				m = [m[0], m[1], (m[2] - pow + 7) % 4];
 			}
-			ret.push((i == next ? '`' : '') + 'URFDLB'.charAt(m[0]) + [null, "", "2", "'"][m[2]]);
+			if (i == next) ret.push(':');
+			ret.push('URFDLB'.charAt(m[0]) + [null, "", "2", "'"][m[2]]);
+			if (i == next) ret.push(':');
 		}
 		ret = ret.join(' ');
-		if (next != seq.length) {
-			ret += '`';
-		}
 		ret = kernel.getConjMoves(ret, true);
 		return ret;
 	}
@@ -84,7 +83,7 @@ var scrHinter = execMain(function(CubieCube) {
 		if (genState) {
 			toMoveFix = checkInSeq(state, genState, genScr);
 		}
-		if (toMoveFix == null || toMoveFix.indexOf('`') == -1) {
+		if (toMoveFix == null || toMoveFix.indexOf(':') == -1) {
 			toMoveRaw = checkInSeq(state, null, rawScr);
 			genState = null;
 			toMoveFix = null;
@@ -101,8 +100,27 @@ var scrHinter = execMain(function(CubieCube) {
 			genScr = kernel.parseScramble(genScr, "URFDLB");
 			toMoveFix = checkInSeq(state, genState, genScr);
 		}
-		var toMove = toMoveFix ? (rawScrTxt + '\n=> ' + toMoveFix) : toMoveRaw;
-		kernel.pushSignal('scrfix', toMove + (toMove.indexOf('`') == -1 ? ' <span style="color:green">\u2714</span>' : ''));
+		var toMove = toMoveFix ? scrambleToHtml(toMoveFix) : scrambleToHtml(toMoveRaw);
+		kernel.pushSignal('scrfix', toMove);
+	}
+
+	function scramblePartToHtml(part, cssClass) {
+		return part && $.map(part.split(' '), function (move) { return move && ("<span class='" + cssClass + "'>" + move.trim() + "</span>") }).join('');
+	}
+
+	function scrambleToHtml(scrTxt) {
+		var scrHtml = "";
+		var isScrambled = scrTxt.indexOf(':') == -1;
+		var scrParts = $.map(scrTxt.split(':', 3), function (part) { return part.trim() });
+		if (isScrambled) {
+			scrHtml += scramblePartToHtml(scrParts[0], 'smrtScrAct');
+			scrHtml += "<span class='smrtScrMrk'>&#x2713;</span>";
+		} else {
+			scrHtml += scramblePartToHtml(scrParts[0], 'smrtScrDim');
+			scrHtml += scramblePartToHtml(scrParts[1], 'smrtScrCur');
+			scrHtml += scramblePartToHtml(scrParts[2], 'smrtScrAct');
+		}
+		return scrHtml;
 	}
 
 	function checkScramble(curCubie) {
