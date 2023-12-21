@@ -1692,7 +1692,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				avgDiv.showAvgDiv(value[1]);
 			}
 			if (value[0] == 'giiVRC' && value[2] != 'set') {
-				giikerTimer.setEnable(getProp('input'));
+				giikerTimer.setVRC(getProp('input') == 'g' && value[1] != 'n');
 			}
 			if (['toolPos', 'scrHide', 'toolHide', 'statHide'].indexOf(value[0]) >= 0) {
 				updateTimerOffsetAsync(false);
