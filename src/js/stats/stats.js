@@ -346,11 +346,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 	var floatCfm = (function() {
 		var cfmDiv = $('<div style="text-align:center; font-family: initial;">');
 		var cfmTime = $('<span style="font-size:2.5em;"/>');
-		var cfmTxtR = $('<input type="text">').css('width', '8em');
-		var cfmDelR = $('<input type="button" data="d">').val("X");
-		var cfmScrR = $('<input type="text" readonly>').css('width', '8em');
-		var cfmDate = $('<input type="text" readonly>').css('width', '8em');
-		var cfmExt = $('<input type="text" readonly>').css('width', '8em');
+		var cfmTxtR = $('<input type="text">');
+		var cfmOkR = $('<input type="button" data="ok">').val("OK");
+		var cfmPenR = $('<input type="button" data="pen">').val("+2");
+		var cfmDnfR = $('<input type="button" data="dnf">').val("DNF");
+		var cfmDelR = $('<input type="button" data="del">').val("X");
+		var cfmScrR = $('<input type="text" readonly>');
+		var cfmDate = $('<input type="text" readonly>');
+		var cfmExt = $('<input type="text" readonly>');
 
 		var cfmIdx = 0;
 		var cfmIdxRow;
@@ -382,10 +385,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (!which) {
 				return;
 			}
-			if (which == 'p') {
-				var selected = {" OK ": 0, " +2 ": 2000, " DNF ": -1}[target.html()];
-				setPenalty(selected, cfmIdx);
-			} else if (which == 'd') {
+			if (which == 'ok') {
+				setPenalty(0, cfmIdx);
+			} else if (which == 'pen') {
+				setPenalty(2000, cfmIdx);
+			} else if (which == 'dnf') {
+				setPenalty(-1, cfmIdx);
+			} else if (which == 'del') {
 				if (delIdx(cfmIdx)) {
 					cfmIdx = undefined;
 					hideToTools();
@@ -437,18 +443,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var time = timesAt(cfmIdx);
 			var reviewElem = '';
 			if (time[4]) {
-				// reviewElem = $('<a target="_blank">' + STATS_REVIEW + '</a>').addClass('click');
-				// reviewElem.attr('href', getReviewUrl(time));
 				reviewElem = $('<span class="click" data="r">' + STATS_REVIEW + '</span>');
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}
-			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')
-				.append('<span class="click" data="c"> &#128203; </span>|<span class="click" data="p"> OK </span>|<span class="click" data="p"> +2 </span>|<span class="click" data="p"> DNF </span>| ', cfmDelR)
-				.append('<br>', $('<table style="display:inline-block;">').append(
-					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
+			cfmDiv.empty().append(cfmTime.addClass('click').attr('data', 'c'), $('<div>').addClass('cfmPrettyMPA').append(prettyMPA(time[0])))
+				.append($('<div>').addClass('cfmButtons').append(cfmOkR, cfmPenR, cfmDnfR, cfmDelR))
+				.append($('<table>').addClass('cfmTable').append(
 					$('<tr>').append('<td><span class="click" data="s">' + SCRAMBLE_SCRAMBLE + '</span></td>', $('<td>').append(cfmScrR)),
 					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
-					reviewElem
+					reviewElem,
+					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
 			cfmScrR.val(time[1]);
@@ -473,7 +477,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					kernel.pushSignal('reqrec', [timesAt(idx), idx]);
 				}]);
 			}
-			kernel.showDialog(params, 'cfm', 'Solves No.' + (idx + 1));
+			kernel.showDialog(params, 'cfm', 'Solve No.' + (idx + 1));
 		}
 
 		function setPenalty(value, idx) {
@@ -1709,6 +1713,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				floatCfm.setCfm(2000);
 			} else if (value[1] == 'DNF') {
 				floatCfm.setCfm(-1);
+			} else if (value[1] == 'showlast') {
+				if (times.length > 0) {
+					floatCfm.proc(times.length - 1, kernel.getProp('statinv') ? avgRow.prev() : title.next());
+				}
 			}
 		} else if (signal == 'ashow' && !value) {
 			table_ctrl.hideAll();

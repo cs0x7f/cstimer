@@ -1603,6 +1603,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		if (status == -1 && keyCode == 27) {
 			lcd.renderUtil(true);
 		}
+		// handle swipe gestures but only for specific timers
+		if ("sbig".indexOf(getProp('input')) >= 0) {
+			if (keyCode == 140 && status == -1) { // swipe left
+				kernel.pushSignal('ctrl', ['stats', 'undo']);
+			} else if (keyCode == 142 && status == -1) { // swipe up
+				kernel.pushSignal('ctrl', ['stats', 'showlast']);
+			}
+		}
 		switch (getProp('input')) {
 			case 't':
 			case 'l':

@@ -1182,27 +1182,74 @@ var kernel = execMain(function() {
 		return cc.ori || 0;
 	}
 
-	var longTouch = (function() {
-		var longTouchTid = 0;
+	var gestureRecognizer = (function () {
 
-		function startLongTouch() {
-			clearLongTouch();
-			longTouchTid = setTimeout(longTouchCallback, 2000);
+		var LONG_TOUCH_DURATION = 2000;
+		var SWIPE_THRESHOLD = 200;
+
+		var longTouchTid;
+		var startX;
+		var startY;
+
+		function setLongTouch() {
+			longTouchTid = setTimeout(fireLongTouch, LONG_TOUCH_DURATION);
 		}
 
 		function clearLongTouch() {
 			longTouchTid && clearTimeout(longTouchTid);
+			longTouchTid = null;
 		}
 
-		function longTouchCallback() {
+		function fireLongTouch() {
 			clearLongTouch();
-			timer.onkeydown({which: 28});
+			timer.onkeydown({ which: 28 });
+		}
+
+		function detectSwipe(diffX, diffY) {
+			var keyCode = 0;
+			if (Math.abs(diffX) > Math.abs(diffY)) {
+				if (diffX + SWIPE_THRESHOLD < 0) {
+					keyCode = 140; // F29: Swipe Left
+				} else if (diffX - SWIPE_THRESHOLD > 0) {
+					keyCode = 141; // F30: Swipe Right
+				}
+			} else {
+				if (diffY + SWIPE_THRESHOLD < 0) {
+					keyCode = 142; // F31: Swipe Up
+				} else if (diffY - SWIPE_THRESHOLD > 0) {
+					keyCode = 143; // F32: Swipe Down
+				}
+			}
+			if (keyCode > 0) {
+				timer.onkeydown({ which: keyCode });
+			}
+		}
+
+		function onTouchStart(event) {
+			clearLongTouch();
+			setLongTouch();
+			var touches = event.originalEvent.changedTouches;
+			if (touches && touches[0]) {
+				startX = touches[0].clientX;
+				startY = touches[0].clientY;
+			}
+		}
+
+		function onTouchEnd(event) {
+			clearLongTouch();
+			var touches = event.originalEvent.changedTouches;
+			if (touches && touches[0]) {
+				var diffX = touches[0].clientX - startX;
+				var diffY = touches[0].clientY - startY;
+				detectSwipe(diffX, diffY);
+			}
 		}
 
 		return {
-			startLongTouch: startLongTouch,
-			clearLongTouch: clearLongTouch
+			onTouchStart: onTouchStart,
+			onTouchEnd: onTouchEnd
 		};
+
 	})();
 
 	var keyback = true;
@@ -1232,13 +1279,13 @@ var kernel = execMain(function() {
 			if ($(e.target).is('.click')) {
 				return;
 			}
-			longTouch.startLongTouch();
+			gestureRecognizer.onTouchStart(e);
 			refocus();
 			timer.onkeydown({which: 32});
 			e.preventDefault && e.preventDefault();
 		});
 		$('#container').bind('touchend', function(e) {
-			longTouch.clearLongTouch();
+			gestureRecognizer.onTouchEnd(e);
 			if ($(e.target).is('.click')) {
 				return;
 			}
