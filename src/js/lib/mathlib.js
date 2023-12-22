@@ -763,12 +763,33 @@ var mathlib = (function() {
 		return ret;
 	}
 
+	SchreierSims.prototype.toKeyIdx = function(perm) {
+		var ret = [];
+		perm = perm || this.e;
+		for (var i = 0; i < this.keyIdx.length; i++) {
+			ret[i] = perm[this.keyIdx[i]];
+		}
+		return ret;
+	}
+
 	SchreierSims.prototype.permInv = function(perm) {
 		var ret = [];
 		for (var i = 0; i < perm.length; i++) {
 			ret[perm[i]] = i;
 		}
 		return ret;
+	}
+
+	SchreierSims.prototype.permCmp = function(perm1, perm2) {
+		if (perm1.length != perm2.length) {
+			return perm1.length - perm2.length;
+		}
+		for (var i = 0; i < perm1.length; i++) {
+			if (perm1[i] != perm2[i]) {
+				return perm1[i] - perm2[i];
+			}
+		}
+		return 0;
 	}
 
 	SchreierSims.prototype.isMember = function(p, depth) {
@@ -1204,9 +1225,10 @@ var mathlib = (function() {
 		DEBUG && console.log('[Subgroup Solver] coset space:', cosetSize);
 
 		this.genEx = [];
+		this.genExi = [];
 		this.genExMap = [];
-		var genExSet = new Set();
-		genExSet.add(this.permHash(this.sgsG.e));
+		var genExSet = new Map();
+		genExSet.set(this.permHash(this.sgsG.e), -1);
 		for (var i = 0; i < this.genG.length; i++) {
 			var perm = this.genG[i];
 			var pow = 1;
@@ -1215,14 +1237,19 @@ var mathlib = (function() {
 				if (genExSet.has(key)) {
 					break;
 				}
-				genExSet.add(key);
+				genExSet.set(key, this.genEx.length);
 				this.genEx.push(perm);
+				this.genExi.push(this.sgsG.permInv(perm));
 				this.genExMap.push([i, pow]);
 				perm = this.sgsG.permMult(this.genG[i], perm);
 				pow++;
 			}
 		}
 		this.glen = this.genEx.length;
+		for (var i = 0; i < this.glen; i++) {
+			var genInv = this.sgsG.permInv(this.genEx[i]);
+			this.genExMap[i][2] = genExSet.get(this.permHash(genInv));
+		}
 
 		this.canon = new CanonSeqGen(this.genEx);
 		this.canon.initTrie(2);
@@ -1266,13 +1293,13 @@ var mathlib = (function() {
 		DEBUG && console.log('[Subgroup Solver] prun table size:', this.prunTable[0].length);
 	}
 
-	SubgroupSolver.prototype.idaSearch = function(pidx, maxl, lm, moves, prunTable, callback) {
+	SubgroupSolver.prototype.idaSearch = function(pidx, maxl, lm, moves, perm, prunTable, callback) {
 		var nodePrun = prunTable[0][pidx];
 		if (nodePrun > maxl) {
 			return false;
 		}
 		if (maxl == 0) {
-			return callback(moves);
+			return callback(moves, perm);
 		}
 		var node = this.canon.trieNodes[lm];
 		var glenBase = pidx * ((this.glen + 31) >> 5);
@@ -1292,7 +1319,9 @@ var mathlib = (function() {
 				}
 				var nextCanon = node[midx];
 				moves.push(midx);
-				var ret = this.idaSearch(newpidx, maxl - 1, nextCanon ^ (nextCanon >> 31), moves, prunTable, callback);
+				// var newPerm = [];
+				var newPerm = this.sgsG.permMult(perm, this.genExi[midx]);
+				var ret = this.idaSearch(newpidx, maxl - 1, nextCanon ^ (nextCanon >> 31), moves, newPerm, prunTable, callback);
 				moves.pop();
 				if (ret) {
 					return ret;
@@ -1358,17 +1387,12 @@ var mathlib = (function() {
 			var tt = performance.now();
 			var s1tot = 0;
 			var s2tot = 0;
+			var permi = this.sgsG.permInv(perm);
 			if (onlyIDA || depth <= this.prunTable[0][this.prunTable[0].length - 1]) {
-				this.idaSearch(pidx, depth, 1, [], this.prunTable, function(moves) {
+				this.idaSearch(pidx, depth, 1, [], this.sgsG.toKeyIdx(permi), this.prunTable, function(moves, permKey) {
 					s1tot++;
-					var perms = [];
-					for (var k = 0; k < moves.length; k++) {
-						perms.push(this.genEx[moves[moves.length - k - 1]]);
-					}
-					perms.push(perm);
-					var finalPermKey = this.sgsG.permMMultKey(perms);
 					for (var k = 0; k < this.sgsG.keyIdx.length; k++) {
-						if (finalPermKey[k] != this.sgsG.keyIdx[k]) {
+						if (permKey[k] != this.sgsG.keyIdx[k]) {
 							return;
 						}
 					}
@@ -1398,13 +1422,8 @@ var mathlib = (function() {
 				var visited = new Map();
 				var size1 = 0;
 				var size2 = 0;
-				this.idaSearch(mpidx, mid, 1, [], this.prunTable, function(moves) {
-					var perms = [];
-					for (var k = 0; k < moves.length; k++) {
-						perms.push(this.genEx[moves[moves.length - k - 1]]);
-					}
-					var finalPermKey = this.sgsG.permMMultKey(perms);
-					var key = this.permHash(finalPermKey);
+				this.idaSearch(mpidx, mid, 1, [], this.sgsG.toKeyIdx(), this.prunTable, function(moves, permKey) {
+					var key = this.permHash(permKey);
 					size1++;
 					if (!visited.has(key)) {
 						visited.set(key, moves.slice());
@@ -1412,18 +1431,17 @@ var mathlib = (function() {
 				}.bind(this));
 
 				//search from mpidx to pidx
-				var permi = this.sgsG.permInv(perm);
-				this.idaSearch(mpidx, depth - mid, 1, [], prunTable2, function(moves) {
+				this.idaSearch(mpidx, depth - mid, 1, [], this.sgsG.toKeyIdx(), prunTable2, function(moves, permKey) {
 					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
-					var perms = [permi];
-					for (var k = 0; k < moves.length; k++) {
-						perms.push(this.genEx[moves[moves.length - k - 1]]);
-					}
-					var finalPermKey = this.sgsG.permMMultKey(perms);
+					var finalPermKey = this.sgsG.permMult(permKey, perm);
 					var key = this.permHash(finalPermKey);
 					size2++;
 					if (visited.has(key)) {
-						solution = [visited.get(key), moves.slice()];
+						solution = [];
+						for (var i = 0; i < moves.length; i++) {
+							solution.push(this.genExMap[moves[moves.length - 1 - i]][2]);
+						}
+						Array.prototype.push.apply(solution, visited.get(key));
 						return true;
 					}
 				}.bind(this));
@@ -1449,13 +1467,8 @@ var mathlib = (function() {
 			var perm = this.idx2coset[i];
 			var visited = new Set();
 			for (var maxl = 0; maxl <= depth; maxl++) {
-				this.idaSearch(i, maxl, 1, [], this.prunTable, function(moves) {
-					var perms = [];
-					for (var k = 0; k < moves.length; k++) {
-						perms.push(this.genEx[moves[moves.length - k - 1]]);
-					}
-					var finalPermKey = this.sgsG.permMMultKey(perms);
-					var key = this.permHash(finalPermKey);
+				this.idaSearch(i, maxl, 1, [], this.sgsG.toKeyIdx(), this.prunTable, function(moves, permKey) {
+					var key = this.permHash(permKey);
 					if (!visited.has(key)) {
 						stateCnt++;
 						visited.add(key);
