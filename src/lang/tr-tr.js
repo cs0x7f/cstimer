@@ -396,13 +396,14 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsetleri', [
-		['2-tür hamle R,U', "2gen", 25],
-		['2-tür hamle L,U', "2genl", 25],
+		['2-tür hamle R,U', "2gen", 0],
+		['2-tür hamle L,U', "2genl", 0],
 		['Roux hamleleri M,U', "roux", 25],
-		['3-tür hamle F,R,U', "3gen_F", 25],
-		['3-tür hamle R,U,L', "3gen_L", 25],
+		['3-tür hamle F,R,U', "3gen_F", 0],
+		['3-tür hamle R,U,L', "3gen_L", 0],
 		['3-tür hamle R,r,U', "RrU", 25],
-		['sadece yarım hamleler', "half", 25],
+		['Domino Subgroup', "333drud", 0],
+		['sadece yarım hamleler', "half", 0],
 		['son bölme + son katman (eski)', "lsll", 15]
 	]],
 	['Bandage küp', [

@@ -396,13 +396,14 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['Subconjuntos de 3x3x3', [
-		['Sólo movimientos R,U', "2gen", 25],
-		['Sólo movimientos L,U', "2genl", 25],
+		['Sólo movimientos R,U', "2gen", 0],
+		['Sólo movimientos L,U', "2genl", 0],
 		['Sólo movimientos de Roux M,U', "roux", 25],
-		['Sólo movimiéntos F,R,U', "3gen_F", 25],
-		['Sólo movimientos R,U,L', "3gen_L", 25],
+		['Sólo movimiéntos F,R,U', "3gen_F", 0],
+		['Sólo movimientos R,U,L', "3gen_L", 0],
 		['Sólo movimientos R,r,U', "RrU", 25],
-		['Sólo giros a medias', "half", 25],
+		['Domino Subgroup', "333drud", 0],
+		['Sólo giros a medias', "half", 0],
 		['última capa + último hueco (antiguo)', "lsll", 15]
 	]],
 	['Cubo con bloqueos', [

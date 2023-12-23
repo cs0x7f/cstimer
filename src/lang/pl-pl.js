@@ -396,13 +396,14 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3 etapy', [
-		['tylko ruchy R,U', "2gen", 25],
-		['tylko ruchy L,U', "2genl", 25],
+		['tylko ruchy R,U', "2gen", 0],
+		['tylko ruchy L,U', "2genl", 0],
 		['tylko ruchy M,U (Roux)', "roux", 25],
-		['tylko ruchy F,R,U', "3gen_F", 25],
-		['tylko ruchy R,U,L', "3gen_L", 25],
+		['tylko ruchy F,R,U', "3gen_F", 0],
+		['tylko ruchy R,U,L', "3gen_L", 0],
 		['tylko ruchy R,r,U', "RrU", 25],
-		['tylko podwójne ruchy', "half", 25],
+		['Domino Subgroup', "333drud", 0],
+		['tylko podwójne ruchy', "half", 0],
 		['ostatni slot + ostatnia warstwa', "lsll", 15]
 	]],
 	['Bandaged Cube', [

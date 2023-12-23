@@ -31,11 +31,11 @@
 		"gear": [[["U"],["R"],["F"]],["","2","3","4","5","6","'","2'","3'","4'","5'"]],
 		"sfl": [[["R","L"],["U","D"]],cubesuff], // Super Floppy Cube
 		"ufo": [[["A"],["B"],["C"],[["U","U'","U2'","U2","U3"]]]], // UFO
-		"2gen": [[["U"],["R"]],cubesuff], // 2-generator <R,U>
-		"2genl": [[["U"],["L"]],cubesuff], // 2-generator <L,U>
+		// "2gen": [[["U"],["R"]],cubesuff], // 2-generator <R,U>
+		// "2genl": [[["U"],["L"]],cubesuff], // 2-generator <L,U>
 		"roux": [[["U"],["M"]],cubesuff], // Roux-generator <M,U>
-		"3gen_F": [[["U"],["R"],["F"]],cubesuff], // 3-generator <F,R,U>
-		"3gen_L": [[["U"],["R","L"]],cubesuff], // 3-generator <R,U,L>
+		// "3gen_F": [[["U"],["R"],["F"]],cubesuff], // 3-generator <F,R,U>
+		// "3gen_L": [[["U"],["R","L"]],cubesuff], // 3-generator <R,U,L>
 		"RrU": [[["U"],["R","r"]],cubesuff], // 3-generator <R,r,U>
 		"RrUu": [[["U","u"],["R","r"]],cubesuff], // <R,r,U,u>
 		"minx2g": [[["U"],["R"]],minxsuff], // megaminx 2-gen

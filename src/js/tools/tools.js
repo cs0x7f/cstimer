@@ -87,7 +87,7 @@ var tools = execMain(function() {
 	function puzzleType(scrambleType) {
 		if (/^222(so|[236o]|eg[012]?|tc[np]|lsall|nb)$/.exec(scrambleType)) {
 			return "222";
-		} else if (/^(333(oh?|ni|f[mt]|custom)?|(z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|(zb|w?v|eo)ls|roux|RrU|half|easyx?c|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|nocache_333bldspec)$/.exec(scrambleType)) {
+		} else if (/^(333(oh?|ni|f[mt]|drud|custom)?|(z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|(zb|w?v|eo)ls|roux|RrU|half|easyx?c|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|nocache_333bldspec)$/.exec(scrambleType)) {
 			return "333";
 		} else if (/^(444([mo]|wca|yj|bld)?|4edge|RrUu)$/.exec(scrambleType)) {
 			return "444";
@@ -326,7 +326,7 @@ var tools = execMain(function() {
 	}
 
 	var lastTrain = null;
-	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|222(eg[012]?|tc[np]|lsall))$/;
+	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|333drud|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|222(eg[012]?|tc[np]|lsall))$/;
 
 	function isCurTrainScramble(scramble) {
 		return !!trainScrambleRe.exec((scramble || curScramble || [])[0]);

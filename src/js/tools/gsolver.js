@@ -508,39 +508,6 @@ var gsolver = (function() {
 			}
 		}
 
-		var halfSGS = null;
-		var halfSolv = null;
-
-		function halfGroupScramble(type, length) {
-			if (!halfSGS) {
-				var halfMoves = {"U2": 0x00, "R2": 0x11, "F2": 0x22, "D2": 0x30, "L2": 0x41, "B2": 0x52};
-				var gens = [];
-				for (var move in halfMoves) {
-					var perm = [];
-					for (var i = 0; i < 54; i++) {
-						perm[i] = i + 32;
-					}
-					var moved = cubeMove(String.fromCharCode.apply(null, perm), move);
-					for (var i = 0; i < 54; i++) {
-						perm[i] = moved.charCodeAt(i) - 32;
-					}
-					gens.push(perm);
-				}
-				halfSGS = new mathlib.SchreierSims(gens);
-				halfSolv = halfSolv || new mathlib.gSolver([
-					mathlib.SOLVED_FACELET,
-				], cubeMove, halfMoves);
-			}
-			var state = halfSGS.rndElem();
-			for (var i = 0; i < state.length; i++) {
-				state[i] = "URFDLB".charAt(~~(state[i] / 9));
-			}
-			var sol1 = halfSolv.search(state.join(''), 0);
-			return sol1.join(' ');
-		}
-
-		scrMgr.reg('half', halfGroupScramble);
-
 		return {
 			exec: exec333StepSolver,
 			move: cubeMove

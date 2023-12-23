@@ -396,13 +396,14 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
-		['2-gen R,U', "2gen", 25],
-		['2-gen L,U', "2genl", 25],
+		['2-gen R,U', "2gen", 0],
+		['2-gen L,U', "2genl", 0],
 		['Roux-2gen M,U', "roux", 25],
-		['3-gen F,R,U', "3gen_F", 25],
-		['3-gen R,U,L', "3gen_L", 25],
+		['3-gen F,R,U', "3gen_F", 0],
+		['3-gen R,U,L', "3gen_L", 0],
 		['3-gen R,r,U', "RrU", 25],
-		['không có bước kép', "half", 25],
+		['Domino Subgroup', "333drud", 0],
+		['không có bước kép', "half", 0],
 		['F2L cuối + tầng 3 ( kiểu cũ )', "lsll", 15]
 	]],
 	['Bandaged Cube', [

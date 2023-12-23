@@ -396,13 +396,14 @@ var scrdata = [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
-		['2-generator R,U', "2gen", 25],
-		['2-generator L,U', "2genl", 25],
+		['2-generator R,U', "2gen", 0],
+		['2-generator L,U', "2genl", 0],
 		['Roux-generator M,U', "roux", 25],
-		['3-generator F,R,U', "3gen_F", 25],
-		['3-generator R,U,L', "3gen_L", 25],
+		['3-generator F,R,U', "3gen_F", 0],
+		['3-generator R,U,L', "3gen_L", 0],
 		['3-generator R,r,U', "RrU", 25],
-		['Alleen halve draaien', "half", 25],
+		['Domino Subgroup', "333drud", 0],
+		['Alleen halve draaien', "half", 0],
 		['Laatste slot + laatste laag (oud)', "lsll", 15]
 	]],
 	['Bandaged Cube', [

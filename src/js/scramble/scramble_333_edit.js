@@ -947,6 +947,36 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(cases[0], cases[1], cases[2], cases[3]);
 	}
 
+	var subsetSGSs = {};
+
+	function subsetScramble(moves) {
+		var key = moves.join('|');
+		if (!subsetSGSs[key]) {
+			var gens = [];
+			for (var m = 0; m < moves.length; m++) {
+				var perm = [];
+				for (var i = 0; i < 54; i++) {
+					perm[i] = i + 32;
+				}
+				var moved = gsolver.rubiksCube.move(String.fromCharCode.apply(null, perm), moves[m]);
+				for (var i = 0; i < 54; i++) {
+					perm[i] = moved.charCodeAt(i) - 32;
+				}
+				gens.push(perm);
+			}
+			subsetSGSs[key] = new mathlib.SchreierSims(gens);
+		}
+		var solution = "";
+		do {
+			var state = subsetSGSs[key].rndElem();
+			for (var i = 0; i < state.length; i++) {
+				state[i] = "URFDLB".charAt(~~(state[i] / 9));
+			}
+			solution = search.solution(state.join(''), 21, 1e9, 50, 2);
+		} while (solution.length <= 3);
+		return solution.replace(/ +/g, ' ');
+	}
+
 	function genFacelet(facelet) {
 		return search.solution(facelet, 21, 1e9, 50, 2);
 	}
@@ -979,6 +1009,12 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		('oll', getOLLScramble, [ollfilter, ollprobs, getOLLImage])
 		('2gll', get2GLLScramble)
 		('sbrx', getSBRouxScramble)
+		('half', subsetScramble.bind(null, ["U2", "R2", "F2", "D2", "L2", "B2"]))
+		('333drud', subsetScramble.bind(null, ["U ", "R2", "F2", "D ", "L2", "B2"]))
+		('3gen_F', subsetScramble.bind(null, ["U ", "R ", "F "]))
+		('3gen_L', subsetScramble.bind(null, ["U ", "R ", "L "]))
+		('2gen', subsetScramble.bind(null, ["U ", "R "]))
+		('2genl', subsetScramble.bind(null, ["U ", "L "]))
 		('mt3qb', getMehta3QBScramble)
 		('mteole', getMehtaEOLEScramble)
 		('mttdr', getMehtaTDRScramble)
