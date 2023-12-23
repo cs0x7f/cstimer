@@ -162,6 +162,35 @@ textarea {
 	font-size: 0.2em;
 }
 
+#astouch {
+	position: fixed;
+	display: none;
+	width: 0;
+	height: 0;
+	font-family: Arial;
+	z-index: 120;
+	font-size: 4vmin;
+}
+
+#astouch > span {
+	position: absolute;
+	display: block;
+	text-align: center;
+	width: 3em;
+	height: 3em;
+	margin-left: -1.5em;
+	margin-top: -1.5em;
+	line-height: 3em;
+	border-radius: 100%;
+	opacity: 0.5;
+}
+
+#astouch > span.hit {
+	opacity: 1.0;
+	box-shadow: 0 0 1em;
+	font-weight: bolder;
+}
+
 #multiphase > #avgstr {
 	font-size: 0.3em;
 }

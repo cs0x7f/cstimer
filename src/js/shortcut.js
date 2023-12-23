@@ -1,6 +1,6 @@
 "use strict";
 
-var shortcuts= execMain(function(){
+var shortcuts = execMain(function(){
 	
 	/**
 	 * {keycode: [value, signal]}
@@ -55,19 +55,128 @@ var shortcuts= execMain(function(){
 		} else if (e.ctrlKey) {
 			action = ctrlMap[e.which];
 		}
-		if (action != undefined) {
-			if (action[1] == undefined) {
-				kernel.setProp(action[0][0], action[0][1]);
-			} else {
-				kernel.pushSignal(action[1], action[0]);
-			}
-			kernel.clrKey();
-			kernel.blur();
+		performAction(action);
+	}
+
+	function performAction(action) {
+		if (!action) {
+			return;
+		}
+		if (action[1] == undefined) {
+			kernel.setProp(action[0][0], action[0][1]);
+		} else {
+			kernel.pushSignal(action[1], action[0]);
+		}
+		kernel.clrKey();
+		kernel.blur();
+	}
+
+	var longTouchTid = 0;
+	var touchPoint = null;
+	var hitGesture = -1;
+
+	function getOffXY(e) {
+		var offX = e.pageX;
+		var offY = e.pageY;
+		if (event.type.startsWith('touch')) {
+			var ep = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+			offX = ep.pageX;
+			offY = ep.pageY;
+		}
+		return [offX, offY]
+	}
+
+	function onTouchStart(e) {
+		DEBUG && console.log('[shortcut] touch start', e);
+		clearLongTouch();
+		longTouchTid = setTimeout(longTouchCallback, 2000);
+		if (timer.getStatus() != -1) {
+			return;
+		}
+		touchPoint = getOffXY(e);
+		astDiv.css({
+			'left': touchPoint[0],
+			'top': touchPoint[1],
+			'opacity': 0.0
+		}).show();
+	}
+
+	function onTouchEnd(e) {
+		DEBUG && console.log('[shortcut] touch end', e);
+		clearLongTouch();
+		astDiv.hide();
+		if (hitGesture != -1) {
+			touchElem[hitGesture].removeClass('hit');
+			timer.softESC();
+			Promise.resolve().then(performAction.bind(null, gestures[hitGesture]));
+		}
+		touchPoint = null;
+		hitGesture = -1;
+	}
+
+	function onTouchMove(e) {
+		DEBUG && console.log('[shortcut] touch move', e);
+		if (!touchPoint) {
+			return;
+		}
+		var movePoint = getOffXY(e);
+		var moveDis = Math.hypot(movePoint[0] - touchPoint[0], movePoint[1] - touchPoint[1]);
+		if (hitGesture != -1) {
+			touchElem[hitGesture].removeClass('hit');
+		}
+		if (moveDis <= touchElem[0].width()) {
+			hitGesture = -1;
+			astDiv.css('opacity', moveDis / touchElem[0].width());
+		} else {
+			var theta = -Math.atan2(movePoint[1] - touchPoint[1], movePoint[0] - touchPoint[0]);
+			hitGesture = Math.floor(theta / Math.PI * 4 + 8.5) % 8;
+			astDiv.css('opacity', 1);
+			touchElem[hitGesture].addClass('hit');
+			timer.softESC();
 		}
 	}
-	
+
+	function clearLongTouch() {
+		longTouchTid && clearTimeout(longTouchTid);
+	}
+
+	function longTouchCallback() {
+		//todo
+		DEBUG && console.log('[shortcut] long touch callback');
+		clearLongTouch();
+		timer.onkeydown({which: 28});
+	}
+
+	var gestures = [
+		[['scramble', 'next'], 'ctrl', '->'],
+		[['stats', 'OK'], 'ctrl', 'OK'],
+		[['stats', '+2'], 'ctrl', '+2'],
+		[['stats', 'DNF'], 'ctrl', 'DNF'],
+		[['scramble', 'last'], 'ctrl', '<-'],
+		[['stats', 'cmt'], 'ctrl', '*'],
+		[['stats', 'undo'], 'ctrl', '\u232b'],
+		[['stats', 'cfm'], 'ctrl', '\u2315']
+	];
+	var touchElem = [];
+	var astDiv;
+
 	$(function() {
 		kernel.regListener('shortcut', 'keydown', onkeydown);
 		kernel.regProp('tools', 'useKSC', 0, PROPERTY_USEKSC, [true]);
+		astDiv = $('<div id="astouch">').appendTo('body');
+		var r = 1.5 / Math.sin(Math.PI / 8);
+		for (var i = 0; i < 8; i++) {
+			touchElem[i] = touchElem[i] || $('<span class="astouch"/>').appendTo(astDiv);
+			touchElem[i].css({
+				'left': r * Math.cos(i * Math.PI / 4) + 'em',
+				'top': -r * Math.sin(i * Math.PI / 4) + 'em'
+			}).text(gestures[i][2]);
+		}
 	});
+
+	return {
+		onTouchStart: onTouchStart,
+		onTouchMove: onTouchMove,
+		onTouchEnd: onTouchEnd
+	}
 });

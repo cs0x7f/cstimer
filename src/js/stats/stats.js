@@ -457,23 +457,42 @@ var stats = execMain(function(kpretty, round, kpround) {
 			cfmExt.val(time[4] ? JSON.stringify(time[4]) : "");
 		}
 
-		function proc(idx, target) {
-			cfmIdx = idx;
-			cfmIdxRow = target.parent();
+		function proc(idx, target, action) {
+			if (!target) {
+				cfmIdx = times.length - 1;
+				cfmIdxRow = kernel.getProp('statinv') ? avgRow.prev() : title.next();
+				if (cfmIdx < 0) {
+					return;
+				}
+			} else {
+				cfmIdx = idx;
+				cfmIdxRow = target.parent();
+			}
 			genDiv();
 			cfmDiv.css('font-size', '1.2em');
+			if (action == 'comment') {
+				hideToTools();
+				var newComment = prompt('Comment for solve No. ' + (cfmIdx + 1) + ':', cfmTxtR.val());
+				if (newComment == null) {
+					return;
+				}
+				console.log(newComment);
+				cfmTxtR.val(newComment);
+				procTxt();
+				return;
+			}
 			var params = [cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function() {
 				hideToTools();
-				setHighlight(times_stats_table, timesAt, idx, 1, 10, true);
+				setHighlight(times_stats_table, timesAt, cfmIdx, 1, 10, true);
 			}]];
-			var curTime = timesAt(idx);
+			var curTime = timesAt(cfmIdx);
 			if (curTime && curTime[4]) {
 				params.push([TOOLS_RECONS, function() {
 					hideToTools();
-					kernel.pushSignal('reqrec', [timesAt(idx), idx]);
+					kernel.pushSignal('reqrec', [timesAt(cfmIdx), cfmIdx]);
 				}]);
 			}
-			kernel.showDialog(params, 'cfm', 'Solves No.' + (idx + 1));
+			kernel.showDialog(params, 'cfm', 'Solves No.' + (cfmIdx + 1));
 		}
 
 		function setPenalty(value, idx) {
@@ -1709,6 +1728,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				floatCfm.setCfm(2000);
 			} else if (value[1] == 'DNF') {
 				floatCfm.setCfm(-1);
+			} else if (value[1] == 'cfm') {
+				floatCfm.proc();
+			} else if (value[1] == 'cmt') {
+				floatCfm.proc(0, 0, 'comment');
 			}
 		} else if (signal == 'ashow' && !value) {
 			table_ctrl.hideAll();
