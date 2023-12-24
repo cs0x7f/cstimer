@@ -1238,23 +1238,30 @@ var kernel = execMain(function() {
 		 * ontouch events might not work on microsoft surface pad or laptop,
 		 * so we add the mouse timer function to support such devices.
 		 */
+		var isValidDown = false;
 		$('#container').mousedown(function(e) {
 			$.waitUser.call();
 			if ($(e.target).is('.click')) {
 				return;
 			}
 			if (e.which == 1 && getProp('useMouse')) { //left button only
+				isValidDown = true;
+				shortcuts.onTouchStart(e);
 				timer.onkeydown({which: 32});
 				e.preventDefault && e.preventDefault();
 			}
 		});
-		$('#container').mouseup(function(e) {
-			if ($(e.target).is('.click')) {
-				return;
+		$('body').mousemove(function(e) {
+			if (e.which == 1 && isValidDown && getProp('useMouse')) {
+				shortcuts.onTouchMove(e);
 			}
-			if (e.which == 1 && getProp('useMouse')) {
+		});
+		$('body').mouseup(function(e) {
+			if (e.which == 1 && isValidDown && getProp('useMouse')) {
+				shortcuts.onTouchEnd(e);
 				timer.onkeyup({which: 32});
 				e.preventDefault && e.preventDefault();
+				isValidDown = false;
 			}
 		});
 
