@@ -1227,6 +1227,7 @@ var mathlib = (function() {
 			this.sgsM = null;
 			this.sgsMdepth = this.sgsG.e.length;
 		}
+		this.clen = midCosetSize;
 		DEBUG && console.log('[Subgroup Solver] coset space:', cosetSize, 'mid coset size:', midCosetSize);
 
 		this.genEx = [];
@@ -1276,7 +1277,7 @@ var mathlib = (function() {
 		this.coset2idx[this.midCosetHash(this.sgsG.e)] = 0;
 		var sumPrun = 0;
 		for (var i = 0; i < this.idx2coset.length; i++) {
-			if (i > midCosetSize) {
+			if (i >= midCosetSize) {
 				console.log('ERROR!');
 				break;
 			}
@@ -1300,23 +1301,42 @@ var mathlib = (function() {
 				stdMove = j;
 				continue;
 			}
-			for (var i = 0; i < this.idx2coset.length; i++) {
+			for (var i = 0; i < this.clen; i++) {
 				this.moveTable[i * this.glen + j] = this.moveTable[this.moveTable[i * this.glen + j - 1] * this.glen + stdMove];
 			}
 		}
-		this.prunTable = this.initPrunTable(0);
+		this.prunTable = this.initPrunTable(this.sgsG.e);
 		DEBUG && console.log('[Subgroup Solver] prun table size:', this.prunTable[0].length);
 	}
 
-	SubgroupSolver.prototype.idaMidSearch = function(pidx, maxl, lm, trieNodes, moves, perm, prunTable, callback) {
+	SubgroupSolver.prototype.idaMidSearch = function(pidx, maxl, lm, trieNodes, moves, curPerm, insertPerm, prunTable, callback) {
 		var nodePrun = prunTable[0][pidx];
 		if (nodePrun > maxl) {
 			return false;
 		}
 		if (maxl == 0) {
-			return callback(moves, perm);
+			if (pidx >= this.clen) {
+				moves.push(-1);
+				var newPerm = this.sgsG.permMult(curPerm, insertPerm);
+				var ret = callback(moves, newPerm);
+				moves.pop();
+				return ret;
+			}
+			return callback(moves, curPerm);
 		}
-		var node = trieNodes[lm];
+
+		if (pidx >= this.clen && lm != 0) {
+			var newpidx = prunTable[3][pidx - this.clen];
+			moves.push(-1);
+			var newPerm = this.sgsG.permMult(curPerm, insertPerm);
+			var ret = this.idaMidSearch(newpidx, maxl, 1, trieNodes, moves, newPerm, insertPerm, prunTable, callback);
+			moves.pop();
+			if (ret) {
+				return ret;
+			}
+		}
+
+		var node = trieNodes[lm || 1];
 		var glenBase = pidx * ((this.glen + 31) >> 5);
 
 		for (var mbase = 0; mbase < this.glen; mbase += 32) {
@@ -1328,14 +1348,15 @@ var mathlib = (function() {
 				mask -= 1 << midx;
 				midx += mbase;
 
-				var newpidx = this.moveTable[pidx * this.glen + midx];
+				var cidx = pidx % this.clen;
+				var newpidx = this.moveTable[cidx * this.glen + midx] + pidx - cidx;
 				if (DEBUG && prunTable[0][newpidx] >= maxl) {
 					debugger;
 				}
 				var nextCanon = node[midx];
 				moves.push(midx);
-				var newPerm = this.sgsG.permMult(perm, this.genExi[midx]);
-				var ret = this.idaMidSearch(newpidx, maxl - 1, nextCanon ^ (nextCanon >> 31), trieNodes, moves, newPerm, prunTable, callback);
+				var newPerm = this.sgsG.permMult(curPerm, this.genExi[midx]);
+				var ret = this.idaMidSearch(newpidx, maxl - 1, nextCanon ^ (nextCanon >> 31), trieNodes, moves, newPerm, insertPerm, prunTable, callback);
 				moves.pop();
 				if (ret) {
 					return ret;
@@ -1345,46 +1366,74 @@ var mathlib = (function() {
 		return false;
 	}
 
-	SubgroupSolver.prototype.initPrunTable = function(solvedIdx) {
+	SubgroupSolver.prototype.initPrunTable = function(perm, allowPre) {
+		var pidx = this.coset2idx[this.midCosetHash(perm)];
 		var prunTable = [];
 		var fartherMask = [];
 		var nocloserMask = [];
 		var maskBase = (this.glen + 31) >> 5;
-		for (var i = 0; i < this.idx2coset.length; i++) {
+		for (var i = 0; i < this.clen; i++) {
 			prunTable[i] = -1;
 		}
-		prunTable[solvedIdx] = 0;
+		var permMove = [];
+		if (allowPre) {
+			var permi = this.sgsG.permInv(perm);
+			for (var i = 0; i < this.clen; i++) {
+				prunTable.push(-1, -1);
+				permMove[i] = this.coset2idx[this.midCosetHash(this.sgsG.permMult(perm, this.idx2coset[i]))];
+				permMove[i + this.clen] = this.coset2idx[this.midCosetHash(this.sgsG.permMult(permi, this.idx2coset[i]))];
+			}
+			prunTable[0] = 0;
+		} else {
+			prunTable[pidx] = 0;
+		}
 		var fill = 1;
 		var lastfill = 0;
-		var cur = 0;
+		var curDepth = 0;
 		while (fill != lastfill) {
 			lastfill = fill;
-			for (var idx = 0; idx < this.idx2coset.length; idx++) {
-				if (prunTable[idx] != cur) {
+			for (var idx = 0; idx < prunTable.length; idx++) {
+				if (prunTable[idx] != curDepth) {
 					continue;
 				}
-				for (var j = 0; j < this.glen; j++) {
-					var newIdx = this.moveTable[idx * this.glen + j];
+				var cidx = idx % this.clen;
+				var midx = idx - cidx; // 0 - normal, 1 - after perm inserted, 2 - after permi inserted
+				for (var m = 0; m < this.glen; m++) {
+					var newIdx = this.moveTable[cidx * this.glen + m] + midx;
 					var newPrun = prunTable[newIdx];
 					if (prunTable[newIdx] == -1) {
-						prunTable[newIdx] = cur + 1;
-						newPrun = cur + 1;
+						prunTable[newIdx] = curDepth + 1;
+						newPrun = curDepth + 1;
 						fill++;
 					}
-					if (newPrun > cur) {
-						fartherMask[idx * maskBase + (j >> 5)] |= 1 << (j & 0x1f);
+					if (newPrun > curDepth) {
+						fartherMask[idx * maskBase + (m >> 5)] |= 1 << (m & 0x1f);
 					}
-					if (newPrun >= cur) {
-						nocloserMask[idx * maskBase + (j >> 5)] |= 1 << (j & 0x1f);
+					if (newPrun >= curDepth) {
+						nocloserMask[idx * maskBase + (m >> 5)] |= 1 << (m & 0x1f);
+					}
+				}
+				if (!allowPre || midx != 0) {
+					continue;
+				}
+				// insert perm/permi
+				for (var m = 0; m < 2; m++) {
+					var newIdx = permMove[cidx + (1 - m) * this.clen] + (m + 1) * this.clen;
+					if (prunTable[newIdx] == -1) {
+						prunTable[newIdx] = curDepth;
+						fill++;
 					}
 				}
 			}
-			cur++;
+			curDepth++;
 		}
-		return [prunTable, fartherMask, nocloserMask];
+		return [prunTable, fartherMask, nocloserMask, permMove];
 	}
 
-	SubgroupSolver.prototype.DissectionSolve = function(perm, maxl, onlyIDA, solCallback) {
+	SubgroupSolver.ONLY_IDA = 0x1;
+	SubgroupSolver.ALLOW_PRE = 0x2;
+
+	SubgroupSolver.prototype.DissectionSolve = function(perm, maxl, mask, solCallback) {
 		this.initTables();
 		if (this.sgsG.isMember(perm) < 0) {
 			console.log('[Subgroup Solver] NOT A MEMBER OF G');
@@ -1395,22 +1444,32 @@ var mathlib = (function() {
 			console.log('[Subgroup Solver] ERROR!');
 			return;
 		}
+		var onlyIDA = (mask & SubgroupSolver.ONLY_IDA) != 0;
+		var allowPre = (mask & SubgroupSolver.ALLOW_PRE) != 0 && this.isCosetSearch;
 		var ret = null;
+		var prunTable1 = this.prunTable;
 		var prunTable2 = null;
+		if (allowPre) {
+			prunTable2 = this.initPrunTable(perm, allowPre);
+			prunTable1 = prunTable2;
+		}
 		for (var depth = 0; depth <= maxl; depth++) {
 			var tt = performance.now();
 			var s1tot = 0;
 			var s2tot = 0;
 			var permi = this.sgsG.permInv(perm);
 			if (onlyIDA || depth <= this.prunTable[0][this.prunTable[0].length - 1]) {
-				ret = this.idaMidSearch(pidx, depth, 1, this.canon.trieNodes, [], this.sgsG.toKeyIdx(permi), this.prunTable, function(moves, permKey) {
+				ret = this.idaMidSearch(allowPre ? this.clen : pidx, depth,
+						1, this.canon.trieNodes, [], 
+						this.sgsG.toKeyIdx(allowPre ? null : permi), permi, prunTable1, 
+						function(moves, permKey) {
 					s1tot++;
 					if (this.sgsG.isSubgroupMemberByKey(permKey, this.sgsH) < 0) {
 						return;
 					}
 					var solution = [];
 					for (var i = 0; i < moves.length; i++) {
-						solution.push(this.genExMap[moves[i]].slice(0, 2));
+						solution.push(moves[i] == -1 ? -1 : this.genExMap[moves[i]].slice(0, 2));
 					}
 					return solCallback ? solCallback(solution) : solution;
 				}.bind(this));
@@ -1422,13 +1481,16 @@ var mathlib = (function() {
 			}
 			var mid = ~~(depth / 2);
 			if (!prunTable2) {
-				prunTable2 = this.initPrunTable(pidx);
+				prunTable2 = this.initPrunTable(perm, allowPre);
 			}
+			var preSize = allowPre ? 2 : 1;
 			var mpcnt = 0;
 			var mpsizes = [];
-			for (var mpidx = 0; mpidx < this.idx2coset.length; mpidx++) {
+			for (var mpidx = 0; mpidx < this.clen * preSize; mpidx++) {
 				//pidx at mid == mpidx
-				if (this.prunTable[0][mpidx] > mid || prunTable2[0][mpidx] > depth - mid) {
+				var mpidx1 = mpidx;
+				var mpidx2 = mpidx + (allowPre ? (mpidx >= this.clen ? -this.clen : this.clen * 2) : 0);
+				if (prunTable1[0][mpidx1] > mid || prunTable2[0][mpidx2] > depth - mid) {
 					continue;
 				}
 				mpcnt++;
@@ -1438,7 +1500,10 @@ var mathlib = (function() {
 				var size1 = 0;
 				var size2 = 0;
 				var perm0 = this.isCosetSearch ? this.sgsG.e : this.sgsG.toKeyIdx();
-				this.idaMidSearch(mpidx, mid, 1, this.canon.trieNodes, [], perm0, this.prunTable, function(moves, permKey) {
+				this.idaMidSearch(mpidx1, mid, 
+						0, this.canon.trieNodes, [], 
+						perm0, permi, prunTable1, 
+						function(moves, permKey) {
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(permKey);
@@ -1453,9 +1518,12 @@ var mathlib = (function() {
 				}.bind(this));
 
 				//search from mpidx to pidx
-				ret = this.idaMidSearch(mpidx, depth - mid, 1, this.canoni.trieNodes, [], perm0, prunTable2, function(moves, permKey) {
+				ret = this.idaMidSearch(mpidx2, depth - mid, 
+						1, this.canoni.trieNodes, [], 
+						perm0, perm, prunTable2, 
+						function(moves, permKey) {
 					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
-					var finalPermKey = this.sgsG.permMult(permKey, perm);
+					var finalPermKey = allowPre ? permKey : this.sgsG.permMult(permKey, perm);
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(finalPermKey);
@@ -1469,13 +1537,14 @@ var mathlib = (function() {
 						var sols2h = [];
 						var node = 1;
 						for (var i = 0; i < moves.length; i++) {
-							var move = this.genExMap[moves[moves.length - 1 - i]][2];
-							node = this.canon.trieNodes[node][move];
+							var move = moves[moves.length - 1 - i];
+							move = move == -1 ? -1 : this.genExMap[move][2];
+							node = move == -1 ? 1 : this.canon.trieNodes[node][move];
 							if (DEBUG && node == -1) {
 								debugger;
 							}
 							node ^= node >> 31;
-							sols2h.push(this.genExMap[move].slice(0, 2));
+							sols2h.push(move == -1 ? -1 : this.genExMap[move].slice(0, 2));
 						}
 						var sols1h = visited.get(key);
 						for (var i = 0; i < sols1h.length; i++) {
@@ -1483,12 +1552,12 @@ var mathlib = (function() {
 							var node2 = node;
 							for (var j = 0; j < sols1h[i].length; j++) {
 								var move = sols1h[i][j];
-								node2 = this.canon.trieNodes[node2][move];
+								node2 = move == -1 ? 1 : this.canon.trieNodes[node2][move];
 								if (node2 == -1) {
 									break;
 								}
 								node2 ^= node2 >> 31;
-								solution.push(this.genExMap[move].slice(0, 2));
+								solution.push(move == -1 ? -1 : this.genExMap[move].slice(0, 2));
 							}
 							if (node2 == -1) {
 								continue;
@@ -1518,12 +1587,15 @@ var mathlib = (function() {
 	SubgroupSolver.prototype.godsAlgo = function(depth) {
 		this.initTables();
 		var stateCnt = 0;
-		for (var i = 0; i < this.idx2coset.length; i++) {
+		for (var i = 0; i < this.clen; i++) {
 			var perm = this.idx2coset[i];
 			var visited = new Set();
 			for (var maxl = 0; maxl <= depth; maxl++) {
 				var perm0 = this.isCosetSearch ? this.sgsG.e : this.sgsG.toKeyIdx();
-				this.idaMidSearch(i, maxl, 1, this.canon.trieNodes, [], perm0, this.prunTable, function(moves, permKey) {
+				this.idaMidSearch(i, maxl, 
+						1, this.canon.trieNodes, [], 
+						perm0, null, this.prunTable, 
+						function(moves, permKey) {
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(permKey);
