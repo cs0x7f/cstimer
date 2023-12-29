@@ -74,7 +74,7 @@ var scrHinter = execMain(function(CubieCube) {
 	}
 
 	function checkState(state) {
-		if (!rawScrTxt || (!DEBUG && !GiikerCube.isConnected())
+		if (!rawScrTxt || (!DEBUGBL && !GiikerCube.isConnected())
 				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0) {
 			return;
 		}
@@ -221,7 +221,7 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		statusDiv.empty();
 		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick)));
-		if (GiikerCube.isConnected() || DEBUG && deviceName) {
+		if (GiikerCube.isConnected() || DEBUGBL && deviceName) {
 			statusDiv.append($('<tr>').append(batteryTd, slopeTd))
 				.append($('<tr>').append($('<td colspan=2>').append(resetClick.unbind('click').click(markSolved))))
 				.append($('<tr>').append($('<td>').append(algCubingClick),$('<td>').append(lastSolveClick)))
