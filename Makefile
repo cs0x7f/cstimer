@@ -59,6 +59,7 @@ tools/cross.js \
 tools/eoline.js \
 tools/roux1.js \
 tools/gsolver.js \
+tools/thistlethwaite.js \
 tools/bluetoothutil.js \
 tools/metronome.js \
 tools/onlinecomp.js \

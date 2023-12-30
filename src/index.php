@@ -59,6 +59,7 @@
   <script type="text/javascript" src="js/tools/eoline.js"></script>
   <script type="text/javascript" src="js/tools/roux1.js"></script>
   <script type="text/javascript" src="js/tools/gsolver.js"></script>
+  <script type="text/javascript" src="js/tools/thistlethwaite.js"></script>
   <script type="text/javascript" src="js/tools/bluetoothutil.js"></script>
   <script type="text/javascript" src="js/tools/metronome.js"></script>
   <script type="text/javascript" src="js/tools/onlinecomp.js"></script>

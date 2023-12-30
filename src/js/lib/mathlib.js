@@ -1223,6 +1223,9 @@ var mathlib = (function() {
 				this.sgsMdepth = i;
 				midCosetSize *= this.sgsG.i2t[i].length;
 			}
+		} else if (cosetSize <= maxCosetSize) { // subgroup <H>
+			this.sgsM = new SchreierSims(this.genH);
+			midCosetSize = cosetSize;
 		} else { // trivial subgroup <G>
 			this.sgsM = null;
 			this.sgsMdepth = this.sgsG.e.length;
@@ -1428,6 +1431,18 @@ var mathlib = (function() {
 			curDepth++;
 		}
 		return [prunTable, fartherMask, nocloserMask, permMove];
+	}
+	
+	// 0 - normal, 1 - solved, 2 - unsolvable
+	SubgroupSolver.prototype.checkPerm = function(perm) {
+		this.initTables();
+		if (this.sgsH.isMember(perm) >= 0) {
+			return 1;
+		} else if (this.sgsG.isMember(perm) < 0) {
+			return 2;
+		} else {
+			return 0;
+		}
 	}
 
 	SubgroupSolver.ONLY_IDA = 0x1;
