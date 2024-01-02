@@ -14,6 +14,7 @@
   <script type="text/javascript" src="js/lib/sha256.js"></script>
   <script type="text/javascript" src="js/lib/mersennetwister.js"></script>
   <script type="text/javascript" src="js/lib/mathlib.js"></script>
+  <script type="text/javascript" src="js/lib/grouplib.js"></script>
   <script type="text/javascript" src="js/lib/sbtree.js"></script>
   <script type="text/javascript" src="js/lib/sqlfile.js"></script>
   <script type="text/javascript" src="js/lib/tdconverter.js"></script>

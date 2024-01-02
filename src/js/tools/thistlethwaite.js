@@ -11,7 +11,7 @@ var thistlethwaite = (function() {
 	var middleGroup = [
 		null,
 		["U ", "R2", "F2", "D ", "L2", "B2", "R U2 D2 L U2 D2 R"],
-		null,
+		["U2", "R2", "F2", "D2", "L2", "B2", "U R2 U' L2 U R2 U' L2"],
 		null
 	]
 	var gens = [];
@@ -52,7 +52,7 @@ var thistlethwaite = (function() {
 			gens[i] = move2gen(stepMoves[i]);
 		}
 		for (var i = 0; i < stepMoves.length; i++) {
-			solvs[i] = new mathlib.SubgroupSolver(gens[i], gens[i + 1], middleGroup[i] && move2gen(middleGroup[i]));
+			solvs[i] = new grouplib.SubgroupSolver(gens[i], gens[i + 1], middleGroup[i] && move2gen(middleGroup[i]));
 			solvs[i].initTables();
 		}
 	}

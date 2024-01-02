@@ -14,6 +14,7 @@ lib/utillib.js \
 lib/sha256.js \
 lib/mersennetwister.js \
 lib/mathlib.js \
+lib/grouplib.js \
 lib/sbtree.js \
 lib/sqlfile.js \
 lib/tdconverter.js \

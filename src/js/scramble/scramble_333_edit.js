@@ -964,7 +964,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 				}
 				gens.push(perm);
 			}
-			subsetSGSs[key] = new mathlib.SchreierSims(gens);
+			subsetSGSs[key] = new grouplib.SchreierSims(gens);
 		}
 		var solution = "";
 		do {
