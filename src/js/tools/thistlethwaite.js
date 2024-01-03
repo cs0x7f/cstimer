@@ -10,8 +10,8 @@ var thistlethwaite = (function() {
 	];
 	var middleGroup = [
 		null,
-		["U ", "R2", "F2", "D ", "L2", "B2", "R U2 D2 L U2 D2 R"],
-		["U2", "R2", "F2", "D2", "L2", "B2", "U R2 U' L2 U R2 U' L2"],
+		["U ", "R2", "F2", "D ", "L2", "B2", "R U R U R U' R' U' R' U'"],
+		["U2", "R2", "F2", "D2", "L2", "B2", "U D"],
 		null
 	]
 	var gens = [];
