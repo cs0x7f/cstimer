@@ -377,20 +377,18 @@ var scrdata = [
 		['Blocco 1x2x3', "sia123", 25],
 		['Blocco 2x2x2', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['torsione metrica', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Stile Jaap', "ufo", 25]
 	]],
-	['Altro', [
-		['FTO (Giro faccia Ottaedro)', "fto", 30]
+	['FTO (Giro faccia Ottaedro)', [
+		['random move', "fto", 30]
 	]],
 	['===SPECIALI===', [
 		['--', "blank", 0]

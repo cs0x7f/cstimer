@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 blok', "sia123", 25],
 		['2x2x2 blok', "sia222", 25]
 	]],
-	['Firkant-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Firkant-2', "sq2", 20],
+		['Super Firkant-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Firkant-1', [
-		['Rotation metrik', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap stil', "ufo", 25]
 	]],
-	['Andet', [
-		['FTO (Side Rotér Oktahedron)', "fto", 30]
+	['FTO (Side Rotér Oktahedron)', [
+		['tilfældig træk', "fto", 30]
 	]],
 	['===SPECIEL===', [
 		['--', "blank", 0]

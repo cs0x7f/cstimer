@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 block', "sia123", 25],
 		['2x2x2 block', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
-		['FTO (Face-Turning Octahedron)', "fto", 30]
+	['FTO (Face-Turning Octahedron)', [
+		['random move', "fto", 30]
 	]],
 	['===SPECIAL===', [
 		['--', "blank", 0]
@@ -503,8 +501,8 @@ var PROPERTY_STATSSUM = 'Show sum in time list';
 var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'Statistical indicators';
 var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_HLPBS = 'Highlight PBs';
-var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bolder|None';
+var PROPERTY_HLPBS = 'Highlight PB\'s';
+var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bold|None';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var PROPERTY_TOOLSFUNC = 'Selected Functions';
 var PROPERTY_TRIM = 'Number of solves trimmed at better side';

@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'DOAR';
 var PROPERTY_SR = 'Com sessão';
 var PROPERTY_USEINS = 'usar inspeção da WCA';
 var PROPERTY_USEINS_STR = 'Sempre|Exceto BLD|Nunca';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Mostrar um ícone quando a inspeção estiver habilitada';
 var PROPERTY_VOICEINS = 'aviso de voz da inspeção da WCA';
 var PROPERTY_VOICEINS_STR = 'nenhuma|voz masculina|voz feminina';
 var PROPERTY_VOICEVOL = 'Volume de voz';
@@ -65,11 +65,11 @@ var TOOLS_HUGESTATS = 'estatísticas de sessão cruzada';
 var TOOLS_DISTRIBUTION = 'Distribuição dos tempos';
 var TOOLS_TREND = 'Gráfico dos tempos';
 var TOOLS_METRONOME = 'Metrônomo';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_RECONS = 'Reconstruir';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
-var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_TRAINSTAT = 'Status do treinamento.';
+var TOOLS_BLDHELPER = 'Auxiliar de BLD';
 var TOOLS_CFMTIME = 'Confirmar tempo';
 var TOOLS_SOLVERS = 'Solvers';
 var TOOLS_DLYSTAT = 'Daily Statistics';
@@ -134,7 +134,7 @@ var PROPERTY_AHIDE = 'Esconder TODOS os elementos enquanto se resolve';
 var SCRAMBLE_LAST = 'último';
 var SCRAMBLE_NEXT = 'próximo';
 var SCRAMBLE_SCRAMBLE = ' embaralhamento';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = 'Embaralhamento';
 var SCRAMBLE_LENGTH = 'tamanho';
 var SCRAMBLE_INPUT = 'colocar embaralhamento(s)';
 var PROPERTY_VRCSPEED = 'velocidade base do VRC (tps)';
@@ -190,7 +190,7 @@ var scrdata = [
 		['3x3x3 para novatos', "333noob", 25],
 		['Apenas meios', "edges", 0],
 		['Apenas cantos', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['Auxiliar de BLD', "nocache_333bldspec", 0],
 		['3x3x3 com os pés', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],
@@ -212,7 +212,7 @@ var scrdata = [
 		['cruz resolvida', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['cruz fácil', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Xcross fácil', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -245,14 +245,14 @@ var scrdata = [
 	['4x4x4', [
 		["WCA", "444wca", -40],
 		['movimentos aleatórios', "444m", 40],
-		['SiGN', "444", 40],
+		['Criar conta', "444", 40],
 		['YJ', "444yj", 40],
 		['Meios do 4x4x4', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
-		['SiGN', "555", 60],
+		['Criar conta', "555", 60],
 		['Meios do 5x5x5', "5edge", 8]
 	]],
 	['6x6x6', [
@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 block', "sia123", 25],
 		['2x2x2 block', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Other', [
-		['FTO (Face-Turning Octahedron)', "fto", 30]
+	['FTO (Face-Turning Octahedron)', [
+		['movimento aleatório', "fto", 30]
 	]],
 	['===ESPECIAIS===', [
 		['--', "blank", 0]

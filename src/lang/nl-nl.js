@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 block', "sia123", 25],
 		['2x2x2 block', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Overig', [
-		['FTO (Face-Turning Octahedron)', "fto", 30]
+	['FTO (Face-Turning Octahedron)', [
+		['willekeurige draai', "fto", 30]
 	]],
 	['===SPECIAAL===', [
 		['--', "blank", 0]
@@ -474,7 +472,7 @@ var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'Gemiddelde';
-var STATS_SUM = 'sum';
+var STATS_SUM = 'som';
 var STATS_SOLVE = 'Opgelost';
 var STATS_TIME = 'Tijd';
 var STATS_SESSION = 'Sessie';

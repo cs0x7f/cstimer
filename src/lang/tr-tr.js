@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 blok', "sia123", 25],
 		['2x2x2 blok', "sia222", 25]
 	]],
-	['Kare-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Kare-2', "sq2", 20],
+		['Süper Kare-1', "ssq1t", 20]
 	]],
 	['süper disket', [
 		[' ', "sfl", 25]
 	]],
-	['Süper Kare-1', [
-		['büküm metriği', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap Stili', "ufo", 25]
 	]],
-	['diğer', [
-		['FTO (Yüz-Döndüren-Octahedron)', "fto", 30]
+	['FTO (Yüz-Döndüren-Octahedron)', [
+		['Rastgele hamle', "fto", 30]
 	]],
 	['===ÖZEL===', [
 		['--', "blank", 0]

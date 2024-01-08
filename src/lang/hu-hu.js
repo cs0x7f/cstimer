@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3-as blokk', "sia123", 25],
 		['2x2x2-es blokk', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['tekerési rendszer', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap stílus', "ufo", 25]
 	]],
-	['Egyéb', [
-		['FTO (Oldalain forduló oktaéder)', "fto", 30]
+	['FTO (Oldalain forduló oktaéder)', [
+		['véletlen mozdulat', "fto", 30]
 	]],
 	['===KÜLÖNLEGES===', [
 		['--', "blank", 0]

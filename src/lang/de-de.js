@@ -10,7 +10,7 @@ var BUTTON_DONATE = 'Spenden';
 var PROPERTY_SR = 'Mit Sitzung';
 var PROPERTY_USEINS = 'WCA-Inspektion benutzen';
 var PROPERTY_USEINS_STR = 'Immer|Ausgenommen blind|Nie';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'Symbol anzeigen, wenn Inspektion aktiviert ist';
 var PROPERTY_VOICEINS = 'Sprachansage für WCA-Inspektion';
 var PROPERTY_VOICEINS_STR = 'keine|männliche Stimme|weibliche Stimme';
 var PROPERTY_VOICEVOL = 'Sprachlautstärke';
@@ -69,7 +69,7 @@ var TOOLS_RECONS = 'Rekonstruieren';
 var TOOLS_RECONS_NODATA = 'Keine Lösung gefunden.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Trainingsstatistik.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_BLDHELPER = 'BLD-Helfer';
 var TOOLS_CFMTIME = 'Zeit bestätigen';
 var TOOLS_SOLVERS = 'Löser';
 var TOOLS_DLYSTAT = 'Daily Statistics';
@@ -190,7 +190,7 @@ var scrdata = [
 		['3x3x3 für Anfänger', "333noob", 25],
 		['nur Kanten', "edges", 0],
 		['nur Ecken', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['BLD-Helfer', "nocache_333bldspec", 0],
 		['3x3 mit Füßen', "333ft", 0],
 		['Angepasst', "333custom", 0]
 	]],
@@ -212,7 +212,7 @@ var scrdata = [
 		['Kreuz gelöst', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['einfaches Kreuz', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Einfaches X-Cross', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 Block', "sia123", 25],
 		['2x2x2 Block', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['Drehmetrik', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap Stil', "ufo", 25]
 	]],
-	['Andere', [
-		['FTO (Face-Turning Octahedron)', "fto", 30]
+	['FTO (Face-Turning Octahedron)', [
+		['zufällige Bewegung', "fto", 30]
 	]],
 	['===Spezial===', [
 		['--', "blank", 0]
@@ -474,7 +472,7 @@ var STATS_ALERTMG = 'Alle Zeiten der Sitzung [%f] an das Ende von Sitzung [%t] a
 var STATS_PROMPTSPL = 'Nummer des neuesten Zeit-Splits der Sitzung [%s]?';
 var STATS_ALERTSPL = 'Soll geteilt werden, oder mindestens eine Zeit übrig lassen';
 var STATS_AVG = 'Mittelwert';
-var STATS_SUM = 'sum';
+var STATS_SUM = 'Summe';
 var STATS_SOLVE = 'Versuch';
 var STATS_TIME = 'Zeit';
 var STATS_SESSION = 'Sitzung';
@@ -499,12 +497,12 @@ var PROPERTY_SCR2SS = 'neue Sitzung erstellen, wenn Scramble-Typ gewechselt wird
 var PROPERTY_SS2SCR = 'Scramble-Typ wiederherstellen wenn Sitzung gewechselt wird';
 var PROPERTY_SS2PHASES = 'Multi-Phase Timen wiederherstellen, wenn Sitzung gewechselt wird';
 var PROPERTY_STATINV = 'umgekehrte Zeitliste';
-var PROPERTY_STATSSUM = 'Show sum in time list';
+var PROPERTY_STATSSUM = 'Summe in der Zeitliste anzeigen';
 var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'Statistische Indikatoren';
 var PROPERTY_STATALU = 'Angepasster statistischer Indikator';
-var PROPERTY_HLPBS = 'Highlight PBs';
-var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bolder|None';
+var PROPERTY_HLPBS = 'PBs hervorheben';
+var PROPERTY_HLPBS_STR = 'Dunkelorange wie WCA|Wie Linksfarbe|Fettdruck|Keiner';
 var PROPERTY_DELMUL = 'Mehrfach-Löschung aktivieren';
 var PROPERTY_TOOLSFUNC = 'Ausgewählte Funktionen';
 var PROPERTY_TRIM = 'Anzahl der Versuche, die auf beiden Seiten getrimmt wurden';
@@ -534,7 +532,7 @@ var BGIMAGE_OPACITY = 'Deckkraft des Hintergrundbilds';
 var BGIMAGE_IMAGE = 'Hintergrundbild';
 var BGIMAGE_IMAGE_STR = 'keine|manuell|CCT';
 var SHOW_AVG_LABEL = 'Durchnitts-Label anzeigen';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
+var SHOW_DIFF_LABEL = 'Differenzlabel anzeigen';
 var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
 var USE_LOGOHINT = 'Hinweis-Meldungen im Logo';
 var TOOLS_SCRGEN = 'Scramble-Generator';

@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3', "sia123", 25],
 		['2x2x2', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['mètrica de girar', "ssq1t", 20]
-	]],
 	['OVNI', [
 		['Estil Jaap', "ufo", 25]
 	]],
-	['Altres', [
-		['FTO (Octaedre amb cares rotatòries)', "fto", 30]
+	['FTO (Octaedre amb cares rotatòries)', [
+		['moviment aleatori', "fto", 30]
 	]],
 	['===Especials===', [
 		['--', "blank", 0]

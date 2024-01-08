@@ -377,20 +377,18 @@ var scrdata = [
 		['1x2x3 blok', "sia123", 25],
 		['2x2x2 blok', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['twist metrika', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Jaap style', "ufo", 25]
 	]],
-	['"Ostatní"', [
-		['PSO (Přední Soutěžní Osmistěn)', "fto", 30]
+	['PSO (Přední Soutěžní Osmistěn)', [
+		['náhodný tah', "fto", 30]
 	]],
 	['==SPECIÁLNÍ==', [
 		['--', "blank", 0]

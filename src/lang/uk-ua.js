@@ -377,20 +377,18 @@ var scrdata = [
 		['Блок 1х2х3', "sia123", 25],
 		['Блок 2х2х2', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['twist metric', "ssq1t", 20]
-	]],
 	['НЛО', [
 		['Jaap style', "ufo", 25]
 	]],
-	['Інше', [
-		['FTO (Face-Turning Octahedron)', "fto", 30]
+	['FTO (Face-Turning Octahedron)', [
+		['random move', "fto", 30]
 	]],
 	['===СПЕЦІАЛЬНЕ===', [
 		['--', "blank", 0]

@@ -377,20 +377,18 @@ var scrdata = [
 		['Block 1x2x3', "sia123", 25],
 		['Bloc 2x2x2', "sia222", 25]
 	]],
-	['Square-2', [
-		[' ', "sq2", 20]
+	['Square', [
+		['Square-2', "sq2", 20],
+		['Super Square-1', "ssq1t", 20]
 	]],
 	['Super Floppy', [
 		[' ', "sfl", 25]
 	]],
-	['Super Square-1', [
-		['torsion métrique', "ssq1t", 20]
-	]],
 	['UFO', [
 		['Style Jaap', "ufo", 25]
 	]],
-	['Autre', [
-		['FTO (Face-Turning Octahedron)', "fto", 30]
+	['FTO (Face-Turning Octahedron)', [
+		['mouvements aléatoires', "fto", 30]
 	]],
 	['=== SPÉCIAL ===', [
 		['--', "blank", 0]
@@ -503,8 +501,8 @@ var PROPERTY_STATSSUM = 'Afficher le total dans la liste des temps';
 var PROPERTY_STATTHRES = 'Afficher le temps cible de la meilleure session';
 var PROPERTY_STATAL = 'Indicateurs statistiques';
 var PROPERTY_STATALU = 'Indicateur de statistiques personnalisé';
-var PROPERTY_HLPBS = 'Highlight PBs';
-var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bolder|None';
+var PROPERTY_HLPBS = 'Surligner les PBs';
+var PROPERTY_HLPBS_STR = 'Orange foncé en WCA|En tant que couleur de lien|Bolder|Aucun';
 var PROPERTY_DELMUL = 'Activer la suppression multiple';
 var PROPERTY_TOOLSFUNC = 'Fonctions sélectionnées';
 var PROPERTY_TRIM = 'Nombre de résolutions élaguées à chaque extrémité.';
@@ -534,7 +532,7 @@ var BGIMAGE_OPACITY = 'Opacité du fond ';
 var BGIMAGE_IMAGE = 'Image de fond';
 var BGIMAGE_IMAGE_STR = 'Aucune|Personnalisée|CCT';
 var SHOW_AVG_LABEL = 'Afficher les moyennes en cours';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
+var SHOW_DIFF_LABEL = 'Afficher l\'étiquette de différence';
 var SHOW_DIFF_LABEL_STR = '-Vert+Rouge|-Rouge+Vert|Normal|Aucun';
 var USE_LOGOHINT = 'Afficher des messages dans le bloc du logo';
 var TOOLS_SCRGEN = 'Générateur de mélange';
