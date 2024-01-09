@@ -801,7 +801,7 @@ var scramble = execMain(function(rn, rndEl) {
 		], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
-		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['n', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);
+		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['c', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);
 		kernel.regProp('scramble', 'scrType', ~5, 'Scramble Type', ['333'], 3);
 
 		scrLen.change(genScramble);
