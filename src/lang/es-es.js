@@ -250,6 +250,11 @@ var scrdata = [
 		['Aristas 4x4', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
+	['Cubo de 444 Yau', [
+		['UD center solved', "444ctud", 0],
+		['3 edges solved', "444ud3c", 0],
+		['Cross solved', "444yauf2l", 0]
+	]],
 	['Cubo de 555', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],

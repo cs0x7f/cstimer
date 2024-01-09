@@ -1,6 +1,6 @@
 "use strict";
 
-var scramble_444 = (function(rn, Cnk, circle) {
+var scramble_444 = (function(Cnk, circle) {
 
   function createArray(length1, length2) {
     var result, i;
@@ -332,7 +332,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
     var i_0;
     $$init_1(this);
     for (i_0 = 0; i_0 < 24; ++i_0) {
-      this.ct[i_0] = (~~(c.ct[i_0] / 2) == urf ? 1 : 0);
+      this.ct[i_0] = c.ct[i_0] % 3 == urf ? 1 : 0;
     }
   }
 
@@ -396,7 +396,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
     for (j = 0; j < 48; ++j) {
       check = true;
       for (i_0 = 0; i_0 < 24; ++i_0) {
-        if (c.ct[i_0] != ~~(i_0 / 4)) {
+        if (c.ct[i_0] != (centerFacelet[i_0] >> 4)) {
           check = false;
           break;
         }
@@ -615,7 +615,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
   function $set_2(this$static, c, edgeParity) {
     var i_0;
     for (i_0 = 0; i_0 < 16; ++i_0) {
-      this$static.ct[i_0] = ~~(c.ct[i_0] / 2);
+      this$static.ct[i_0] = c.ct[i_0] % 3;
     }
     for (i_0 = 0; i_0 < 8; ++i_0) {
       this$static.rl[i_0] = c.ct[i_0 + 16];
@@ -826,11 +826,11 @@ var scramble_444 = (function(rn, Cnk, circle) {
 
   function $set_3(this$static, c, eXc_parity) {
     var i_0, parity;
-    parity = c.ct[0] > c.ct[8] ^ c.ct[8] > c.ct[16] ^ c.ct[0] > c.ct[16] ? 1 : 0;
+    parity = c.ct[0] % 3 > c.ct[8] % 3 ^ c.ct[8] % 3 > c.ct[16] % 3 ^ c.ct[0] % 3 > c.ct[16] % 3 ? 0 : 1;
     for (i_0 = 0; i_0 < 8; ++i_0) {
-      this$static.ud[i_0] = c.ct[i_0] & 1 ^ 1;
-      this$static.fb[i_0] = c.ct[i_0 + 8] & 1 ^ 1;
-      this$static.rl[i_0] = c.ct[i_0 + 16] & 1 ^ 1 ^ parity;
+      this$static.ud[i_0] = ~~(c.ct[i_0] / 3) ^ 1;
+      this$static.fb[i_0] = ~~(c.ct[i_0 + 8] / 3) ^ 1;
+      this$static.rl[i_0] = ~~(c.ct[i_0 + 16] / 3) ^ 1 ^ parity;
     }
     this$static.parity = parity ^ eXc_parity;
   }
@@ -987,11 +987,11 @@ var scramble_444 = (function(rn, Cnk, circle) {
     var i_0;
     this.ct = createArray(24);
     for (i_0 = 0; i_0 < 24; ++i_0) {
-      this.ct[i_0] = ~~(i_0 / 4);
+      this.ct[i_0] = centerFacelet[i_0] >> 4;
     }
   }
 
-  function CenterCube_1(r) {
+  function CenterCube_1(rn) {
     var i_0, m_0, t;
     CenterCube_0.call(this);
     for (i_0 = 0; i_0 < 23; ++i_0) {
@@ -1076,7 +1076,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
     $setTwist_0(this, twist);
   }
 
-  function CornerCube_2(r) {
+  function CornerCube_2(rn) {
     CornerCube_1.call(this, rn(40320), rn(2187));
   }
 
@@ -1701,7 +1701,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
     }
   }
 
-  function EdgeCube_1(r) {
+  function EdgeCube_1(rn) {
     var i_0, m_0, t;
     EdgeCube_0.call(this);
     for (i_0 = 0; i_0 < 23; ++i_0) {
@@ -1748,6 +1748,93 @@ var scramble_444 = (function(rn, Cnk, circle) {
     this$static.edgeAvail = c.edgeAvail;
     this$static.centerAvail = c.centerAvail;
     this$static.cornerAvail = c.cornerAvail;
+  }
+
+  var centerFacelet = [5, 6, 10, 9, 53, 54, 58, 57, 37, 38, 42, 41, 85, 86, 90, 89, 21, 22, 26, 25, 69, 70, 74, 73];
+  var cornerFacelet = [[15, 16, 35], [12, 32, 67], [0, 64, 83], [3, 80, 19], [51, 47, 28], [48, 79, 44], [60, 95, 76], [63, 31, 92]];
+  var edgeFacelet = [[13, 33], [4, 65], [2, 81], [11, 17], [61, 94], [52, 78], [50, 46], [59, 30], [75, 40], [68, 87], [27, 88], [20, 39], [34, 14], [66, 8], [82, 1], [18, 7], [93, 62], [77, 56], [45, 49], [29, 55], [36, 71], [91, 72], [84, 23], [43, 24]];
+
+  function $fromFacelet(this$static, f) {
+    var ctMask = 0;
+    var edMask = 0;
+    var cpMask = 0;
+    var coSum = 0;
+    for (var i = 0; i < 24; i++) {
+      this$static.center.ct[i] = f[centerFacelet[i]];
+      ctMask += 1 << f[centerFacelet[i]] * 4;
+    }
+    for (var i = 0; i < 24; i++) {
+      for (var j = 0; j < 24; j++) {
+        if (f[edgeFacelet[i][0]] == (edgeFacelet[j][0] >> 4) && f[edgeFacelet[i][1]] == (edgeFacelet[j][1] >> 4)) {
+          this$static.edge.ep[i] = j;
+          edMask |= 1 << j;
+        }
+      }
+    }
+    var col1, col2, ori;
+    for (var i = 0; i<8; i++) {
+      for (ori = 0; ori < 3; ori++) {
+        if (f[cornerFacelet[i][ori]] == 0 || f[cornerFacelet[i][ori]] == 3) {
+          break;
+        }
+      }
+      col1 = f[cornerFacelet[i][(ori + 1) % 3]];
+      col2 = f[cornerFacelet[i][(ori + 2) % 3]];
+      for (var j = 0; j < 8; j++) {
+        if (col1 == (cornerFacelet[j][1] >> 4) && col2 == (cornerFacelet[j][2] >> 4)) {
+          this$static.corner.cp[i] = j;
+          this$static.corner.co[i] = ori % 3;
+          cpMask |= 1 << j;
+          coSum += ori % 3;
+          break;
+        }
+      }
+    }
+    return (cpMask != 0xff) * 1 + (coSum % 3 != 0) * 2 + (ctMask != 0x444444) * 4 + (edMask != 0xffffff) * 8;;
+  }
+
+  function $toFacelet(this$static) {
+    $getCenter(this$static);
+    $getCorner(this$static);
+    $getEdge(this$static);
+    var f = [];
+    for (var i = 0; i < 24; i++) {
+      f[centerFacelet[i]] = this$static.center.ct[i];
+    }
+    for (var i = 0; i < 24; i++) {
+      f[edgeFacelet[i][0]] = edgeFacelet[this$static.edge.ep[i]][0] >> 4;
+      f[edgeFacelet[i][1]] = edgeFacelet[this$static.edge.ep[i]][1] >> 4;
+    }
+    for (var c=0; c<8; c++) {
+      var j = this$static.corner.cp[c];
+      var ori = this$static.corner.co[c];
+      for (var n=0; n<3; n++) {
+        f[cornerFacelet[c][(n + ori) % 3]] = cornerFacelet[j][n] >> 4;
+      }
+    }
+    return f;
+  }
+
+  function $to333Facelet(this$static) {
+    var f = $toFacelet(this$static);
+    var chks = [[1, 2], [4, 8], [7, 11], [13, 14], [5, 6, 9, 10]];
+    var map4to3 = [0, 1, 3, 4, 5, 7, 12, 13, 15];
+    var f3 = [];
+    for (var fidx = 0; fidx < 6; fidx++) {
+      for (var i = 0; i < chks.length; i++) {
+        var cmp = f[fidx << 4 | chks[i][0]];
+        for (var j = 1; j < chks[i].length; j++) {
+          if (cmp != f[fidx << 4 | chks[i][j]]) {
+            console.log('reduction error', chks[i][j], chks[i][0]);
+            return null;
+          }
+        }
+      }
+      for (var i = 0; i < map4to3.length; i++) {
+        f3[fidx * 9 + i] = f[fidx << 4 | map4to3[i]];
+      }
+    }
+    return f3;
   }
 
   function $getCenter(this$static) {
@@ -1845,11 +1932,11 @@ var scramble_444 = (function(rn, Cnk, circle) {
     $copy_4(this, c);
   }
 
-  function FullCube_5(r) {
+  function FullCube_5(rn) {
     $$init_3(this);
-    this.edge = new EdgeCube_1(r);
-    this.center = new CenterCube_1(r);
-    this.corner = new CornerCube_2(r);
+    this.edge = new EdgeCube_1(rn);
+    this.center = new CenterCube_1(rn);
+    this.corner = new CornerCube_2(rn);
   }
 
   defineSeed(160, 1, makeCastMap([Q$FullCube_0, Q$Comparable]), FullCube_3, FullCube_4, FullCube_5);
@@ -1956,6 +2043,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
   function $doSearch(this$static) {
     var MAX_LENGTH2, MAX_LENGTH3, ct, edge, eparity, fb, fbprun, i_0, index, length_0, length12, length123, p1SolsArr, prun, rl, rlprun, s2ct, s2rl, solcube, ud, udprun;
     this$static.solution = '';
+    var tt = +new Date;
     ud = $getsym(new Center1_1($getCenter(this$static.c), 0));
     fb = $getsym(new Center1_1($getCenter(this$static.c), 1));
     rl = $getsym(new Center1_1($getCenter(this$static.c), 2));
@@ -1971,7 +2059,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
       }
     }
     p1SolsArr = $toArray_1(this$static.p1sols, initDim(_3Lcs_threephase_FullCube_2_classLit, makeCastMap([Q$FullCube_$1, Q$Serializable, Q$Object_$1]), Q$FullCube_0, 0, 0));
-
+    DEBUG && console.log('[scramble 444] Phase 1 Done in', +new Date - tt);
     p1SolsArr.sort(function(a, b) {
       return a.value - b.value
     });
@@ -2001,6 +2089,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
     this$static.arr2.sort(function(a, b) {
       return a.value - b.value
     });
+    DEBUG && console.log('[scramble 444] Phase 2 Done in', +new Date - tt);
     index = 0;
     MAX_LENGTH3 = 13;
     do {
@@ -2026,6 +2115,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
         ++MAX_LENGTH3;
     }
     while (length123 == 100);
+    DEBUG && console.log('[scramble 444] Phase 3 Done in', +new Date - tt);
     solcube = new FullCube_4(this$static.arr2[index]);
     this$static.length1 = solcube.length1;
     this$static.length2 = solcube.length2;
@@ -2033,7 +2123,46 @@ var scramble_444 = (function(rn, Cnk, circle) {
     for (i_0 = 0; i_0 < length_0; ++i_0) {
       $move_6(solcube, move3std[this$static.move3[i_0]]);
     }
+    var f3 = $to333Facelet(solcube);
+    if (!f3) {
+      console.log('[scramble 444] Reduction Error!', $toFacelet(solcube));
+    }
+    for (var i = 0; i < 54; i++) {
+      f3[i] = "URFDLB"[f3[i]];
+    }
+    f3 = f3.join('');
+    var sol3 = scramble_333.solvFacelet(f3);
+    sol3 = sol3.split(' ');
+    for (var m = 0; m < sol3.length; m++) {
+      if (/^[URFDLB][2']?$/.exec(sol3[m])) {
+        $move_6(solcube, "URFDLB".indexOf(sol3[m][0]) * 3 + "2'".indexOf(sol3[m][1]) + 1);
+      }
+    }
     this$static.solution = $getMoveString(solcube);
+    DEBUG && console.log('[scramble 444] 3x3x3 Done in', +new Date - tt);
+  }
+
+  function printState(state) {
+    var tmp =
+      "          U0U1U2U3\n" +
+      "          U4U5U6U7\n" +
+      "          U8U9UaUb\n" +
+      "          UcUdUeUf\n" +
+      "L0L1L2L3  F0F1F2F3  R0R1R2R3  B0B1B2B3\n" +
+      "L4L5L6L7  F4F5F6F7  R4R5R6R7  B4B5B6B7\n" +
+      "L8L9LaLb  F8F9FaFb  R8R9RaRb  B8B9BaBb\n" +
+      "LcLdLeLf  FcFdFeFf  RcRdReRf  BcBdBeBf\n" +
+      "          D0D1D2D3\n" +
+      "          D4D5D6D7\n" +
+      "          D8D9DaDb\n" +
+      "          DcDdDeDf\n";
+    tmp = tmp.replace(/[URFDLB][0-9a-f]/g, function(m) {
+      var i1 = "URFDLB".indexOf(m[0]);
+      var i2 = "0123456789abcdef".indexOf(m[1]);
+      var posit = state[i1 * 16 + i2];
+      return "URFDLB"[posit] + ' ';
+    });
+    console.log(tmp);
   }
 
   function $init2_0(this$static, sym) {
@@ -2103,13 +2232,6 @@ var scramble_444 = (function(rn, Cnk, circle) {
     return this$static.arr2idx == this$static.arr2.length;
   }
 
-  function $randomState(this$static, r) {
-    init_5();
-    this$static.c = new FullCube_5(r);
-    $doSearch(this$static);
-    return this$static.solution;
-  }
-
   function $search1(this$static, ct, sym, maxl, lm, depth) {
     var axis, ctx, m_0, power, prun, symx;
     if (ct == 0) {
@@ -2142,7 +2264,7 @@ var scramble_444 = (function(rn, Cnk, circle) {
 
   function $search2(this$static, ct, rl, maxl, lm, depth) {
     var ctx, m_0, prun, rlx;
-    if (ct == 0 && ctprun[rl] == 0) {
+    if (ct == 0 && ctprun[rl] == 0 && maxl < 5) {
       return maxl == 0 && $init3(this$static);
     }
     for (m_0 = 0; m_0 < 23; ++m_0) {
@@ -2520,18 +2642,100 @@ var scramble_444 = (function(rn, Cnk, circle) {
     $clinit_CornerCube();
     $clinit_EdgeCube();
     $clinit_FullCube_0();
+    init_5();
     searcher = new Search_4();
   }
 
-  function getRandomScramble() {
+  function randomState() {
     init();
-    return (scramble_333.getRandomScramble() + $randomState(searcher, Math)).replace(/\s+/g, ' ');
+    var facelet = $toFacelet(new FullCube_5(mathlib.rn));
+    for (var i = 0; i < 96; i++) {
+      facelet[i] = "URFDLB".charAt(facelet[i]);
+    }
+    return facelet.join("");
   }
 
-  scrMgr.reg('444wca', getRandomScramble)
+  function partialSolvedState(ctMask, edMask, cnMask) {
+    var cc = new FullCube_3;
+    var ctSwaps = [];
+    var edSwaps = [];
+    var cnSwaps = [];
+    for (var i = 0; i < 24; i++) {
+      if (ctMask >> i & 1) {
+        ctSwaps.push(i);
+      }
+      if (edMask >> i & 1) {
+        edSwaps.push(i);
+      }
+      if (cnMask >> i & 1) {
+        cnSwaps.push(i);
+      }
+    }
+    var ctPerm = mathlib.rndPerm(ctSwaps.length);
+    for (var i = 0; i < ctSwaps.length; i++) {
+      cc.center.ct[ctSwaps[i]] = centerFacelet[ctSwaps[ctPerm[i]]] >> 4;
+    }
+    var edPerm = mathlib.rndPerm(edSwaps.length);
+    for (var i = 0; i < edSwaps.length; i++) {
+      cc.edge.ep[edSwaps[i]] = edSwaps[edPerm[i]];
+    }
+    var cnPerm = mathlib.rndPerm(cnSwaps.length);
+    var coSum = 24;
+    for (var i = 0; i < cnSwaps.length; i++) {
+      var co = mathlib.rn(3);
+      cc.corner.co[cnSwaps[i]] = co;
+      cc.corner.cp[cnSwaps[i]] = cnSwaps[cnPerm[i]];
+      coSum -= co;
+    }
+    if (coSum % 3 != 0) {
+      cc.corner.co[cnSwaps[0]] = (cc.corner.co[cnSwaps[0]] + coSum) % 3;
+    }
+    var facelet = $toFacelet(cc);
+    for (var i = 0; i < 96; i++) {
+      facelet[i] = "URFDLB".charAt(facelet[i]);
+    }
+    return facelet.join("");
+  }
+
+  function genFacelet(facelet) {
+    init();
+    facelet = facelet.split('');
+    for (var i = 0; i < 96; i++) {
+      facelet[i] = "URFDLB".indexOf(facelet[i]);
+    }
+    DEBUG && console.log('[scramble 444] Scramble to state:');
+    DEBUG && printState(facelet);
+    searcher.c = new FullCube_3;
+    var chk = $fromFacelet(searcher.c, facelet);
+    if (chk != 0) {
+      console.log('[scramble 444] State Check Error!', chk, facelet);
+    }
+    $doSearch(searcher);
+    return searcher.solution.replace(/\s+/g, ' ');
+  }
+
+  function getPartialScramble(ctMask, edMask, cnMask) {
+    return genFacelet(partialSolvedState(ctMask, edMask, cnMask));
+  }
+
+  function getRandomScramble() {
+    return genFacelet(partialSolvedState(0xffffff, 0xffffff, 0xff));
+  }
+
+  function getYauUD3CScramble() {
+    var unsolv = mathlib.rn(4);
+    return getPartialScramble(0xffff00, 0xff0ff0 | (0x1001 << unsolv), 0xff);
+  }
+
+  scrMgr.reg('444wca', getPartialScramble.bind(null, 0xffffff, 0xffffff, 0xff))
+            ('4edge', getPartialScramble.bind(null, 0x000000, 0xffffff, 0xff))
+            ('444ctud', getPartialScramble.bind(null, 0xffff00, 0xffffff, 0xff))
+            ('444yauf2l', getPartialScramble.bind(null, 0x000000, 0xff0ff0, 0xff))
+            ('444ud3c', getYauUD3CScramble)
+  ;
 
   return {
-    getRandomScramble: getRandomScramble
+    getRandomScramble: getRandomScramble,
+    getPartialScramble: getPartialScramble
   }
-
-})(mathlib.rn, mathlib.Cnk, mathlib.circle);
+})(mathlib.Cnk, mathlib.circle);
