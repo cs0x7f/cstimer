@@ -2727,11 +2727,24 @@ var scramble_444 = (function(Cnk, circle) {
     return getPartialScramble(0xffff00, 0xff0ff0 | (0x1001 << unsolv), 0xff);
   }
 
+  function getHoyaRLDAScramble() {
+    var unsolv = mathlib.rn(2) * 4;
+    return getPartialScramble(0x0000f0 | (0xf00 << unsolv), 0xffffff, 0xff);
+  }
+
+  function getHoyaRLCAScramble() {
+    var unsolv = mathlib.rn(2) * 4;
+    return getPartialScramble(0x0000f0 | (0xf00 << unsolv), 0xff0ff0, 0xff);
+  }
+
   scrMgr.reg('444wca', getPartialScramble.bind(null, 0xffffff, 0xffffff, 0xff))
             ('4edge', getPartialScramble.bind(null, 0x000000, 0xffffff, 0xff))
             ('444ctud', getPartialScramble.bind(null, 0xffff00, 0xffffff, 0xff))
-            ('444yauf2l', getPartialScramble.bind(null, 0x000000, 0xff0ff0, 0xff))
+            ('444ctrl', getPartialScramble.bind(null, 0x00ffff, 0xffffff, 0xff))
+            ('444l8e', getPartialScramble.bind(null, 0x000000, 0xff0ff0, 0xff))
             ('444ud3c', getYauUD3CScramble)
+            ('444rlda', getHoyaRLDAScramble)
+            ('444rlca', getHoyaRLCAScramble)
   ;
 
   return {

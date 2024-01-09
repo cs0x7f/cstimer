@@ -250,10 +250,13 @@ var scrdata = [
 		['4x4x4 kenarlar', "4edge", 8],
 		['R,r,U,u', "RrUu", 40]
 	]],
-	['4x4x4 Yau', [
+	['4x4x4 Yau/Hoya', [
 		['UD center solved', "444ctud", 0],
-		['3 edges solved', "444ud3c", 0],
-		['Cross solved', "444yauf2l", 0]
+		['UD+3E solved', "444ud3c", 0],
+		['Last 8 dedges', "444l8e", 0],
+		['RL center solved', "444ctrl", 0],
+		['RLDX center solved', "444rlda", 0],
+		['RLDX cross solved', "444rlca", 0]
 	]],
 	['5x5x5', [
 		["WCA", "555wca", 60],
