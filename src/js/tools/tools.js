@@ -89,7 +89,7 @@ var tools = execMain(function() {
 			return "222";
 		} else if (/^(333(oh?|ni|f[mt]|drud|custom)?|(z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|(zb|w?v|eo)ls|roux|RrU|half|easyx?c|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|nocache_333bldspec)$/.exec(scrambleType)) {
 			return "333";
-		} else if (/^(444([mo]|wca|yj|bld|ctud|ctrl|ud3c|l8e|rlda|rlca)?|4edge|RrUu)$/.exec(scrambleType)) {
+		} else if (/^(444([mo]|wca|yj|bld|ctud|ctrl|ud3c|l8e|rlda|rlca|edo|cto|ll)?|4edge|RrUu)$/.exec(scrambleType)) {
 			return "444";
 		} else if (/^(555(wca|bld)?|5edge)$/.exec(scrambleType)) {
 			return "555";

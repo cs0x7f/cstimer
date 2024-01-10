@@ -247,8 +247,11 @@ var scrdata = [
 		['Ngẫu nhiên', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 cạnh', "4edge", 8],
-		['Chỉ dùng R,r,U,u để tráo', "RrUu", 40]
+		['4x4x4 cạnh', "4edge", 0],
+		['Chỉ dùng R,r,U,u để tráo', "RrUu", 40],
+		['Last layer', "444ll", 0],
+		['Edge only', "444edo", 0],
+		['Center only', "444cto", 0]
 	]],
 	['4x4x4 Yau/Hoya', [
 		['UD center solved', "444ctud", 0],

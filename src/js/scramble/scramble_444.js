@@ -2376,43 +2376,50 @@ var scramble_444 = (function(Cnk, circle) {
   }
 
   function partialSolvedState(ctMask, edMask, cnMask) {
-    var cc = new FullCube_3;
-    var ctSwaps = [];
-    var edSwaps = [];
-    var cnSwaps = [];
-    for (var i = 0; i < 24; i++) {
-      if (ctMask >> i & 1) {
-        ctSwaps.push(i);
+    var facelet;
+    var solved = true;
+    for (var _ = 0; solved && _ < 100; _++) {
+      var cc = new FullCube_3;
+      var ctSwaps = [];
+      var edSwaps = [];
+      var cnSwaps = [];
+      for (var i = 0; i < 24; i++) {
+        if (ctMask >> i & 1) {
+          ctSwaps.push(i);
+        }
+        if (edMask >> i & 1) {
+          edSwaps.push(i);
+        }
+        if (cnMask >> i & 1) {
+          cnSwaps.push(i);
+        }
       }
-      if (edMask >> i & 1) {
-        edSwaps.push(i);
+      var ctPerm = mathlib.rndPerm(ctSwaps.length);
+      for (var i = 0; i < ctSwaps.length; i++) {
+        cc.center.ct[ctSwaps[i]] = centerFacelet[ctSwaps[ctPerm[i]]] >> 4;
       }
-      if (cnMask >> i & 1) {
-        cnSwaps.push(i);
+      var edPerm = mathlib.rndPerm(edSwaps.length);
+      for (var i = 0; i < edSwaps.length; i++) {
+        cc.edge.ep[edSwaps[i]] = edSwaps[edPerm[i]];
       }
-    }
-    var ctPerm = mathlib.rndPerm(ctSwaps.length);
-    for (var i = 0; i < ctSwaps.length; i++) {
-      cc.center.ct[ctSwaps[i]] = centerFacelet[ctSwaps[ctPerm[i]]] >> 4;
-    }
-    var edPerm = mathlib.rndPerm(edSwaps.length);
-    for (var i = 0; i < edSwaps.length; i++) {
-      cc.edge.ep[edSwaps[i]] = edSwaps[edPerm[i]];
-    }
-    var cnPerm = mathlib.rndPerm(cnSwaps.length);
-    var coSum = 24;
-    for (var i = 0; i < cnSwaps.length; i++) {
-      var co = mathlib.rn(3);
-      cc.corner.co[cnSwaps[i]] = co;
-      cc.corner.cp[cnSwaps[i]] = cnSwaps[cnPerm[i]];
-      coSum -= co;
-    }
-    if (coSum % 3 != 0) {
-      cc.corner.co[cnSwaps[0]] = (cc.corner.co[cnSwaps[0]] + coSum) % 3;
-    }
-    var facelet = $toFacelet(cc);
-    for (var i = 0; i < 96; i++) {
-      facelet[i] = "URFDLB".charAt(facelet[i]);
+      var cnPerm = mathlib.rndPerm(cnSwaps.length);
+      var coSum = 24;
+      for (var i = 0; i < cnSwaps.length; i++) {
+        var co = mathlib.rn(3);
+        cc.corner.co[cnSwaps[i]] = co;
+        cc.corner.cp[cnSwaps[i]] = cnSwaps[cnPerm[i]];
+        coSum -= co;
+      }
+      if (coSum % 3 != 0) {
+        cc.corner.co[cnSwaps[0]] = (cc.corner.co[cnSwaps[0]] + coSum) % 3;
+      }
+      facelet = $toFacelet(cc);
+      for (var i = 0; i < 96; i++) {
+        facelet[i] = "URFDLB".charAt(facelet[i]);
+        if (facelet[i] != facelet[i >> 4 << 4]) {
+          solved = false;
+        }
+      }
     }
     return facelet.join("");
   }
@@ -2459,6 +2466,9 @@ var scramble_444 = (function(Cnk, circle) {
 
   scrMgr.reg('444wca', getPartialScramble.bind(null, 0xffffff, 0xffffff, 0xff))
             ('4edge', getPartialScramble.bind(null, 0x000000, 0xffffff, 0xff))
+            ('444edo', getPartialScramble.bind(null, 0x000000, 0xffffff, 0x00))
+            ('444cto', getPartialScramble.bind(null, 0xffffff, 0x000000, 0x00))
+            ('444ll', getPartialScramble.bind(null, 0x000000, 0x0f00f0, 0xf0))
             ('444ctud', getPartialScramble.bind(null, 0xffff00, 0xffffff, 0xff))
             ('444ctrl', getPartialScramble.bind(null, 0x00ffff, 0xffffff, 0xff))
             ('444l8e', getPartialScramble.bind(null, 0x000000, 0xff0ff0, 0xff))
