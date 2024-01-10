@@ -34,7 +34,7 @@ jobs:
         with:
           php-version: '8.0'
       - name: Build cstimer
-        run: mkdir dist/js dist/css && make local
+        run: mkdir dist/local dist/local/js dist/local/css && make local
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
