@@ -27,7 +27,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v4.0.0
         with: 
-          distribution: 'oracle'
+          distribution: 'temurin'
           java-version: '11'
       - name: Setup php
         uses: shivammathur/setup-php@2.28.0
