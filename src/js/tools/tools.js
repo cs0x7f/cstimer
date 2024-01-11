@@ -131,6 +131,10 @@ var tools = execMain(function() {
 			return "sq2";
 		} else if (/^fto$/.exec(scrambleType)) {
 			return "fto";
+		} else if (/^heli$/.exec(scrambleType)) {
+			return "heli";
+		} else if (/^heli2x2$/.exec(scrambleType)) {
+			return "heli2x2";
 		}
 	}
 

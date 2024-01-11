@@ -365,7 +365,8 @@ var scrdata = [
 		['Pochmann', "giga", 300]
 	]],
 	['Helicopter Cube', [
-		[' ', "heli", 40]
+		['Helicopter', "heli", 40],
+		['2x2 Helicopter', "heli2x2", 70]
 	]],
 	['Redi Cube', [
 		['MoYu', "redim", 8],

@@ -365,7 +365,8 @@ var scrdata = [
 		['포흐만(Pochmann)', "giga", 300]
 	]],
 	['헬리콥터 큐브', [
-		[' ', "heli", 40]
+		['Helicopter', "heli", 40],
+		['2x2 Helicopter', "heli2x2", 70]
 	]],
 	['레디 큐브', [
 		['모위(MoYu)', "redim", 8],
