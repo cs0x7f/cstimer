@@ -366,7 +366,8 @@ var scrdata = [
 	]],
 	['Helicopter kocka', [
 		['Helicopter', "heli", 40],
-		['2x2 Helicopter', "heli2x2", 70]
+		['2x2 Heli random move', "heli2x2", 70],
+		['2x2 Heli by group', "heli2x2g", 5]
 	]],
 	['Redi kocka', [
 		['MoYu', "redim", 8],
