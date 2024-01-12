@@ -170,7 +170,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 
 	function getFMCScramble() {
-		var scramble = getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff, undefined, undefined, 2, 1);
+		var scramble = getAnyScramble(0xffffffffffff, 0xffffffffffff, 0xffffffff, 0xffffffff, 0, undefined, undefined, 2, 1);
 		return "R' U' F " + scramble + "R' U' F";
 	}
 
@@ -270,7 +270,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		[]
 	];
 
-	function getAnyScramble(_ep, _eo, _cp, _co, _rndapp, _rndpre, firstAxisFilter, lastAxisFilter) {
+	function getAnyScramble(_ep, _eo, _cp, _co, neut, _rndapp, _rndpre, firstAxisFilter, lastAxisFilter) {
 		initMove();
 		_rndapp = _rndapp || emptysuff;
 		_rndpre = _rndpre || emptysuff;
@@ -332,6 +332,14 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 				cc = tmp;
 			}
 			var posit = toFaceCube(cc);
+			if (neut) {
+				cc = new mathlib.CubieCube();
+				cc.fromFacelet(posit);
+				cc.ori = mathlib.rn([1, 4, 8, 1, 1, 1, 24][neut]);
+				cc.selfConj();
+				cc.ori = 0;
+				posit = cc.toFaceCube();
+			}
 			var search0 = new min2phase.Search();
 			solution = search0.solution(posit, 21, 1e9, 50, 2, lastAxisFilter, firstAxisFilter);
 		} while (solution.length <= 3);
@@ -346,8 +354,8 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		return getAnyScramble(0xba9876543210, 0x000000000000, 0xffffffff, 0xffffffff);
 	}
 
-	function getLLScramble() {
-		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x7654ffff, 0x0000ffff);
+	function getLLScramble(type, length, cases, neut) {
+		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x7654ffff, 0x0000ffff, neut);
 	}
 
 	var f2l_map = [
@@ -399,13 +407,13 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	var f2lfilter = mathlib.idxArray(f2l_map, 2);
 
-	function getLSLLScramble(type, length, cases) {
+	function getLSLLScramble(type, length, cases, neut) {
 		var caze = f2l_map[scrMgr.fixCase(cases, f2lprobs)][0];
 		var ep = Math.pow(16, caze & 0xf);
 		var eo = 0xf ^ (caze >> 4 & 1);
 		var cp = Math.pow(16, caze >> 8 & 0xf);
 		var co = 0xf ^ (caze >> 12 & 3);
-		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000f0000ffff - eo * ep, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, aufsuff);
+		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000f0000ffff - eo * ep, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, neut, aufsuff);
 	}
 
 	var eols_map = [];
@@ -420,12 +428,12 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		eolsfilter.push(f2lfilter[i]);
 	}
 
-	function getEOLSScramble(type, length, cases) {
+	function getEOLSScramble(type, length, cases, neut) {
 		var caze = eols_map[scrMgr.fixCase(cases, eolsprobs)];
 		var ep = Math.pow(16, caze & 0xf);
 		var cp = Math.pow(16, caze >> 8 & 0xf);
 		var co = 0xf ^ (caze >> 12 & 3);
-		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000000000000, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, aufsuff);
+		return getAnyScramble(0xba9f7654ffff - 7 * ep, 0x000000000000, 0x765fffff - 0xb * cp, 0x000fffff - co * cp, neut, aufsuff);
 	}
 
 	function getF2LImage(piece0, stmap, stprobs, cases, canvas) {
@@ -459,9 +467,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		wvlsprobs[i] = 1;
 	}
 
-	function getWVLSScramble(type, length, cases) {
+	function getWVLSScramble(type, length, cases, neut) {
 		var caze = wvls_map[scrMgr.fixCase(cases, wvlsprobs)];
-		return getAnyScramble(0xba9f7654ff8f, 0x000000000000, 0x765fff4f, 0x000f0020 | caze);
+		return getAnyScramble(0xba9f7654ff8f, 0x000000000000, 0x765fff4f, 0x000f0020 | caze, neut);
 	}
 
 	function getWVLSImage(cases, canvas) {
@@ -485,9 +493,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		vlsfilter[i] = ["WVLS", "UB", "UF", "UF UB", "UL", "UB UL", "UF UL", "No Edge"][eo] + "-" + (co + 1);
 	}
 
-	function getVLSScramble(type, length, cases) {
+	function getVLSScramble(type, length, cases, neut) {
 		var caze = vls_map[scrMgr.fixCase(cases, vlsprobs)];
-		return getAnyScramble(0xba9f7654ff8f, 0x000f00000000 + caze[1], 0x765fff4f, 0x000f0020 + caze[0], [[Ux3]]);
+		return getAnyScramble(0xba9f7654ff8f, 0x000f00000000 + caze[1], 0x765fff4f, 0x000f0020 + caze[0], neut, [[Ux3]]);
 	}
 
 	function getVLSImage(cases, canvas) {
@@ -503,8 +511,8 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		}), null, canvas);
 	}
 
-	function getF2LScramble() {
-		return getAnyScramble(0xffff7654ffff, 0xffff0000ffff, 0xffffffff, 0xffffffff);
+	function getF2LScramble(type, length, cases, neut) {
+		return getAnyScramble(0xffff7654ffff, 0xffff0000ffff, 0xffffffff, 0xffffffff, neut);
 	}
 
 	var coll_map = [
@@ -556,9 +564,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	var coprobs = mathlib.idxArray(coll_map, 3);
 	var cofilter = mathlib.idxArray(coll_map, 4);
 
-	function getZBLLScramble(type, length, cases) {
+	function getZBLLScramble(type, length, cases, neut) {
 		var cocase = coll_map[scrMgr.fixCase(cases, coprobs)];
-		return getAnyScramble(0xba987654ffff, 0, cocase[0] + 0x76540000, cocase[1], aufsuff, aufsuff);
+		return getAnyScramble(0xba987654ffff, 0, cocase[0] + 0x76540000, cocase[1], neut, aufsuff, aufsuff);
 	}
 
 	function getCMLLScramble(type, length, cases) {
@@ -568,12 +576,12 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		for (var i = 0; i < aufsuff.length; i++) {
 			presuff.push(aufsuff[i].concat(rlpresuff[rnd4]));
 		}
-		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, cocase[0] + 0x76540000, cocase[1], presuff, aufsuff) + rlappsuff[rnd4];
+		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, cocase[0] + 0x76540000, cocase[1], 0, presuff, aufsuff) + rlappsuff[rnd4];
 	}
 
 	function getSBRouxScramble(type, length, cases) {
 		var rnd4 = rn(4);
-		return getAnyScramble(0xfa9ff6ffffff, 0xf00ff0ffffff, 0xf65fffff, 0xf00fffff, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
+		return getAnyScramble(0xfa9ff6ffffff, 0xf00ff0ffffff, 0xf65fffff, 0xf00fffff, 0, [rlpresuff[rnd4]]) + rlappsuff[rnd4];
 	}
 
 	function getCOLLImage(efill, cases, canvas) {
@@ -581,8 +589,8 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		image.llImage.drawImage(face, null, canvas);
 	}
 
-	function getZZLLScramble() {
-		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, aufsuff);
+	function getZZLLScramble(type, length, cases, neut) {
+		return getAnyScramble(0xba9876543f1f, 0x000000000000, 0x7654ffff, 0x0000ffff, neut, aufsuff);
 	}
 
 	var ttll_map = [
@@ -667,9 +675,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		ttllfilter[i] = ttll_map[i][2];
 	}
 
-	function getTTLLScramble(type, length, cases) {
+	function getTTLLScramble(type, length, cases, neut) {
 		var ttllcase = ttll_map[scrMgr.fixCase(cases, ttllprobs)];
-		return getAnyScramble(0xba9876540000 + ttllcase[1], 0x000000000000, 0x76500000 + ttllcase[0], 0x00000000, aufsuff, aufsuff);
+		return getAnyScramble(0xba9876540000 + ttllcase[1], 0x000000000000, 0x76500000 + ttllcase[0], 0x00000000, neut, aufsuff, aufsuff);
 	}
 
 	function getTTLLImage(cases, canvas) {
@@ -690,20 +698,20 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	function getLSEScramble() {
 		var rnd4 = rn(4);
-		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, [rlpresuff[rnd4]], aufsuff) + rlappsuff[rnd4];
+		return getAnyScramble(0xba98f6f4ffff, 0x0000f0f0ffff, 0x76543210, 0x00000000, 0, [rlpresuff[rnd4]], aufsuff) + rlappsuff[rnd4];
 	}
 
-	function getCLLScramble(type, length, cases) {
+	function getCLLScramble(type, length, cases, neut) {
 		var cocase = coll_map[scrMgr.fixCase(cases, coprobs)];
-		return getAnyScramble(0xba987654ffff, 0x00000000ffff, cocase[0] + 0x76540000, cocase[1], aufsuff, aufsuff);
+		return getAnyScramble(0xba987654ffff, 0x00000000ffff, cocase[0] + 0x76540000, cocase[1], neut, aufsuff, aufsuff);
 	}
 
-	function getELLScramble() {
-		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x76543210, 0x00000000);
+	function getELLScramble(type, length, cases, neut) {
+		return getAnyScramble(0xba987654ffff, 0x00000000ffff, 0x76543210, 0x00000000, neut);
 	}
 
-	function get2GLLScramble() {
-		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x76543210, 0x0000ffff, aufsuff);
+	function get2GLLScramble(type, length, cases, neut) {
+		return getAnyScramble(0xba987654ffff, 0x000000000000, 0x76543210, 0x0000ffff, neut, aufsuff);
 	}
 
 	var pll_map = [
@@ -770,9 +778,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		['BBFLRRFLBRFL', [0, 8], [1, 3]]
 	];
 
-	function getPLLScramble(type, length, cases) {
+	function getPLLScramble(type, length, cases, neut) {
 		var pllcase = pll_map[scrMgr.fixCase(cases, pllprobs)];
-		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, aufsuff, aufsuff);
+		return getAnyScramble(pllcase[0] + 0xba9876540000, 0x000000000000, pllcase[1] + 0x76540000, 0x00000000, neut, aufsuff, aufsuff);
 	}
 
 	function getPLLImage(cases, canvas) {
@@ -851,9 +859,9 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	var ollfilter = ['PLL', 'Point-1', 'Point-2', 'Point-3', 'Point-4', 'Square-5', 'Square-6', 'SLBS-7', 'SLBS-8', 'Fish-9', 'Fish-10', 'SLBS-11', 'SLBS-12', 'Knight-13', 'Knight-14', 'Knight-15', 'Knight-16', 'Point-17', 'Point-18', 'Point-19', 'CO-20', 'OCLL-21', 'OCLL-22', 'OCLL-23', 'OCLL-24', 'OCLL-25', 'OCLL-26', 'OCLL-27', 'CO-28', 'Awkward-29', 'Awkward-30', 'P-31', 'P-32', 'T-33', 'C-34', 'Fish-35', 'W-36', 'Fish-37', 'W-38', 'BLBS-39', 'BLBS-40', 'Awkward-41', 'Awkward-42', 'P-43', 'P-44', 'T-45', 'C-46', 'L-47', 'L-48', 'L-49', 'L-50', 'I-51', 'I-52', 'L-53', 'L-54', 'I-55', 'I-56', 'CO-57'];
 	var ollImgParam = [0x000ff, 0xeba00, 0xdda00, 0x5b620, 0x6d380, 0x8360b, 0x60b16, 0x1362a, 0x64392, 0x2538a, 0x9944c, 0x9160e, 0x44b13, 0x1a638, 0x2c398, 0x8a619, 0x28b1c, 0x4b381, 0x49705, 0xc9a05, 0x492a5, 0x1455a, 0xa445a, 0x140fa, 0x101de, 0x2047e, 0x2095e, 0x1247a, 0x012af, 0x1138e, 0x232aa, 0x50396, 0x0562b, 0x1839c, 0x2a2b8, 0x4a1d1, 0xc4293, 0x0338b, 0x11a2e, 0x18a3c, 0x8c299, 0x152aa, 0x0954d, 0xe0296, 0x03a2b, 0xa829c, 0x43863, 0x52b12, 0xa560a, 0xe4612, 0xec450, 0x1ab18, 0x53942, 0x54712, 0x1570a, 0x1c718, 0xaaa18, 0x082bd];
 
-	function getOLLScramble(type, length, cases) {
+	function getOLLScramble(type, length, cases, neut) {
 		var ollcase = oll_map[scrMgr.fixCase(cases, ollprobs)];
-		return getAnyScramble(0xba987654ffff, ollcase[0], 0x7654ffff, ollcase[1], aufsuff, aufsuff);
+		return getAnyScramble(0xba987654ffff, ollcase[0], 0x7654ffff, ollcase[1], neut, aufsuff, aufsuff);
 	}
 
 	function getOLLImage(cases, canvas) {
@@ -873,21 +881,21 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		image.llImage.drawImage(face, null, canvas);
 	}
 
-	function getEOLineScramble() {
-		return getAnyScramble(0xffff7f5fffff, 0x000000000000, 0xffffffff, 0xffffffff);
+	function getEOLineScramble(type, length, cases, neut) {
+		return getAnyScramble(0xffff7f5fffff, 0x000000000000, 0xffffffff, 0xffffffff, neut);
 	}
 
 	var daufsuff = [[], [Dx1], [Dx2], [Dx3]];
 	var daufrot = ["", "y", "y2", "y'"];
 	function getMehta3QBScramble() {
 		var rnd4 = mathlib.rn(4);
-		return getAnyScramble(0xffff765fffff, 0xffff000fffff, 0xf65fffff, 0xf00fffff, [daufsuff[rnd4]]) + daufrot[rnd4];
+		return getAnyScramble(0xffff765fffff, 0xffff000fffff, 0xf65fffff, 0xf00fffff, 0, [daufsuff[rnd4]]) + daufrot[rnd4];
 	}
 
 	function getMehtaEOLEScramble() {
 		var skip = mathlib.rn(4);
 		var rnd4 = mathlib.rn(4);
-		return getAnyScramble(0xba98765fffff + (0x4567 & (0xf << skip * 4)) * 0x100000000, 0x0000000fffff + (0xf << skip * 4) * 0x100000000, 0xf65fffff, 0xf00fffff, [daufsuff[rnd4]]) + daufrot[rnd4];
+		return getAnyScramble(0xba98765fffff + (0x4567 & (0xf << skip * 4)) * 0x100000000, 0x0000000fffff + (0xf << skip * 4) * 0x100000000, 0xf65fffff, 0xf00fffff, 0, [daufsuff[rnd4]]) + daufrot[rnd4];
 	}
 
 	function getMehtaTDRScramble() {
@@ -914,7 +922,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 	}
 	var customprobs = mathlib.valuedArray(40, 0);
 
-	function getCustomScramble(type, length, cases) {
+	function getCustomScramble(type, length, cases, neut) {
 		var ep = 0;
 		var eo = 0;
 		var cp = 0;
@@ -934,17 +942,17 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		if ((chk & 0x1cccee) == 0) {
 			return "U' U ";
 		}
-		return getAnyScramble(ep, eo, cp, co);
+		return getAnyScramble(ep, eo, cp, co, neut);
 	}
 
-	function getEasyCrossScramble(type, length) {
+	function getEasyCrossScramble(type, length, _, neut) {
 		var cases = cross.getEasyCross(length);
-		return getAnyScramble(cases[0], cases[1], 0xffffffff, 0xffffffff);
+		return getAnyScramble(cases[0], cases[1], 0xffffffff, 0xffffffff, neut);
 	}
 
-	function getEasyXCrossScramble(type, length) {
+	function getEasyXCrossScramble(type, length, _, neut) {
 		var cases = cross.getEasyXCross(length);
-		return getAnyScramble(cases[0], cases[1], cases[2], cases[3]);
+		return getAnyScramble(cases[0], cases[1], cases[2], cases[3], neut);
 	}
 
 	var subsetSGSs = {};

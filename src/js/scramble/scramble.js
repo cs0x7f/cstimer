@@ -187,6 +187,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	var type, scramble, len = 0;
 	var lasttype, lastscramble, lastlen = 0;
+	var neutLevel = 0;
 	var typeExIn = '333';
 	var isDisplayLast = false;
 	var lastClick = $('<span />').html(SCRAMBLE_LAST);
@@ -331,15 +332,15 @@ var scramble = execMain(function(rn, rndEl) {
 
 		if (realType in scramblers) {
 			var cachedScr = JSON.parse(localStorage['cachedScr'] || null) || {};
-			var detailType = JSON.stringify([realType, len, scrFlt[1]]);
+			var detailType = JSON.stringify([realType, len, scrFlt[1], neutLevel]);
 			if (enableCache && detailType in cachedScr && !realType.startsWith('nocache_')) {
 				scramble = cachedScr[detailType];
 				delete cachedScr[detailType];
 				localStorage['cachedScr'] = JSON.stringify(cachedScr);
 			} else {
-				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]));
+				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]), neutLevel);
 			}
-			genCachedScramble([realType, len, rndState(scrFlt[1], probs[realType])], detailType);
+			genCachedScramble([realType, len, rndState(scrFlt[1], probs[realType]), neutLevel], detailType);
 			return;
 		}
 
@@ -679,6 +680,11 @@ var scramble = execMain(function(rn, rndEl) {
 				} else {
 					title.show();
 				}
+			} else if (value[0] == 'scrNeut') {
+				neutLevel = ~~value[1];
+				if (value[2] == 'modify') {
+					genScramble();
+				}
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -782,7 +788,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide)$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide|Neut)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'scrfix', procSignal);
@@ -799,6 +805,7 @@ var scramble = execMain(function(rn, rndEl) {
 			["", "y", "y2", "y'", "z2", "z2 y", "z2 y2", "z2 y'", "z'", "z' y", "z' y2", "z' y'", "z", "z y", "z y2", "z y'", "x'", "x' y", "x' y2", "x' y'", "x", "x y", "x y2", "x y'"],
 			["(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
 		], 1);
+		kernel.regProp('scramble', 'scrNeut', 1, "Color neutral", ['n', ['n', '1', '2', '6'], ['None', 'Single face', 'Double faces', 'Six faces']], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
 		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['c', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);

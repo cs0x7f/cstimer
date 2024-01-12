@@ -2375,8 +2375,24 @@ var scramble_444 = (function(Cnk, circle) {
     return facelet.join("");
   }
 
-  function partialSolvedState(ctMask, edMask, cnMask) {
+  function partialSolvedState(ctMask, edMask, cnMask, neut) {
     var facelet;
+    var colmap = [0, 1, 2, 3, 4, 5];
+    if (neut) {
+      var ori = mathlib.rn([1, 4, 8, 1, 1, 1, 24][neut]);
+      if (ori >= 8) {
+        mathlib.acycle(colmap, [0, 1, 2], ori >> 3);
+        mathlib.acycle(colmap, [3, 4, 5], ori >> 3);
+        ori &= 0x7;
+      }
+      if (ori >= 4) {
+        mathlib.acycle(colmap, [0, 1, 3, 4], 2);
+        ori &= 0x3;
+      }
+      if (ori >= 1) {
+        mathlib.acycle(colmap, [1, 2, 4, 5], ori);
+      }
+    }
     var solved = true;
     for (var _ = 0; solved && _ < 100; _++) {
       var cc = new FullCube_3;
@@ -2415,7 +2431,7 @@ var scramble_444 = (function(Cnk, circle) {
       }
       facelet = $toFacelet(cc);
       for (var i = 0; i < 96; i++) {
-        facelet[i] = "URFDLB".charAt(facelet[i]);
+        facelet[i] = "URFDLB".charAt(colmap[facelet[i]]);
         if (facelet[i] != facelet[i >> 4 << 4]) {
           solved = false;
         }
@@ -2441,37 +2457,65 @@ var scramble_444 = (function(Cnk, circle) {
     return searcher.solution.replace(/\s+/g, ' ');
   }
 
-  function getPartialScramble(ctMask, edMask, cnMask) {
-    return genFacelet(partialSolvedState(ctMask, edMask, cnMask));
+  function getPartialScramble(ctMask, edMask, cnMask, neut) {
+    return genFacelet(partialSolvedState(ctMask, edMask, cnMask, neut));
   }
 
   function getRandomScramble() {
     return genFacelet(partialSolvedState(0xffffff, 0xffffff, 0xff));
   }
 
-  function getYauUD3CScramble() {
+  function getYauUD3CScramble(type, length, cases, neut) {
     var unsolv = mathlib.rn(4);
-    return getPartialScramble(0xffff00, 0xff0ff0 | (0x1001 << unsolv), 0xff);
+    return getPartialScramble(0xffff00, 0xff0ff0 | (0x1001 << unsolv), 0xff, neut);
   }
 
-  function getHoyaRLDAScramble() {
+  function getHoyaRLDAScramble(type, length, cases, neut) {
     var unsolv = mathlib.rn(2) * 4;
-    return getPartialScramble(0x0000f0 | (0xf00 << unsolv), 0xffffff, 0xff);
+    return getPartialScramble(0x0000f0 | (0xf00 << unsolv), 0xffffff, 0xff, neut);
   }
 
-  function getHoyaRLCAScramble() {
+  function getHoyaRLCAScramble(type, length, cases, neut) {
     var unsolv = mathlib.rn(2) * 4;
-    return getPartialScramble(0x0000f0 | (0xf00 << unsolv), 0xff0ff0, 0xff);
+    return getPartialScramble(0x0000f0 | (0xf00 << unsolv), 0xff0ff0, 0xff, neut);
   }
 
-  scrMgr.reg('444wca', getPartialScramble.bind(null, 0xffffff, 0xffffff, 0xff))
-            ('4edge', getPartialScramble.bind(null, 0x000000, 0xffffff, 0xff))
-            ('444edo', getPartialScramble.bind(null, 0x000000, 0xffffff, 0x00))
-            ('444cto', getPartialScramble.bind(null, 0xffffff, 0x000000, 0x00))
-            ('444ll', getPartialScramble.bind(null, 0x000000, 0x0f00f0, 0xf0))
-            ('444ctud', getPartialScramble.bind(null, 0xffff00, 0xffffff, 0xff))
-            ('444ctrl', getPartialScramble.bind(null, 0x00ffff, 0xffffff, 0xff))
-            ('444l8e', getPartialScramble.bind(null, 0x000000, 0xff0ff0, 0xff))
+  function getEdgeScramble() {
+    return getPartialScramble(0x000000, 0xffffff, 0xff);
+  }
+
+  function getEdgeOnlyScramble() {
+    return getPartialScramble(0x000000, 0xffffff, 0x00);
+  }
+
+  function getCenterOnlyScramble() {
+    return getPartialScramble(0xffffff, 0x000000, 0x00);
+  }
+
+  function getLastLayerScramble(type, length, cases, neut) {
+    return getPartialScramble(0x000000, 0x0f00f0, 0xf0, neut);
+  }
+
+  function getCenterUDSolvedScramble(type, length, cases, neut) {
+    return getPartialScramble(0xffff00, 0xffffff, 0xff, neut);
+  }
+
+  function getCenterRLSolvedScramble(type, length, cases, neut) {
+    return getPartialScramble(0x00ffff, 0xffffff, 0xff, neut);
+  }
+
+  function getLast8DedgeScramble(type, length, cases, neut) {
+    return getPartialScramble(0x000000, 0xff0ff0, 0xff, neut);
+  }
+
+  scrMgr.reg('444wca', getRandomScramble)
+            ('4edge', getEdgeScramble)
+            ('444edo', getEdgeOnlyScramble)
+            ('444cto', getCenterOnlyScramble)
+            ('444ll', getLastLayerScramble)
+            ('444ctud', getCenterUDSolvedScramble)
+            ('444ctrl', getCenterRLSolvedScramble)
+            ('444l8e', getLast8DedgeScramble)
             ('444ud3c', getYauUD3CScramble)
             ('444rlda', getHoyaRLDAScramble)
             ('444rlca', getHoyaRLCAScramble)
