@@ -133,6 +133,8 @@ var tools = execMain(function() {
 			return "fto";
 		} else if (/^heli$/.exec(scrambleType)) {
 			return "heli";
+		} else if (/^helicv$/.exec(scrambleType)) {
+			return "helicv";
 		} else if (/^heli2x2g?$/.exec(scrambleType)) {
 			return "heli2x2";
 		}

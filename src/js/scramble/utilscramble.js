@@ -404,6 +404,7 @@
 			case "klmp": // Kilominx (Pochmann)
 				return pochscramble(10, Math.ceil(len / 10));
 			case "heli":
+			case "helicv":
 				return adjScramble(["UF", "UR", "UB", "UL", "FR", "BR", "BL", "FL", "DF", "DR", "DB", "DL"], [0x09a, 0x035, 0x06a, 0x0c5, 0x303, 0x606, 0xc0c, 0x909, 0xa90, 0x530, 0xa60, 0x5c0], len);
 			case "heli2x2":
 				var ret = adjScramble(['UR', 'UF', 'UL', 'UB', 'DR', 'DF', 'DL', 'DB', 'FR', 'FL', 'BL', 'BR', 'UFR', 'UFL', 'UBL', 'UBR', 'DFR', 'DFL', 'DBL', 'DBR', 'U', 'R', 'F'], [0x2709000, 0x1703000, 0x3506000, 0x330c000, 0x2e90000, 0x1e30000, 0x3c60000, 0x3ac0000, 0x0f11000, 0x1d22000, 0x3944000, 0x2b88000, 0x0700103, 0x1500206, 0x310040c, 0x2300809, 0x0e00130, 0x1c00260, 0x38004c0, 0x2a00890, 0x360ff0f, 0x2d999bb, 0x1b33377, 0x36f0ff0, 0x2d666ee, 0x1bcccdd], len, null, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3]).split(' ');
@@ -507,6 +508,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

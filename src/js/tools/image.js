@@ -1178,6 +1178,20 @@ posit:
 			}
 		}
 
+		/*    +--2+
+		 U0 = |1/0|
+		      +---+ */
+		function drawCurvyFacelet(posit, startIdx, rotate, width, x, y) {
+			var ps = [
+				[[0, -0.3, -1], [0, -1, -0.3]],
+				[[-1, -0.3, -1], [-1, -1, -0.3]],
+				[[0, -0.3, 0.3], [0, -1, -1]]
+			];
+			for (var i = 0; i < ps.length; i++) {
+				drawPolygon(ctx, colors[colorsMap[posit[startIdx + i]]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
+			}
+		}
+
 		/*    +-----+
 		      |3|4|5|
 		 U0 = |2 \| |
@@ -1215,6 +1229,12 @@ posit:
 				cmasks = [2];
 				fmasks = [3, 3, 3];
 				drawFunc = drawHeliFacelet;
+			} else if (type == 'helicv') {
+				npieces = 3;
+				emasks = [2, 3, 7];
+				cmasks = [2];
+				fmasks = [7, 7, 7];
+				drawFunc = drawCurvyFacelet;
 			} else if (type == 'heli2x2') {
 				npieces = 6;
 				emasks = [0, 6, 48];
@@ -1376,7 +1396,7 @@ posit:
 			ftoImage(scramble[1]);
 			return true;
 		}
-		if (type == "heli" || type == "heli2x2") {
+		if (type == "heli" || type == "heli2x2" || type == "helicv") {
 			heliImage(type, scramble[1]);
 			return true;
 		}
