@@ -1163,6 +1163,7 @@ posit:
 		}
 
 		var colors;
+		var colorsMap = [3, 4, 5, 0, 1, 2];
 
 		/*    +---+
 		 U0 = |1/0|
@@ -1173,7 +1174,7 @@ posit:
 				[[-1, -1, 0], [-1, 0, -1]]
 			];
 			for (var i = 0; i < ps.length; i++) {
-				drawPolygon(ctx, colors[posit[startIdx + i]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
+				drawPolygon(ctx, colors[colorsMap[posit[startIdx + i]]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
 			}
 		}
 
@@ -1198,7 +1199,7 @@ posit:
 				 [-0.3, -1, -1, -0.4]]
 			];
 			for (var i = 0; i < ps.length; i++) {
-				drawPolygon(ctx, colors[posit[startIdx + i]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
+				drawPolygon(ctx, colors[colorsMap[posit[startIdx + i]]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
 			}
 		}
 
