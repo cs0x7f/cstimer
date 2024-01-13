@@ -342,7 +342,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var ii = kernel.getProp('statinv') ? shownIdxs.length + 1 - sidx : 2 + sidx;
 			var row = avgRow.parent().children().eq(ii);
 			if (sidx != ~~row.attr('data')) {
-				console.log('[stats] table_ctrl getRowIndexOf error', sidx, idx, rows.eq(ii));
+				console.log('[stats] table_ctrl getRowIndexOf error', sidx, idx, row);
 				return null;
 			}
 			return row;

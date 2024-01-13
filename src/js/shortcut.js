@@ -78,7 +78,7 @@ var shortcuts = execMain(function(){
 	function getOffXY(e) {
 		var offX = e.pageX;
 		var offY = e.pageY;
-		if (event.type.startsWith('touch')) {
+		if (e.type.startsWith('touch')) {
 			var ep = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
 			offX = ep.pageX;
 			offY = ep.pageY;

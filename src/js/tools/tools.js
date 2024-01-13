@@ -155,18 +155,18 @@ var tools = execMain(function() {
 
 	function onFuncSelected(idx, val) {
 		DEBUG && console.log('[func select]', idx, val);
-        kernel.blur();
+		kernel.blur();
 		var start = idx === undefined ? 0 : idx;
 		var end = idx === undefined ? 4 : idx + 1;
-        for (var i = start; i < end; i++) {
+		for (var i = start; i < end; i++) {
 			var newVal = funcMenu[i].getSelected();
-            if (funcs[i] != newVal) {
-                disableFunc(i, 'property');
-                funcs[i] = newVal;
-                kernel.setProp('toolsfunc', JSON.stringify(funcs));
-                execFunc(i, 'property');
-            }
-        }
+			if (funcs[i] != newVal) {
+				disableFunc(i, 'property');
+				funcs[i] = newVal;
+				kernel.setProp('toolsfunc', JSON.stringify(funcs));
+				execFunc(i, 'property');
+			}
+		}
 	}
 
 	function procSignal(signal, value) {

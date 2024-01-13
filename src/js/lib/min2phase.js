@@ -1069,8 +1069,8 @@ var min2phase = (function() {
 			for (var j = 0; j < 18; j++) {
 				CubieCube.CornConjugate(moveCube[j], SymMultInv[0][s], c);
 				outloop: for (var m = 0; m < 18; m++) {
-					for (var t = 0; t < 8; t++) {
-						if (moveCube[m].ca[t] != c.ca[t]) {
+					for (var k = 0; k < 8; k++) {
+						if (moveCube[m].ca[k] != c.ca[k]) {
 							continue outloop;
 						}
 					}

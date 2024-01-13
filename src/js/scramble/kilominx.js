@@ -517,11 +517,11 @@ var kilominx = (function() {
 
 		//phase2
 		var doPhase2Move = comb3FullMove.bind(null, Phase2Move);
-		var val0 = phase2Coord.get(kc0, 3);
+		val0 = phase2Coord.get(kc0, 3);
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][1]], kc0, KiloCubie.symCube[1], kc1);
-		var val1 = phase2Coord.get(kc1, 3);
+		val1 = phase2Coord.get(kc1, 3);
 		idx = [val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]];
-		var tt = +new Date;
+		tt = +new Date;
 		var sol2 = solve(idx, function(idx) {
 			return idx[0] == 0 && idx[1] == 0;
 		}, function(idx) {
@@ -542,13 +542,13 @@ var kilominx = (function() {
 
 		//phase3
 		var doPhase3Move = comb4FullMove.bind(null, Phase3Move);
-		var val0 = phase3Coord.get(kc0);
+		val0 = phase3Coord.get(kc0);
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][6]], kc0, KiloCubie.symCube[6], kc1);
-		var val1 = phase3Coord.get(kc1);
+		val1 = phase3Coord.get(kc1);
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][29]], kc0, KiloCubie.symCube[29], kc1);
 		var val2 = phase3Coord.get(kc1);
 		idx = [val0[0] * 81 * 24 + val0[1] * 81 + val0[2], val1[0] * 81 * 24 + val1[1] * 81 + val1[2], val2[0] * 81 * 24 + val2[1] * 81 + val2[2]];
-		var tt = +new Date;
+		tt = +new Date;
 		var sol3 = solve(idx, function(idx) {
 			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
 		}, function(idx) {

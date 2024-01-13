@@ -185,6 +185,7 @@ var replay = execMain(function() {
 		var moves = [];
 		for (var i = -4; i < 5; i++) {
 			var idx = i + curPlayIdx;
+			var pad;
 			if (idx < 0 || idx >= playMoves.length) {
 				moves[i + 4] = '<span style="color:#888;">~</span>';
 				pad = mathlib.valuedArray(maxMoveLen - 1, ' ').join('');

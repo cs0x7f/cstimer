@@ -484,7 +484,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 					if (isFound || getPruning(ecPrun[j], corns[j] * 24 + edges[j]) > length) {
 						continue;
 					}
-					var sol = [];
+					sol = [];
 					for (var depth = 0; depth <= length; depth++) {
 						if (idaxcross(perm, flip, edges[j], corns[j], j, depth, -1, sol)) {
 							isFound = true;

@@ -1149,10 +1149,10 @@ var GiikerCube = execMain(function() {
 			chkAvail = window.navigator.bluetooth.getAvailability();
 		}
 
-        return chkAvail.then(function(available) {
+		return chkAvail.then(function(available) {
 			DEBUG && console.log('[bluetooth]', 'is available', available);
-            if (!available) {
-                return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
+			if (!available) {
+				return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
 			}
 			return window.navigator.bluetooth.requestDevice({
 				filters: [{
