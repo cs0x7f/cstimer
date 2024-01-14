@@ -94,7 +94,7 @@ var shortcuts = execMain(function(){
 			return;
 		}
 		touchPoint = getOffXY(e);
-		astDiv.css({
+		astDiv && astDiv.css({
 			'left': touchPoint[0],
 			'top': touchPoint[1],
 			'opacity': 0.0
@@ -104,7 +104,7 @@ var shortcuts = execMain(function(){
 	function onTouchEnd(e) {
 		DEBUG && console.log('[shortcut] touch end', e);
 		clearLongTouch();
-		astDiv.hide();
+		astDiv && astDiv.hide();
 		if (hitGesture != -1) {
 			touchElem[hitGesture].removeClass('hit');
 			timer.softESC();
@@ -126,11 +126,11 @@ var shortcuts = execMain(function(){
 		}
 		if (moveDis <= touchElem[0].width()) {
 			hitGesture = -1;
-			astDiv.css('opacity', moveDis / touchElem[0].width());
+			astDiv && astDiv.css('opacity', moveDis / touchElem[0].width());
 		} else {
 			var theta = -Math.atan2(movePoint[1] - touchPoint[1], movePoint[0] - touchPoint[0]);
 			hitGesture = Math.floor(theta / Math.PI * 4 + 8.5) % 8;
-			astDiv.css('opacity', 1);
+			astDiv && astDiv.css('opacity', 1);
 			touchElem[hitGesture].addClass('hit');
 			timer.softESC();
 		}
