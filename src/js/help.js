@@ -67,6 +67,53 @@ var help = execMain(function(regProp, setProp, getProp) {
 		}
 	}
 
+	function improveColorPreview() {
+		var links = rightDiv.find('.click');
+		for (var i = 0; i < links.length; i++) {
+			var obj = links.eq(i);
+			if (!colstr_re.exec(obj.attr('href'))) {
+				continue;
+			}
+			obj.parent().parent().after(genColorPreview(obj.attr('href')));
+			obj.parent().remove();
+		}
+	}
+
+	var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7})\s*$/;
+
+	function genColorPreview(colScheme) {
+		var m = colstr_re.exec(colScheme);
+		if (!m) {
+			return;
+		}
+		var colors = [];
+		for (var i = 0; i < 7; i++) {
+			colors[i] = colScheme.substr(i * 4, 4);
+		}
+		var obj = $(
+			'<div class="colorPrev" style="display:inline-block; width:10em; height:14em; text-align:center; border:#0008 solid;">' +
+			'<table style="width:100%; height:100%; border-collapse: collapse;"><tbody>' +
+			'<tr style="height:15%;"><td class="clpr-bd" colspan=8>U R F D L B</td></tr>' +
+			'<tr style="height:50%;"><td colspan=8><span class="clpr-tm" style="font-size:2em; font-family:lcd;">0.00</span><br><span class="clpr-lk">ao5: xx.xx<br>ao12: xx.xx</span></td></tr>' +
+			'<tr style="height:25%;"><td class="clpr-bd" colspan=4>XXxXX<br>XXxXX</td><td class="bgcolor"></td></tr>' +
+			'<tr style="height:10%;"><td class="clpr-bt0"/><td class="clpr-bt0"/><td class="clpr-bt1"/>' +
+			'<td class="clpr-lg" style="width:33%; font-family:MyImpact;" colspan=2>csTimer</td>' +
+			'<td class="clpr-bt1"/><td class="clpr-bt0"/><td class="clpr-bt0"/></tr>' +
+			'</tbody></table></div>');
+		obj.css({'color': colors[0], 'background-color': colors[1]});
+		obj.find('.clpr-bt0').css({'width': '11%'}).html('O');
+		obj.find('.clpr-bt1').css({'width': '11%', 'background-color': colors[3]}).html('O');
+		obj.find('.clpr-bd').css({'background-color': colors[2]});
+		obj.find('.clpr-lk').css({'color': colors[4]});
+		obj.find('.clpr-lg').css({'color': colors[5], 'background-color': colors[6]});
+		obj.click(function(url) {
+			if (confirm('Change color scheme?')) {
+				window.location.href = url;
+			}
+		}.bind(null, colScheme));
+		return obj;
+	}
+
 
 	var layouts = {
 		"qwerty": "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./",
@@ -187,6 +234,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 
 	$(function() {
 		generateDocs();
+		improveColorPreview();
 		updateTable();
 		$('#about').html(table);
 		rightDiv.scrollTop();
@@ -197,6 +245,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 	});
 
 	return {
+		genColorPreview: genColorPreview,
 		getMappedCode: getMappedCode
 	}
 }, [kernel.regProp, kernel.setProp, kernel.getProp]);
