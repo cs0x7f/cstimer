@@ -283,6 +283,7 @@ var scrdata = [
 	['Rellotge', [
 		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
+		['WCA (old)', "clkwcab", 0],
 		['òptim', "clko", 0],
 		['Concís', "clkc", 0],
 		['Ordre eficient de clavilles', "clke", 0]

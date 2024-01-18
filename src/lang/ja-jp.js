@@ -283,6 +283,7 @@ var scrdata = [
 	['クロック', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['最適', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]

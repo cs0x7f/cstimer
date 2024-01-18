@@ -283,6 +283,7 @@ var scrdata = [
 	['Rubik Clock', [
 		['jaap', "clk", 0],
 		['Hiệp hội Rubik Thế giới', "clkwca", 0],
+		['Hiệp hội Rubik Thế giới (old)', "clkwcab", 0],
 		['optimal', "clko", 0],
 		['Ngắn Gọn', "clkc", 0],
 		['efficient pin order', "clke", 0]

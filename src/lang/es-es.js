@@ -283,6 +283,7 @@ var scrdata = [
 	['Reloj de Rubi', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['óptimo', "clko", 0],
 		['conciso', "clkc", 0],
 		['orden de pin eficiente', "clke", 0]

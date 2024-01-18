@@ -283,6 +283,7 @@ var scrdata = [
 	['Ur', [
 		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
+		['WCA (old)', "clkwcab", 0],
 		['Optimal', "clko", 0],
 		['kortfattet', "clkc", 0],
 		['Effektiv pin rækkefølge', "clke", 0]

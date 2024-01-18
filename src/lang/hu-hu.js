@@ -283,6 +283,7 @@ var scrdata = [
 	['Óra', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['optimális', "clko", 0],
 		['tömör', "clkc", 0],
 		['hatékony pöcök sorrend', "clke", 0]

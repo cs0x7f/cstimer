@@ -283,6 +283,7 @@ var scrdata = [
 	['Klok', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['optimaal', "clko", 0],
 		['beknopt', "clkc", 0],
 		['Efficiente knop volgorde', "clke", 0]

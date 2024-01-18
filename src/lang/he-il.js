@@ -283,6 +283,7 @@ var scrdata = [
 	['שעון', [
 		['jaap', "clk", 0],
 		['רשמי', "clkwca", 0],
+		['רשמי (old)', "clkwcab", 0],
 		['optimal', "clko", 0],
 		['קצר', "clkc", 0],
 		['efficient pin order', "clke", 0]

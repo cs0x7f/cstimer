@@ -283,6 +283,7 @@ var scrdata = [
 	['الساعة', [
 		['jaap', "clk", 0],
 		['جمعية الكيوبينغ العالمية', "clkwca", 0],
+		['جمعية الكيوبينغ العالمية (old)', "clkwcab", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]

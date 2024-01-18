@@ -283,6 +283,7 @@ var scrdata = [
 	['Clock', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['optimal', "clko", 0],
 		['Concis', "clkc", 0],
 		['Ordre des boutons fixe', "clke", 0]

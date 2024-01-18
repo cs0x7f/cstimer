@@ -377,10 +377,14 @@
 			case "15pat": // 15 puzzle
 				return do15puzzle(false, len, true, true);
 			case "clkwca": // Clock (WCA Notation)
+			case "clkwcab": // Clock (WCA Notation with buttons)
 				var clkapp = ["0+", "1+", "2+", "3+", "4+", "5+", "6+", "1-", "2-", "3-", "4-", "5-"];
 				ret = "UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
 				for (var i = 0; i < 14; i++) {
 					ret = ret.replace('?', rndEl(clkapp));
+				}
+				if (type == "clkwca") {
+					ret = ret.slice(0, -4);
 				}
 				return ret.replace('?', rndEl(["", " UR"])).replace('?', rndEl(["", " DR"])).replace('?', rndEl(["", " DL"])).replace('?', rndEl(["", " UL"]));
 			case "clk": // Clock (Jaap order)
@@ -508,6 +512,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

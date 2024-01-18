@@ -283,6 +283,7 @@ var scrdata = [
 	['魔錶', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['最佳化', "clko", 0],
 		['簡潔', "clkc", 0],
 		['pin腳順序效率最佳化', "clke", 0]

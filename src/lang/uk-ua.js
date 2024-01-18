@@ -283,6 +283,7 @@ var scrdata = [
 	['Годинник', [
 		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
+		['WCA (old)', "clkwcab", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]

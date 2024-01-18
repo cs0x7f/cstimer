@@ -283,6 +283,7 @@ var scrdata = [
 	['Hodiny', [
 		['věci', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['optimální', "clko", 0],
 		['stručně', "clkc", 0],
 		['efektivní pin řád', "clke", 0]

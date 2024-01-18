@@ -283,6 +283,7 @@ var scrdata = [
 	['Saat', [
 		['jaap', "clk", 0],
 		['Dünya Küp Derneği', "clkwca", 0],
+		['Dünya Küp Derneği (old)', "clkwcab", 0],
 		['ideal', "clko", 0],
 		['Özlü', "clkc", 0],
 		['verimli düğme sırası', "clke", 0]

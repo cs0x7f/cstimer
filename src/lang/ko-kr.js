@@ -283,6 +283,7 @@ var scrdata = [
 	['클락', [
 		['얍(Jaap)', "clk", 0],
 		['WCA', "clkwca", 0],
+		['WCA (old)', "clkwcab", 0],
 		['최적', "clko", 0],
 		['약식 표기', "clkc", 0],
 		['효율적 핀 순서', "clke", 0]

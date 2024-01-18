@@ -283,6 +283,7 @@ var scrdata = [
 	['Zegar', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['optymalny', "clko", 0],
 		['concise', "clkc", 0],
 		['efektywna kolejność pinów', "clke", 0]

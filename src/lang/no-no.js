@@ -283,6 +283,7 @@ var scrdata = [
 	['Klokke', [
 		['Jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['Optimalt', "clko", 0],
 		['konkav', "clkc", 0],
 		['Effektiv pin rekkefølge', "clke", 0]

@@ -283,6 +283,7 @@ var scrdata = [
 	['魔表', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
+		['wca (old)', "clkwcab", 0],
 		['最少步', "clko", 0],
 		['concise', "clkc", 0],
 		['高效顺序', "clke", 0]
