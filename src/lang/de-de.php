@@ -78,7 +78,7 @@
 <li><strong data="opt_scrAlign">Aurichtung des Scramble-Bereichs</strong>. Ausrichtung des gesamten Scramble-Bereiches, inklusive Scamble-Typ-Auswahl</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrFast">schnellen Scramble für 4x4x4 verwenden (inoffiziell)</strong>. Offizielle WCA 4x4x4-Scrambles benötigen große Mengen an Rechenleistung, wählen Sie diese Option um stattdessen zufällig generierte Scrambles zu verwenden</li>
-<li><strong data="opt_scrKeyM">Schlüssel-Züge im Scramble hervorheben</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
+<li><strong data="opt_scrKeyM">Schlüssel-Züge im Scramble hervorheben</strong>. Markiere einen entscheidenden Move in dem Scramble, z. B. den Schritt, der die quadratische Form in SQ1-Scrambles zerstört</li>
 <li><strong data="opt_scrClk">Aktion beim klicken des scrambles</strong>. Verhalten beim anklicken des Scrambles, kopieren oder neu generieren</li>
 <li><strong data="opt_trim">Anzahl der Versuche, die auf beiden Seiten getrimmt wurden</strong>. Anzahl der besten und schlechtesten Zeiten die bei Durchschnitten ignoriert werden</li>
 <li><strong data="opt_statsum">Zusammenfassung vor der Zeiten-Liste anzeigen</strong>. Statistiken vor Zeiten anzeigen</li>
@@ -87,51 +87,51 @@
 <li><strong data="opt_imrename">Sitzung direkt nach der Erstellung umbenennen</strong>. Sitzung nach dem Erstellen sofort umbenennen.</li>
 <li><strong data="opt_scr2ss">neue Sitzung erstellen, wenn Scramble-Typ gewechselt wird</strong>. Beim wechseln des Scramble-Typs eine neue Sitzung erstellen.</li>
 <li><strong data="opt_statinv">umgekehrte Zeitliste</strong>. Zeitenliste umkehren, sodass die neusten Zeiten am Ende der Liste stehen</li>
-<li><strong data="opt_statclr">Leeren von Sitzungen zulassen</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
-<li><strong data="opt_absidx">Absoluten Index im Statistik-Report anzeigen</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Zeige Statistik, when die Zeitnummer angeklickt wird</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
-<li><strong data="opt_statal">Statistische Indikatoren</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
-<li><strong data="opt_delmul">Mehrfach-Löschung aktivieren</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
-<li><strong data="opt_disPrec">Genauigkeit des Histograms</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Zeige die Lösungen schrittweise an</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
-<li><strong data="opt_imgSize">Scramble-Bild Größe</strong>. Set the size of scramble image.</li>
+<li><strong data="opt_statclr">Leeren von Sitzungen zulassen</strong>. Wenn deaktiviert, wird ein "+"-Buttons (zum Erstellen einer Sitzung) anstelle des "X"-Buttons neben der Sitzungsauswahl angezeigt. So wird bei einem Klick eine neue Sitzung erstellt, anstatt die gesamte Sitzung zurückzusetzen.</li>
+<li><strong data="opt_absidx">Absoluten Index im Statistik-Report anzeigen</strong>. Zeige den absoluten Index in einer Session anstelle der Zahl von 1 bis zur gesamten Anzahl an Solves (z. B. 1/2/3 for mo3) in runden Statistiken.</li>
+<li><strong data="opt_rsfor1s">Zeige Statistik, when die Zeitnummer angeklickt wird</strong>. Bei Klick auf die erste Zeile in der Zeitenliste, wird eine runde Statistik für einen einzlenen Solve angezeigt.</li>
+<li><strong data="opt_statal">Statistische Indikatoren</strong>. statistische Anzeige für die Statistik-Tabelle, wenn Anpassungen für aoX und moX zur Verfügung stehen</li>
+<li><strong data="opt_delmul">Mehrfach-Löschung aktivieren</strong>. Möglichkeit zum Löschen mehrerer Solves beginnend von einem ausgewählten Solve (der ausgewählte Solve ist der älteste zu löschende Solve)</li>
+<li><strong data="opt_disPrec">Genauigkeit des Histograms</strong>. Zeitintervall für das Zeitverteilungswerkzeug.</li>
+<li><strong data="opt_solSpl">Zeige die Lösungen schrittweise an</strong>. Wenn ausgewählt, wird nur die Länge der Lösung eines Solvers angezeigt und die Lösung kann Zug für Zug angezeigt werden. Ansonsten wird die gesamte Lösung angezeigt.</li>
+<li><strong data="opt_imgSize">Scramble-Bild Größe</strong>. Setzt die Größe der Scramble-Abbildung.</li>
 <li><strong data="opt_NTools">Anzahl der Werkzeuge</strong>. csTimer ist in der Lage, bis zu 4 Werkzeuge gleichzeitig zu zeigen.</li>
 <li><strong data="opt_useKSC">Tastenkombinationen benutzen</strong>. Tastaturkürzel verwenden, um den Scramble-Typ zu wechseln, nächstes Scramble zu erzeugen, zwischen Sessions zu wechseln usw.</li>
 <li><strong data="opt_vrcSpeed">VRC Grundgeschwindigkeit (TPS)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
-<li><strong data="opt_vrcMP">Multi-Phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiVRC">Virtuellen Giiker Cube zeigen</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
+<li><strong data="opt_vrcMP">Multi-Phase</strong>. Automatische Mehrphasen-Aufteilung für virtuelle und Bluetooth-Cubes.</li>
+<li><strong data="opt_giiVRC">Virtuellen Giiker Cube zeigen</strong>. Zeigt einen virtuellen Cube im Haupt-Timer während der Verbindung zu einem Bluetooth-Cube an.</li>
 <li><strong data="opt_giiSD">Ende des Scrambles durch Warten anzeigen</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
-<li><strong data="opt_giiSK">Ende des Scrambles mit Leertaste anzeigen</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
-<li><strong data="opt_giiSM">Ende des Scrambles anzeigen mit</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
+<li><strong data="opt_giiSK">Ende des Scrambles mit Leertaste anzeigen</strong>. Beim Drücken der Leertaste wird der Bluetooth-Cube als gescrambelt markiert, alle folgenden Züge starten den Timer.</li>
+<li><strong data="opt_giiSM">Ende des Scrambles anzeigen mit</strong>. Verwende bestimmte Zug-Sequenzen, um den Bluetooth-cube als gescrambelt zu markieren.</li>
 <li><strong data="opt_giiBS">Beep am Ende des Scrambles</strong>. Beep when some of scramble-finish signal is triggered.</li>
 <li><strong data="opt_giiRST">Giiker Cube bei Verbindung zurück setzen</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
 <li><strong data="opt_giiAED">Automatische Hardware-Fehler-Erkennung</strong>. Einige Bluetooth-Würfel verlieren einige Schritte aufgrund von Hardware-Fehlern, csTimer wird versuchen, solche Fälle zu erkennen.</li>
 </ul>
-<h2>Tools detail</h2>
+<h2>Werkzeug-Details</h2>
 <ul>
-<li><strong data="tool_scrgen">Scramble-Generator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">Zeit bestätigen</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
-<li><strong data="tool_hugestats">sitzungsübergreifende Statistiken</strong>. You are able to do cross-session statistics with this tool.</li>
-<li><strong data="tool_stats">Statistiken</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">Zeitverteilung</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
-<li><strong data="tool_trend">Zeit-Trend</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
-<li><strong data="tool_image">Scramble zeichnen</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">Löser &gt; Roux ersten Block lösen</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Löser &gt; EOLine Lösen</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Löser &gt; Kreuz lösen</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Löser &gt; 2x2x2 Würfel</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
+<li><strong data="tool_scrgen">Scramble-Generator</strong>. Mit diesem Werkzeug können bis zu 999 Scrambles mit einem Klick generiert werden.</li>
+<li><strong data="tool_cfm">Zeit bestätigen</strong>. Werkzeug, um den aktuellen Solve mit zugehörigem Kommentar, Scramble, Datum und, falls verfügbar, Rekonstruktionsmöglichkeit anzuzeigen (gleicher Dialog wie beim Anklicken eines Solves).</li>
+<li><strong data="tool_hugestats">sitzungsübergreifende Statistiken</strong>. Mit diesem Werkzeug können sitzungsübergreifende Statistiken erstellt werden.</li>
+<li><strong data="tool_stats">Statistiken</strong>. Statistik-Tabelle, ähnlich zu der Tabelle in der Zeitenliste.</li>
+<li><strong data="tool_distribution">Zeitverteilung</strong>. Zeitverteilungs- und Kontinuitätsanalyse, &lt;X Y/Z bedeutet, dass es insgesamt Z Solves unter X Sekunden gibt, und alle der letzten Y Solves in der Session unter X Sekunden sind.</li>
+<li><strong data="tool_trend">Zeit-Trend</strong>. Zeigt eine Trendkurve aller Solves in der aktuellen Sitzung an.</li>
+<li><strong data="tool_dlystat">Daily Statistics</strong>. Zählt die Anzahl der Solves pro Tag/Woche/Monat/Jahr.</li>
+<li><strong data="tool_image">Scramble zeichnen</strong>. Scramble-Abbildung zur Überprüfung des korrekten Scrambles, alle WCA-Puzzles werden unterstützt</li>
+<li><strong data="tool_roux1">Löser &gt; Roux ersten Block lösen</strong>. Roux-1. Schritt-Löser, der einen 1x2x3 Block löst.</li>
+<li><strong data="tool_eoline">Löser &gt; EOLine Lösen</strong>. EO-Line-Löser, der die Ausrichtung aller 12 Kanten und die Positionen der DF- und DB-Kanten löst.</li>
+<li><strong data="tool_cross">Löser &gt; Kreuz lösen</strong>. Kreuz-Löser, der die DF-, DL-,DR und DB-Kante löst.</li>
+<li><strong data="tool_222face">Löser &gt; 2x2x2 Würfel</strong>. 2x2x2-Seiten-Löser, der eine Seite von einem 2x2x2-Würfel löst.</li>
 <li><strong data="tool_333cf">Löser &gt; Cross + F2L</strong>. Cross- und F2L-Solver, der Cross und 4 F2Ls mit Computersuche löst, so dass die Lösung weit von menschlichen Lösungen entfernt sein kann.</li>
-<li><strong data="tool_333roux">Löser &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
-<li><strong data="tool_333petrus">Löser &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
-<li><strong data="tool_333zz">Löser &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
-<li><strong data="tool_sq1cs">Löser &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
-<li><strong data="tool_pyrv">Löser &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
-<li><strong data="tool_skbl1">Löser &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">Giiker Cube</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_mtrnm">Metronom</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Gemeinsamen Scramble</strong>. Using same scrambles with friends by setting a common seed.</li>
-<li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
+<li><strong data="tool_333roux">Löser &gt; Roux S1 + S2</strong>. Roux-1. und 2. Schritt-Löser, der zuerst einen 1x2x3-Block auf der linken Seite und dann einen weiteren 1x2x3-Block auf der rechten Seite mit R-, M, r- und U-Zügen löst.</li>
+<li><strong data="tool_333petrus">Löser &gt; 2x2x2 + 2x2x3</strong>. Petrus-1. und 2. Schritt-Löser, der zuerst einen 2x2x2-Block auf der linken Seiten löst und diesen dann zu einem 2x2x3-Block auf der linken Seite erweitert.</li>
+<li><strong data="tool_333zz">Löser &gt; EOLine + ZZF2L</strong>. EO-Line und ZZ-F2L-Löser, der zuerst die EO-Line, dann den linken 1x2x3-Block oder den rechten 1x2x3-Block löst und anschließend den anderen 1x2x3-Block löst.</li>
+<li><strong data="tool_sq1cs">Löser &gt; SQ1 S1 + S2</strong>. SQ1-1. und 2. Schritt-Löser, der zuerst die Form des SQ1 löst und dann die U- und D-Teile trennt.</li>
+<li><strong data="tool_pyrv">Löser &gt; Pyraminx V</strong>. Pyraminx-V-Löser, der drei Ecken und zwei Kanten löst, um V-Muster zu erzeugen.</li>
+<li><strong data="tool_skbl1">Löser &gt; Skewb Face</strong>. Skewb-1-Seite-Löser, der eine Ebene des Skewb's, also 1 Mitte und 4 benachbarte Ecken löst.</li>
+<li><strong data="tool_giikerutil">Giiker Cube</strong>. Zusatzwerkzeug für Bluetooth-Würfel, das den aktuellen Zustand, die Akkuladung, die Echtzeit-Rekonstruktion usw. anzeigen kann.</li>
+<li><strong data="tool_mtrnm">Metronom</strong>. Metronom: Piept in einem bestimmten Takt und/oder zu einer bestimmten Zeit nach dem Starten des Solves.</li>
+<li><strong data="tool_syncseed">Gemeinsamen Scramble</strong>. Benutze die gleichen Scrambles mit Freunden, indem gemeinsame "Seeds" verwendet werden.</li>
+<li><strong data="tool_stackmatutil">stackmat</strong>. Zusatzwerkzeug für Stackmat, das den Status, den Akkustand, den Geräuschpegel des Signals usw. anzeigen kann.</li>
 </ul>
 <h2>Links</h2>
 <ul>
@@ -160,11 +160,11 @@
 <p>Danke nochmals für deine Spende!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>Überprüfe im Fehlerfall, ob Bluetooth auf dem System aktiviert ist!</strong></p>
+<p>Der verwendete Browser muss die Web-Bluetooth-API unterstützen. Verwende bitte einen kompatiblen Browser, die beste Wahl ist:</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome in macOS, Linux, Android oder Windows</li>
+<li>Bluefy in iOS</li>
 </ul>
-<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+<p>Es bietet sich außerdem an, <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">den Status der Implementierung</a> zu überprüfen, um eine vollständige Übersicht verschiedener Browser und unterstützter Web-Bluetooth-API-Funktionen zu erhalten.</p>
 </div>

@@ -65,11 +65,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	function checkUseIns() {
 		var ret = getProp('useIns');
-		if (ret === true || ret == 'a') {
+		if (ret === true || ret == 'a' || ret == 'ap') {
 			return true;
 		} else if (ret === false || ret == 'n') {
 			return false;
-		} else if (ret == 'b') {
+		} else if (ret == 'b' || ret == 'bp') {
 			return /^(333ni|444bld|555bld|r3ni)$/.exec(getProp('scrType')) == null;
 		}
 	}
@@ -116,7 +116,17 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 			var time = $.now() - startTime;
 			if (status == -3 || (status == -2 && checkUseIns())) {
-				setHtml(runningDiv, (getProp('timeU') != 'n' ? ((time > 17000) ? 'DNF' : (time > 15000) ? '+2' : 15 - ~~(time / 1000)) : TIMER_INSPECT));
+				var insVal = TIMER_INSPECT;
+				if (getProp('timeU') != 'n') {
+					if (time > 17000) {
+						insVal = 'DNF';
+					} else if (time > 15000) {
+						insVal = '+2';
+					} else {
+						insVal = /^[ab]p$/.exec(getProp('useIns')) ? Math.floor(time / 1000) : 15 - Math.floor(time / 1000);
+					}
+				}
+				setHtml(runningDiv, insVal);
 			} else { //>0
 				var pret = pretty(time > 0 ? time : 0, true);
 				setHtml(runningDiv, {
@@ -1734,7 +1744,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'giiRST', 1, PROPERTY_GIIRST, ['p', ['a', 'p', 'n'], PROPERTY_GIIRSTS.split('|')]);
 		regProp('vrc', 'giiAED', 0, PROPERTY_GIIAED, [false]);
 		regProp('timer', 'useMouse', 0, PROPERTY_USEMOUSE, [false], 1);
-		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'b', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
+		regProp('timer', 'useIns', 1, PROPERTY_USEINS, ['n', ['a', 'ap', 'b', 'bp', 'n'], PROPERTY_USEINS_STR.split('|')], 1);
 		regProp('timer', 'showIns', 0, PROPERTY_SHOWINS, [true], 1);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
