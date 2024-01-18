@@ -1401,14 +1401,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 			);
 
 			var groups = [];
-			var gscr = NaN;
+			var lastGKey = NaN;
 			for (var i = 0; i < ssSorted.length; i++) {
 				var ssData = sessionData[ssSorted[i]];
-				if (byGroup && ssData[byGroup] == gscr) {
+				var gKey = byGroup == 'scr' ? (ssData['opt'] || {})['scrType'] : ssData[byGroup];
+				if (byGroup && gKey == lastGKey) {
 					groups[groups.length - 1].push(i);
 				} else {
 					groups.push([i]);
-					gscr = ssData[byGroup];
+					lastGKey = gKey;
 				}
 			}
 			for (var i = 0; i < groups.length; i++) {
