@@ -25,19 +25,30 @@
 </ul>
 <h2>Гарячі клавіші</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Клавіша</th><td>Функція</td></tr>
-<tr><th>Alt + 1</th><td>Scramble тип до Square -1.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Змінити тип скрамблу на 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + з/ь/с/і</th><td>Scramble type to pyra/megaminx/clock/skewb.</td></tr>
-<tr><th>Alt + ш</th><td>Змінити тип скрамблу на ручний ввод</td></tr>
-<tr><th>Alt + в</th><td>Видалити всі часи в поточній сесії.</td></tr>
-<tr><th>Alt + я</th><td>Видалити останній час.</td></tr>
-<tr><th>Alt + вверх/вниз</th><td>До наступної/попередньої сесії</td></tr>
-<tr><th>Alt + ліво/право
-</th><td>Відображення останнього/наступного.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>Останній час - OK/+2/DNF</td></tr>
+<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
+<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>Gesture</th><td>Function</td></tr>
+<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
+<tr><th>Up</th><td>The latest solve is +2</td></tr>
+<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Down</th><td>Remove the latest solve</td></tr>
+<tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Клавіші для віртуального куба</th></tr>
 </table>

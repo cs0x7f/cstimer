@@ -25,18 +25,30 @@
 </ul>
 <h2>Gyorsbillentyűk</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Billentyűkombináció</th><td>Funkció</td></tr>
-<tr><th>Alt + 1</th><td>Keverés típus "Square-1" -hez.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Keverés típus "2x2x2~7x7x7" -hez.</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Keverés típus "pyra/megaminx/clock/skewb" -hez.</td></tr>
-<tr><th>Alt + i</th><td>Keverés kézi bevitele.</td></tr>
-<tr><th>Alt + d</th><td>Kurrens időszak kiürítése.</td></tr>
-<tr><th>Alt + z</th><td>Utolsó mért idő törlése.</td></tr>
-<tr><th>Alt + up/down</th><td>Lépés a következő/előző időszakra.</td></tr>
-<tr><th>Alt + left/right</th><td>Utolsó/következő keverés mutatása.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>Az utolsó mért idő "OK" vagy "+2" vagy "DNF".</td></tr>
+<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
+<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>Gesture</th><td>Function</td></tr>
+<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
+<tr><th>Up</th><td>The latest solve is +2</td></tr>
+<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Down</th><td>Remove the latest solve</td></tr>
+<tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Virtuális kocka térkép</th></tr>
 </table>

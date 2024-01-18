@@ -25,18 +25,30 @@
 </ul>
 <h2>Klávesové zkratky</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Kombinace písmen</th><td>Funkce</td></tr>
-<tr><th>Alt + 1</th><td>Nastavit typ míchání na Square-1.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Nastavit typ míchání na 2x2x2~7x7x7.</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Nastavit typ míchání na pyra/megaminx/clock/skewb.</td></tr>
-<tr><th>Alt + i</th><td>Nastavit druh míchání na vstup.</td></tr>
-<tr><th>Alt + d</th><td>Odebrat všechny časy v aktuální relaci.</td></tr>
-<tr><th>Alt + z</th><td>Odstranit nejnovější čas.</td></tr>
-<tr><th>Alt + špika nahoru / šipka dolů</th><td>Přejít na další / předchozí relaci.</td></tr>
-<tr><th>Alt + šipka vlevo / šipka vpravo</th><td>Zobrazit předchozí / další zamíchání.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>Nejnovější čas je OK/+2/DNF</td></tr>
+<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
+<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>Gesture</th><td>Function</td></tr>
+<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
+<tr><th>Up</th><td>The latest solve is +2</td></tr>
+<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Down</th><td>Remove the latest solve</td></tr>
+<tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Klávesy pro otáčení virtuální kostky</th></tr>
 </table>

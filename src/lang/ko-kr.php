@@ -25,18 +25,30 @@
 </ul>
 <h2>키보드 단축키</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>키</th><td>기능</td></tr>
-<tr><th>Alt + 1</th><td>스퀘어-1 섞기</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>2x2x2~7x7x7 섞기</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>피라/메가밍크스/클락/스큐브 섞기</td></tr>
-<tr><th>Alt + i</th><td>직접 입력 섞기</td></tr>
-<tr><th>Alt + d</th><td>현재 모둠의 모든 시간 제거</td></tr>
-<tr><th>Alt + z</th><td>마지막 시간 제거</td></tr>
-<tr><th>Alt + up/down</th><td>다음/마지막 모둠</td></tr>
-<tr><th>Alt + left/right</th><td>마지막/다음 섞기 표시</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>최근 시간을 OK/+2/DNF</td></tr>
+<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
+<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>Gesture</th><td>Function</td></tr>
+<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
+<tr><th>Up</th><td>The latest solve is +2</td></tr>
+<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Down</th><td>Remove the latest solve</td></tr>
+<tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>가상 큐브 키맵</th></tr>
 </table>

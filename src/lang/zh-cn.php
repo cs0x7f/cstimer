@@ -36,7 +36,19 @@
 <tr><th>Alt + 左/右</th><td>显示上/下一条打乱公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>将最新成绩的完成状态改为 OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>手势</th><td>功能</td></tr>
+<tr><th>左上</th><td>将最新成绩的完成状态改为DNF</td></tr>
+<tr><th>上</th><td>将最新成绩的完成状态改为+2</td></tr>
+<tr><th>右上</th><td>将最新成绩的完成状态改为OK</td></tr>
+<tr><th>左</th><td>显示上一条打乱公式</td></tr>
+<tr><th>右</th><td>显示下一条打乱公式</td></tr>
+<tr><th>左下</th><td>给最新的成绩添加注释</td></tr>
+<tr><th>下</th><td>删除统计功能中本组最新的一个成绩</td></tr>
+<tr><th>右下</th><td>检查最新的还原</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>虚拟魔方按键表</th></tr>
 </table>

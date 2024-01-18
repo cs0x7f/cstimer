@@ -25,18 +25,30 @@
 </ul>
 <h2>الاختصارات</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>المفتاح</th><td>الاستعمال</td></tr>
-<tr><th>ALT+1</th><td>تغير طريقة الخربطة الى Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>تغير طريقة الخربطة الى 2x2x2 ~ 7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>تغير طريقة الخريطة الى pyra/megaminx/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>ادخال طريقة الخربطة</td></tr>
-<tr><th>Alt + d</th><td>يمسح كل الاوقات التي سجلت في الموسم الحالي</td></tr>
-<tr><th>Alt + z</th><td>يمسح اخر وقت سجل</td></tr>
-<tr><th>Alt + فوق\تحت</th><td>الى الجلسة التالي\القبل</td></tr>
-<tr><th>Alt + يمين\يسار</th><td>تغير الى الخربطة التالية\القبلية</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>الموئقت الاخير جيد\+2\DNF</td></tr>
+<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
+<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>Gesture</th><td>Function</td></tr>
+<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
+<tr><th>Up</th><td>The latest solve is +2</td></tr>
+<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Down</th><td>Remove the latest solve</td></tr>
+<tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>خريطة مفتاح المكعب الظاهري</th></tr>
 </table>

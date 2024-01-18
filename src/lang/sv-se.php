@@ -25,18 +25,30 @@
 </ul>
 <h2>Tangentbordsgenvägar</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Tangent</th><td>Funktion</td></tr>
-<tr><th>Alt + 1</th><td>Byter blandningstyp till Square-1.</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Byter blandningstyp till 2x2x2~7x7x7.</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Byter blandningstyp till Pyraminx/Megaminx/Clock/Skewb.</td></tr>
-<tr><th>Alt + i</th><td>Byter blandningstyp till skriv in.</td></tr>
-<tr><th>Alt + d</th><td>Ta bort alla tider i nuvarande session.</td></tr>
-<tr><th>Alt + z</th><td>Ta bort senaste tid.</td></tr>
-<tr><th>Alt + upp/ner</th><td>Till nästa/senaste session.</td></tr>
-<tr><th>Alt + vänster/höger</th><td>Visa senaste/nästa blandning.</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>Senaste tiden är OK/+2/DNF</td></tr>
+<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
+<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
+<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 </table>
+
+<table class="table" style="display: inline-block;">
+<tr><th>Gesture</th><td>Function</td></tr>
+<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
+<tr><th>Up</th><td>The latest solve is +2</td></tr>
+<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Down</th><td>Remove the latest solve</td></tr>
+<tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
+
 <table class="table" id="vrckey" style="display: inline-block;">
 <tr><th colspan=10>Virtual Cube tangenter</th></tr>
 </table>
