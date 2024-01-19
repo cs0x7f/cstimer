@@ -31,7 +31,10 @@ var logohint = execMain(function() {
 			logocc.html('csTimer');
 			return;
 		}
-		logocc.html('<div class="pad" style="width: ' + logo.width() + 'px; ">csTimer</div><span style="font-family: sans-serif; margin: 0 1em 0 1em;">' + curMsg + '</span><div class="pad" style="width: ' + logo.width() + 'px; position: absolute;">csTimer</div>');
+		var logow = logo.width();
+		logocc.html('<div class="pad" style="width: ' + logow + 'px; ">csTimer</div>' +
+			'<span class="msg">' + curMsg + '</span>' +
+			'<div class="pad" style="width:' + logow + 'px; margin-right:' + (-logow) + 'px;">csTimer</div>');
 		logocc.removeClass('hint');
 		var duration = (curMsg.length + 15) * 0.1 + 's';
 		logocc.css({

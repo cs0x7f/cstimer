@@ -278,6 +278,7 @@ textarea {
 
 #leftbar div > div > span {
 	vertical-align: middle;
+	position: relative;
 }
 
 #leftbar div > div > span, html:not(.m) #leftbar div > div:hover > span.icon {
@@ -302,6 +303,12 @@ html:not(.m) #leftbar div > div:hover > span, #leftbar div > div > span.icon, #l
 	display: inline-block;
 	top: 0;
 	bottom: 0;
+}
+
+#leftbar #logo > div > span > span.msg {
+	font-family: sans-serif;
+	margin: 0 1em 0 1em;
+	line-height: 100%;
 }
 
 #leftbar #logo > div > span.hint {

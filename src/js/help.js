@@ -75,7 +75,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 			if (!colstr_re.exec(obj.attr('href'))) {
 				continue;
 			}
-			obj.parent().parent().before(genColorPreview(obj.attr('href')));
+			obj.parent().after(genColorPreview(obj.attr('href')));
 			obj.parent().remove();
 		}
 	}
