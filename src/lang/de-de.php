@@ -25,28 +25,28 @@
 </ul>
 <h2>Tastenkombinationen</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
-<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
+<tr><th>Taste(n)</th><td>Funktion</td></tr>
+<tr><th>Alt + 1</th><td>Scramble-Art zu Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Scramble-Art zu 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Scramble-Art zu Pyraminx/Megaminx/Clock/Skweb</td></tr>
+<tr><th>Alt + i</th><td>Scramble-Art zu Eingabe</td></tr>
+<tr><th>Alt + d</th><td>Entfernt alle Solves aus der aktuellen Sitzung</td></tr>
+<tr><th>Alt + z</th><td>Entfernt den letzten Solve</td></tr>
+<tr><th>Alt + nach oben/unten</th><td>Zur nächsten/vorherigen Sitzung</td></tr>
+<tr><th>Alt + links/rechts</th><td>Vorheriges/Nächstes Scramble anzeigen</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>Der letzte Solve ist OK/+2/DNF</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
-<tr><th>Gesture</th><td>Function</td></tr>
-<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
-<tr><th>Up</th><td>The latest solve is +2</td></tr>
-<tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
-<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
-<tr><th>Down</th><td>Remove the latest solve</td></tr>
-<tr><th>Down right</th><td>Check the latest solve</td></tr>
+<tr><th>Geste</th><td>Funktion</td></tr>
+<tr><th>Nach oben links</th><td>Der letzte Solve ist ein DNF</td></tr>
+<tr><th>Nach oben</th><td>Der letzte Solve ist +2</td></tr>
+<tr><th>Nach oben rechts</th><td>Der letzte Solve ist OK</td></tr>
+<tr><th>Nach links</th><td>Letztes Scramble</td></tr>
+<tr><th>Nach rechts</th><td>Nächstes Scramble</td></tr>
+<tr><th>Nach unten links</th><td>Kommentar zum letzten Solve hinzufügen</td></tr>
+<tr><th>Nach unten</th><td>Entferne den letzten Solve</td></tr>
+<tr><th>Nach unten rechts</th><td>Überprüfe den letzten Solve</td></tr>
 </table>
 
 <table class="table" id="vrckey" style="display: inline-block;">
@@ -112,11 +112,11 @@
 <li><strong data="opt_vrcSpeed">VRC Grundgeschwindigkeit (TPS)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">Multi-Phase</strong>. Automatische Mehrphasen-Aufteilung für virtuelle und Bluetooth-Cubes.</li>
 <li><strong data="opt_giiVRC">Virtuellen Giiker Cube zeigen</strong>. Zeigt einen virtuellen Cube im Haupt-Timer während der Verbindung zu einem Bluetooth-Cube an.</li>
-<li><strong data="opt_giiSD">Ende des Scrambles durch Warten anzeigen</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
+<li><strong data="opt_giiSD">Ende des Scrambles durch Warten anzeigen</strong>. Bei Bluetooth-Cubes kann csTimer nicht wissen, ob ein Move zum Schrambling oder zum Lösen gehört</li>
 <li><strong data="opt_giiSK">Ende des Scrambles mit Leertaste anzeigen</strong>. Beim Drücken der Leertaste wird der Bluetooth-Cube als gescrambelt markiert, alle folgenden Züge starten den Timer.</li>
 <li><strong data="opt_giiSM">Ende des Scrambles anzeigen mit</strong>. Verwende bestimmte Zug-Sequenzen, um den Bluetooth-cube als gescrambelt zu markieren.</li>
 <li><strong data="opt_giiBS">Beep am Ende des Scrambles</strong>. Beep when some of scramble-finish signal is triggered.</li>
-<li><strong data="opt_giiRST">Giiker Cube bei Verbindung zurück setzen</strong>. When connecting to a bluetooth cube, csTimer will detect whether it is solved, if not, there might be some hardware problems or the cube is really unsolved.</li>
+<li><strong data="opt_giiRST">Giiker Cube bei Verbindung zurück setzen</strong>. Beim Verbinden eines Bluetooth-Cubes wird csTimer erkennen, ob dieser gelöst ist. Wenn nicht, gibt es entweder Hardware-Probleme oder der Würfel ist wirklich ungelöst.</li>
 <li><strong data="opt_giiAED">Automatische Hardware-Fehler-Erkennung</strong>. Einige Bluetooth-Würfel verlieren einige Schritte aufgrund von Hardware-Fehlern, csTimer wird versuchen, solche Fälle zu erkennen.</li>
 </ul>
 <h2>Werkzeug-Details</h2>

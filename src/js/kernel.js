@@ -394,7 +394,6 @@ var kernel = execMain(function() {
 		var isPopup = false;
 		var gray;
 		var leftbar;
-		var donateDiv = $('<div />');
 
 		function addButton(module, button, callback, index) {
 			leftbar = leftbar || $('#leftbar');
@@ -838,10 +837,6 @@ var kernel = execMain(function() {
 			regProp('ui', 'wndStat', 1, PROPERTY_WNDSTAT, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
 			regProp('ui', 'wndTool', 1, PROPERTY_WNDTOOL, ['n', ['n', 'f'], PROPERTY_WND_STR.split('|')]);
 
-			$('.donate').appendTo(donateDiv);
-			addButton('donate', BUTTON_DONATE, function() {
-				showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE.replace(/-?<br>-?/g, ''));
-			}, 5);
 			leftbar.appendTo(wndCtn).mouseenter(function() {
 				toggleLeftBar(true);
 			}).mouseleave(function() {

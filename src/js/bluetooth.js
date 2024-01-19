@@ -319,14 +319,14 @@ var GiikerCube = execMain(function() {
 					}).then(function(value) {
 						var key = getKey(version, value);
 						if (!key) {
-							logohint.push('Not support your Gan cube');
+							logohint.push(LGHINT_BTNOTSUP);
 							return;
 						}
 						DEBUG && console.log('[gancube] key', JSON.stringify(key));
 						decoder = $.aes128(key);
 					});
 				} else { //not support
-					logohint.push('Not support your Gan cube');
+					logohint.push(LGHINT_BTNOTSUP);
 				}
 			}).then(function() {
 				return _service_data.getCharacteristics();
@@ -398,7 +398,7 @@ var GiikerCube = execMain(function() {
 			}
 			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
 			if (!m) {
-				logohint.push('Not a valid mac address, cannot connect to your Gan cube');
+				logohint.push(LGHINT_BTINVMAC);
 				decoder = null;
 				return;
 			}
@@ -530,7 +530,7 @@ var GiikerCube = execMain(function() {
 				if (_service_data && _service_meta) {
 					return v1init();
 				}
-				logohint.push('Not support your Gan cube');
+				logohint.push(LGHINT_BTNOTSUP);
 			});
 		}
 

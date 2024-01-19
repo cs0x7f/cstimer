@@ -409,12 +409,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 			} else if (which == 's') {
 				var time = timesAt(cfmIdx);
 				if ($.clipboardCopy(time[1])) {
-					logohint.push('scramble copied');
+					logohint.push(LGHINT_SCRCOPY);
 				}
 			} else if (which == 'c') {
 				var time = timesAt(cfmIdx);
 				if ($.clipboardCopy(pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "") + "   " + time[1] + "   @" + mathlib.time2str(time[3]))) {
-					logohint.push('solve copied');
+					logohint.push(LGHINT_SOLVCOPY);
 				}
 			} else if (which == 'r') {
 				var time = timesAt(cfmIdx);
@@ -1300,7 +1300,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 			}
 			if (cntdiff == 0) {
-				logohint.push('Already sorted');
+				logohint.push(LGHINT_SORT0);
 				return;
 			}
 			if (!confirm(STATS_SSMGR_SORTCFM.replace('%d', cntdiff))) {
@@ -1515,7 +1515,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			fixSessionSelect();
 			loadSession(currentSessionIdx);
 			showMgrTable();
-			logohint.push('Import %d session(s)'.replace('%d', data.length));
+			logohint.push(LGHINT_IMPORTED.replace('%d', data.length));
 			return data.length;
 		}
 

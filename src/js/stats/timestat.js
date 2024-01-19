@@ -153,7 +153,7 @@ var TimeStat = execMain(function() {
 			this.treesAvg[j] = rbt;
 		}
 		if (bestHintList.length != 0 && !silent) {
-			logohint.push("Session best " + bestHintList.join(" ") + "!");
+			logohint.push(LGHINT_SSBEST.replace('%s', bestHintList.join(" ")));
 		}
 	}
 

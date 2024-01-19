@@ -130,7 +130,7 @@ var replay = execMain(function() {
 			curTime = normTime(ctime);
 		} else if (key == 'a') {
 			if ($.clipboardCopy(shareURL)) {
-				logohint.push('share link copied');
+				logohint.push(LGHINT_LINKCOPY);
 			}
 		} else if (key == 'o') {
 			autoOri = !autoOri;

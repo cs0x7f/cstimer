@@ -221,7 +221,7 @@ var scramble = execMain(function(rn, rndEl) {
 		if (act == 'c') {
 			var succ = $.clipboardCopy(sdiv.text());
 			if (succ) {
-				logohint.push('scramble copied');
+				logohint.push(LGHINT_SCRCOPY);
 			}
 		} else if (act == '+') {
 			procNextClick();

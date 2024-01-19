@@ -54,7 +54,7 @@ var exportFunc = execMain(function() {
 		try {
 			dataobj = JSON.parse(this.result);
 		} catch (e) {
-			logohint.push('Invalid Data');
+			logohint.push(LGHINT_INVALID);
 			return;
 		}
 		loadData(dataobj);
@@ -526,14 +526,14 @@ var exportFunc = execMain(function() {
 			if (atexpa == 'id' || atexpa == 'wca') {
 				var id = atexpa == 'id' ? getDataId('locData', 'id') : getDataId('wcaData', 'cstimer_token');
 				if (!isValidId(id)) {
-					logohint.push('Auto Export Abort');
+					logohint.push(LGHINT_AEXPABT);
 					kernel.setProp('atexpa', 'n');
 					return;
 				}
 				uploadData(id).then(function() {
-					logohint.push('Auto Export Success');
+					logohint.push(LGHINT_AEXPSUC);
 				}, function() {
-					logohint.push('Auto Export Failed');
+					logohint.push(LGHINT_AEXPFAL);
 				});
 			} else if (atexpa == 'f') {
 				if (window.Blob) {
@@ -550,14 +550,14 @@ var exportFunc = execMain(function() {
 			} else if (atexpa == 'ggl') {
 				var gglToken = getDataId('gglData', 'access_token');
 				if (!gglToken) {
-					logohint.push('Auto Export Abort');
+					logohint.push(LGHINT_AEXPABT);
 					kernel.setProp('atexpa', 'n');
 					return;
 				}
 				uploadDataGGL(gglToken).then(function() {
-					logohint.push('Auto Export Success');
+					logohint.push(LGHINT_AEXPSUC);
 				}, function() {
-					logohint.push('Auto Export Failed');
+					logohint.push(LGHINT_AEXPFAL);
 				});
 			}
 		});
@@ -605,7 +605,7 @@ var exportFunc = execMain(function() {
 			readerOther.onload = function() {
 				var n_import = stats.importSessions(TimerDataConverter(this.result));
 				if (n_import == 0) {
-					logohint.push('No session imported');
+					logohint.push(LGHINT_IMPORT0);
 				}
 			};
 			inFile.change(importFile.bind(inFile[0], reader));

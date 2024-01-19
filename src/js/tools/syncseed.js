@@ -19,7 +19,7 @@ execMain(function() {
 			return;
 		}
 		if (!/^[a-zA-Z0-9]+$/.exec(val)) {
-			logohint.push('Invalid Value');
+			logohint.push(LGHINT_INVALID);
 			return;
 		}
 		setSeed(val);

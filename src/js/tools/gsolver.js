@@ -1127,7 +1127,7 @@ var gsolver = (function() {
 					return;
 				}
 				if (!stateRE.exec(state)) {
-					logohint.push('Invalid Input');
+					logohint.push(LGHINT_INVALID);
 					return;
 				}
 				setState(state);

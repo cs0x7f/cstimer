@@ -81,7 +81,7 @@ var onlinecomp = execMain(function() {
 			resetProgress();
 			refreshButton.hide();
 		}).error(function() {
-			logohint.push('Network Error');
+			logohint.push(LGHINT_NETERR);
 			refreshButton.val(OLCOMP_UPDATELIST);
 		});
 	}
@@ -110,7 +110,7 @@ var onlinecomp = execMain(function() {
 		}, function(value) {
 			value = JSON.parse(value);
 			if (value['retcode'] != 0 || !value['data']) {
-				logohint.push(value['reason'] || 'Server Error');
+				logohint.push(value['reason'] || LGHINT_SERVERR);
 				return;
 			}
 			var scrambles = value['data'];
@@ -122,7 +122,7 @@ var onlinecomp = execMain(function() {
 			resetProgress(true);
 			kernel.setProp('scrType', 'remoteComp');
 		}).error(function() {
-			logohint.push('Network Error');
+			logohint.push(LGHINT_NETERR);
 		});
 	}
 
@@ -250,13 +250,13 @@ var onlinecomp = execMain(function() {
 		}, function(value) {
 			if (value == '{"retcode":0}') {
 				submitted = true;
-				logohint.push('Submitted');
+				logohint.push(LGHINT_SUBMITED);
 			} else {
-				logohint.push('Network Error');
+				logohint.push(LGHINT_NETERR);
 			}
 			updateProgress();
 		}).error(function() {
-			logohint.push('Network Error');
+			logohint.push(LGHINT_NETERR);
 		});
 	}
 
@@ -279,7 +279,7 @@ var onlinecomp = execMain(function() {
 				value = {};
 			}
 			if (value['retcode'] !== 0) {
-				logohint.push('Server Error');
+				logohint.push(LGHINT_SERVERR);
 				return;
 			}
 			var myid = $.sha256('cstimer_public_salt_' + exportFunc.getDataId('locData', 'compid'));
@@ -340,7 +340,7 @@ var onlinecomp = execMain(function() {
 			ret.push('</table>');
 			compProgressDiv.empty().html(ret.join(''));
 		}).error(function() {
-			logohint.push('Network Error');
+			logohint.push(LGHINT_NETERR);
 		});
 	}
 
@@ -363,7 +363,7 @@ var onlinecomp = execMain(function() {
 				value = {};
 			}
 			if (value['retcode'] !== 0) {
-				logohint.push('Server Error');
+				logohint.push(LGHINT_SERVERR);
 				return;
 			}
 			value = value['data'];
@@ -395,7 +395,7 @@ var onlinecomp = execMain(function() {
 			ret.push('</table>');
 			compProgressDiv.empty().html(ret.join(''));
 		}).error(function() {
-			logohint.push('Network Error');
+			logohint.push(LGHINT_NETERR);
 		});
 	}
 

@@ -504,7 +504,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function giikerEvtCallback(info, event) {
 		if (info == 'disconnect') {
-			logohint.push('Bluetooth disconnected!');
+			logohint.push(LGHINT_BTDISCON);
 			renderStatus();
 			return typeof evtCallback == 'function' && evtCallback(info, event);
 		}
@@ -538,7 +538,7 @@ var giikerutil = execMain(function(CubieCube) {
 		GiikerCube.setEventCallback(giikerEvtCallback);
 		if (!GiikerCube.isConnected()) {
 			return GiikerCube.init().then(function () {
-				logohint.push('Bluetooth successfully connected!');
+				logohint.push(LGHINT_BTCONSUC);
 			});
 		} else {
 			return Promise.resolve();
