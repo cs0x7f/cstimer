@@ -582,6 +582,8 @@ var bldhelper = execMain(function() {
 				bldSets['scheme'] = ret;
 			}
 			calcResult();
+		} else if (key == 'scr') {
+			kernel.setProp('scrType', 'nocache_333bldspec');
 		}
 		kernel.setProp('bldSets', JSON.stringify(bldSets));
 		genBLDSetTable(bldSets, setDiv);
@@ -642,6 +644,9 @@ var bldhelper = execMain(function() {
 			(ret[0] == 0 ? 0 : prob < 1e-3 ? prob.toExponential(3) : Math.round(prob * 1000000) / 10000 + '%') +
 			(prob < 1e-8 ? ('<br>N=' + (ret[0] > 1e8 ? ret[0].toExponential(3) : ret[0])) : '')
 		)));
+		if (kernel.getProp('scrType') != 'nocache_333bldspec') {
+			setDiv.append('<tr><td colspan=3><span class="click" id="scr">' + SCRGEN_GEN + '</span></td></tr>');
+		}
 		setDiv.find('input,select').css({'padding':0}).unbind('change').change(procBLDSetEvent);
 		setDiv.find('span.click').unbind('click').click(procBLDSetEvent);
 		setDiv.find('td,th').css({'padding':0});
