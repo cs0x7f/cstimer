@@ -1,4 +1,4 @@
-<ul style="font-family: monospace;">
+<ul style="font-family: monospace; padding-left:0;">
 <li><a class="click" href="#000#efc#fdd#fbb#00f#ff0#000"></a></li>
 <li><a class="click" href="#fff#000#555#888#aaa#000#aaa"></a></li>
 <li><a class="click" href="#9aa#023#034#b80#28d#678#034"></a></li>
