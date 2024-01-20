@@ -28,17 +28,28 @@ var help = execMain(function(regProp, setProp, getProp) {
 		updateRight(val) && updateLeft(val);
 	}
 
-	function updateLeft(val1, val2) {
-		left.children().appendTo(kernel.temp);
-		for (var type in docs) {
-			$('<div />').html(type).addClass(type == val1 ? 'tab enable' : 'tab disable').click(leftClick).appendTo(left);
+	function updateLeft(val) {
+		var elems = left.children();
+		if (elems.length == 0) {
+			for (var type in docs) {
+				$('<div />').html(type).addClass(type == val ? 'tab enable' : 'tab disable').click(leftClick).appendTo(left);
+			}
+			elems = left.children();
 		}
+		elems.each(function(idx, elem) {
+			elem = $(elem);
+			if (elem.html() == val) {
+				elem.removeClass('disable').addClass('enable');
+			} else {
+				elem.removeClass('enable').addClass('disable');
+			}
+		});
 	}
 
-	function updateRight(val1, val2) {
+	function updateRight(val) {
 		setTimeout(function() {
-			if (docs[val1]) {
-				rightDiv.scrollTop(rightDiv.scrollTop() + docs[val1].position().top - 3);
+			if (docs[val]) {
+				rightDiv.scrollTop(rightDiv.scrollTop() + docs[val].position().top - 3);
 			}
 		}, 0);
 		return true;
@@ -47,7 +58,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 	function onOptScroll() {
 		var type = ABOUT_LANG;
 		for (var m in docs) {
-			if (docs[m].position().top > 50) {
+			if (docs[m].position().top > 10) {
 				continue;
 			}
 			type = docs[m].is('h1, h2, h3') ? docs[m].html() : ABOUT_LANG;

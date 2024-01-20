@@ -436,17 +436,17 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 	display: none;
 }
 
+.dialog > table {
+	table-layout: fixed;
+	width: 100%;
+	height: 100%;
+}
+
 .dialog .value {
-	position: absolute;
-	left: 8px;
-	left: 0.55rem;
-	right: 8px;
-	right: 0.55rem;
-	top: 2.5em;
 	overflow-y: auto;
 }
 
-.dialog .value > * {
+.dialog .value, .dialog .value > * {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -457,12 +457,11 @@ html:not(.m) .mywindow:hover, html:not(.m) #leftbar:hover {
 .dialog .title {
 	font: 1.5em bold;
 	font-family: Impact;
-	white-space: nowrap;
+	white-space: break-spaces;
 	overflow-x: hidden;
 }
 
 .dialog .button {
-	position: absolute;
 	bottom: 5px;
 	bottom: 0.35rem;
 	left: 8px;
@@ -635,6 +634,13 @@ a {
 #about {
 	line-height: 1.6em;
 	text-align: left;
+}
+
+#about .tab {
+	white-space: break-spaces;
+	min-width: min(15vw, 6em);
+	max-height: 3.5em;
+	overflow: auto;
 }
 
 #stats {

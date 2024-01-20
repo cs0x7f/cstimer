@@ -448,13 +448,25 @@ var kernel = execMain(function() {
 		/**
 		 * value = [obj, ok, cancel, gray, [name, bool click()]]
 		 */
-		var dialog = $('<div />').addClass('dialog');
-		var title = $('<div />').addClass('title');
-		var value = $('<div />').addClass('value');
-		var buttons = $('<div />').addClass('button');
+		var dialog = $('<div class="dialog">');
+		var title = $('<div class="title">');
+		var value = $('<div class="value">');
+		var buttons = $('<div class="button">');
 		var OK = $('<input type="button" class="buttonOK">').val(OK_LANG);
 		var CAN = $('<input type="button" class="buttonOK">').val(CANCEL_LANG);
-		dialog.append(title, value, buttons);
+		dialog.append(
+			$('<table>').append(
+				$('<tr style="height:0%;">').append(
+					$('<td>').append(title)
+				),
+				$('<tr style="height:100%;">').append(
+					$('<td style="position:relative;">').append(value)
+				),
+				$('<tr style="height:0%;">').append(
+					$('<td>').append(buttons)
+				)
+			)
+		);
 
 		var fullButton = $('<span style="position:absolute;left:0.5em" class="click">&nbsp;\u21f1&nbsp;</span>');
 		var refreshButton = $('<span style="float:left;" class="click">&nbsp;\u21bb&nbsp;</span>');
@@ -482,11 +494,6 @@ var kernel = execMain(function() {
 			value.children().appendTo(temp);
 			values[0].appendTo(value.empty());
 			buttons.empty();
-			if (values.length < 2) {
-				value.css('bottom', '0');
-			} else {
-				value.css('bottom', '2.5em');
-			}
 			if (values[1] != undefined) {
 				buttons.append(OK.unbind("click").click(function() {
 					$.waitUser.call();
@@ -895,7 +902,7 @@ var kernel = execMain(function() {
 	var TwoLvMenu = (function() {
 		/**
 		 *  data = [[text1, value1], [text2, value2], ...]
-		 *  value = 'value' or [[texta, valuea], [textb, valueb]]
+		 *  value = 'value' or [[texta, valuea], [textb, valueb]] or null (disabled)
 		 */
 		function TwoLvMenu(data, callback, select1, select2, val) {
 			this.data = data;
@@ -973,7 +980,7 @@ var kernel = execMain(function() {
 			for (var i = 0; i < this.data.length; i++) {
 				this.select1.append($('<option>').html(this.data[i][0]).val(
 					$.isArray(this.data[i][1]) ? i : this.data[i][1]
-				));
+				).attr('disabled', /===/.exec(this.data[i][0]) ? true : false));
 			}
 			this.select1.unbind('change').change(this.onSelect1Change.bind(this));
 			this.select2.unbind('change').change(this.onSelect2Change.bind(this));
