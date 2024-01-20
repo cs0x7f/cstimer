@@ -1796,7 +1796,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
 				sessionManager.getSelect(), sessionManager.getButton()),
 			sumtableDiv.append(sumtable),
-			$('<div class="stattl">').append(scrollDiv.append(table)));
+			$('<div class="stattl">').append(scrollDiv.append(table))
+		).click(function(e) {
+			if ($(e.target).is('input,textarea,select,.click,.chide,.times')) {
+				return;
+			}
+			kernel.setProp('statHide', false);
+		});
 		$(window).bind('resize', resultsHeight);
 		table.append(title, avgRow);
 		kernel.addWindow('stats', BUTTON_TIME_LIST, div, true, true, 4);

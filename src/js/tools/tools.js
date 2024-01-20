@@ -232,7 +232,7 @@ var tools = execMain(function() {
 	}
 
 	function showFuncSpan(e) {
-		if ($(e.target).hasClass('click') || $(e.target).is('input, textarea, select')) {
+		if ($(e.target).is('input,textarea,select,.click')) {
 			return;
 		}
 		kernel.setProp('toolHide', false);
