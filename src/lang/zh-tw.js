@@ -191,6 +191,7 @@ var scrdata = [
 		['僅打亂邊塊', "edges", 0],
 		['僅打亂角塊', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3x3腳解', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

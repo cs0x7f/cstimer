@@ -61,6 +61,7 @@ tools/eoline.js \
 tools/roux1.js \
 tools/gsolver.js \
 tools/thistlethwaite.js \
+tools/pat3x3gen.js \
 tools/bluetoothutil.js \
 tools/metronome.js \
 tools/onlinecomp.js \

@@ -191,6 +191,7 @@ var scrdata = [
 		['Només arestes', "edges", 0],
 		['Només cantonades', "corners", 0],
 		['Ajudant per a BLD', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 Peus', "333ft", 0],
 		['Personalitzat', "333custom", 0]
 	]],

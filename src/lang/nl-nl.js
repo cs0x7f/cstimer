@@ -191,6 +191,7 @@ var scrdata = [
 		['Alleen randen', "edges", 0],
 		['Alleen hoeken', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Aangepast', "333custom", 0]
 	]],

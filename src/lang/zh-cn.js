@@ -191,6 +191,7 @@ var scrdata = [
 		['棱块训练', "edges", 0],
 		['角块训练', "corners", 0],
 		['盲拧助手', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['三阶脚拧', "333ft", 0],
 		['自定义', "333custom", 0]
 	]],

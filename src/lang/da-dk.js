@@ -191,6 +191,7 @@ var scrdata = [
 		['kun kanter', "edges", 0],
 		['kun hjørner', "corners", 0],
 		['BLD hjælper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 FT', "333ft", 0],
 		['Brugertilpasset', "333custom", 0]
 	]],

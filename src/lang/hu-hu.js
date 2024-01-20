@@ -191,6 +191,7 @@ var scrdata = [
 		['csak élek', "edges", 0],
 		['csak sarkok', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ft (lábbal)', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

@@ -191,6 +191,7 @@ var scrdata = [
 		['Arêtes seulement', "edges", 0],
 		['Coins seulement', "corners", 0],
 		['Assistant BLD', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Personnalisé', "333custom", 0]
 	]],

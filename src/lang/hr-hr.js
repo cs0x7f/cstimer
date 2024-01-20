@@ -191,6 +191,7 @@ var scrdata = [
 		['samo rubni dijelovi', "edges", 0],
 		['samo korneri', "corners", 0],
 		['BLD pomoćnik', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 s nogama', "333ft", 0],
 		['Prilagođeno', "333custom", 0]
 	]],

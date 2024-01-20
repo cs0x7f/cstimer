@@ -191,6 +191,7 @@ var scrdata = [
 		['solo spigoli', "edges", 0],
 		['solo angoli', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

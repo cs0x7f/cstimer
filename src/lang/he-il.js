@@ -191,6 +191,7 @@ var scrdata = [
 		['אדג\'ים בלבד', "edges", 0],
 		['פינות בלבד', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3×3 רגליים', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

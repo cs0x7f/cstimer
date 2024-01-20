@@ -191,6 +191,7 @@ var scrdata = [
 		['cạnh', "edges", 0],
 		['góc', "corners", 0],
 		['Hỗ trợ giải bịt mắt', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 FT', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

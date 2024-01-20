@@ -191,6 +191,7 @@ var scrdata = [
 		['모서리만', "edges", 0],
 		['귀퉁이만', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 발', "333ft", 0],
 		['Custom', "333custom", 0]
 	]],

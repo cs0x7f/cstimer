@@ -191,6 +191,7 @@ var scrdata = [
 		['тільки ребра', "edges", 0],
 		['тільки кути', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ft', "333ft", 0],
 		['Користувацький', "333custom", 0]
 	]],

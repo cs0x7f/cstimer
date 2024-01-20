@@ -191,6 +191,7 @@ var scrdata = [
 		['sadece kenarlar', "edges", 0],
 		['sadece köşeler', "corners", 0],
 		['Gözü Bağlı Yardımcısı', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ayakla', "333ft", 0],
 		['Özel', "333custom", 0]
 	]],

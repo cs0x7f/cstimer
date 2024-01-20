@@ -191,6 +191,7 @@ var scrdata = [
 		['الحواف فقط', "edges", 0],
 		['الركنات فقط', "corners", 0],
 		['BLD Helper', "nocache_333bldspec", 0],
+		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 بالقدمين', "333ft", 0],
 		['مُخصّص', "333custom", 0]
 	]],
