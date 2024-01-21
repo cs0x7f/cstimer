@@ -219,7 +219,9 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 		var act = kernel.getProp('scrClk', 'n');
 		if (act == 'c') {
-			var succ = $.clipboardCopy(sdiv.text());
+			var scrTxt = (tools.getCurScramble()[1]).trim();
+			var succ = $.clipboardCopy(scrTxt);
+			DEBUG && console.log('[scramble]', 'Copy to clipboard, scrTxt = "' + scrTxt + '", success = ' + succ);
 			if (succ) {
 				logohint.push(LGHINT_SCRCOPY);
 			}
@@ -238,14 +240,14 @@ var scramble = execMain(function(rn, rndEl) {
 			len = ~~m[2];
 		}
 		if (forDisplay) {
-			var scrTxtLen = scramble.replace(/<[^>]*>/g, '').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1').length;
+			var scrTxtLen = scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1').length;
 			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scrTxtLen, 10), 0.30) * 20) / 20) : 1;
 			sdiv.css('font-size', fontSize + 'em');
 			DEBUG && console.log('[scrFontSize]', fontSize);
 			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
 				.replace(/`([^`]*)`/g, forceKeyM || kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 		} else {
-			return [type, scramble.replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1'), len];
+			return [type, scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1'), len];
 		}
 	}
 

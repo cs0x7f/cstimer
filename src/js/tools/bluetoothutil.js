@@ -120,7 +120,7 @@ var scrHinter = execMain(function(CubieCube) {
 			scrHtml += scramblePartToHtml(scrParts[1], 'smrtScrCur');
 			scrHtml += scramblePartToHtml(scrParts[2], 'smrtScrAct');
 		}
-		return scrHtml.replace(/span><span/g, 'span> <span');
+		return scrHtml;
 	}
 
 	function checkScramble(curCubie) {
