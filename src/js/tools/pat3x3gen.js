@@ -75,7 +75,7 @@ var pat3x3gen = (function() {
 		return memo[key];
 	}
 
-	function genCandidates(facelet, pieces) {
+	function genCandidates(facelet, solved, pieces) {
 		var nPiece = pieces.length;
 		var nOri = pieces[0].length;
 		var candidates = [];
@@ -86,7 +86,7 @@ var pat3x3gen = (function() {
 					var isValid = true;
 					for (var chk = 0; chk < nOri; chk++) {
 						var target = facelet[pieces[pos][chk]]
-						if (target != -1 && target != ~~(pieces[piece][(nOri - ori + chk) % nOri] / 9)) {
+						if (target != -1 && target != solved[pieces[piece][(nOri - ori + chk) % nOri]]) {
 							isValid = false;
 							break;
 						}
@@ -100,13 +100,15 @@ var pat3x3gen = (function() {
 		return candidates;
 	}
 
-	function calcPattern(facelet) {
+	function calcPattern(facelet, solved) {
 		facelet = facelet.split("");
+		solved = (solved || mathlib.SOLVED_FACELET).split("");
 		for (var i = 0; i < facelet.length; i++) {
-			facelet[i] = "URFDLB".indexOf(facelet[i]);
+			facelet[i] = "URFDLB-XYZ".indexOf(facelet[i]);
+			solved[i] = "URFDLB-XYZ".indexOf(solved[i]);
 		}
-		var cornCandidates = genCandidates(facelet, cornerFacelet);
-		var edgeCandidates = genCandidates(facelet, edgeFacelet);
+		var cornCandidates = genCandidates(facelet, solved, cornerFacelet);
+		var edgeCandidates = genCandidates(facelet, solved, edgeFacelet);
 		var cornCnts = [];
 		var edgeCnts = [];
 		var cornMemo = {};
@@ -139,8 +141,8 @@ var pat3x3gen = (function() {
 		var resultSpan = $('<span>');
 		var presets = {
 			'3x3x3': mathlib.SOLVED_FACELET,
-			'Empty': '----U--------R--------F--------D--------L--------B----',
-			'U&D': 'UUUUUUUUU----R--------F----DDDDDDDDD----L--------B----',
+			'Empty': '****U********R********F********D********L********B****',
+			'U&D': 'UUUUUUUUU****R********F****DDDDDDDDD****L********B****',
 		};
 		var canvas, ctx;
 		var solvedState = mathlib.SOLVED_FACELET;
@@ -151,15 +153,15 @@ var pat3x3gen = (function() {
 			'D': '#ff0',
 			'L': '#fa0',
 			'B': '#00f',
-			'-': '#777'
+			'*': '#777'
 		};
-		var selColor = '-';
+		var selColor = '*';
 		var width = 30;
 		var offxs = [1, 2, 1, 1, 0, 3, 7.25];
 		var offys = [0, 1, 1, 2, 1, 1, 0.50];
 		var selXYs = [[-0.7, -0.7, 0.7, 0.7], [-0.7, 0.7, 0.7, -0.7]];
 		var offw = 3.3;
-		var stateRE = /^[URFDLB-]{54}$/;
+		var stateRE = /^[URFDLB*]{54}$/;
 
 		function procClick(e) {
 			var rect = canvas[0].getBoundingClientRect();
@@ -187,7 +189,7 @@ var pat3x3gen = (function() {
 				cordY <= offys[6] + 2) {
 				var i = ~~(cordX - offxs[6]);
 				var j = ~~(cordY - offys[6]);
-				selColor = 'URFDLB----'.charAt(i * 2 + j);
+				selColor = 'URFDLB****'.charAt(i * 2 + j);
 				$.ctxDrawPolygon(ctx, colors[selColor], selXYs, [width, 1.5, 1.5]);
 			}
 		}
@@ -216,7 +218,7 @@ var pat3x3gen = (function() {
 			}
 			for (var i = 0; i < 5; i++) {
 				for (var j = 0; j < 2; j++) {
-					$.ctxDrawPolygon(ctx, colors['URFDLB----'.charAt(i * 2 + j)], [
+					$.ctxDrawPolygon(ctx, colors['URFDLB****'.charAt(i * 2 + j)], [
 						[i, i, i + 1, i + 1],
 						[j, j + 1, j + 1, j]
 					], [width, 7.25, 0.5]);

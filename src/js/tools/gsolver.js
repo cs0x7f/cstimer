@@ -1015,9 +1015,11 @@ var gsolver = (function() {
 	var general333Solver = execMain(function() {
 		var isSolving = 0; //0 - idle, 1 - single, 2 - batch
 		var selectPre = $('<select style="font-size:0.75em;">');
-		var batchButton = $('<input type="button" value="Batch Solve!" style="font-size:0.75em;">');
-		var singleButton = $('<input type="button" value="Single Solve!" style="font-size:0.75em;">');
-		var resultText = $('<textarea wrap=off rows="2" cols="30" style="font-size:0.75em;">');
+		var selectMode = $('<select style="font-size:0.75em;">');
+		var solveButton = $('<input type="button" value="Solve!" style="font-size:0.75em;">');
+		var resultText = $('<textarea wrap=off rows="8" cols="30" style="font-size:0.75em; display:none;">');
+		var resultSpan = $('<span>');
+		var subsetInfo = $('<span style="display:block;">');
 		var resultArr = [];
 		var presets = {
 			'3x3x3': mathlib.SOLVED_FACELET,
@@ -1055,6 +1057,7 @@ var gsolver = (function() {
 		var stateRE = /^[URFDLBXYZ-]{54}$/;
 
 		function procClick(e) {
+			clearSolve();
 			var rect = canvas[0].getBoundingClientRect();
 			var cordX = e.offsetX / width * canvas[0].width / rect.width;
 			var cordY = e.offsetY / width * canvas[0].height / rect.height;
@@ -1066,9 +1069,9 @@ var gsolver = (function() {
 					cordY <= offys[face] * offw + 3) {
 					var i = ~~(cordX - offxs[face] * offw);
 					var j = ~~(cordY - offys[face] * offw);
-					solvedState = solvedState.split('');
-					solvedState[face * 9 + 3 * j + i] = selColor;
-					solvedState = solvedState.join('');
+					var tmp = solvedState.split('');
+					tmp[face * 9 + 3 * j + i] = selColor;
+					setState(tmp.join(''));
 					drawFacelet(ctx, face, i, j, solvedState);
 				}
 			}
@@ -1081,14 +1084,13 @@ var gsolver = (function() {
 				selColor = 'URFDLB-XYZ'.charAt(i * 2 + j);
 				$.ctxDrawPolygon(ctx, colors[selColor], selXYs, [width, 1.5, 1.5]);
 			}
-			clearSolve();
 		}
 
 		function drawFacelet(ctx, face, i, j, state) {
 			$.ctxDrawPolygon(ctx, colors[state[face * 9 + j * 3 + i]], [
 				[i, i, i + 1, i + 1],
 				[j, j + 1, j + 1, j]
-			], [width, offxs[face] * offw, offys[face] * offw]);
+			], [width, offxs[face] * offw + 0.1, offys[face] * offw + 0.1]);
 		}
 
 		function drawCube(ctx, state) {
@@ -1137,12 +1139,23 @@ var gsolver = (function() {
 		}
 
 		function setState(state) {
+			if (solvedState == state) {
+				return;
+			}
 			solvedState = state;
 			drawCube(ctx, solvedState);
+			params = pat3x3gen.calcPattern(solvedState, solvedState);
+			var sizeH = params[0][0] * params[1][0] + params[0][1] * params[1][1];
+			var indexH = 43252003274489856000 / sizeH;
+			subsetInfo.html(
+				// '|H|=' + (sizeH > 1e8 ? sizeH.toExponential(3) : sizeH) + '<br>' +
+				'|G:H|=' + (indexH > 1e8 ? indexH.toExponential(3) : indexH)
+			);
 			clearSolve();
 		}
 
 		var curSolver = ['', null];
+		var params = [[0, 0], [0, 0]];
 		var startTime = 0;
 		var solveTid = 0;
 
@@ -1156,11 +1169,12 @@ var gsolver = (function() {
 			if (ret) {
 				resultArr.push(ret.join(' ') + ' (' + ret.length + 'f)');
 			}
-			if (ret && isSolving == 1) {
-				resultText.html(resultArr.join('\n'));
-				resultText[0].scrollTop = resultText[0].scrollHeight;
-				solveTid = 0;
-				return;
+			if (isSolving == 1) {
+				resultSpan.html(ret ? resultArr.join('\n') : curStatus);
+				if (ret) {
+					solveTid = 0;
+					return;
+				}
 			} else {
 				resultText.html(resultArr.join('\n') + '\n' + curStatus);
 				resultText[0].scrollTop = resultText[0].scrollHeight;
@@ -1169,10 +1183,8 @@ var gsolver = (function() {
 		}
 
 		function clearSolve() {
-			if (isSolving == 1) {
-				singleSolve();
-			} else if (isSolving == 2) {
-				batchSolve();
+			if (isSolving == 1 || isSolving == 2) {
+				toggleSolve();
 			}
 		}
 
@@ -1188,6 +1200,17 @@ var gsolver = (function() {
 					"B": 0x52
 				}));
 			}
+			if (isSolving == 2) {
+				canvas.hide();
+				subsetInfo.addClass('click');
+				resultSpan.hide();
+				resultText.show();
+			} else {
+				canvas.show();
+				subsetInfo.removeClass('click');
+				resultSpan.html('Searching...').show();
+				resultText.hide();
+			}
 			var startState = stateInit(rubiksCube.move, solvedState);
 			var ret = curSolver[1].search(startState, 0, 0);
 			startTime = +new Date;
@@ -1195,31 +1218,14 @@ var gsolver = (function() {
 			searchThread();
 		}
 
-		function batchSolve() {
+		function toggleSolve() {
 			if (isSolving == 0) {
-				batchButton.val('Stop Solve!');
-				singleButton.prop('disabled', true);
-				isSolving = 2;
+				solveButton.val('Stop!');
+				selectMode.prop('disabled', true);
+				isSolving = selectMode.val() == 'batch' ? 2 : 1;
 			} else {
-				batchButton.val('Batch Solve!');
-				singleButton.prop('disabled', false);
-				isSolving = 0;
-			}
-			kernel.blur();
-			if (!isSolving) {
-				return;
-			}
-			startSolve();
-		}
-
-		function singleSolve() {
-			if (isSolving == 0) {
-				singleButton.val('Stop Solve!');
-				batchButton.prop('disabled', true);
-				isSolving = 1;
-			} else {
-				singleButton.val('Single Solve!');
-				batchButton.prop('disabled', false);
+				solveButton.val('Solve!');
+				selectMode.prop('disabled', false);
 				isSolving = 0;
 			}
 			kernel.blur();
@@ -1235,11 +1241,27 @@ var gsolver = (function() {
 				curScramble[i] = "URFDLB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
 			sol = [];
-			span.empty().append(selectPre.unbind('change').change(selectChange), ' ')
-				.append(batchButton.unbind('click').click(batchSolve), '')
-				.append(singleButton.unbind('click').click(singleSolve), '<br>')
-				.append(resultText.empty(), '<br>')
-				.append(canvas.unbind('mousedown').bind('mousedown', procClick));
+			span.empty().append($('<table class="table">').append(
+				$('<tr>').append(
+					$('<td style="padding:0;">').append(
+						selectPre.unbind('change').change(selectChange),
+						selectMode,
+						solveButton.unbind('click').click(toggleSolve)),
+				),
+				$('<tr>').append(
+					$('<td>').append(resultText.empty(), resultSpan)
+				),
+				$('<tr>').append(
+					$('<td style="padding:0;">').append(
+						canvas.unbind('mousedown').bind('mousedown', procClick), subsetInfo.unbind('click').click(function() {
+							clearSolve();
+							canvas.show();
+							subsetInfo.removeClass('click');
+						})
+					)
+				)
+			));
+
 			if (isSolving) {
 				if (solveTid) {
 					clearTimeout(solveTid);
@@ -1260,6 +1282,8 @@ var gsolver = (function() {
 				selectPre.append($('<option>').val(presets[subset]).html(subset));
 			}
 			selectPre.append($('<option>').val('input').html('...'));
+			selectMode.append($('<option>').val('single').html('Single'));
+			selectMode.append($('<option>').val('batch').html('Batch'));
 			setState(presets['Cross']);
 		});
 
