@@ -131,7 +131,11 @@ execMain(function() {
 		}
 	};
 
-	$.clipboardCopy = function(value, callback) {
+	$.clipboardCopy = function(value) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(value);
+		}
+		DEBUG && console.log('[utillib] clipboard copy fallback');
 		var textArea = $('<textarea>' + value + '</textarea>').appendTo(document.body);
 		textArea.focus().select();
 		var succ = false;
@@ -139,7 +143,7 @@ execMain(function() {
 			succ = document.execCommand('copy');
 		} catch (err) {}
 		textArea.remove();
-		return succ;
+		return succ ? Promise.resolve() : Promise.reject();
 	};
 
 	$.fingerprint = function() {

@@ -129,9 +129,10 @@ var replay = execMain(function() {
 			txtSpeed.html(speeds[speedIdx] + 'x');
 			curTime = normTime(ctime);
 		} else if (key == 'a') {
-			if ($.clipboardCopy(shareURL)) {
-				logohint.push(LGHINT_LINKCOPY);
-			}
+			$.clipboardCopy(shareURL).then(
+				logohint.push.bind(logohint, LGHINT_LINKCOPY),
+				logohint.push.bind(logohint, 'Copy Failed')
+			);
 		} else if (key == 'o') {
 			autoOri = !autoOri;
 			if (autoOri) {

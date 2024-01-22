@@ -408,14 +408,18 @@ var stats = execMain(function(kpretty, round, kpround) {
 				}
 			} else if (which == 's') {
 				var time = timesAt(cfmIdx);
-				if ($.clipboardCopy(time[1])) {
-					logohint.push(LGHINT_SCRCOPY);
-				}
+				$.clipboardCopy(time[1]).then(
+					logohint.push.bind(logohint, LGHINT_SCRCOPY),
+					logohint.push.bind(logohint, 'Copy Failed')
+				);
 			} else if (which == 'c') {
 				var time = timesAt(cfmIdx);
-				if ($.clipboardCopy(pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "") + "   " + time[1] + "   @" + mathlib.time2str(time[3]))) {
-					logohint.push(LGHINT_SOLVCOPY);
-				}
+				$.clipboardCopy(
+					pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "") + "   " + time[1] + "   @" + mathlib.time2str(time[3])
+				).then(
+					logohint.push.bind(logohint, LGHINT_SOLVCOPY),
+					logohint.push.bind(logohint, 'Copy Failed')
+				);
 			} else if (which == 'r') {
 				var time = timesAt(cfmIdx);
 				if (time[4]) {

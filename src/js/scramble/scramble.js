@@ -220,11 +220,10 @@ var scramble = execMain(function(rn, rndEl) {
 		var act = kernel.getProp('scrClk', 'n');
 		if (act == 'c') {
 			var scrTxt = (tools.getCurScramble()[1]).trim();
-			var succ = $.clipboardCopy(scrTxt);
-			DEBUG && console.log('[scramble]', 'Copy to clipboard, scrTxt = "' + scrTxt + '", success = ' + succ);
-			if (succ) {
-				logohint.push(LGHINT_SCRCOPY);
-			}
+			$.clipboardCopy(scrTxt).then(
+				logohint.push.bind(logohint, LGHINT_SCRCOPY),
+				logohint.push.bind(logohint, 'Copy Failed')
+			);
 		} else if (act == '+') {
 			procNextClick();
 		}
