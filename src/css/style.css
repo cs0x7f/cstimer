@@ -640,7 +640,7 @@ a {
 	white-space: break-spaces;
 	min-width: min(15vw, 6em);
 	max-height: 3.5em;
-	overflow: auto;
+	overflow: visible;
 }
 
 #stats {
