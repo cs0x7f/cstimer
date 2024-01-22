@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Login med Google konto';
 var EXPORT_LOGINWCA = 'Login med WCA konto';
 var EXPORT_LOGOUTCFM = 'Bekræft for at logge ud?';
 var EXPORT_LOGINAUTHED = 'Autoriseret<br>Henter data...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Dette vil overstyre alle lokal data! Det vil ændre %d sessioner, tilføje %a og fjerne mindst %r løsninger. Bekræft for at importere data?';
 var BUTTON_SCRAMBLE = 'Blanding';
 var BUTTON_TOOLS = 'Værktøj';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bund|Flydende|Top';
 var PROPERTY_HIDEFULLSOL = 'Vis løsning progressivt';
 var PROPERTY_IMPPREV = 'Importer ikke-seneste data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 løsning)';
-var PROPERTY_AUTOEXP_OPT = 'Aldrig|Til fil|Med csTimer ID|Med WCA konto|Med Google konto';
+var PROPERTY_AUTOEXP_OPT = 'Aldrig|Til fil|Med csTimer ID|Med WCA konto|Med Google konto|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatisk blandingsstørrelse';
 var MODULE_NAMES = {
 	"kernel": 'global',

@@ -350,6 +350,7 @@ var exportFunc = execMain(function() {
 			}
 			kernel.showDialog([exportDiv, 0, undefined, 0, [EXPORT_ONLYOPT, exportProperties], [EXPORT_ACCOUNT, exportAccounts]], 'export', EXPORT_DATAEXPORT);
 		});
+		solvesAfterExport = 0;
 	}
 
 	function exportByPrompt(expOpt) {
@@ -445,7 +446,7 @@ var exportFunc = execMain(function() {
 			inServGGL.addClass('click').click(downloadDataGGL);
 			outServGGL.addClass('click').click(function() {
 				uploadDataGGL().then(function() {
-					alert('Export Success');
+					alert(EXPORT_UPLOADED);
 				}, function(errmsg) {
 					alert(errmsg);
 				});
@@ -479,7 +480,7 @@ var exportFunc = execMain(function() {
 						if (id != null) {
 							alert(EXPORT_INVID);
 						}
-						kernel.setProp('atexpa', 'n');
+						kernel.setProp('atexpa', 'a');
 						return;
 					}
 					localStorage['locData'] = JSON.stringify({ id: id, compid: getDataId('locData', 'compid') });
@@ -488,13 +489,13 @@ var exportFunc = execMain(function() {
 			} else if (value[1] == 'wca') {
 				if (!isValidId(getDataId('wcaData', 'cstimer_token'))) {
 					alert('Please Login with WCA Account in Export Panel First');
-					kernel.setProp('atexpa', 'n');
+					kernel.setProp('atexpa', 'a');
 					return;
 				}
 			} else if (value[1] == 'ggl') {
 				if (!getDataId('gglData', 'access_token')) {
 					alert('Please Login with Google Account in Export Panel First');
-					kernel.setProp('atexpa', 'n');
+					kernel.setProp('atexpa', 'a');
 					return;
 				}
 
@@ -518,8 +519,8 @@ var exportFunc = execMain(function() {
 	}
 
 	function doBackExport() {
-		var atexpa = kernel.getProp('atexpa', 'n');
-		if (atexpa == 'n') {
+		var atexpa = kernel.getProp('atexpa', 'a');
+		if (atexpa == 'n' || atexpa == 'a') {
 			return;
 		}
 		updateExpString().then(function() {
@@ -527,7 +528,7 @@ var exportFunc = execMain(function() {
 				var id = atexpa == 'id' ? getDataId('locData', 'id') : getDataId('wcaData', 'cstimer_token');
 				if (!isValidId(id)) {
 					logohint.push(LGHINT_AEXPABT);
-					kernel.setProp('atexpa', 'n');
+					kernel.setProp('atexpa', 'a');
 					return;
 				}
 				uploadData(id).then(function() {
@@ -551,7 +552,7 @@ var exportFunc = execMain(function() {
 				var gglToken = getDataId('gglData', 'access_token');
 				if (!gglToken) {
 					logohint.push(LGHINT_AEXPABT);
-					kernel.setProp('atexpa', 'n');
+					kernel.setProp('atexpa', 'a');
 					return;
 				}
 				uploadDataGGL(gglToken).then(function() {
@@ -568,11 +569,17 @@ var exportFunc = execMain(function() {
 	var solvesAfterExport = 0;
 
 	function newTimePushed() {
-		if (kernel.getProp('atexpa', 'n') == 'n') {
-			return;
-		}
 		solvesAfterExport += 1;
 		if (solvesAfterExport >= kernel.getProp('atexpi', 100)) {
+			var atexpa = kernel.getProp('atexpa', 'a');
+			if (atexpa == 'n') {
+				return;
+			} else if (atexpa == 'a') {
+				if (solvesAfterExport % 100 == 0) {
+					logohint.push(EXPORT_AEXPALERT.replace('%d', solvesAfterExport));
+				}
+				return;
+			}
 			startBackExport();
 		}
 	}
@@ -581,7 +588,7 @@ var exportFunc = execMain(function() {
 		kernel.regListener('export', 'time', newTimePushed);
 		kernel.regListener('export', 'property', procSignal, /^atexpa$/);
 		kernel.regListener('export', 'export', procSignal, /^account$/);
-		kernel.regProp('kernel', 'atexpa', 1, PROPERTY_AUTOEXP, ['n', ['n', 'f', 'id', 'wca', 'ggl'], PROPERTY_AUTOEXP_OPT.split('|')]);
+		kernel.regProp('kernel', 'atexpa', 1, PROPERTY_AUTOEXP, ['a', ['n', 'f', 'id', 'wca', 'ggl', 'a'], PROPERTY_AUTOEXP_OPT.split('|')]);
 		kernel.regProp('kernel', 'atexpi', ~1, 'Auto Export Interval (Solves)', [100, [50, 100, 200, 500], ['50', '100', '200', '500']]);
 		kernel.regProp('kernel', 'expp', 0, PROPERTY_IMPPREV, [false]);
 

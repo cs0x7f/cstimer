@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Kirjaudu käyttäen Google-tiliä';
 var EXPORT_LOGINWCA = 'Kirjaudu käyttäen WCA-tiliä';
 var EXPORT_LOGOUTCFM = 'Kirjaudu ulos?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SEKOITA';
 var BUTTON_TOOLS = 'TYÖKALUT';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account|Alert Only';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
 	"kernel": 'global',

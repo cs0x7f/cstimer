@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Войти используя аккаунт Google';
 var EXPORT_LOGINWCA = 'Войти используя аккаунт WCA';
 var EXPORT_LOGOUTCFM = 'Подтвердить для выхода?';
 var EXPORT_LOGINAUTHED = 'Авторизовано<br>Получение данных...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Это перезапишет все локальные данные! Будет перезаписано как минимум %d сессий, добавлено %a и удалено %r сборок. Продолжить?';
 var BUTTON_SCRAMBLE = 'СКРА-<br>МБЛ';
 var BUTTON_TOOLS = 'ИНСТРУ-<br>МЕНТЫ';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Снизу|Плавающее|Сверху';
 var PROPERTY_HIDEFULLSOL = 'Показывать решение постепенно';
 var PROPERTY_IMPPREV = 'Импортировать не новейшие данные';
 var PROPERTY_AUTOEXP = 'Авто-экспорт (по 100 сборок)';
-var PROPERTY_AUTOEXP_OPT = 'Никогда|В Файл|С csTimer ID|С аккаунтом WCA|С аккаунтом Google';
+var PROPERTY_AUTOEXP_OPT = 'Никогда|В Файл|С csTimer ID|С аккаунтом WCA|С аккаунтом Google|Alert Only';
 var PROPERTY_SCRASIZE = 'Размер автоматического скрамбла';
 var MODULE_NAMES = {
 	"kernel": 'глобальный',

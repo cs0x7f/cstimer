@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Belépés Google Fiókkal';
 var EXPORT_LOGINWCA = 'Belépés WCA Fiókkal';
 var EXPORT_LOGOUTCFM = 'Biztosan kilépsz?';
 var EXPORT_LOGINAUTHED = 'Engedélyezve<br>Adatok letöltése...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Ez minden helyi adatot felülír! Módosítani fog %d időszakot, hozzáad legalább %a és töröl legalább %r megoldást. Biztosan folytatja az importálást?';
 var BUTTON_SCRAMBLE = 'KEVE-<br>RÉS';
 var BUTTON_TOOLS = 'ESZ-<br>KÖZÖK';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'A megoldás lépésenkénti mutatása';
 var PROPERTY_IMPPREV = 'A régebbi adatok importálása';
 var PROPERTY_AUTOEXP = 'Automatikus exportálás (100 kirakásonként)';
-var PROPERTY_AUTOEXP_OPT = 'Soha|File-ba|csTimer ID-val|WCA fiókkal|Google fiókkal';
+var PROPERTY_AUTOEXP_OPT = 'Soha|File-ba|csTimer ID-val|WCA fiókkal|Google fiókkal|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatikus keverésméret';
 var MODULE_NAMES = {
 	"kernel": 'globális',

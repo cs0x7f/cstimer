@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = '使用Google帐号登录';
 var EXPORT_LOGINWCA = '使用WCA帐号登录';
 var EXPORT_LOGOUTCFM = '确认注销登录？';
 var EXPORT_LOGINAUTHED = '已获授权<br>正在获取数据...';
+var EXPORT_AEXPALERT = '自上次备份已有%d次还原';
 var IMPORT_FINAL_CONFIRM = '这将会覆盖所有本地数据！将至少修改%d个分组，添加%a并删除%r个成绩。确认导入数据？';
 var BUTTON_SCRAMBLE = '打乱<br>公式';
 var BUTTON_TOOLS = '工具';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = '下面|浮动|上面';
 var PROPERTY_HIDEFULLSOL = '逐步显示解法';
 var PROPERTY_IMPPREV = '导入非最新数据';
 var PROPERTY_AUTOEXP = '自动导出（每100次还原）';
-var PROPERTY_AUTOEXP_OPT = '从不|到文件|用csTimer账号|用WCA账号|用Google账号';
+var PROPERTY_AUTOEXP_OPT = '从不|到文件|用csTimer账号|用WCA账号|用Google账号|仅警告';
 var PROPERTY_SCRASIZE = '自动打乱字体大小';
 var MODULE_NAMES = {
 	"kernel": '全局',

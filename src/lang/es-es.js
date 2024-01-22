@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Iniciar sesión usando la cuenta de Google';
 var EXPORT_LOGINWCA = 'Iniciar sesión usando su cuenta de WCA';
 var EXPORT_LOGOUTCFM = '¿Confirmar para cerrar sesión?';
 var EXPORT_LOGINAUTHED = 'Autorizado<br>Recolectando información...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = '¡Esto sobreescribirá todos los datos locales! Modificará %d sesiones, añadirá %a y quitará %r resoluciones. ¿Seguro que quieres importar los datos?';
 var BUTTON_SCRAMBLE = 'MEZCLA';
 var BUTTON_TOOLS = 'HERRA-<br>MIENTAS';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Mostrar la solución progresivamente';
 var PROPERTY_IMPPREV = 'Importar datos no actualizados';
 var PROPERTY_AUTOEXP = 'Auto Exportación (por 100 soluciones)';
-var PROPERTY_AUTOEXP_OPT = 'Nunca|A archivo|Con csTimer ID|Con cuenta WCA|Con cuenta Google';
+var PROPERTY_AUTOEXP_OPT = 'Nunca|A archivo|Con csTimer ID|Con cuenta WCA|Con cuenta Google|Alert Only';
 var PROPERTY_SCRASIZE = 'Tamaño de la mezcla automático';
 var MODULE_NAMES = {
 	"kernel": 'Global',

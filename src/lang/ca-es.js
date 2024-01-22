@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Entrar amb compte de Google';
 var EXPORT_LOGINWCA = 'Entrar amb compte de WCA';
 var EXPORT_LOGOUTCFM = 'Confirmar desconnexió?';
 var EXPORT_LOGINAUTHED = 'Autoritzat<br>s\'estan obtenint dades...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Això anul·larà les dades locals! Es modificaran %d sessions, s\'afegiran %a i s\'eliminaran %r resolucions. Confirmar per a importar les dades?';
 var BUTTON_SCRAMBLE = 'Barre-<br>ja';
 var BUTTON_TOOLS = 'Eines';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Mostrar resolució progressivament';
 var PROPERTY_IMPPREV = 'Importar dades no més recents';
 var PROPERTY_AUTOEXP = 'Exportar automàticament (per cada 100 resolucions)';
-var PROPERTY_AUTOEXP_OPT = 'Mai|A un Arxiu|Amb ID csTimer|Amb un compte WCA|Amb un compte Google';
+var PROPERTY_AUTOEXP_OPT = 'Mai|A un Arxiu|Amb ID csTimer|Amb un compte WCA|Amb un compte Google|Alert Only';
 var PROPERTY_SCRASIZE = 'Tamany automàtic de barreja';
 var MODULE_NAMES = {
 	"kernel": 'Global',

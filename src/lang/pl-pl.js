@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Zaloguj się przy użyciu konta Google';
 var EXPORT_LOGINWCA = 'Zaloguj się przy użyciu konta WCA';
 var EXPORT_LOGOUTCFM = 'Czy na pewno chcesz się wylogować?';
 var EXPORT_LOGINAUTHED = 'Autoryzowano<br>Pobierania danych...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'To spowoduje to nadpisanie wszystkich lokalnych danych! Zmodyfikuje to sesje %d, doda %a i usunie %r rozwiązań. Potwierdzasz importowanie danych?';
 var BUTTON_SCRAMBLE = 'POMIE-<br>SZAJ';
 var BUTTON_TOOLS = 'NARZĘDZIA';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Pokaż stopniowo rozwiązanie';
 var PROPERTY_IMPPREV = 'Importuj starsze dane';
 var PROPERTY_AUTOEXP = 'Automatyczny eksport (co 100 rozwiązań)';
-var PROPERTY_AUTOEXP_OPT = 'Nie eksportuj|Do pliku|przy użyciu csTimer ID|przy użyciu konta WCA|przy użyciu konta Google';
+var PROPERTY_AUTOEXP_OPT = 'Nie eksportuj|Do pliku|przy użyciu csTimer ID|przy użyciu konta WCA|przy użyciu konta Google|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatyczny rozmiar scrambla';
 var MODULE_NAMES = {
 	"kernel": 'globalnie',

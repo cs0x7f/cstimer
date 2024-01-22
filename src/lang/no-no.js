@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Logg inn med Google-konto';
 var EXPORT_LOGINWCA = 'Logg inn med WCA-konto';
 var EXPORT_LOGOUTCFM = 'Bekreft utlogging?';
 var EXPORT_LOGINAUTHED = 'Godkjent<br>Henter data...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Dette vil overskrive alle lokale data! Det vil endre %d økter, legge til %a og fjerne %r løst minst. Bekreft import av data?';
 var BUTTON_SCRAMBLE = 'BLAN -<br>DING';
 var BUTTON_TOOLS = 'VERKTØY';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Vis løsning progressivt';
 var PROPERTY_IMPPREV = 'Importer ikke-nyeste data';
 var PROPERTY_AUTOEXP = 'Automatisk eksport (hver 100 gang)';
-var PROPERTY_AUTOEXP_OPT = 'Aldri|til fil|Med CsTimer ID|Med WCA bruker|Med Google bruker';
+var PROPERTY_AUTOEXP_OPT = 'Aldri|til fil|Med CsTimer ID|Med WCA bruker|Med Google bruker|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatisk blandingsstørrelse';
 var MODULE_NAMES = {
 	"kernel": 'Globalt',

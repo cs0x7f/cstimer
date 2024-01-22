@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = '구글 계정을 사용하여 로그인';
 var EXPORT_LOGINWCA = 'WCA 계정을 사용하여 로그인';
 var EXPORT_LOGOUTCFM = '로그아웃하시겠습니까?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = '섞기<br>공식';
 var BUTTON_TOOLS = '도구';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = '최신이 아닌 데이터 가져오기';
 var PROPERTY_AUTOEXP = '자동 내보내기 (해법 100개 마다)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account|Alert Only';
 var PROPERTY_SCRASIZE = '자동 섞기 크기';
 var MODULE_NAMES = {
 	"kernel": '전역',

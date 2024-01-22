@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Google hesabı ile Giriş yap';
 var EXPORT_LOGINWCA = 'WCA hesabı ile Giriş yap';
 var EXPORT_LOGOUTCFM = 'Çıkış yapmak istiyor musunuz?';
 var EXPORT_LOGINAUTHED = 'Yetkilendirildi<br>Veriler Alınıyor...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'karış-<br>tırma';
 var BUTTON_TOOLS = 'Yardımcılar';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Alt|Kayan|Üst';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account|Alert Only';
 var PROPERTY_SCRASIZE = 'Otomatik Karıştırma Boyutu';
 var MODULE_NAMES = {
 	"kernel": 'küresel',

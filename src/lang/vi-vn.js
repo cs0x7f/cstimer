@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Đăng Nhập Bằng Tài Khoản Google';
 var EXPORT_LOGINWCA = 'Đăng Nhập Bằng Tài Khoản WCA';
 var EXPORT_LOGOUTCFM = 'Xác nhận đăng xuất?';
 var EXPORT_LOGINAUTHED = 'Đã Xác Thực<br>Đang Lấy Dữ Liệu...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'Xáo<br>trộn';
 var BUTTON_TOOLS = 'Công cụ';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Dưới|Giữa|Trên';
 var PROPERTY_HIDEFULLSOL = 'Hiện cách giải theo thứ tự';
 var PROPERTY_IMPPREV = 'Thêm vào dữ liệu cũ';
 var PROPERTY_AUTOEXP = 'Tự Động Xuất (mỗi 100 lượt giải)';
-var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account';
+var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account|Alert Only';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
 	"kernel": 'toàn cầu',

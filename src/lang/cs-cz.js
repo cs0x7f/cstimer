@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Přihlásit Pomocí Google Účtu';
 var EXPORT_LOGINWCA = 'Přihlásit Pomocí WCA Účtu';
 var EXPORT_LOGOUTCFM = 'Potvrdit odhlášení?';
 var EXPORT_LOGINAUTHED = 'Autorizováno<br>Načítání Dat...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Toto přepíše všechna lokální data! Upraví %d relací, přidá alespoň %a odstraní %r řešení. Potvrdit import dat?';
 var BUTTON_SCRAMBLE = 'Scramble';
 var BUTTON_TOOLS = 'NÁSTROJE';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Ukázat řešení postupně';
 var PROPERTY_IMPPREV = 'Importovat ne-poslední data';
 var PROPERTY_AUTOEXP = 'Automatický export dat (po 100 solvech)';
-var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s csTimer ID|S účtem WCA|S účtem Google';
+var PROPERTY_AUTOEXP_OPT = 'Nikdy|Do souboru|s csTimer ID|S účtem WCA|S účtem Google|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatická velikost scramblu';
 var MODULE_NAMES = {
 	"kernel": 'globální',

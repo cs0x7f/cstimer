@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Googleアカウントでログイン';
 var EXPORT_LOGINWCA = 'WCAアカウントでログイン';
 var EXPORT_LOGOUTCFM = 'ログアウトしてもよいですか？';
 var EXPORT_LOGINAUTHED = '認可されました。<br>データ取得中...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'この操作はローカルデータを上書きします！ %d 個のセッションが変更され、少なくとも %a 個のソルブが追加され %r 個のソルブが削除されます。 インポートを実行しますか？';
 var BUTTON_SCRAMBLE = 'スクラ-<br>ンブル';
 var BUTTON_TOOLS = 'ツール';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = '下|フロート|上';
 var PROPERTY_HIDEFULLSOL = '解法を段階的に表示';
 var PROPERTY_IMPPREV = '最新でないデータをインポート';
 var PROPERTY_AUTOEXP = 'オートエクスポート (100ソルブごと)';
-var PROPERTY_AUTOEXP_OPT = '保存しない|ファイルに保存|csTimer IDに保存|WCAアカウントに保存|Googleアカウントに保存';
+var PROPERTY_AUTOEXP_OPT = '保存しない|ファイルに保存|csTimer IDに保存|WCAアカウントに保存|Googleアカウントに保存|Alert Only';
 var PROPERTY_SCRASIZE = '自動スクランブルのサイズ';
 var MODULE_NAMES = {
 	"kernel": 'グローバル',

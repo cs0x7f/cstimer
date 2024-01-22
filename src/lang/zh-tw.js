@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = '使用Google帳號登入';
 var EXPORT_LOGINWCA = '使用WCA帳戶登入';
 var EXPORT_LOGOUTCFM = '確定要登出?';
 var EXPORT_LOGINAUTHED = '授權完成<br>正在取得數據...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = '這個動作會覆蓋所有儲存的數據！更動範圍包括%d個階段，至少增加%a、減少%r條紀錄。確定要載入資料嗎？';
 var BUTTON_SCRAMBLE = '打亂';
 var BUTTON_TOOLS = '工具';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = '逐步顯示解法';
 var PROPERTY_IMPPREV = '載入更舊的數據';
 var PROPERTY_AUTOEXP = '(每100轉)自動匯出';
-var PROPERTY_AUTOEXP_OPT = '從不|匯出成檔案|使用csTimer ID|使用WCA帳號|使用Google帳號';
+var PROPERTY_AUTOEXP_OPT = '從不|匯出成檔案|使用csTimer ID|使用WCA帳號|使用Google帳號|Alert Only';
 var PROPERTY_SCRASIZE = '自動調整打亂字體大小';
 var MODULE_NAMES = {
 	"kernel": '全域',

@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Logga in med Google-konto';
 var EXPORT_LOGINWCA = 'Logga in med WCA-konto';
 var EXPORT_LOGOUTCFM = 'Bekräfta att logga ut?';
 var EXPORT_LOGINAUTHED = 'Godkänd<br>hämtar data...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'Detta kommer att överskrida all lokal data! Det kommer att ändra %d sessioner,  lägga till %a och ta bort %r lösningar åtminstone. Bekräfta att importera data?';
 var BUTTON_SCRAMBLE = 'BLAN<br>NING';
 var BUTTON_TOOLS = 'VERKTYG';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Visa lösning proggressivt';
 var PROPERTY_IMPPREV = 'Importera icke-senaste data';
 var PROPERTY_AUTOEXP = 'Automatisk exportering (per 100 lösningar)';
-var PROPERTY_AUTOEXP_OPT = 'Aldrig|Till fil|Med csTimer ID|Med WCA konot|Med Google konot';
+var PROPERTY_AUTOEXP_OPT = 'Aldrig|Till fil|Med csTimer ID|Med WCA konot|Med Google konot|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatisk blandningsstorlek';
 var MODULE_NAMES = {
 	"kernel": 'Global',

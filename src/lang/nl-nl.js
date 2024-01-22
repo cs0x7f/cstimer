@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'Login met behulp van Google-account';
 var EXPORT_LOGINWCA = 'Inloggen met WCA Account';
 var EXPORT_LOGOUTCFM = 'Bevestigen om uit te loggen?';
 var EXPORT_LOGINAUTHED = 'Geautoriseerde<br>gegevens ophalen...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'Hulpmi-<br>ddelen';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Importeer niet-nieuwste gegevens';
 var PROPERTY_AUTOEXP = 'Automatisch exporteren (per 100 solves)';
-var PROPERTY_AUTOEXP_OPT = 'Nooit|Naar bestand|Met csTimer ID|Met WCA Account|Met Google Account';
+var PROPERTY_AUTOEXP_OPT = 'Nooit|Naar bestand|Met csTimer ID|Met WCA Account|Met Google Account|Alert Only';
 var PROPERTY_SCRASIZE = 'Automatische scramble grootte';
 var MODULE_NAMES = {
 	"kernel": 'Global',

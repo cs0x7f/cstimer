@@ -49,6 +49,7 @@ var EXPORT_LOGINGGL = 'התחבר עם חשבון גוגל';
 var EXPORT_LOGINWCA = 'התחבר עם חשבון WCA';
 var EXPORT_LOGOUTCFM = 'האם להתנתק?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
+var EXPORT_AEXPALERT = 'More than %d solves since last backup';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'בלגון';
 var BUTTON_TOOLS = 'כלים';
@@ -530,7 +531,7 @@ var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'יבא מידע לא עדכני';
 var PROPERTY_AUTOEXP = 'יצוא אוטומטי (כל 100 פתירות)';
-var PROPERTY_AUTOEXP_OPT = 'אף פעם|לקובץ|עם משתמש csTimer|עם משתמש WCA|עם משתמש Google';
+var PROPERTY_AUTOEXP_OPT = 'אף פעם|לקובץ|עם משתמש csTimer|עם משתמש WCA|עם משתמש Google|Alert Only';
 var PROPERTY_SCRASIZE = 'גודל ערבוב אוטומטי';
 var MODULE_NAMES = {
 	"kernel": 'גלובלי',
