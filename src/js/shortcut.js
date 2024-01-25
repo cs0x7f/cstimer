@@ -90,7 +90,7 @@ var shortcuts = execMain(function(){
 		DEBUG && console.log('[shortcut] touch start', e);
 		clearLongTouch();
 		longTouchTid = setTimeout(longTouchCallback, 2000);
-		if (timer.getStatus() != -1) {
+		if (timer.getStatus() != -1 || !kernel.getProp('useGES')) {
 			return;
 		}
 		touchPoint = getOffXY(e);
@@ -163,6 +163,7 @@ var shortcuts = execMain(function(){
 	$(function() {
 		kernel.regListener('shortcut', 'keydown', onkeydown);
 		kernel.regProp('tools', 'useKSC', 0, PROPERTY_USEKSC, [true]);
+		kernel.regProp('tools', 'useGES', 0, 'use gesture control', [true]);
 		astDiv = $('<div id="astouch">').appendTo('body');
 		var r = 1.5 / Math.sin(Math.PI / 8);
 		for (var i = 0; i < 8; i++) {
