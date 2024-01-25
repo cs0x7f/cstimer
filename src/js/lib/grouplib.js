@@ -923,7 +923,7 @@ var grouplib = (function(rn) {
 		for (var mbase = 0; mbase < this.glen; mbase += 32) {
 			var mask = node[this.glen + (mbase >> 5)];
 			mask |= (nodePrun >= maxl - 1) ? prunTable[nodePrun - maxl + 2][glenBase + (mbase >> 5)] : 0;
-			mask = ~mask & ((1 << Math.min(32, this.glen - mbase)) - 1);
+			mask = ~mask & (this.glen - mbase >= 32 ? -1 : ((1 << this.glen - mbase) - 1));
 			while (mask != 0) {
 				var midx = 31 - Math.clz32(mask);
 				mask -= 1 << midx;
