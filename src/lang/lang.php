@@ -10,6 +10,7 @@
 <option value="?lang=fi-fi">Suomi</option>
 <option value="?lang=fr-fr">Français</option>
 <option value="?lang=he-il">עברית</option>
+<option value="?lang=hi-in">हिन्दी</option>
 <option value="?lang=hr-hr">Hrvatski</option>
 <option value="?lang=hu-hu">Magyar</option>
 <option value="?lang=it-it">Italiano</option>
