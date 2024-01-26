@@ -178,11 +178,11 @@
 <li>Chrome in macOS, Linux, Android oder Windows</li>
 <li>Bluefy in iOS</li>
 </ul>
-<p>Also you can check complete list of <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">supported browsers</a>.</p>
-<p>For some bluetooth cubes, we need you to provide the MAC address of your cube to decrypt the data. <strong>csTimer is able to automatically read MAC address of the cube if you properly setup your browser:</strong></p>
+<p><a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">Hier können sie eine vollständige Liste aller unterstützter Browser abrufen.</a></p>
+<p>Für einige Bluetooth-Cubes muss zudem die MAC-Adresse angegeben werden, um die Daten zu entschlüsseln. <strong>csTimer kann diese bei richtigen Browser-Einstellungen automatisch auslesen.</strong></p>
 <ul>
-<li>Chrome: enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.</li>
-<li>Bluefy: turn on Enable BLE Advertisements option in browser settings.</li>
+<li>Chrome: aktiviere chrome://flags/#enable-experimental-web-platform-features in den Browsereinstellungen</li>
+<li>Bluefy: aktiviere die "Enable BLE Advertisements"-Option in den Browsereinstellungen</li>
 </ul>
-<p>If you have difficulties with cube MAC address, you may read <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC address FAQ</a>.</p>
+<p>Lesen Sie bei Schwierigkeiten mit der MAC-Adresse des Cubes bitte die <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart-Cubes MAC-Adresse FAQ</a></p>
 </div>

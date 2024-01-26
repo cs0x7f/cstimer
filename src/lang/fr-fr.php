@@ -26,10 +26,10 @@
 <h2>Raccourcis clavier</h2>
 <table class="table" style="display: inline-block;">
 <tr><th>Touche</th><td>Fonctionnalité</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
+<tr><th>Alt + 1</th><td>Type de mélange pour Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Type de mélange pour 2x2x2~7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Type de mélange pour pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Type de mélange à saisir</td></tr>
 <tr><th>Alt + d</th><td>Supprimer toutes les résolutions de la session en cours</td></tr>
 <tr><th>Alt + z</th><td>Supprimer la dernière résolution</td></tr>
 <tr><th>Alt + haut/bas</th><td>Aller à la session suivante/précédente</td></tr>
@@ -105,7 +105,7 @@
 <li><strong data="opt_statal">Indicateurs statistiques</strong>. Indicateur pour le tableau de statistiques, lors de la personnalisation, aoX et moX sont disponibles.</li>
 <li><strong data="opt_delmul">Activer la suppression multiple</strong>. Possibilité de supprimer plusieurs résolutions à partir d'une résolution. La résolution sélectionnée sera la plus ancienne résolution supprimée.</li>
 <li><strong data="opt_disPrec">Précision de la répartition des temps</strong>. Intervalle de temps pour l'outil de distribution des temps.</li>
-<li><strong data="opt_solSpl">Afficher la solution progressivement</strong>. Si sélectionné, seule la longueur de la solution du solveur sera montrée et vous pourrez voir la solution mouvement par mouvement. Sinon la solution complète sera affichée.</li>
+<li><strong data="opt_solSpl">Afficher la solution progressivement</strong>. Si sélectionné, seule s'affiche la partie de la solution tenant dans la largeur du solveur, mouvement par mouvement. Si déselectionné, la solution complète est affichée.</li>
 <li><strong data="opt_imgSize">Taille de l&#x27;aperçu du mélange</strong>. Définit la taille de l'aperçu du mélange.</li>
 <li><strong data="opt_NTools">Nombre d&#x27;outils</strong>. csTimer peut afficher jusqu'à 4 outils simultanément.</li>
 <li><strong data="opt_useKSC">Utiliser les raccourcis clavier</strong>. Utilisez les raccourci clavier pour changer le type de mélange, générer un nouveau mélange, basculer d'une session à une autre, etc.</li>
@@ -113,7 +113,7 @@
 <li><strong data="opt_vrcMP">multi-phase</strong>. Séparation automatique des différentes phases de résolution sur Rubik's cube virtuel and cubes Bluetooth.</li>
 <li><strong data="opt_giiVRC">Montrer le Giiker Cube virtuel</strong>. Lors de la connexion d'un cube bluetooth, afficher un Rubik's cube virtuel dans le panneau du chronomètre.</li>
 <li><strong data="opt_giiSD">Considérer le cube comme mélangé si immobile pendant</strong>. Avec un cube Bluetooth, csTimer ne peut pas identifier si un mouvement fait partie du mélange ou de la résolution.</li>
-<li><strong data="opt_giiSK">Considérer le cube comme mélangé avec la barre d&#x27;espace</strong>. Dès que la barre d'espace est pressée, le cube Bluetooth est considéré comme mélangé. Tout mouvement va alors déclencher le chronomètre.</li>
+<li><strong data="opt_giiSK">Considérer le cube comme mélangé avec la barre d&#x27;espace</strong>. Dès que vous pressez la barre d'espace, le cube Bluetooth est considéré comme mélangé. Tout mouvement va alors déclencher le chronomètre.</li>
 <li><strong data="opt_giiSM">Considérer le cube comme mélangé en faisant</strong>. Réaliser une séquence de mouvements spécifique sur le cube Bluetooth pour le déclarer mélangé.</li>
 <li><strong data="opt_giiBS">Bip quand le cube est considéré comme mélangé</strong>. Bip lorsque le signal de fin de mélange est déclenché.</li>
 <li><strong data="opt_giiRST">Remettre le Giiker Cube à zéro quand il se connecte</strong>. Lors de la connexion d'un cube Bluetooth, csTimer détecte s'il est résolu. Si tel n'est pas le cas, cela signifie qu'il y a un problème matériel ou que le cube n'est pas entièrement résolu.</li>
@@ -122,7 +122,7 @@
 <h2>Descriptions des outils</h2>
 <ul>
 <li><strong data="tool_scrgen">Générateur de mélange</strong>. Cet outil vous permet de générer jusqu'à 999 mélanges en un seul clic.</li>
-<li><strong data="tool_cfm">Confirmation du temps</strong>. Outil pour voir les résolutions actuelles avec leurs commentaires, mélanges, dates de résolution et reconstructions si disponible ; c'est également la boîte de dialogue qui s'ouvre lorsque vous cliquez sur une résolution.</li>
+<li><strong data="tool_cfm">Confirmation du temps</strong>. Outil affichant les résolutions actuelles avec leur commentaire, mélange, date de résolution et reconstruction, si disponible ; c'est également la boîte de dialogue qui s'ouvre quand vous cliquez sur une résolution.</li>
 <li><strong data="tool_hugestats">Stats sur plusieurs sessions</strong>. Cet outil consolide les statistiques de plusieurs sessions.</li>
 <li><strong data="tool_stats">Statistiques</strong>. Tableau statistique similaire à celui du panneau des temps.</li>
 <li><strong data="tool_distribution">Répartition des temps</strong>. Analyse de la distribution des temps et de la stabilité, &lt;X Y/Z signifient que Y résolutions sont en-dessous de X secondes, et que les Z dernières résolutions de la session sont en-dessous de X secondes.</li>
@@ -178,11 +178,11 @@
 <li>Chrome sur macOS, Linux, Android ou Windows</li>
 <li>Bluefy sur iOS</li>
 </ul>
-<p>Also you can check complete list of <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">supported browsers</a>.</p>
-<p>For some bluetooth cubes, we need you to provide the MAC address of your cube to decrypt the data. <strong>csTimer is able to automatically read MAC address of the cube if you properly setup your browser:</strong></p>
+<p>Vous pouvez également consulter cette liste complète des <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">navigateurs pris en charge</a>.</p>
+<p>Avec certains cubes Bluetooth, nous avons besoin de l'adresse MAC de votre cube pour déchiffrer les données. <strong>csTimer est capable de lire automatiquement l'adresse MAC du cube si vous configurez correctement votre navigateur :</strong></p>
 <ul>
-<li>Chrome: enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.</li>
-<li>Bluefy: turn on Enable BLE Advertisements option in browser settings.</li>
+<li>Chrome : activez le flag chrome://flags/#enable-experimental-web-platform-features dans les paramètres du navigateur.</li>
+<li>Bluefy: activez l'option Enable BLE Advertisements dans les paramètres du navigateur.</li>
 </ul>
-<p>If you have difficulties with cube MAC address, you may read <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC address FAQ</a>.</p>
+<p>Si vous rencontrez des difficultés avec l'adresse MAC du cube, veuillez consulter la FAQ <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">"GAN Smart Cubes MAC address"</a>.</p>
 </div>
