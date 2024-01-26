@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Kiểu chữ timer';
 var PROPERTY_FONT_STR = 'bất kì|bình thường|kí thuật số 1|kí thuật số 2|kí thuật số 3|kí thuật số 4|kí thuật số 5';
 var PROPERTY_FORMAT = 'Thể loại thời gian';
 var PROPERTY_USEKSC = 'Sử dụng nút tắt';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'số công cụ';
 var PROPERTY_AHIDE = 'ẩn tất cả khi giải';
 var SCRAMBLE_LAST = 'trước';

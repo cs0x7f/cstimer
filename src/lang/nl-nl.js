@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Selecteer lettertype timer';
 var PROPERTY_FONT_STR = 'Willekeurig digitaal|Normaal|Digitaal1|Digitaal2|Digitaal3|Digitaal4|Digitaal5';
 var PROPERTY_FORMAT = 'Tijdsindeling';
 var PROPERTY_USEKSC = 'Gebruik sneltoetsen';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'Aantal hulpmiddelen';
 var PROPERTY_AHIDE = 'Verberg Alle Elementen wanneer je aan het timen bent';
 var SCRAMBLE_LAST = 'Laatste';

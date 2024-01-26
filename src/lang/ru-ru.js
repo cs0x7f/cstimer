@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'выберите шрифт таймера';
 var PROPERTY_FONT_STR = 'случайный цифровойl|нормальный|цифровой1|цифровой2|цифровой3|цифровой4|цифровой5';
 var PROPERTY_FORMAT = 'формат времени';
 var PROPERTY_USEKSC = 'использовать сокращение на клавиатуре';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'количество инструментов';
 var PROPERTY_AHIDE = 'скрывать все элементы когда идёт время';
 var SCRAMBLE_LAST = 'последний';

@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'タイマーフォントの選択';
 var PROPERTY_FONT_STR = 'ランダムデジタル|通常|デジタル1|デジタル2|デジタル3|デジタル4|デジタル5';
 var PROPERTY_FORMAT = '時間形式';
 var PROPERTY_USEKSC = 'キーボードショートカットを有効にする';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'ツール表示数';
 var PROPERTY_AHIDE = '記録中はすべての要素を非表示にする';
 var SCRAMBLE_LAST = '前';

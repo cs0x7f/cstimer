@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'időmérő betűtípusa';
 var PROPERTY_FONT_STR = 'random digitális|normál|1-es digitális|2-es digitális|3-as digitális|4-es digitális|5-ös digitális';
 var PROPERTY_FORMAT = 'idő formátum';
 var PROPERTY_USEKSC = 'billentyűparancsok használata';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'eszközök száma';
 var PROPERTY_AHIDE = 'Összes elem elrejtése mérés közben';
 var SCRAMBLE_LAST = 'utolsó';

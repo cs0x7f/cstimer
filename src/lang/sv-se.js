@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Timerns teckensnitt';
 var PROPERTY_FONT_STR = 'slumpmässig digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'Tidsformat';
 var PROPERTY_USEKSC = 'använd tangentborsgenväg';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'Antal verktyg';
 var PROPERTY_AHIDE = 'Göm allt när timern tar tid';
 var SCRAMBLE_LAST = 'senaste';

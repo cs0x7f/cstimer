@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'wybierz czcionkę timera';
 var PROPERTY_FONT_STR = 'cyfra losowa|normalna|cyfrowa1|cyfrowa2|cyfrowa3|cyfrowa4|cyfrowa5';
 var PROPERTY_FORMAT = 'format czasu';
 var PROPERTY_USEKSC = 'użyj skrótu klawiszowego';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'liczba narzędzi';
 var PROPERTY_AHIDE = 'Ukryj wszystkie elementy podczas układania';
 var SCRAMBLE_LAST = 'ostatni';

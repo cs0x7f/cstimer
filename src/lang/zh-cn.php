@@ -178,5 +178,11 @@
 <li>Chrome（谷歌浏览器）用于Windows、macOS、Linux、Android</li>
 <li>Bluefy用于iOS</li>
 </ul>
-<p>你可以看一下这个链接<a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a>，这里有完整的Web Bluetooth API及浏览器支持情况。</p>
+<p>你也可以查看所有<a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">支持的浏览器</a>。</p>
+<p>对于一些蓝牙魔方，我们需要你提供它的MAC地址，这样我们才能解密数据。 如果你正确配置了浏览器，csTimer可以自动读取蓝牙魔方的MAC地址：</p>
+<ul>
+<li>Chrome: 在浏览器设置里打开chrome://flags/#enable-experimental-web-platform-features这个开关。</li>
+<li>Bluefy：在浏览器设置里开启Enable BLE Advertisements。</li>
+</ul>
+<p>如果对于蓝牙魔方的MAC地址你碰到了困难，你可以查阅<a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC address FAQ</a>。</p>
 </div>

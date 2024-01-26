@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'टाइमर का फ़ॉन्ट चुनें';
 var PROPERTY_FONT_STR = 'क्रम रहित डिजिटल|सामान्य|डिजिटल१|डिजिटल२|डिजिटल३|डिजिटल४|डिजिटल५';
 var PROPERTY_FORMAT = 'समय प्रारूप';
 var PROPERTY_USEKSC = 'कीबोर्ड शॉर्टकट का उपयोग करें';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'उपकरणों की संख्या';
 var PROPERTY_AHIDE = 'समय रिकॉर्ड करते समय सभी तत्वों को छिपाएँ';
 var SCRAMBLE_LAST = 'पिछली';

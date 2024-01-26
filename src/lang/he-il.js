@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'תבחר גופן לטיימר';
 var PROPERTY_FONT_STR = 'דיגיטלי רנדומלי|רגיל|דיגיטלי1|דיגיטלי2|דיגיטלי3|דיגיטלי4|דיגיטלי5';
 var PROPERTY_FORMAT = 'פורמט זמן';
 var PROPERTY_USEKSC = 'השתמש בקיצורי מקלדת';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'מספר כלים';
 var PROPERTY_AHIDE = 'החבא את כל האלמנטים כאשר מודד זמן';
 var SCRAMBLE_LAST = 'האחרון';

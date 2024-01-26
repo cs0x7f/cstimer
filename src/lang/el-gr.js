@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'time format';
 var PROPERTY_USEKSC = 'use keyboard shortcut';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'number of tools';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
 var SCRAMBLE_LAST = 'last';

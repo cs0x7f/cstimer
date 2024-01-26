@@ -130,6 +130,7 @@ var PROPERTY_FONT = '計時器字體';
 var PROPERTY_FONT_STR = '隨機顯示器字體|普通|顯示器1|顯示器2|顯示器3|顯示器4|顯示器5';
 var PROPERTY_FORMAT = '時間格式';
 var PROPERTY_USEKSC = '使用快捷鍵';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = '工具數量';
 var PROPERTY_AHIDE = '計時期間隱藏所有物件';
 var SCRAMBLE_LAST = '上一個';

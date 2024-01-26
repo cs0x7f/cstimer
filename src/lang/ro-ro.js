@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Alegeți fontul cronometrului';
 var PROPERTY_FONT_STR = 'Digital aleatoriu|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'Formatul timpului';
 var PROPERTY_USEKSC = 'Folosește scurtătura tastaturii';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'Număr de unelte';
 var PROPERTY_AHIDE = 'Ascunde elementele in timpul cronometrării';
 var SCRAMBLE_LAST = 'ultimul';

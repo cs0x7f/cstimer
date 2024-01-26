@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'kronometrenin yazı tipini seç';
 var PROPERTY_FONT_STR = 'rastgele|normal|dijital1 1|dijital 2|dijital 3|dijital 4|dijital 5';
 var PROPERTY_FORMAT = 'zaman biçimi';
 var PROPERTY_USEKSC = 'kısayol kullan';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'yardımcı sayısı';
 var PROPERTY_AHIDE = 'Zaman tutulurken her şeyi gizle';
 var SCRAMBLE_LAST = 'önceki';

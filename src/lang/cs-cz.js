@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'vyberte písmo časovače';
 var PROPERTY_FONT_STR = 'náhodně digitální|normální|digitální1|digitánlí2|digitální3|digitální4|digitální5';
 var PROPERTY_FORMAT = 'formát času';
 var PROPERTY_USEKSC = 'použít klávesové zkratky';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'počet nástrojů';
 var PROPERTY_AHIDE = 'Skrýt všechny prvky při časování';
 var SCRAMBLE_LAST = 'poslední';

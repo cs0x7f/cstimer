@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'إختار طقم حروف المؤقت';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'صيغة الوقت';
 var PROPERTY_USEKSC = 'إستخدم الإختصارات';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'عدد الأدوات';
 var PROPERTY_AHIDE = 'إخفاء كل العناصر عند التوقيت';
 var SCRAMBLE_LAST = 'سابق';

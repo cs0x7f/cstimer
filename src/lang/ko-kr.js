@@ -130,6 +130,7 @@ var PROPERTY_FONT = '초시계 글꼴';
 var PROPERTY_FONT_STR = '무작위로|기본|디지털1|디지털2|디지털3|디지털4|디지털5';
 var PROPERTY_FORMAT = '시간 표시 형식';
 var PROPERTY_USEKSC = '키보드 단축키 사용';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = '도구 창 개수';
 var PROPERTY_AHIDE = '시간 측정 중 모든 창 숨기기';
 var SCRAMBLE_LAST = '이전';

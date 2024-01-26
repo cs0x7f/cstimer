@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Изаберите фонт тајмера';
 var PROPERTY_FONT_STR = 'Насумично дигитално | нормално | дигитално1 | дигитално2 | дигитално3 | дигитално 4 | дигитално 5';
 var PROPERTY_FORMAT = 'Формат времена';
 var PROPERTY_USEKSC = 'Пречице за тастатуру';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'number of tools';
 var PROPERTY_AHIDE = 'Сакријте све елементе док се мери време';
 var SCRAMBLE_LAST = 'Последње';

@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'odaberi font štoperice';
 var PROPERTY_FONT_STR = 'nasumično digitlni|normalan|digitalni1|digitalni2|digitalni3|digitalni4|digitalni5';
 var PROPERTY_FORMAT = 'format vremena';
 var PROPERTY_USEKSC = 'koristi prečace s tipkovnice';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'broj alata';
 var PROPERTY_AHIDE = 'Sakrij sve elemente dok štoperica mjeri vrijeme';
 var SCRAMBLE_LAST = 'prethodni';

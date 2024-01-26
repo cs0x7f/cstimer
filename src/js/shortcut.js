@@ -163,7 +163,7 @@ var shortcuts = execMain(function(){
 	$(function() {
 		kernel.regListener('shortcut', 'keydown', onkeydown);
 		kernel.regProp('tools', 'useKSC', 0, PROPERTY_USEKSC, [true]);
-		kernel.regProp('tools', 'useGES', 0, 'use gesture control', [true]);
+		kernel.regProp('tools', 'useGES', 0, PROPERTY_USEGES, [true]);
 		astDiv = $('<div id="astouch">').appendTo('body');
 		var r = 1.5 / Math.sin(Math.PI / 8);
 		for (var i = 0; i < 8; i++) {

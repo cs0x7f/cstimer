@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Timer-Schriftart wählen';
 var PROPERTY_FONT_STR = 'zufällig digital|normal|digital 1|digital 2|digital 3|digital 4|digital 5';
 var PROPERTY_FORMAT = 'Zeitformat';
 var PROPERTY_USEKSC = 'Tastenkombinationen benutzen';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'Anzahl der Werkzeuge';
 var PROPERTY_AHIDE = 'Alle Elemente während des Timens verstecken';
 var SCRAMBLE_LAST = 'letzter';

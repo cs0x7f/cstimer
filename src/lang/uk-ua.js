@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Вибрати шрифт таймера';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'Формат часу';
 var PROPERTY_USEKSC = 'використовувати гарячі клавіші';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'кількість інструментів';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
 var SCRAMBLE_LAST = 'останній';

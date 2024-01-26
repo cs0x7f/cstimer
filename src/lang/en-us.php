@@ -125,7 +125,7 @@
 <li><strong data="tool_cfm">Confirm time</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">cross-session stats</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">Statistics</strong>. Statistic table similar with the table in the list times panel.</li>
-<li><strong data="tool_distribution">time distribution</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Y solves less than X seconds, and all of the latest Z solves are less than X seconds in the session.</li>
+<li><strong data="tool_distribution">time distribution</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
 <li><strong data="tool_trend">time trend</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">draw scramble</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
@@ -178,5 +178,11 @@
 <li>Chrome on macOS, Linux, Android or Windows</li>
 <li>Bluefy on iOS</li>
 </ul>
-<p>Also you can check <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">Web Bluetooth Community Group implementation status</a> for complete list of different browsers and supported Web Bluetooth API features.</p>
+<p>Also you can check complete list of <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">supported browsers</a>.</p>
+<p>For some bluetooth cubes, we need you to provide the MAC address of your cube to decrypt the data. <strong>csTimer is able to automatically read MAC address of the cube if you properly setup your browser:</strong></p>
+<ul>
+<li>Chrome: enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.</li>
+<li>Bluefy: turn on Enable BLE Advertisements option in browser settings.</li>
+</ul>
+<p>If you have difficulties with cube MAC address, you may read <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC address FAQ</a>.</p>
 </div>

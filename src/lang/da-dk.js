@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Vælg timerens font';
 var PROPERTY_FONT_STR = 'Tilfældig digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'tids format';
 var PROPERTY_USEKSC = 'brug tastatur genvej';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'nummer af værktøj';
 var PROPERTY_AHIDE = 'Gem alle elementer når du tager tid';
 var SCRAMBLE_LAST = 'sidste';

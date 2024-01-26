@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Seleccionar font del cronòmetre';
 var PROPERTY_FONT_STR = 'Digital aleatori|Normal|Digital 1|Digital 2|Digital 3|Digital 4|Digital 5';
 var PROPERTY_FORMAT = 'Format de temps';
 var PROPERTY_USEKSC = 'Fer servir dreceres del teclat';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'Nombre d\'eines';
 var PROPERTY_AHIDE = 'Amagar tots els elements en el cronometratge';
 var SCRAMBLE_LAST = 'Anterior';

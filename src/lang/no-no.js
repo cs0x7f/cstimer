@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'velg skrifttype på tidtaker';
 var PROPERTY_FONT_STR = 'tilfeldig digital|normal|digital1|digital2|digital3|digital4|digital5';
 var PROPERTY_FORMAT = 'Tidsformat';
 var PROPERTY_USEKSC = 'bruk snarvei på tastatur';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'antall verktøy';
 var PROPERTY_AHIDE = 'Skjul alle elementer under kubeløsing';
 var SCRAMBLE_LAST = 'siste';

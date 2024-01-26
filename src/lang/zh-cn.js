@@ -130,6 +130,7 @@ var PROPERTY_FONT = '选择计时器字体';
 var PROPERTY_FONT_STR = '随机数码管|常规|数码管1|数码管2|数码管3|数码管4|数码管5';
 var PROPERTY_FORMAT = '时间格式';
 var PROPERTY_USEKSC = '使用键盘快捷键';
+var PROPERTY_USEGES = '使用手势控制';
 var PROPERTY_NTOOLS = '工具栏数量';
 var PROPERTY_AHIDE = '计时过程中隐藏所有元素';
 var SCRAMBLE_LAST = '上一条';

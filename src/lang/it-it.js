@@ -130,6 +130,7 @@ var PROPERTY_FONT = 'Seleziona il carattere del cronometro';
 var PROPERTY_FONT_STR = 'digitale casuale|normale|digitale1|digitale2|digitale3|digitale4|digitale5';
 var PROPERTY_FORMAT = 'Formato tempo';
 var PROPERTY_USEKSC = 'Usa abbreviazioni da tastiea';
+var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'Numero di strumenti';
 var PROPERTY_AHIDE = 'Nascondi tutti gli elementi quando mi cronometro';
 var SCRAMBLE_LAST = 'Ultimo';

@@ -178,5 +178,11 @@
 <li>Chrome in macOS, Linux, Android oder Windows</li>
 <li>Bluefy in iOS</li>
 </ul>
-<p>Es bietet sich außerdem an, <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md">den Status der Implementierung</a> zu überprüfen, um eine vollständige Übersicht verschiedener Browser und unterstützter Web-Bluetooth-API-Funktionen zu erhalten.</p>
+<p>Also you can check complete list of <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">supported browsers</a>.</p>
+<p>For some bluetooth cubes, we need you to provide the MAC address of your cube to decrypt the data. <strong>csTimer is able to automatically read MAC address of the cube if you properly setup your browser:</strong></p>
+<ul>
+<li>Chrome: enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.</li>
+<li>Bluefy: turn on Enable BLE Advertisements option in browser settings.</li>
+</ul>
+<p>If you have difficulties with cube MAC address, you may read <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC address FAQ</a>.</p>
 </div>
