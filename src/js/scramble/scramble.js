@@ -175,7 +175,7 @@ var scramble = execMain(function(rn, rndEl) {
 			lastClick.addClass('click').unbind('click').click(procLastClick);
 		}
 
-		type = menu.getSelected();
+		type = menu.getSelected() || '333';
 		len = ~~scrLen.val();
 		if (lasttype != type) {
 			kernel.setProp('scrType', type);
@@ -481,6 +481,9 @@ var scramble = execMain(function(rn, rndEl) {
 	function loadScrOpts() {
 		kernel.blur();
 		var idx = menu.getSelIdx();
+		if (!scrdata[idx[0]] || !scrdata[idx[0]][1] || !scrdata[idx[0]][1][idx[1]]) {
+			idx = [0, 0];
+		}
 		var len = scrdata[idx[0]][1][idx[1]][2];
 		scrLen.val(Math.abs(len));
 		scrLen[0].disabled = len <= 0;

@@ -1175,7 +1175,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					isReseted = false;
 					reset();
 				}
-				var m = value[0].match(/^r(\d)\d*$/);
+				var m = /^r(\d)\d*$/.exec(curScrType);
 				if (m) {
 					relayScrs = curScramble.split('\n');
 					if (curScrSize != ~~m[1]) {
