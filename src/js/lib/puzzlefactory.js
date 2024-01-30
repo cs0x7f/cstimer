@@ -125,6 +125,9 @@ var puzzleFactory = execMain(function() {
 		} else if (puzzle == "clk") {
 			options["type"] = "clk";
 			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
+		} else if (puzzle == "fto") {
+			options["type"] = "fto";
+			options["faceColors"] = col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		}
 		options['scale'] = 0.9;
 		child[2].twistyScene.initializeTwisty(options);

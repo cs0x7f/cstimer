@@ -48,13 +48,6 @@
 		[Math.sin(PI * 0.0) * cfrac, -Math.cos(PI * 0.0) * cfrac],
 		[Math.sin(PI * 0.4) * cfrac, -Math.cos(PI * 0.4) * cfrac],
 		[Math.sin(PI * 0.8) * cfrac, -Math.cos(PI * 0.8) * cfrac],
-		[Math.sin(PI * 1.2) * cfrac, -Math.cos(PI * 1.2) * cfrac]
-		// [Math.sin(PI * 1.6) * cfrac, -Math.cos(PI * 1.6) * cfrac]
-	];
-	var ct2 = [
-		[Math.sin(PI * 0.0) * cfrac, -Math.cos(PI * 0.0) * cfrac],
-		// [Math.sin(PI * 0.4) * cfrac, -Math.cos(PI * 0.4) * cfrac],
-		// [Math.sin(PI * 0.8) * cfrac, -Math.cos(PI * 0.8) * cfrac],
 		[Math.sin(PI * 1.2) * cfrac, -Math.cos(PI * 1.2) * cfrac],
 		[Math.sin(PI * 1.6) * cfrac, -Math.cos(PI * 1.6) * cfrac]
 	];
@@ -85,8 +78,7 @@
 		[corn, 0, -0.8, ctdis, 0.4],
 		[corn, 0, -0.8, ctdis, 0.6],
 		[corn, 0, -0.8, ctdis, 0.8],
-		[ct, 0, 0, ctdis, 0],
-		[ct2, 0, 0, ctdis, 0]
+		[ct, 0, 0, ctdis, 0]
 	];
 
 	// Cube Constants
@@ -202,6 +194,7 @@
 				};
 				var stickerInterior = new THREE.Mesh(new THREE.Ploy(curf0), meshes);
 				stickerInterior.doubleSided = cubeOptions.doubleSided;
+				stickerInterior.overdraw = true;
 				sticker.addChild(stickerInterior);
 
 				var transformationMatrix = new THREE.Matrix4().setRotationAxis(normList[i], TAU * curf[4])

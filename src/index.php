@@ -15,6 +15,7 @@
   <script type="text/javascript" src="js/lib/mersennetwister.js"></script>
   <script type="text/javascript" src="js/lib/mathlib.js"></script>
   <script type="text/javascript" src="js/lib/grouplib.js"></script>
+  <script type="text/javascript" src="js/lib/poly3dlib.js"></script>
   <script type="text/javascript" src="js/lib/sbtree.js"></script>
   <script type="text/javascript" src="js/lib/sqlfile.js"></script>
   <script type="text/javascript" src="js/lib/tdconverter.js"></script>
@@ -84,6 +85,7 @@
   <script type="text/javascript" src="js/twisty/twistypyra.js"></script>
   <script type="text/javascript" src="js/twisty/twistyminx.js"></script>
   <script type="text/javascript" src="js/twisty/twistyclk.js"></script>
+  <script type="text/javascript" src="js/twisty/twistypoly.js"></script>
   <script type="text/javascript" src="js/twisty/qcube.js"></script>
   <script type="text/javascript" src="js/twisty/qcubennn.js"></script>
   <script type="text/javascript" src="js/twisty/qcubeminx.js"></script>

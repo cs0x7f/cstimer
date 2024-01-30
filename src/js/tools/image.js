@@ -436,90 +436,6 @@ var image = execMain(function() {
 		}
 	})();
 
-	/*
-
-face:
-1 0 2
-  3
-
-posit:
-2 8 3 7 1    0    2 8 3 7 1
-  4 6 5    5 6 4    4 6 5
-    0    1 7 3 8 2    0
-
-         2 8 3 7 1
-           4 6 5
-             0
-
-     */
-	var pyraImage = (function() {
-		var width = 45;
-		var posit = [];
-		var colors = ['#0f0', '#f00', '#00f', '#ff0'];
-		var faceoffx = [3.5, 1.5, 5.5, 3.5];
-		var faceoffy = [0, 3 * hsq3, 3 * hsq3, 6.5 * hsq3];
-		var g1 = [0, 6, 5, 4];
-		var g2 = [1, 7, 3, 5];
-		var g3 = [2, 8, 4, 3];
-		var flist = [
-			[0, 1, 2],
-			[2, 3, 0],
-			[1, 0, 3],
-			[3, 2, 1]
-		];
-		var arrx = [-0.5, 0.5, 0];
-		var arry1 = [hsq3, hsq3, 0];
-		var arry2 = [-hsq3, -hsq3, 0];
-
-		function doMove(axis, power) {
-			var len = axis >= 4 ? 1 : 4;
-			var f = flist[axis % 4];
-			for (var i = 0; i < len; i++) {
-				for (var p = 0; p < power; p++) {
-					mathlib.circle(posit, f[0] * 9 + g1[i], f[1] * 9 + g2[i], f[2] * 9 + g3[i]);
-				}
-			}
-		}
-
-		function face(f) {
-			var inv = f != 0;
-			var arroffx = [0, -1, 1, 0, 0.5, -0.5, 0, -0.5, 0.5];
-			var arroffy = [0, 2, 2, 2, 1, 1, 2, 3, 3];
-
-			for (var i = 0; i < arroffy.length; i++) {
-				arroffy[i] *= inv ? -hsq3 : hsq3;
-				arroffx[i] *= inv ? -1 : 1;
-			}
-			for (var idx = 0; idx < 9; idx++) {
-				drawPolygon(ctx, colors[posit[f * 9 + idx]], [arrx, (idx >= 6 != inv) ? arry2 : arry1], [width, faceoffx[f] + arroffx[idx], faceoffy[f] + arroffy[idx]]);
-			}
-		}
-
-		return function(moveseq) {
-			colors = kernel.getProp('colpyr').match(colre);
-			var cnt = 0;
-			for (var i = 0; i < 4; i++) {
-				for (var f = 0; f < 9; f++) {
-					posit[cnt++] = i;
-				}
-			}
-			var scramble = kernel.parseScramble(moveseq, 'URLB');
-			for (var i = 0; i < scramble.length; i++) {
-				doMove(scramble[i][0] + (scramble[i][1] == 2 ? 4 : 0), scramble[i][2] == 1 ? 1 : 2);
-			}
-			var imgSize = kernel.getProp('imgSize') / 10;
-			canvas.width(7 * imgSize + 'em');
-			canvas.height(6.5 * hsq3 * imgSize + 'em');
-
-			canvas.attr('width', 7 * width);
-			canvas.attr('height', 6.5 * hsq3 * width);
-
-			for (var i = 0; i < 4; i++) {
-				face(i);
-			}
-		}
-	})();
-
 	var nnnImage = (function() {
 		var width = 30;
 
@@ -1285,6 +1201,107 @@ posit:
 		}
 	})();
 
+
+	var polyhedronImage = (function() {
+		var puzzleCache = {};
+
+		return function(type, moveseq) {
+			var colors = [];
+			var moves = [];
+			var minArea = 0;
+			var gap = 0.05;
+			var puzzle = puzzleCache[type];
+
+			if (type == 'mgm' || type == 'klm') {
+				var param = [0.7, -0.7, -2];
+				if (type == 'klm') {
+					param = [0.575, -0.575, -2];
+					minArea = 0.1;
+				}
+				puzzle = puzzle || poly3d.makePuzzle(12, param);
+				var colmgm = kernel.getProp('colmgm').match(colre);
+				for (var i = 0; i < 12; i++) {
+					colors[i] = colmgm[[0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10][i]];
+				}
+				if (/^(\s*([+-]{2}\s*)+U'?\s*\n)*$/.exec(moveseq)) {
+					moveseq = tools.carrot2poch(moveseq);
+				}
+				moveseq.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+					var move = null;
+					if (p1) {
+						move = [1 + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '+' ? 4 : 1) * p2.length % 5];
+					} else if (p3) {
+						move = [0 + p3[0] + p3.slice(1).toLowerCase(), (p5 ? 1 : 4) * (~~p4 || 1) % 5];
+					} else {
+						move = [2 + p6.toUpperCase(), p7 ? 1 : 4];
+					}
+					moves.push(move);
+				});
+			} else if (type == 'fto') {
+				puzzle = puzzle || poly3d.makePuzzle(8, [1/3]);
+				var colfto = kernel.getProp('colfto').match(colre);
+				for (var i = 0; i < 8; i++) {
+					colors[i] = colfto[[0, 3, 1, 2, 6, 7, 5, 4][i]];
+				}
+				moveseq.replace(/(?:^|\s*)([URFDL]|(?:B[RL]?))(')?(?:$|\s*)/g, function(m, p1, p2) {
+					moves.push([0 + p1[0] + p1.slice(1).toLowerCase(), p2 ? 1 : 2]);
+				});
+			} else if (type == 'pyr') {
+				puzzle = puzzle || poly3d.makePuzzle(4, [], [], [1/3, 5/3]);
+				gap = 0.1;
+				var colpyr = kernel.getProp('colpyr').match(colre);
+				for (var i = 0; i < 4; i++) {
+					colors[i] = colpyr[[3, 1, 2, 0][i]];
+				}
+				moveseq.replace(/(?:^|\s*)([URLBurlb])(')?(?:$|\s*)/g, function(m, p1, p2) {
+					moves.push([['0DLF', '0DLR', '0DRF', '0LRF', '1DLF', '1DLR', '1DRF', '1LRF']['LBRUlbru'.indexOf(p1)], p2 ? 1 : 2]);
+				});
+			}
+
+			DEBUG && console.log('[polyhedron image] puzzle=', puzzle, 'moves=', moves);
+			puzzleCache[type] = puzzle;
+			var ret = poly3d.renderNet(puzzle, gap, minArea);
+			var sizes = ret[0];
+			var polys = ret[1];
+			var posit = [];
+			for (var i = 0; i < polys.length; i++) {
+				posit[i] = polys[i] && polys[i][2];
+			}
+			for (var midx = 0; midx < moves.length; midx++) {
+				var perm;
+				for (var i = 0; i < puzzle.twistyDetails.length; i++) {
+					if (puzzle.twistyDetails[i][0] == moves[midx][0]) {
+						perm = puzzle.moveTable[i];
+						break;
+					}
+				}
+				if (!perm) {
+					debugger; // error, cannot find move permutations
+				}
+				var posit2 = [];
+				for (var i = 0; i < posit.length; i++) {
+					var val = i;
+					for (var j = 0; j < moves[midx][1]; j++) {
+						val = perm[val];
+					}
+					posit2[val] = posit[i];
+				}
+				posit = posit2;
+			}
+
+			var scale = Math.min(1.6 / sizes[0], 1.0 / sizes[1]) * kernel.getProp('imgSize') * 0.6;
+			canvas.width(sizes[0] * scale + 'em');
+			canvas.height(sizes[1] * scale + 'em');
+			canvas.attr('width', sizes[0] * scale * 30 + 1);
+			canvas.attr('height', sizes[1] * scale * 30 + 1);
+			for (var i = 0; i < posit.length; i++) {
+				polys[i] && $.ctxDrawPolygon(ctx, colors[posit[i]], polys[i], [scale * 30, 0, 0, 0, scale * 30, 0]);
+			}
+		}
+
+	})();
+
+
 	var sldImage = (function() {
 
 		return function(type, size, moveseq) {
@@ -1373,7 +1390,7 @@ posit:
 			return true;
 		}
 		if (type == "pyr") {
-			pyraImage(scramble[1]);
+			polyhedronImage(type, scramble[1]);
 			return true;
 		}
 		if (type == "skb") {

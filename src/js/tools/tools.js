@@ -127,16 +127,10 @@ var tools = execMain(function() {
 			return "8p";
 		} else if (/^8p(rmp|m)$/.exec(scrambleType)) {
 			return "8b";
-		} else if (/^sq2$/.exec(scrambleType)) { //matching only sq2 case
-			return "sq2";
-		} else if (/^fto$/.exec(scrambleType)) {
-			return "fto";
-		} else if (/^heli$/.exec(scrambleType)) {
-			return "heli";
-		} else if (/^helicv$/.exec(scrambleType)) {
-			return "helicv";
 		} else if (/^heli2x2g?$/.exec(scrambleType)) {
 			return "heli2x2";
+		} else {
+			return scrambleType;
 		}
 	}
 

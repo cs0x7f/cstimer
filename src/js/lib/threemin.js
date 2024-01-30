@@ -2211,6 +2211,7 @@ THREE.Projector = function() {
 					}
 					_face.meshMaterials = objectMaterials;
 					_face.faceMaterials = face.materials;
+					_face.innerLineMask = face.innerLineMask;
 					_face.overdraw = objectOverdraw;
 					_face.z = _face.centroidScreen.z;
 					renderList.push(_face)
@@ -2694,7 +2695,7 @@ THREE.CanvasRenderer = function(parameters) {
 			_v2y = v2.positionScreen.y;
 			_v3x = v3.positionScreen.x;
 			_v3y = v3.positionScreen.y;
-			drawTriangle(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y);
+			drawTriangle(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, material.wireframe ? element.innerLineMask : undefined);
 			if (material instanceof THREE.MeshBasicMaterial)
 				if (material.map) {
 					if (material.map.mapping instanceof THREE.UVMapping) {
@@ -2798,7 +2799,7 @@ THREE.CanvasRenderer = function(parameters) {
 			_v6x = v6.positionScreen.x;
 			_v6y = v6.positionScreen.y;
 			if (material instanceof THREE.MeshBasicMaterial) {
-				drawQuad(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, _v4x, _v4y);
+				drawQuad(_v1x, _v1y, _v2x, _v2y, _v3x, _v3y, _v4x, _v4y, material.wireframe ? element.innerLineMask : undefined);
 				material.wireframe ? strokePath(material.color, material.wireframeLinewidth, material.wireframeLinecap,
 					material.wireframeLinejoin) : fillPath(material.color)
 			} else if (material instanceof THREE.MeshLambertMaterial)
@@ -2856,23 +2857,22 @@ THREE.CanvasRenderer = function(parameters) {
 			}
 		}
 
-		function drawTriangle(x0, y0, x1, y1, x2, y2) {
+		function drawTriangle(x0, y0, x1, y1, x2, y2, mask) {
 			_context.beginPath();
-			_context.moveTo(x0, y0);
-			_context.lineTo(x1, y1);
-			_context.lineTo(x2, y2);
-			_context.lineTo(x0, y0);
-			_context.closePath()
+			(mask & 1) ? _context.moveTo(x1, y1) : _context.lineTo(x1, y1);
+			(mask & 2) ? _context.moveTo(x2, y2) : _context.lineTo(x2, y2);
+			(mask & 4) ? _context.moveTo(x0, y0) : _context.lineTo(x0, y0);
+			mask || _context.closePath()
 		}
 
-		function drawQuad(x0, y0, x1, y1, x2, y2, x3, y3) {
+		function drawQuad(x0, y0, x1, y1, x2, y2, x3, y3, mask) {
 			_context.beginPath();
 			_context.moveTo(x0, y0);
-			_context.lineTo(x1, y1);
-			_context.lineTo(x2, y2);
-			_context.lineTo(x3, y3);
-			_context.lineTo(x0, y0);
-			_context.closePath()
+			(mask & 1) ? _context.moveTo(x1, y1) : _context.lineTo(x1, y1);
+			(mask & 2) ? _context.moveTo(x2, y2) : _context.lineTo(x2, y2);
+			(mask & 4) ? _context.moveTo(x3, y3) : _context.lineTo(x3, y3);
+			(mask & 8) ? _context.moveTo(x0, y0) : _context.lineTo(x0, y0);
+			mask || _context.closePath()
 		}
 
 		function strokePath(color, linewidth, linecap, linejoin) {

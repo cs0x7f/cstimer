@@ -1061,7 +1061,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				puzzle: "cube" + size,
 				allowDragging: true
 			};
-			if (['skb', 'mgm', 'pyr', 'sq1', 'clk'].indexOf(curPuzzle) != -1) {
+			if (['skb', 'mgm', 'pyr', 'sq1', 'clk', 'fto'].indexOf(curPuzzle) != -1) {
 				options = {
 					puzzle: curPuzzle
 				};
@@ -1157,7 +1157,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curScrType;
 		var curScrSize;
 		var curPuzzle;
-		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr', 'clk'];
+		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr', 'clk', 'fto'];
 		var isReseted = false;
 
 		function procSignal(signal, value) {

@@ -277,7 +277,7 @@ var replay = execMain(function() {
 		};
 		if (size != -1) {
 			options['puzzle'] = 'cube' + (size + 2);
-		} else if (['skb', 'mgm', 'pyr', 'sq1', 'clk'].indexOf(puzzle) != -1) {
+		} else if (['skb', 'mgm', 'pyr', 'sq1', 'clk', 'fto'].indexOf(puzzle) != -1) {
 			options['puzzle'] = puzzle;
 		}
 		kernel.showDialog([div, function() {

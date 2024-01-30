@@ -12,11 +12,19 @@ THREE.Ploy = function(points) {
 	for (var i = 0; i < points.length; i++) {
 		this.vertices.push(new THREE.Vertex(new THREE.Vector3(points[i][0], points[i][1], 0)))
 	}
-
-	if (points.length == 4) {
-		this.faces.push(new THREE.Face4(0, 1, 2, 3));
-	} else {
-		this.faces.push(new THREE.Face3(0, 1, 2));
+	var i = 1;
+	for (; i + 2 < points.length; i += 2) {
+		this.faces.push(new THREE.Face4(0, i, i + 1, i + 2));
+	}
+	for (; i + 1 < points.length; i += 1) {
+		this.faces.push(new THREE.Face3(0, i, i + 1));
+	}
+	if (this.faces.length > 1) {
+		for (i = 1; i < this.faces.length - 1; i++) {
+			this.faces[i].innerLineMask = this.faces[i].d ? 9 : 5;
+		}
+		this.faces[0].innerLineMask = this.faces[0].d ? 8 : 4;
+		this.faces[i].innerLineMask = 1;
 	}
 
 	this.computeCentroids();
@@ -42,6 +50,21 @@ window.twistyjs = (function() {
 		//	assert(!(twistyName in twisties));
 		twisties[twistyName] = twistyConstructor;
 	};
+
+	twistyjs.axify = function(v1, v2, v3) {
+		var ax = new THREE.Matrix4();
+		ax.set(
+			v1.x, v2.x, v3.x, 0,
+			v1.y, v2.y, v3.y, 0,
+			v1.z, v2.z, v3.z, 0,
+			0, 0, 0, 1
+		);
+		return ax;
+	}
+
+	twistyjs.matrixVector3Dot = function(m, v) {
+		return m.n14 * v.x + m.n24 * v.y + m.n34 * v.z;
+	}
 
 	twistyjs.TwistyScene = function() {
 		// that=this is a Crockford convention for accessing "this" inside of methods.

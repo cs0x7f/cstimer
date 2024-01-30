@@ -15,6 +15,7 @@ lib/sha256.js \
 lib/mersennetwister.js \
 lib/mathlib.js \
 lib/grouplib.js \
+lib/poly3dlib.js \
 lib/sbtree.js \
 lib/sqlfile.js \
 lib/tdconverter.js \
@@ -93,6 +94,7 @@ twisty/twistyskb.js \
 twisty/twistypyra.js \
 twisty/twistyminx.js \
 twisty/twistyclk.js \
+twisty/twistypoly.js \
 twisty/qcube.js \
 twisty/qcubennn.js \
 twisty/qcubeminx.js)
