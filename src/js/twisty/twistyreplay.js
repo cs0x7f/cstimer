@@ -277,8 +277,11 @@ var replay = execMain(function() {
 		};
 		if (size != -1) {
 			options['puzzle'] = 'cube' + (size + 2);
-		} else if (['skb', 'mgm', 'pyr', 'sq1', 'clk', 'fto'].indexOf(puzzle) != -1) {
-			options['puzzle'] = puzzle;
+		} else if (/^(skb|mgm|pyr|sq1|clk|fto)$/.exec(puzzle)) {
+			options.puzzle = puzzle;
+		} else if (/^udpoly$/.exec(puzzle)) {
+			options.puzzle = puzzle;
+			options.scramble = scramble;
 		}
 		kernel.showDialog([div, function() {
 			setStatus(0);

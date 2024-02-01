@@ -128,6 +128,8 @@ var puzzleFactory = execMain(function() {
 		} else if (puzzle == "fto") {
 			options["type"] = "fto";
 			options["faceColors"] = col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
+		} else if (puzzle = "udpoly") {
+			options["type"] = "udpoly";
 		}
 		options['scale'] = 0.9;
 		child[2].twistyScene.initializeTwisty(options);
@@ -146,6 +148,7 @@ var puzzleFactory = execMain(function() {
 	}
 
 	return {
-		init: init
+		init: init,
+		col2std: col2std
 	}
 });

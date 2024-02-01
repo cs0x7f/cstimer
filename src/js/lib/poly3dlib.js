@@ -185,6 +185,10 @@ var poly3d = (function() {
 	_.setTwisty = function(twistyPlanes, twistyDetails) {
 		this.twistyPlanes = twistyPlanes.slice();
 		this.twistyDetails = twistyDetails.slice();
+		this.twistyIdx = {};
+		for (var i = 0; i < twistyDetails.length; i++) {
+			this.twistyIdx[twistyDetails[i][0]] = i;
+		}
 		this.cutFacePolygons();
 		this.makeMoveTable();
 	}

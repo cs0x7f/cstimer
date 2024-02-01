@@ -1061,10 +1061,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				puzzle: "cube" + size,
 				allowDragging: true
 			};
-			if (['skb', 'mgm', 'pyr', 'sq1', 'clk', 'fto'].indexOf(curPuzzle) != -1) {
-				options = {
-					puzzle: curPuzzle
-				};
+			if (/^(skb|mgm|pyr|sq1|clk|fto)$/.exec(curPuzzle)) {
+				options.puzzle = curPuzzle;
+			} else if (/^udpoly$/.exec(curPuzzle)) {
+				options.puzzle = curPuzzle;
+				options.scramble = curScramble;
 			}
 			options['style'] = getProp('input');
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
@@ -1157,7 +1158,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curScrType;
 		var curScrSize;
 		var curPuzzle;
-		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr', 'clk', 'fto'];
+		var types = ['', 'sq1', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111', 'skb', 'mgm', 'pyr', 'clk', 'fto', 'udpoly'];
 		var isReseted = false;
 
 		function procSignal(signal, value) {
