@@ -317,7 +317,15 @@ var poly3d = (function() {
 			faceNames = ["U", "F", "R", "Br", "Bl", "L", "D", "B", "Dbl", "Dl", "Dr", "Dbr"];
 			facePow = 5;
 		} else if (nface == 20) { // icosahedron
-			//TODO
+			faceNorms = [];
+			for (var i = 0; i < 5; i++) {
+				var r1 = Math.sqrt(5) + 1;
+				var r2 = Math.sqrt(5) + 3;
+				faceNorms.push(new Point(r1 * Math.sin(0.4 * i * Math.PI), Math.sqrt(5) + 2, r1 * Math.cos(0.4 * i * Math.PI)));
+				faceNorms.push(new Point(r2 * Math.sin(0.4 * i * Math.PI), 1, r2 * Math.cos(0.4 * i * Math.PI)));
+			}
+			faceVs = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+			faceNames = ["U", "F", "Ur", "R", "Ubr", "Br", "Ubl", "Bl", "Ul", "L", "D", "B", "Dl", "Lb", "Dfl", "Fl", "Dfr", "Fr", "Dr", "Rb"];
 			cornPow = 5;
 		} else { // invalid input
 			debugger;
@@ -479,8 +487,36 @@ var poly3d = (function() {
 		return [sizes, ret];
 	}
 
+	// parseFunc(m, p1, p2, ..) -> [layer, axis, pow] or null, toStrFunc(layer:int, axis:str, pow:int) -> moveString
+	function makeParser(regexp, parseFunc, toStrFunc) {
+		return {
+			parseScramble: function(regexp, parseFunc, scramble) {
+				if (!scramble || /^\s*$/.exec(scramble)) {
+					return [];
+				}
+				var ret = [];
+				scramble.replace(regexp, function() {
+					var move = parseFunc.apply(null, arguments);
+					if (move) {
+						ret.push(["" + move[0] + move[1], move[2]]);
+					}
+				});
+				return ret;
+			}.bind(null, regexp, parseFunc),
+			move2str: function(toStrFunc, move) {
+				var m = /^(\d+)([a-zA-Z]+)$/.exec(move[0]);
+				if (!m) { // invalid move
+					debugger;
+					return "";
+				}
+				return toStrFunc(~~m[0], m[1], move[1]);
+			}.bind(null, toStrFunc)
+		}
+	}
+
 	return {
 		makePuzzle: makePuzzle,
-		renderNet: renderNet
+		renderNet: renderNet,
+		makeParser: makeParser
 	}
 })();

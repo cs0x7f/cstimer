@@ -1,26 +1,117 @@
 (function() {
 	// keyMaps = "key:movestr key:movestr key:movestr..."
-	function parseKeyMap(keyMaps, twisty) {
+	// movestr: move|[+-]key1key2..., do move or adjust layer of keys
+	function bindKeyMap(keyMaps, twisty) {
 		keyMaps = keyMaps.split(' ');
-		var ret = {};
+		var moveActions = {}; // {keyCode: move}
+		var layerActions = {}; // {keyCode: [layerDiff, keyCode1, keyCode2, ...]}, layerDiff = 1/-1
+		var layerOffs = {}; // {keyCode: layerOffset, ...}
 		var char2code = {
 			39: 222, 44: 188, 45: 189, 46: 190,
 			47: 191, 59: 186, 61: 187, 91: 219,
 			92: 220, 93: 221, 96: 192
 		};
+		var layerActionsPre = {};
 		for (var i = 0; i < keyMaps.length; i++) {
 			var keyMap = keyMaps[i].split(':');
 			if (keyMap.length != 2 || keyMap[0].length != 1) {
 				continue;
 			}
-			var keyCode = keyMap[0].charCodeAt(0);
+			var keyCode = keyMap[0].toUpperCase().charCodeAt(0);
 			keyCode = char2code[keyCode] || keyCode;
+			if (/^[+-]$/.exec(keyMap[1][0])) { // layerActions
+				layerActionsPre[keyCode] = keyMap[1].toUpperCase(); // handle keyCodes later for move check
+				continue;
+			}
 			var action = twisty.parseScramble(keyMap[1]);
-			if (action.length == 1) {
-				ret[keyCode] = action[0];
+			if (action.length != 1) {
+				continue;
+			}
+			moveActions[keyCode] = action[0];
+			layerOffs[keyCode] = 0;
+		}
+		for (var keyCode in layerActionsPre) {
+			var layerAction = layerActionsPre[keyCode];
+			var nIncs = [layerAction[0] == '+' ? 1 : -1];
+			for (var i = 1; i < layerAction.length; i++) {
+				var incKeyCode = layerAction.charCodeAt(i);
+				incKeyCode = char2code[incKeyCode] || incKeyCode;
+				if (incKeyCode in moveActions) {
+					nIncs.push(incKeyCode);
+				}
+			}
+			if (nIncs.length > 1) {
+				layerActions[keyCode] = nIncs;
 			}
 		}
-		return ret;
+		twisty.handleKeyCode = function(puzzle, moveActions, layerActions, layerOffs, keyCode) {
+			if (keyCode in moveActions) {
+				var move = moveActions[keyCode].slice();
+				if (layerOffs[keyCode]) { // change layer
+					var m = /^(\d+)([a-zA-Z]+)$/.exec(move[0]);
+					move[0] = "" + (~~m[1] + layerOffs[keyCode]) + m[2];
+				}
+				return move;
+			} else if (keyCode in layerActions) {
+				var nIncs = layerActions[keyCode];
+				var nInc = nIncs[0];
+				for (var i = 1; i < nIncs.length; i++) {
+					var incKeyCode = nIncs[i];
+					var m = /^(\d+)([a-zA-Z]+)$/.exec(moveActions[incKeyCode][0]);
+					var newAxis = "" + (~~m[1] + layerOffs[incKeyCode] + nInc) + m[2];
+					if (m[1] != '0' && newAxis[0] != '0' && (newAxis in puzzle.twistyIdx)) {
+						layerOffs[incKeyCode] += nInc;
+					}
+				}
+			}
+		}.bind(null, twisty.puzzle, moveActions, layerActions, layerOffs);
+		twisty.getAllMoves = function(puzzle, moveActions, layerActions) {
+			var ret = [];
+			var moveSets = {};
+			for (var key in moveActions) { // each move might be adjusted by layer actions
+				var move = moveActions[key];
+				moveSets[move[0] + move[1]] = move;
+				var m = /^(\d+)([a-zA-Z]+)$/.exec(move[0]);
+				if (m[1] == '0') {
+					continue;
+				}
+				var maxLayer;
+				for (maxLayer = ~~m[1]; (maxLayer + 1 + m[2]) in puzzle.twistyIdx; maxLayer++) {}
+				var layerIncs = {};
+				for (var key2 in layerActions) { // cache the effective of all layerActions
+					var nIncs = layerActions[key2];
+					var layerInc = 0;
+					for (var i = 1; i < nIncs.length; i++) {
+						if (nIncs[i] == key) {
+							layerInc += nIncs[0];
+						}
+					}
+					if (layerInc != 0) {
+						layerIncs[layerInc] = 1;
+					}
+				}
+				var layers = {};
+				layers[m[1]] = 1;
+				var isUpdated;
+				do {
+					isUpdated = false;
+					for (var layer in layers) {
+						for (var layerInc in layerIncs) {
+							var newLayer = "" + Math.max(1, Math.min(maxLayer, ~~layer + ~~layerInc));
+							if (!(newLayer in layers)) {
+								layers[newLayer] = 1;
+								moveSets[newLayer + m[2] + move[1]] = [newLayer + m[2], move[1]];
+								isUpdated = true;
+							}
+						}
+					}
+				} while (isUpdated);
+			}
+			for (var key in moveSets) {
+				ret.push(moveSets[key]);
+			}
+			return ret;
+		}.bind(null, twisty.puzzle, moveActions, layerActions);
 	}
 
 	twistyjs.registerTwisty("udpoly", function(scene, param) {
@@ -38,13 +129,14 @@
 			param["faceColors"] = puzzleFactory.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		} else if (nFace == 12) {
 			param["faceColors"] = puzzleFactory.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
+		} else if (nFace == 20) {
+			param["faceColors"] = puzzleFactory.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
 		}
 		var curIdx = 0;
 		for (var i = 1; i < paramCmd.length; i++) {
 			if (/^[cvf]$/.exec(paramCmd[i])) {
 				cutIdx = ' fev'.indexOf(paramCmd[i]);
-				continue;
-			} else if (/^[+-]?\d+(?:\.\d+)$/.exec(paramCmd[i])) {
+			} else if (/^[+-]?\d+(?:\.\d+)?$/.exec(paramCmd[i])) {
 				param.polyParam[cutIdx].push(parseFloat(paramCmd[i]));
 			}
 		}
@@ -52,12 +144,8 @@
 		if (m) {
 			param.pieceGap = parseFloat(m[1]);
 		}
-		var twisty = createCubeTwisty(scene, param, {
-			getCubeKeyMapping: function() {
-				return cubeKeyMapping;
-			}
-		});
-		var cubeKeyMapping = parseKeyMap(params[1], twisty);
+		var twisty = createCubeTwisty(scene, param, {});
+		bindKeyMap(params[1], twisty);
 		return twisty;
 	});
 
@@ -75,15 +163,13 @@
 					scramble = tools.carrot2poch(scramble);
 				}
 				scramble.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
-					var move;
 					if (p1) {
-						move = ['2' + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '-' ? -1 : 1) * p2.length];
+						ret.push(['2' + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '-' ? -1 : 1) * p2.length]);
 					} else if (p3) {
-						move = ['1' + p3[0] + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)];
+						ret.push(['1' + p3[0] + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)]);
 					} else {
-						move = ['0' + p6.toUpperCase(), p7 ? -1 : 1];
+						ret.push(['0' + p6.toUpperCase(), p7 ? -1 : 1]);
 					}
-					ret.push(move);
 				});
 				return ret;
 			},
@@ -99,12 +185,9 @@
 				} else if (axis[0] == '1') {
 					return axis.slice(1).toUpperCase() + powfix;
 				}
-			},
-			getCubeKeyMapping: function() {
-				return cubeKeyMapping;
 			}
 		});
-		var cubeKeyMapping = parseKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
+		bindKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
 		return twisty;
 	});
 
@@ -112,57 +195,29 @@
 		param.polyParam = [4, [], [], [-2, 1/3, 5/3]];
 		param.scale *= 0.51;
 		param.pieceGap = 0.14;
-		var twisty = createCubeTwisty(scene, param, {
-			parseScramble: function(scramble) {
-				if (!scramble || /^\s*$/.exec(scramble)) {
-					return [];
-				}
-				var ret = [];
-				scramble.replace(/(?:^|\s*)(?:([URLBurlb])(')?|\[([urlb])(')?\])(?:$|\s*)/g, function(m, p1, p2, p3, p4) {
-					var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p3).toUpperCase())];
-					ret.push([(p3 ? '0' : p1 == p1.toUpperCase() ? '1' : '2') + face, (p2 || p4) ? -1 : 1]);
-				});
-				return ret;
-			},
-			move2str: function(move) {
-				var face = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(move[0].slice(1)));
-				var pow = move[1] < 0 ? "'" : "";
-				return ["[" + face + pow + "]", face.toUpperCase() + pow, face + pow][~~move[0][0]];
-			},
-			getCubeKeyMapping: function() {
-				return cubeKeyMapping;
-			}
+		var parser = poly3d.makeParser(/(?:^|\s*)(?:([URLBurlb])(')?|\[([urlb])(')?\])(?:$|\s*)/g, function(m, p1, p2, p3, p4) {
+			var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p3).toUpperCase())];
+			return [p3 ? 0 : p1 == p1.toUpperCase() ? 1 : 2, face, (p2 || p4) ? -1 : 1];
+		}, function(layer, axis, pow) {
+			var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis)) + (pow < 0 ? "'" : "");
+			return ["[" + move + "]", move.toLowerCase(), move][layer];
 		});
-		var cubeKeyMapping = parseKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b]", twisty);
+		var twisty = createCubeTwisty(scene, param, parser);
+		bindKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b]", twisty);
 		return twisty;
 	});
 
 	twistyjs.registerTwisty("fto", function(scene, param) {
 		param.polyParam = [8, [-2, 1/3]];
 		param.pieceGap = 0.075;
-		var twisty = createCubeTwisty(scene, param, {
-			parseScramble: function(scramble) {
-				if (!scramble || /^\s*$/.exec(scramble)) {
-					return [];
-				}
-				var ret = [];
-				scramble.replace(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
-					ret.push(["" + (p3 ? 0 : 1) + p1[0] + p1.slice(1).toLowerCase(), p2 ? -1 : 1]);
-				});
-				return ret;
-			},
-			move2str: function(move) {
-				var move = move[0].toUpperCase() + (move[1] == 1 ? "" : "'");
-				if (move[0] == '0') {
-					return '[' + move.slice(1) + ']';
-				}
-				return move.slice(1);
-			},
-			getCubeKeyMapping: function() {
-				return cubeKeyMapping;
-			}
+		var parser = poly3d.makeParser(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
+			return [p3 ? 0 : 1, p1[0] + p1.slice(1).toLowerCase(), p2 ? -1 : 1];
+		}, function(layer, axis, pow) {
+			var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
+			return layer == 0 ? ('[' + move + ']') : move;
 		});
-		var cubeKeyMapping = parseKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
+		var twisty = createCubeTwisty(scene, param, parser);
+		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
 		return twisty;
 	});
 
@@ -314,9 +369,9 @@
 				return;
 			}
 			var keyCode = e.keyCode;
-			var cubeKeyMapping = twisty.getCubeKeyMapping();
-			if (keyCode in cubeKeyMapping) {
-				twistyScene.addMoves([cubeKeyMapping[keyCode]]);
+			var move = twisty.handleKeyCode(keyCode);
+			if (move) {
+				twistyScene.addMoves([move]);
 			}
 		}
 
@@ -358,13 +413,9 @@
 				for (var i = 0; i < m[1].length; i++) {
 					seed[i] = m[1].charCodeAt(i);
 				}
-				var validMoves = [];
-				var cubeKeyMapping = this.getCubeKeyMapping();
-				for (var key in cubeKeyMapping) {
-					validMoves.push(cubeKeyMapping[key]);
-				}
+				var validMoves = this.getAllMoves();
 				if (validMoves.length == 0) {
-					return 0;
+					return [];
 				}
 				var rndFunc = new MersenneTwisterObject(seed[0], seed);
 				for (var i = 0; i < 100; i++) {
@@ -409,11 +460,14 @@
 		}
 
 		function defaultMove2str(move) {
-			var move = move[0].toUpperCase() + (move[1] == 1 ? "" : "'");
-			if (move[0] == '0') {
+			var m = /^(\d+)([a-zA-Z]+)$/.exec(move[0]);
+			var move = move[0] + (Math.abs(move[1]) == 1 ? "" : Math.abs(move[1])) + (move[1] < 0 ? "'" : "");
+			if (m[1] == '0') {
 				return '[' + move.slice(1) + ']';
+			} else if (m[1] == '1') {
+				return move.slice(1);
 			}
-			return move.slice(1);
+			return move;
 		}
 
 		function moveInv(move) {
@@ -436,7 +490,6 @@
 			isParallelMove: isParallelMove,
 			generateScramble: generateScramble,
 			parseScramble: twistyFuncs.parseScramble || defaultParseScramble,
-			getCubeKeyMapping: twistyFuncs.getCubeKeyMapping || function() { return {}; },
 			moveCnt: moveCnt,
 			move2str: twistyFuncs.move2str || defaultMove2str,
 			moveInv: moveInv
