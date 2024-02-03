@@ -514,9 +514,25 @@ var poly3d = (function() {
 		}
 	}
 
+	function parsePolyParam(polyDef) {
+		var paramCmd = polyDef.split(/\s+/g);
+		var nFace = [4, 6, 8, 12, 20]['tcodi'.indexOf(paramCmd[0])];
+		var polyParam = [nFace, [-2], [-2], [-2]];
+		var cutIdx = 1;
+		for (var i = 1; i < paramCmd.length; i++) {
+			if (/^[fev]$/.exec(paramCmd[i])) {
+				cutIdx = ' fev'.indexOf(paramCmd[i]);
+			} else if (/^[+-]?\d+(?:\.\d+)?$/.exec(paramCmd[i])) {
+				polyParam[cutIdx].push(parseFloat(paramCmd[i]));
+			}
+		}
+		return polyParam;
+	}
+
 	return {
 		makePuzzle: makePuzzle,
 		renderNet: renderNet,
-		makeParser: makeParser
+		makeParser: makeParser,
+		parsePolyParam: parsePolyParam
 	}
 })();
