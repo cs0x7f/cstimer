@@ -142,46 +142,8 @@
 	});
 
 	function mgmTwisty(type, scene, param) {
-		param.polyParam = [12, {
-			"mgm": [-2, 0.72, -0.72],
-			"prc": [-2, 0.4472136, -0.4472136]
-		}[type]];
-		param.scale *= 1.18;
-		param.pieceGap = 0.05;
-		var twisty = createCubeTwisty(scene, param, {
-			parseScramble: function(scramble) {
-				if (!scramble || /^\s*$/.exec(scramble)) {
-					return [];
-				}
-				var ret = [];
-				if (/^(\s*([+-]{2}\s*)+U'?\s*\n)*$/.exec(scramble)) {
-					scramble = tools.carrot2poch(scramble);
-				}
-				scramble.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
-					if (p1) {
-						ret.push(['2' + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '-' ? -1 : 1) * p2.length]);
-					} else if (p3) {
-						ret.push(['1' + p3[0] + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)]);
-					} else {
-						ret.push(['0' + p6.toUpperCase(), p7 ? -1 : 1]);
-					}
-				});
-				return ret;
-			},
-			move2str: function(move) {
-				var axis = move[0];
-				var pow = (move[1] + 7) % 5 - 2;
-				var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
-				if (axis[0] == '0') {
-					return "[" + axis.slice(1).toLowerCase() + powfix + "]";
-				} else if (axis[0] == '2') {
-					powfix = pow > 0 ? "+" : "-";
-					return "DLR".charAt(["2D", "2Dbl", "2Dbr"].indexOf(axis)) + powfix + (Math.abs(pow) == 2 ? powfix : '');
-				} else if (axis[0] == '1') {
-					return axis.slice(1).toUpperCase() + powfix;
-				}
-			}
-		});
+		poly3d.getFamousPuzzle(type, param);
+		var twisty = createCubeTwisty(scene, param, param.parser);
 		bindKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
 		return twisty;
 	}
@@ -190,31 +152,15 @@
 	twistyjs.registerTwisty("prc", mgmTwisty.bind(null, "prc"));
 
 	twistyjs.registerTwisty("pyr", function(scene, param) {
-		param.polyParam = [4, [], [], [-2, 1/3, 5/3]];
-		param.scale *= 0.51;
-		param.pieceGap = 0.14;
-		var parser = poly3d.makeParser(/(?:^|\s*)(?:([URLBurlb])(')?|\[([urlb])(')?\])(?:$|\s*)/g, function(m, p1, p2, p3, p4) {
-			var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p3).toUpperCase())];
-			return [p3 ? 0 : p1 == p1.toUpperCase() ? 1 : 2, face, (p2 || p4) ? -1 : 1];
-		}, function(layer, axis, pow) {
-			var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis)) + (pow < 0 ? "'" : "");
-			return ["[" + move + "]", move.toUpperCase(), move][layer];
-		});
-		var twisty = createCubeTwisty(scene, param, parser);
+		poly3d.getFamousPuzzle("pyr", param);
+		var twisty = createCubeTwisty(scene, param, param.parser);
 		bindKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b]", twisty);
 		return twisty;
 	});
 
 	twistyjs.registerTwisty("fto", function(scene, param) {
-		param.polyParam = [8, [-2, 1/3]];
-		param.pieceGap = 0.075;
-		var parser = poly3d.makeParser(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
-			return [p3 ? 0 : 1, p1[0] + p1.slice(1).toLowerCase(), p2 ? -1 : 1];
-		}, function(layer, axis, pow) {
-			var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
-			return layer == 0 ? ('[' + move + ']') : move;
-		});
-		var twisty = createCubeTwisty(scene, param, parser);
+		poly3d.getFamousPuzzle("fto", param);
+		var twisty = createCubeTwisty(scene, param, param.parser);
 		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
 		return twisty;
 	});

@@ -529,10 +529,98 @@ var poly3d = (function() {
 		return polyParam;
 	}
 
+	function getFamousPuzzle(name, bindObj) {
+		var polyParam, parser, scale = 1, pieceGap = 0.075, colors = [];
+		if (name == "pyr") {
+			polyParam = [4, [], [], [-2, 1/3, 5/3]];
+			scale = 0.51;
+			pieceGap = 0.14;
+			parser = makeParser(/(?:^|\s*)(?:([URLBurlb])(')?|\[([urlb])(')?\])(?:$|\s*)/g, function(m, p1, p2, p3, p4) {
+				var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p3).toUpperCase())];
+				return [p3 ? 0 : p1 == p1.toUpperCase() ? 1 : 2, face, (p2 || p4) ? -1 : 1];
+			}, function(layer, axis, pow) {
+				var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis)) + (pow < 0 ? "'" : "");
+				return ["[" + move + "]", move.toUpperCase(), move][layer];
+			});
+		} else if (name == "fto") {
+			polyParam = [8, [-2, 1/3]];
+			parser = poly3d.makeParser(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
+				return [p3 ? 0 : 1, p1[0] + p1.slice(1).toLowerCase(), p2 ? -1 : 1];
+			}, function(layer, axis, pow) {
+				var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
+				return layer == 0 ? ('[' + move + ']') : move;
+			});
+		} else if (name == "mgm" || name == "pyc") {
+			polyParam = [12, {
+				"mgm": [-2, 0.72, -0.72],
+				"prc": [-2, 0.4472136, -0.4472136]
+			}[name]];
+			scale = 1.18;
+			pieceGap = 0.05;
+			parser = {
+				parseScramble: function(scramble) {
+					if (!scramble || /^\s*$/.exec(scramble)) {
+						return [];
+					}
+					var ret = [];
+					if (/^(\s*([+-]{2}\s*)+U'?\s*\n)*$/.exec(scramble)) {
+						scramble = tools.carrot2poch(scramble);
+					}
+					scramble.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+						if (p1) {
+							ret.push(['2' + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '-' ? -1 : 1) * p2.length]);
+						} else if (p3) {
+							ret.push(['1' + p3[0] + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)]);
+						} else {
+							ret.push(['0' + p6.toUpperCase(), p7 ? -1 : 1]);
+						}
+					});
+					return ret;
+				},
+				move2str: function(move) {
+					var axis = move[0];
+					var pow = (move[1] + 7) % 5 - 2;
+					var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
+					if (axis[0] == '0') {
+						return "[" + axis.slice(1).toLowerCase() + powfix + "]";
+					} else if (axis[0] == '2') {
+						powfix = pow > 0 ? "+" : "-";
+						return "DLR".charAt(["2D", "2Dbl", "2Dbr"].indexOf(axis)) + powfix + (Math.abs(pow) == 2 ? powfix : '');
+					} else if (axis[0] == '1') {
+						return axis.slice(1).toUpperCase() + powfix;
+					}
+				}
+			};
+		} else {
+			return null;
+		}
+		var nFace = polyParam[0];
+		if (nFace == 4) {
+			colors = puzzleFactory.col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
+		} else if (nFace == 6) {
+			colors = puzzleFactory.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
+		} else if (nFace == 8) {
+			colors = puzzleFactory.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
+		} else if (nFace == 12) {
+			colors = puzzleFactory.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
+		} else if (nFace == 20) {
+			colors = puzzleFactory.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+		}
+
+		bindObj = bindObj || {};
+		bindObj.parser = parser;
+		bindObj.polyParam = polyParam;
+		bindObj.scale = (bindObj.scale || 1) * scale;
+		bindObj.pieceGap = pieceGap;
+		bindObj.colors = colors;
+		return bindObj;
+	}
+
 	return {
 		makePuzzle: makePuzzle,
 		renderNet: renderNet,
 		makeParser: makeParser,
+		getFamousPuzzle: getFamousPuzzle,
 		parsePolyParam: parsePolyParam
 	}
 })();

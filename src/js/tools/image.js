@@ -1212,50 +1212,14 @@ var image = execMain(function() {
 			var gap = 0.05;
 			var puzzle = puzzleCache[type];
 
-			if (type == 'mgm' || type == 'klm') {
-				var param = [0.7, -0.7, -2];
-				if (type == 'klm') {
-					param = [0.575, -0.575, -2];
-					minArea = 0.1;
-				}
-				puzzle = puzzle || poly3d.makePuzzle(12, param);
-				var colmgm = kernel.getProp('colmgm').match(colre);
-				for (var i = 0; i < 12; i++) {
-					colors[i] = colmgm[[0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10][i]];
-				}
-				if (/^(\s*([+-]{2}\s*)+U'?\s*\n)*$/.exec(moveseq)) {
-					moveseq = tools.carrot2poch(moveseq);
-				}
-				moveseq.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
-					var move = null;
-					if (p1) {
-						move = [1 + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '+' ? 4 : 1) * p2.length % 5];
-					} else if (p3) {
-						move = [0 + p3[0] + p3.slice(1).toLowerCase(), (p5 ? 1 : 4) * (~~p4 || 1) % 5];
-					} else {
-						move = [2 + p6.toUpperCase(), p7 ? 1 : 4];
-					}
-					moves.push(move);
-				});
-			} else if (type == 'fto') {
-				puzzle = puzzle || poly3d.makePuzzle(8, [1/3]);
-				var colfto = kernel.getProp('colfto').match(colre);
-				for (var i = 0; i < 8; i++) {
-					colors[i] = colfto[[0, 3, 1, 2, 6, 7, 5, 4][i]];
-				}
-				moveseq.replace(/(?:^|\s*)([URFDL]|(?:B[RL]?))(')?(?:$|\s*)/g, function(m, p1, p2) {
-					moves.push([0 + p1[0] + p1.slice(1).toLowerCase(), p2 ? 1 : 2]);
-				});
-			} else if (type == 'pyr') {
-				puzzle = puzzle || poly3d.makePuzzle(4, [], [], [1/3, 5/3]);
-				gap = 0.1;
-				var colpyr = kernel.getProp('colpyr').match(colre);
-				for (var i = 0; i < 4; i++) {
-					colors[i] = colpyr[[3, 1, 2, 0][i]];
-				}
-				moveseq.replace(/(?:^|\s*)([URLBurlb])(')?(?:$|\s*)/g, function(m, p1, p2) {
-					moves.push([['0DLF', '0DLR', '0DRF', '0LRF', '1DLF', '1DLR', '1DRF', '1LRF']['LBRUlbru'.indexOf(p1)], p2 ? 1 : 2]);
-				});
+			var params = poly3d.getFamousPuzzle(type);
+			if (params != null) {
+				moves = params.parser.parseScramble(moveseq);
+				puzzle = puzzle || poly3d.makePuzzle.apply(poly3d, params.polyParam);
+				gap = params.pieceGap;
+				colors = params.colors;
+			} else {
+				debugger; // unknown puzzle
 			}
 
 			DEBUG && console.log('[polyhedron image] puzzle=', puzzle, 'moves=', moves);
@@ -1268,23 +1232,21 @@ var image = execMain(function() {
 				posit[i] = polys[i] && polys[i][2];
 			}
 			for (var midx = 0; midx < moves.length; midx++) {
-				var perm;
-				for (var i = 0; i < puzzle.twistyDetails.length; i++) {
-					if (puzzle.twistyDetails[i][0] == moves[midx][0]) {
-						perm = puzzle.moveTable[i];
-						break;
-					}
-				}
-				if (!perm) {
+				var move = moves[midx];;
+				if (!(move[0] in puzzle.twistyIdx)) {
 					debugger; // error, cannot find move permutations
 				}
+				var moveIdx = puzzle.twistyIdx[move[0]];
+				var perm = puzzle.moveTable[moveIdx];
+				var maxPow = puzzle.twistyDetails[moveIdx][1];
+				var pow = (move[1] % maxPow + maxPow) % maxPow;
 				var posit2 = [];
 				for (var i = 0; i < posit.length; i++) {
 					var val = i;
-					for (var j = 0; j < moves[midx][1]; j++) {
+					for (var j = 0; j < pow; j++) {
 						val = perm[val];
 					}
-					posit2[val] = posit[i];
+					posit2[i] = posit[val];
 				}
 				posit = posit2;
 			}
@@ -1294,6 +1256,9 @@ var image = execMain(function() {
 			canvas.height(sizes[1] * scale + 'em');
 			canvas.attr('width', sizes[0] * scale * 30 + 1);
 			canvas.attr('height', sizes[1] * scale * 30 + 1);
+			for (var i = 0; i < colors.length; i++) {
+				colors[i] = '#' + colors[i].toString(16).padStart(6, '0');
+			}
 			for (var i = 0; i < posit.length; i++) {
 				polys[i] && $.ctxDrawPolygon(ctx, colors[posit[i]], polys[i], [scale * 30, 0, 0, 0, scale * 30, 0]);
 			}
@@ -1323,7 +1288,6 @@ var image = execMain(function() {
 
 			var movere = /([ULRD\uFFEA\uFFE9\uFFEB\uFFEC])([\d]?)/;
 			moveseq = moveseq.split(' ');
-			// console.log(moves.findall)
 			for (var s = 0; s < moveseq.length; s++) {
 				var m = movere.exec(moveseq[s]);
 				if (!m) {
