@@ -509,7 +509,7 @@ var poly3d = (function() {
 					debugger;
 					return "";
 				}
-				return toStrFunc(~~m[0], m[1], move[1]);
+				return toStrFunc(~~m[1], m[2], move[1]);
 			}.bind(null, toStrFunc)
 		}
 	}

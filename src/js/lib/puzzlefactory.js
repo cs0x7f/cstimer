@@ -105,6 +105,7 @@ var puzzleFactory = execMain(function() {
 			child[2].addMoveListener(moveListener);
 		}
 		var puzzle = options['puzzle'];
+		options["type"] = puzzle;
 		if (puzzle.startsWith("cube")) {
 			options["type"] = "cube";
 			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]); // U L F D L B
@@ -113,23 +114,18 @@ var puzzleFactory = execMain(function() {
 		} else if (puzzle == "skb") {
 			options["type"] = "skewb";
 			options["faceColors"] = col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);
-		} else if (puzzle == "mgm") {
-			options["type"] = "mgm";
+		} else if (puzzle == "mgm" || puzzle == "prc") {
 			options["faceColors"] = col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
 		} else if (puzzle == "pyr") {
-			options["type"] = "pyr";
 			options["faceColors"] = col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
 		} else if (puzzle == "sq1") {
-			options["type"] = "sq1";
 			options["faceColors"] = col2std(kernel.getProp("colsq1"), [0, 5, 4, 2, 1, 3]);
 		} else if (puzzle == "clk") {
-			options["type"] = "clk";
 			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
 		} else if (puzzle == "fto") {
-			options["type"] = "fto";
 			options["faceColors"] = col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
-		} else if (puzzle = "udpoly") {
-			options["type"] = "udpoly";
+		} else if (puzzle == "heli" || puzzle == "helicv") {
+			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
 		}
 		options['scale'] = 0.9;
 		child[2].twistyScene.initializeTwisty(options);

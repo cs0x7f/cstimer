@@ -129,6 +129,8 @@ var tools = execMain(function() {
 			return "8b";
 		} else if (/^heli2x2g?$/.exec(scrambleType)) {
 			return "heli2x2";
+		} else if (/^prc[po]$/.exec(scrambleType)) {
+			return "prc";
 		} else {
 			return scrambleType;
 		}

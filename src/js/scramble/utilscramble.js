@@ -400,7 +400,7 @@
 			case "giga": // Gigaminx
 				return gigascramble(len);
 			case "mgmo": // Megaminx (old style)
-				return adjScramble(["F", "B", "U", "D", "L", "DBR", "DL", "BR", "DR", "BL", "R", "DBL"], [0x554, 0xaa8, 0x691, 0x962, 0xa45, 0x58a, 0x919, 0x626, 0x469, 0x896, 0x1a5, 0x25a], len);
+				return adjScramble(["F", "B", "U", "D", "L", "DBR", "DL", "BR", "DR", "BL", "R", "DBL"], [0x554, 0xaa8, 0x691, 0x962, 0xa45, 0x58a, 0x919, 0x626, 0x469, 0x896, 0x1a5, 0x25a], len, minxsuff);
 			case "mgmp": // Megaminx (Pochmann)
 				return pochscramble(10, Math.ceil(len / 10));
 			case "mgmc": // Megaminx (Carrot)

@@ -141,8 +141,11 @@
 		return twisty;
 	});
 
-	twistyjs.registerTwisty("mgm", function(scene, param) {
-		param.polyParam = [12, [-2, 0.72, -0.72]];
+	function mgmTwisty(type, scene, param) {
+		param.polyParam = [12, {
+			"mgm": [-2, 0.72, -0.72],
+			"prc": [-2, 0.4472136, -0.4472136]
+		}[type]];
 		param.scale *= 1.18;
 		param.pieceGap = 0.05;
 		var twisty = createCubeTwisty(scene, param, {
@@ -181,7 +184,10 @@
 		});
 		bindKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
 		return twisty;
-	});
+	}
+
+	twistyjs.registerTwisty("mgm", mgmTwisty.bind(null, "mgm"));
+	twistyjs.registerTwisty("prc", mgmTwisty.bind(null, "prc"));
 
 	twistyjs.registerTwisty("pyr", function(scene, param) {
 		param.polyParam = [4, [], [], [-2, 1/3, 5/3]];
@@ -192,7 +198,7 @@
 			return [p3 ? 0 : p1 == p1.toUpperCase() ? 1 : 2, face, (p2 || p4) ? -1 : 1];
 		}, function(layer, axis, pow) {
 			var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis)) + (pow < 0 ? "'" : "");
-			return ["[" + move + "]", move.toLowerCase(), move][layer];
+			return ["[" + move + "]", move.toUpperCase(), move][layer];
 		});
 		var twisty = createCubeTwisty(scene, param, parser);
 		bindKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b]", twisty);
@@ -212,6 +218,20 @@
 		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
 		return twisty;
 	});
+
+	function heliTwisty(type, scene, param) {
+		param.polyParam = [6, [-2], {
+			"heli": [-2, Math.sqrt(0.5)],
+			"helicv": [-2, 0.83],
+		}[type]];
+		param.pieceGap = 0.075;
+		var twisty = createCubeTwisty(scene, param, {});
+		bindKeyMap("I:UR K:UR' W:BD O:BD' S:FD L:FD' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:FR M:FR' R:FL' V:FL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
+		return twisty;
+	}
+
+	twistyjs.registerTwisty("heli", heliTwisty.bind(null, "heli"));
+	twistyjs.registerTwisty("helicv", heliTwisty.bind(null, "helicv"));
 
 	function createCubeTwisty(twistyScene, twistyParameters, twistyFuncs) {
 
