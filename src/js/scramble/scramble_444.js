@@ -2508,11 +2508,16 @@ var scramble_444 = (function(Cnk, circle) {
 		return getPartialScramble(0x000000, 0xff0ff0, 0xff, neut);
 	}
 
+	function getELLScramble(type, length, cases, neut) {
+		return getPartialScramble(0x000000, 0x0f00f0, 0x00, neut);
+	}
+
 	scrMgr.reg('444wca', getRandomScramble)
 		('4edge', getEdgeScramble)
 		('444edo', getEdgeOnlyScramble)
 		('444cto', getCenterOnlyScramble)
 		('444ll', getLastLayerScramble)
+		('444ell', getELLScramble)
 		('444ctud', getCenterUDSolvedScramble)
 		('444ctrl', getCenterRLSolvedScramble)
 		('444l8e', getLast8DedgeScramble)

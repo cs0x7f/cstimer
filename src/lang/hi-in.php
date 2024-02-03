@@ -19,7 +19,7 @@
 <ul>
 <li><strong>टाइमिंग कैसे प्रारंभ करें</strong> - स्पेस बार, या बाएँ और दाएँ दोनों Ctrl बटन (या मोबाइल डिवाइस पर स्क्रीन) दबाए रखें और टाइमर के हरे होने की प्रतीक्षा करें। स्पेस बार छूटते ही टाइमर टाइमिंग शुरू कर देगा। टाइमिंग रोकने के लिए कोई भी कीबोर्ड बटन (या मोबाईल पर स्क्रीन) दबाएं और हल करने का समय रिकॉर्ड हो जाएगा।</li>
 <li><strong>यूआई विवरण</strong> - csTimer के चिह्न के पास 6 बटन हैं: विकल्प, निर्यात, स्क्रैम्बल, समय सूची, मदद करें, और उपकरण। संबंधित फ़ंक्शन पैनल खोलने के लिए <strong>स्क्रैम्बल</strong>, <strong>समय सूची</strong>, और <strong>उपकरण</strong> को दबाएं।</li>
-<li><strong>Scramble panel</strong> - In the Scramble panel, you can select scramble type, set scramble length and case filter (if available), review previous scramble, generate next scramble.</li>
+<li><strong>स्क्रैम्बल पैनल</strong> - स्क्रैम्बल पैनल में, आप स्क्रैम्बल प्रकार का चयन कर सकते हैं, स्क्रैम्बल की लंबाई और केस फ़िल्टर सेट कर सकते हैं (यदि उपलब्ध हो), पिछले स्क्रैम्बल की समीक्षा कर सकते हैं, और अगला स्क्रैम्बल तैयार कर सकते हैं।</li>
 <li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
 <li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
 </ul>

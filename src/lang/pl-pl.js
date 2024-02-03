@@ -253,6 +253,7 @@ var scrdata = [
 		['4x4x4 krawędzie', "4edge", 0],
 		['R,r,U,u', "RrUu", 40],
 		['Last layer', "444ll", 0],
+		['ELL', "444ell", 0],
 		['Edge only', "444edo", 0],
 		['Center only', "444cto", 0]
 	]],

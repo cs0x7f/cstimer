@@ -88,7 +88,7 @@
 <li><strong data="opt_scrMono">Monospace-Scramble</strong>. Monospace-Schrift für den Scramble-Text verwenden</li>
 <li><strong data="opt_scrLim">Die Höhe des Scramble-Bereichs begrenzen</strong>. Wenn der Scramble-Bereich zu groß wird, erscheint eine Scrollbar um eine weitere Vergrößerung zu vermeiden.</li>
 <li><strong data="opt_scrAlign">Aurichtung des Scramble-Bereichs</strong>. Ausrichtung des gesamten Scramble-Bereiches, inklusive Scamble-Typ-Auswahl</li>
-<li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
+<li><strong data="opt_preScr">pre-scramble</strong>. Moves vor dem eigentlichen Scramble, welche für den virtuellen Cube und Scramble-Bilder verwendet werden</li>
 <li><strong data="opt_scrFast">schnellen Scramble für 4x4x4 verwenden (inoffiziell)</strong>. Offizielle WCA 4x4x4-Scrambles benötigen große Mengen an Rechenleistung, wählen Sie diese Option um stattdessen zufällig generierte Scrambles zu verwenden</li>
 <li><strong data="opt_scrKeyM">Schlüssel-Züge im Scramble hervorheben</strong>. Markiere einen entscheidenden Move in dem Scramble, z. B. den Schritt, der die quadratische Form in SQ1-Scrambles zerstört</li>
 <li><strong data="opt_scrClk">Aktion beim klicken des scrambles</strong>. Verhalten beim anklicken des Scrambles, kopieren oder neu generieren</li>
@@ -109,7 +109,7 @@
 <li><strong data="opt_imgSize">Scramble-Bild Größe</strong>. Setzt die Größe der Scramble-Abbildung.</li>
 <li><strong data="opt_NTools">Anzahl der Werkzeuge</strong>. csTimer ist in der Lage, bis zu 4 Werkzeuge gleichzeitig zu zeigen.</li>
 <li><strong data="opt_useKSC">Tastenkombinationen benutzen</strong>. Tastaturkürzel verwenden, um den Scramble-Typ zu wechseln, nächstes Scramble zu erzeugen, zwischen Sessions zu wechseln usw.</li>
-<li><strong data="opt_vrcSpeed">VRC Grundgeschwindigkeit (TPS)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
+<li><strong data="opt_vrcSpeed">VRC Grundgeschwindigkeit (TPS)</strong>. Basisgeschwindigkeit des virtuellen Cubes; die Geschwindigkeit wird bei mehreren nachzuholenden Zügen erhöht</li>
 <li><strong data="opt_vrcMP">Multi-Phase</strong>. Automatische Mehrphasen-Aufteilung für virtuelle und Bluetooth-Cubes.</li>
 <li><strong data="opt_giiVRC">Virtuellen Giiker Cube zeigen</strong>. Zeigt einen virtuellen Cube im Haupt-Timer während der Verbindung zu einem Bluetooth-Cube an.</li>
 <li><strong data="opt_giiSD">Ende des Scrambles durch Warten anzeigen</strong>. Bei Bluetooth-Cubes kann csTimer nicht wissen, ob ein Move zum Schrambling oder zum Lösen gehört</li>

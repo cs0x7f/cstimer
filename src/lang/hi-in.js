@@ -3,7 +3,7 @@ var CANCEL_LANG = 'रद्द करें';
 var RESET_LANG = 'रीसेट करें';
 var ABOUT_LANG = 'हमारे बारे में';
 var ZOOM_LANG = 'बड़ा करें';
-var BUTTON_TIME_LIST = 'समय सूची';
+var BUTTON_TIME_LIST = 'समय <br> सूची';
 var BUTTON_OPTIONS = 'विकल्प';
 var BUTTON_EXPORT = 'निर्यात <br> करें';
 var BUTTON_DONATE = 'मदद <br> करें';
@@ -253,6 +253,7 @@ var scrdata = [
 		['4x4x4 edges', "4edge", 0],
 		['R,r,U,u', "RrUu", 40],
 		['Last layer', "444ll", 0],
+		['ELL', "444ell", 0],
 		['Edge only', "444edo", 0],
 		['Center only', "444cto", 0]
 	]],
