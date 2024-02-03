@@ -114,7 +114,7 @@ var puzzleFactory = execMain(function() {
 		} else if (puzzle == "skb") {
 			options["type"] = "skewb";
 			options["faceColors"] = col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);
-		} else if (puzzle == "mgm" || puzzle == "prc") {
+		} else if (puzzle == "mgm" || puzzle == "prc" || puzzle == "klm") {
 			options["faceColors"] = col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
 		} else if (puzzle == "pyr") {
 			options["faceColors"] = col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);

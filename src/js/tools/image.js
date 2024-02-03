@@ -1353,7 +1353,7 @@ var image = execMain(function() {
 			nnnImage.draw(scramble[2], scramble[1]);
 			return true;
 		}
-		if (type == "pyr") {
+		if (type == "pyr" || type == "prc") {
 			polyhedronImage(type, scramble[1]);
 			return true;
 		}

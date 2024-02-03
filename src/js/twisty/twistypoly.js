@@ -143,11 +143,15 @@
 
 	function mgmTwisty(type, scene, param) {
 		poly3d.getFamousPuzzle(type, param);
+		if (type == "klm") {
+			param.minArea = 0.1;
+		}
 		var twisty = createCubeTwisty(scene, param, param.parser);
 		bindKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
 		return twisty;
 	}
 
+	twistyjs.registerTwisty("klm", mgmTwisty.bind(null, "klm"));
 	twistyjs.registerTwisty("mgm", mgmTwisty.bind(null, "mgm"));
 	twistyjs.registerTwisty("prc", mgmTwisty.bind(null, "prc"));
 
@@ -170,6 +174,9 @@
 			"heli": [-2, Math.sqrt(0.5)],
 			"helicv": [-2, 0.83],
 		}[type]];
+		if (type == "helicv") {
+			param.minArea = 0.15;
+		}
 		param.pieceGap = 0.075;
 		var twisty = createCubeTwisty(scene, param, {});
 		bindKeyMap("I:UR K:UR' W:BD O:BD' S:FD L:FD' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:FR M:FR' R:FL' V:FL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
@@ -222,6 +229,9 @@
 		}
 
 		puzzle.enumFacesPolys(function(face, p, poly, idx) {
+			if (poly.area < (twistyParameters.minArea || 0)) {
+				return;
+			}
 			var sticker = new THREE.Object3D();
 
 			var meshes = [materials[face]];
@@ -267,6 +277,9 @@
 					return;
 				}
 				var sticker = twisty.cubePieces[idx];
+				if (!sticker) {
+					return;
+				}
 				sticker[1].matrix.multiply(rots, sticker[1].matrix);
 				sticker[1].update();
 			});
@@ -292,10 +305,16 @@
 					val = perm[val];
 				}
 				var sticker = twisty.cubePieces[val];
+				if (!sticker) {
+					continue;
+				}
 				nextState[i] = [sticker[2], sticker[1].children[0].materials];
 			}
 			for (var i = 0; i < perm.length; i++) {
 				var sticker = twisty.cubePieces[i];
+				if (!sticker) {
+					continue;
+				}
 				sticker[2] = nextState[i][0];
 				sticker[1].children[0].materials = nextState[i][1];
 				sticker[1].matrix.copy(sticker[0]);
@@ -341,6 +360,9 @@
 			var faceMap = {};
 			var ret = 0;
 			puzzle.enumFacesPolys(function(face, p, poly, idx) {
+				if (!twisty.cubePieces[idx]) {
+					return;
+				}
 				var stateFace = twisty.cubePieces[idx][2];
 				if (!(stateFace in faceMap)) {
 					faceMap[stateFace] = face;

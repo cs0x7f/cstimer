@@ -550,8 +550,9 @@ var poly3d = (function() {
 				var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
 				return layer == 0 ? ('[' + move + ']') : move;
 			});
-		} else if (name == "mgm" || name == "pyc") {
+		} else if (name == "klm" || name == "mgm" || name == "prc") {
 			polyParam = [12, {
+				"klm": [-2, 0.57, -0.57],
 				"mgm": [-2, 0.72, -0.72],
 				"prc": [-2, 0.4472136, -0.4472136]
 			}[name]];
