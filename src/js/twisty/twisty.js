@@ -8,23 +8,32 @@
 "use strict";
 
 THREE.Ploy = function(points) {
+
+	var tridata = [];
+	for (var i = 0; i < points.length; i++) {
+		tridata.push({x: points[i][0], y: points[i][1]});
+	}
+
+	// triangulate the polygon with holes
+	var myTriangulator = new PNLTRI.Triangulator();
+	var triangList = myTriangulator.triangulate_polygon( [tridata] );
+
 	THREE.Geometry.call(this);
 	for (var i = 0; i < points.length; i++) {
 		this.vertices.push(new THREE.Vertex(new THREE.Vector3(points[i][0], points[i][1], 0)))
 	}
-	var i = 1;
-	for (; i + 2 < points.length; i += 2) {
-		this.faces.push(new THREE.Face4(0, i, i + 1, i + 2));
-	}
-	for (; i + 1 < points.length; i += 1) {
-		this.faces.push(new THREE.Face3(0, i, i + 1));
-	}
-	if (this.faces.length > 1) {
-		for (i = 1; i < this.faces.length - 1; i++) {
-			this.faces[i].innerLineMask = this.faces[i].d ? 9 : 5;
+
+	for (var i = 0; i < triangList.length; i++) {
+		var tri = triangList[i];
+		this.faces.push(new THREE.Face3(tri[0], tri[1], tri[2]));
+		var mask = 0;
+		for (var j = 0; j < 3; j++) {
+			var gap = tri[j] - tri[(j + 1) % 3];
+			if (gap != -1 && gap != points.length - 1) {
+				mask |= 1 << j;
+			}
 		}
-		this.faces[0].innerLineMask = this.faces[0].d ? 8 : 4;
-		this.faces[i].innerLineMask = 1;
+		this.faces[i].innerLineMask = mask;
 	}
 
 	this.computeCentroids();

@@ -172,7 +172,7 @@
 	function heliTwisty(type, scene, param) {
 		param.polyParam = [6, [-2], {
 			"heli": [-2, Math.sqrt(0.5)],
-			"helicv": [-2, 0.83],
+			"helicv": [-2, [2 * Math.sqrt(2), -Math.sqrt(5)]],
 		}[type]];
 		if (type == "helicv") {
 			param.minArea = 0.15;
@@ -185,6 +185,14 @@
 
 	twistyjs.registerTwisty("heli", heliTwisty.bind(null, "heli"));
 	twistyjs.registerTwisty("helicv", heliTwisty.bind(null, "helicv"));
+	twistyjs.registerTwisty("heli2x2", function(scene, param) {
+		param.polyParam = [6, [-2, 0], [-2, [Math.sqrt(2), -0.6]], [-2, [Math.sqrt(3), -0.7]]];
+		param.minArea = 0.01;
+		param.pieceGap = 0.05;
+		var twisty = createCubeTwisty(scene, param, {});
+		bindKeyMap("I:UR K:UR' W:F' O:F S:U' L:U X:R .:R' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:URF M:URF' R:UFL' V:UFL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
+		return twisty;
+	});
 
 	function createCubeTwisty(twistyScene, twistyParameters, twistyFuncs) {
 
@@ -273,7 +281,7 @@
 			rots.setRotationAxis(twistyPlane.norm, -moveStep * Math.TAU * currentMove[1] / puzzle.twistyDetails[moveIdx][1]);
 
 			puzzle.enumFacesPolys(function(face, p, poly, idx) {
-				if (twistyPlane.norm.inprod(poly.center) < twistyPlane.dis) {
+				if (twistyPlane.side(poly.center) < 0) {
 					return;
 				}
 				var sticker = twisty.cubePieces[idx];
@@ -418,7 +426,7 @@
 				}
 				var faces = axis.match(/[A-Z][a-z]*/g);
 				var tmp;
-				for (var i = 0; i < [1, 2, 6][faces.length]; i++) {
+				for (var i = 0; i < [0, 1, 2, 6][faces.length]; i++) {
 					axis = faces.join('');
 					if ((layer + axis) in puzzle.twistyIdx) {
 						ret.push([layer + axis, pow]);

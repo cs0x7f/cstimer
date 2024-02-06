@@ -78,6 +78,7 @@
   <script type="text/javascript" src="js/gantimer.js"></script>
   <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>
+  <script type="text/javascript" src="js/lib/pnltri.js"></script>
   <script type="text/javascript" src="js/twisty/twisty.js"></script>
   <script type="text/javascript" src="js/twisty/twistynnn.js"></script>
   <script type="text/javascript" src="js/twisty/twistysq1.js"></script>

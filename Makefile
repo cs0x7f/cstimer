@@ -87,6 +87,7 @@ css/style.css) $(langJS) $(langPHP)
 
 twistySrc = $(addprefix $(src)/js/, \
 lib/threemin.js \
+lib/pnltri.js \
 twisty/twisty.js \
 twisty/twistynnn.js \
 twisty/twistysq1.js \

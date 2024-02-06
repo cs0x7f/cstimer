@@ -88,78 +88,379 @@ var poly3d = (function() {
 		this.dis = typeof(dis) == 'number' ? dis : 1;
 	}
 
-	// assert points.length >= 3
-	function Polygon(points) {
-		this.vertices = points.slice();
-		this.area = 0;
-		var x = 0, y = 0, z = 0;
-		for (var i = 2; i < points.length; i++) {
-			var area = points[0].triangleArea(points[i - 1], points[i]);
-			x += (points[0].x + points[i].x + points[i - 1].x) * area / 3;
-			y += (points[0].y + points[i].y + points[i - 1].y) * area / 3;
-			z += (points[0].z + points[i].z + points[i - 1].z) * area / 3;
-			this.area += area;
-		}
-		this.center = new Point(x / this.area, y / this.area, z / this.area);
+	Plane.prototype.side = function(point) {
+		return this.norm.inprod(point) - this.dis;
 	}
 
-	_ = Polygon.prototype;
+	function Sphere(ct, radius, norm) {
+		this.ct = ct;
+		this.radius = radius;
+		if (norm) {
+			this.norm = norm;
+		}
+	}
 
-	_.projection = function(norms) {
+	Sphere.prototype.side = function(point) { // when radius > 0, >0: outside, <0: inside
+		return (this.ct.abs(point) - Math.abs(this.radius)) * (this.radius > 0 ? 1 : -1);
+	}
+
+	function Segment(p1, p2) {
+		this.p1 = p1;
+		this.p2 = p2;
+	}
+
+	_ = Segment.prototype;
+
+	_.getMid = function() {
+		return this.p1.add(this.p2).scalar(0.5);;
+	}
+
+	_.genMids = function() {
+		return [];
+	}
+
+	_.slice = function(p1, p2) {
+		return new Segment(p1, p2);
+	}
+
+	_.revert = function() {
+		return new Segment(this.p2, this.p1);
+	}
+
+	_.rankKey = function(p) {
+		return this.p2.add(this.p1, -1).inprod(p);
+	}
+
+	_.intersect = function(obj) {
 		var ret = [];
-		for (var i = 0; i < this.vertices.length; i++) {
-			var coord = [];
-			for (var j = 0; j < norms.length; j++) {
-				coord.push(this.vertices[i].inprod(norms[j]));
+		if (obj instanceof Plane) {
+			var prod1 = this.p1.inprod(obj.norm) - obj.dis;
+			var prod2 = this.p2.inprod(obj.norm) - obj.dis;
+			if (Math.abs(prod1 - prod2) < EPS) {
+				return [];
 			}
-			ret.push(coord);
+			var lambda = -prod1 / (prod2 - prod1);
+			if (Math.abs(lambda) < EPS || Math.abs(lambda - 1) < EPS) {
+				ret.push(Math.abs(lambda) < EPS ? this.p1 : this.p2);
+			} else if (lambda > 0 && lambda < 1) {
+				ret.push(this.p1.scalar(1 - lambda).add(this.p2, lambda));
+			}
+		} else if (obj instanceof Sphere) {
+			// p = (1 - lambda) * p1 + lambda * p2, ||p - ct||^2 = radius^2
+			// ||p1 - ct + lambda * (p2 - p1) ||^2 = radius^2
+			// ||p2 - p1||^2 lambda^2 + 2 * <p2 - p1, p1 - ct> lambda + ||p1 - ct||^2 - radius^2 = 0
+			var a = Math.pow(this.p1.abs(this.p2), 2);
+			var b = this.p2.add(this.p1, -1).inprod(this.p1.add(obj.ct, -1)) * 2;
+			var c = Math.pow(this.p1.abs(obj.ct), 2) - Math.pow(obj.radius, 2);
+			var delta = b * b - 4 * a * c;
+			if (delta <= 0) { // tangency or not intersected
+				return [];
+			}
+			for (var sign = -1; sign < 2; sign += 2) {
+				var lambda = (-b + sign * Math.sqrt(delta)) / (2 * a)
+				if (Math.abs(lambda) < EPS || Math.abs(lambda - 1) < EPS) {
+					ret.push(Math.abs(lambda) < EPS ? this.p1 : this.p2);
+				} else if (lambda > 0 && lambda < 1) {
+					ret.push(this.p1.scalar(1 - lambda).add(this.p2, lambda));
+				}
+			}
 		}
 		return ret;
 	}
 
-	_.split = function(pl) {
-		var thres = this.center.inprod(pl.norm) > pl.dis ? -EPS : EPS;
-		var _point = this.vertices[this.vertices.length - 1];
-		var _prod = _point.inprod(pl.norm) - pl.dis - thres;
-		var polys = [[], []];
-		for (var i = 0; i < this.vertices.length; i++) { // check segment (vertices[i-1], vertices[i])
-			var point = this.vertices[i];
-			var prod = point.inprod(pl.norm) - pl.dis - thres;
-			if (prod * _prod < 0) { // cross the plane, split the segment
-				var lambda = -(_prod + thres) / (prod - _prod);
-				if (Math.abs(lambda) < EPS) { // cross at _point
-					polys[prod > 0 ? 0 : 1].push(_point);
-				} else if (Math.abs(1 - lambda) < EPS) { // cross at point
-					polys[prod > 0 ? 1 : 0].push(point);
-				} else {
-					var crossPoint = _point.scalar(1 - lambda).add(point, lambda);
-					polys[0].push(crossPoint);
-					polys[1].push(crossPoint);
+	function Arc(p1, p2, ct, norm) {
+		this.p1 = p1;
+		this.p2 = p2;
+		this.ct = ct;
+		this.norm = norm;
+		this._fu = this.p1.add(this.ct, -1).normalized();
+		this._fv = this.norm.outprod(this._fu);
+		this._radius = this.ct.abs(p1);
+		var ctp2 = this.p2.add(this.ct, -1);
+		this._ang = (Math.atan2(this._fv.inprod(ctp2), this._fu.inprod(ctp2)) + Math.PI * 2 + EPS) % (Math.PI * 2) - EPS;
+	}
+
+	_ = Arc.prototype;
+
+	_.getMid = function() {
+		return this.ct.add(this._fu, Math.cos(this._ang / 2) * this._radius).add(this._fv, Math.sin(this._ang / 2) * this._radius);
+	}
+
+	_.genMids = function() {
+		var nSegs = Math.ceil(this._ang / Math.PI * 180 / 10);
+		var mids = [];
+		for (var i = 0; i < nSegs - 1; i++) {
+			var theta = this._ang / nSegs * (i + 1);
+			mids.push(this.ct.add(this._fu, Math.cos(theta) * this._radius).add(this._fv, Math.sin(theta) * this._radius));
+		}
+		return mids;
+	}
+
+	_.slice = function(p1, p2) {
+		return new Arc(p1, p2, this.ct, this.norm);
+	}
+
+	_.revert = function() {
+		return new Arc(this.p2, this.p1, this.ct, this.norm.scalar(-1));
+	}
+
+	_.rankKey = function(p) {
+		var vec1 = p.add(this.ct, -1);
+		return Math.atan2(this._fv.inprod(vec1), this._fu.inprod(vec1));
+	}
+
+	_.intersect = function(obj) {
+		var a, b, c;
+		// p = ct + radius * (fu * cos(t) + fv * sin(t)), 0 <= t <= atan2(<p2 - ct , fv>, <p2 - ct, fu>);
+		if (obj instanceof Plane) {
+			// <p, norm> = dis => radius * <fu, norm> * cos(t) + radius * <fv, norm> * sin(t) = dis - <ct, norm>
+			// t = +- acos(a / c) - phi
+			a = this._radius * obj.norm.inprod(this._fv);
+			b = this._radius * obj.norm.inprod(this._fu);
+			c = obj.dis - obj.norm.inprod(this.ct);
+		} else if (obj instanceof Sphere) {
+			// ||p - ct2|| = radius2 => ||ct - ct2 + radius * (fu * cos(t) + fv * sin(t))|| = radius2
+			// => ||ct - ct2||^2 + radius ^ 2 + 2 * <ct - ct2, radius * (fu * cos(t) + fv * sin(t))> = radius2^2
+			// => <ct - ct2, radius * (fu * cos(t) + fv * sin(t))> = (radius2 ^ 2 - radius ^ 2 - ||ct - ct2||^2) / 2;
+			var vec1 = this.ct.add(obj.ct, -1);
+			a = this._radius * vec1.inprod(this._fv);
+			b = this._radius * vec1.inprod(this._fu);
+			c = ((obj.radius + this._radius) * (obj.radius - this._radius) - Math.pow(this.ct.abs(obj.ct), 2)) / 2;
+		}
+		// console.log(a, b, c, this, obj);
+		//solve: b cos(t) + a sin(t) = c => sqrt(a*a+b*b) cos(t + phi) = c, phi = atan2(-a, b)
+		var phi = Math.atan2(-a, b);
+		var cos_t = c / Math.hypot(a, b);
+		if (Math.abs(cos_t) >= 1) { // tangency or not intersected
+			return [];
+		}
+		var ret = [];
+		var t0 = Math.acos(cos_t);
+		for (var sign = -1; sign < 2; sign += 2) {
+			var t = (sign * t0 - phi + Math.PI * 4 + EPS) % (Math.PI * 2) - EPS;
+			if (t > -EPS && t < this._ang + EPS) {
+				ret.push(t);
+			}
+		}
+		ret.sort(function(a, b) { return a - b; });
+		for (var i = 0; i < ret.length; i++) {
+			if (Math.abs(ret[i]) < EPS || Math.abs(ret[i] - this._ang) < EPS) {
+				ret[i] = Math.abs(ret[i]) < EPS ? this.p1 : this.p2;
+			} else {
+				ret[i] = this.ct.add(this._fu, Math.cos(ret[i]) * this._radius).add(this._fv, Math.sin(ret[i]) * this._radius);
+			}
+		}
+		for (var i = 0; i < ret.length; i++) {
+			if (Math.abs(obj.side(ret[i])) > EPS) {
+				debugger;
+			}
+			if (Math.abs(this.ct.abs(ret[i]) - this._radius) > EPS) {
+				debugger;
+			}
+			if (Math.abs(this.norm.inprod(this.ct) - this.norm.inprod(ret[i])) > EPS) {
+				debugger;
+			}
+		}
+		// console.log(ret, this._radius);
+		return ret;
+	}
+
+	// assert points.length >= 3, assume paths[i].p2 = paths[i + ].p1
+	function Polygon(paths) {
+		this.paths = paths.slice();
+		var norm;
+		for (var i = 0; i < paths.length; i++) {
+			if (paths[i].ct) {
+				norm = paths[i].norm;
+				break;
+			}
+			var candNorm = paths[0].p2.add(paths[0].p1, -1).outprod(paths[1].p2.add(paths[1].p1, -1));
+			if (candNorm.abs() > EPS * 10) {
+				norm = candNorm.normalized();
+				break;
+			}
+		}
+		this.area = 0;
+		if (!norm) {
+			return;
+		}
+		var center = new Point(0, 0, 0);
+		for (var i = 1; i < paths.length - 1; i++) {
+			var area = paths[i].p1.add(paths[0].p1, -1).outprod(paths[i].p2.add(paths[i].p1, -1)).inprod(norm) / 2;
+			center = center.add(paths[0].p1, area / 3);
+			center = center.add(paths[i].p1, area / 3);
+			center = center.add(paths[i].p2, area / 3);
+			this.area += area;
+		}
+		for (var i = 0; i < paths.length; i++) {
+			if (!paths[i].ct) {
+				continue;
+			}
+			var arc = paths[i];
+			var theta = arc._ang / 2;
+			var h = 4 * arc._radius * Math.pow(Math.sin(arc._ang / 2), 3) / 3 / (arc._ang - Math.sin(arc._ang));
+			area = Math.pow(arc._radius, 2) * (arc._ang - Math.sin(arc._ang)) / 2 * arc.norm.inprod(norm);
+			var centroid = arc.ct.add(arc.norm.outprod(arc.p2.add(arc.p1, -1)).normalized(), -h);
+			center = center.add(centroid, area);
+			this.area += area;
+		}
+		this.center = center.scalar(1 / this.area);
+		this.norm = this.area > 0 ? norm : norm.scalar(-1);
+		this.area = Math.abs(this.area);
+		this.dis = this.norm.inprod(paths[0].p1);
+	}
+
+	_ = Polygon.prototype;
+
+	Polygon.fromVertices = function(vertices) {
+		var paths = [];
+		for (var i = 0; i < vertices.length; i++) {
+			paths.push(new Segment(vertices[i], vertices[(i + 1) % vertices.length]));
+		}
+		return new Polygon(paths);
+	}
+
+	_.projection = function(norms) {
+		var ret = [];
+		for (var i = 0; i < this.paths.length; i++) {
+			var points = [this.paths[i].p1].concat(this.paths[i].genMids());
+			for (var k = 0; k < points.length; k++) {
+				var coord = [];
+				for (var j = 0; j < norms.length; j++) {
+					coord.push(points[k].inprod(norms[j]));
+				}
+				ret.push(coord);
+			}
+		}
+		return ret;
+	}
+
+	_.split = function(obj) {
+		// calculate all intersects
+		var paths = [[], []];
+		var nCuts = 0;
+		var refSide = obj.side(this.center) < 0 ? 1 : 0; // 0 outside, 1 inside
+		for (var i = 0; i < this.paths.length; i++) {
+			var path = this.paths[i];
+			var points = path.intersect(obj);
+			nCuts += points.length;
+			var start = path.p1;
+			for (var j = 0; j < points.length; j++) {
+				if (start.abs(points[j]) > EPS) {
+					var newPath = path.slice(start, points[j]);
+					paths[obj.side(newPath.getMid()) < 0 ? 1 : 0].push(newPath);
+					start = points[j];
 				}
 			}
-			_point = point;
-			_prod = prod;
-			polys[prod > 0 ? 0 : 1].push(point);
+			if (start.abs(path.p2) > EPS) {
+				var remainPath = start == path.p1 ? path : path.slice(start, path.p2);
+				var sideFloat = obj.side(remainPath.getMid());
+				paths[Math.abs(sideFloat) < EPS ? refSide : sideFloat < 0 ? 1 : 0].push(remainPath);
+			}
 		}
-		polys[0] = polys[0].length >= 3 ? new Polygon(polys[0]) : null;
-		polys[1] = polys[1].length >= 3 ? new Polygon(polys[1]) : null;
+
+		var cutBound;
+		if (obj instanceof Plane) {
+			if (nCuts == 0) {
+				return paths[0].length == 0 ? [[], [this]] : [[this], []];
+			}
+			cutBound = new Segment(new Point(0, 0, 0), obj.norm.outprod(this.norm));
+		} else if (obj instanceof Sphere) {
+			var ct = obj.ct.add(this.norm, -this.norm.inprod(obj.ct) + this.dis);
+			var radius = Math.pow(obj.radius, 2) - Math.pow(this.dis - this.norm.inprod(obj.ct), 2);
+			if (radius <= 0) {
+				return paths[0].length == 0 ? [[], [this]] : [[this], []];
+			}
+			radius = Math.sqrt(radius);
+			var p1 = this.paths[1].p1.add(this.paths[0].p1, -1).normalized().scalar(radius).add(ct);
+			cutBound = new Arc(p1, p1, ct, this.norm.scalar(obj.radius > 0 ? -1 : 1));
+		}
+
+		var polys = [[], []];
+		DEBUG && console.log('cut bound=', JSON.stringify(cutBound));
+
+		for (var side = 0; side < 2; side++) {
+			// mark all near-bound points
+			var sign = side * 2 - 1;
+			var pathStart = [];
+			var pathsSide = paths[side];
+			for (var i = 0, len = pathsSide.length; i < len; i++) {
+				var nextIdx = (i + 1) % len;
+				if (pathsSide[i].p2.abs(pathsSide[nextIdx].p1) > EPS) {
+					pathStart.push([nextIdx, cutBound.rankKey(pathsSide[nextIdx].p1), pathsSide[nextIdx].p1]);
+				}
+			}
+			pathStart.sort(function(a, b) { return a[1] - b[1]; });
+			DEBUG && console.log('sort result', JSON.stringify(pathStart));
+			var usedCnt = 0;
+			var used = [];
+			DEBUG && console.log('handle side', side, 'pathsSide.length=', pathsSide.length, JSON.stringify(pathsSide));
+			while (usedCnt < pathsSide.length) {
+				var curPaths = [];
+				var idx = 0;
+				while (used[idx]) {
+					idx++;
+				}
+				DEBUG && console.log('handle side', side, 'start idx=', idx);
+				while (true) {
+					var path = pathsSide[idx];
+					curPaths.push(path);
+					used[idx] = 1;
+					usedCnt++;
+					DEBUG && console.log('path add', JSON.stringify(path), 'used=', JSON.stringify(used), 'usedCnt=', usedCnt, curPaths.length);
+					if (path.p2.abs(curPaths[0].p1) < EPS) { // close path
+						break;
+					}
+					idx = (idx + 1) % len;
+					if (path.p2.abs(pathsSide[idx].p1) < EPS) {
+						continue;
+					}
+					var key = cutBound.rankKey(path.p2);
+					var next = 0;
+					for (var i = 0; i < pathStart.length; i++) {
+						if (pathStart[i][1] > key) {
+							next = i;
+							break;
+						}
+					}
+					idx = pathStart[next][0];
+					pathStart.splice(next, 1);
+					curPaths.push(cutBound.slice(path.p2, pathsSide[idx].p1));
+					DEBUG && console.log('path addcut', JSON.stringify(cutBound.slice(path.p2, pathsSide[idx].p1)), 'remain start=', pathStart, curPaths.length);
+					if (pathsSide[idx].p1.abs(curPaths[0].p1) < EPS) { // close path
+						break;
+					}
+				}
+				DEBUG && console.log('close path=', JSON.stringify(curPaths));
+				var poly = new Polygon(curPaths);
+				if (poly.area > EPS) {
+					polys[side].push(poly);
+				} else {
+					console.log('invalid path length', curPaths, poly);
+				}
+			}
+			cutBound = cutBound.revert();
+		}
 		return polys;
 	}
 
 	_.trim = function(gap) {
 		var toCutPlanes = [];
-		var _point = this.vertices[this.vertices.length - 1];
-		var polyNorm = this.vertices[0].add(_point, -1).outprod(this.vertices[1].add(this.vertices[0], -1)).normalized();
+		var _point = this.paths[this.paths.length - 1].p1;
 		var poly = this;
-		for (var i = 0; i < this.vertices.length; i++) { // check segment (vertices[i-1], vertices[i])
-			var point = this.vertices[i];
-			var norm = point.add(_point, -1).outprod(polyNorm).normalized();
-			var dis = norm.inprod(point);
-			poly = poly.split(new Plane(norm, dis - gap / 2))[1];
+		for (var i = 0; i < this.paths.length; i++) { // check paths[i]
+			var path = this.paths[i];
+			if (path instanceof Arc) {
+				var radius = (this.norm.inprod(path.norm) > 0 ? 1 : -1) * path._radius; 
+				poly = poly.split(new Sphere(path.ct, radius - gap / 2))[1][0];
+			} else {
+				var norm = path.p2.add(path.p1, -1).outprod(this.norm).normalized();
+				var dis = norm.inprod(path.p2);
+				poly = poly.split(new Plane(norm, dis - gap / 2))[1][0];
+			}
 			if (!poly) {
 				return null;
 			}
-			_point = point;
 		}
 		return poly;
 	}
@@ -200,7 +501,7 @@ var poly3d = (function() {
 			var dis = this.facePlanes[face].dis;
 			var faceCenter = norm.scalar(dis);
 			var faceUV = this.faceUVs[face];
-			var poly = new Polygon([
+			var poly = Polygon.fromVertices([
 				faceCenter.add(faceUV[0], 100),
 				faceCenter.add(faceUV[1], 100),
 				faceCenter.add(faceUV[0], -100),
@@ -210,7 +511,7 @@ var poly3d = (function() {
 				if (fother == face) {
 					continue;
 				}
-				poly = poly.split(this.facePlanes[fother])[1];
+				poly = poly.split(this.facePlanes[fother])[1][0];
 				if (!poly) { // all area in the plane is cut out, input is incorrect
 					debugger
 					break;
@@ -224,10 +525,11 @@ var poly3d = (function() {
 		for (var i = 0; i < this.twistyPlanes.length; i++) {
 			var plane = this.twistyPlanes[i];
 			this.enumFacesPolys(function(face, p, poly) {
-				poly = poly.split(plane);
-				if (poly[0] != null & poly[1] != null) { // cut into two polys
-					this.facesPolys[face][p] = poly[0];
-					this.facesPolys[face].push(poly[1]);
+				var polys = poly.split(plane);
+				polys = Array.prototype.concat.apply([], polys);
+				this.facesPolys[face][p] = polys[0];
+				for (var j = 1; j < polys.length; j++) {
+					this.facesPolys[face].push(polys[j]);
 				}
 			}.bind(this));
 		}
@@ -251,10 +553,10 @@ var poly3d = (function() {
 		this.moveTable = [];
 		for (var i = 0; i < this.twistyPlanes.length; i++) {
 			var curMove = [];
-			var curPlane = this.twistyPlanes[i];
-			var trans = new RotTrans(curPlane.norm, Math.PI * 2 / this.twistyDetails[i][1]);
+			var plane = this.twistyPlanes[i];
+			var trans = new RotTrans(plane.norm, Math.PI * 2 / this.twistyDetails[i][1]);
 			this.enumFacesPolys(function(face, p, poly, idx) {
-				if (curPlane.norm.inprod(poly.center) < curPlane.dis) {
+				if (plane.side(poly.center) < 0) {
 					curMove[idx] = idx; // not affect by this twistyPlane
 					return;
 				}
@@ -353,8 +655,13 @@ var poly3d = (function() {
 		if (faceCuts && faceCuts.length > 0) {
 			for (var i = 0; i < faceNorms.length; i++) {
 				for (var j = 0; j < faceCuts.length; j++) {
-					twistyPlanes.push(new Plane(faceNorms[i], faceCuts[j]));
-					twistyDetails.push([j + "" + faceNames[i], facePow]);
+					if (typeof(faceCuts[j]) == 'number') { // plane
+						twistyPlanes.push(new Plane(faceNorms[i], faceCuts[j]));
+						twistyDetails.push([j + "" + faceNames[i], facePow]);
+					} else { // sphere
+						twistyPlanes.push(new Sphere(faceNorms[i].scalar(faceCuts[j][0]), faceCuts[j][1], faceNorms[i]));
+						twistyDetails.push([j + "" + faceNames[i], facePow]);
+					}
 				}
 			}
 		}
@@ -362,9 +669,9 @@ var poly3d = (function() {
 			var edgeNorms = [];
 			var edgeNames = [];
 			puzzle.enumFacesPolys(function(face, p, poly) {
-				var _point = poly.vertices[poly.vertices.length - 1];
-				for (var i = 0; i < poly.vertices.length; i++) {
-					var point = poly.vertices[i];
+				var _point = poly.paths[poly.paths.length - 1].p1;
+				for (var i = 0; i < poly.paths.length; i++) {
+					var point = poly.paths[i].p1;
 					var edgeNorm = point.add(_point).normalized();
 					for (var j = 0; j < edgeNorms.length; j++) {
 						if (edgeNorm.abs(edgeNorms[j]) < EPS) {
@@ -382,8 +689,13 @@ var poly3d = (function() {
 			});
 			for (var i = 0; i < edgeNorms.length; i++) {
 				for (var j = 0; j < edgeCuts.length; j++) {
-					twistyPlanes.push(new Plane(edgeNorms[i], edgeCuts[j]));
-					twistyDetails.push([j + "" + edgeNames[i], edgePow]);
+					if (typeof(edgeCuts[j]) == 'number') { // plane
+						twistyPlanes.push(new Plane(edgeNorms[i], edgeCuts[j]));
+						twistyDetails.push([j + "" + edgeNames[i], edgePow]);
+					} else { // sphere
+						twistyPlanes.push(new Sphere(edgeNorms[i].scalar(edgeCuts[j][0]), edgeCuts[j][1], edgeNorms[i]));
+						twistyDetails.push([j + "" + edgeNames[i], edgePow]);
+					}
 				}
 			}
 		}
@@ -391,8 +703,8 @@ var poly3d = (function() {
 			var cornNorms = [];
 			var cornNames = [];
 			puzzle.enumFacesPolys(function(face, p, poly) {
-				for (var i = 0; i < poly.vertices.length; i++) {
-					var cornNorm  = poly.vertices[i].normalized();
+				for (var i = 0; i < poly.paths.length; i++) {
+					var cornNorm  = poly.paths[i].p1.normalized();
 					for (var j = 0; j < cornNorms.length; j++) {
 						if (cornNorm.abs(cornNorms[j]) < EPS) {
 							cornNames[j] += faceNames[face];
@@ -408,13 +720,20 @@ var poly3d = (function() {
 			});
 			for (var i = 0; i < cornNorms.length; i++) {
 				for (var j = 0; j < cornCuts.length; j++) {
-					twistyPlanes.push(new Plane(cornNorms[i], cornCuts[j]));
-					twistyDetails.push([j + "" + cornNames[i], cornPow]);
+					if (typeof(cornCuts[j]) == 'number') { // plane
+						twistyPlanes.push(new Plane(cornNorms[i], cornCuts[j]));
+						twistyDetails.push([j + "" + cornNames[i], cornPow]);
+					} else { // sphere
+						twistyPlanes.push(new Sphere(cornNorms[i].scalar(cornCuts[j][0]), cornCuts[j][1], cornNorms[i]));
+						twistyDetails.push([j + "" + cornNames[i], cornPow]);
+					}
 				}
 			}
 		}
 
 		puzzle.setTwisty(twistyPlanes, twistyDetails);
+
+		// console.log(puzzle);
 
 		return puzzle;
 	}
@@ -519,11 +838,15 @@ var poly3d = (function() {
 		var nFace = [4, 6, 8, 12, 20]['tcodi'.indexOf(paramCmd[0])];
 		var polyParam = [nFace, [-2], [-2], [-2]];
 		var cutIdx = 1;
+		var m;
 		for (var i = 1; i < paramCmd.length; i++) {
 			if (/^[fev]$/.exec(paramCmd[i])) {
 				cutIdx = ' fev'.indexOf(paramCmd[i]);
 			} else if (/^[+-]?\d+(?:\.\d+)?$/.exec(paramCmd[i])) {
 				polyParam[cutIdx].push(parseFloat(paramCmd[i]));
+			} else if (/^\d+(?:\.\d+)?r[+-]?\d+(?:\.\d+)?$/.exec(paramCmd[i])) {
+				var sphereCmd = paramCmd[i].split('r');
+				polyParam[cutIdx].push([parseFloat(sphereCmd[0]), -parseFloat(sphereCmd[1])]);
 			}
 		}
 		return polyParam;
@@ -618,6 +941,13 @@ var poly3d = (function() {
 	}
 
 	return {
+		Point: Point,
+		RotTrans: RotTrans,
+		Plane: Plane,
+		Sphere: Sphere,
+		Segment: Segment,
+		Arc: Arc,
+		Polygon: Polygon,
 		makePuzzle: makePuzzle,
 		renderNet: renderNet,
 		makeParser: makeParser,
