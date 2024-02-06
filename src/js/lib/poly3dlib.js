@@ -551,6 +551,12 @@ var poly3d = (function() {
 
 	_.makeMoveTable = function() {
 		this.moveTable = [];
+		var proj1d = [];
+		var projNorm = new Point(1, 2, 3).normalized();
+		this.enumFacesPolys(function(face, p, poly, idx) {
+			proj1d[idx] = [idx, projNorm.inprod(poly.center), poly.center];
+		}.bind(this));
+		proj1d.sort(function(a, b) { return a[1] - b[1]; });
 		for (var i = 0; i < this.twistyPlanes.length; i++) {
 			var curMove = [];
 			var plane = this.twistyPlanes[i];
@@ -561,12 +567,26 @@ var poly3d = (function() {
 					return;
 				}
 				var movedCenter = trans.perform(poly.center);
-				this.enumFacesPolys(function(face2, p2, poly2, idx2) {
-					if (movedCenter.abs(poly2.center) < EPS) {
-						curMove[idx] = idx2;
-						return true;
+				var movedProj = projNorm.inprod(movedCenter);
+				var left = 0, right = proj1d.length - 1;
+				while (right > left) {
+					var mid = (right + left) >> 1;
+					var midval = proj1d[mid][1];
+					if (midval < movedProj - EPS) {
+						left = mid + 1;
+					} else {
+						right = mid;
 					}
-				});
+				}
+				for (var j = left; j < proj1d.length; j++) {
+					if (proj1d[j][1] > movedProj + EPS) {
+						debugger; // no moves found
+					}
+					if (movedCenter.abs(proj1d[j][2]) < EPS) {
+						curMove[idx] = proj1d[j][0];
+						break;
+					}
+				}
 			}.bind(this));
 			this.moveTable.push(curMove);
 		}
