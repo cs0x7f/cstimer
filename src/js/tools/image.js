@@ -997,211 +997,6 @@ var image = execMain(function() {
 		}
 	})();
 
-	var heliImage = (function() {
-		/*
-		      U0 U1
-		      U2 U3
-		L0 L1 F0 F1 R0 R1 B0 B1
-		L2 L3 F2 F3 R2 R3 B2 B3
-		      D0 D1
-		      D2 D3
-		 */
-		var U0 = 0, U1 = 1, U2 = 2, U3 = 3,
-		    R0 = 4, R1 = 5, R2 = 6, R3 = 7,
-		    F0 = 8, F1 = 9, F2 = 10, F3 = 11,
-		    D0 = 12, D1 = 13, D2 = 14, D3 = 15,
-		    L0 = 16, L1 = 17, L2 = 18, L3 = 19,
-		    B0 = 20, B1 = 21, B2 = 22, B3 = 23;
-
-		var moveMasks = [
-			3, 5, 17, 33, 10, 12, 24, 40, 6, 20, 48, 34,
-			7, 21, 49, 35, 14, 28, 56, 42,
-			1, 2, 4, 8, 16, 32
-		];
-
-		var moveParams = [
-			[[F1, B0], [U3, R1], [R0, U1]], // UR
-			[[L1, R0], [U2, F1], [F0, U3]], // UF
-			[[B1, F0], [U0, L1], [L0, U2]], // UL
-			[[R1, L0], [U1, B1], [B0, U0]], // UB
-			[[F3, B2], [R2, D3], [D1, R3]], // DR
-			[[L3, R2], [F2, D1], [D0, F3]], // DF
-			[[B3, F2], [L2, D0], [D2, L3]], // DL
-			[[R3, L2], [B2, D2], [D3, B3]], // DB
-			[[U3, D1], [R0, F3], [F1, R2]], // FR
-			[[U2, D0], [F0, L3], [L1, F2]], // FL
-			[[U0, D2], [L0, B3], [B1, L2]], // BL
-			[[U1, D3], [B0, R3], [R1, B2]], // BR
-			[[U3, R0, F1]], // URF
-			[[U2, F0, L1]], // UFL
-			[[U0, L0, B1]], // ULB
-			[[U1, B0, R1]], // UBR
-			[[D1, F3, R2]], // DFR
-			[[D0, L3, F2]], // DLF
-			[[D2, B3, L2]], // DBL
-			[[D3, R3, B2]], // DRB
-			[[U0, U1, U3, U2], [L0, B0, R0, F0], [B1, R1, F1, L1]], // U
-			[[R0, R1, R3, R2], [F1, U1, B2, D1], [U3, B0, D3, F3]], // R
-			[[F0, F1, F3, F2], [L1, U3, R2, D0], [U2, R0, D1, L3]], // F
-			[[D0, D1, D3, D2], [L3, F3, R3, B3], [F2, R2, B2, L2]], // D
-			[[L0, L1, L3, L2], [B1, U2, F2, D2], [U0, F0, D0, B3]], // L
-			[[B0, B1, B3, B2], [R1, U0, L2, D3], [U1, L0, D2, R3]]  // B
-		]
-
-		function doSwap(posit, perms, pow, npieces, masks) {
-			for (var i = 0; i < perms.length; i++) {
-				var perm = perms[i];
-				var mask = masks[i];
-				for (var p = 0; p < npieces; p++) {
-					if ((mask >> p & 1) == 0) {
-						continue;
-					}
-					var swap = [];
-					for (var j = 0; j < perm.length; j++) {
-						swap[j] = perm[j] * npieces + p;
-					}
-					mathlib.acycle(posit, swap, pow);
-				}
-			}
-		}
-
-		function doMove(posit, move, pow, npieces, emasks, cmasks, fmasks) {
-			var perms = moveParams[move];
-			var masks = null;
-			if (move < 12) { // edge move
-				masks = emasks;
-			} else if (move < 20) { // corner move
-				masks = cmasks;
-			} else { // face move
-				masks = fmasks;
-			}
-			doSwap(posit, perms, pow, npieces, masks);
-		}
-
-		var colors;
-		var colorsMap = [3, 4, 5, 0, 1, 2];
-
-		/*    +---+
-		 U0 = |1/0|
-		      +---+ */
-		function drawHeliFacelet(posit, startIdx, rotate, width, x, y) {
-			var ps = [
-				[[0, 0, -1], [0, -1, 0]],
-				[[-1, -1, 0], [-1, 0, -1]]
-			];
-			for (var i = 0; i < ps.length; i++) {
-				drawPolygon(ctx, colors[colorsMap[posit[startIdx + i]]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
-			}
-		}
-
-		/*    +--2+
-		 U0 = |1/0|
-		      +---+ */
-		function drawCurvyFacelet(posit, startIdx, rotate, width, x, y) {
-			var ps = [
-				[[0, -0.3, -1], [0, -1, -0.3]],
-				[[-1, -0.3, -1], [-1, -1, -0.3]],
-				[[0, -0.3, 0.3], [0, -1, -1]]
-			];
-			for (var i = 0; i < ps.length; i++) {
-				drawPolygon(ctx, colors[colorsMap[posit[startIdx + i]]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
-			}
-		}
-
-		/*    +-----+
-		      |3|4|5|
-		 U0 = |2 \| |
-		      |1  |0|
-		      +-----+ */
-		function drawHeli2x2Facelet(posit, startIdx, rotate, width, x, y) {
-			var ps = [
-				[[0, -0.3, -0.4, -0.3, 0],
-				 [0, 0, -0.3, -0.4, -0.3]],
-				[[-0.3, -1, -1, -0.4],
-				 [0, 0, -0.2, -0.3]],
-				[[-0.4, -1, -1],
-				 [-0.3, -0.2, -0.65]],
-				[[-0.4, -1, -1, -0.65, -0.3],
-				 [-0.3, -0.65, -1, -1, -0.4]],
-				[[-0.3, -0.2, -0.65],
-				 [-0.4, -1, -1]],
-				[[0, 0, -0.2, -0.3],
-				 [-0.3, -1, -1, -0.4]]
-			];
-			for (var i = 0; i < ps.length; i++) {
-				drawPolygon(ctx, colors[colorsMap[posit[startIdx + i]]], Rotate(ps[i], rotate), [width, x + 0.1, y + 0.1]);
-			}
-		}
-
-		return function(type, moveseq) {
-			var npieces = 0;
-			var emasks = null;
-			var cmasks = null;
-			var fmasks = null;
-			var drawFunc = null;
-			if (type == 'heli') {
-				npieces = 2;
-				emasks = [2, 3, 3];
-				cmasks = [2];
-				fmasks = [3, 3, 3];
-				drawFunc = drawHeliFacelet;
-			} else if (type == 'helicv') {
-				npieces = 3;
-				emasks = [2, 3, 7];
-				cmasks = [2];
-				fmasks = [7, 7, 7];
-				drawFunc = drawCurvyFacelet;
-			} else if (type == 'heli2x2') {
-				npieces = 6;
-				emasks = [0, 6, 48];
-				cmasks = [28];
-				fmasks = [63, 63, 63];
-				drawFunc = drawHeli2x2Facelet;
-			}
-
-			var posit = [];
-			for (var i = 0; i < 24 * npieces; i++) {
-				posit[i] = ~~(i / npieces / 4);
-			}
-			var moves = [];
-			moveseq.replace(/(?:^|\s*)([URFDLB]{1,3})([2'])?(?:$|\s*)/g, function(m, p1, p2) {
-				var mm = 0;
-				for (var i = 0; i < p1.length; i++) {
-					mm |= 1 << "URFDLB".indexOf(p1[i]);
-				}
-				mm = moveMasks.indexOf(mm);
-				if (mm != -1) {
-					var pow = "2'".indexOf(p2) + 2;
-					moves.push([mm, mm < 20 && pow == 3 ? 2 : pow]);
-				}
-			});
-			for (var i = 0; i < moves.length; i++) {
-				doMove(posit, moves[i][0], moves[i][1], npieces, emasks, cmasks, fmasks);
-			}
-
-			var width = 40;
-			var imgSize = kernel.getProp('imgSize') / 50;
-			canvas.width(39 * imgSize + 'em');
-			canvas.height(29 * imgSize + 'em');
-
-			canvas.attr('width', (39 * 3 / 9 + 0.2) * width);
-			canvas.attr('height', (29 * 3 / 9 + 0.2) * width);
-
-			colors = kernel.getProp('colcube').match(colre);
-
-			var rotates = [0, PI * 0.5, PI * 1.5, PI];
-			for (var i = 0; i < 4; i++) {
-				drawFunc(posit, (0 + i) * npieces, rotates[i], width * 1.5, 3.22, 1.00); // U
-				drawFunc(posit, (4 + i) * npieces, rotates[i], width * 1.5, 5.44, 3.22); // R
-				drawFunc(posit, (8 + i) * npieces, rotates[i], width * 1.5, 3.22, 3.22); // F
-				drawFunc(posit, (12 + i) * npieces, rotates[i], width * 1.5, 3.22, 5.44); // D
-				drawFunc(posit, (16 + i) * npieces, rotates[i], width * 1.5, 1.00, 3.22); // L
-				drawFunc(posit, (20 + i) * npieces, rotates[i], width * 1.5, 7.67, 3.22); // B
-			}
-		}
-	})();
-
-
 	var polyhedronImage = (function() {
 		var puzzleCache = {};
 
@@ -1214,8 +1009,9 @@ var image = execMain(function() {
 
 			var params = poly3d.getFamousPuzzle(type);
 			if (params != null) {
-				moves = params.parser.parseScramble(moveseq);
 				puzzle = puzzle || poly3d.makePuzzle.apply(poly3d, params.polyParam);
+				params.parser = params.parser || poly3d.makePuzzleParser(puzzle);
+				moves = params.parser.parseScramble(moveseq);
 				gap = params.pieceGap;
 				colors = params.colors;
 			} else {
@@ -1353,7 +1149,7 @@ var image = execMain(function() {
 			nnnImage.draw(scramble[2], scramble[1]);
 			return true;
 		}
-		if (type == "pyr" || type == "prc") {
+		if (/^pyr|prc|heli(?:2x2|cv)?$/.exec(type)) {
 			polyhedronImage(type, scramble[1]);
 			return true;
 		}
@@ -1375,10 +1171,6 @@ var image = execMain(function() {
 		}
 		if (type == "fto") {
 			ftoImage(scramble[1]);
-			return true;
-		}
-		if (type == "heli" || type == "heli2x2" || type == "helicv") {
-			heliImage(type, scramble[1]);
 			return true;
 		}
 		if (type == "15b" || type == "15p") {

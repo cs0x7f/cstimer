@@ -136,7 +136,7 @@
 		if (m) {
 			param.pieceGap = parseFloat(m[1]);
 		}
-		var twisty = createCubeTwisty(scene, param, {});
+		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap(params[1], twisty);
 		return twisty;
 	});
@@ -146,7 +146,7 @@
 		if (type == "klm") {
 			param.minArea = 0.1;
 		}
-		var twisty = createCubeTwisty(scene, param, param.parser);
+		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
 		return twisty;
 	}
@@ -157,14 +157,14 @@
 
 	twistyjs.registerTwisty("pyr", function(scene, param) {
 		poly3d.getFamousPuzzle("pyr", param);
-		var twisty = createCubeTwisty(scene, param, param.parser);
+		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b]", twisty);
 		return twisty;
 	});
 
 	twistyjs.registerTwisty("fto", function(scene, param) {
 		poly3d.getFamousPuzzle("fto", param);
-		var twisty = createCubeTwisty(scene, param, param.parser);
+		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
 		return twisty;
 	});
@@ -178,7 +178,7 @@
 			param.minArea = 0.15;
 		}
 		param.pieceGap = 0.075;
-		var twisty = createCubeTwisty(scene, param, {});
+		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap("I:UR K:UR' W:BD O:BD' S:FD L:FD' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:FR M:FR' R:FL' V:FL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
 		return twisty;
 	}
@@ -189,12 +189,12 @@
 		param.polyParam = [6, [-2, 0], [-2, [Math.sqrt(2), -0.6]], [-2, [Math.sqrt(3), -0.7]]];
 		param.minArea = 0.01;
 		param.pieceGap = 0.05;
-		var twisty = createCubeTwisty(scene, param, {});
+		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap("I:UR K:UR' W:F' O:F S:U' L:U X:R .:R' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:URF M:URF' R:UFL' V:UFL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
 		return twisty;
 	});
 
-	function createCubeTwisty(twistyScene, twistyParameters, twistyFuncs) {
+	function createCubeTwisty(twistyScene, twistyParameters) {
 
 		var cubeObject = new THREE.Object3D();
 		var cubePieces = [];
@@ -219,6 +219,7 @@
 
 		var puzzle = poly3d.makePuzzle.apply(poly3d, twistyParameters.polyParam);
 		DEBUG && console.log('[twistypoly] Create Puzzle', puzzle);
+		var parser = twistyParameters.parser || poly3d.makePuzzleParser(puzzle);
 		var numSides = twistyParameters.polyParam[0];
 
 		// Cube Materials
@@ -390,12 +391,7 @@
 			return move1[0] == move2[0];
 		}
 
-		function defaultParseScramble(scramble) {
-			if (!scramble || /^\s*$/.exec(scramble)) {
-				return [];
-			}
-			var ret = [];
-			var puzzle = this.puzzle;
+		function parseScramble(scramble) {
 			var m = /seed:([0-9a-zA-Z]+)/.exec(scramble);
 			if (m) {
 				var seed = [];
@@ -407,38 +403,13 @@
 					return [];
 				}
 				var rndFunc = new MersenneTwisterObject(seed[0], seed);
+				var ret = [];
 				for (var i = 0; i < 100; i++) {
 					ret.push(validMoves[~~(validMoves.length * rndFunc())]);
 				}
 				return ret;
-
 			}
-			scramble.replace(/(?:^|\s*)(?:\[([a-zA-Z]+)(\d*)('?)\]|(\d*)([A-Z][a-zA-Z]*)(\d*)('?))(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
-				var layer, axis, pow;
-				if (p1) {
-					layer = '0';
-					axis = p1;
-					pow = (p2 == '' ? 1 : ~~p2) * (p3 ? -1 : 1);
-				} else {
-					layer = p4 == '' ? '1' : p4;
-					axis = p5;
-					pow = (p6 == '' ? 1 : ~~p6) * (p7 ? -1 : 1);
-				}
-				var faces = axis.match(/[A-Z][a-z]*/g);
-				var tmp;
-				for (var i = 0; i < [0, 1, 2, 6][faces.length]; i++) {
-					axis = faces.join('');
-					if ((layer + axis) in puzzle.twistyIdx) {
-						ret.push([layer + axis, pow]);
-						break;
-					}
-					tmp = faces[0]; faces[0] = faces[1]; faces[1] = tmp;
-					if (i % 2 == 1) {
-						tmp = faces[0]; faces[0] = faces[1]; faces[1] = faces[2]; faces[2] = tmp;
-					}
-				}
-			});
-			return ret;
+			return this.parser.parseScramble(scramble);
 		}
 
 		var counter = 0;
@@ -459,17 +430,6 @@
 			return counter;
 		}
 
-		function defaultMove2str(move) {
-			var m = /^(\d+)([a-zA-Z]+)$/.exec(move[0]);
-			var move = move[0] + (Math.abs(move[1]) == 1 ? "" : Math.abs(move[1])) + (move[1] < 0 ? "'" : "");
-			if (m[1] == '0') {
-				return '[' + move.slice(1) + ']';
-			} else if (m[1] == '1') {
-				return move.slice(1);
-			}
-			return move;
-		}
-
 		function moveInv(move) {
 			move = move.slice();
 			move[1] = -move[1];
@@ -482,6 +442,7 @@
 			_3d: cubeObject,
 			cubePieces: cubePieces,
 			puzzle: puzzle,
+			parser: parser,
 			animateMoveCallback: animateMoveCallback,
 			advanceMoveCallback: advanceMoveCallback,
 			keydownCallback: keydownCallback,
@@ -489,9 +450,9 @@
 			isInspectionLegalMove: isInspectionLegalMove,
 			isParallelMove: isParallelMove,
 			generateScramble: generateScramble,
-			parseScramble: twistyFuncs.parseScramble || defaultParseScramble,
+			parseScramble: parseScramble,
 			moveCnt: moveCnt,
-			move2str: twistyFuncs.move2str || defaultMove2str,
+			move2str: parser.move2str,
 			moveInv: moveInv
 		};
 	}

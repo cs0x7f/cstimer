@@ -833,6 +833,29 @@ var poly3d = (function() {
 		}
 	}
 
+	function makePuzzleParser(puzzle) {
+		return makeParser(/(?:^|\s*)(?:\[([a-zA-Z]+)(\d*)(')?\]|(\d*)([A-Z][a-zA-Z]*)(\d*)(')?)(?:$|\s*)/g, function(puzzle, m, p1, p2, p3, p4, p5, p6, p7) {
+			var layer = p1 ? '0' : p4 == '' ? '1' : p4;
+			var axis = p1 || p5;
+			var pow = (p1 ? (p2 == '' ? 1 : ~~p2) : (p6 == '' ? 1 : ~~p6)) * ((p3 || p7) ? -1 : 1);
+			var faces = axis.match(/[A-Z][a-z]*/g);
+			var tmp;
+			for (var i = 0; i < [0, 1, 2, 6][faces.length]; i++) {
+				axis = faces.join('');
+				if ((layer + axis) in puzzle.twistyIdx) {
+					return [layer, axis, pow];
+				}
+				tmp = faces[0]; faces[0] = faces[1]; faces[1] = tmp;
+				if (i % 2 == 1) {
+					tmp = faces[0]; faces[0] = faces[1]; faces[1] = faces[2]; faces[2] = tmp;
+				}
+			}
+		}.bind(null, puzzle), function(layer, axis, pow) {
+			var move = axis + (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow < 0 ? "'" : "");
+			return layer == 0 ? ('[' + move + ']') : move;
+		});
+	}
+
 	function parsePolyParam(polyDef) {
 		var paramCmd = polyDef.split(/\s+/g);
 		var nFace = [4, 6, 8, 12, 20]['tcodi'.indexOf(paramCmd[0])];
@@ -867,7 +890,7 @@ var poly3d = (function() {
 			});
 		} else if (name == "fto") {
 			polyParam = [8, [-2, 1/3]];
-			parser = poly3d.makeParser(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
+			parser = makeParser(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
 				return [p3 ? 0 : 1, p1[0] + p1.slice(1).toLowerCase(), p2 ? -1 : 1];
 			}, function(layer, axis, pow) {
 				var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
@@ -915,6 +938,13 @@ var poly3d = (function() {
 					}
 				}
 			};
+		} else if (name == "heli" || name == "helicv" || name == "heli2x2") {
+			polyParam = {
+				"heli": [6, [-2], [-2, Math.sqrt(0.5)], [-2]],
+				"helicv": [6, [-2], [-2, [2 * Math.sqrt(2), -Math.sqrt(5)]], [-2]],
+				"heli2x2": [6, [-2, 0], [-2, [Math.sqrt(2), -0.6]], [-2, [Math.sqrt(3), -0.7]]]
+			}[name];
+			pieceGap = 0.05;
 		} else {
 			return null;
 		}
@@ -951,6 +981,7 @@ var poly3d = (function() {
 		makePuzzle: makePuzzle,
 		renderNet: renderNet,
 		makeParser: makeParser,
+		makePuzzleParser: makePuzzleParser,
 		getFamousPuzzle: getFamousPuzzle,
 		parsePolyParam: parsePolyParam
 	}
