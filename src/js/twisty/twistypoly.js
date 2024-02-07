@@ -4,6 +4,8 @@
 	function bindKeyMap(keyMaps, twisty) {
 		keyMaps = keyMaps.split(' ');
 		var moveActions = {}; // {keyCode: move}
+		var touchActions = {}; // {gesture: [moveStr, move]}
+		var hasTouch = false;
 		var layerActions = {}; // {keyCode: [layerDiff, keyCode1, keyCode2, ...]}, layerDiff = 1/-1
 		var layerOffs = {}; // {keyCode: layerOffset, ...}
 		var char2code = {
@@ -14,7 +16,15 @@
 		var layerActionsPre = {};
 		for (var i = 0; i < keyMaps.length; i++) {
 			var keyMap = keyMaps[i].split(':');
-			if (keyMap.length != 2 || keyMap[0].length != 1) {
+			if (keyMap.length != 2 || !/^(.|\d\d)$/.exec(keyMap[0])) {
+				continue;
+			}
+			if (keyMap[0].length == 2) { // gestures
+				var action = twisty.parseScramble(keyMap[1]);
+				if (action.length == 1) {
+					touchActions[keyMap[0]] = [keyMap[1], action[0]];
+					hasTouch = true;
+				}
 				continue;
 			}
 			var keyCode = keyMap[0].toUpperCase().charCodeAt(0);
@@ -44,6 +54,7 @@
 				layerActions[keyCode] = nIncs;
 			}
 		}
+
 		twisty.handleKeyCode = function(puzzle, moveActions, layerActions, layerOffs, keyCode) {
 			if (keyCode in moveActions) {
 				var move = moveActions[keyCode].slice();
@@ -65,6 +76,7 @@
 				}
 			}
 		}.bind(null, twisty.puzzle, moveActions, layerActions, layerOffs);
+
 		twisty.getAllMoves = function(puzzle, moveActions, layerActions) {
 			var ret = [];
 			var moveSets = {};
@@ -112,6 +124,12 @@
 			}
 			return ret;
 		}.bind(null, twisty.puzzle, moveActions, layerActions);
+
+		if (hasTouch) {
+			twisty.getTouchMoves = function(touchActions) {
+				return touchActions;
+			}.bind(null, touchActions);
+		}
 	}
 
 	twistyjs.registerTwisty("udpoly", function(scene, param) {
@@ -148,8 +166,8 @@
 		}
 		var twisty = createCubeTwisty(scene, param);
 		bindKeyMap(type != "giga"
-			? "I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']"
-			: "I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:r R:l' M:r' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
+			? "I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f'] 62:BR 63:R 64:[u2] 65:[u] 67:F2 69:F 41:L' 42:BR' 45:[u'] 46:[u2'] 47:F' 49:F2' 31:U2 32:U 36:R' 37:[f'] 39:R2' 12:U' 13:U2' 14:L 17:L2 19:[f] 91:[f'] 92:BR2 93:R2 94:F2' 96:F' 97:DR2' 98:DR' 73:[f] 72:BR2' 71:L2' 76:F2 74:F 79:DR2 78:DR 21:U 23:U' 24:BR 25:[r'] 26:BR' 27:BR2 28:[r2'] 29:BR2' 52:[r] 54:[u] 56:[u'] 58:[r'] 82:[r2] 85:[r] 87:DR' 89:DR"
+			: "I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:r R:l' M:r' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f'] 61:u2 62:BR 63:R 64:[u2] 65:[u] 67:F2 69:F 41:L' 42:BR' 43:u2' 45:[u'] 46:[u2'] 47:F' 49:F2' 31:U2 32:U 34:u2 35:u 36:R' 37:[f'] 39:R2' 12:U' 13:U2' 14:L 15:u' 16:u2' 17:L2 19:[f] 91:[f'] 92:BR2 93:R2 94:F2' 95:r 96:F' 97:DR2' 98:DR' 73:[f] 72:BR2' 71:L2' 76:F2 75:l' 74:F 79:DR2 78:DR 21:U 23:U' 24:BR 25:[r'] 26:BR' 27:BR2 28:[r2'] 29:BR2' 51:u 52:[r] 53:u' 54:[u] 56:[u'] 57:l 58:[r'] 59:r' 82:[r2] 85:[r] 87:DR' 89:DR", twisty);
 		return twisty;
 	}
 
@@ -161,14 +179,14 @@
 	twistyjs.registerTwisty("pyr", function(scene, param) {
 		poly3d.getFamousPuzzle("pyr", param);
 		var twisty = createCubeTwisty(scene, param);
-		bindKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b]", twisty);
+		bindKeyMap("I:R K:R' W:B O:B' S:b L:b' D:L E:L' J:U F:U' H:u G:u' ;:[u] A:[u'] U:r M:r' R:l' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b] 61:u2 62:B 63:R 64:[u2] 65:[u] 67:F2 69:F 41:L' 42:B' 43:u2' 45:[u'] 46:[u2'] 47:F' 49:F2' 31:U2 32:U 34:u2 35:u 36:R' 37:[f'] 39:R2' 12:U' 13:U2' 14:L 15:u' 16:u2' 17:L2 19:[f] 91:[f'] 92:B2 93:R2 94:F2' 95:r 96:F' 97:D2' 98:D' 73:[f] 72:B2' 71:L2' 76:F2 75:l' 74:F 79:D2 78:D 21:U 23:U' 24:B 25:[r'] 26:B' 27:B2 28:[r2'] 29:B2' 51:u 52:[r] 53:u' 54:[u] 56:[u'] 57:l 58:[r'] 59:r' 82:[r2] 85:[r] 87:D' 89:D", twisty);
 		return twisty;
 	});
 
 	twistyjs.registerTwisty("fto", function(scene, param) {
 		poly3d.getFamousPuzzle("fto", param);
 		var twisty = createCubeTwisty(scene, param);
-		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
+		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F'] 62:BR 63:R 64:[U2] 65:[U] 67:F2 69:F 41:L' 42:BR' 45:[U'] 46:[U2'] 47:F' 49:F2' 31:U2 32:U 36:R' 37:[F'] 39:R2' 12:U' 13:U2' 14:L 17:L2 19:[F] 91:[F'] 92:BR2 93:R2 94:F2' 96:F' 97:D2' 98:D' 73:[F] 72:BR2' 71:L2' 76:F2 74:F 79:D2 78:D 21:U 23:U' 24:BR 25:[R'] 26:BR' 27:BR2 28:[R2'] 29:BR2' 52:[R] 54:[U] 56:[U'] 58:[R'] 82:[R2] 85:[R] 87:D' 89:D", twisty);
 		return twisty;
 	});
 
@@ -182,7 +200,7 @@
 		}
 		param.pieceGap = 0.075;
 		var twisty = createCubeTwisty(scene, param);
-		bindKeyMap("I:UR K:UR' W:BD O:BD' S:FD L:FD' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:FR M:FR' R:FL' V:FL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F']", twisty);
+		bindKeyMap("I:UR K:UR' W:BD O:BD' S:FD L:FD' D:UL E:UL' J:UB F:UB' H:UF G:UF' U:FR M:FR' R:FL' V:FL ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F'] 62:BD 63:UR 64:[U2] 65:[U] 67:UF2 69:UF 41:UL' 42:BD' 45:[U'] 46:[U2'] 47:UF' 49:UF2' 31:UB2 32:UB 36:UR' 37:[F'] 39:UR2' 12:UB' 13:UB2' 14:UL 17:UL2 19:[F] 91:[F'] 92:BD2 93:UR2 94:UF2' 96:UF' 97:FD2' 98:FD' 73:[F] 72:BD2' 71:UL2' 76:UF2 74:UF 79:FD2 78:FD 21:UB 23:UB' 24:BD 25:[R'] 26:BD' 27:BD2 28:[R2'] 29:BD2' 52:[R] 54:[U] 56:[U'] 58:[R'] 82:[R2] 85:[R] 87:FD' 89:FD", twisty);
 		return twisty;
 	}
 
@@ -200,7 +218,7 @@
 	twistyjs.registerTwisty("crz3a", function(scene, param) {
 		poly3d.getFamousPuzzle("crz3a", param);
 		var twisty = createCubeTwisty(scene, param);
-		bindKeyMap("I:R K:R' W:B O:B' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:y A:y' T:x Y:x N:x' B:x' P:z Q:z'", twisty);
+		bindKeyMap("I:R K:R' W:B O:B' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:y A:y' T:x Y:x N:x' B:x' P:z Q:z' 62:B 63:R 64:y2 65:y 67:F2 69:F 41:L' 42:B' 45:y' 46:y2' 47:F' 49:F2' 31:U2 32:U 36:R' 37:z' 39:R2' 12:U' 13:U2' 14:L 17:L2 19:z 91:z' 92:B2 93:R2 94:F2' 96:F' 97:D2' 98:D' 73:z 72:B2' 71:L2' 76:F2 74:F 79:D2 78:D 21:U 23:U' 24:B 25:x' 26:B' 27:B2 28:x2' 29:B2' 52:x 54:y 56:y' 58:x' 82:x2 85:x 87:D' 89:D", twisty);
 		return twisty;
 	});
 

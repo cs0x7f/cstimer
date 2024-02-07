@@ -154,7 +154,7 @@ window.twistyjs = (function() {
 			}
 			touchCube.append(trs);
 
-			if (twistyType.allowDragging) {
+			if (twistyType.allowDragging && twisty.getTouchMoves) {
 				touchCube.on('mousedown', onTouchDown);
 				touchCube.on('mousemove', onTouchMove);
 				touchCube.on('mouseup', onTouchUp);

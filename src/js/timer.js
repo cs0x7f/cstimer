@@ -1063,11 +1063,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			};
 			if (/^(skb|mgm|pyr|sq1|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga)$/.exec(curPuzzle)) {
 				options.puzzle = curPuzzle;
-				options.allowDragging = false;
 			} else if (/^udpoly$/.exec(curPuzzle)) {
 				options.puzzle = curPuzzle;
 				options.scramble = curScramble;
-				options.allowDragging = false;
 			}
 			options['style'] = getProp('input');
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
