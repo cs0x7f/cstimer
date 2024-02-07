@@ -147,13 +147,16 @@
 			param.minArea = 0.1;
 		}
 		var twisty = createCubeTwisty(scene, param);
-		bindKeyMap("I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
+		bindKeyMap(type != "giga"
+			? "I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:R+ R:L- M:R- V:L+ T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']"
+			: "I:R K:R' W:BR O:BR' S:DR L:DR' C:DL ,:DL' D:L E:L' J:U F:U' H:F G:F' ;:[u] A:[u'] U:r R:l' M:r' V:l T:[l'] Y:[r] N:[r'] B:[l] P:[f] Q:[f']", twisty);
 		return twisty;
 	}
 
 	twistyjs.registerTwisty("klm", mgmTwisty.bind(null, "klm"));
 	twistyjs.registerTwisty("mgm", mgmTwisty.bind(null, "mgm"));
 	twistyjs.registerTwisty("prc", mgmTwisty.bind(null, "prc"));
+	twistyjs.registerTwisty("giga", mgmTwisty.bind(null, "giga"));
 
 	twistyjs.registerTwisty("pyr", function(scene, param) {
 		poly3d.getFamousPuzzle("pyr", param);

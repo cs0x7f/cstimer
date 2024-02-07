@@ -926,10 +926,11 @@ var poly3d = (function() {
 				var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
 				return layer == 0 ? ('[' + move + ']') : move;
 			});
-		} else if (name == "klm" || name == "mgm" || name == "prc") {
+		} else if (name == "klm" || name == "mgm" || name == "prc" || name == "giga") {
 			polyParam = [12, {
 				"klm": [-2, 0.57, -0.57],
 				"mgm": [-2, 0.72, -0.72],
+				"giga": [-2, 0.83, -0.83, 0.66, -0.66],
 				"prc": [-2, 0.4472136, -0.4472136]
 			}[name]];
 			scale = 1.18;
@@ -943,11 +944,11 @@ var poly3d = (function() {
 					if (/^(\s*([+-]{2}\s*)+U'?\s*\n)*$/.exec(scramble)) {
 						scramble = tools.carrot2poch(scramble);
 					}
-					scramble.replace(/(?:^|\s*)(?:([DLR])(\+\+?|--?)|(U|F|D?B?R|D?B?L|D|B)(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+					scramble.replace(/(?:^|\s*)(?:([DLRdlr])(\+\+?|--?)|([UuFf]|D?B?[RL]|d?b?[rl]|[DdBb])(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
 						if (p1) {
-							ret.push(['2' + ["D", "Dbl", "Dbr"]["DLR".indexOf(p1)], (p2[0] == '-' ? -1 : 1) * p2.length]);
+							ret.push([["2D", "2Dbl", "2Dbr", "4D", "4Dbl", "4Dbr"]["DLRdlr".indexOf(p1)], (p2[0] == '-' ? -1 : 1) * p2.length]);
 						} else if (p3) {
-							ret.push(['1' + p3[0] + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)]);
+							ret.push([(p3[0] >= 'a' ? '3' : '1') + p3[0].toUpperCase() + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)]);
 						} else {
 							ret.push(['0' + p6.toUpperCase(), p7 ? -1 : 1]);
 						}
@@ -960,11 +961,13 @@ var poly3d = (function() {
 					var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
 					if (axis[0] == '0') {
 						return "[" + axis.slice(1).toLowerCase() + powfix + "]";
-					} else if (axis[0] == '2') {
+					} else if (axis[0] == '2' || axis[0] == '4') {
 						powfix = pow > 0 ? "+" : "-";
-						return "DLR".charAt(["2D", "2Dbl", "2Dbr"].indexOf(axis)) + powfix + (Math.abs(pow) == 2 ? powfix : '');
+						return "DLRdlr".charAt(["2D", "2Dbl", "2Dbr", "4D", "4Dbl", "4Dbr"].indexOf(axis)) + powfix + (Math.abs(pow) == 2 ? powfix : '');
 					} else if (axis[0] == '1') {
 						return axis.slice(1).toUpperCase() + powfix;
+					} else if (axis[0] == '3') {
+						return axis.slice(1).toLowerCase() + powfix;
 					}
 				}
 			};
