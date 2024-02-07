@@ -482,13 +482,16 @@ var poly3d = (function() {
 	_ = PolyhedronPuzzle.prototype;
 
 	// twistyPlanes = [plane1, plane2, ..., planeN]
-	// twistyDetails = [[name1, maxPow1], [name2, maxPow2], ...]
+	// twistyDetails = [[name1, maxPow1, planeIdx1_1, planeIdx1_2, ...], [name2, maxPow2, planeIdx2_1, ...], ...]
 	_.setTwisty = function(twistyPlanes, twistyDetails) {
 		this.twistyPlanes = twistyPlanes.slice();
 		this.twistyDetails = twistyDetails.slice();
 		this.twistyIdx = {};
 		for (var i = 0; i < twistyDetails.length; i++) {
 			this.twistyIdx[twistyDetails[i][0]] = i;
+			if (this.twistyDetails[i].length == 2) {
+				this.twistyDetails[i].push(i);
+			}
 		}
 		this.cutFacePolygons();
 		this.makeMoveTable();
@@ -522,8 +525,11 @@ var poly3d = (function() {
 	}
 
 	_.cutFacePolygons = function() {
-		for (var i = 0; i < this.twistyPlanes.length; i++) {
-			var plane = this.twistyPlanes[i];
+		var cuts = this.twistyPlanes.slice();
+		cuts.sort(function(a, b) { return (a.ct ? 1 : 0) - (b.ct ? 1 : 0); });
+		// TODO we are not able to handle holes, so cut plane first
+		for (var i = 0; i < cuts.length; i++) {
+			var plane = cuts[i];
 			this.enumFacesPolys(function(face, p, poly) {
 				var polys = poly.split(plane);
 				polys = Array.prototype.concat.apply([], polys);
@@ -557,14 +563,19 @@ var poly3d = (function() {
 			proj1d[idx] = [idx, projNorm.inprod(poly.center), poly.center];
 		}.bind(this));
 		proj1d.sort(function(a, b) { return a[1] - b[1]; });
-		for (var i = 0; i < this.twistyPlanes.length; i++) {
+		for (var i = 0; i < this.twistyDetails.length; i++) {
 			var curMove = [];
-			var plane = this.twistyPlanes[i];
-			var trans = new RotTrans(plane.norm, Math.PI * 2 / this.twistyDetails[i][1]);
+			var planes = [];
+			for (var j = 2; j < this.twistyDetails[i].length; j++) {
+				planes.push(this.twistyPlanes[this.twistyDetails[i][j]]);
+			}
+			var trans = new RotTrans(planes[0].norm, Math.PI * 2 / this.twistyDetails[i][1]);
 			this.enumFacesPolys(function(face, p, poly, idx) {
-				if (plane.side(poly.center) < 0) {
-					curMove[idx] = idx; // not affect by this twistyPlane
-					return;
+				for (var j = 0; j < planes.length; j++) {
+					if (planes[j].side(poly.center) < 0) {
+						curMove[idx] = -1; // not affect by this twisty
+						return;
+					}
 				}
 				var movedCenter = trans.perform(poly.center);
 				var movedProj = projNorm.inprod(movedCenter);
@@ -592,7 +603,7 @@ var poly3d = (function() {
 		}
 	}
 
-	function makePuzzle(nface, faceCuts, edgeCuts, cornCuts) {
+	function makePuzzle(nface, faceCuts, edgeCuts, cornCuts, faceMoves, edgeMoves, cornMoves) {
 		var faceNorms = [];
 		var faceVs = [];
 		var faceNames = [];
@@ -672,19 +683,38 @@ var poly3d = (function() {
 		var twistyPlanes = [];
 		var twistyDetails = [];
 
-		if (faceCuts && faceCuts.length > 0) {
-			for (var i = 0; i < faceNorms.length; i++) {
-				for (var j = 0; j < faceCuts.length; j++) {
-					if (typeof(faceCuts[j]) == 'number') { // plane
-						twistyPlanes.push(new Plane(faceNorms[i], faceCuts[j]));
-						twistyDetails.push([j + "" + faceNames[i], facePow]);
+		function addAxes(norms, names, pow, cuts, moves) {
+			if (!cuts || cuts.length == 0) {
+				return;
+			}
+			if (!moves) {
+				moves = [];
+				for (var i = 0; i < cuts.length; i++) {
+					moves[i] = i;
+				}
+			}
+			for (var i = 0; i < norms.length; i++) {
+				var planeBase = twistyPlanes.length;
+				for (var j = 0; j < cuts.length; j++) {
+					if (typeof(cuts[j]) == 'number') { // plane
+						twistyPlanes.push(new Plane(norms[i], cuts[j]));
 					} else { // sphere
-						twistyPlanes.push(new Sphere(faceNorms[i].scalar(faceCuts[j][0]), faceCuts[j][1], faceNorms[i]));
-						twistyDetails.push([j + "" + faceNames[i], facePow]);
+						twistyPlanes.push(new Sphere(norms[i].scalar(cuts[j][0]), cuts[j][1], norms[i]));
 					}
+				}
+				for (var j = 0; j < moves.length; j++) {
+					var detail = [j + "" + names[i], pow];
+					var planes = typeof(moves[j]) == 'number' ? [moves[j]] : moves[j];
+					for (var k = 0; k < planes.length; k++) {
+						detail.push(planes[k] + planeBase);
+					}
+					twistyDetails.push(detail);
 				}
 			}
 		}
+
+		addAxes(faceNorms, faceNames, facePow, faceCuts, faceMoves);
+
 		if (edgeCuts && edgeCuts.length > 0) {
 			var edgeNorms = [];
 			var edgeNames = [];
@@ -707,17 +737,7 @@ var poly3d = (function() {
 					_point = point;
 				}
 			});
-			for (var i = 0; i < edgeNorms.length; i++) {
-				for (var j = 0; j < edgeCuts.length; j++) {
-					if (typeof(edgeCuts[j]) == 'number') { // plane
-						twistyPlanes.push(new Plane(edgeNorms[i], edgeCuts[j]));
-						twistyDetails.push([j + "" + edgeNames[i], edgePow]);
-					} else { // sphere
-						twistyPlanes.push(new Sphere(edgeNorms[i].scalar(edgeCuts[j][0]), edgeCuts[j][1], edgeNorms[i]));
-						twistyDetails.push([j + "" + edgeNames[i], edgePow]);
-					}
-				}
-			}
+			addAxes(edgeNorms, edgeNames, edgePow, edgeCuts, edgeMoves);
 		}
 		if (cornCuts && cornCuts.length > 0) {
 			var cornNorms = [];
@@ -738,17 +758,7 @@ var poly3d = (function() {
 					}
 				}
 			});
-			for (var i = 0; i < cornNorms.length; i++) {
-				for (var j = 0; j < cornCuts.length; j++) {
-					if (typeof(cornCuts[j]) == 'number') { // plane
-						twistyPlanes.push(new Plane(cornNorms[i], cornCuts[j]));
-						twistyDetails.push([j + "" + cornNames[i], cornPow]);
-					} else { // sphere
-						twistyPlanes.push(new Sphere(cornNorms[i].scalar(cornCuts[j][0]), cornCuts[j][1], cornNorms[i]));
-						twistyDetails.push([j + "" + cornNames[i], cornPow]);
-					}
-				}
-			}
+			addAxes(cornNorms, cornNames, cornPow, cornCuts, cornMoves);
 		}
 
 		puzzle.setTwisty(twistyPlanes, twistyDetails);
@@ -965,6 +975,18 @@ var poly3d = (function() {
 				"heli2x2": [6, [-2, 0], [-2, [Math.sqrt(2), -0.6]], [-2, [Math.sqrt(3), -0.7]]]
 			}[name];
 			pieceGap = 0.05;
+		} else if (/^crz3a$/.exec(name)) {
+			polyParam = [6, [-2, 0.3333, [1, 0.75]], [], [], [0, [1, 2]]];
+			parser = makeParser(/(?:^|\s*)([URFDLBxyz])(\d*)(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
+				var pow = (p2 == '' ? 1 : ~~p2) * (p3 ? -1 : 1);
+				if ("xyz".indexOf(p1) != -1) {
+					return [0, "RUF".charAt("xyz".indexOf(p1)), pow];
+				}
+				return [1, p1, pow];
+			}, function(layer, axis, pow) {
+				var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
+				return (layer == 0 ? "xyz".charAt("RUF".indexOf(axis)) : axis) + powfix;
+			});
 		} else {
 			return null;
 		}

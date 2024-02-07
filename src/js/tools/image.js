@@ -1040,7 +1040,7 @@ var image = execMain(function() {
 				for (var i = 0; i < posit.length; i++) {
 					var val = i;
 					for (var j = 0; j < pow; j++) {
-						val = perm[val];
+						val = perm[val] < 0 ? val : perm[val];
 					}
 					posit2[i] = posit[val];
 				}
@@ -1149,7 +1149,7 @@ var image = execMain(function() {
 			nnnImage.draw(scramble[2], scramble[1]);
 			return true;
 		}
-		if (/^pyr|prc|heli(?:2x2|cv)?$/.exec(type)) {
+		if (/^pyr|prc|heli(?:2x2|cv)?|crz3a$/.exec(type)) {
 			polyhedronImage(type, scramble[1]);
 			return true;
 		}

@@ -194,6 +194,13 @@
 		return twisty;
 	});
 
+	twistyjs.registerTwisty("crz3a", function(scene, param) {
+		poly3d.getFamousPuzzle("crz3a", param);
+		var twisty = createCubeTwisty(scene, param);
+		bindKeyMap("I:R K:R' W:B O:B' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:y A:y' T:x Y:x N:x' B:x' P:z Q:z'", twisty);
+		return twisty;
+	});
+
 	function createCubeTwisty(twistyScene, twistyParameters) {
 
 		var cubeObject = new THREE.Object3D();
@@ -278,11 +285,12 @@
 				return;
 			}
 			var rots = new THREE.Matrix4();
-			var twistyPlane = puzzle.twistyPlanes[moveIdx];
+			var twistyPlane = puzzle.twistyPlanes[puzzle.twistyDetails[moveIdx][2]];
+			var perm = puzzle.moveTable[moveIdx];
 			rots.setRotationAxis(twistyPlane.norm, -moveStep * Math.TAU * currentMove[1] / puzzle.twistyDetails[moveIdx][1]);
 
 			puzzle.enumFacesPolys(function(face, p, poly, idx) {
-				if (twistyPlane.side(poly.center) < 0) {
+				if (perm[idx] < 0) {
 					return;
 				}
 				var sticker = twisty.cubePieces[idx];
@@ -303,7 +311,6 @@
 				debugger; // invalid move
 				return;
 			}
-			var twistyPlane = puzzle.twistyPlanes[moveIdx];
 			var maxPow = puzzle.twistyDetails[moveIdx][1];
 			var pow = (currentMove[1] % maxPow + maxPow) % maxPow;
 			var perm = puzzle.moveTable[moveIdx];
@@ -311,7 +318,7 @@
 			for (var i = 0; i < perm.length; i++) {
 				var val = i;
 				for (var j = 0; j < pow; j++) {
-					val = perm[val];
+					val = perm[val] < 0 ? val : perm[val];
 				}
 				var sticker = twisty.cubePieces[val];
 				if (!sticker) {

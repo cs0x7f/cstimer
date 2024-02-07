@@ -34,9 +34,9 @@
 	];
 	var lp = [
 		[1 - wg * 2, 1 - wg * 2],
-		[0.5 - wg, -hsq3 + wg * hsq3],
+		[-hsq3 + wg * hsq3, 0.5 - wg],
 		[-hsq3 + wg * hsq3, -hsq3 + wg * hsq3],
-		[-hsq3 + wg * hsq3, 0.5 - wg]
+		[0.5 - wg, -hsq3 + wg * hsq3]
 	];
 	var ss = [
 		[-0.5 + wg, ws - wg],
@@ -255,6 +255,7 @@
 				};
 				var stickerInterior = new THREE.Mesh(new THREE.Ploy(curf0), meshes);
 				stickerInterior.doubleSided = cubeOptions.doubleSided;
+				stickerInterior.overdraw = true;
 				sticker.addChild(stickerInterior);
 
 				var transformationMatrix = new THREE.Matrix4().setRotationAxis(sidesRotAxis[index_side[i]], Math.TAU / 4 * curf[4])

@@ -360,14 +360,15 @@ var scrdata = [
 		['random state', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
-	['Cmetrik', [
-		[' ', "cm3", 25]
-	]],
-	['Mini Cmetrik', [
-		[' ', "cm2", 25]
-	]],
 	['Gigaminx', [
 		['Pochmann', "giga", 300]
+	]],
+	['Crazy Puzzle', [
+		['Crazy 3x3x3', "crz3a", 30],
+	]],
+	['Cmetrik', [
+		['Cmetrik', "cm3", 25],
+		['Mini Cmetrik', "cm2", 25]
 	]],
 	['Helikopter Terning', [
 		['Heli copter', "heli", 40],

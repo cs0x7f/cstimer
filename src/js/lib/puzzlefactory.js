@@ -124,7 +124,7 @@ var puzzleFactory = execMain(function() {
 			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
 		} else if (puzzle == "fto") {
 			options["faceColors"] = col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
-		} else if (puzzle == "heli" || puzzle == "helicv" || puzzle == "heli2x2") {
+		} else if (/^heli(?:2x2|cv)?|crz3a$/.exec(puzzle)) {
 			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
 		}
 		options['scale'] = 0.9;

@@ -1,5 +1,5 @@
 <?php
-$version = "2024.02.03";
+$version = "2024.02.07";
 
 function prefered_language($available_languages, $req_lang) {
   if ($req_lang == "auto" && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
