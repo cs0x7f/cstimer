@@ -52,6 +52,28 @@ const api = (function () {
     importScramble,
   };
 })();
+
+function getOrCreateStartHint() {
+  const START_HINT_ID = "vs-start-hint";
+  const existingStartHint = document.querySelector(`#${START_HINT_ID}`);
+  if (existingStartHint) {
+    return existingStartHint;
+  }
+
+  const startHint = document.createElement("p");
+  startHint.id = START_HINT_ID;
+  startHint.innerText = "Make a move to start";
+  document.querySelector("#container").appendChild(startHint);
+  return startHint;
+}
+
+function hideStartHint() {
+  getOrCreateStartHint().style.visibility = "hidden";
+}
+function showStartHint() {
+  getOrCreateStartHint().style.visibility = "visible";
+}
+
 const POST_MESSAGE_SOURCE = "vs-solver-integration";
 
 api.hackForFreshLocalStorage();
@@ -67,6 +89,7 @@ api.regSolveFinishListener((result) => {
 });
 
 api.regStartTimeListener(() => {
+  hideStartHint();
   parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "timeStart" }, "*");
 });
 
@@ -78,6 +101,8 @@ window.addEventListener(
       return;
     }
 
+    console.log(document.querySelector("#vs-start-hint"));
+    showStartHint();
     api.importScramble(scramble);
   },
   false,

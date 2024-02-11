@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@500&family=Space+Grotesk&display=swap");
 
 #wndctn > div,
 .dialog,
@@ -9,23 +9,34 @@
   visibility: hidden !important;
   position: absolute;
 }
+html,
 body {
-  background-color: #11191f !important;
+  background-color: transparent !important;
 }
 .click {
   color: #a0a3a5 !important;
 }
 .activetimer {
   color: #ffffff !important;
-}
-.click,
-.activetimer {
+  font-size: 64px !important;
   font-family: "Space Grotesk", sans-serif !important;
 }
-.click {
-  font-size: 24px !important;
+
+#vs-start-hint {
+  font-size: 20px;
+  font-family: "Kanit", sans-serif;
+  margin: 0 auto;
+  width: max-content;
+  color: #1b1e25;
+  background-color: #70df00;
+  border-radius: 12px;
+  padding: 0.65em 1.2em;
 }
+
 @media screen and (max-width: 1000px) {
+  #vs-start-hint {
+    font-size: 16px;
+  }
   #timer {
     width: 100% !important;
     left: 0 !important;
