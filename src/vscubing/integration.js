@@ -53,43 +53,20 @@ const api = (function () {
   };
 })();
 
-function getOrCreateStartHint() {
-  const START_HINT_ID = "vs-start-hint";
-  const existingStartHint = document.querySelector(`#${START_HINT_ID}`);
-  if (existingStartHint) {
-    return existingStartHint;
-  }
-
-  const startHint = document.createElement("p");
-  startHint.id = START_HINT_ID;
-  startHint.innerText = "Make a move to start";
-  document.querySelector("#container").appendChild(startHint);
-  return startHint;
-}
-
-function hideStartHint() {
-  getOrCreateStartHint().style.visibility = "hidden";
-}
-function showStartHint() {
-  getOrCreateStartHint().style.visibility = "visible";
-}
-
-const POST_MESSAGE_SOURCE = "vs-solver-integration";
-
 api.hackForFreshLocalStorage();
 window.addEventListener("load", () => {
   api.setInputModeToVirtual();
 });
 
+const POST_MESSAGE_SOURCE = "vs-solver-integration";
 api.regSolveFinishListener((result) => {
   parent.postMessage(
     { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
     "*",
   );
 });
-
 api.regStartTimeListener(() => {
-  hideStartHint();
+  getOrCreateStartHint().style.visibility = "hidden";
   parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "timeStart" }, "*");
 });
 
@@ -101,11 +78,24 @@ window.addEventListener(
       return;
     }
 
-    showStartHint();
+    getOrCreateStartHint().style.visibility = "visible";
     api.importScramble(scramble);
   },
   false,
 );
+
+function getOrCreateStartHint() {
+  const existingStartHint = document.querySelector("#vs-start-hint");
+  if (existingStartHint) {
+    return existingStartHint;
+  }
+
+  const startHint = document.createElement("p");
+  startHint.id = "vs-start-hint";
+  startHint.innerText = "Make a move to start";
+  document.querySelector("#container").appendChild(startHint);
+  return startHint;
+}
 
 function getAlgCubingReconstruction(csReconstruction) {
   return csReconstruction
