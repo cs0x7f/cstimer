@@ -228,7 +228,7 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_V3READ = '8653000b-43e6-47b7-9cb0-5fc21d4ae340';
 		var CHRCT_UUID_V3WRITE = '8653000c-43e6-47b7-9cb0-5fc21d4ae340';
 
-		var GAN_CIC_LIST = [0x0001, 0x0501]; // List of Company Identifier Codes seen for GAN cubes
+		var GAN_CIC_LIST = [0x0001, 0x1001, 0x0501]; // List of Company Identifier Codes seen for GAN cubes
 
 		var decoder = null;
 		var deviceName = null;
@@ -398,22 +398,35 @@ var GiikerCube = execMain(function() {
 		}
 
 		function v2initKey(forcePrompt, isWrongKey, ver) {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var mac = savedMacMap[deviceName];
-			if (!mac || forcePrompt) {
-				mac = prompt((isWrongKey ? 'The key provided might be wrong. ' : '') + 'MAC address (xx:xx:xx:xx:xx:xx) of your cube, can be found in CubeStation or about://bluetooth-internals/#devices', mac || 'xx:xx:xx:xx:xx:xx');
+			if (deviceMac) {
+				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
+				var prevMac = savedMacMap[deviceName];
+				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
+					DEBUG && console.log('[gancube] v2init mac matched');
+				} else {
+					DEBUG && console.log('[gancube] v2init mac updated');
+					savedMacMap[deviceName] = deviceMac;
+					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
+				}
+				v2initDecoder(deviceMac, ver);
+			} else {
+				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
+				var mac = savedMacMap[deviceName];
+				if (!mac || forcePrompt) {
+					mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + 'Please enter MAC address.\nMAC address (xx:xx:xx:xx:xx:xx) of your cube can be found using chrome://bluetooth-internals/#devices', mac || 'xx:xx:xx:xx:xx:xx');
+				}
+				var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
+				if (!m) {
+					logohint.push(LGHINT_BTINVMAC);
+					decoder = null;
+					return;
+				}
+				if (mac != savedMacMap[deviceName]) {
+					savedMacMap[deviceName] = mac;
+					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
+				}
+				v2initDecoder(mac, ver);
 			}
-			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
-			if (!m) {
-				logohint.push(LGHINT_BTINVMAC);
-				decoder = null;
-				return;
-			}
-			if (mac != savedMacMap[deviceName]) {
-				savedMacMap[deviceName] = mac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-			v2initDecoder(mac, ver);
 		}
 
 		function v2initDecoder(mac, ver) {
@@ -462,20 +475,7 @@ var GiikerCube = execMain(function() {
 		function v2init(ver) {
 			DEBUG && console.log('[gancube] v2init start');
 			keyCheck = 0;
-			if (deviceMac) {
-				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-				var prevMac = savedMacMap[deviceName];
-				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-					DEBUG && console.log('[gancube] v2init mac matched');
-				} else {
-					DEBUG && console.log('[gancube] v2init mac updated');
-					savedMacMap[deviceName] = deviceMac;
-					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-				}
-				v2initDecoder(deviceMac, ver);
-			} else {
-				v2initKey(true, false, ver);
-			}
+			v2initKey(true, false, ver);
 			return _service_v2data.getCharacteristics().then(function(chrcts) {
 				DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
@@ -537,20 +537,7 @@ var GiikerCube = execMain(function() {
 		function v3init() {
 			DEBUG && console.log('[gancube] v3init start');
 			keyCheck = 0;
-			if (deviceMac) {
-				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-				var prevMac = savedMacMap[deviceName];
-				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-					DEBUG && console.log('[gancube] v3init mac matched');
-				} else {
-					DEBUG && console.log('[gancube] v3init mac updated');
-					savedMacMap[deviceName] = deviceMac;
-					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-				}
-				v2initDecoder(deviceMac, 0);
-			} else {
-				v2initKey(true, false, 0);
-			}
+			v2initKey(true, false, 0);
 			return _service_v3data.getCharacteristics().then(function(chrcts) {
 				DEBUG && console.log('[gancube] v3init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
