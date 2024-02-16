@@ -711,7 +711,13 @@ var GiikerCube = execMain(function() {
 					f6val = value;
 					return checkState();
 				}).then(function(isUpdated) {
+
 					if (isUpdated) {
+						DEBUG && console.log('[gancube]', 'facelet state calc', prevCubie.toFaceCube());
+						DEBUG && console.log('[gancube]', 'facelet state read', latestFacelet);
+						if (prevCubie.toFaceCube() != latestFacelet) {
+							DEBUG && console.log('[gancube]', 'Cube state check error');
+						}
 						return;
 					}
 
@@ -722,12 +728,6 @@ var GiikerCube = execMain(function() {
 					}
 					updateMoveTimes(locTime, 0);
 
-					if (isUpdated && prevCubie.toFaceCube() != latestFacelet) {
-						DEBUG && console.log('[gancube]', 'Cube state check error');
-						DEBUG && console.log('[gancube]', 'calc', prevCubie.toFaceCube());
-						DEBUG && console.log('[gancube]', 'read', latestFacelet);
-						prevCubie.fromFacelet(latestFacelet);
-					}
 				});
 			}).then(loopRead);
 		}
@@ -771,10 +771,7 @@ var GiikerCube = execMain(function() {
 			} else if (mode == 2) { // cube move
 				DEBUG && console.log('[gancube]', 'v2 received move event', value);
 				moveCnt = parseInt(value.slice(4, 12), 2);
-				if (moveCnt == prevMoveCnt) {
-					return;
-				} else if (prevMoveCnt == -1) {
-					prevMoveCnt = moveCnt;
+				if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
 					return;
 				}
 				timeOffs = [];
@@ -796,9 +793,6 @@ var GiikerCube = execMain(function() {
 			} else if (mode == 4) { // cube state
 				DEBUG && console.log('[gancube]', 'v2 received facelets event', value);
 				moveCnt = parseInt(value.slice(4, 12), 2);
-				if (moveCnt != prevMoveCnt && prevMoveCnt != -1) {
-					return;
-				}
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
 				var cchk = 0xf00;
@@ -819,19 +813,14 @@ var GiikerCube = execMain(function() {
 				cc.ea[11] = echk;
 				if (cc.verify() != 0) {
 					keyCheck++;
+					DEBUG && console.log('[gancube]', 'v2 facelets state verify error');
 					return;
 				}
 				latestFacelet = cc.toFaceCube();
+				DEBUG && console.log('[gancube]', 'v2 facelets event state parsed', latestFacelet);
 				if (prevMoveCnt == -1) {
 					initCubeState();
-				} else if (prevCubie.toFaceCube() != latestFacelet) {
-					DEBUG && console.log('[gancube]', 'Cube state check error');
-					DEBUG && console.log('[gancube]', 'calc', prevCubie.toFaceCube());
-					DEBUG && console.log('[gancube]', 'read', latestFacelet);
-					prevCubie.fromFacelet(latestFacelet);
-					callback(latestFacelet, prevMoves, [null, locTime], deviceName + '*');
 				}
-				prevMoveCnt = moveCnt;
 			} else if (mode == 5) { // hardware info
 				DEBUG && console.log('[gancube]', 'v2 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(8, 16), 2) + "." + parseInt(value.slice(16, 24), 2);
