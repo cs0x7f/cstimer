@@ -607,6 +607,7 @@ var GiikerCube = execMain(function() {
 
 		var prevMoves = [];
 		var timeOffs = [];
+		var moveBuffer = []; // [ [moveCnt, move, ts, locTime], ... ]
 		var prevCubie = new mathlib.CubieCube();
 		var curCubie = new mathlib.CubieCube();
 		var latestFacelet = mathlib.SOLVED_FACELET;
@@ -616,7 +617,6 @@ var GiikerCube = execMain(function() {
 		var prevMoveCnt = -1;
 		var movesFromLastCheck = 1000;
 		var batteryLevel = 100;
-		var lastV3ts = -1;
 
 		function initCubeState() {
 			var locTime = $.now();
@@ -855,6 +855,78 @@ var GiikerCube = execMain(function() {
 
 		$.parseV2Data = parseV2Data; // for debug
 
+		// Check if circular move number (modulo 256) fits into (start,end) range exclusive.
+		function isMoveNumberInRange(start, end, moveCnt) {
+			return ((end - start) & 0xFF) > ((moveCnt - start) & 0xFF)
+				&& ((start - moveCnt) & 0xFF) > 0
+				&& ((end - moveCnt) & 0xFF) > 0;
+		}
+
+		function v3InjectLostMoveToBuffer(move) {
+			if (moveBuffer.length > 0) {
+				// Skip if move with the same number already in the buffer
+				if (moveBuffer.some(function (e) { return e[0] == move[0] }))
+					return;
+				// Skip if move number does not fit in range between last evicted move number and move number on buffer head, i.e. move must be one of missed
+				if (!isMoveNumberInRange(prevMoveCnt, moveBuffer[0][0], move[0]))
+					return;
+				// Lost moves should be injected in reverse order, so just put suitable move on buffer head
+				if (move[0] == ((moveBuffer[0][0] - 1) & 0xFF)) {
+					move[2] = moveBuffer[0][2] - 10; // Set lost move device hardware timestamp near to next move event
+					moveBuffer.unshift(move);
+					DEBUG && console.log('[gancube]', 'v3 lost move recovered', move[0], move[1]);
+				}
+			}
+		}
+
+		function v3requestMoveHistory(startMoveCnt, numberOfMoves) {
+			var req = mathlib.valuedArray(16, 0);
+			// Move history response data is byte-aligned, and moves always starting with near-ceil odd serial number, regardless of requested.
+			// Adjust serial and count to always get properly aligned history window that contains all reqested moves.
+			if (startMoveCnt % 2 == 0) {
+				startMoveCnt = (startMoveCnt + 1) & 0xFF;
+				numberOfMoves += numberOfMoves % 2 == 0 ? 2 : 1;
+			}
+			req[0] = 0x68;
+			req[1] = 0x03;
+			req[2] = startMoveCnt;
+			req[3] = 0;
+			req[4] = numberOfMoves;
+			req[5] = 0;
+			// We can safely suppress and ignore possible GATT write errors, v3requestMoveHistory command is automatically retried on each move event if needed
+			return v3sendRequest(req).catch($.noop);
+		}
+
+		function v3EvictMoveBuffer(reqLostMoves) {
+			while (moveBuffer.length > 0) {
+				var diff = (moveBuffer[0][0] - prevMoveCnt) & 0xFF;
+				if (diff > 1) {
+					DEBUG && console.log('[gancube]', 'v3 lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
+					if (reqLostMoves) {
+						v3requestMoveHistory(moveBuffer[0][0], diff);
+					}
+					break;
+				} else {
+					var move = moveBuffer.shift();
+					var m = "URFDLB".indexOf(move[1][0]) * 3 + " 2'".indexOf(move[1][1]);
+					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					prevMoves.unshift(move[1]);
+					if (prevMoves.length > 8)
+						prevMoves = prevMoves.slice(0, 8);
+					callback(curCubie.toFaceCube(), prevMoves, [move[2], move[3]], deviceName + '*');
+					var tmp = curCubie;
+					curCubie = prevCubie;
+					prevCubie = tmp;
+					prevMoveCnt = move[0];
+					DEBUG && console.log('[gancube]', 'v3 move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
+				}
+			}
+			if (moveBuffer.length > 32) { // Something wrong, moves are not evicted from buffer, force cube disconnection
+				onDisconnect();
+			}
+		}
+
 		function onStateChangedV3(event) {
 			var value = event.target.value;
 			if (decoder == null) {
@@ -865,47 +937,40 @@ var GiikerCube = execMain(function() {
 
 		function parseV3Data(value) {
 			var locTime = $.now();
-			DEBUG && console.log('[gancube]', 'dec v3', value);
+			DEBUG && console.log('[gancube]', 'v3 raw message', value);
 			value = decode(value);
 			for (var i = 0; i < value.length; i++) {
 				value[i] = (value[i] + 256).toString(2).slice(1);
 			}
 			value = value.join('');
-			DEBUG && console.log('[gancube]', 'dec v3 decrypted', value);
+			DEBUG && console.log('[gancube]', 'v3 decrypted message', value);
 			var magic = parseInt(value.slice(0, 8), 2);
 			var mode = parseInt(value.slice(8, 16), 2);
 			var len = parseInt(value.slice(16, 24), 2);
 			if (magic != 0x55 || len <= 0) {
-				DEBUG && console.log('[gancube]', 'invalid magic or len', value);
+				DEBUG && console.log('[gancube]', 'v3 invalid magic or len', value);
 				return;
 			}
 			if (mode == 1) { // cube move
 				DEBUG && console.log('[gancube]', 'v3 received move event', value);
 				moveCnt = parseInt(value.slice(64, 72) + value.slice(56, 64), 2);
-				if (moveCnt == prevMoveCnt) {
-					return;
-				} else if (prevMoveCnt == -1) {
-					prevMoveCnt = moveCnt;
+				if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
 					return;
 				}
-				var v3ts = parseInt(value.slice(48, 56) + value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32), 2);
+				var ts = parseInt(value.slice(48, 56) + value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32), 2);
 				var pow = parseInt(value.slice(72, 74), 2);
-				var axis = parseInt(value.slice(74, 80), 2);
-				axis = [2, 32, 8, 1, 16, 4].indexOf(axis);
+				var axis = [2, 32, 8, 1, 16, 4].indexOf(parseInt(value.slice(74, 80), 2));
 				if (axis == -1) {
-					console.log('[gancube]', 'v3 move event invalid axis', value);
+					DEBUG && console.log('[gancube]', 'v3 move event invalid axis');
 					return;
 				}
-				timeOffs = [lastV3ts == -1 ? 0 : ((v3ts - lastV3ts) & 0xffffffff)];
-				prevMoves = ["URFDLB".charAt(axis) + " '".charAt(pow)];
-				lastV3ts = v3ts;
-				updateMoveTimes(locTime, 1);
+				var move = "URFDLB".charAt(axis) + " '".charAt(pow);
+				moveBuffer.push([moveCnt, move, ts, locTime]);
+				DEBUG && console.log('[gancube]', 'v3 move placed to fifo buffer', moveCnt, move, ts, locTime);
+				v3EvictMoveBuffer(true);
 			} else if (mode == 2) {  // cube state
 				DEBUG && console.log('[gancube]', 'v3 received facelets event', value);
 				moveCnt = parseInt(value.slice(32, 40) + value.slice(24, 32), 2);
-				if (moveCnt != prevMoveCnt && prevMoveCnt != -1) {
-					return;
-				}
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
 				var cchk = 0xf00;
@@ -926,19 +991,27 @@ var GiikerCube = execMain(function() {
 				cc.ea[11] = echk;
 				if (cc.verify() != 0) {
 					keyCheck++;
+					DEBUG && console.log('[gancube]', 'v3 facelets state verify error');
 					return;
 				}
 				latestFacelet = cc.toFaceCube();
+				DEBUG && console.log('[gancube]', 'v3 facelets event state parsed', latestFacelet);
 				if (prevMoveCnt == -1) {
 					initCubeState();
-				} else if (prevCubie.toFaceCube() != latestFacelet) {
-					DEBUG && console.log('[gancube]', 'Cube state check error');
-					DEBUG && console.log('[gancube]', 'calc', prevCubie.toFaceCube());
-					DEBUG && console.log('[gancube]', 'read', latestFacelet);
-					prevCubie.fromFacelet(latestFacelet);
-					callback(latestFacelet, prevMoves, [null, locTime], deviceName + '*');
 				}
-				prevMoveCnt = moveCnt;
+			} else if (mode == 6) { // move history
+				DEBUG && console.log('[gancube]', 'v3 received move history event', value);
+				let startMoveCnt = parseInt(value.slice(24, 32), 2);
+				let numberOfMoves = (len - 1) * 2;
+				for (var i = 0; i < numberOfMoves; i++) {
+					var axis = parseInt(value.slice(32 + 4 * i, 35 + 4 * i), 2);
+					var pow = parseInt(value.slice(35 + 4 * i, 36 + 4 * i), 2);
+					if (axis < 6) {
+						var move = "DUBFLR".charAt(axis) + " '".charAt(pow);
+						v3InjectLostMoveToBuffer([(startMoveCnt - i) & 0xFF, move, null, null]);
+					}
+				}
+				v3EvictMoveBuffer(false);
 			} else if (mode == 7) { // hardware info
 				DEBUG && console.log('[gancube]', 'v3 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(80, 84), 2) + "." + parseInt(value.slice(84, 88), 2);
@@ -981,6 +1054,7 @@ var GiikerCube = execMain(function() {
 			deviceMac = null;
 			prevMoves = [];
 			timeOffs = [];
+			moveBuffer = [];
 			prevCubie = new mathlib.CubieCube();
 			curCubie = new mathlib.CubieCube();
 			latestFacelet = mathlib.SOLVED_FACELET;
