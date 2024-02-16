@@ -136,8 +136,7 @@ var GiikerCube = execMain(function() {
 				console.log('[giiker]', "Raw Data: ", valhex.join(""));
 				console.log('[giiker]', "Current State: ", facelet);
 				console.log('[giiker]', "A Valid Generator: ", scramble_333.genFacelet(facelet));
-				console.log('[giiker]', "Previous Moves: ", prevMoves.reverse().join(" "));
-				prevMoves.reverse();
+				console.log('[giiker]', "Previous Moves: ", prevMoves.slice().reverse().join(" "));
 			}
 			callback(facelet, prevMoves, [locTime, locTime], deviceName);
 			return [facelet, prevMoves];
@@ -622,7 +621,7 @@ var GiikerCube = execMain(function() {
 		function initCubeState() {
 			var locTime = $.now();
 			DEBUG && console.log('[gancube]', 'init cube state');
-			callback(latestFacelet, prevMoves, [null, locTime], deviceName);
+			callback(latestFacelet, [], [null, locTime], deviceName);
 			prevCubie.fromFacelet(latestFacelet);
 			prevMoveCnt = moveCnt;
 			if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
@@ -1062,6 +1061,7 @@ var GiikerCube = execMain(function() {
 		var curFacelet = mathlib.SOLVED_FACELET;
 		var curCubie = new mathlib.CubieCube();
 		var prevCubie = new mathlib.CubieCube();
+		var prevMoves = [];
 
 		function parseData(value) {
 			var locTime = $.now();
@@ -1085,7 +1085,10 @@ var GiikerCube = execMain(function() {
 					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					curFacelet = curCubie.toFaceCube();
-					callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(power)], [locTime, locTime], _deviceName);
+					prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(power));
+					if (prevMoves.length > 8)
+						prevMoves = prevMoves.slice(0, 8);
+					callback(curFacelet, prevMoves, [locTime, locTime], _deviceName);
 					var tmp = curCubie;
 					curCubie = prevCubie;
 					prevCubie = tmp;
@@ -1144,6 +1147,11 @@ var GiikerCube = execMain(function() {
 			_service = null;
 			_gatt = null;
 			_deviceName = null;
+			moveCntFree = 100;
+			curFacelet = mathlib.SOLVED_FACELET;
+			curCubie = new mathlib.CubieCube();
+			prevCubie = new mathlib.CubieCube();
+			prevMoves = [];
 			return result;
 		}
 
@@ -1208,7 +1216,7 @@ var GiikerCube = execMain(function() {
 		var curFacelet = mathlib.SOLVED_FACELET;
 		var curCubie = new mathlib.CubieCube();
 		var prevCubie = new mathlib.CubieCube();
-		var timeOffset = 0;
+		var prevMoves = [];
 
 		function onReadEvent(event) {
 			var value = event.target.value;
@@ -1256,17 +1264,15 @@ var GiikerCube = execMain(function() {
 				} else {
 					continue;
 				}
-				var calcTs = ts + timeOffset;
-				// if (timeOffset == 0 || Math.abs(locTime - calcTs) > 2000 || timer.getStatus() == -1 && Math.abs(locTime - calcTs) > 300) {
-				// 	timeOffset = locTime - ts;
-				// 	calcTs = locTime;
-				// }
 				var m = axis * 3 + pow;
 				DEBUG && console.log('[moyucube]', 'move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
 				mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				curFacelet = curCubie.toFaceCube();
-				callback(curFacelet, ["URFDLB".charAt(axis) + " 2'".charAt(pow)], [calcTs, locTime], _deviceName);
+				prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(pow));
+				if (prevMoves.length > 8)
+					prevMoves = prevMoves.slice(0, 8);
+				callback(curFacelet, prevMoves, [ts, locTime], _deviceName);
 				var tmp = curCubie;
 				curCubie = prevCubie;
 				prevCubie = tmp;
@@ -1299,6 +1305,11 @@ var GiikerCube = execMain(function() {
 			_service = null;
 			_gatt = null;
 			_deviceName = null;
+			faceStatus = [0, 0, 0, 0, 0, 0];
+			curFacelet = mathlib.SOLVED_FACELET;
+			curCubie = new mathlib.CubieCube();
+			prevCubie = new mathlib.CubieCube();
+			prevMoves = [];
 			return result;
 		}
 

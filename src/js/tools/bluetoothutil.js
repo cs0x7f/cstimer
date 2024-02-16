@@ -360,7 +360,7 @@ var giikerutil = execMain(function(CubieCube) {
 		moveTsStart = moveTsList.length;
 		scrambleLength = 0;
 		drawState();
-		callback(curState, ['U '], [null, $.now()]);
+		callback(curState, [], [null, $.now()]);
 	}
 
 	var moveTsList = []; //[[move, deviceTime, locTime], ...], locTime might be null
@@ -654,7 +654,7 @@ var giikerutil = execMain(function(CubieCube) {
 			CubieCube.EdgeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			CubieCube.CornMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			moveTsStart = moveTsList.length;
-			callback(targetCubie.toFaceCube(), ['U '], [null, $.now()]);
+			callback(targetCubie.toFaceCube(), [], [null, $.now()]);
 		}
 		scrambleLength = moveTsList.length - moveTsStart;
 		updateRawMovesClick();
@@ -673,7 +673,7 @@ var giikerutil = execMain(function(CubieCube) {
 			return;
 		}
 		hackedSolvedCubieInv = null;
-		callback(curState, ['U '], [null, $.now()]);
+		callback(curState, [], [null, $.now()]);
 	}
 
 	$(function() {
