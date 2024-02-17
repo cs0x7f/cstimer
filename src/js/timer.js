@@ -1408,7 +1408,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				lcd.fixDisplay(false, true);
 			}
 			if (status >= 1) {
-				rawMoves[status - 1].push([prevMoves[0], lastTs[0], lastTs[1]]);
+				if (prevMoves.length > 0)
+					rawMoves[status - 1].push([prevMoves[0], lastTs[0], lastTs[1]]);
 				var curProgress = cubeutil.getProgress(facelet, solvingMethod);
 				updateMulPhase(totPhases, curProgress, locTime);
 
