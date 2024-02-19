@@ -871,11 +871,14 @@ var GiikerCube = execMain(function() {
 		function v3requestMoveHistory(startMoveCnt, numberOfMoves) {
 			var req = mathlib.valuedArray(16, 0);
 			// Move history response data is byte-aligned, and moves always starting with near-ceil odd serial number, regardless of requested.
-			// Adjust serial and count to always get properly aligned history window that contains all reqested moves.
-			if (startMoveCnt % 2 == 0) {
-				startMoveCnt = (startMoveCnt + 1) & 0xFF;
-				numberOfMoves += numberOfMoves % 2 == 0 ? 2 : 1;
-			}
+			// Adjust start move and number of moves to get odd number aligned history window with even number of moves inside.
+			if (startMoveCnt % 2 == 0)
+				startMoveCnt = (startMoveCnt - 1) & 0xFF;
+			if (numberOfMoves % 2 == 1)
+				numberOfMoves++;
+			// Never overflow requested history window beyond the move number cycle edge 255 -> 0.
+			// Because due to iCarry2 firmware bug the moves beyond the edge spoofed with 'D' (just zero bytes).
+			numberOfMoves = Math.min(numberOfMoves, startMoveCnt + 1);
 			req[0] = 0x68;
 			req[1] = 0x03;
 			req[2] = startMoveCnt;
@@ -990,8 +993,8 @@ var GiikerCube = execMain(function() {
 				}
 			} else if (mode == 6) { // move history
 				DEBUG && console.log('[gancube]', 'v3 received move history event', value);
-				let startMoveCnt = parseInt(value.slice(24, 32), 2);
-				let numberOfMoves = (len - 1) * 2;
+				var startMoveCnt = parseInt(value.slice(24, 32), 2);
+				var numberOfMoves = (len - 1) * 2;
 				for (var i = 0; i < numberOfMoves; i++) {
 					var axis = parseInt(value.slice(32 + 4 * i, 35 + 4 * i), 2);
 					var pow = parseInt(value.slice(35 + 4 * i, 36 + 4 * i), 2);
