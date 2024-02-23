@@ -481,23 +481,30 @@ var kilominx = (function() {
 		return ret.join(' ');
 	}
 
-	function solveKiloCubie(cc) {
+	function solveKiloCubie(cc, useSym) {
 		init();
 		var kc0 = new KiloCubie();
 		var kc1 = new KiloCubie();
+		var kc2 = new KiloCubie();
 
 		kc0.init(cc.perm, cc.twst);
 
 		var idx;
+		var tt = +new Date;
+		var sols = [];
+		var solsym = 0;
 
 		//phase1
 		var doPhase1Move = comb3FullMove.bind(null, Phase1Move);
-		var val0 = phase1Coord.get(kc0, 3);
-		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][2]], kc0, KiloCubie.symCube[2], kc1);
-		var val1 = phase1Coord.get(kc1, 3);
-		idx = [val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]];
-		var tt = +new Date;
-		var sol1 = solve(idx, function(idx) {
+		var idx1s = [];
+		for (var s = 0; s < (useSym ? 12 : 1); s++) {
+			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][s * 5]], kc0, KiloCubie.symCube[s * 5], kc1);
+			var val0 = phase1Coord.get(kc1, 3);
+			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][2]], kc1, KiloCubie.symCube[2], kc2);
+			var val1 = phase1Coord.get(kc2, 3);
+			idx1s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
+		}
+		var sol1s = solveMulti(idx1s, function(idx) {
 			return idx[0] == 0 && idx[1] == 0;
 		}, function(idx) {
 			return Math.max(mathlib.getPruning(Phase1Prun, idx[0]), mathlib.getPruning(Phase1Prun, idx[1]));
@@ -508,21 +515,31 @@ var kilominx = (function() {
 			}
 			return idx1;
 		}, 12, 9);
+		var ksym = sol1s[0] * 5;
+		var sol1 = sol1s[1];
+		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
+		kc0.init(kc1.perm, kc1.twst);
+		solsym = KiloCubie.symMult[solsym][ksym];
 		for (var i = 0; i < sol1.length; i++) {
 			var move = sol1[i];
 			KiloCubie.KiloMult(kc0, KiloCubie.moveCube[move[0] * 4 + move[1]], kc1);
 			kc0.init(kc1.perm, kc1.twst);
+			move[0] = KiloCubie.symMulM[KiloCubie.symMulI[0][solsym]][move[0]];
 		}
-		DEBUG && console.log('[kilo] Phase1 in ', +new Date - tt);
+		DEBUG && console.log('[kilo] Phase1s in ', +new Date - tt, 'ms', sol1.length, 'move(s) sym=', ksym);
 
 		//phase2
-		var doPhase2Move = comb3FullMove.bind(null, Phase2Move);
-		val0 = phase2Coord.get(kc0, 3);
-		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][1]], kc0, KiloCubie.symCube[1], kc1);
-		val1 = phase2Coord.get(kc1, 3);
-		idx = [val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]];
 		tt = +new Date;
-		var sol2 = solve(idx, function(idx) {
+		var doPhase2Move = comb3FullMove.bind(null, Phase2Move);
+		var idx2s = [];
+		for (var s = 0; s < (useSym ? 5 : 1); s++) {
+			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][s]], kc0, KiloCubie.symCube[s], kc1);
+			var val0 = phase2Coord.get(kc1, 3);
+			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][1]], kc1, KiloCubie.symCube[1], kc2);
+			var val1 = phase2Coord.get(kc2, 3);
+			idx2s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
+		}
+		var sol2s = solveMulti(idx2s, function(idx) {
 			return idx[0] == 0 && idx[1] == 0;
 		}, function(idx) {
 			return Math.max(mathlib.getPruning(Phase2Prun, idx[0]), mathlib.getPruning(Phase2Prun, idx[1]));
@@ -533,12 +550,18 @@ var kilominx = (function() {
 			}
 			return idx1;
 		}, 6, 14);
+		var ksym = sol2s[0];
+		var sol2 = sol2s[1];
+		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
+		kc0.init(kc1.perm, kc1.twst);
+		solsym = KiloCubie.symMult[solsym][ksym];
 		for (var i = 0; i < sol2.length; i++) {
 			var move = sol2[i];
 			KiloCubie.KiloMult(kc0, KiloCubie.moveCube[move[0] * 4 + move[1]], kc1);
 			kc0.init(kc1.perm, kc1.twst);
+			move[0] = KiloCubie.symMulM[KiloCubie.symMulI[0][solsym]][move[0]];
 		}
-		DEBUG && console.log('[kilo] Phase2 in ', +new Date - tt);
+		DEBUG && console.log('[kilo] Phase2s in ', +new Date - tt, 'ms', sol2.length, 'move(s) sym=', ksym);
 
 		//phase3
 		var doPhase3Move = comb4FullMove.bind(null, Phase3Move);
@@ -556,7 +579,11 @@ var kilominx = (function() {
 		}, function(idx, move) {
 			return [doPhase3Move(idx[0], move), doPhase3Move(idx[1], (move + 1) % 3), doPhase3Move(idx[2], (move + 2) % 3)];
 		}, 3, 14);
-		DEBUG && console.log('[kilo] Phase3 in ', +new Date - tt);
+		DEBUG && console.log('[kilo] Phase3 in ', +new Date - tt, 'ms', sol3.length, 'move(s)');
+		for (var i = 0; i < sol3.length; i++) {
+			var move = sol3[i];
+			move[0] = KiloCubie.symMulM[KiloCubie.symMulI[0][solsym]][move[0]];
+		}
 		DEBUG && console.log('[kilo] total length: ', sol1.length + sol2.length + sol3.length);
 		return move2str(Array.prototype.concat(sol1, sol2, sol3));
 	}
@@ -572,7 +599,7 @@ var kilominx = (function() {
 			KiloCubie.KiloMult(kc0, KiloCubie.moveCube[move * 4], kc1);
 			kc0.init(kc1.perm, kc1.twst);
 		}
-		return move2str(gen) + '   ' + solveKiloCubie(kc0);
+		return move2str(gen) + '   ' + solveKiloCubie(kc0, true);
 	}
 
 	function getScramble() {
@@ -586,10 +613,14 @@ var kilominx = (function() {
 			chksum -= t;
 		}
 		cc.twst[19] = chksum % 3;
-		return solveKiloCubie(cc);
+		return solveKiloCubie(cc, true);
 	}
 
 	scrMgr.reg('klmso', getScramble);
 
-	return KiloCubie;
+	return {
+		KiloCubie: KiloCubie,
+		getScramble: getScramble,
+		checkSolver: checkSolver
+	};
 })();

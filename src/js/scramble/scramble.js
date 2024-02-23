@@ -762,6 +762,10 @@ var scramble = execMain(function(rn, rndEl) {
 			}
 			scramble = scramble_copy;
 			output.text(genScrambles);
+			$.clipboardCopy(genScrambles).then(
+				logohint.push.bind(logohint, LGHINT_SCRCOPY),
+				logohint.push.bind(logohint, 'Copy Failed')
+			);
 			output.select();
 		}
 
