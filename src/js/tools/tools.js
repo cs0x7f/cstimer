@@ -250,10 +250,10 @@ var tools = execMain(function() {
 			}
 		}
 
-		kernel.regProp('tools', 'toolPos', 1, PROPERTY_TOOLPOS, ['b', ['b', 'f', 't'], PROPERTY_TOOLPOS_STR.split('|')]);
+		kernel.regProp('tools', 'toolPos', 1, PROPERTY_TOOLPOS, ['b', ['b', 'f', 't'], PROPERTY_TOOLPOS_STR.split('|')], 1);
 		kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false]);
-		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50]);
-		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4]);
+		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50], 1);
+		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4], 1);
 		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
 		kernel.regProp('tools', 'toolsfunc', 5, PROPERTY_TOOLSFUNC, [defaultFunc], 1);
 		kernel.regProp('tools', 'isTrainScr', ~5, 'Is Train Scramble', [false], 0);
