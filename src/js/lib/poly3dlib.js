@@ -918,8 +918,9 @@ var poly3d = (function() {
 				var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p4).toUpperCase())];
 				return [p4 ? 0 : p2 ? 3 : p1 == p1.toUpperCase() ? 2 : 1, face, (p3 || p5) ? -1 : 1];
 			}, function(layer, axis, pow) {
-				var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis)) + (pow < 0 ? "'" : "");
-				return ["[" + move + "]", move, move.toUpperCase(), move.toUpperCase() + 'w'][layer];
+				var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis));
+				var powfix = pow < 0 ? "'" : "";
+				return ["[" + move + powfix + "]", move + powfix, move.toUpperCase() + powfix, move.toUpperCase() + 'w' + powfix][layer];
 			});
 		} else if (name == "fto") {
 			polyParam = [8, [-2, 1/3]];
