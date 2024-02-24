@@ -437,11 +437,13 @@
 				if (validMoves.length == 0) {
 					return [];
 				}
-				var rndFunc = new MersenneTwisterObject(seed[0], seed);
+				var iscache = isaac.internals();
+				isaac.seed(seed);
 				var ret = [];
 				for (var i = 0; i < 100; i++) {
-					ret.push(validMoves[~~(validMoves.length * rndFunc())]);
+					ret.push(validMoves[~~(validMoves.length * isaac.random())]);
 				}
+				isaac.internals(iscache);
 				return ret;
 			}
 			return this.parser.parseScramble(scramble);

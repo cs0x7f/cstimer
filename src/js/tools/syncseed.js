@@ -28,7 +28,7 @@ execMain(function() {
 	function setSeed(seed) {
 		seedMode = true;
 		rawSeed = rawSeed || mathlib.getSeed();
-		mathlib.setSeed(0, 'syncseed' + seed);
+		mathlib.setSeed(256, 'syncseed' + seed);
 		scramble.setCacheEnable(false);
 		seedSpan.html(seed).addClass('click');
 		kernel.pushSignal('ctrl', ['scramble', 'next']);
@@ -39,7 +39,7 @@ execMain(function() {
 			return;
 		}
 		seedMode = false;
-		mathlib.setSeed(0, rawSeed[1] + '' + rawSeed[0]);
+		mathlib.setSeed(256, rawSeed[1] + '' + rawSeed[0]);
 		rawSeed = undefined;
 		scramble.setCacheEnable(true);
 		kernel.pushSignal('ctrl', ['scramble', 'next']);

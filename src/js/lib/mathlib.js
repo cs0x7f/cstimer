@@ -1091,7 +1091,8 @@ var mathlib = (function() {
 				for (var i = 0; i < _seedStr.length; i++) {
 					seed[i] = _seedStr.charCodeAt(i);
 				}
-				rndFunc = new MersenneTwisterObject(seed[0], seed);
+				isaac.seed(seed);
+				rndFunc = isaac.random;
 				rndCnt = 0;
 				seedStr = _seedStr;
 			}
@@ -1101,8 +1102,14 @@ var mathlib = (function() {
 			}
 		}
 
-		// setSeed(0, '1576938267035');
-		setSeed(0, '' + new Date().getTime());
+		var seed = '' + new Date().getTime();
+		if (typeof crypto != 'undefined' && crypto.getRandomValues) {
+			seed = String.fromCharCode.apply(null, crypto.getRandomValues(new Uint16Array(256)));
+			DEBUG && console.log('[mathlib] use crypto seed', seed);
+		} else {
+			DEBUG && console.log('[mathlib] use datetime seed', seed);
+		}
+		setSeed(256, seed);
 
 		return {
 			random: random,

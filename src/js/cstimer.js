@@ -3,7 +3,7 @@
 importScripts(
 	'lib/utillib.js',
 	'lib/sha256.js',
-	'lib/mersennetwister.js',
+	'lib/isaac.js',
 	'lib/mathlib.js',
 	'lib/grouplib.js',
 	'lib/sbtree.js',

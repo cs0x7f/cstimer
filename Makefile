@@ -12,7 +12,7 @@ debugoff = --define='DEBUGM=false' --define='DEBUGWK=false'
 timerSrc = $(addprefix $(src)/js/, \
 lib/utillib.js \
 lib/sha256.js \
-lib/mersennetwister.js \
+lib/isaac.js \
 lib/mathlib.js \
 lib/grouplib.js \
 lib/poly3dlib.js \
