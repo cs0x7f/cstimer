@@ -277,7 +277,7 @@ var replay = execMain(function() {
 		};
 		if (size != -1) {
 			options['puzzle'] = 'cube' + (size + 2);
-		} else if (/^(skb|mgm|pyr|sq1|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga)$/.exec(puzzle)) {
+		} else if (/^(skb|mgm|m?pyr|sq1|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga)$/.exec(puzzle)) {
 			options.puzzle = puzzle;
 		} else if (/^udpoly$/.exec(puzzle)) {
 			options.puzzle = puzzle;

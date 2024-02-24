@@ -1149,7 +1149,7 @@ var image = execMain(function() {
 			nnnImage.draw(scramble[2], scramble[1]);
 			return true;
 		}
-		if (/^pyr|prc|heli(?:2x2|cv)?|crz3a|giga$/.exec(type)) {
+		if (/^m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga$/.exec(type)) {
 			polyhedronImage(type, scramble[1]);
 			return true;
 		}

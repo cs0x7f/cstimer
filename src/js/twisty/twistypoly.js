@@ -183,6 +183,13 @@
 		return twisty;
 	});
 
+	twistyjs.registerTwisty("mpyr", function(scene, param) {
+		poly3d.getFamousPuzzle("mpyr", param);
+		var twisty = createCubeTwisty(scene, param);
+		bindKeyMap("I:R K:R' W:B O:B' S:Bw L:Bw' D:L E:L' J:U F:U' H:Uw G:Uw' ;:[u] A:[u'] U:Rw M:Rw' R:Lw' V:Lw T:[l'] Y:[r] N:[r'] B:[l] P:[b'] Q:[b] 5:u' 6:u X:b .:b' 1:l 2:l' 9:r 0:r'", twisty);
+		return twisty;
+	});
+
 	twistyjs.registerTwisty("fto", function(scene, param) {
 		poly3d.getFamousPuzzle("fto", param);
 		var twisty = createCubeTwisty(scene, param);

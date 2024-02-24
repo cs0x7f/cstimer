@@ -116,7 +116,7 @@ var puzzleFactory = execMain(function() {
 			options["faceColors"] = col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);
 		} else if (puzzle == "mgm" || puzzle == "prc" || puzzle == "klm" || puzzle == "giga") {
 			options["faceColors"] = col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
-		} else if (puzzle == "pyr") {
+		} else if (puzzle == "pyr" || puzzle == "mpyr") {
 			options["faceColors"] = col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
 		} else if (puzzle == "sq1") {
 			options["faceColors"] = col2std(kernel.getProp("colsq1"), [0, 5, 4, 2, 1, 3]);

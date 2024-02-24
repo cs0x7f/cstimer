@@ -907,16 +907,19 @@ var poly3d = (function() {
 
 	function getFamousPuzzle(name, bindObj) {
 		var polyParam, parser, scale = 1, pieceGap = 0.075, colors = [];
-		if (name == "pyr") {
-			polyParam = [4, [], [], [-2, 1/3, 5/3]];
+		if (name == "pyr" || name == "mpyr") {
+			polyParam = [4, [], [], {
+				"pyr": [-2, 5/3, 1/3],
+				"mpyr": [-2, 2, 1, 0]
+			}[name]];
 			scale = 0.51;
 			pieceGap = 0.14;
-			parser = makeParser(/(?:^|\s*)(?:([URLBurlb])(')?|\[([urlb])(')?\])(?:$|\s*)/g, function(m, p1, p2, p3, p4) {
-				var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p3).toUpperCase())];
-				return [p3 ? 0 : p1 == p1.toUpperCase() ? 1 : 2, face, (p2 || p4) ? -1 : 1];
+			parser = makeParser(/(?:^|\s*)(?:([URLBurlb])(w?)(')?|\[([urlb])(')?\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5) {
+				var face = ["LRF", "DRF", "DLF", "DLR"]["URLB".indexOf((p1 || p4).toUpperCase())];
+				return [p4 ? 0 : p2 ? 3 : p1 == p1.toUpperCase() ? 2 : 1, face, (p3 || p5) ? -1 : 1];
 			}, function(layer, axis, pow) {
 				var move = "urlb".charAt(["LRF", "DRF", "DLF", "DLR"].indexOf(axis)) + (pow < 0 ? "'" : "");
-				return ["[" + move + "]", move.toUpperCase(), move][layer];
+				return ["[" + move + "]", move, move.toUpperCase(), move.toUpperCase() + 'w'][layer];
 			});
 		} else if (name == "fto") {
 			polyParam = [8, [-2, 1/3]];

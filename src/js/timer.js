@@ -1061,7 +1061,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				puzzle: "cube" + size,
 				allowDragging: true
 			};
-			if (/^(skb|mgm|pyr|sq1|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga)$/.exec(curPuzzle)) {
+			if (/^(skb|mgm|m?pyr|sq1|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga)$/.exec(curPuzzle)) {
 				options.puzzle = curPuzzle;
 			} else if (/^udpoly$/.exec(curPuzzle)) {
 				options.puzzle = curPuzzle;
@@ -1159,7 +1159,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var curScrSize;
 		var curPuzzle;
 		var types = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
-		var typere = /^sq1|skb|mgm|pyr|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga|udpoly$/;
+		var typere = /^sq1|skb|mgm|m?pyr|clk|fto|heli(?:cv|2x2)?|crz3a|prc|klm|giga|udpoly$/;
 		var isReseted = false;
 
 		function procSignal(signal, value) {
