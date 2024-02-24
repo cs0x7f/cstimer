@@ -227,7 +227,7 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_V3READ = '8653000b-43e6-47b7-9cb0-5fc21d4ae340';
 		var CHRCT_UUID_V3WRITE = '8653000c-43e6-47b7-9cb0-5fc21d4ae340';
 
-		var GAN_CIC_LIST = [0x0001, 0x1001, 0x0501]; // List of Company Identifier Codes seen for GAN cubes
+		var GAN_CIC_LIST = [0x0001, 0x1001, 0x0501, 0x7f01]; // List of Company Identifier Codes seen for GAN cubes
 
 		var decoder = null;
 		var deviceName = null;
