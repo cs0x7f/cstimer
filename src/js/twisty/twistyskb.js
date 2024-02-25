@@ -200,7 +200,7 @@
 			new THREE.Vector3(0, -Math.sqrt(1 / 3), -Math.sqrt(2 / 3)), //B
 			xx, //x
 			yy, //y
-			zzi, //z
+			zz, //z
 			new THREE.Vector3(Math.sqrt(2 / 3), Math.sqrt(1 / 3), 0), //R
 			new THREE.Vector3(-Math.sqrt(2 / 3), Math.sqrt(1 / 3), 0), //L
 			new THREE.Vector3(0, Math.sqrt(1 / 3), Math.sqrt(2 / 3)), //F
@@ -321,8 +321,8 @@
 				89: [mX, 3, -5, 5], //Y x
 				78: [mX, -3, -5, 5], //N x'
 				66: [mX, -3, -5, 5], //B x'
-				80: [mZ, -3, -5, 5], //P z
-				81: [mZ, 3, -5, 5] //Q z'
+				80: [mZ, 3, -5, 5], //P z
+				81: [mZ, -3, -5, 5] //Q z'
 			}
 		}
 
@@ -373,9 +373,8 @@
 			} else {
 				var ret = [];
 				scramble.replace(moveRe, function(m, p1, p2) {
-					ret.push(['URLBxyzrlFD'.indexOf(p1),
-						p2 ? -4 : 4, 0, 5
-					]);
+					var isRot = 'xyz'.indexOf(p1) != -1;
+					ret.push(['URLBxyzrlFD'.indexOf(p1), (p2 ? -1 : 1) * (isRot ? 3 : 4), isRot ? -5 : 0, 5]);
 				});
 				return ret;
 			}
