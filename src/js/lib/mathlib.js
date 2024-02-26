@@ -1210,8 +1210,9 @@ var mathlib = (function() {
 
 	function valuedArray(len, val) {
 		var ret = [];
+		var isFun = typeof val == 'function';
 		for (var i = 0; i < len; i++) {
-			ret[i] = val;
+			ret[i] = isFun ? val(i) : val;
 		}
 		return ret;
 	}

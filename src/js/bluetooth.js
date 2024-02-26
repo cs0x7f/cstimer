@@ -227,7 +227,8 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_V3READ = '8653000b-43e6-47b7-9cb0-5fc21d4ae340';
 		var CHRCT_UUID_V3WRITE = '8653000c-43e6-47b7-9cb0-5fc21d4ae340';
 
-		var GAN_CIC_LIST = [0x0001, 0x1001, 0x0501]; // List of Company Identifier Codes seen for GAN cubes
+		// List of Company Identifier Codes, fill with all values range [0x0001, 0xFF01] possible for GAN cubes
+		var GAN_CIC_LIST = mathlib.valuedArray(256, function (i) { return (i << 8) | 0x01 });
 
 		var decoder = null;
 		var deviceName = null;
@@ -392,7 +393,7 @@ var GiikerCube = execMain(function() {
 					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
 					abortController.abort();
 					reject(-2);
-				}, 5000);
+				}, 10000);
 			});
 		}
 
