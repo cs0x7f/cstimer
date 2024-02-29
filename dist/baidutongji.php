@@ -12,10 +12,5 @@ $(function() {
 		ad.setAttribute('crossorigin', 'anonymous');
 		s.parentNode.insertBefore(ad, s);
 	}
-	kernel.regListener('baidu', 'property', function(signal, value) {
-		setTimeout(function() {
-			_hmt.push(['_trackEvent', 'color', kernel.exportColor && kernel.exportColor()]);
-		}, 500);
-	}, /^color$/);
 });
 </script>
