@@ -129,9 +129,9 @@
 <li><strong data="tool_trend">time trend</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">draw scramble</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">Solvers &gt; solve Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Solvers &gt; solve EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Solvers &gt; solve cross</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
+<li><strong data="tool_roux1">Solvers &gt; Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
+<li><strong data="tool_eoline">Solvers &gt; EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
+<li><strong data="tool_cross">Solvers &gt; Cross</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
 <li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
 <li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
 <li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
