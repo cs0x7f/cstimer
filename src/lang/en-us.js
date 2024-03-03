@@ -55,9 +55,9 @@ var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
 var BUTTON_TOOLS = 'TOOLS';
 var IMAGE_UNAVAILABLE = 'Unavailable for this scramble type';
 var TOOLS_SELECTFUNC = 'Function';
-var TOOLS_CROSS = 'solve cross';
-var TOOLS_EOLINE = 'solve EOLine';
-var TOOLS_ROUX1 = 'solve Roux S1';
+var TOOLS_CROSS = 'Cross';
+var TOOLS_EOLINE = 'EOLine';
+var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Cube';
 var TOOLS_IMAGE = 'draw scramble';
@@ -364,7 +364,7 @@ var scrdata = [
 		['Pochmann', "giga", 300]
 	]],
 	['Crazy Puzzle', [
-		['Crazy 3x3x3', "crz3a", 30],
+		['Crazy 3x3x3', "crz3a", 30]
 	]],
 	['Cmetrick', [
 		['Cmetrick', "cm3", 25],

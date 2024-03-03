@@ -21,45 +21,45 @@
 <li><strong>यूआई विवरण</strong> - csTimer के चिह्न के पास 6 बटन हैं: विकल्प, निर्यात, स्क्रैम्बल, समय सूची, मदद करें, और उपकरण। संबंधित फ़ंक्शन पैनल खोलने के लिए <strong>स्क्रैम्बल</strong>, <strong>समय सूची</strong>, और <strong>उपकरण</strong> को दबाएं।</li>
 <li><strong>स्क्रैम्बल पैनल</strong> - स्क्रैम्बल पैनल में, आप स्क्रैम्बल प्रकार का चयन कर सकते हैं, स्क्रैम्बल की लंबाई और केस फ़िल्टर सेट कर सकते हैं (यदि उपलब्ध हो), पिछले स्क्रैम्बल की समीक्षा कर सकते हैं, और अगला स्क्रैम्बल तैयार कर सकते हैं।</li>
 <li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
-<li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
+<li><strong>टूल्स पैनल</strong> - टूल्स पैनल में, आप विशिष्ट सहायक कार्यों का चयन कर सकते हैं, जिसमें स्क्रैम्बल इमेज, स्क्रैम्बल जनरेटर, सॉल्वर, अन्य प्रकार के आँकड़े आदि शामिल हैं।</li>
 </ul>
-<h2>Keyboard shortcut</h2>
+<h2>कुंजीपटल संक्षिप्त रीति</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
-<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
+<tr><th>कुंजी</th><td>कार्य</td></tr>
+<tr><th>Alt + 1</th><td>स्क्रैंबल प्रकार को स्क्वायर-1 पर सेट करें</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>स्क्रैंबल प्रकार को 2x2x2~7x7x7 पर सेट करें</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>स्क्रैंबल प्रकार को पिरा/मेगामिनक्स/क्लॉक/स्क्यूब पर सेट करें</td></tr>
+<tr><th>Alt + i</th><td>स्क्रैंबल प्रकार को इनपुट पर सेट करें</td></tr>
+<tr><th>Alt + d</th><td>वर्तमान सत्र से सभी समय हटाएँ</td></tr>
+<tr><th>Alt + z</th><td>नवीनतम समय हटाएँ</td></tr>
+<tr><th>Alt + ऊपर/नीचे</th><td>अगले/पिछले सत्र पर जाएँ</td></tr>
+<tr><th>Alt + बाएँ/दाएँ</th><td>अगला/पिछला स्क्रैंबल प्रदर्शित करें</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>नवीनतम समय OK/+2/DNF है</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
-<tr><th>Gesture</th><td>Function</td></tr>
-<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
-<tr><th>Up</th><td>The latest solve is +2</td></tr>
-<tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
-<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
-<tr><th>Down</th><td>Remove the latest solve</td></tr>
-<tr><th>Down right</th><td>Check the latest solve</td></tr>
+<tr><th>संकेत</th><td>कार्य</td></tr>
+<tr><th>ऊपर बाईं तरफ</th><td>नवीनतम समय DNF है</td></tr>
+<tr><th>ऊपर की ओर</th><td>नवीनतम समय +2 है</td></tr>
+<tr><th>ऊपर दाईं ओर</th><td>नवीनतम समय OK है</td></tr>
+<tr><th>बाएं ओर</th><td>पिछला स्क्रैंबल</td></tr>
+<tr><th>दाएँ ओर</th><td>अगला स्क्रैंबल</td></tr>
+<tr><th>नीचे बाईं ओर</th><td>नवीनतम समय के लिए टिप्पणी जोड़ें</td></tr>
+<tr><th>नीचे की ओर</th><td>नवीनतम समय हटाएँ</td></tr>
+<tr><th>नीचे दाईं ओर</th><td>नवीनतम समय की जाँच करें</td></tr>
 </table>
 
 <table class="table" id="vrckey" style="display: inline-block;">
-<tr><th colspan=10>Virtual Cube Key Map</th></tr>
+<tr><th colspan=10>वर्चुअल क्यूब कुंजी मानचित्र</th></tr>
 </table>
 
-<h2>Option details</h2>
+<h2>विकल्प विवरण</h2>
 <ul>
-<li><strong data="opt_ahide">समय रिकॉर्ड करते समय सभी तत्वों को छिपाएँ</strong>. Hide logo and all panels when timing.</li>
-<li><strong data="opt_useMilli">मिलीसेकंड का उपयोग करें</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
-<li><strong data="opt_timeFormat">समय प्रारूप</strong>. Time format to display.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
-<li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
+<li><strong data="opt_ahide">समय रिकॉर्ड करते समय सभी तत्वों को छिपाएँ</strong>. समय निर्धारण के समय लोगो और सभी पैनल छिपाएँ।</li>
+<li><strong data="opt_useMilli">मिलीसेकंड का उपयोग करें</strong>. मिलीसेकंड अंक प्रदर्शित करें। इससे कोई फर्क नहीं पड़ता कि चुना गया है या नहीं, csTimer की आंतरिक समय सटीकता 1 मिलीसेकंड है।</li>
+<li><strong data="opt_timeFormat">समय प्रारूप</strong>. प्रदर्शित करने के लिए समय का प्रारूप।</li>
+<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. यदि चयनित है, तो csTimer स्वचालित रूप से प्रति 100 समयों को निर्दिष्ट स्थान पर निर्यात करेगा - स्थानीय फ़ाइल, csTimer सर्वर, या Google स्टोरेज।</li>
+<li><strong data="opt_expp">Import non-latest data</strong>. यदि आपने कई बैकअप अपलोड किए हैं, तो आप सबसे हाल ही में अपलोड किए गए 10 बैकअप में से किसी एक से आयात कर सकते हैं। यदि आप गलती से खाली बैकअप अपलोड कर देते हैं, तो यह विकल्प आपको अपने समय पुनः प्राप्त करने में मदद करेगा।</li>
 <li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">Show Avg Label</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">बड़ा करें</strong>. You can adjust sizes of all elements by this option.</li>

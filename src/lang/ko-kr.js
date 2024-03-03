@@ -364,7 +364,7 @@ var scrdata = [
 		['포흐만(Pochmann)', "giga", 300]
 	]],
 	['Crazy Puzzle', [
-		['Crazy 3x3x3', "crz3a", 30],
+		['Crazy 3x3x3', "crz3a", 30]
 	]],
 	['C메트릭', [
 		['C메트릭', "cm3", 25],
