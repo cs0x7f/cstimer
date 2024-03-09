@@ -408,7 +408,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['FTO (Face-Turning Octahedron)', [
-		['Насумичан потез', "fto", 30]
+		['Насумичан потез', "fto", 30],
+		['random state', "ftoso", 0]
 	]],
 	['===SPECIAL===', [
 		['--', "blank", 0]

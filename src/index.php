@@ -44,6 +44,7 @@
   <script type="text/javascript" src="js/scramble/333lse.js"></script>
   <script type="text/javascript" src="js/scramble/mgmlsll.js"></script>
   <script type="text/javascript" src="js/scramble/kilominx.js"></script>
+  <script type="text/javascript" src="js/scramble/scramble_fto.js"></script>
   <script type="text/javascript" src="js/scramble/utilscramble.js"></script>
   <script type="text/javascript" src="js/lib/storage.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>

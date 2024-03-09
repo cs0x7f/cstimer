@@ -408,7 +408,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['FTO (Face-Turning Octahedron)', [
-		['ランダムムーブ', "fto", 30]
+		['ランダムムーブ', "fto", 30],
+		['ランダム状態', "ftoso", 0]
 	]],
 	['===SPECIAL===', [
 		['--', "blank", 0]

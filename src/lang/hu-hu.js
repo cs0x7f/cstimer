@@ -408,7 +408,8 @@ var scrdata = [
 		['Jaap stílus', "ufo", 25]
 	]],
 	['FTO (Oldalain forduló oktaéder)', [
-		['véletlen mozdulat', "fto", 30]
+		['véletlen mozdulat', "fto", 30],
+		['véletlen állapot', "ftoso", 0]
 	]],
 	['===KÜLÖNLEGES===', [
 		['--', "blank", 0]

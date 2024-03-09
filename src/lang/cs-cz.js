@@ -408,7 +408,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['PSO (Přední Soutěžní Osmistěn)', [
-		['náhodný tah', "fto", 30]
+		['náhodný tah', "fto", 30],
+		['náhodný stav', "ftoso", 0]
 	]],
 	['==SPECIÁLNÍ==', [
 		['--', "blank", 0]

@@ -408,7 +408,8 @@ var scrdata = [
 		['kiểu Jaap', "ufo", 25]
 	]],
 	['FTO (Face-Turning Octahedron)', [
-		['random move', "fto", 30]
+		['random move', "fto", 30],
+		['random state', "ftoso", 0]
 	]],
 	['===ĐẶC BIỆT===', [
 		['--', "blank", 0]

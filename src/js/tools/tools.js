@@ -119,6 +119,8 @@ var tools = execMain(function() {
 			return "mgm";
 		} else if (/^(klmso|klmp)$/.exec(scrambleType)) {
 			return "klm";
+		} else if (/^(fto|ftoso)$/.exec(scrambleType)) {
+			return "fto";
 		} else if (/^15p(at|ra?p?)?$/.exec(scrambleType)) {
 			return "15p";
 		} else if (/^15p(rmp|m)$/.exec(scrambleType)) {

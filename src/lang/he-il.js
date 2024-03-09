@@ -408,7 +408,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['אוקטהדרון פאות', [
-		['random move', "fto", 30]
+		['random move', "fto", 30],
+		['random state', "ftoso", 0]
 	]],
 	['===מיוחד===', [
 		['--', "blank", 0]
