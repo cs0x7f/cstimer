@@ -469,29 +469,19 @@ var ftosolver = (function() {
 		[9, 1, 8, 2, 0, 5, 6, 7, 3, 4]
 	];
 
-	var p2ccCache = [[], [], []];
-
 	function doPhase2CcufMove(i0, move) {
-		if (p2ccCache[move][i0] == undefined) {
-			var uf = [];
-			set10Perm(uf, i0);
-			for (var m = 0; m < 3; m++) {
-				var ccMap = p2ccMaps[m];
-				var ufMap = p2ufMaps[m];
-				var idx = 0;
-				var val = 0x9876543210;
-				for (var i = 0; i < 9; ++i) {
-					var v = Math.pow(16, ccMap[uf[ufMap[i]]]);
-					idx = (10 - i) * idx + ((val / v) & 0xf);
-					val -= 0x1111111110 * v % 0x10000000000;
-				}
-				p2ccCache[m][i0] = idx >> 1;
-			}
+		var uf = [];
+		set10Perm(uf, i0);
+		var ccMap = p2ccMaps[move];
+		var ufMap = p2ufMaps[move];
+		var uf2 = [];
+		for (var i = 0; i < 10; i++) {
+			uf2[i] = ccMap[uf[ufMap[i]]];
 		}
-		return p2ccCache[move][i0];
+		return get10Perm(uf2, ccMap, ufMap);
 	}
 
-	function getPhase2CcufIdx(fc) {
+	function getPhase2CcufArr(fc) {
 		var cornExFacelets = [
 			[U + 2, R + 2, F + 2, L + 2],
 			[U + 5, B + 7, r + 5, R + 7],
@@ -511,42 +501,60 @@ var ftosolver = (function() {
 		var p1 = [0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 6, 9];
 		var p2 = [0, 1, 2, 3, 4, 5, 10, 6, 7, 11, 8, 9];
 		var ret = [];
-		for (var i = 0; i < 12; i++) {
+		for (var i = 0; i < 10; i++) {
 			ret[i] = p2[cpi[fc.uf[p1[i]]]];
 		}
-		return get10Perm(ret);
+		return ret;
 	}
 
 	var factH = [1, 1, 1, 3, 12, 60, 360, 2520, 20160, 181440, 1814400];
 
 	function get10Perm(arr) {
+		var vall = 0x76543210;
+		var valh = 0x98;
 		var idx = 0;
-		var val = 0x9876543210;
-		for (var i = 0; i < 9; ++i) {
-			var v = Math.pow(16, arr[i]);
-			idx = (10 - i) * idx + ((val / v) & 0xf);
-			val -= 0x1111111110 * v % 0x10000000000;
+		for (var i = 0; i < 8; i++) {
+			var v = arr[i] << 2;
+			idx *= 10 - i;
+			if (v >= 32) {
+				idx += (valh >> (v - 32)) & 0xf;
+				valh -= 0x1110 << (v - 32);
+			} else {
+				idx += (vall >> v) & 0xf;
+				valh -= 0x1111;
+				vall -= 0x11111110 << v;
+			}
 		}
-		return idx >> 1;
+		return idx;
 	}
 
 	function set10Perm(arr, idx) {
-		var val = 0x9876543210;
+		var vall = 0x76543210;
+		var valh = 0x98;
 		var prt = 0;
-		for (var i = 0; i < 9; ++i) {
+		for (var i = 0; i < 9; i++) {
 			var p = factH[9 - i];
-			var v = ~~(idx / p);
+			var v = idx / p;
+			idx = idx % p;
 			prt ^= v;
-			idx %= p;
-			v = Math.pow(16, v);
-			arr[i] = val / v & 0xf;
-			val = (val % v) + Math.floor(val / v / 16) * v;
+			v <<= 2;
+			if (v >= 32) {
+				v = v - 32;
+				arr[i] = valh >> v & 0xf;
+				var m = (1 << v) - 1;
+				valh = (valh & m) + ((valh >> 4) & ~m);
+			} else {
+				arr[i] = vall >> v & 0xf;
+				var m = (1 << v) - 1;
+				vall = (vall & m) + ((vall >>> 4) & ~m) + (valh << 28);
+				valh = valh >> 4;
+			}
 		}
 		if ((prt & 1) != 0) {
 			arr[9] = arr[8];
-			arr[8] = val & 0xf;
+			arr[8] = vall & 0xf;
 		} else {
-			arr[9] = val & 0xf;
+			arr[9] = vall & 0xf;
 		}
 		return arr;
 	}
@@ -834,7 +842,7 @@ var ftosolver = (function() {
 		var ufrlmap = [0, 1, 2, 3, 4, 5, 6, 8, 7, 9, 11, 10];
 
 		for (var ufidx = 0; ufidx < 72; ufidx++) {
-			idxs.push([epidx, rlidx, getPhase2CcufIdx(fc)]);
+			idxs.push([epidx, rlidx, getPhase2CcufArr(fc)]);
 			FtoCubie.permMult(ufUmap, fc.uf, fc.uf);
 			if (ufidx % 3 == 2) {
 				FtoCubie.permMult(ufFmap, fc.uf, fc.uf);
@@ -870,17 +878,24 @@ var ftosolver = (function() {
 		}
 
 		var sol2s = solveMulti(idxs, function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
+			return idx[0] == 0 && idx[1] == 0 && get10Perm(idx[2]) == 0;
 		}, function(idx) {
 			return Math.max(
 				mathlib.getPruning(p2erPrun, idx[1] * 280 + idx[0]),
-				Math.min(12, mathlib.getPruning(p2ufPrun, idx[2]))
+				Math.min(12, mathlib.getPruning(p2ufPrun, get10Perm(idx[2])))
 			);
 		}, function(idx, move) {
+			var uf = idx[2];
+			var ccMap = p2ccMaps[move];
+			var ufMap = p2ufMaps[move];
+			var uf2 = [];
+			for (var i = 0; i < 10; i++) {
+				uf2[i] = ccMap[uf[ufMap[i]]];
+			}
 			return [
 				p2epMoves[0][move][idx[0]],
 				p2rlMoves[0][move][idx[1]],
-				doPhase2CcufMove(idx[2], move)
+				uf2
 			];
 		}, 3, ckmv2, 25);
 
@@ -990,6 +1005,13 @@ var ftosolver = (function() {
 	function FtoSolver() {}
 
 	FtoSolver.prototype.solveFto = function(fc, invSol) {
+		if (!p1epPrun) {
+			var tt = +new Date;
+			phase1Init();
+			phase2Init();
+			phase3Init();
+			DEBUG && console.log('[ftosolver] init time:', +new Date - tt);
+		}
 		var solvInfos = solvePhase1(fc);
 
 		var solvInfo2 = solvePhase2(solvInfos);
