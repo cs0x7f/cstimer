@@ -374,7 +374,7 @@ var ftosolver = (function() {
 			}
 		}
 		DEBUG && console.log(states.length, 'states generated, tt=', +new Date - tt, JSON.stringify(depthEnds));
-		return [moveTable, states, hash2idx];
+		return [moveTable, hash2idx];
 	}
 
 	function ftoPermMove(key, perm, move) {
@@ -390,10 +390,6 @@ var ftosolver = (function() {
 		var ret = new FtoCubie();
 		FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], ret);
 		return ret;
-	}
-
-	function moveToFunc(moveTable, idx, move) {
-		return moveTable[move][idx];
 	}
 
 	function phase1EdgeHash(ep) {
@@ -691,7 +687,6 @@ var ftosolver = (function() {
 		var syms = [];
 		var fc2 = new FtoCubie();
 		var fc3 = new FtoCubie();
-		var tt = +new Date();
 
 		var rlbmap = [0, 1, 2, 4, 5, 3, 6, 7, 8, 9, 10, 11];
 		var emap = [0, 1, 9, 3, 4, 5, 6, 7, 8, 10, 2, 11];
@@ -705,23 +700,29 @@ var ftosolver = (function() {
 					break;
 				}
 			}
-			for (var ctidx = 0; ctidx < 81; ctidx++) {
-				idxs.push([
-					p1epMoves[2][phase1EdgeHash(fc3.ep)],
-					p1rlMoves[2][phase1CtrlHash(fc3.rl)],
-					p1ufMoves[2][phase1CcufHash(fc3)]
-				]);
-				syms.push([sidx, rot]);
+			var epidxs = [];
+			var rlidxs = [];
+			var ufidxs = [];
+			for (var i = 0; i < 3; i++) {
+				epidxs.push(p1epMoves[1][phase1EdgeHash(fc3.ep)]);
+				rlidxs.push(p1rlMoves[1][phase1CtrlHash(fc3.rl)]);
+				FtoCubie.permMult(emap, fc3.ep, fc3.ep);
+				FtoCubie.permMult(rlbmap, fc3.rl, fc3.rl);
+			}
+			for (var ufi = 0; ufi < 9; ufi++) {
+				ufidxs.push(p1ufMoves[1][phase1CcufHash(fc3)]);
 				FtoCubie.permMult(p1uflmap, fc3.uf, fc3.uf);
-				if (ctidx % 3 == 2) {
+				if (ufi % 3 == 2) {
 					FtoCubie.permMult(p1ufrmap, fc3.uf, fc3.uf);
 				}
-				if (ctidx % 9 == 8) {
-					FtoCubie.permMult(emap, fc3.ep, fc3.ep);
-				}
-				if (ctidx % 27 == 26) {
-					FtoCubie.permMult(rlbmap, fc3.rl, fc3.rl);
-				}
+			}
+			for (var ctidx = 0; ctidx < 81; ctidx++) {
+				idxs.push([
+					epidxs[~~(ctidx / 9 / 3)],
+					rlidxs[~~(ctidx / 9) % 3],
+					ufidxs[ctidx % 9]
+				]);
+				syms.push([sidx, rot]);
 			}
 		}
 		return [idxs, syms];
@@ -755,8 +756,9 @@ var ftosolver = (function() {
 
 	var p1uflmap = [0, 1, 2, 3, 4, 5, 7, 8, 6, 9, 10, 11];
 	var p1ufrmap = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 9];
+	var N_PHASE1_SOLS = 10;
 
-	function solvePhase1Multi(fc) {
+	function solvePhase1(fc) {
 		if (!p1epPrun) {
 			phase1Init();
 		}
@@ -785,7 +787,7 @@ var ftosolver = (function() {
 		}, 8, ckmv1, 12, function(sidx, sol) {
 			var param = phase1ProcSol(sol, syms[sidx].slice(), fc);
 			p1sols.push(param);
-			return p1sols.length >= 10;
+			return p1sols.length >= N_PHASE1_SOLS;
 		});
 		var tt = +new Date - tt;
 		for (var i = 0; i < p1sols.length; i++) {
@@ -821,8 +823,8 @@ var ftosolver = (function() {
 
 
 	function phase2GenIdxs(fc) {
-		var epidx = p2epMoves[2][phase2EdgeHash(fc.ep)];
-		var rlidx = p2rlMoves[2][phase2CtrlHash(fc.rl)];
+		var epidx = p2epMoves[1][phase2EdgeHash(fc.ep)];
+		var rlidx = p2rlMoves[1][phase2CtrlHash(fc.rl)];
 		var idxs = [];
 
 		var ufUmap = [1, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -851,7 +853,7 @@ var ftosolver = (function() {
 	}
 
 
-	function solvePhase2Multi(fcscrs) {
+	function solvePhase2(solvInfos) {
 		if (!p2erPrun) {
 			phase2Init();
 		}
@@ -859,8 +861,8 @@ var ftosolver = (function() {
 
 		var idxs = [];
 		var srcs = [];
-		for (var i = 0; i < fcscrs.length; i++) {
-			var curIdxs = phase2GenIdxs(fcscrs[i][0]);
+		for (var i = 0; i < solvInfos.length; i++) {
+			var curIdxs = phase2GenIdxs(solvInfos[i][0]);
 			for (var j = 0; j < curIdxs.length; j++) {
 				idxs.push(curIdxs[j]);
 				srcs.push(i);
@@ -884,51 +886,15 @@ var ftosolver = (function() {
 
 		var sol = sol2s[1];
 		var src = srcs[sol2s[0]];
-		var fcscr = fcscrs[src];
-		var fc = fcscr[0];
+		var solvInfo = solvInfos[src];
+		var fc = solvInfo[0];
 		for (var i = 0; i < sol.length; i++) {
 			var move = phase2Moves[sol[i][0]] + sol[i][1];
-			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][fcscr[3]]][move >> 1] * 2 + (move & 1);
+			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][solvInfo[3]]][move >> 1] * 2 + (move & 1);
 
 			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move]);
 		}
-		return [fc, sol, fcscr[2], fcscr[3], src, +new Date - tt];
-	}
-
-
-	function solvePhase2(fcscr) {
-		var fc = fcscr[0];
-		if (!p2erPrun) {
-			phase2Init();
-		}
-		var tt = +new Date();
-
-		var idxs = phase2GenIdxs(fc);
-
-		var sol2s = solveMulti(idxs, function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
-		}, function(idx) {
-			return Math.max(
-				mathlib.getPruning(p2erPrun, idx[1] * 280 + idx[0]),
-				Math.min(12, mathlib.getPruning(p2ufPrun, idx[2]))
-			);
-		}, function(idx, move) {
-			// return [p2epMoves[0][move][idx[0]], p2rlMoves[0][move][idx[1]], p2ufMoves[0][move][idx[2]]];
-			return [
-				p2epMoves[0][move][idx[0]],
-				p2rlMoves[0][move][idx[1]],
-				doPhase2CcufMove(idx[2], move)
-			];
-		}, 3, ckmv2, 25);
-
-		var sol = sol2s[1];
-		for (var i = 0; i < sol.length; i++) {
-			var move = phase2Moves[sol[i][0]] + sol[i][1];
-			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][fcscr[3]]][move >> 1] * 2 + (move & 1);
-
-			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move]);
-		}
-		return [fc, sol, fcscr[2], fcscr[3], +new Date - tt];
+		return [fc, sol, solvInfo[2], solvInfo[3], src, +new Date - tt];
 	}
 
 	var phase3Moves = [8, 10, 12, 14];
@@ -949,15 +915,15 @@ var ftosolver = (function() {
 		ckmv3 = genCkmv(phase3Moves);
 	}
 
-	function solvePhase3(fcscr) {
-		var fc = fcscr[0];
+	function solvePhase3(solvInfo) {
+		var fc = solvInfo[0];
 		if (!p3epPrun) {
 			phase3Init();
 		}
 
 		var tt = +new Date();
-		var p3epidx = p3epMoves[2][phase3EdgeHash(fc.ep)];
-		var p3ufidx = p3ufMoves[2][phase3CcufHash(fc)];
+		var p3epidx = p3epMoves[1][phase3EdgeHash(fc.ep)];
+		var p3ufidx = p3ufMoves[1][phase3CcufHash(fc)];
 
 		var sol3s = solveMulti([[p3epidx, p3ufidx]], function(idx) {
 			return idx[0] == 0 && idx[1] == 0;
@@ -973,11 +939,11 @@ var ftosolver = (function() {
 		var sol = sol3s[1];
 		for (var i = 0; i < sol.length; i++) {
 			var move = phase3Moves[sol[i][0]] + sol[i][1];
-			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][fcscr[3]]][move >> 1] * 2 + (move & 1);
+			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][solvInfo[3]]][move >> 1] * 2 + (move & 1);
 
 			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move]);
 		}
-		return [fc, sol, fcscr[2], fcscr[3], +new Date - tt];
+		return [fc, sol, solvInfo[2], solvInfo[3], +new Date - tt];
 	}
 
 	// convert wide moves to face moves
@@ -1024,9 +990,9 @@ var ftosolver = (function() {
 	function FtoSolver() {}
 
 	FtoSolver.prototype.solveFto = function(fc, invSol) {
-		var solvInfos = solvePhase1Multi(fc);
+		var solvInfos = solvePhase1(fc);
 
-		var solvInfo2 = solvePhase2Multi(solvInfos);
+		var solvInfo2 = solvePhase2(solvInfos);
 
 		var solvInfo1 = solvInfos[solvInfo2[4]];
 		this.sol1 = solvInfo1[1].slice();
@@ -1054,12 +1020,12 @@ var ftosolver = (function() {
 	var solver = new FtoSolver();
 
 	function solveTest(n_moves) {
-		var fcscr = getScramble([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], n_moves);
+		var solvInfo = getScramble([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], n_moves);
 
-		var scramble = prettyMoves(fcscr[1].slice());
-		var solution = solver.solveFto(fcscr[0]);
+		var scramble = prettyMoves(solvInfo[1].slice());
+		var solution = solver.solveFto(solvInfo[0]);
 
-		var fc = fcscr[0];
+		var fc = solvInfo[0];
 		DEBUG && console.log('scrambled state\n', fc.toString(1));
 		fc = applyMoves(fc, solver.sol1);
 		DEBUG && console.log('after phase 1 (' + prettyMoves(solver.sol1) + '):\n', fc.toString(1));
