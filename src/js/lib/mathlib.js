@@ -817,6 +817,72 @@ var mathlib = (function() {
 		return false;
 	};
 
+	function Searcher(isSolved, getPrun, doMove, N_AXIS, N_POWER, ckmv) {
+		this.isSolved = isSolved;
+		this.getPrun = getPrun;
+		this.doMove = doMove;
+		this.N_AXIS = N_AXIS;
+		this.N_POWER = N_POWER;
+		this.ckmv = ckmv || valuedArray(N_AXIS, function(i) { return 1 << i; } );
+	}
+
+	_ = Searcher.prototype;
+
+	_.solve = function(idx, maxl, callback) {
+		var sols = this.solveMulti([idx], maxl, callback);
+		return sols == null ? null : sols[0];
+	};
+
+	_.solveMulti = function(idxs, maxl, callback) {
+		this.callback = callback || function() { return true; };
+		var sol = [];
+		out: for (var l = 0; l <= maxl; l++) {
+			for (var s = 0; s < idxs.length; s++) {
+				this.sidx = s;
+				if (this.idaSearch(idxs[s], l, -1, sol) == 0) {
+					break out;
+				}
+			}
+			this.sidx = -1;
+		}
+		return this.sidx == -1 ? null : [sol, this.sidx];
+	};
+
+	_.idaSearch = function(idx, maxl, lm, sol) {
+		if (maxl == 0) {
+			return this.isSolved(idx) && this.callback(sol, this.sidx) ? 0 : 1;
+		}
+		var prun = this.getPrun(idx);
+		if (prun > maxl) {
+			return prun > maxl + 1 ? 2 : 1;
+		}
+		if (prun == 0 && this.isSolved(idx) && maxl == 1) {
+			return 1;
+		}
+		for (var axis = 0; axis < this.N_AXIS; axis++) {
+			if (this.ckmv[lm] >> axis & 1) {
+				continue;
+			}
+			var idx1 = idx;
+			for (var pow = 0; pow < this.N_POWER; pow++) {
+				idx1 = this.doMove(idx1, axis);
+				if (idx1 == null) {
+					break;
+				}
+				sol.push([axis, pow]);
+				var ret = this.idaSearch(idx1, maxl - 1, axis, sol);
+				if (ret == 0) {
+					return 0;
+				}
+				sol.pop();
+				if (ret == 2) {
+					break;
+				}
+			}
+		}
+		return 1;
+	};
+
 	// state: string not null
 	// solvedStates: [solvedstate, solvedstate, ...], string not null
 	// moveFunc: function(state, move);
@@ -1258,6 +1324,7 @@ var mathlib = (function() {
 		valuedArray: valuedArray,
 		idxArray: idxArray,
 		Solver: Solver,
+		Searcher: Searcher,
 		rndPerm: rndPerm,
 		gSolver: gSolver,
 		getSeed: randGen.getSeed,

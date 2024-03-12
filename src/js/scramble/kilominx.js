@@ -385,6 +385,9 @@ var kilominx = (function() {
 	var phase1Coord;
 	var phase2Coord;
 	var phase3Coord;
+	var solv1 = null;
+	var solv2 = null;
+	var solv3 = null;
 
 	function initPhase1() {
 		phase1Coord = new CombCoord([5, 6, 7, 8, 9]);
@@ -396,6 +399,18 @@ var kilominx = (function() {
 			return phase1Coord.get(tmp2, 3);
 		}, 12);
 		mathlib.createPrun(Phase1Prun, 0, 1140 * 27 * 6, 8, comb3FullMove.bind(null, Phase1Move), 12, 4, 5);
+		var doPhase1Move = comb3FullMove.bind(null, Phase1Move);
+		solv1 = new mathlib.Searcher(function(idx) {
+			return idx[0] == 0 && idx[1] == 0;
+		}, function(idx) {
+			return Math.max(mathlib.getPruning(Phase1Prun, idx[0]), mathlib.getPruning(Phase1Prun, idx[1]));
+		}, function(idx, move) {
+			var idx1 = [doPhase1Move(idx[0], move), doPhase1Move(idx[1], y2Move[move])];
+			if (idx1[0] == idx[0] && idx1[1] == idx[1]) {
+				return null;
+			}
+			return idx1;
+		}, 12, 4, 9);
 	}
 
 	function initPhase2() {
@@ -408,6 +423,18 @@ var kilominx = (function() {
 			return phase2Coord.get(tmp2, 3);
 		}, 6);
 		mathlib.createPrun(Phase2Prun, 0, 455 * 27 * 6, 8, comb3FullMove.bind(null, Phase2Move), 6, 4, 4);
+		var doPhase2Move = comb3FullMove.bind(null, Phase2Move);
+		solv2 = new mathlib.Searcher(function(idx) {
+			return idx[0] == 0 && idx[1] == 0;
+		}, function(idx) {
+			return Math.max(mathlib.getPruning(Phase2Prun, idx[0]), mathlib.getPruning(Phase2Prun, idx[1]));
+		}, function(idx, move) {
+			var idx1 = [doPhase2Move(idx[0], move), doPhase2Move(idx[1], yMove[move])];
+			if (idx1[0] == idx[0] && idx1[1] == idx[1]) {
+				return null;
+			}
+			return idx1;
+		}, 6, 4);
 	}
 
 	function initPhase3() {
@@ -419,58 +446,15 @@ var kilominx = (function() {
 			KiloCubie.KiloMult(tmp1, KiloCubie.moveCube[move * 4], tmp2);
 			return phase3Coord.get(tmp2);
 		}, 3);
-		mathlib.createPrun(Phase3Prun, 0, 210 * 81 * 24, 14, comb4FullMove.bind(null, Phase3Move), 3, 4, 6);
-	}
-
-	function idaSearch(idx, isSolved, getPrun, doMove, N_AXIS, maxl, lm, sol) {
-		if (maxl == 0) {
-			return isSolved(idx);
-		} else if (getPrun(idx) > maxl) {
-			return false;
-		}
-		for (var axis = 0; axis < N_AXIS; axis++) {
-			if (ckmv[lm] >> axis & 1) {
-				continue;
-			}
-			var idx1 = idx;
-			for (var pow = 0; pow < 4; pow++) {
-				idx1 = doMove(idx1, axis);
-				if (idx1 == null) {
-					break;
-				}
-				if (idaSearch(idx1, isSolved, getPrun, doMove, N_AXIS, maxl - 1, axis, sol)) {
-					sol.push([axis, pow]);
-					// sol.push(["U", "R", "F", "L", "BL", "BR", "DR", "DL", "DBL", "B", "DBR", "D"][axis] + ["", "2", "2'", "'"][pow]);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	function solve(idx, isSolved, getPrun, doMove, N_AXIS, maxl) {
-		var sol = [];
-		for (var l = 0; l <= maxl; l++) {
-			if (idaSearch(idx, isSolved, getPrun, doMove, N_AXIS, l, -1, sol)) {
-				break;
-			}
-		}
-		sol.reverse();
-		return sol;
-	}
-
-	function solveMulti(idxs, isSolved, getPrun, doMove, N_AXIS, maxl) {
-		var sol = [];
-		var s = 0;
-		out: for (var l = 0; l <= maxl; l++) {
-			for (s = 0; s < idxs.length; s++) {
-				if (idaSearch(idxs[s], isSolved, getPrun, doMove, N_AXIS, l, -1, sol)) {
-					break out;
-				}
-			}
-		}
-		sol.reverse();
-		return [s, sol];
+		var doPhase3Move = comb4FullMove.bind(null, Phase3Move);
+		mathlib.createPrun(Phase3Prun, 0, 210 * 81 * 24, 14, doPhase3Move, 3, 4, 6);
+		solv3 = new mathlib.Searcher(function(idx) {
+			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
+		}, function(idx) {
+			return Math.max(mathlib.getPruning(Phase3Prun, idx[0]), mathlib.getPruning(Phase3Prun, idx[1]), mathlib.getPruning(Phase3Prun, idx[2]));
+		}, function(idx, move) {
+			return [doPhase3Move(idx[0], move), doPhase3Move(idx[1], (move + 1) % 3), doPhase3Move(idx[2], (move + 2) % 3)];
+		}, 3, 4);
 	}
 
 	function move2str(moves) {
@@ -495,7 +479,6 @@ var kilominx = (function() {
 		var solsym = 0;
 
 		//phase1
-		var doPhase1Move = comb3FullMove.bind(null, Phase1Move);
 		var idx1s = [];
 		for (var s = 0; s < (useSym ? 12 : 1); s++) {
 			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][s * 5]], kc0, KiloCubie.symCube[s * 5], kc1);
@@ -504,19 +487,9 @@ var kilominx = (function() {
 			var val1 = phase1Coord.get(kc2, 3);
 			idx1s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
 		}
-		var sol1s = solveMulti(idx1s, function(idx) {
-			return idx[0] == 0 && idx[1] == 0;
-		}, function(idx) {
-			return Math.max(mathlib.getPruning(Phase1Prun, idx[0]), mathlib.getPruning(Phase1Prun, idx[1]));
-		}, function(idx, move) {
-			var idx1 = [doPhase1Move(idx[0], move), doPhase1Move(idx[1], y2Move[move])];
-			if (idx1[0] == idx[0] && idx1[1] == idx[1]) {
-				return null;
-			}
-			return idx1;
-		}, 12, 9);
-		var ksym = sol1s[0] * 5;
-		var sol1 = sol1s[1];
+		var sol1s = solv1.solveMulti(idx1s, 9);
+		var ksym = sol1s[1] * 5;
+		var sol1 = sol1s[0];
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
 		kc0.init(kc1.perm, kc1.twst);
 		solsym = KiloCubie.symMult[solsym][ksym];
@@ -530,7 +503,6 @@ var kilominx = (function() {
 
 		//phase2
 		tt = +new Date;
-		var doPhase2Move = comb3FullMove.bind(null, Phase2Move);
 		var idx2s = [];
 		for (var s = 0; s < (useSym ? 5 : 1); s++) {
 			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][s]], kc0, KiloCubie.symCube[s], kc1);
@@ -539,19 +511,9 @@ var kilominx = (function() {
 			var val1 = phase2Coord.get(kc2, 3);
 			idx2s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
 		}
-		var sol2s = solveMulti(idx2s, function(idx) {
-			return idx[0] == 0 && idx[1] == 0;
-		}, function(idx) {
-			return Math.max(mathlib.getPruning(Phase2Prun, idx[0]), mathlib.getPruning(Phase2Prun, idx[1]));
-		}, function(idx, move) {
-			var idx1 = [doPhase2Move(idx[0], move), doPhase2Move(idx[1], yMove[move])];
-			if (idx1[0] == idx[0] && idx1[1] == idx[1]) {
-				return null;
-			}
-			return idx1;
-		}, 6, 14);
-		var ksym = sol2s[0];
-		var sol2 = sol2s[1];
+		var sol2s = solv2.solveMulti(idx2s, 14);
+		var ksym = sol2s[1];
+		var sol2 = sol2s[0];
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
 		kc0.init(kc1.perm, kc1.twst);
 		solsym = KiloCubie.symMult[solsym][ksym];
@@ -564,21 +526,14 @@ var kilominx = (function() {
 		DEBUG && console.log('[kilo] Phase2s in ', +new Date - tt, 'ms', sol2.length, 'move(s) sym=', ksym);
 
 		//phase3
-		var doPhase3Move = comb4FullMove.bind(null, Phase3Move);
 		val0 = phase3Coord.get(kc0);
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][6]], kc0, KiloCubie.symCube[6], kc1);
 		val1 = phase3Coord.get(kc1);
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][29]], kc0, KiloCubie.symCube[29], kc1);
 		var val2 = phase3Coord.get(kc1);
-		idx = [val0[0] * 81 * 24 + val0[1] * 81 + val0[2], val1[0] * 81 * 24 + val1[1] * 81 + val1[2], val2[0] * 81 * 24 + val2[1] * 81 + val2[2]];
+		idx = [(val0[0] * 24 + val0[1]) * 81 + val0[2], (val1[0] * 24 + val1[1]) * 81 + val1[2], (val2[0] * 24 + val2[1]) * 81 + val2[2]];
 		tt = +new Date;
-		var sol3 = solve(idx, function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
-		}, function(idx) {
-			return Math.max(mathlib.getPruning(Phase3Prun, idx[0]), mathlib.getPruning(Phase3Prun, idx[1]), mathlib.getPruning(Phase3Prun, idx[2]));
-		}, function(idx, move) {
-			return [doPhase3Move(idx[0], move), doPhase3Move(idx[1], (move + 1) % 3), doPhase3Move(idx[2], (move + 2) % 3)];
-		}, 3, 14);
+		var sol3 = solv3.solve(idx, 14);
 		DEBUG && console.log('[kilo] Phase3 in ', +new Date - tt, 'ms', sol3.length, 'move(s)');
 		for (var i = 0; i < sol3.length; i++) {
 			var move = sol3[i];
