@@ -837,11 +837,14 @@ var poly3d = (function() {
 	}
 
 	// parseFunc(m, p1, p2, ..) -> [layer, axis, pow] or null, toStrFunc(layer:int, axis:str, pow:int) -> moveString
-	function makeParser(regexp, parseFunc, toStrFunc) {
+	function makeParser(regexp, parseFunc, toStrFunc, preProcess) {
 		return {
-			parseScramble: function(regexp, parseFunc, scramble) {
+			parseScramble: function(regexp, parseFunc, preProcess, scramble) {
 				if (!scramble || /^\s*$/.exec(scramble)) {
 					return [];
+				}
+				if (preProcess) {
+					scramble = preProcess(scramble);
 				}
 				var ret = [];
 				scramble.replace(regexp, function() {
@@ -851,7 +854,7 @@ var poly3d = (function() {
 					}
 				});
 				return ret;
-			}.bind(null, regexp, parseFunc),
+			}.bind(null, regexp, parseFunc, preProcess),
 			move2str: function(toStrFunc, move) {
 				var m = /^(\d+)([a-zA-Z]+)$/.exec(move[0]);
 				if (!m) { // invalid move
@@ -993,6 +996,21 @@ var poly3d = (function() {
 			}, function(layer, axis, pow) {
 				var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
 				return (layer == 0 ? "xyz".charAt("RUF".indexOf(axis)) : axis) + powfix;
+			});
+		} else if (/^redi$/.exec(name)) {
+			polyParam = [6, [-2], [], [-2, 0.85]],
+			parser = makeParser(/(?:^|\s*)([FLBRflbrxyz])(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
+				var midx = 'FLBRflbrxyz'.indexOf(p1);
+				var mstr = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'][midx];
+				return [midx >= 8 ? 0 : 1, mstr, p2 ? -1 : 1];
+			}, function(layer, axis, pow) {
+				var midx = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'].indexOf(axis);
+				return 'FLBRflbrxyz'[midx];
+			}, function(scramble) {
+				if (/^(([LR]'? ){3,}x ){3,}/.exec(scramble)) {
+					return scramble.replace(/R/g, 'F');
+				}
+				return scramble;
 			});
 		} else {
 			return null;
