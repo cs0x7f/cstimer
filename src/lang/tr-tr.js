@@ -377,8 +377,9 @@ var scrdata = [
 		['2x2 Heli by group', "heli2x2g", 5]
 	]],
 	['Redi Kübü', [
+		['Rastgele Durum', "rediso", 0],
 		['MoYu', "redim", 8],
-		['Eski', "redi", 20]
+		['Rastgele hamle', "redi", 20]
 	]],
 	['Sarmaşık Küp', [
 		['Rastgele Durum', "ivyso", 0],

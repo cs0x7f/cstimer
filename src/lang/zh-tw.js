@@ -377,8 +377,9 @@ var scrdata = [
 		['2x2 Heli by group', "heli2x2g", 5]
 	]],
 	['Redi Cube', [
+		['隨機狀態', "rediso", 0],
 		['魔域', "redim", 8],
-		['舊版', "redi", 20]
+		['隨機步驟', "redi", 20]
 	]],
 	['楓葉方塊', [
 		['隨機狀態', "ivyso", 0],

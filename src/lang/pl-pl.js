@@ -377,8 +377,9 @@ var scrdata = [
 		['2x2 Heli by group', "heli2x2g", 5]
 	]],
 	['Redi Cube', [
+		['stan losowy', "rediso", 0],
 		['MoYu', "redim", 8],
-		['stary', "redi", 20]
+		['losowy ruch', "redi", 20]
 	]],
 	['Ivy cube', [
 		['stan losowy', "ivyso", 0],

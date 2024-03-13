@@ -133,7 +133,7 @@ var tools = execMain(function() {
 			return "heli2x2";
 		} else if (/^prc[po]$/.exec(scrambleType)) {
 			return "prc";
-		} else if (/^redim?$/.exec(scrambleType)) {
+		} else if (/^redi(m|so)?$/.exec(scrambleType)) {
 			return "redi";
 		} else {
 			return scrambleType;

@@ -377,8 +377,9 @@ var scrdata = [
 		['2x2 Heli by group', "heli2x2g", 5]
 	]],
 	['Redi Cube', [
+		['nasumično stanje', "rediso", 0],
 		['MoYu', "redim", 8],
-		['old', "redi", 20]
+		['nasumični potez', "redi", 20]
 	]],
 	['Ivy kocka', [
 		['nasumično stanje', "ivyso", 0],

@@ -377,8 +377,9 @@ var scrdata = [
 		['2x2 Heli by group', "heli2x2g", 5]
 	]],
 	['레디 큐브', [
+		['무작위 상태', "rediso", 0],
 		['모위(MoYu)', "redim", 8],
-		['구 방식', "redi", 20]
+		['무작위 수순', "redi", 20]
 	]],
 	['Ivy cube', [
 		['무작위 상태', "ivyso", 0],

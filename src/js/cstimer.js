@@ -32,6 +32,7 @@ importScripts(
 	'scramble/mgmlsll.js',
 	'scramble/kilominx.js',
 	'scramble/scramble_fto.js',
+	'scramble/redi.js',
 	'scramble/utilscramble.js',
 	'lib/storage.js',
 	'stats/timestat.js',
