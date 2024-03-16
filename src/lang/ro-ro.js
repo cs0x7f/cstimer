@@ -387,7 +387,8 @@ var scrdata = [
 		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['random move', "mpyr", 42],
+		['random state', "mpyrso", 0]
 	]],
 	['Pyraminx Cristal', [
 		['Pochmann', "prcp", 70],

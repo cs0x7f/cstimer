@@ -121,6 +121,8 @@ var tools = execMain(function() {
 			return "klm";
 		} else if (/^(fto|ftoso)$/.exec(scrambleType)) {
 			return "fto";
+		} else if (/^(mpyr|mpyrso)$/.exec(scrambleType)) {
+			return "mpyr";
 		} else if (/^15p(at|ra?p?)?$/.exec(scrambleType)) {
 			return "15p";
 		} else if (/^15p(rmp|m)$/.exec(scrambleType)) {

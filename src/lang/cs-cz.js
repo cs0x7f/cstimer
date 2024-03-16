@@ -357,7 +357,7 @@ var scrdata = [
 		['náhodný tah', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['náhodný stav', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['náhodný tah', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['náhodný tah', "mpyr", 42],
+		['náhodný stav', "mpyrso", 0]
 	]],
 	['Pyraminx krystal', [
 		['Pochmann', "prcp", 70],

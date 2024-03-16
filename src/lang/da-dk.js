@@ -357,7 +357,7 @@ var scrdata = [
 		['tilfældig træk', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['tilfældig tilstand', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['tilfældig træk', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['tilfældig træk', "mpyr", 42],
+		['tilfældig tilstand', "mpyrso", 0]
 	]],
 	['Pyraminx Krystal', [
 		['Pochmann', "prcp", 70],

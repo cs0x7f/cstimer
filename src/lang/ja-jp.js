@@ -357,7 +357,7 @@ var scrdata = [
 		['ランダムムーブ', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['ランダム状態', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['ギガミンクス', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['ランダムムーブ', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['ランダムムーブ', "mpyr", 42],
+		['ランダム状態', "mpyrso", 0]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],

@@ -357,7 +357,7 @@ var scrdata = [
 		['zufällige Bewegung', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['zufälliger Status', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['zufällige Bewegung', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['zufällige Bewegung', "mpyr", 42],
+		['zufälliger Status', "mpyrso", 0]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],

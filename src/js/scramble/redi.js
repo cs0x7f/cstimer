@@ -115,8 +115,6 @@ var redi = (function() {
 			}
 		}
 
-		DEBUG = true;
-
 		cornCoord = new mathlib.coord('o', 4, 3);
 		mathlib.createMove(cornMove, 81, phase1CornMove, 8);
 		mathlib.createMove(edgeCombMove, 495, phase1EdgeCombMove, 8);
@@ -124,9 +122,7 @@ var redi = (function() {
 		mathlib.createPrun(phase1CornPrun, 0, 81, 4, cornMove, 8, 2);
 		mathlib.createPrun(phase1EdgePrun, 1656, 495 * 24, 8, phase1EdgeMove, 8, 2);
 
-		solv1 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 1656;
-		}, function(idx) {
+		solv1 = new mathlib.Searcher(null, function(idx) {
 			return Math.max(mathlib.getPruning(phase1CornPrun, idx[0]), mathlib.getPruning(phase1EdgePrun, idx[1]));
 		}, function(idx, move) {
 			var idx1 = [cornMove[move][idx[0]], phase1EdgeMove(idx[1], move)];

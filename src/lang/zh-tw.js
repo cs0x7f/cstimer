@@ -357,7 +357,7 @@ var scrdata = [
 		['隨機步驟', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['隨機狀態', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['四階十二面體', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['隨機步驟', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['隨機步驟', "mpyr", 42],
+		['隨機狀態', "mpyrso", 0]
 	]],
 	['水晶金字塔', [
 		['Pochmann', "prcp", 70],

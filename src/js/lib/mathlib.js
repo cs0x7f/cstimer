@@ -818,7 +818,7 @@ var mathlib = (function() {
 	};
 
 	function Searcher(isSolved, getPrun, doMove, N_AXIS, N_POWER, ckmv) {
-		this.isSolved = isSolved;
+		this.isSolved = isSolved || function() { return true; };
 		this.getPrun = getPrun;
 		this.doMove = doMove;
 		this.N_AXIS = N_AXIS;
@@ -849,12 +849,12 @@ var mathlib = (function() {
 	};
 
 	_.idaSearch = function(idx, maxl, lm, sol) {
-		if (maxl == 0) {
-			return this.isSolved(idx) && this.callback(sol, this.sidx) ? 0 : 1;
-		}
 		var prun = this.getPrun(idx);
 		if (prun > maxl) {
 			return prun > maxl + 1 ? 2 : 1;
+		}
+		if (maxl == 0) {
+			return this.isSolved(idx) && this.callback(sol, this.sidx) ? 0 : 1;
 		}
 		if (prun == 0 && this.isSolved(idx) && maxl == 1) {
 			return 1;

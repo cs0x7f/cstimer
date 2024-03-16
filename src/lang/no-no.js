@@ -357,7 +357,7 @@ var scrdata = [
 		['Tilfeldig trekk', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['tilfeldig tilstand', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['Tilfeldig trekk', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['Tilfeldig trekk', "mpyr", 42],
+		['tilfeldig tilstand', "mpyrso", 0]
 	]],
 	['Pyraminx krystall', [
 		['Pochmann', "prcp", 70],

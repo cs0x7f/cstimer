@@ -357,7 +357,7 @@ var scrdata = [
 		['随机转动', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['随机状态', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['五阶五魔', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['随机转动', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['随机转动', "mpyr", 42],
+		['随机状态', "mpyrso", 0]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],

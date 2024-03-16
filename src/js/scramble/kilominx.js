@@ -400,9 +400,7 @@ var kilominx = (function() {
 		}, 12);
 		mathlib.createPrun(Phase1Prun, 0, 1140 * 27 * 6, 8, comb3FullMove.bind(null, Phase1Move), 12, 4, 5);
 		var doPhase1Move = comb3FullMove.bind(null, Phase1Move);
-		solv1 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0;
-		}, function(idx) {
+		solv1 = new mathlib.Searcher(null, function(idx) {
 			return Math.max(mathlib.getPruning(Phase1Prun, idx[0]), mathlib.getPruning(Phase1Prun, idx[1]));
 		}, function(idx, move) {
 			var idx1 = [doPhase1Move(idx[0], move), doPhase1Move(idx[1], y2Move[move])];
@@ -424,9 +422,7 @@ var kilominx = (function() {
 		}, 6);
 		mathlib.createPrun(Phase2Prun, 0, 455 * 27 * 6, 8, comb3FullMove.bind(null, Phase2Move), 6, 4, 4);
 		var doPhase2Move = comb3FullMove.bind(null, Phase2Move);
-		solv2 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0;
-		}, function(idx) {
+		solv2 = new mathlib.Searcher(null, function(idx) {
 			return Math.max(mathlib.getPruning(Phase2Prun, idx[0]), mathlib.getPruning(Phase2Prun, idx[1]));
 		}, function(idx, move) {
 			var idx1 = [doPhase2Move(idx[0], move), doPhase2Move(idx[1], yMove[move])];
@@ -448,9 +444,7 @@ var kilominx = (function() {
 		}, 3);
 		var doPhase3Move = comb4FullMove.bind(null, Phase3Move);
 		mathlib.createPrun(Phase3Prun, 0, 210 * 81 * 24, 14, doPhase3Move, 3, 4, 6);
-		solv3 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
-		}, function(idx) {
+		solv3 = new mathlib.Searcher(null, function(idx) {
 			return Math.max(mathlib.getPruning(Phase3Prun, idx[0]), mathlib.getPruning(Phase3Prun, idx[1]), mathlib.getPruning(Phase3Prun, idx[2]));
 		}, function(idx, move) {
 			return [doPhase3Move(idx[0], move), doPhase3Move(idx[1], (move + 1) % 3), doPhase3Move(idx[2], (move + 2) % 3)];

@@ -357,7 +357,7 @@ var scrdata = [
 		['무작위 수순', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['무작위 상태', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['기가밍크스', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['무작위 수순', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['무작위 수순', "mpyr", 42],
+		['무작위 상태', "mpyrso", 0]
 	]],
 	['피라밍크스 크리스털', [
 		['포흐만(Pochmann)', "prcp", 70],

@@ -357,7 +357,7 @@ var scrdata = [
 		['Rastgele hamle', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['Rastgele Durum', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['Rastgele hamle', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['Rastgele hamle', "mpyr", 42],
+		['Rastgele Durum', "mpyrso", 0]
 	]],
 	['Pyraminx Kristal', [
 		['Pochmann', "prcp", 70],

@@ -199,45 +199,25 @@ var ftosolver = (function() {
 		return ret;
 	}
 
-	FtoCubie.prototype.fromMult = function(a, b, c) {
-		if (c) {
-			FtoCubie.FtoMult3(a, b, c, this);
-		} else {
-			FtoCubie.FtoMult(a, b, this);
-		}
-		return this;
-	}
-
 	FtoCubie.permMult = function(a, b, ab) {
 		for (var i = 0; i < b.length; i++) {
 			ab[i] = a[b[i]];
 		}
 	}
 
-	FtoCubie.FtoMult = function(a, b, prod) {
-		prod = prod || new FtoCubie();
-		for (var i = 0; i < 6; i++) {
-			prod.cp[i] = a.cp[b.cp[i]];
-			prod.co[i] = a.co[b.cp[i]] ^ b.co[i];
-		}
-		for (var i = 0; i < 12; i++) {
-			prod.ep[i] = a.ep[b.ep[i]];
-			prod.uf[i] = a.uf[b.uf[i]];
-			prod.rl[i] = a.rl[b.rl[i]];
-		}
-		return prod;
-	}
-
-	FtoCubie.FtoMult3 = function(a, b, c, prod) {
-		prod = prod || new FtoCubie();
-		for (var i = 0; i < 6; i++) {
-			prod.cp[i] = a.cp[b.cp[c.cp[i]]];
-			prod.co[i] = a.co[b.cp[c.cp[i]]] ^ b.co[c.cp[i]] ^ c.co[i];
-		}
-		for (var i = 0; i < 12; i++) {
-			prod.ep[i] = a.ep[b.ep[c.ep[i]]];
-			prod.uf[i] = a.uf[b.uf[c.uf[i]]];
-			prod.rl[i] = a.rl[b.rl[c.rl[i]]];
+	FtoCubie.FtoMult = function() {
+		var prod = arguments[arguments.length - 1] || new FtoCubie();
+		for (var k = 0; k < arguments.length; k++) {
+			var a = arguments[arguments.length - 1 - k];
+			for (var i = 0; i < 6; i++) {
+				prod.co[i] = k == 0 ? 0 : (a.co[prod.cp[i]] ^ prod.co[i]);
+				prod.cp[i] = k == 0 ? i : a.cp[prod.cp[i]];
+			}
+			for (var i = 0; i < 12; i++) {
+				prod.ep[i] = k == 0 ? i : a.ep[prod.ep[i]];
+				prod.uf[i] = k == 0 ? i : a.uf[prod.uf[i]];
+				prod.rl[i] = k == 0 ? i : a.rl[prod.rl[i]];
+			}
 		}
 		return prod;
 	}
@@ -250,10 +230,10 @@ var ftosolver = (function() {
 			[5, 0, 4, 2, 3, 1], [1, 1, 0, 1, 1, 0], [6, 5, 7, 9, 2, 10, 11, 4, 3, 8, 1, 0],
 			[5, 3, 4, 8, 6, 7, 2, 0, 1, 11, 9, 10], [4, 5, 3, 7, 8, 6, 1, 2, 0, 10, 11, 9]);
 
-		var rotUi = new FtoCubie().fromMult(rotU, rotU);
-		var rotRi = new FtoCubie().fromMult(rotR, rotR);
-		var rotL = new FtoCubie().fromMult(rotUi, rotR, rotU);
-		var rotF = new FtoCubie().fromMult(rotR, rotU, rotRi);
+		var rotUi = FtoCubie.FtoMult(rotU, rotU, null);
+		var rotRi = FtoCubie.FtoMult(rotR, rotR, null);
+		var rotL = FtoCubie.FtoMult(rotUi, rotR, rotU, null);
+		var rotF = FtoCubie.FtoMult(rotR, rotU, rotRi, null);
 
 		var moveCube = [];
 		moveCube[0] = new FtoCubie( //moveU
@@ -280,10 +260,10 @@ var ftosolver = (function() {
 		moveCube[14] = new FtoCubie( //moveL
 			[2, 1, 4, 3, 0, 5], [1, 0, 1, 0, 0, 0], [0, 8, 2, 3, 4, 5, 6, 1, 7, 9, 10, 11],
 			[11, 1, 10, 2, 0, 5, 6, 7, 8, 9, 3, 4], [0, 1, 2, 3, 4, 5, 7, 8, 6, 9, 10, 11]);
-		moveCube[16] = new FtoCubie().fromMult(rotU, moveCube[8]); // moveUw = [U] * D
-		moveCube[18] = new FtoCubie().fromMult(rotF, moveCube[10]); // moveFw = [F] * B
-		moveCube[20] = new FtoCubie().fromMult(rotR, moveCube[6]); // moveRw = [R] * l
-		moveCube[22] = new FtoCubie().fromMult(rotL, moveCube[4]); // moveLw = [L] * r
+		moveCube[16] = FtoCubie.FtoMult(rotU, moveCube[8], null); // moveUw = [U] * D
+		moveCube[18] = FtoCubie.FtoMult(rotF, moveCube[10], null); // moveFw = [F] * B
+		moveCube[20] = FtoCubie.FtoMult(rotR, moveCube[6], null); // moveRw = [R] * l
+		moveCube[22] = FtoCubie.FtoMult(rotL, moveCube[4], null); // moveLw = [L] * r
 
 		for (var i = 1; i < 24; i += 2) {
 			moveCube[i] = new FtoCubie();
@@ -308,12 +288,12 @@ var ftosolver = (function() {
 			symHash[s] = symCube[s].ep.join(',');
 			symMult[s] = [];
 			symMulI[s] = [];
-			fc = FtoCubie.FtoMult(fc, rotU);
+			fc = FtoCubie.FtoMult(fc, rotU, null);
 			if (s % 3 == 2) { // [F] or [R]
-				fc = FtoCubie.FtoMult3(fc, rotR, rotU);
+				fc = FtoCubie.FtoMult(fc, rotR, rotU, null);
 			}
 			if (s % 6 == 5) {
-				fc = FtoCubie.FtoMult3(fc, rotU, rotR);
+				fc = FtoCubie.FtoMult(fc, rotU, rotR, null);
 			}
 		}
 		for (var i = 0; i < 12; i++) {
@@ -327,7 +307,7 @@ var ftosolver = (function() {
 		for (var s = 0; s < 12; s++) {
 			symMulM[s] = [];
 			for (var j = 0; j < 8; j++) {
-				FtoCubie.FtoMult3(symCube[symMulI[0][s]], moveCube[j * 2], symCube[s], fc);
+				FtoCubie.FtoMult(symCube[symMulI[0][s]], moveCube[j * 2], symCube[s], fc);
 				var k = moveHash.indexOf(fc.ep.join(','));
 				symMulM[s][j] = k >> 1;
 			}
@@ -575,7 +555,7 @@ var ftosolver = (function() {
 		}
 		var fc = new FtoCubie();
 		for (var i = 0; i < scramble.length; i++) {
-			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[scramble[i]]);
+			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[scramble[i]], null);
 		}
 		return [fc, scramble];
 	}
@@ -665,7 +645,7 @@ var ftosolver = (function() {
 		var emap = [0, 1, 9, 3, 4, 5, 6, 7, 8, 10, 2, 11];
 
 		for (var sidx = 0; sidx < 12 * pyraSymCube.length; sidx++) {
-			FtoCubie.FtoMult3(pyraSymCube[~~(sidx / 12)], FtoCubie.symCube[sidx % 12], fc, fc2);
+			FtoCubie.FtoMult(pyraSymCube[~~(sidx / 12)], FtoCubie.symCube[sidx % 12], fc, fc2);
 			var rot;
 			for (rot = 0; rot < 12; rot++) {
 				FtoCubie.FtoMult(fc2, FtoCubie.symCube[rot], fc3);
@@ -709,11 +689,13 @@ var ftosolver = (function() {
 		for (var i = 0; i < std[0].length; i++) {
 			var move = std[0][i];
 			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][solsym[1]]][move >> 1] * 2 + (move & 1);
-			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[sol[i]]);
+			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[sol[i]], null);
 		}
 		solsym[1] = FtoCubie.symMulI[solsym[1]][std[1]];
-		var symCube = FtoCubie.FtoMult(pyraSymCube[~~(solsym[0] / 12)], FtoCubie.symCube[solsym[0] % 12]);
-		fc = FtoCubie.FtoMult3(symCube, fc, FtoCubie.symCube[solsym[1]]);
+		fc = FtoCubie.FtoMult(
+			pyraSymCube[~~(solsym[0] / 12)], FtoCubie.symCube[solsym[0] % 12],
+			fc, FtoCubie.symCube[solsym[1]], null
+		);
 
 		if (~~(fc.uf[6] / 3) != 2 || ~~(fc.uf[9] / 3) != 3) {
 			debugger;
@@ -858,8 +840,7 @@ var ftosolver = (function() {
 		for (var i = 0; i < sol.length; i++) {
 			var move = phase2Moves[sol[i][0]] + sol[i][1];
 			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][solvInfo[3]]][move >> 1] * 2 + (move & 1);
-
-			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move]);
+			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], null);
 		}
 		return [fc, sol, solvInfo[2], solvInfo[3], src, +new Date - tt];
 	}
@@ -910,7 +891,7 @@ var ftosolver = (function() {
 			var move = phase3Moves[sol[i][0]] + sol[i][1];
 			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][solvInfo[3]]][move >> 1] * 2 + (move & 1);
 
-			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move]);
+			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], null);
 		}
 		return [fc, sol, solvInfo[2], solvInfo[3], +new Date - tt];
 	}
@@ -941,7 +922,7 @@ var ftosolver = (function() {
 
 	function applyMoves(fc, moves) {
 		for (var i = 0; i < moves.length; i++) {
-			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[moves[i]]);
+			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[moves[i]], null);
 		}
 		return fc;
 	}
@@ -977,7 +958,7 @@ var ftosolver = (function() {
 
 		this.sol2 = solvInfo2[1].slice();
 		this.tt2 = solvInfo2[5];
-		solvInfo2[0] = FtoCubie.FtoMult(pyraSymCube[FtoCubie.symMulI[0][~~(sym1Idx / 12)]], solvInfo2[0]);
+		solvInfo2[0] = FtoCubie.FtoMult(pyraSymCube[FtoCubie.symMulI[0][~~(sym1Idx / 12)]], solvInfo2[0], null);
 
 		var solvInfo3 = solvePhase3(solvInfo2);
 		this.sol3 = solvInfo3[1].slice();

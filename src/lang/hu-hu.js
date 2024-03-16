@@ -357,7 +357,7 @@ var scrdata = [
 		['véletlen mozdulat', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['véletlen állapot', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['véletlen mozdulat', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['véletlen mozdulat', "mpyr", 42],
+		['véletlen állapot', "mpyrso", 0]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],

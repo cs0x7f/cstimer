@@ -357,7 +357,7 @@ var scrdata = [
 		['nasumični potez', "gear", 10]
 	]],
 	['Kilominx', [
-		['random state', "klmso", 0],
+		['nasumično stanje', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
 	['Gigaminx', [
@@ -387,7 +387,8 @@ var scrdata = [
 		['nasumični potez', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		[' ', "mpyr", 42]
+		['nasumični potez', "mpyr", 42],
+		['nasumično stanje', "mpyrso", 0]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
