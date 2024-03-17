@@ -36,7 +36,7 @@ var scramble_222 = (function(rn) {
 	var llFaces = [0, 1, 2, 3, 8, 9, 4, 5, 20, 21, 16, 17];
 
 	function checkNoBar(pidx, oidx) {
-		var perm = mathlib.set8Perm([], pidx, 7);
+		var perm = mathlib.setNPerm([], pidx, 7);
 		var ori = oriCoord.set([], oidx);
 		var f = [];
 		for (var i = 0; i < 24; i++) {
@@ -338,7 +338,7 @@ var scramble_222 = (function(rn) {
 			doOriMove(ori, 0);
 			doPermMove(perm, 0);
 		}
-		perm = mathlib.get8Perm(perm, 7);
+		perm = mathlib.getNPerm(perm, 7);
 		ori = oriCoord.get(ori);
 		return solv.toStr(solv.search([perm, ori], 9).reverse(), "URF", "'2 ");
 	}
@@ -381,8 +381,8 @@ var scramble_222 = (function(rn) {
 			} else if (type == '222eg') {
 				ori = egmap[state & 0x7];
 				perm = [0, 2, 3, 4, 5, 1][state >> 3];
-				var arr = mathlib.set8Perm([0, 0, 0, 0].concat(egperms[perm]), rn(24), 4);
-				perm = mathlib.get8Perm(arr, 7);
+				var arr = mathlib.setNPerm([0, 0, 0, 0].concat(egperms[perm]), rn(24), 4);
+				perm = mathlib.getNPerm(arr, 7);
 				var rndU = rn(4);
 				ori = oriCoord.set([], ori);
 				while (rndU-- > 0) {

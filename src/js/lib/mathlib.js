@@ -60,28 +60,84 @@ var mathlib = (function() {
 		return table[index >> 3] >> ((index & 7) << 2) & 15;
 	}
 
-	function setNPerm(arr, idx, n) {
-		var i, j;
-		arr[n - 1] = 0;
-		for (i = n - 2; i >= 0; --i) {
-			arr[i] = idx % (n - i);
-			idx = ~~(idx / (n - i));
-			for (j = i + 1; j < n; ++j) {
-				arr[j] >= arr[i] && ++arr[j];
+	function setNPerm(arr, idx, n, even) {
+		var prt = 0;
+		if (even < 0) {
+			idx <<= 1;
+		}
+		if (n >= 16) {
+			arr[n - 1] = 0;
+			for (var i = n - 2; i >= 0; i--) {
+				arr[i] = idx % (n - i);
+				prt ^= arr[i];
+				idx = ~~(idx / (n - i));
+				for (var j = i + 1; j < n; j--) {
+					arr[j] >= arr[i] && arr[j]++;
+				}
+			}
+			if (even < 0 && (prt & 1) != 0) {
+				var tmp = arr[n - 1];
+				arr[n - 1] = arr[n - 2];
+				arr[n - 2] = tmp;
+			}
+			return arr;
+		}
+		var vall = 0x76543210;
+		var valh = 0xfedcba98;
+		for (var i = 0; i < n - 1; i++) {
+			var p = fact[n - 1 - i];
+			var v = idx / p;
+			idx = idx % p;
+			prt ^= v;
+			v <<= 2;
+			if (v >= 32) {
+				v = v - 32;
+				arr[i] = valh >> v & 0xf;
+				var m = (1 << v) - 1;
+				valh = (valh & m) + ((valh >> 4) & ~m);
+			} else {
+				arr[i] = vall >> v & 0xf;
+				var m = (1 << v) - 1;
+				vall = (vall & m) + ((vall >>> 4) & ~m) + (valh << 28);
+				valh = valh >> 4;
 			}
 		}
+		if (even < 0 && (prt & 1) != 0) {
+			arr[n - 1] = arr[n - 2];
+			arr[n - 2] = vall & 0xf;
+		} else {
+			arr[n - 1] = vall & 0xf;
+		}
+		return arr;
 	}
 
-	function getNPerm(arr, n) {
-		var i, idx, j;
-		idx = 0;
-		for (i = 0; i < n; ++i) {
+	function getNPerm(arr, n, even) {
+		n = n || arr.length;
+		var idx = 0;
+		if (n >= 16) {
+			for (var i = 0; i < n - 1; i++) {
+				idx *= n - i;
+				for (var j = i + 1; j < n; j++) {
+					arr[j] < arr[i] && idx++;
+				}
+			}
+			return even < 0 ? (idx >> 1) : idx;
+		}
+		var vall = 0x76543210;
+		var valh = 0xfedcba98;
+		for (var i = 0; i < n - 1; i++) {
+			var v = arr[i] << 2;
 			idx *= n - i;
-			for (j = i + 1; j < n; ++j) {
-				arr[j] < arr[i] && ++idx;
+			if (v >= 32) {
+				idx += (valh >> (v - 32)) & 0xf;
+				valh -= 0x11111110 << (v - 32);
+			} else {
+				idx += (vall >> v) & 0xf;
+				valh -= 0x11111111;
+				vall -= 0x11111110 << v;
 			}
 		}
-		return idx;
+		return even < 0 ? (idx >> 1) : idx;
 	}
 
 	function getNParity(idx, n) {
@@ -92,44 +148,6 @@ var mathlib = (function() {
 			idx = ~~(idx / (n - i));
 		}
 		return p & 1;
-	}
-
-	function get8Perm(arr, n, even) {
-		n = n || 8;
-		var idx = 0;
-		var val = 0x76543210;
-		for (var i = 0; i < n - 1; ++i) {
-			var v = arr[i] << 2;
-			idx = (n - i) * idx + (val >> v & 7);
-			val -= 0x11111110 << v;
-		}
-		return even < 0 ? (idx >> 1) : idx;
-	}
-
-	function set8Perm(arr, idx, n, even) {
-		n = (n || 8) - 1;
-		var val = 0x76543210;
-		var prt = 0;
-		if (even < 0) {
-			idx <<= 1;
-		}
-		for (var i = 0; i < n; ++i) {
-			var p = fact[n - i];
-			var v = ~~(idx / p);
-			prt ^= v;
-			idx %= p;
-			v <<= 2;
-			arr[i] = val >> v & 7;
-			var m = (1 << v) - 1;
-			val = (val & m) + (val >> 4 & ~m);
-		}
-		if (even < 0 && (prt & 1) != 0) {
-			arr[n] = arr[n - 1];
-			arr[n - 1] = val & 7;
-		} else {
-			arr[n] = val & 7;
-		}
-		return arr;
 	}
 
 	function getNOri(arr, n, evenbase) {
@@ -160,13 +178,13 @@ var mathlib = (function() {
 		this.evenbase = evenbase;
 		this.get = type == 'p' ?
 			function(arr) {
-				return get8Perm(arr, this.length, this.evenbase);
+				return getNPerm(arr, this.length, this.evenbase);
 			} : function(arr) {
 				return getNOri(arr, this.length, this.evenbase);
 			};
 		this.set = type == 'p' ?
 			function(arr, idx) {
-				return set8Perm(arr, idx, this.length, this.evenbase);
+				return setNPerm(arr, idx, this.length, this.evenbase);
 			} : function(arr, idx) {
 				return setNOri(arr, idx, this.length, this.evenbase);
 			};
@@ -176,6 +194,31 @@ var mathlib = (function() {
 		for (var i = 0; i < facelets.length; i++) {
 			for (var j = 0; j < facelets[i].length; j++) {
 				f[facelets[i][(j + ori[i]) % facelets[i].length]] = ~~(facelets[perm[i]][j] / divcol);
+			}
+		}
+	}
+
+	function detectFacelet(facelets, f, perm, ori, divcol) {
+		for (var i = 0; i < facelets.length; i++) {
+			var n_ori = facelets[i].length;
+			out: for (var j = 0; j < facelets.length; j++) {
+				if (facelets[j].length != n_ori) {
+					continue;
+				}
+				for (var o = 0; o < n_ori; o++) {
+					var isMatch = true;
+					for (var t = 0; t < n_ori; t++) {
+						if (~~(facelets[j][t] / divcol) != f[cornFacelets[i][(t + o) % n_ori]]) {
+							isMatch = false;
+							break;
+						}
+					}
+					if (isMatch) {
+						perm[i] = j;
+						ori[i] = o;
+						break out;
+					}
+				}
 			}
 		}
 	}
@@ -201,6 +244,43 @@ var mathlib = (function() {
 				}
 			}
 		}
+	}
+
+	function createMoveHash(initState, validMoves, hashFunc, moveFunc) {
+		var states = [initState];
+		var hash2idx = {};
+		var depthEnds = [];
+		hash2idx[hashFunc(initState)] = 0;
+		depthEnds[0] = 1;
+		var moveTable = [];
+		for (var m = 0; m < validMoves.length; m++) {
+			moveTable[m] = [];
+		}
+		var tt = +new Date;
+		for (var i = 0; i < states.length; i++) {
+			if (i == depthEnds[depthEnds.length - 1]) {
+				depthEnds.push(states.length);
+			}
+			if (i % 10000 == 9999) {
+				DEBUG && console.log(i, 'states scanned, tt=', +new Date - tt);
+			}
+			var curState = states[i];
+			for (var m = 0; m < validMoves.length; m++) {
+				var newState = moveFunc(curState, validMoves[m]);
+				if (!newState) {
+					moveTable[m][i] = -1;
+					continue;
+				}
+				var newHash = hashFunc(newState);
+				if (!(newHash in hash2idx)) {
+					hash2idx[newHash] = states.length;
+					states.push(newState);
+				}
+				moveTable[m][i] = hash2idx[newHash];
+			}
+		}
+		DEBUG && console.log('[move hash] ' + states.length + ' states generated, tt=', +new Date - tt, JSON.stringify(depthEnds));
+		return [moveTable, hash2idx];
 	}
 
 	function edgeMove(arr, m) {
@@ -1300,10 +1380,9 @@ var mathlib = (function() {
 		setNPerm: setNPerm,
 		getNPerm: getNPerm,
 		getNParity: getNParity,
-		get8Perm: get8Perm,
-		set8Perm: set8Perm,
 		coord: coord,
 		createMove: createMove,
+		createMoveHash: createMoveHash,
 		edgeMove: edgeMove,
 		circle: circle,
 		circleOri: circleOri,
@@ -1313,6 +1392,7 @@ var mathlib = (function() {
 		minx: minx,
 		SOLVED_FACELET: "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB",
 		fillFacelet: fillFacelet,
+		detectFacelet: detectFacelet,
 		rn: rn,
 		rndEl: rndEl,
 		rndProb: rndProb,

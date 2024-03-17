@@ -14,9 +14,9 @@
 	}
 
 	function edgeMove(idx, m) {
-		var arr = mathlib.set8Perm([], ~~(idx / 3), 4);
+		var arr = mathlib.setNPerm([], ~~(idx / 3), 4);
 		mathlib.acycle(arr, moveEdges[m]);
-		return mathlib.get8Perm(arr, 4) * 3 + (idx % 3 + (m == 0 ? 1 : 0)) % 3;
+		return mathlib.getNPerm(arr, 4) * 3 + (idx % 3 + (m == 0 ? 1 : 0)) % 3;
 	}
 
 	function doMove(off, idx, m) {

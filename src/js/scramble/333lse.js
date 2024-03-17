@@ -14,7 +14,7 @@
 		var edge = idx >> 3;
 		var corn = idx;
 		var cent = idx << 1 | (mathlib.getNParity(edge, 6) ^ ((corn >> 1) & 1));
-		var g = mathlib.set8Perm([], edge, 6);
+		var g = mathlib.setNPerm([], edge, 6);
 		mathlib.acycle(g, edgePerms[m]);
 		if (m == 0) { //U
 			corn = corn + 2;

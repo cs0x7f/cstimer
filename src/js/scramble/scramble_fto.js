@@ -321,43 +321,6 @@ var ftosolver = (function() {
 
 	initMoveCube();
 
-	function createMoveTable(initState, validMoves, hashFunc, moveFunc) {
-		var states = [initState];
-		var hash2idx = {};
-		var depthEnds = [];
-		hash2idx[hashFunc(initState)] = 0;
-		depthEnds[0] = 1;
-		var moveTable = [];
-		for (var m = 0; m < validMoves.length; m++) {
-			moveTable[m] = [];
-		}
-		var tt = +new Date;
-		for (var i = 0; i < states.length; i++) {
-			if (i == depthEnds[depthEnds.length - 1]) {
-				depthEnds.push(states.length);
-			}
-			if (i % 10000 == 9999) {
-				DEBUG && console.log(i, 'states scanned, tt=', +new Date - tt);
-			}
-			var curState = states[i];
-			for (var m = 0; m < validMoves.length; m++) {
-				var newState = moveFunc(curState, validMoves[m]);
-				if (!newState) {
-					moveTable[m][i] = -1;
-					continue;
-				}
-				var newHash = hashFunc(newState);
-				if (!(newHash in hash2idx)) {
-					hash2idx[newHash] = states.length;
-					states.push(newState);
-				}
-				moveTable[m][i] = hash2idx[newHash];
-			}
-		}
-		DEBUG && console.log(states.length, 'states generated, tt=', +new Date - tt, JSON.stringify(depthEnds));
-		return [moveTable, hash2idx];
-	}
-
 	function ftoPermMove(key, perm, move) {
 		var ret = [];
 		var movePerm = FtoCubie.moveCube[move][key];
@@ -452,14 +415,14 @@ var ftosolver = (function() {
 
 	function doPhase2CcufMove(i0, move) {
 		var uf = [];
-		set10Perm(uf, i0);
+		mathlib.setNPerm(uf, i0, 10, -1);
 		var ccMap = p2ccMaps[move];
 		var ufMap = p2ufMaps[move];
 		var uf2 = [];
 		for (var i = 0; i < 10; i++) {
 			uf2[i] = ccMap[uf[ufMap[i]]];
 		}
-		return get10Perm(uf2, ccMap, ufMap);
+		return mathlib.getNPerm(uf2, 10, -1);
 	}
 
 	function getPhase2CcufArr(fc) {
@@ -486,58 +449,6 @@ var ftosolver = (function() {
 			ret[i] = p2[cpi[fc.uf[p1[i]]]];
 		}
 		return ret;
-	}
-
-	var factH = [1, 1, 1, 3, 12, 60, 360, 2520, 20160, 181440, 1814400];
-
-	function get10Perm(arr) {
-		var vall = 0x76543210;
-		var valh = 0x98;
-		var idx = 0;
-		for (var i = 0; i < 8; i++) {
-			var v = arr[i] << 2;
-			idx *= 10 - i;
-			if (v >= 32) {
-				idx += (valh >> (v - 32)) & 0xf;
-				valh -= 0x1110 << (v - 32);
-			} else {
-				idx += (vall >> v) & 0xf;
-				valh -= 0x1111;
-				vall -= 0x11111110 << v;
-			}
-		}
-		return idx;
-	}
-
-	function set10Perm(arr, idx) {
-		var vall = 0x76543210;
-		var valh = 0x98;
-		var prt = 0;
-		for (var i = 0; i < 9; i++) {
-			var p = factH[9 - i];
-			var v = idx / p;
-			idx = idx % p;
-			prt ^= v;
-			v <<= 2;
-			if (v >= 32) {
-				v = v - 32;
-				arr[i] = valh >> v & 0xf;
-				var m = (1 << v) - 1;
-				valh = (valh & m) + ((valh >> 4) & ~m);
-			} else {
-				arr[i] = vall >> v & 0xf;
-				var m = (1 << v) - 1;
-				vall = (vall & m) + ((vall >>> 4) & ~m) + (valh << 28);
-				valh = valh >> 4;
-			}
-		}
-		if ((prt & 1) != 0) {
-			arr[9] = arr[8];
-			arr[8] = vall & 0xf;
-		} else {
-			arr[9] = vall & 0xf;
-		}
-		return arr;
 	}
 
 	function phase3EdgeHash(ep) {
@@ -600,9 +511,9 @@ var ftosolver = (function() {
 
 	function phase1Init() {
 		var fc = new FtoCubie();
-		p1epMoves = createMoveTable(fc.ep.slice(), phase1Moves, phase1EdgeHash, ftoPermMove.bind(null, 'ep'));
-		p1rlMoves = createMoveTable(fc.rl.slice(), phase1Moves, phase1CtrlHash, ftoPermMove.bind(null, 'rl'));
-		p1ufMoves = createMoveTable(new FtoCubie(), phase1Moves, phase1CcufHash, ftoFullMove);
+		p1epMoves = mathlib.createMoveHash(fc.ep.slice(), phase1Moves, phase1EdgeHash, ftoPermMove.bind(null, 'ep'));
+		p1rlMoves = mathlib.createMoveHash(fc.rl.slice(), phase1Moves, phase1CtrlHash, ftoPermMove.bind(null, 'rl'));
+		p1ufMoves = mathlib.createMoveHash(new FtoCubie(), phase1Moves, phase1CcufHash, ftoFullMove);
 		p1epPrun = [];
 		p1ctPrun = [];
 		p1cePrun = [];
@@ -749,9 +660,9 @@ var ftosolver = (function() {
 
 	function phase2Init() {
 		var fc = new FtoCubie();
-		p2epMoves = createMoveTable(fc.ep.slice(), phase2Moves, phase2EdgeHash, ftoPermMove.bind(null, 'ep'));
-		p2rlMoves = createMoveTable(fc.rl.slice(), phase2Moves, phase2CtrlHash, ftoPermMove.bind(null, 'rl'));
-		// p2ufMoves = createMoveTable(new FtoCubie(), phase2Moves, phase2CcufHash, ftoFullMove);
+		p2epMoves = mathlib.createMoveHash(fc.ep.slice(), phase2Moves, phase2EdgeHash, ftoPermMove.bind(null, 'ep'));
+		p2rlMoves = mathlib.createMoveHash(fc.rl.slice(), phase2Moves, phase2CtrlHash, ftoPermMove.bind(null, 'rl'));
+		// p2ufMoves = mathlib.createMoveHash(new FtoCubie(), phase2Moves, phase2CcufHash, ftoFullMove);
 		p2erPrun = [];
 		p2ufPrun = [];
 		mathlib.createPrun(p2erPrun, 0, 280 * 560, 14, function(idx, move) {
@@ -762,11 +673,11 @@ var ftosolver = (function() {
 		mathlib.createPrun(p2ufPrun, 0, 1814400, 10, doPhase2CcufMove, 3, 2);
 		ckmv2 = genCkmv(phase2Moves);
 		solv2 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && get10Perm(idx[2]) == 0;
+			return idx[0] == 0 && idx[1] == 0 && mathlib.getNPerm(idx[2], 10, -1) == 0;
 		}, function(idx) {
 			return Math.max(
 				mathlib.getPruning(p2erPrun, idx[1] * 280 + idx[0]),
-				Math.min(12, mathlib.getPruning(p2ufPrun, get10Perm(idx[2])))
+				Math.min(12, mathlib.getPruning(p2ufPrun, mathlib.getNPerm(idx[2], 10, -1)))
 			);
 		}, function(idx, move) {
 			var uf = idx[2];
@@ -855,8 +766,8 @@ var ftosolver = (function() {
 
 	function phase3Init() {
 		var fc = new FtoCubie();
-		p3epMoves = createMoveTable(fc.ep.slice(), phase3Moves, phase3EdgeHash, ftoPermMove.bind(null, 'ep'));
-		p3ufMoves = createMoveTable(new FtoCubie(), phase3Moves, phase3CcufHash, ftoFullMove);
+		p3epMoves = mathlib.createMoveHash(fc.ep.slice(), phase3Moves, phase3EdgeHash, ftoPermMove.bind(null, 'ep'));
+		p3ufMoves = mathlib.createMoveHash(new FtoCubie(), phase3Moves, phase3CcufHash, ftoFullMove);
 		p3epPrun = [];
 		p3ufPrun = [];
 		mathlib.createPrun(p3epPrun, 0, 81, 14, p3epMoves[0], 4, 2);

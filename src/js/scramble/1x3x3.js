@@ -8,9 +8,9 @@
 	];
 
 	function doMove(idx, m) {
-		var arr = mathlib.set8Perm([], idx >> 4, 4);
+		var arr = mathlib.setNPerm([], idx >> 4, 4);
 		mathlib.acycle(arr, movePieces[m]);
-		return (mathlib.get8Perm(arr, 4) << 4) + ((idx & 15) ^ (1 << m));
+		return (mathlib.getNPerm(arr, 4) << 4) + ((idx & 15) ^ (1 << m));
 	}
 
 	function generateScramble() {

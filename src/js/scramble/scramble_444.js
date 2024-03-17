@@ -933,7 +933,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function CornerCube_1(cperm, twist) {
 		$$init_2(this);
-		mathlib.set8Perm(this.cp, cperm);
+		mathlib.setNPerm(this.cp, cperm, 8);
 		$setTwist_0(this, twist);
 	}
 

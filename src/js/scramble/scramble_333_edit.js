@@ -11,7 +11,7 @@ Compiled to Javascript using GWT.
  */
 "use strict";
 
-var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl) {
+var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 
 	var Ux1 = 0,
 		Ux2 = 1,
@@ -79,7 +79,7 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 
 	function CubieCube1(cperm, twist, eperm, flip) {
 		CubieCube_$$init(this);
-		set8Perm(this.cp, cperm);
+		setNPerm(this.cp, cperm, 8);
 		$setTwist(this, twist);
 		setNPerm(this.ep, eperm, 12);
 		$setFlip(this, flip);
@@ -1057,4 +1057,4 @@ var scramble_333 = (function(getNPerm, setNPerm, set8Perm, getNParity, rn, rndEl
 		solvFacelet: solvFacelet
 	};
 
-})(mathlib.getNPerm, mathlib.setNPerm, mathlib.set8Perm, mathlib.getNParity, mathlib.rn, mathlib.rndEl);
+})(mathlib.getNPerm, mathlib.setNPerm, mathlib.getNParity, mathlib.rn, mathlib.rndEl);

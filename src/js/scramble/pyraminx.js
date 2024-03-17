@@ -151,7 +151,7 @@
 
 	function getL4EScramble(type, length, cases) {
 		var l4ecase = l4e_map[scrMgr.fixCase(cases, l4eprobs)][0];
-		var perm = mathlib.get8Perm(mathlib.set8Perm([], l4ecase & 1, 4, -1).concat([4, 5]), 6, -1);
+		var perm = mathlib.getNPerm(mathlib.setNPerm([], l4ecase & 1, 4, -1).concat([4, 5]), 6, -1);
 		var ori = (l4ecase >> 1 & 0x3) * 864 + (l4ecase >> 3);
 		var state = pyrMult(mathlib.rndEl(aufs), pyrMult([perm, ori], mathlib.rndEl(aufs)));
 		var sol = solv.toStr(solv.search(state, 8).reverse(), "ULRB", ["'", ""]) + ' ';
@@ -184,7 +184,7 @@
 				perm = mathlib.rn(360);
 				ori = mathlib.rn(2592);
 			} else if (type == 'pyrl4e') {
-				perm = mathlib.get8Perm(mathlib.set8Perm([], mathlib.rn(12), 4, -1).concat([4, 5]), 6, -1);
+				perm = mathlib.getNPerm(mathlib.setNPerm([], mathlib.rn(12), 4, -1).concat([4, 5]), 6, -1);
 				ori = mathlib.rn(3) * 864 + mathlib.rn(8);
 			} else if (type == 'pyrnb') {
 				do {
@@ -576,43 +576,6 @@ var mpyr = (function() {
 		return arr;
 	}
 
-	function createMoveTable(initState, validMoves, hashFunc, moveFunc) {
-		var states = [initState];
-		var hash2idx = {};
-		var depthEnds = [];
-		hash2idx[hashFunc(initState)] = 0;
-		depthEnds[0] = 1;
-		var moveTable = [];
-		for (var m = 0; m < validMoves.length; m++) {
-			moveTable[m] = [];
-		}
-		var tt = +new Date;
-		for (var i = 0; i < states.length; i++) {
-			if (i == depthEnds[depthEnds.length - 1]) {
-				depthEnds.push(states.length);
-			}
-			if (i % 10000 == 9999) {
-				DEBUG && console.log(i, 'states scanned, tt=', +new Date - tt);
-			}
-			var curState = states[i];
-			for (var m = 0; m < validMoves.length; m++) {
-				var newState = moveFunc(curState, validMoves[m]);
-				if (!newState) {
-					moveTable[m][i] = -1;
-					continue;
-				}
-				var newHash = hashFunc(newState);
-				if (!(newHash in hash2idx)) {
-					hash2idx[newHash] = states.length;
-					states.push(newState);
-				}
-				moveTable[m][i] = hash2idx[newHash];
-			}
-		}
-		DEBUG && console.log(states.length, 'states generated, tt=', +new Date - tt, JSON.stringify(depthEnds));
-		return [moveTable, hash2idx];
-	}
-
 	function doMove(mc, move) {
 		return MpyrCubie.MpyrMult(mc, MpyrCubie.moveCube[move], null);
 	}
@@ -654,7 +617,7 @@ var mpyr = (function() {
 	var solv2 = null;
 
 	function phase2EpCtHash(fc) {
-		return mathlib.get8Perm(fc.ep, 6, -1) * 4 + fc.ct.indexOf(0);
+		return mathlib.getNPerm(fc.ep, 6, -1) * 4 + fc.ct.indexOf(0);
 	}
 
 	function phase2EoCoHash(fc) {
@@ -662,8 +625,8 @@ var mpyr = (function() {
 	}
 
 	function initPhase2() {
-		p2epctMoves = createMoveTable(new MpyrCubie(), phase2Moves, phase2EpCtHash, doMove);
-		p2eocoMoves = createMoveTable(new MpyrCubie(), phase2Moves, phase2EoCoHash, doMove);
+		p2epctMoves = mathlib.createMoveHash(new MpyrCubie(), phase2Moves, phase2EpCtHash, doMove);
+		p2eocoMoves = mathlib.createMoveHash(new MpyrCubie(), phase2Moves, phase2EoCoHash, doMove);
 		mathlib.createPrun(p2epctPrun, 0, 1440, 14, p2epctMoves[0], 4, 2);
 		mathlib.createPrun(p2eocoPrun, 0, 2592, 14, p2eocoMoves[0], 4, 2);
 		var ckmv2 = genCkmv(phase2Moves);

@@ -14,7 +14,7 @@ TODO:
 */
 "use strict";
 
-(function(set8Perm, get8Perm, circle, rn) {
+(function(setNPerm, getNPerm, circle, rn) {
 
 	function FullCube_copy(obj, c) {
 		obj.ul = c.ul;
@@ -96,7 +96,7 @@ TODO:
 		for (a = 0; a < 8; ++a) {
 			obj.prm[a] = FullCube_pieceAt(obj, a * 3 + 1) >> 1;
 		}
-		sq.cornperm = get8Perm(obj.prm);
+		sq.cornperm = getNPerm(obj.prm, 8);
 		sq.topEdgeFirst = FullCube_pieceAt(obj, 0) == FullCube_pieceAt(obj, 1);
 		a = sq.topEdgeFirst ? 2 : 0;
 		for (b = 0; b < 4; a += 3, ++b)
@@ -105,7 +105,7 @@ TODO:
 		a = sq.botEdgeFirst ? 14 : 12;
 		for (; b < 8; a += 3, ++b)
 			obj.prm[b] = FullCube_pieceAt(obj, a) >> 1;
-		sq.edgeperm = get8Perm(obj.prm);
+		sq.edgeperm = getNPerm(obj.prm, 8);
 		sq.ml = obj.ml;
 	}
 
@@ -581,15 +581,15 @@ TODO:
 		var check, depth, done, find, i, idx, idxx, inv, m, ml, pos;
 		pos = [];
 		for (i = 0; i < 40320; ++i) {
-			set8Perm(pos, i);
+			setNPerm(pos, i, 8);
 			circle(pos, 2, 4)(pos, 3, 5);
-			Square_TwistMove[i] = get8Perm(pos);
-			set8Perm(pos, i);
+			Square_TwistMove[i] = getNPerm(pos, 8);
+			setNPerm(pos, i, 8);
 			circle(pos, 0, 3, 2, 1);
-			Square_TopMove[i] = get8Perm(pos);
-			set8Perm(pos, i);
+			Square_TopMove[i] = getNPerm(pos, 8);
+			setNPerm(pos, i, 8);
 			circle(pos, 4, 7, 6, 5);
-			Square_BottomMove[i] = get8Perm(pos);
+			Square_BottomMove[i] = getNPerm(pos, 8);
 		}
 		for (i = 0; i < 80640; ++i) {
 			SquarePrun[i] = -1;
@@ -841,4 +841,4 @@ TODO:
 		getRandomScramble: square1SolverGetRandomScramble
 	};
 
-})(mathlib.set8Perm, mathlib.get8Perm, mathlib.circle, mathlib.rn);
+})(mathlib.setNPerm, mathlib.getNPerm, mathlib.circle, mathlib.rn);

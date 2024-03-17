@@ -1,4 +1,4 @@
-(function(circle, get8Perm) {
+(function(circle, getNPerm) {
 	var cmv = [];
 	var cprun = [];
 
@@ -9,15 +9,15 @@
 			cmv[i] = [];
 		}
 		for (var i = 0; i < 40320; i++) {
-			mathlib.set8Perm(g, i);
+			mathlib.setNPerm(g, i, 8);
 			circle(g, 0, 1, 2, 3);
-			temp = cmv[0][i] = get8Perm(g); //U
+			temp = cmv[0][i] = getNPerm(g, 8); //U
 			circle(g, 4, 5, 6, 7);
-			temp = cmv[1][temp] = get8Perm(g); //D
+			temp = cmv[1][temp] = getNPerm(g, 8); //D
 			circle(g, 2, 5)(g, 3, 6);
-			temp = cmv[2][temp] = get8Perm(g); //R
+			temp = cmv[2][temp] = getNPerm(g, 8); //R
 			circle(g, 0, 5)(g, 3, 4);
-			cmv[3][temp] = get8Perm(g); //F
+			cmv[3][temp] = getNPerm(g, 8); //F
 		}
 	}
 
@@ -25,13 +25,13 @@
 		if (m < 2) {
 			return idx;
 		}
-		var g = mathlib.set8Perm([], idx, 3);
+		var g = mathlib.setNPerm([], idx, 3);
 		if (m == 2) {
 			circle(g, 0, 1);
 		} else if (m == 3) {
 			circle(g, 0, 2);
 		}
-		return get8Perm(g, 3);
+		return getNPerm(g, 3);
 	}
 	//	function doMv(idx, m) {
 	//		return cmv[~~(idx / 6)][m] * 6 + doEdgeMove(idx % 6, m);
@@ -81,4 +81,4 @@
 		return d.reverse().join(" ");
 	}
 	scrMgr.reg('223', generateScramble);
-})(mathlib.circle, mathlib.get8Perm);
+})(mathlib.circle, mathlib.getNPerm);

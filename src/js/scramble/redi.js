@@ -154,7 +154,7 @@ var redi = (function() {
 			var j = i < 4 ? i : i + 4;
 			ep2[i] = ep[j] < 4 ? ep[j] : ep[j] - 4;
 		}
-		var p2eidx = mathlib.get8Perm(ep2, 8, -1);
+		var p2eidx = mathlib.getNPerm(ep2, 8, -1);
 		var p2cidx = cornCoord.get(co);
 		var sol2 = solv2.search([p2cidx, p2eidx], 0);
 		return prettySolution([].concat(sol1, sol2));		
