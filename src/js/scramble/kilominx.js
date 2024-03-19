@@ -40,16 +40,7 @@ var kilominx = (function() {
 	KiloCubie.prototype.toFaceCube = function(kFacelet) {
 		kFacelet = kFacelet || kiloFacelet;
 		var f = [];
-		// for (var i = 0; i < 60; i++) {
-		// 	f[i] = ~~(i / 5);
-		// }
-		for (var c = 0; c < 20; c++) {
-			var j = this.perm[c];
-			var ori = this.twst[c];
-			for (var n = 0; n < 3; n++) {
-				f[kFacelet[c][(n + ori) % 3]] = ~~(kFacelet[j][n] / 5);
-			}
-		}
+		mathlib.fillFacelet(kFacelet, f, this.perm, this.twst, 5);
 		return f;
 	}
 
@@ -64,22 +55,8 @@ var kilominx = (function() {
 		if (count != 0x555555555555) {
 			return -1;
 		}
-		for (var i = 0; i < 20; i++) {
-			for (var j = 0; j < 20; j++) {
-				var twst = -1;
-				for (var t = 0; t < 3; t++) {
-					if (~~(kFacelet[j][0] / 5) == f[kFacelet[i][t]] && 
-							~~(kFacelet[j][1] / 5) == f[kFacelet[i][(t + 1) % 3]] && 
-							~~(kFacelet[j][2] / 5) == f[kFacelet[i][(t + 2) % 3]]) {
-						twst = t;
-						break;
-					}
-				}
-				if (twst != -1) {
-					this.perm[i] = j;
-					this.twst[i] = twst;
-				}
-			}
+		if (mathlib.detectFacelet(kFacelet, f, this.perm, this.twst, 5) == -1) {
+			return -1;
 		}
 		return this;
 	}

@@ -425,6 +425,7 @@
 				ret = [];
 				var cornMoves = ['UFR', 'UFL', 'UBL', 'UBR', 'DFR', 'DFL', 'DBL', 'DBR'];
 				var edgeMoves = ['UF', 'UL', 'UB', 'UR', 'FR', 'FL', 'BL', 'BR', 'DF', 'DL', 'DB', 'DR'];
+				var maxWidth = 0;
 				for (var i = 0; i < len; i++) {
 					var facePerm;
 					do {
@@ -435,15 +436,21 @@
 					var edgePerm = mathlib.rndPerm(12).slice(0, mathlib.rn(2) + 6).sort(function(a, b) {return a - b;});
 					var line = [];
 					for (var j = 0; j < 3; j++) {
-						line.push('URF'.charAt(facePerm[j]) + mathlib.rndEl(["", "2", "'"]));
+						line.push('URF'.charAt(facePerm[j]) + mathlib.rndEl([" ", "2", "'"]));
 					}
+					line.push('');
 					for (var j = 0; j < cornPerm.length; j++) {
-						line.push(cornMoves[cornPerm[j]] + mathlib.rndEl(["", "'"]));
+						line.push(cornMoves[cornPerm[j]] + mathlib.rndEl([" ", "'"]));
 					}
+					line.push('');
 					for (var j = 0; j < edgePerm.length; j++) {
 						line.push(edgeMoves[edgePerm[j]]);
 					}
-					ret.push(line.join(' '));
+					ret[i] = line.join(' ');
+					maxWidth = Math.max(maxWidth, ret[i].length);
+				}
+				for (var i = 0; i < ret.length; i++) {
+					ret[i] = ret[i].padEnd(maxWidth, '~');
 				}
 				return ret.join('\\n');
 			case "redi":

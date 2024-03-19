@@ -9,15 +9,6 @@ var ftosolver = (function() {
 		this.rl = (rl && rl.slice()) || [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 	}
 
-	/*
-	    U8 U7 U6 U5 U4      B8 B7 B6 B5 B4
-	  L4   U3 U2 U1   R8  r4   B3 B2 B1   l8
-	  L5 L1   U0   R3 R7  r5 r1   B0   l3 l7
-	  L6 L2 L0  R0 R2 R6  r6 r2 r0  l0 l2 l6
-	  L7 L3   F0   R1 R5  r7 r3   D0   l1 l5
-	  L8   F1 F2 F3   R4  r8   D1 D2 D3   l4
-	    F4 F5 F6 F7 F8      D4 D5 D6 D7 D8
-	*/
 	var U = 0, F = 9, r = 18, l = 27, D = 36, B = 45, R = 54, L = 63;
 
 	var cornFacelets = [
@@ -50,23 +41,27 @@ var ftosolver = (function() {
 		R + 2, R + 5, R + 7
 	];
 
+	FtoCubie.prototype.isEqual = function(fc) {
+		for (var i = 0; i < 12; i++) {
+			if (this.ep[i] != fc.ep[i] || this.uf[i] != fc.uf[i] || this.rl[i] != fc.rl[i]
+					|| i < 6 && (this.cp[i] != fc.cp[i] || this.co[i] != fc.co[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	FtoCubie.prototype.toFaceCube = function(todiv) {
 		var f = [];
 		todiv = todiv || 9;
+		var co = [];
 		for (var i = 0; i < 6; i++) {
-			var j = this.cp[i];
-			var ori = this.co[i] * 2;
-			for (var n = 0; n < 4; n++) {
-				f[cornFacelets[i][(n + ori) % 4]] = ~~(cornFacelets[j][n] / todiv);
-			}
+			co[i] = this.co[i] * 2;
 		}
-		for (var i = 0; i < 12; i++) {
-			for (var n = 0; n < 2; n++) {
-				f[edgeFacelets[i][n]] = ~~(edgeFacelets[this.ep[i]][n] / todiv);
-			}
-			f[ctufFacelets[i]] = ~~(ctufFacelets[this.uf[i]] / todiv);
-			f[ctrlFacelets[i]] = ~~(ctrlFacelets[this.rl[i]] / todiv);
-		}
+		mathlib.fillFacelet(cornFacelets, f, this.cp, co, todiv);
+		mathlib.fillFacelet(edgeFacelets, f, this.ep, [], todiv);
+		mathlib.fillFacelet(ctufFacelets, f, this.uf, null, todiv);
+		mathlib.fillFacelet(ctrlFacelets, f, this.rl, null, todiv);
 		return f;
 	}
 
@@ -480,7 +475,7 @@ var ftosolver = (function() {
 			for (var m2 = 0; m2 < m1; m2++) {
 				FtoCubie.FtoMult(FtoCubie.moveCube[moves[m1]], FtoCubie.moveCube[moves[m2]], tmp1);
 				FtoCubie.FtoMult(FtoCubie.moveCube[moves[m2]], FtoCubie.moveCube[moves[m1]], tmp2);
-				if (tmp1.toString(1) == tmp2.toString(1)) {
+				if (tmp1.isEqual(tmp2)) {
 					ckmv[m1] |= 1 << m2;
 				}
 			}

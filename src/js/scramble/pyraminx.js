@@ -258,26 +258,10 @@ var mpyr = (function() {
 	MpyrCubie.prototype.toFaceCube = function(todiv) {
 		var f = [];
 		todiv = todiv || 13;
-		for (var i = 0; i < 6; i++) {
-			var j = this.ep[i];
-			var ori = this.eo[i];
-			for (var n = 0; n < 2; n++) {
-				f[edgeFacelets[i][n ^ ori]] = ~~(edgeFacelets[j][n] / todiv);
-			}
-		}
-		for (var i = 0; i < 12; i++) {
-			for (var n = 0; n < 2; n++) {
-				f[wingFacelets[i][n]] = ~~(wingFacelets[this.wp[i]][n] / todiv);
-			}
-		}
-		for (var i = 0; i < 4; i++) {
-			var j = this.cp[i];
-			var ori = this.co[i];
-			for (var n = 0; n < 3; n++) {
-				f[cornFacelets[i][(n + ori) % 3]] = ~~(cornFacelets[j][n] / todiv);
-			}
-			f[centFacelets[i]] = ~~(centFacelets[this.ct[i]] / todiv);
-		}
+		mathlib.fillFacelet(edgeFacelets, f, this.ep, this.eo, todiv);
+		mathlib.fillFacelet(wingFacelets, f, this.wp, [], todiv);
+		mathlib.fillFacelet(cornFacelets, f, this.cp, this.co, todiv);
+		mathlib.fillFacelet(centFacelets, f, this.ct, null, todiv);
 		return f;
 	}
 

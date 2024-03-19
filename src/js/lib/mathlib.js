@@ -192,8 +192,14 @@ var mathlib = (function() {
 
 	function fillFacelet(facelets, f, perm, ori, divcol) {
 		for (var i = 0; i < facelets.length; i++) {
-			for (var j = 0; j < facelets[i].length; j++) {
-				f[facelets[i][(j + ori[i]) % facelets[i].length]] = ~~(facelets[perm[i]][j] / divcol);
+			var cubie = facelets[i];
+			if (typeof(cubie) == 'number') {
+				f[cubie] = ~~(facelets[perm[i]] / divcol);
+				continue;
+			}
+			var o = ori[i] || 0;
+			for (var j = 0; j < cubie.length; j++) {
+				f[cubie[(j + o) % cubie.length]] = ~~(facelets[perm[i]][j] / divcol);
 			}
 		}
 	}
@@ -201,14 +207,16 @@ var mathlib = (function() {
 	function detectFacelet(facelets, f, perm, ori, divcol) {
 		for (var i = 0; i < facelets.length; i++) {
 			var n_ori = facelets[i].length;
-			out: for (var j = 0; j < facelets.length; j++) {
-				if (facelets[j].length != n_ori) {
+			out: for (var j = 0; j < facelets.length + 1; j++) {
+				if (j == facelets.length) { // not matched
+					return -1;
+				} else if (facelets[j].length != n_ori) {
 					continue;
 				}
 				for (var o = 0; o < n_ori; o++) {
 					var isMatch = true;
 					for (var t = 0; t < n_ori; t++) {
-						if (~~(facelets[j][t] / divcol) != f[cornFacelets[i][(t + o) % n_ori]]) {
+						if (~~(facelets[j][t] / divcol) != f[facelets[i][(t + o) % n_ori]]) {
 							isMatch = false;
 							break;
 						}
@@ -221,6 +229,7 @@ var mathlib = (function() {
 				}
 			}
 		}
+		return 0;
 	}
 
 	function createMove(moveTable, size, doMove, N_MOVES) {
