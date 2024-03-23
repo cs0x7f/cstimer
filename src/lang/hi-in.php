@@ -20,7 +20,7 @@
 <li><strong>टाइमिंग कैसे प्रारंभ करें</strong> - स्पेस बार, या बाएँ और दाएँ दोनों Ctrl बटन (या मोबाइल डिवाइस पर स्क्रीन) दबाए रखें और टाइमर के हरे होने की प्रतीक्षा करें। स्पेस बार छूटते ही टाइमर टाइमिंग शुरू कर देगा। टाइमिंग रोकने के लिए कोई भी कीबोर्ड बटन (या मोबाईल पर स्क्रीन) दबाएं और हल करने का समय रिकॉर्ड हो जाएगा।</li>
 <li><strong>यूआई विवरण</strong> - csTimer के चिह्न के पास 6 बटन हैं: विकल्प, निर्यात, स्क्रैम्बल, समय सूची, मदद करें, और उपकरण। संबंधित फ़ंक्शन पैनल खोलने के लिए <strong>स्क्रैम्बल</strong>, <strong>समय सूची</strong>, और <strong>उपकरण</strong> को दबाएं।</li>
 <li><strong>स्क्रैम्बल पैनल</strong> - स्क्रैम्बल पैनल में, आप स्क्रैम्बल प्रकार का चयन कर सकते हैं, स्क्रैम्बल की लंबाई और केस फ़िल्टर सेट कर सकते हैं (यदि उपलब्ध हो), पिछले स्क्रैम्बल की समीक्षा कर सकते हैं, और अगला स्क्रैम्बल तैयार कर सकते हैं।</li>
-<li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
+<li><strong>समय-सूची पैनल</strong> - इस पैनल में आप: "सत्र" पर दबाकर सत्र प्रबंधक खोल सकते हैं; सत्रों को चुन/जोड़/हटा सकते हैं; चयनकर्ता द्वारा सत्रों को खाली कर सकतें हैं; और उसके बगल में बटन को दबाकर आप वर्तमान एकल/औसत समय, सर्वश्रेष्ठ एकल/औसत समय, और समय की पूरी सूची देख सकते हैं।</li>
 <li><strong>टूल्स पैनल</strong> - टूल्स पैनल में, आप विशिष्ट सहायक कार्यों का चयन कर सकते हैं, जिसमें स्क्रैम्बल इमेज, स्क्रैम्बल जनरेटर, सॉल्वर, अन्य प्रकार के आँकड़े आदि शामिल हैं।</li>
 </ul>
 <h2>कुंजीपटल संक्षिप्त रीति</h2>
@@ -60,34 +60,34 @@
 <li><strong data="opt_timeFormat">समय प्रारूप</strong>. प्रदर्शित करने के लिए समय का प्रारूप।</li>
 <li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. यदि चयनित है, तो csTimer स्वचालित रूप से प्रति 100 समयों को निर्दिष्ट स्थान पर निर्यात करेगा - स्थानीय फ़ाइल, csTimer सर्वर, या Google स्टोरेज।</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. यदि आपने कई बैकअप अपलोड किए हैं, तो आप सबसे हाल ही में अपलोड किए गए 10 बैकअप में से किसी एक से आयात कर सकते हैं। यदि आप गलती से खाली बैकअप अपलोड कर देते हैं, तो यह विकल्प आपको अपने समय पुनः प्राप्त करने में मदद करेगा।</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
-<li><strong data="opt_showAvg">Show Avg Label</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
-<li><strong data="opt_zoom">बड़ा करें</strong>. You can adjust sizes of all elements by this option.</li>
-<li><strong data="opt_font">टाइमर का फ़ॉन्ट चुनें</strong>. Font of the main timer.</li>
-<li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
-<li><strong data="opt_view">इंटरफ़ेस शैली है</strong>. Switch between desktop and mobile views.</li>
-<li><strong data="opt_wndScr">फेरबदल पैनल प्रदर्शन शैली</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">सांख्यिकी पैनल प्रदर्शन शैली</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">उपकरण पैनल प्रदर्शन शैली</strong>. Make tool panel embedded into background.</li>
-<li><strong data="opt_bgImgO">background image opacity</strong>. Opacity of the background image.</li>
-<li><strong data="opt_bgImgS">background image</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
-<li><strong data="opt_timerSize">टाइमर का विस्तार</strong>. Set the size of main timer.</li>
-<li><strong data="opt_smallADP">दशमलव बिंदु के बाद छोटे फ़ॉन्ट का उपयोग करें</strong>. Use a smaller font size after the digital point in main timer.</li>
-<li><strong data="opt_useMouse">माउस टाइमर का उपयोग करें</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
-<li><strong data="opt_useIns">WCA निरीक्षण का उपयोग करें</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
-<li><strong data="opt_voiceIns">WCA निरिक्षण के लिए आवाज़ की चेतावनी</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
-<li><strong data="opt_voiceVol">Voice volume</strong>. Voice level of the alert above.</li>
-<li><strong data="opt_input">समयों का अभिलेखन किसके साथ करें?</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
-<li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
-<li><strong data="opt_timeU">टाइमर अद्यतन है</strong>. How timer is updated when timing.</li>
-<li><strong data="opt_preTime">स्पेसबार को नीचे रखने का समय (सेकंड)</strong>. How long the space bar should be held before the timer turns green.</li>
-<li><strong data="opt_phases">एकाधिक-स्थिति</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
-<li><strong data="opt_scrSize">फेरबदल का विस्तार</strong>. Size of the scramble text.</li>
-<li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
-<li><strong data="opt_scrMono">मोनोस्पेस करी हुई फेरबदल</strong>. Use monospaced font for scramble text.</li>
-<li><strong data="opt_scrLim">फेरबदल क्षेत्र की ऊंचाई सीमित करें</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
-<li><strong data="opt_scrAlign">फेरबदल क्षेत्र का संरेखण</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
+<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer का लोगो एक सूचना डिस्प्ले पैनल के रूप में काम करेगा, जो आपकी रुचिनुसार विभिन्न प्रकार की जानकारी के लिए संकेत देता है, जैसे PB को तोड़ना।</li>
+<li><strong data="opt_showAvg">Show Avg Label</strong>. मुख्य टाइमर के नीचे वर्तमान में चयनित दो प्रकार के औसत (डिफ़ॉल्ट रूप से AO5 और AO12) प्रदर्शित होते हैं।</li>
+<li><strong data="opt_zoom">बड़ा करें</strong>. आप इस विकल्प द्वारा सभी यूआई तत्वों के आकार को समायोजित कर सकते हैं।</li>
+<li><strong data="opt_font">टाइमर का फ़ॉन्ट चुनें</strong>. मुख्य टाइमर का फ़ॉन्ट।</li>
+<li><strong data="opt_uidesign">UI design is</strong>. आप इस विकल्प द्वारा यूआई डिज़ाइन को मटीरीयल-लाईक में बदल सकते हैं, या छायाएँ छिपा सकते हैं।</li>
+<li><strong data="opt_view">इंटरफ़ेस शैली है</strong>. डेस्कटॉप और मोबाइल दृश्यों के बीच स्विच करें।</li>
+<li><strong data="opt_wndScr">फेरबदल पैनल प्रदर्शन शैली</strong>. स्क्रैम्बल पैनल को बैकग्राउंड में एंबेडेड बनाएं।</li>
+<li><strong data="opt_wndStat">सांख्यिकी पैनल प्रदर्शन शैली</strong>. समय-सूची पैनल को बैकग्राउंड में एंबेडेड बनाएं।</li>
+<li><strong data="opt_wndTool">उपकरण पैनल प्रदर्शन शैली</strong>. टूल्स पैनल को बैकग्राउंड में एंबेडेड बनाएं।</li>
+<li><strong data="opt_bgImgO">background image opacity</strong>. बैकग्राउंड चित्र की अपारदर्शिता बदलें।</li>
+<li><strong data="opt_bgImgS">background image</strong>. आप अपनी तस्वीर को पृष्ठभूमि चित्र के रूप में चुन सकते हैं; हालाँकि, ब्राउज़र की सुरक्षा बाधाओं के कारण केवल HTTPS URL ही उपलब्ध हैं।</li>
+<li><strong data="opt_timerSize">टाइमर का विस्तार</strong>. मुख्य टाइमर का आकार निर्धारित करें।</li>
+<li><strong data="opt_smallADP">दशमलव बिंदु के बाद छोटे फ़ॉन्ट का उपयोग करें</strong>. मुख्य टाइमर में डिजिटल बिंदु के बाद छोटे फ़ॉन्ट आकार का उपयोग करें।</li>
+<li><strong data="opt_useMouse">माउस टाइमर का उपयोग करें</strong>. टाइमर शुरू करने के लिए माउस का उपयोग करें (कीबोर्ड-ट्रिगर भी उपलब्ध होगा)।</li>
+<li><strong data="opt_useIns">WCA निरीक्षण का उपयोग करें</strong>. WCA निरीक्षण प्रक्रिया सक्षम करें, जो 15 सेकंड की उलटी गिनती है। यदि आप 15 सेकंड से अधिक समय तक निरीक्षण करते हैं तो ऑटो +2/डीएनएफ जुर्माना भी सक्षम किया जाएगा।</li>
+<li><strong data="opt_voiceIns">WCA निरिक्षण के लिए आवाज़ की चेतावनी</strong>. WCA प्रतियोगिताओं में जज के अलर्ट का अनुकरण करने के लिए निरीक्षण के 8/12 सेकंड पर अलर्ट।</li>
+<li><strong data="opt_voiceVol">Voice volume</strong>. उपरोक्त चेतावनी का ध्वनि स्तर।</li>
+<li><strong data="opt_input">समयों का अभिलेखन किसके साथ करें?</strong>. csTimer कई तरीकों से समय रिकॉर्ड कर सकता है: कीबोर्ड टाइमिंग, मैन्युअल इनपुट, स्टैकमैट टाइमर से स्वचालित रिकॉर्डिंग, ब्लूटूथ स्मार्ट क्यूब से कनेक्ट करना या वर्चुअल रूबिक क्यूब प्रयोग करना।</li>
+<li><strong data="opt_intUN">Unit when entering an integer</strong>. जब आप इनपुट बॉक्स में पूर्णांक XXX टाइप करते हैं, तो इसका क्या मतलब है, XXX सेकंड या XXX सेंटीसेकंड या XXX मिलीसेकंड?</li>
+<li><strong data="opt_timeU">टाइमर अद्यतन है</strong>. टाइमिंग के समय टाइमर को कैसे अपडेट किया जाता है।</li>
+<li><strong data="opt_preTime">स्पेसबार को नीचे रखने का समय (सेकंड)</strong>. टाइमर के हरा होने से पहले स्पेस बार को कितनी देर तक दबाकर रखना चाहिए।</li>
+<li><strong data="opt_phases">एकाधिक-स्थिति</strong>. चरणों की संख्या, समय निर्धारण के समय विभाजन बिंदु को चिह्नित करने के लिए कोई भी कुंजी दबाएँ।</li>
+<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. स्टैकमैट अपनी स्थिति की रिपोर्ट करेगा, उदा. चाहे बाएँ या दाएँ क्षेत्र को छुआ जाए, तो csTimer इस जानकारी का उपयोग कर सकता है, हालाँकि, डेटा त्रुटि हो सकती है और अप्रत्याशित व्यवहार का कारण बन सकती है।</li>
+<li><strong data="opt_scrSize">फेरबदल का विस्तार</strong>. स्क्रैम्बल टेक्स्ट का आकार।</li>
+<li><strong data="opt_scrASize">Auto scramble size</strong>. स्क्रैम्बल टेक्स्ट का आकार स्वचालित रूप से स्क्रैम्बल की लंबाई से समायोजित हो जाएगा, जो पिछले विकल्प के साथ मिलकर काम करता है।</li>
+<li><strong data="opt_scrMono">मोनोस्पेस करी हुई फेरबदल</strong>. स्क्रैम्बल टेक्स्ट के लिए मोनोस्पेस्ड फ़ॉन्ट का प्रयोग करें।</li>
+<li><strong data="opt_scrLim">फेरबदल क्षेत्र की ऊंचाई सीमित करें</strong>. जब स्क्रैम्बल क्षेत्र बहुत बड़ा हो जाए, तो स्क्रैम्बल पैनल को ऊपर उठने से बचाने के लिए एक स्क्रॉल बार होगा।</li>
+<li><strong data="opt_scrAlign">फेरबदल क्षेत्र का संरेखण</strong>. स्क्रैम्बल प्रकार चयनकर्ता सहित पूरे स्क्रैम्बल क्षेत्र का संरेखण।</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrFast">4x4x4 के लिए तेज़ फेरबदल का उपयोग करें (अनौपचारिक)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">फेरबदल में मुख्य चालों को अंकित करें</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>

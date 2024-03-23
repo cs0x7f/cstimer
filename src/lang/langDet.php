@@ -1,5 +1,5 @@
 <?php
-$version = "2024.03.16";
+$version = "2024.03.23";
 
 function prefered_language($available_languages, $req_lang) {
   if ($req_lang == "auto" && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -43,7 +43,7 @@ if ($lang == "en-us") { ?>
   <title> csTimer - Cronòmetre Professional de Speedsolving/Entrenament de Cubs de Rubik </title>
 <?php } else if ($lang == "cs-cz") { ?>
   <meta name="keywords" content="časovač, csčasovač, časovač pro rubikovu kostku, online časovač, web časovač">
-  <title> csČasovač - Pofesionální Speedsolving/Training Časovač pro Rubikovu Kostku </title>
+  <title> csTimer - Profesionální Speedsolving/Training Časovač pro Rubikovu Kostku </title>
 <?php } else if ($lang == "da-dk") { ?>
   <meta name="keywords" content="tidstager, stopur, cstimer, professor terning tidstager, professor terning stopur , online tidstager, online stopur">
   <title> csTimer - Professionel Rubik's Cube Speedsolving/Trænings Timer </title>
