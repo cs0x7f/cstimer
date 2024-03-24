@@ -75,48 +75,18 @@ var ftosolver = (function() {
 		if (count != 0x99999999) {
 			return -1;
 		}
-		for (var i = 0; i < 6; i++) {
-			this.cp[i] = -1;
-			for (var j = 0; j < 6; j++) {
-				var twst = -1;
-				for (var t = 0; t < 4; t += 2) {
-					if (~~(cornFacelets[j][0] / 9) == f[cornFacelets[i][t]] && 
-							~~(cornFacelets[j][1] / 9) == f[cornFacelets[i][(t + 1) % 4]] && 
-							~~(cornFacelets[j][2] / 9) == f[cornFacelets[i][(t + 2) % 4]] && 
-							~~(cornFacelets[j][3] / 9) == f[cornFacelets[i][(t + 3) % 4]]) {
-						twst = t >> 1;
-						break;
-					}
-				}
-				if (twst != -1) {
-					this.cp[i] = j;
-					this.co[i] = twst;
-				}
-			}
-			if (this.cp[i] == -1) {
-				return -1;
-			}
+		var co = [];
+		if (mathlib.detectFacelet(cornFacelets, f, this.cp, co, 9) == -1
+				|| mathlib.detectFacelet(edgeFacelets, f, this.ep, [], 9) == -1) {
+			return -1;
 		}
-		for (var i = 0; i < 12; i++) {
-			this.ep[i] = -1;
-			for (var j = 0; j < 12; j++) {
-				if (~~(edgeFacelets[j][0] / 9) == f[edgeFacelets[i][0]] && 
-						~~(edgeFacelets[j][1] / 9) == f[edgeFacelets[i][1]]) {
-					this.ep[i] = j;
-					break;
-				}
-			}
-			if (this.ep[i] == -1) {
-				return -1;
-			}
+		for (var i = 0; i < 6; i++) {
+			this.co[i] = co[i] >> 1;
 		}
 		var remainCnts = [3, 3, 3, 3];
 		for (var i = 0; i < 12; i++) {
-			if (f[ctufFacelets[i]] >= 4) {
-				return -1;
-			}
 			var col = f[ctufFacelets[i]];
-			if (remainCnts[col] == 0) {
+			if (!(remainCnts[col] > 0)) {
 				return -1;
 			}
 			this.uf[i] = col * 3 + 3 - remainCnts[col];
@@ -124,57 +94,24 @@ var ftosolver = (function() {
 		}
 		remainCnts = [3, 3, 3, 3];
 		for (var i = 0; i < 12; i++) {
-			if (f[ctrlFacelets[i]] < 4) {
-				return -1;
-			}
 			var col = [0, 1, 3, 2][f[ctrlFacelets[i]] - 4];
-			if (remainCnts[col] == 0) {
+			if (!(remainCnts[col] > 0)) {
 				return -1;
 			}
 			this.rl[i] = col * 3 + 3 - remainCnts[col];
 			remainCnts[col]--;
 		}
+		if (mathlib.getNParity(mathlib.getNPerm(this.uf, 12), 12) != 0) {
+			for (var i = 0; i < 12; i++) { // swap 0 and 1 to fix parity
+				this.uf[i] ^= this.uf[i] < 2 ? 1 : 0;
+			}
+		}
+		if (mathlib.getNParity(mathlib.getNPerm(this.rl, 12), 12) != 0) {
+			for (var i = 0; i < 12; i++) { // swap 0 and 1 to fix parity
+				this.rl[i] ^= this.rl[i] < 2 ? 1 : 0;
+			}
+		}
 		return this;
-	}
-
-	FtoCubie.randomCube = function(rn) {
-		rn = rn || function(n) {
-			return ~~(Math.random() * n);
-		}
-		var fc = new FtoCubie();
-		var parities = [0, 0, 0, 0];
-		var swap;
-		var tmp;
-		var keys = ['ep', 'uf', 'rl', 'cp'];
-		for (var i = 0; i < 11; i++) {
-			for (var j = 0; j < 3; j++) {
-				swap = rn(12 - i);
-				if (swap != 0) {
-					tmp = fc[keys[j]][i];
-					fc[keys[j]][i] = fc[keys[j]][i + swap];
-					fc[keys[j]][i + swap] = tmp;
-					parities[j] ^= 1;
-				}
-			}
-		}
-		for (var i = 0; i < 5; i++) {
-			swap = rn(6 - i);
-			if (swap != 0) {
-				tmp = fc.cp[i]; fc.cp[i] = fc.cp[i + swap]; fc.cp[i + swap] = tmp;
-				parities[3] ^= 1;
-			}
-			fc.co[i] = rn(2);
-			parities[4] ^= fc.co[i];
-		}
-		for (var j = 0; j < 4; j++) {
-			if (parities[j] == 1) {
-				tmp = fc[keys[j]][0];
-				fc[keys[j]][0] = fc[keys[j]][1];
-				fc[keys[j]][1] = tmp;
-			}
-		}
-		fc.co[5] = parities[4];
-		return fc;
 	}
 
 	FtoCubie.prototype.toString = function(todiv) {
@@ -454,7 +391,7 @@ var ftosolver = (function() {
 		return String.fromCharCode.apply(null, [].concat(fc.cp, fc.co));
 	}
 
-	function getScramble(validMoves, len) {
+	function randomMoves(validMoves, len) {
 		var scramble = [];
 		for (var i = 0; i < len; i++) {
 			scramble.push(validMoves[~~(Math.random() * validMoves.length)]);
@@ -883,7 +820,7 @@ var ftosolver = (function() {
 	var solver = new FtoSolver();
 
 	function solveTest(n_moves) {
-		var solvInfo = getScramble([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], n_moves);
+		var solvInfo = randomMoves([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], n_moves);
 
 		var scramble = prettyMoves(solvInfo[1].slice());
 		var solution = solver.solveFto(solvInfo[0]);
@@ -944,15 +881,51 @@ var ftosolver = (function() {
 	function solveFacelet(facelet, invSol) {
 		var fc = new FtoCubie();
 		if (fc.fromFacelet(facelet) == -1) {
-			return -1;
+			return "FTO Solver ERROR!";
 		}
 		return solver.solveFto(fc, invSol);
 	}
 
-	function getRandomScramble(rn) {
-		var fc = FtoCubie.randomCube(rn);
-		return solver.solveFto(fc, true);
+	function getRandomScramble() {
+		var fc = new ftosolver.FtoCubie();
+		fc.ep = mathlib.rndPerm(12, true);
+		fc.uf = mathlib.rndPerm(12, true);
+		fc.rl = mathlib.rndPerm(12, true);
+		fc.cp = mathlib.rndPerm(6, true);
+		mathlib.setNOri(fc.co, mathlib.rn(32), 6, -2);
+		return ftosolver.solveFacelet(fc.toFaceCube(), true);
 	}
+
+	function getLNTScramble(ufs) {
+		var solved = false;
+		var nCorn = ufs.length >> 1;
+		var fc = new ftosolver.FtoCubie();
+		var cp, co, uf;
+		do {
+			cp = mathlib.rndPerm(nCorn, true);
+			co = mathlib.setNOri([], mathlib.rn(1 << nCorn >> 1), nCorn, -2);
+			uf = mathlib.rndPerm(ufs.length, true);
+			solved = true;
+			for (var i = 0; i < ufs.length; i++) {
+				solved = solved && (~~(ufs[uf[i]] / 3) == ~~(ufs[i] / 3));
+			}
+			for (var i = 0; i < nCorn; i++) {
+				solved = solved && cp[i] == i && co[i] == 0;
+			}
+		} while (solved);
+		for (var i = 0; i < nCorn; i++) {
+			fc.cp[i] = cp[i];
+			fc.co[i] = co[i];
+		}
+		for (var i = 0; i < ufs.length; i++) {
+			fc.uf[ufs[i]] = ufs[uf[i]];
+		}
+		return ftosolver.solveFacelet(fc.toFaceCube(), true);
+	}
+
+	scrMgr.reg('ftoso', getRandomScramble)
+		('ftol3t', getLNTScramble.bind(null, [0, 1, 2, 3, 7, 11]))
+		('ftol4t', getLNTScramble.bind(null, [0, 1, 2, 3, 6, 7, 9, 11]));
 
 	return {
 		getRandomScramble: getRandomScramble,
@@ -961,7 +934,3 @@ var ftosolver = (function() {
 		testbench: testbench
 	}
 })();
-
-scrMgr.reg('ftoso', function() {
-	return ftosolver.getRandomScramble(mathlib.rn);
-});

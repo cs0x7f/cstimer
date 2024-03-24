@@ -770,32 +770,33 @@ var poly3d = (function() {
 
 	// return [sizes, polys], polys = [ [xs, ys, face], ... ]
 	function renderNet(puzzle, gap, minArea) {
-		var faceOffs = [];
+		var faceTrans = [];
 		var nface = puzzle.facePlanes.length;
 		gap = gap || 0;
 		var sizes = [0, 0];
 		if (nface == 4) { // tetrahedron
 			var hw = Math.sqrt(6) * (1 + gap);
 			var hwdsq3 = hw / Math.sqrt(3);
-			faceOffs = [
+			faceTrans = [
 				[hw * 2, hwdsq3 * 4], [hw * 1, hwdsq3 * 1],
 				[hw * 3, hwdsq3 * 1], [hw * 2, hwdsq3 * 2]
 			];
 			sizes = [hw * 4, hwdsq3 * 6];
 		} else if (nface == 6) { // cube
 			var hw = (1 + gap);
-			faceOffs = [
+			faceTrans = [
 				[hw * 3, hw], [hw * 5, hw * 3], [hw * 3, hw * 3],
 				[hw * 3, hw * 5], [hw, hw * 3], [hw * 7, hw * 3]
 			];
 			sizes = [hw * 8, hw * 6];
 		} else if (nface == 8) { // octahedron
 			var hwdsq3 = Math.sqrt(6) * (1 + gap) / 2 / Math.sqrt(3);
-			faceOffs = [
-				[hwdsq3 * 3, hwdsq3 * 1], [hwdsq3 * 5, hwdsq3 * 3],
-				[hwdsq3 * 1, hwdsq3 * 3], [hwdsq3 * 3, hwdsq3 * 5],
-				[hwdsq3 * 9, hwdsq3 * 5], [hwdsq3 * 11, hwdsq3 * 3],
-				[hwdsq3 * 7, hwdsq3 * 3], [hwdsq3 * 9, hwdsq3 * 1]
+			var sq3 = Math.sqrt(3);
+			faceTrans = [
+				[hwdsq3 * 3, hwdsq3 * 1, sq3, 1], [hwdsq3 * 5, hwdsq3 * 3, 1, sq3],
+				[hwdsq3 * 1, hwdsq3 * 3, 1, sq3], [hwdsq3 * 3, hwdsq3 * 5, sq3, 1],
+				[hwdsq3 * 9, hwdsq3 * 5, sq3, 1], [hwdsq3 * 11, hwdsq3 * 3, 1, sq3],
+				[hwdsq3 * 7, hwdsq3 * 3, 1, sq3], [hwdsq3 * 9, hwdsq3 * 1, sq3, 1]
 			];
 			sizes = [hwdsq3 * 12, hwdsq3 * 6];
 		} else if (nface == 12) { // dodecahedron
@@ -806,12 +807,12 @@ var poly3d = (function() {
 			var off1Y = hw * (1 / Math.sin(Math.PI * 0.2) + Math.cos(Math.PI * 0.1) * 2);
 			var off2X = hw * (4 + 5 * phi);
 			var off2Y = wec2 + hw / Math.cos(Math.PI * 0.3);;
-			faceOffs = [];
-			faceOffs[0] = [off1X, off1Y];
-			faceOffs[6] = [off2X, off2Y];
+			faceTrans = [];
+			faceTrans[0] = [off1X, off1Y];
+			faceTrans[6] = [off2X, off2Y];
 			for (var i = 0; i < 5; i++) {
-				faceOffs[1 + i] = [off1X + Math.cos(Math.PI * (0.5 - 0.4 * i)) * wec2, off1Y + Math.sin(Math.PI * (0.5 - 0.4 * i)) * wec2];
-				faceOffs[7 + i] = [off2X + Math.cos(Math.PI * (1.5 + 0.4 * i)) * wec2, off2Y + Math.sin(Math.PI * (1.5 + 0.4 * i)) * wec2];
+				faceTrans[1 + i] = [off1X + Math.cos(Math.PI * (0.5 - 0.4 * i)) * wec2, off1Y + Math.sin(Math.PI * (0.5 - 0.4 * i)) * wec2];
+				faceTrans[7 + i] = [off2X + Math.cos(Math.PI * (1.5 + 0.4 * i)) * wec2, off2Y + Math.sin(Math.PI * (1.5 + 0.4 * i)) * wec2];
 			}
 			sizes = [off1X + off2X, off1Y + off2Y];
 		} else if (nface == 20) { // icosahedron
@@ -825,10 +826,11 @@ var poly3d = (function() {
 				return;
 			}
 			var cords = poly.projection(puzzle.faceUVs[face]);
+			var trans = faceTrans[face];
 			var arr = [[], []];
 			for (var i = 0; i < cords.length; i++) {
-				arr[0][i] = faceOffs[face][0] + cords[i][0];
-				arr[1][i] = faceOffs[face][1] - cords[i][1];
+				arr[0][i] = trans[0] + cords[i][0] * (trans[2] || 1);
+				arr[1][i] = trans[1] - cords[i][1] * (trans[3] || 1);
 			}
 			arr[2] = face;
 			ret[idx] = arr;
@@ -998,17 +1000,17 @@ var poly3d = (function() {
 				return (layer == 0 ? "xyz".charAt("RUF".indexOf(axis)) : axis) + powfix;
 			});
 		} else if (/^redi$/.exec(name)) {
-			polyParam = [6, [-2], [], [-2, 0.85]],
+			polyParam = [6, [-2], [], [-2, 0.85]];
+			var rediShort = 'FLBRflbrxyz';
+			var rediLong = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'];
 			parser = makeParser(/(?:^|\s*)([FLBRflbrxyz])(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
-				var midx = 'FLBRflbrxyz'.indexOf(p1);
-				var mstr = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'][midx];
-				return [midx >= 8 ? 0 : 1, mstr, p2 ? -1 : 1];
+				var midx = rediShort.indexOf(p1);
+				return [midx >= 8 ? 0 : 1, rediLong[midx], p2 ? -1 : 1];
 			}, function(layer, axis, pow) {
-				var midx = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'].indexOf(axis);
-				return 'FLBRflbrxyz'[midx];
+				return rediShort.charAt(rediLong.indexOf(axis));
 			}, function(scramble) {
 				if (/^(([LR]'? ){3,}x ){3,}/.exec(scramble)) {
-					return scramble.replace(/R/g, 'F');
+					return scramble.replace(/L/g, 'B');
 				}
 				return scramble;
 			});

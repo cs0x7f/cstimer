@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Yüz-Döndüren-Octahedron)', [
 		['Rastgele hamle', "fto", 30],
-		['Rastgele Durum', "ftoso", 0]
+		['Rastgele Durum', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['===ÖZEL===', [
 		['--', "blank", 0]

@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Face-Turning Octahedron)', [
 		['随机转动', "fto", 30],
-		['随机状态', "ftoso", 0]
+		['随机状态', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['===训练===', [
 		['--', "blank", 0]

@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Octaedro de giro por caras)', [
 		['movimiento aleatorio', "fto", 30],
-		['estado aleatorio', "ftoso", 0]
+		['estado aleatorio', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['===ESPECIAL===', [
 		['--', "blank", 0]

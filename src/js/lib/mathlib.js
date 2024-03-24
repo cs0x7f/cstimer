@@ -1386,6 +1386,8 @@ var mathlib = (function() {
 		Cnk: Cnk,
 		fact: fact,
 		getPruning: getPruning,
+		setNOri: setNOri,
+		getNOri: getNOri,
 		setNPerm: setNPerm,
 		getNPerm: getNPerm,
 		getNParity: getNParity,

@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Oldalain forduló oktaéder)', [
 		['véletlen mozdulat', "fto", 30],
-		['véletlen állapot', "ftoso", 0]
+		['véletlen állapot', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['===KÜLÖNLEGES===', [
 		['--', "blank", 0]

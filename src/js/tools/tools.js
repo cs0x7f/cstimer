@@ -119,7 +119,7 @@ var tools = execMain(function() {
 			return "mgm";
 		} else if (/^(klmso|klmp)$/.exec(scrambleType)) {
 			return "klm";
-		} else if (/^(fto|ftoso)$/.exec(scrambleType)) {
+		} else if (/^(fto|fto(so|l[34]t))$/.exec(scrambleType)) {
 			return "fto";
 		} else if (/^(mpyr|mpyrso)$/.exec(scrambleType)) {
 			return "mpyr";

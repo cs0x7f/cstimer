@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Face-Turning Octahedron)', [
 		['random move', "fto", 30],
-		['random state', "ftoso", 0]
+		['random state', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['===SPECIAL===', [
 		['--', "blank", 0]
@@ -524,7 +526,7 @@ var PROPERTY_STATSSUM = 'Show sum in time list';
 var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATAL = 'Statistical indicators';
 var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_HLPBS = 'Highlight PB\'s';
+var PROPERTY_HLPBS = 'Highlight PBs';
 var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bold|None';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var PROPERTY_TOOLSFUNC = 'Selected Functions';

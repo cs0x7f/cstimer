@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Side Rotér Oktahedron)', [
 		['tilfældig træk', "fto", 30],
-		['tilfældig tilstand', "ftoso", 0]
+		['tilfældig tilstand', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['===SPECIEL===', [
 		['--', "blank", 0]

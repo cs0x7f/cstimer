@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['FTO (Face-Turning Octahedron)', [
 		['mouvements aléatoires', "fto", 30],
-		['état aléatoire', "ftoso", 0]
+		['état aléatoire', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['=== SPÉCIAL ===', [
 		['--', "blank", 0]

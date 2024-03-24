@@ -411,7 +411,9 @@ var scrdata = [
 	]],
 	['PSO (Přední Soutěžní Osmistěn)', [
 		['náhodný tah', "fto", 30],
-		['náhodný stav', "ftoso", 0]
+		['náhodný stav', "ftoso", 0],
+		['L3T', "ftol3t", 0],
+		['L3T+LBT', "ftol4t", 0]
 	]],
 	['==SPECIÁLNÍ==', [
 		['--', "blank", 0]
