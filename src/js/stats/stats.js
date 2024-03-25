@@ -716,26 +716,45 @@ var stats = execMain(function(kpretty, round, kpround) {
 			shead.push('<td class="times click" data="cs">' + prettyFunc[0](times_stats_table.timeAt(idx)) + '</td>');
 			shead.push('<td class="times click" data="bs">' + prettyFunc[0](times_stats_table.bestTime) + '</td>');
 		} else {
-			shead.push('<td><span>-</span></td>');
-			shead.push('<td><span>-</span></td>');
+			shead.push('<td>-</td><td>-</td>');
 		}
 		var s = [];
-		var thres = times_stats_table.getThres();
 		var showThres = kernel.getProp('statthres', false);
+		var showBPA = kernel.getProp('statbpa', false);
+		var showWPA = kernel.getProp('statwpa', false);
+		var thres = showThres ? times_stats_table.getThres() : null;
+		var bwpa = (showBPA || showWPA) ? times_stats_table.getBWPA() : null;
 		for (var j = 0; j < avgSizes.length; j++) {
 			var size = Math.abs(avgSizes[j]);
+			var rowhead = '<tr><th>' + 'am' [avgSizes[j] >>> 31] + 'o' + size + '</th>';
 			if (times.length >= size) {
-				s.push('<tr><th>' + 'am' [avgSizes[j] >>> 31] + 'o' + size + '</th>');
+				s.push(rowhead);
 				s.push('<td class="times click" data="c' + 'am' [avgSizes[j] >>> 31] + j + '">' + prettyFunc[1](times_stats_table.lastAvg[j][0]) + '</td>');
 				s.push('<td class="times click" data="b' + 'am' [avgSizes[j] >>> 31] + j + '">' + prettyFunc[1](times_stats_table.bestAvg(j, 0)) + '</td>');
-				if (showThres) {
-					s.push('<td class="times">' + (thres[j] < 0 ? ['N/A', '\u221E'][-1 - thres[j]] : prettyFunc[0](thres[j])) + '</td>');
-				}
+				showThres && s.push('<td class="times">' + (thres[j] < 0 ? ['N/A', '\u221E'][-1 - thres[j]] : prettyFunc[0](thres[j])) + '</td>');
+			} else if (times.length == size - 1 && (showBPA || showWPA)) {
+				s.push(rowhead);
+				s.push('<td>-</td><td>-</td>');
+				showThres && s.push('<td>-</td>');
+			} else {
+				continue;
 			}
+			showBPA && s.push('<td class="times">' + prettyFunc[1](bwpa[0][j]) + '</td>');
+			showWPA && s.push(avgSizes[j] < 0 ? '<td>-</td>' : ('<td class="times">' + prettyFunc[1](bwpa[1][j]) + '</td>'));
+			s.push('</tr>');
 		}
 		var curTh = $('<tr>').append('<th></th><th>' + hlstr[1] + '</th><th>' + hlstr[0] + '</th>');
 		if (showThres) {
 			curTh.append('<th>' + hlstr[13] + '</th>');
+			shead.push('<td>-</td>');
+		}
+		if (showBPA) {
+			curTh.append('<th>BPA</th>');
+			shead.push('<td>-</td>');
+		}
+		if (showWPA) {
+			curTh.append('<th>WPA</th>');
+			shead.push('<td>-</td>');
 		}
 		sumtable.empty().append(curTh,
 			$('<tr>').append(
@@ -1691,7 +1710,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				len2 = Math.abs(stat2);
 				table_ctrl.updateTable(false);
 				updateUtil(['property', value[0]]);
-			} else if (value[0] == 'statsum' || value[0] == 'statthres') {
+			} else if (/^stat(sum|thres|[bw]pa)$/.exec(value[0])) {
 				updateSumTable();
 			} else if (value[0] == 'statssum') {
 				updateAvgRow(curDim);
@@ -1776,7 +1795,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|hlpbs|sr_.*)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[bw]pa|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|hlpbs|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
@@ -1785,6 +1804,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'trimr', 1, PROPERTY_TRIMR, ['a', ['a', '0', '1', 'p1', 'p5', 'p10', 'p20', 'm'], ['auto', '0', '1', '1%', '5%', '10%', '20%', '50%/' + PROPERTY_TRIM_MED]], 1);
 		kernel.regProp('stats', 'statsum', 0, PROPERTY_SUMMARY, [true], 1);
 		kernel.regProp('stats', 'statthres', 0, PROPERTY_STATTHRES, [false], 1);
+		kernel.regProp('stats', 'statbpa', 0, PROPERTY_STATBPA, [false], 1);
+		kernel.regProp('stats', 'statwpa', 0, PROPERTY_STATWPA, [false], 1);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true], 1);
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false], 1);
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false], 1);

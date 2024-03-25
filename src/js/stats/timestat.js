@@ -126,20 +126,24 @@ var TimeStat = execMain(function() {
 
 		for (var j = 0; j < this.avgSizes.length; j++) {
 			var size = Math.abs(this.avgSizes[j]);
-			if (this.timesLen < size) {
+			if (this.timesLen < size - 1) {
 				continue;
 			}
-			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
-			var neff = size - trimlr[0] - trimlr[1];
 			var rbt = this.treesAvg[j] || sbtree.tree(this.timeSort);
-			if (this.timesLen == size) {
-				for (var k = 0; k < size; k++) {
+			if (this.timesLen == size - 1) {
+				for (var k = 0; k < size - 1; k++) {
 					rbt.insert(this.timeAt(k), k);
 				}
+				this.treesAvg[j] = rbt;
+				continue;
+			} else if (this.timesLen == size) {
 				this._bestAvg[j] = [];
+				rbt.insert(t, i);
 			} else {
 				rbt.remove(this.timeAt(i - size)).insert(t, i);
 			}
+			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
+			var neff = size - trimlr[0] - trimlr[1];
 			var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
 			var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
 			var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
@@ -179,15 +183,18 @@ var TimeStat = execMain(function() {
 		}
 		for (var j = 0; j < this.avgSizes.length; j++) {
 			var size = Math.abs(this.avgSizes[j]);
-			if (this.timesLen < size) {
+			var rbt = this.treesAvg[j];
+			if (this.timesLen < size - 1) {
+				continue;
+			} else if (this.timesLen == size - 1) {
+				this.treesAvg[j] = null;
 				continue;
 			} else if (this.timesLen == size) {
 				this.lastAvg[j] = null;
-				this.treesAvg[j] = null;
 				this._bestAvg[j] = null;
+				rbt.remove(t);
 				continue;
 			}
-			var rbt = this.treesAvg[j];
 			rbt.remove(t).insert(this.timeAt(i - size), i - size);
 			if (!next) {
 				var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
@@ -249,6 +256,36 @@ var TimeStat = execMain(function() {
 			}
 		}
 		return thres;
+	}
+
+	TimeStat.prototype.getBWPA = function() {
+		var bpa = [];
+		var wpa = [];
+		var toRemove, sum;
+		for (var j = 0; j < this.avgSizes.length; j++) {
+			var size = Math.abs(this.avgSizes[j]);
+			if (this.timesLen < size - 1) {
+				continue;
+			}
+			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
+			var neff = size - trimlr[0] - trimlr[1];
+			var rbt = this.treesAvg[j] || sbtree.tree(this.timeSort);
+			if (this.timesLen != size - 1) {
+				toRemove = this.timeAt(this.timesLen - size);
+				rbt.remove(toRemove);
+			}
+			rbt.insert(0, 0);
+			sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
+			bpa[j] = (rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff;
+			rbt.remove(0).insert(-1, 0);
+			sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
+			wpa[j] = (rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff;
+			rbt.remove(-1);
+			if (this.timesLen != size - 1) {
+				rbt.insert(toRemove, this.timesLen - size);
+			}
+		}
+		return [bpa, wpa];
 	}
 
 	TimeStat.prototype.getMinMaxInt = function() {
