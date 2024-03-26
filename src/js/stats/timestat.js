@@ -45,7 +45,7 @@ var TimeStat = execMain(function() {
 	TimeStat.prototype.getAllStats = function() {
 		this.genStats();
 		var numdnf = this.timesLen - this.tree.rankOf(-1);
-		return [numdnf, (numdnf == this.timesLen) ? -1 : this.tree.cumSum(this.timesLen - numdnf) / (this.timesLen - numdnf)];
+		return [numdnf, (numdnf == this.timesLen) ? -1 : this.tree.avgstd(0, this.timesLen - numdnf)[0]];
 	}
 
 	TimeStat.prototype.genStats = function() {
@@ -143,10 +143,8 @@ var TimeStat = execMain(function() {
 				rbt.remove(this.timeAt(i - size)).insert(t, i);
 			}
 			var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
-			var neff = size - trimlr[0] - trimlr[1];
-			var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
-			var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
-			var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
+			var avgstd = rbt.avgstd(trimlr[0], size - trimlr[1]);
+			var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : avgstd[0], avgstd[1] / 1000, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
 			if (this.timeSort(curVal[0], this.bestAvg(j, 0)) < 0) {
 				if (this.bestAvg(j, 0) >= 0 && !next) {
 					bestHintList.push((this.avgSizes[j] > 0 ? "ao" : "mo") + size);
@@ -198,10 +196,8 @@ var TimeStat = execMain(function() {
 			rbt.remove(t).insert(this.timeAt(i - size), i - size);
 			if (!next) {
 				var trimlr = this.avgSizes[j] < 0 ? [0, 0] : getNTrimLR(size);
-				var neff = size - trimlr[0] - trimlr[1];
-				var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
-				var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
-				var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
+				var avgstd = rbt.avgstd(trimlr[0], size - trimlr[1]);
+				var curVal = [(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : avgstd[0], avgstd[1] / 1000, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])];
 				this.lastAvg[j] = curVal;
 			}
 			if (this.bestAvg(j, 4) == i - size + 1) {
@@ -243,8 +239,7 @@ var TimeStat = execMain(function() {
 				thres[j] = -2;
 				continue;
 			}
-			var sum = rbt.cumSum(right + 1) - rbt.cumSum(left) - toRemove;
-			var tgt = tgtAvg * neff - sum;
+			var tgt = tgtAvg * neff - (rbt.sum(left, right + 1) - toRemove);
 			var minVal = left == 0 ? 0 : rbt.rank(left - 1);
 			var maxVal = right == size - 1 ? -1 : rbt.rank(right + 1);
 			if (tgt <= 0 || this.timeSort(tgt, minVal) < 0) {
@@ -261,7 +256,7 @@ var TimeStat = execMain(function() {
 	TimeStat.prototype.getBWPA = function() {
 		var bpa = [];
 		var wpa = [];
-		var toRemove, sum;
+		var toRemove;
 		for (var j = 0; j < this.avgSizes.length; j++) {
 			var size = Math.abs(this.avgSizes[j]);
 			if (this.timesLen < size - 1) {
@@ -275,11 +270,9 @@ var TimeStat = execMain(function() {
 				rbt.remove(toRemove);
 			}
 			rbt.insert(0, 0);
-			sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
-			bpa[j] = (rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff;
+			bpa[j] = (rbt.rankOf(-1) < size - trimlr[1]) ? -1 : rbt.avgstd(trimlr[0], size - trimlr[1])[0];
 			rbt.remove(0).insert(-1, 0);
-			sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
-			wpa[j] = (rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff;
+			wpa[j] = (rbt.rankOf(-1) < size - trimlr[1]) ? -1 : rbt.avgstd(trimlr[0], size - trimlr[1])[0];
 			rbt.remove(-1);
 			if (this.timesLen != size - 1) {
 				rbt.insert(toRemove, this.timesLen - size);
@@ -327,18 +320,15 @@ var TimeStat = execMain(function() {
 		for (var j = 0; j < size; j++) {
 			rbt.insert(this.timeAt(start + j), j);
 		}
-		var neff = size - trimlr[0] - trimlr[1];
-		var sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
-		var variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
+		var avgstd = rbt.avgstd(trimlr[0], size - trimlr[1]);
 		var ret = [
-			[(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])]
+			[(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : avgstd[0], avgstd[1] / 1000, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])]
 		];
 		var start0 = start - size;
 		for (var i = size; i < length; i++) {
 			rbt.remove(this.timeAt(start0 + i)).insert(this.timeAt(start + i), j);
-			sum = rbt.cumSum(size - trimlr[1]) - rbt.cumSum(trimlr[0]);
-			variance = Math.sqrt((rbt.cumSk2(size - trimlr[1]) - rbt.cumSk2(trimlr[0]) - sum * sum / neff) / (neff - 1)) / 1000;
-			ret.push([(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : sum / neff, variance, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])]);
+			avgstd = rbt.avgstd(trimlr[0], size - trimlr[1]);
+			ret.push([(rbt.rankOf(-1) < size - trimlr[1]) ? -1 : avgstd[0], avgstd[1] / 1000, rbt.rank(trimlr[0] - 1), rbt.rank(size - trimlr[1])]);
 		}
 		return ret;
 	}
