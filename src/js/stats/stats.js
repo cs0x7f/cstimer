@@ -591,12 +591,20 @@ var stats = execMain(function(kpretty, round, kpround) {
 		getStats(stats, timesAt, idx == 0 ? 0 : STATS_CURSPLIT.replace('%d', idx));
 	}
 
-	function genAvgSignal(i) {
-		var st1 = times_stats_list.runAvgMean(i - len1 + 1, len1, 0, stat1 > 0 ? undefined : 0);
-		var st2 = times_stats_list.runAvgMean(i - len2 + 1, len2, 0, stat2 > 0 ? undefined : 0);
+	function genAvgSignal() {
+		var i = times.length - 1;
+		var st1 = times_stats_list.lastAvg[0];
+		var st2 = times_stats_list.lastAvg[1];
+		var bpa = times_stats_list.getBWPA()[0];
+		var time1 = st1 ? st1[0] : bpa[0];
+		var time2 = st2 ? st2[0] : bpa[1];
+		var showBP1 = !st1 && time1;
+		var showBP2 = !st2 && time2;
+		var ind1 = (showBP1 ? 'bp' : '') + (stat1 > 0 ? 'a' : 'm') + (showBP1 ? '' : 'o') + len1;
+		var ind2 = (showBP2 ? 'bp' : '') + (stat2 > 0 ? 'a' : 'm') + (showBP2 ? '' : 'o') + len2;
 		kernel.pushSignal('avg', [
-			(stat1 > 0 ? 'ao' : 'mo') + len1 + ": " + (st1 ? kpround(st1[0][0]) : "-"),
-			(stat2 > 0 ? 'ao' : 'mo') + len2 + ": " + (st2 ? kpround(st2[0][0]) : "-"),
+			ind1 + ": " + (time1 ? kpround(time1) : "-"),
+			ind2 + ": " + (time2 ? kpround(time2) : "-"),
 			st1 ? [i - len1 + 1, len1, len1 * 10, stat1 < 0] : undefined,
 			st2 ? [i - len2 + 1, len2, len2 * 10, stat2 < 0] : undefined,
 			setHighlight.bind(undefined, times_stats_list, timesAt),
@@ -774,7 +782,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		for (var util in statUtils) {
 			statUtils[util](msg);
 		}
-		genAvgSignal(times.length - 1);
+		genAvgSignal();
 	}
 
 	function getTableTimeAt() {
