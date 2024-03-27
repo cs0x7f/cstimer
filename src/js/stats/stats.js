@@ -593,6 +593,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 	function genAvgSignal() {
 		var i = times.length - 1;
+		times_stats_list.genStats();
 		var st1 = times_stats_list.lastAvg[0];
 		var st2 = times_stats_list.lastAvg[1];
 		var bpa = times_stats_list.getBWPA()[0];
