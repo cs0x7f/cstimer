@@ -466,8 +466,9 @@ var poly3d = (function() {
 	}
 
 	// facePlanes = [plane1, plane2, ..., planeN]
-	function PolyhedronPuzzle(facePlanes, faceVs) {
+	function PolyhedronPuzzle(facePlanes, faceVs, faceNames) {
 		this.facePlanes = facePlanes.slice();
+		this.faceNames = faceNames.slice();
 		this.faceUVs = [];
 		for (var i = 0; i < facePlanes.length; i++) {
 			var faceNorm = facePlanes[i].norm;
@@ -678,7 +679,7 @@ var poly3d = (function() {
 			}
 		}
 
-		var puzzle = new PolyhedronPuzzle(facePlanes, faceVs);
+		var puzzle = new PolyhedronPuzzle(facePlanes, faceVs, faceNames);
 
 		var twistyPlanes = [];
 		var twistyDetails = [];
@@ -821,6 +822,7 @@ var poly3d = (function() {
 			debugger;
 		}
 		var ret = [];
+		var faceMeta = [];
 		puzzle.enumFacesPolys(function(face, p, poly, idx) {
 			if (poly.area < minArea) {
 				return;
@@ -834,8 +836,9 @@ var poly3d = (function() {
 			}
 			arr[2] = face;
 			ret[idx] = arr;
+			faceMeta[face] = faceMeta[face] || [trans[0], trans[1], puzzle.faceNames[face]];
 		});
-		return [sizes, ret];
+		return [sizes, ret, faceMeta];
 	}
 
 	// parseFunc(m, p1, p2, ..) -> [layer, axis, pow] or null, toStrFunc(layer:int, axis:str, pow:int) -> moveString
