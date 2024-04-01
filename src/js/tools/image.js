@@ -92,9 +92,6 @@ var image = execMain(function() {
 			];
 			buttons = [buttons[3], buttons[2], buttons[0], buttons[1], 1 - buttons[0], 1 - buttons[1], 1 - buttons[3], 1 - buttons[2]];
 
-			var imgSize = kernel.getProp('imgSize') / 7.5;
-			canvas.width(6.25 * imgSize + 'em');
-			canvas.height(3 * imgSize + 'em');
 			canvas.attr('width', 6.25 * 20 * width);
 			canvas.attr('height', 3 * 20 * width);
 
@@ -199,10 +196,6 @@ var image = execMain(function() {
 				doMove([~~m[1] + 12, ~~m[2] + 12, 1]);
 			}
 			doMove([0, 0, 1]);
-
-			var imgSize = kernel.getProp('imgSize') / 10;
-			canvas.width(11 * imgSize / 1.3 + 'em');
-			canvas.height(6.3 * imgSize / 1.3 + 'em');
 
 			canvas.attr('width', 11 * width);
 			canvas.attr('height', 6.3 * width);
@@ -341,9 +334,6 @@ var image = execMain(function() {
 			for (var i = 0; i < scramble.length; i++) {
 				doMove(scramble[i][0], scramble[i][2] == 1 ? 1 : 2);
 			}
-			var imgSize = kernel.getProp('imgSize') / 10;
-			canvas.width((8 * hsq3 + 0.3) * imgSize + 'em');
-			canvas.height(6.2 * imgSize + 'em');
 
 			canvas.attr('width', (8 * hsq3 + 0.3) * width + 1);
 			canvas.attr('height', 6.2 * width + 1);
@@ -492,10 +482,6 @@ var image = execMain(function() {
 
 		function draw(size, moveseq) {
 			genPosit(size, moveseq);
-
-			var imgSize = kernel.getProp('imgSize') / 50;
-			canvas.width(39 * imgSize + 'em');
-			canvas.height(29 * imgSize + 'em');
 
 			canvas.attr('width', (39 * size / 9 + 0.2) * width);
 			canvas.attr('height', (29 * size / 9 + 0.2) * width);
@@ -704,16 +690,14 @@ var image = execMain(function() {
 				posit = posit2;
 			}
 
-			var scale = Math.min(1.6 / sizes[0], 1.0 / sizes[1]) * kernel.getProp('imgSize') * 0.6;
-			canvas.width(sizes[0] * scale + 'em');
-			canvas.height(sizes[1] * scale + 'em');
-			canvas.attr('width', sizes[0] * scale * 30 + 1);
-			canvas.attr('height', sizes[1] * scale * 30 + 1);
+			var scale = Math.min(1.6 / sizes[0], 1.0 / sizes[1]) * 300;
+			canvas.attr('width', sizes[0] * scale + 1);
+			canvas.attr('height', sizes[1] * scale + 1);
 			for (var i = 0; i < colors.length; i++) {
 				colors[i] = '#' + colors[i].toString(16).padStart(6, '0');
 			}
 			for (var i = 0; i < posit.length; i++) {
-				polys[i] && $.ctxDrawPolygon(ctx, colors[posit[i]], polys[i], [scale * 30, 0, 0, 0, scale * 30, 0]);
+				polys[i] && $.ctxDrawPolygon(ctx, colors[posit[i]], polys[i], [scale, 0, 0, 0, scale, 0]);
 			}
 			for (var i = 0; i < faces.length; i++) {
 				if ((faceNameMask >> i & 1) == 0) {
@@ -725,9 +709,9 @@ var image = execMain(function() {
 				ctx.font = "20px Arial";
 				ctx.lineWidth = 3;
 				ctx.strokeStyle = kernel.getProp('col-board');
-				ctx.strokeText(face[2].toUpperCase(), face[0] * scale * 30, face[1] * scale * 30);
+				ctx.strokeText(face[2].toUpperCase(), face[0] * scale, face[1] * scale);
 				ctx.fillStyle = kernel.getProp('col-font');
-				ctx.fillText(face[2].toUpperCase(), face[0] * scale * 30, face[1] * scale * 30);
+				ctx.fillText(face[2].toUpperCase(), face[0] * scale, face[1] * scale);
 				ctx.lineWidth = 1;
 			}
 		}
@@ -770,10 +754,6 @@ var image = execMain(function() {
 				}
 			}
 
-			var imgSize = kernel.getProp('imgSize') / 50;
-			canvas.width(30 * imgSize + 'em');
-			canvas.height(30 * imgSize + 'em');
-
 			canvas.attr('width', (size + gap * 4) * width);
 			canvas.attr('height', (size + gap * 4) * width);
 
@@ -801,7 +781,7 @@ var image = execMain(function() {
 		}
 	})();
 
-	var types_nnn = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
+	var types_nnn = ['222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
 
 	function genImage(scramble) {
 		var type = scramble[0];
@@ -809,18 +789,12 @@ var image = execMain(function() {
 			type = tools.scrambleType(scramble[1]);
 		}
 		type = tools.puzzleType(type);
-		var size;
-		for (size = 0; size < 12; size++) {
-			if (type == types_nnn[size]) {
-				nnnImage.draw(size, scramble[1]);
-				return true;
-			}
-		}
-		if (type == "cubennn") {
+		var size = types_nnn.indexOf(type);
+		if (size >= 0) {
+			nnnImage.draw(size + 2, scramble[1]);
+		} else if (type == "cubennn") {
 			nnnImage.draw(scramble[2], scramble[1]);
-			return true;
-		}
-		if (/^m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto$/.exec(type)) {
+		} else if (/^m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto$/.exec(type)) {
 			var faceNameMask = 0;
 			if (/^prc|giga|mgm|klm$/.exec(type)) {
 				faceNameMask = 0x3;
@@ -828,29 +802,25 @@ var image = execMain(function() {
 				faceNameMask = 0xff;
 			}
 			polyhedronImage(type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
-			return true;
-		}
-		if (type == "skb") {
+		} else if (type == "skb") {
 			skewbImage(scramble[1]);
-			return true;
-		}
-		if (type == "sq1" || type == "sq2") {
+		} else if (type == "sq1" || type == "sq2") {
 			sq1Image(scramble[1], type == "sq2");
-			return true;
-		}
-		if (type == "clk") {
+		} else if (type == "clk") {
 			clkImage(scramble[1]);
-			return true;
-		}
-		if (type == "15b" || type == "15p") {
+		} else if (type == "15b" || type == "15p") {
 			sldImage(type[2], 4, scramble[1]);
-			return true;
-		}
-		if (type == "8b" || type == "8p") {
+		} else if (type == "8b" || type == "8p") {
 			sldImage(type[1], 3, scramble[1]);
-			return true;
+		} else {
+			return false;
 		}
-		return false;
+		var width = canvas.attr('width');
+		var height = canvas.attr('height');
+		var scale = Math.min(1.6 / width, 1.0 / height) * kernel.getProp('imgSize') * 0.6;
+		canvas.width(width * scale + 'em');
+		canvas.height(height * scale + 'em');
+		return true;
 	}
 
 	function execFunc(fdiv) {
