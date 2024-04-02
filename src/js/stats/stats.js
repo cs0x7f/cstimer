@@ -493,10 +493,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 				procTxt();
 				return;
 			}
-			var params = [cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function() {
+			var params = [cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function(cfmIdx) {
 				hideToTools();
 				setHighlight(times_stats_table, timesAt, cfmIdx, 1, 10, true);
-			}]];
+			}.bind(null, cfmIdx)]];
 			var curTime = timesAt(cfmIdx);
 			if (curTime && curTime[4]) {
 				params.push([TOOLS_RECONS, function() {
