@@ -248,102 +248,6 @@ var image = execMain(function() {
 		}
 	})();
 
-	var skewbImage = (function() {
-		var width = 45;
-		var gap = width / 10;
-		var posit = [];
-		var colors = ['#fff', '#00f', '#f00', '#ff0', '#0f0', '#f80'];
-
-		var ftrans = [
-			[width * hsq3, width * hsq3, (width * 4 + gap * 1.5) * hsq3, -width / 2, width / 2, width],
-			[width * hsq3, 0, (width * 7 + gap * 3) * hsq3, -width / 2, width, width * 1.5],
-			[width * hsq3, 0, (width * 5 + gap * 2) * hsq3, -width / 2, width, width * 2.5 + 0.5 * gap],
-			[0, -width * hsq3, (width * 3 + gap * 1) * hsq3, width, -width / 2, width * 4.5 + 1.5 * gap],
-			[width * hsq3, 0, (width * 3 + gap * 1) * hsq3, width / 2, width, width * 2.5 + 0.5 * gap],
-			[width * hsq3, 0, width * hsq3, width / 2, width, width * 1.5]
-		];
-
-		function doMove(axis, power) {
-			for (var p = 0; p < power; p++) {
-				switch (axis) {
-					case 0: //R
-						mathlib.circle(posit, 2 * 5 + 0, 1 * 5 + 0, 3 * 5 + 0);
-						mathlib.circle(posit, 2 * 5 + 4, 1 * 5 + 3, 3 * 5 + 2);
-						mathlib.circle(posit, 2 * 5 + 2, 1 * 5 + 4, 3 * 5 + 1);
-						mathlib.circle(posit, 2 * 5 + 3, 1 * 5 + 1, 3 * 5 + 4);
-						mathlib.circle(posit, 4 * 5 + 4, 0 * 5 + 4, 5 * 5 + 3);
-						break;
-					case 1: //U
-						mathlib.circle(posit, 0 * 5 + 0, 5 * 5 + 0, 1 * 5 + 0);
-						mathlib.circle(posit, 0 * 5 + 2, 5 * 5 + 1, 1 * 5 + 2);
-						mathlib.circle(posit, 0 * 5 + 4, 5 * 5 + 2, 1 * 5 + 4);
-						mathlib.circle(posit, 0 * 5 + 1, 5 * 5 + 3, 1 * 5 + 1);
-						mathlib.circle(posit, 4 * 5 + 1, 3 * 5 + 4, 2 * 5 + 2);
-						break;
-					case 2: //L
-						mathlib.circle(posit, 4 * 5 + 0, 3 * 5 + 0, 5 * 5 + 0);
-						mathlib.circle(posit, 4 * 5 + 3, 3 * 5 + 3, 5 * 5 + 4);
-						mathlib.circle(posit, 4 * 5 + 1, 3 * 5 + 1, 5 * 5 + 3);
-						mathlib.circle(posit, 4 * 5 + 4, 3 * 5 + 4, 5 * 5 + 2);
-						mathlib.circle(posit, 2 * 5 + 3, 1 * 5 + 4, 0 * 5 + 1);
-						break;
-					case 3: //B
-						mathlib.circle(posit, 1 * 5 + 0, 5 * 5 + 0, 3 * 5 + 0);
-						mathlib.circle(posit, 1 * 5 + 4, 5 * 5 + 3, 3 * 5 + 4);
-						mathlib.circle(posit, 1 * 5 + 3, 5 * 5 + 1, 3 * 5 + 3);
-						mathlib.circle(posit, 1 * 5 + 2, 5 * 5 + 4, 3 * 5 + 2);
-						mathlib.circle(posit, 0 * 5 + 2, 4 * 5 + 3, 2 * 5 + 4);
-						break;
-				}
-			}
-		}
-
-		function face(f) {
-			var transform = ftrans[f];
-			drawPolygon(ctx, colors[posit[f * 5 + 0]], [
-				[-1, 0, 1, 0],
-				[0, 1, 0, -1]
-			], transform);
-			drawPolygon(ctx, colors[posit[f * 5 + 1]], [
-				[-1, -1, 0],
-				[0, -1, -1]
-			], transform);
-			drawPolygon(ctx, colors[posit[f * 5 + 2]], [
-				[0, 1, 1],
-				[-1, -1, 0]
-			], transform);
-			drawPolygon(ctx, colors[posit[f * 5 + 3]], [
-				[-1, -1, 0],
-				[0, 1, 1]
-			], transform);
-			drawPolygon(ctx, colors[posit[f * 5 + 4]], [
-				[0, 1, 1],
-				[1, 1, 0]
-			], transform);
-		}
-
-		return function(moveseq) {
-			colors = kernel.getProp('colskb').match(colre);
-			var cnt = 0;
-			for (var i = 0; i < 6; i++) {
-				for (var f = 0; f < 5; f++) {
-					posit[cnt++] = i;
-				}
-			}
-			var scramble = kernel.parseScramble(moveseq, 'RULB');
-			for (var i = 0; i < scramble.length; i++) {
-				doMove(scramble[i][0], scramble[i][2] == 1 ? 1 : 2);
-			}
-
-			canvas.attr('width', (8 * hsq3 + 0.3) * width + 1);
-			canvas.attr('height', 6.2 * width + 1);
-
-			for (var i = 0; i < 6; i++) {
-				face(i);
-			}
-		}
-	})();
-
 	var nnnImage = (function() {
 		var width = 30;
 
@@ -689,7 +593,33 @@ var image = execMain(function() {
 				}
 				posit = posit2;
 			}
-
+			if (type == 'skb') {
+				colors = puzzleFactory.col2std(kernel.getProp("colskb"), [0, 2, 4, 3, 5, 1])
+				var trans = [
+					[hsq3, -hsq3, hsq3 * 2, 0.5, 0.5, -1],
+					[hsq3, 0, 0, -0.5, 1, 2],
+					[hsq3, 0, 0, 0.5, 1, -2],
+					[hsq3, 0, 0, 0.5, 1, -2],
+					[hsq3, 0, 0, 0.5, 1, -2],
+					[hsq3, 0, 0, -0.5, 1, 2]
+				];
+				for (var i = 0; i < 6; i++) {
+					for (var j = 0; j < 6; j++) {
+						if (j % 3 != 2) {
+							trans[i][j] *= 8 / sizes[0];
+						}
+					}
+				}
+				for (var i = 0; i < polys.length; i++) {
+					if (!polys[i]) {
+						continue;
+					}
+					var poly = $.ctxTransform(polys[i], trans[polys[i][2]]);
+					polys[i][0] = poly[0];
+					polys[i][1] = poly[1];
+				}
+				sizes = [8 * hsq3, 6];
+			}
 			var scale = Math.min(1.6 / sizes[0], 1.0 / sizes[1]) * 300;
 			canvas.attr('width', sizes[0] * scale + 1);
 			canvas.attr('height', sizes[1] * scale + 1);
@@ -794,7 +724,7 @@ var image = execMain(function() {
 			nnnImage.draw(size + 2, scramble[1]);
 		} else if (type == "cubennn") {
 			nnnImage.draw(scramble[2], scramble[1]);
-		} else if (/^m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto$/.exec(type)) {
+		} else if (/^skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto$/.exec(type)) {
 			var faceNameMask = 0;
 			if (/^prc|giga|mgm|klm$/.exec(type)) {
 				faceNameMask = 0x3;
@@ -802,8 +732,6 @@ var image = execMain(function() {
 				faceNameMask = 0xff;
 			}
 			polyhedronImage(type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
-		} else if (type == "skb") {
-			skewbImage(scramble[1]);
 		} else if (type == "sq1" || type == "sq2") {
 			sq1Image(scramble[1], type == "sq2");
 		} else if (type == "clk") {

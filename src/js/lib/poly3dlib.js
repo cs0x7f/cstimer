@@ -1017,6 +1017,16 @@ var poly3d = (function() {
 				}
 				return scramble;
 			});
+		} else if (/^skb$/.exec(name)) {
+			polyParam = [6, [-2], [], [-2, 0]];
+			var skbShort = 'FlUrDLBRxyz';
+			var skbLong = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'];
+			parser = makeParser(/(?:^|\s*)([FlUrDLBRxyz])(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
+				var midx = skbShort.indexOf(p1);
+				return [midx >= 8 ? 0 : 1, skbLong[midx], p2 ? -1 : 1];
+			}, function(layer, axis, pow) {
+				return skbShort.charAt(skbLong.indexOf(axis));
+			});
 		} else {
 			return null;
 		}
