@@ -74,10 +74,10 @@
   <script type="text/javascript" src="js/twisty/twistyreplay.js"></script>
   <script type="text/javascript" src="js/shortcut.js"></script>
   <script type="text/javascript" src="js/help.js"></script>
-  <script type="text/javascript" src="js/stackmat.js"></script>
+  <script type="text/javascript" src="js/hardware/stackmat.js"></script>
   <script type="text/javascript" src="js/tools/stackmatutil.js"></script>
-  <script type="text/javascript" src="js/bluetooth.js"></script>
-  <script type="text/javascript" src="js/gantimer.js"></script>
+  <script type="text/javascript" src="js/hardware/bluetooth.js"></script>
+  <script type="text/javascript" src="js/hardware/gantimer.js"></script>
   <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>
   <script type="text/javascript" src="js/lib/pnltri.js"></script>

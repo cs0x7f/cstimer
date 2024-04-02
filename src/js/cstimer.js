@@ -47,8 +47,8 @@ importScripts(
 	'tools/metronome.js',
 	'shortcut.js',
 	'help.js',
-	'stackmat.js',
+	'hardware/stackmat.js',
 	'tools/stackmatutil.js',
-	'bluetooth.js',
+	'hardware/bluetooth.js',
 	'worker.js'
 );

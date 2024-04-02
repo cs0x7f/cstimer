@@ -74,10 +74,10 @@ tools/bldhelper.js \
 twisty/twistyreplay.js \
 shortcut.js \
 help.js \
-stackmat.js \
+hardware/stackmat.js \
 tools/stackmatutil.js \
-bluetooth.js \
-gantimer.js \
+hardware/bluetooth.js \
+hardware/gantimer.js \
 worker.js)
 
 cache = $(addprefix $(dest)/, \
