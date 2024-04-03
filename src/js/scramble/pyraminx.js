@@ -209,17 +209,6 @@
 })();
 
 var mpyr = (function() {
-	/*
-	XX L0 L1 L2 L3 L4 XX    XX R0 R1 R2 R3 R4 XX
-	   L5 L6 L7 L8 L9    XX    R5 R6 R7 R8 R9
-	      La Lb Lc    Fc Fb Fa    Ra Rb Rc
-	         XX    F9 F8 F7 F6 F5    XX
-	            XX F4 F3 F2 F1 F0 XX
-	            XX D0 D1 D2 D3 D4 XX
-	               D5 D6 D7 D8 D9
-	                  Da Db Dc
-	                     XX
-	 */
 
 	function MpyrCubie(ep, eo, wp, ct, co, cp) {
 		this.ep = ep || [0, 1, 2, 3, 4, 5];
@@ -228,6 +217,25 @@ var mpyr = (function() {
 		this.ct = ct || [0, 1, 2, 3];
 		this.co = co || [0, 0, 0, 0];
 		this.cp = cp || [0, 1, 2, 3]; // for cube rotation
+	}
+
+	MpyrCubie.prototype.toString = function() {
+		var f = this.toFaceCube(1);
+		var ret = '' +
+			'XX L0 L1 L2 L3 L4 XX    XX R0 R1 R2 R3 R4 XX\n' +
+			'   L5 L6 L7 L8 L9    XX    R5 R6 R7 R8 R9\n' +
+			'      La Lb Lc    Fc Fb Fa    Ra Rb Rc\n' +
+			'         XX    F9 F8 F7 F6 F5    XX\n' +
+			'            XX F4 F3 F2 F1 F0 XX\n' +
+			'            XX D0 D1 D2 D3 D4 XX\n' +
+			'               D5 D6 D7 D8 D9\n' +
+			'                  Da Db Dc\n' +
+			'                     XX';
+		ret = ret.replace(/([FRDL])([0-9a-c])/g, function(m, p1, p2) {
+			var i = 'FRDL'.indexOf(p1) * 13 + parseInt(p2, 16);
+			return 'FRDL'[~~(f[i] / 13)] + (f[i] % 13).toString(16);
+		});
+		return ret;
 	}
 
 	var F = 0, R = 13, D = 26, L = 39, a = 10, b = 11, c = 12;
@@ -319,64 +327,11 @@ var mpyr = (function() {
 		return this;
 	}
 
-	MpyrCubie.prototype.toString = function() {
-		var f = this.toFaceCube(1);
-		var ret = '' +
-			'XX L0 L1 L2 L3 L4 XX    XX R0 R1 R2 R3 R4 XX\n' +
-			'   L5 L6 L7 L8 L9    XX    R5 R6 R7 R8 R9\n' +
-			'      La Lb Lc    Fc Fb Fa    Ra Rb Rc\n' +
-			'         XX    F9 F8 F7 F6 F5    XX\n' +
-			'            XX F4 F3 F2 F1 F0 XX\n' +
-			'            XX D0 D1 D2 D3 D4 XX\n' +
-			'               D5 D6 D7 D8 D9\n' +
-			'                  Da Db Dc\n' +
-			'                     XX';
-		ret = ret.replace(/([FRDL])([0-9a-c])/g, function(m, p1, p2) {
-			var i = 'FRDL'.indexOf(p1) * 13 + parseInt(p2, 16);
-			return 'FRDL'[~~(f[i] / 13)] + (f[i] % 13).toString(16);
-		});
-		return ret;
-	}
-
-	MpyrCubie.randomCube = function(rn) {
-		rn = rn || function(n) {
-			return ~~(Math.random() * n);
-		}
-
-		function rndEvenPerm(n) {
-			var ret = [];
-			for (var i = 0; i < n; i++) {
-				ret[i] = i;
-			}
-			var parity = 0;
-			for (var i = 0; i < n - 1; i++) {
-				var swap = rn(n - i);
-				if (swap != 0) {
-					var tmp = ret[i]; ret[i] = ret[i + swap]; ret[i + swap] = tmp;
-					parity ^= 1;
-				}
-			}
-			if (parity) {
-				var tmp = ret[0]; ret[0] = ret[1]; ret[1] = tmp;
-			}
-			return ret;
-		}
-
-		var ret = new MpyrCubie(rndEvenPerm(6), null,
-			rndEvenPerm(12), rndEvenPerm(4), null, null)
-		var parity = 0;
-		for (var i = 0; i < 5; i++) {
-			ret.eo[i] = rn(2);
-			parity += ret.eo[i];
-		}
-		ret.eo[5] = parity & 1;
-		parity = 0;
-		for (var i = 0; i < 3; i++) {
-			ret.co[i] = rn(3);
-			parity += 3 - ret.co[i];
-		}
-		ret.co[3] = parity % 3;
-		return ret;
+	MpyrCubie.randomCube = function() {
+		return new MpyrCubie(
+			mathlib.rndPerm(6, true), mathlib.setNOri([], mathlib.rn(32), 6, -2),
+			mathlib.rndPerm(12, true), mathlib.rndPerm(4, true),
+			mathlib.setNOri([], mathlib.rn(27), 4, -3), null)
 	}
 
 	MpyrCubie.MpyrMult = function() {
@@ -486,118 +441,68 @@ var mpyr = (function() {
 		return ckmv;
 	}
 
-	function genCombParams(ccnts) {
-		var thres = [];
-		for (var j = 0; j < ccnts.length; j++) {
-			thres[j] = ~~thres[j - 1] + ccnts[j];
-		}
-		var n = thres[thres.length - 1];
-		var weight = [];
-		weight[ccnts.length - 1] = 1;
-		for (var j = ccnts.length - 2; j >= 0; j--) {
-			weight[j] = weight[j + 1] * mathlib.Cnk[n - thres[j]][ccnts[j + 1]];
-		}
-		var params = {};
-		params.n = n;
-		params.weight = weight;
-		params.thres = thres;
-		params.ccnts = ccnts;
-		return params;
-	}
-
-	function getCombs(arr, params, perms) {
-		var n = params.n;
-		var ccnts = params.ccnts.slice();
-		var thres = params.thres;
-		var weight = params.weight;
-		var idxComb = 0;
-		for (var i = n - 1; i >= 0; i--) {
-			var s = i;
-			for (var j = 0; j < ccnts.length; j++) {
-				if (arr[i] >= thres[j]) {
-					s -= ccnts[j];
-					continue;
-				}
-				idxComb += mathlib.Cnk[s][ccnts[j]--] * weight[j];
-				if (perms && perms[j]) {
-					perms[j][ccnts[j]] = arr[i];
-				}
-				break;
-			}
-		}
-		return idxComb;
-	}
-
-	function setCombs(arr, params, idxComb) {
-		var n = params.n;
-		var ccnts = params.ccnts.slice();
-		var thres = params.thres;
-		var weight = params.weight;
-		var fill = n - 1;
-		var idxs = [];
-		for (var j = ccnts.length - 2; j >= 0; j--) {
-			var size = mathlib.Cnk[n - thres[j]][ccnts[j + 1]];
-			idxs[j + 1] = idxComb % size;
-			idxComb = ~~(idxComb / size);
-		}
-		idxs[0] = idxComb;
-		for (var i = n - 1; i >= 0; i--) {
-			var s = i;
-			arr[i] = -1;
-			for (var j = 0; j < ccnts.length; j++) {
-				var cmp = mathlib.Cnk[s][ccnts[j]];
-				if (idxs[j] >= cmp) {
-					idxs[j] -= cmp;
-					arr[i] = (--ccnts[j]) + ~~thres[j - 1];
-					break;
-				}
-				s -= ccnts[j];
-			}
-			if (arr[i] == -1) {
-				arr[i] = fill--;
-			}
-		}
-		return arr;
-	}
-
 	function doMove(mc, move) {
 		return MpyrCubie.MpyrMult(mc, MpyrCubie.moveCube[move], null);
 	}
 
+	function doCosetMove(idx, move) {
+		return (idx + 1 - (move >> 1) % 2) % 3;
+	}
+
 	var phase1Moves = [0, 2, 4, 6, 8, 10, 12, 14];
-	var p1WPrun = [];
+	var p1e1w2Move = null;
 	var solv1 = null;
 
+	function phase1e1w2Hash(edge, fc) {
+		var pos = fc.ep.indexOf(edge);
+		var ori = fc.eo[pos];
+		return (pos * 12 + fc.wp.indexOf(edge << 1 | ori)) * 12 + fc.wp.indexOf(edge << 1 | ori ^ 1);
+	}
+
 	function initPhase1() {
-		var combParam = genCombParams([2, 2, 2, 2, 2, 2]);
-		mathlib.createPrun(p1WPrun, 0, 7484400, 5, function(idx, move) {
-			var arr = setCombs([], combParam, idx);
-			var mc = new MpyrCubie(null, null, arr, null, null, null);
-			var mc2 = MpyrCubie.MpyrMult(mc, MpyrCubie.moveCube[phase1Moves[move]], null);
-			return getCombs(mc2.getPairPerm(), combParam);
+		var mc = new MpyrCubie();
+		p1e1w2Move = mathlib.createMoveHash(mc, phase1Moves, phase1e1w2Hash.bind(null, 0), doMove);
+		var solved = [];
+		var solved2 = [];
+		for (var i = 0; i < 6; i++) {
+			solved.push(p1e1w2Move[1][phase1e1w2Hash(i, mc)]);
+			for (var j = 0; j < i; j++) {
+				solved2.push(Math.min(solved[i], solved[j]) * 792 + Math.max(solved[i], solved[j]));
+			}
+		}
+		var p1e2w4Prun = [];
+		mathlib.createPrun(p1e2w4Prun, solved2, 792 * 792 * 3, 12, function(idx, move) {
+			var ct = doCosetMove(~~(idx / 792 / 792), phase1Moves[move]);
+			var idx1 = ~~(idx / 792) % 792;
+			var idx2 = idx % 792;
+			idx1 = p1e1w2Move[0][move][idx1];
+			idx2 = p1e1w2Move[0][move][idx2];
+			return ct * 792 * 792 + Math.min(idx1, idx2) * 792 + Math.max(idx1, idx2);
 		}, 8, 2);
 		var ckmv = genCkmv(phase1Moves);
-		solv1 = new mathlib.Searcher(function(idx) {
-			for (var i = 0; i < 12; i++) {
-				if (idx[0][i] != i) {
-					return false;
+		solv1 = new mathlib.Searcher(null, function(idx) {
+			var prun = 0;
+			var ctbase = idx[6] * 792 * 792;
+			for (var i = 0; i < 6; i++) {
+				for (var j = 0; j < i; j++) {
+					prun = Math.max(prun, mathlib.getPruning(p1e2w4Prun,
+						ctbase + Math.min(idx[i], idx[j]) * 792 + Math.max(idx[i], idx[j])));
 				}
 			}
-			return idx[1] == 0;
-		}, function(idx) {
-			return Math.min(7, mathlib.getPruning(p1WPrun, getCombs(idx[0], combParam)));
+			return prun;
 		}, function(idx, move) {
-			var mc = new MpyrCubie(null, null, idx[0], null, null, null);
-			var mc2 = MpyrCubie.MpyrMult(mc, MpyrCubie.moveCube[phase1Moves[move]], null);
-			return [mc2.getPairPerm(), (idx[1] + 1 - (phase1Moves[move] >> 1) % 2) % 3];
+			var ret = [];
+			for (var i = 0; i < 6; i++) {
+				ret[i] = p1e1w2Move[0][move][idx[i]];
+			}
+			ret[6] = doCosetMove(idx[6], phase1Moves[move]);
+			return ret;
 		}, 8, 2, ckmv);
 	}
 
 	var phase2Moves = [2, 6, 10, 14];
 	var p2epctMoves = null;
 	var p2eocoMoves = null;
-	var p2epctPrun = [];
-	var p2eocoPrun = [];
 	var solv2 = null;
 
 	function phase2EpCtHash(fc) {
@@ -611,6 +516,8 @@ var mpyr = (function() {
 	function initPhase2() {
 		p2epctMoves = mathlib.createMoveHash(new MpyrCubie(), phase2Moves, phase2EpCtHash, doMove);
 		p2eocoMoves = mathlib.createMoveHash(new MpyrCubie(), phase2Moves, phase2EoCoHash, doMove);
+		var p2epctPrun = [];
+		var p2eocoPrun = [];
 		mathlib.createPrun(p2epctPrun, 0, 1440, 14, p2epctMoves[0], 4, 2);
 		mathlib.createPrun(p2eocoPrun, 0, 2592, 14, p2eocoMoves[0], 4, 2);
 		var ckmv2 = genCkmv(phase2Moves);
@@ -659,7 +566,12 @@ var mpyr = (function() {
 			initPhase2();
 		}
 		var tt1 = +new Date;
-		var sol1 = solv1.solve([mc.getPairPerm(), mc.getCosetIdx()], 14);
+		var idx = [];
+		for (var i = 0; i < 6; i++) {
+			idx[i] = p1e1w2Move[1][phase1e1w2Hash(i, mc)];
+		}
+		idx[6] = mc.getCosetIdx();
+		var sol1 = solv1.solve(idx, 14);
 		tt1 = +new Date - tt1;
 		for (var i = 0; i < sol1.length; i++) {
 			sol1[i] = phase1Moves[sol1[i][0]] + sol1[i][1];
@@ -703,12 +615,12 @@ var mpyr = (function() {
 	}
 
 
-	function getRandomScramble(rn) {
-		var mc = MpyrCubie.randomCube(rn);
+	function getRandomScramble() {
+		var mc = MpyrCubie.randomCube();
 		var sol = solveMpyr(mc);
 		sol = prettyMoves([].concat(sol[0], sol[1]));
 		for (var i = 0; i < 4; i++) {
-			var r = rn(3);
+			var r = mathlib.rn(3);
 			if (r < 2) {
 				sol += " " + "lrbu".charAt(i) + ["", "'"][r];
 			}
@@ -716,12 +628,11 @@ var mpyr = (function() {
 		return sol;
 	}
 
+	scrMgr.reg('mpyrso', getRandomScramble);
+
 	return {
 		getRandomScramble: getRandomScramble,
 		solveTest: solveTest
 	};
 })();
 
-scrMgr.reg('mpyrso', function() {
-	return mpyr.getRandomScramble(mathlib.rn);
-});

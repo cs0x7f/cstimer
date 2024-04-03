@@ -171,23 +171,87 @@ var mathlib = (function() {
 		return arr;
 	}
 
-	// type: 'p', 'o'
-	// evenbase: base for ori, sign for even parity
+	function bitCount(x) {
+		x -= (x >> 1) & 0x55555555;
+		x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+		return ((x + (x >> 4) & 0xf0f0f0f) * 0x1010101) >> 24;
+	}
+
+	function getMPerm(arr, n, cnts, cums) {
+		var seen = ~0;
+		var idx = 0;
+		var x = 1;
+		for (var i = 0; i < n; i++) {
+			var pi = arr[i];
+			idx = idx * (n - i) + bitCount(seen & ((1 << cums[pi]) - 1)) * x;
+			x = x * cnts[pi]--;
+			seen &= ~(1 << (cums[pi] + cnts[pi]));
+		}
+		return Math.round(idx / x);
+	}
+
+	function setMPerm(arr, idx, n, cnts, x) {
+		for (var i = 0; i < n; i++) {
+			for (var j = 0; j < cnts.length; j++) {
+				if (cnts[j] == 0) {
+					continue;
+				}
+				var x2 = ~~(x * cnts[j] / (n - i));
+				if (idx < x2) {
+					cnts[j]--;
+					arr[i] = j;
+					x = x2;
+					break;
+				}
+				idx -= x2;
+			}
+		}
+	}
+
+	// type: 'p' (permutation), 'o' (orientation), 'c' (combination)
+	// evenbase: base for ori, sign for even parity, cnts for combination
 	function coord(type, length, evenbase) {
 		this.length = length;
 		this.evenbase = evenbase;
-		this.get = type == 'p' ?
-			function(arr) {
+		if (type == 'p') {
+			this.get = function(arr) {
 				return getNPerm(arr, this.length, this.evenbase);
-			} : function(arr) {
+			};
+			this.set = function(arr, idx) {
+				return setNPerm(arr, idx, this.length, this.evenbase);
+			};
+		} else if (type == 'o') {
+			this.get = function(arr) {
 				return getNOri(arr, this.length, this.evenbase);
 			};
-		this.set = type == 'p' ?
-			function(arr, idx) {
-				return setNPerm(arr, idx, this.length, this.evenbase);
-			} : function(arr, idx) {
+			this.set = function(arr, idx) {
 				return setNOri(arr, idx, this.length, this.evenbase);
 			};
+		} else if (type == 'c') {
+			var cnts = evenbase;
+			this.cnts = cnts.slice();
+			this.cums = [0];
+			for (var i = 1; i <= this.cntn; i++) {
+				this.cums[i] = this.cums[i - 1] + cnts[i - 1];
+			}
+			this.n = this.cums[this.cntn];
+			var n = this.n;
+			var x = 1;
+			for (var i = 0; i < this.cntn; i++) {
+				for (var j = 1; j <= cnts[i]; j++, n--) {
+					x *= n / j;
+				}
+			}
+			this.x = Math.round(x);
+			this.get = function(arr) {
+				return getMPerm(arr, this.n, this.cnts.slice(), this.cums);
+			};
+			this.set = function(arr, idx) {
+				return setMPerm(arr, idx, this.n, this.cnts.slice(), this.x);
+			};
+		} else { // invalid type
+			debugger;
+		}
 	}
 
 	function fillFacelet(facelets, f, perm, ori, divcol) {
@@ -785,7 +849,12 @@ var mathlib = (function() {
 		for (var i = 0, len = (size + 7) >>> 3; i < len; i++) {
 			prun[i] = -1;
 		}
-		prun[init >> 3] ^= 15 << ((init & 7) << 2);
+		if (!$.isArray(init)) {
+			init = [init];
+		}
+		for (var i = 0; i < init.length; i++) {
+			prun[init[i] >> 3] ^= 15 << ((init[i] & 7) << 2);
+		}
 		var val = 0;
 		// var t = +new Date;
 		for (var l = 0; l <= maxd; l++) {

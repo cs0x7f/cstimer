@@ -387,8 +387,8 @@ var scrdata = [
 		['random move', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['random move', "mpyr", 42],
-		['random state', "mpyrso", 0]
+		['random state', "mpyrso", 0],
+		['random move', "mpyr", 42]
 	]],
 	['פיראמינקס קריסטל', [
 		['פוקמן', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['אוקטהדרון פאות', [
-		['random move', "fto", 30],
 		['random state', "ftoso", 0],
+		['random move', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

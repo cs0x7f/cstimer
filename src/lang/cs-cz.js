@@ -387,8 +387,8 @@ var scrdata = [
 		['náhodný tah', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['náhodný tah', "mpyr", 42],
-		['náhodný stav', "mpyrso", 0]
+		['náhodný stav', "mpyrso", 0],
+		['náhodný tah', "mpyr", 42]
 	]],
 	['Pyraminx krystal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['PSO (Přední Soutěžní Osmistěn)', [
-		['náhodný tah', "fto", 30],
 		['náhodný stav', "ftoso", 0],
+		['náhodný tah', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

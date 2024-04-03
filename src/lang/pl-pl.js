@@ -387,8 +387,8 @@ var scrdata = [
 		['losowy ruch', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['losowy ruch', "mpyr", 42],
-		['stan losowy', "mpyrso", 0]
+		['stan losowy', "mpyrso", 0],
+		['losowy ruch', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Styl Jaap', "ufo", 25]
 	]],
 	['FTO (Face-Turning Octahedron)', [
-		['losowy ruch', "fto", 30],
 		['stan losowy', "ftoso", 0],
+		['losowy ruch', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

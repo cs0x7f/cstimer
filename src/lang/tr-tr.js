@@ -387,8 +387,8 @@ var scrdata = [
 		['Rastgele hamle', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['Rastgele hamle', "mpyr", 42],
-		['Rastgele Durum', "mpyrso", 0]
+		['Rastgele Durum', "mpyrso", 0],
+		['Rastgele hamle', "mpyr", 42]
 	]],
 	['Pyraminx Kristal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap Stili', "ufo", 25]
 	]],
 	['FTO (Yüz-Döndüren-Octahedron)', [
-		['Rastgele hamle', "fto", 30],
 		['Rastgele Durum', "ftoso", 0],
+		['Rastgele hamle', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

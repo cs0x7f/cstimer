@@ -387,8 +387,8 @@ var scrdata = [
 		['véletlen mozdulat', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['véletlen mozdulat', "mpyr", 42],
-		['véletlen állapot', "mpyrso", 0]
+		['véletlen állapot', "mpyrso", 0],
+		['véletlen mozdulat', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap stílus', "ufo", 25]
 	]],
 	['FTO (Oldalain forduló oktaéder)', [
-		['véletlen mozdulat', "fto", 30],
 		['véletlen állapot', "ftoso", 0],
+		['véletlen mozdulat', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

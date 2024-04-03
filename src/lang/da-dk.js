@@ -387,8 +387,8 @@ var scrdata = [
 		['tilfældig træk', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['tilfældig træk', "mpyr", 42],
-		['tilfældig tilstand', "mpyrso", 0]
+		['tilfældig tilstand', "mpyrso", 0],
+		['tilfældig træk', "mpyr", 42]
 	]],
 	['Pyraminx Krystal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap stil', "ufo", 25]
 	]],
 	['FTO (Side Rotér Oktahedron)', [
-		['tilfældig træk', "fto", 30],
 		['tilfældig tilstand', "ftoso", 0],
+		['tilfældig træk', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

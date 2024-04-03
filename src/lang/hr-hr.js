@@ -387,8 +387,8 @@ var scrdata = [
 		['nasumični potez', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['nasumični potez', "mpyr", 42],
-		['nasumično stanje', "mpyrso", 0]
+		['nasumično stanje', "mpyrso", 0],
+		['nasumični potez', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap stil', "ufo", 25]
 	]],
 	['FTO (Face-Turning Octahedron)', [
-		['nasumični potez', "fto", 30],
 		['nasumično stanje', "ftoso", 0],
+		['nasumični potez', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],

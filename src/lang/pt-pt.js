@@ -387,8 +387,8 @@ var scrdata = [
 		['movimento aleatório', "ivy", 10]
 	]],
 	['Master Pyraminx', [
-		['movimento aleatório', "mpyr", 42],
-		['random state', "mpyrso", 0]
+		['random state', "mpyrso", 0],
+		['movimento aleatório', "mpyr", 42]
 	]],
 	['Pyraminx Crystal', [
 		['Pochmann', "prcp", 70],
@@ -410,8 +410,8 @@ var scrdata = [
 		['Jaap style', "ufo", 25]
 	]],
 	['FTO (Face-Turning Octahedron)', [
-		['movimento aleatório', "fto", 30],
 		['random state', "ftoso", 0],
+		['movimento aleatório', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],
