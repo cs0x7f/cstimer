@@ -86,7 +86,6 @@ js/cstimer.js \
 js/twisty.js \
 css/style.css) $(langJS) $(langPHP)
 
-
 twistySrc = $(addprefix $(src)/js/, \
 lib/threemin.js \
 lib/pnltri.js \
@@ -100,9 +99,46 @@ twisty/qcube.js \
 twisty/qcubennn.js \
 twisty/qcubeminx.js)
 
+moduleSrc = $(addprefix $(src)/js/, \
+lib/utillib.js \
+lib/isaac.js \
+lib/mathlib.js \
+lib/grouplib.js \
+lib/lzstring.js \
+lib/min2phase.js \
+lib/cubeutil.js \
+lib/json.min.js \
+scramble/scramble.js \
+scramble/megascramble.js \
+scramble/scramble_333_edit.js \
+scramble/scramble_444.js \
+scramble/scramble_sq1_new.js \
+scramble/pyraminx.js \
+scramble/skewb.js \
+scramble/2x2x2.js \
+scramble/gearcube.js \
+scramble/1x3x3.js \
+scramble/2x2x3.js \
+scramble/clock.js \
+scramble/333lse.js \
+scramble/mgmlsll.js \
+scramble/kilominx.js \
+scramble/scramble_fto.js \
+scramble/redi.js \
+scramble/utilscramble.js \
+tools/image.js \
+tools/cross.js \
+tools/eoline.js \
+tools/roux1.js \
+tools/gsolver.js \
+tools/thistlethwaite.js \
+tools/pat3x3gen.js \
+tools/bldhelper.js \
+worker.js)
 
 cstimer = $(dest)/js/cstimer.js
 twisty = $(dest)/js/twisty.js
+cstimer_module = $(dest)/js/cstimer_module.js
 css = $(addprefix $(dest)/css/, $(shell ls $(src)/css))
 langJS = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.js))
 langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))
@@ -110,6 +146,8 @@ langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))
 version := $(shell git describe --tags --always 2>/dev/null || echo Unspecified)
 
 all: $(cstimer) $(twisty) $(css) $(langJS) $(langPHP) version $(dest)/cache.manifest $(dest)/sw.js
+
+module: $(cstimer_module)
 
 version: $(langPHP)
 	@echo "Build Version: $(version)"
@@ -133,6 +171,10 @@ $(cstimer): $(twisty) $(timerSrc)
 $(twisty): $(twistySrc)
 	@echo $@
 	@$(compile) $(twistySrc) --js_output_file $(twisty)
+
+$(cstimer_module): $(moduleSrc)
+	@echo $@
+	@$(compile) $(moduleSrc) --js_output_file $(cstimer_module)
 
 $(css): $(dest)/css/%.css: $(src)/css/%.css
 	@echo $@
