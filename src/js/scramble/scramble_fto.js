@@ -263,9 +263,7 @@ var ftosolver = (function() {
 	}
 
 	function ftoFullMove(fc, move) {
-		var ret = new FtoCubie();
-		FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], ret);
-		return ret;
+		return FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], null);
 	}
 
 	function phase1EdgeHash(ep) {
@@ -325,60 +323,10 @@ var ftosolver = (function() {
 		return ret;
 	}
 
-	function phase2CtrlHash(rl) {
+	function phase2CtHash(ct) {
 		var ret = 0;
 		for (var i = 0; i < 12; i++) {
-			ret |= ~~(rl[i] / 3) << (i * 2);
-		}
-		return ret;
-	}
-
-	var p2ccMaps = [
-		[2, 0, 1, 9, 4, 5, 3, 7, 8, 6],
-		[6, 7, 2, 1, 4, 0, 5, 3, 8, 9],
-		[4, 1, 3, 8, 9, 5, 6, 7, 2, 0]
-	];
-
-	var p2ufMaps = [
-		[1, 2, 0, 3, 4, 5, 6, 7, 8, 9],
-		[5, 3, 2, 7, 4, 6, 0, 1, 8, 9],
-		[9, 1, 8, 2, 0, 5, 6, 7, 3, 4]
-	];
-
-	function doPhase2CcufMove(i0, move) {
-		var uf = [];
-		mathlib.setNPerm(uf, i0, 10, -1);
-		var ccMap = p2ccMaps[move];
-		var ufMap = p2ufMaps[move];
-		var uf2 = [];
-		for (var i = 0; i < 10; i++) {
-			uf2[i] = ccMap[uf[ufMap[i]]];
-		}
-		return mathlib.getNPerm(uf2, 10, -1);
-	}
-
-	function getPhase2CcufArr(fc) {
-		var cornExFacelets = [
-			[U + 2, R + 2, F + 2, L + 2],
-			[U + 5, B + 7, r + 5, R + 7],
-			[U + 7, L + 5, l + 7, B + 5],
-			[l + 2, D + 2, r + 2, B + 2],
-			[F + 5, D + 7, l + 5, L + 7],
-			[r + 7, D + 5, F + 7, R + 5]
-		];
-		var cpi = [];
-		for (var i = 0; i < 6; i++) {
-			var j = fc.cp[i];
-			var ori = fc.co[i];
-			for (var n = 0; n < 2; n++) {
-				cpi[ctufFacelets.indexOf(cornExFacelets[j][n * 2])] = ctufFacelets.indexOf(cornExFacelets[i][(n ^ ori) * 2]);
-			}
-		}
-		var p1 = [0, 1, 2, 3, 4, 5, 7, 8, 10, 11, 6, 9];
-		var p2 = [0, 1, 2, 3, 4, 5, 10, 6, 7, 11, 8, 9];
-		var ret = [];
-		for (var i = 0; i < 10; i++) {
-			ret[i] = p2[cpi[fc.uf[p1[i]]]];
+			ret |= ~~(ct[i] / 3) << (i * 2);
 		}
 		return ret;
 	}
@@ -424,9 +372,6 @@ var ftosolver = (function() {
 	var p1epMoves = null;
 	var p1rlMoves = null;
 	var p1ufMoves = null;
-	var p1ctPrun = null;
-	var p1epPrun = null;
-	var p1cePrun = null;
 	var ckmv1 = null;
 	var solv1 = null;
 
@@ -446,9 +391,9 @@ var ftosolver = (function() {
 		p1epMoves = mathlib.createMoveHash(fc.ep.slice(), phase1Moves, phase1EdgeHash, ftoPermMove.bind(null, 'ep'));
 		p1rlMoves = mathlib.createMoveHash(fc.rl.slice(), phase1Moves, phase1CtrlHash, ftoPermMove.bind(null, 'rl'));
 		p1ufMoves = mathlib.createMoveHash(new FtoCubie(), phase1Moves, phase1CcufHash, ftoFullMove);
-		p1epPrun = [];
-		p1ctPrun = [];
-		p1cePrun = [];
+		var p1epPrun = [];
+		var p1ctPrun = [];
+		var p1cePrun = [];
 		mathlib.createPrun(p1epPrun, 0, 31680, 14, p1epMoves[0], 8, 2);
 		mathlib.createPrun(p1ctPrun, 0, 1980 * 132, 14, function(idx, move) {
 			var rl = ~~(idx / 132);
@@ -461,9 +406,7 @@ var ftosolver = (function() {
 			return p1epMoves[0][move][ep] * 132 + p1ufMoves[0][move][uf];
 		}, 8, 2);
 		ckmv1 = genCkmv(phase1Moves);
-		solv1 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && idx[2] == 0;
-		}, function(idx) {
+		solv1 = new mathlib.Searcher(null, function(idx) {
 			return Math.max(
 				mathlib.getPruning(p1epPrun, idx[0]),
 				mathlib.getPruning(p1ctPrun, idx[1] * 132 + idx[2]),
@@ -557,7 +500,7 @@ var ftosolver = (function() {
 	var N_PHASE1_SOLS = 10;
 
 	function solvePhase1(fc) {
-		if (!p1epPrun) {
+		if (!solv1) {
 			phase1Init();
 		}
 
@@ -585,99 +528,102 @@ var ftosolver = (function() {
 	var p2epMoves = null;
 	var p2rlMoves = null;
 	var p2ufMoves = null;
-	var p2erPrun = null;
-	var p2ufPrun = null;
+	var p2ccMoves = null;
 	var ckmv2 = null;
 	var solv2 = null;
+
+	var cornExFacelets = [
+		[U + 2, R + 2, F + 2, L + 2],
+		[U + 5, B + 7, r + 5, R + 7],
+		[U + 7, L + 5, l + 7, B + 5],
+		[l + 2, D + 2, r + 2, B + 2],
+		[F + 5, D + 7, l + 5, L + 7],
+		[r + 7, D + 5, F + 7, R + 5]
+	];
+
+	function phase2CpcoHash(fc) {
+		var co = [];
+		for (var i = 0; i < 6; i++) {
+			co[i] = fc.co[i] * 2;
+		}
+		var facelet = fc.toFaceCube();
+		mathlib.fillFacelet(cornExFacelets, facelet, fc.cp, co, 9);
+		var fc2 = new FtoCubie();
+		fc2.fromFacelet(facelet);
+		return [].concat(fc2.cp, fc2.co, p2ufMoves[1][phase2CtHash(fc2.uf)]).join(',');
+	}
 
 	function phase2Init() {
 		var fc = new FtoCubie();
 		p2epMoves = mathlib.createMoveHash(fc.ep.slice(), phase2Moves, phase2EdgeHash, ftoPermMove.bind(null, 'ep'));
-		p2rlMoves = mathlib.createMoveHash(fc.rl.slice(), phase2Moves, phase2CtrlHash, ftoPermMove.bind(null, 'rl'));
-		// p2ufMoves = mathlib.createMoveHash(new FtoCubie(), phase2Moves, phase2CcufHash, ftoFullMove);
-		p2erPrun = [];
-		p2ufPrun = [];
-		mathlib.createPrun(p2erPrun, 0, 280 * 560, 14, function(idx, move) {
+		p2rlMoves = mathlib.createMoveHash(fc.rl.slice(), phase2Moves, phase2CtHash, ftoPermMove.bind(null, 'rl'));
+		p2ufMoves = mathlib.createMoveHash(fc.uf.slice(), phase2Moves, phase2CtHash, ftoPermMove.bind(null, 'uf'));
+		p2ccMoves = mathlib.createMoveHash(fc, phase2Moves, phase2CpcoHash, ftoFullMove);
+
+		var solved = {};
+		var solvedc0 = [];
+		var p2c0Map = [[], []]
+		for (var key in p2ccMoves[1]) {
+			var cc = p2ccMoves[1][key];
+			key = key.split(',');
+			var uf = parseInt(key[12]);
+			solved[uf * 960 + cc] = true;
+			var pos0 = key.indexOf('0');
+			var subidx = pos0 * 2 + parseInt(key[pos0 + 6]);
+			p2c0Map[0][subidx] = cc;
+			p2c0Map[1][cc] = subidx;
+			solvedc0.push(uf * 12 + subidx);
+		}
+
+		var p2subPrun = [];
+		mathlib.createPrun(p2subPrun, solvedc0, 25200 * 12, 14, function(idx, move) {
+			var uf = ~~(idx / 12);
+			var cc = p2c0Map[0][idx % 12];
+			return p2ufMoves[0][move][uf] * 12 + p2c0Map[1][p2ccMoves[0][move][cc]];
+		}, 3, 2);
+
+		var p2eprlPrun = [];
+		mathlib.createPrun(p2eprlPrun, 0, 280 * 560, 14, function(idx, move) {
 			var rl = ~~(idx / 280);
 			var ep = idx % 280;
 			return p2rlMoves[0][move][rl] * 280 + p2epMoves[0][move][ep];
 		}, 3, 2);
-		mathlib.createPrun(p2ufPrun, 0, 1814400, 10, doPhase2CcufMove, 3, 2);
 		ckmv2 = genCkmv(phase2Moves);
+
 		solv2 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0 && mathlib.getNPerm(idx[2], 10, -1) == 0;
+			return solved[idx[3] * 960 + idx[2]];
 		}, function(idx) {
 			return Math.max(
-				mathlib.getPruning(p2erPrun, idx[1] * 280 + idx[0]),
-				Math.min(12, mathlib.getPruning(p2ufPrun, mathlib.getNPerm(idx[2], 10, -1)))
+				mathlib.getPruning(p2eprlPrun, idx[1] * 280 + idx[0]),
+				mathlib.getPruning(p2subPrun, idx[3] * 12 + p2c0Map[1][idx[2]])
 			);
 		}, function(idx, move) {
-			var uf = idx[2];
-			var ccMap = p2ccMaps[move];
-			var ufMap = p2ufMaps[move];
-			var uf2 = [];
-			for (var i = 0; i < 10; i++) {
-				uf2[i] = ccMap[uf[ufMap[i]]];
-			}
 			return [
 				p2epMoves[0][move][idx[0]],
 				p2rlMoves[0][move][idx[1]],
-				uf2
+				p2ccMoves[0][move][idx[2]],
+				p2ufMoves[0][move][idx[3]],
 			];
 		}, 3, 2, ckmv2);
 	}
 
-	function phase2GenIdxs(fc) {
-		var epidx = p2epMoves[1][phase2EdgeHash(fc.ep)];
-		var rlidx = p2rlMoves[1][phase2CtrlHash(fc.rl)];
-		var idxs = [];
-
-		var ufUmap = [1, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-		var ufFmap = [0, 1, 2, 4, 5, 3, 6, 7, 8, 9, 10, 11];
-		var ufUlmap = [1, 0, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10];
-		var ufFlmap = [0, 1, 2, 4, 3, 5, 6, 7, 8, 9, 11, 10];
-		var ufrlmap = [0, 1, 2, 3, 4, 5, 6, 8, 7, 9, 11, 10];
-
-		for (var ufidx = 0; ufidx < 72; ufidx++) {
-			idxs.push([epidx, rlidx, getPhase2CcufArr(fc)]);
-			FtoCubie.permMult(ufUmap, fc.uf, fc.uf);
-			if (ufidx % 3 == 2) {
-				FtoCubie.permMult(ufFmap, fc.uf, fc.uf);
-			}
-			if (ufidx % 9 == 8) {
-				FtoCubie.permMult(ufUlmap, fc.uf, fc.uf);
-			}
-			if (ufidx % 18 == 17) {
-				FtoCubie.permMult(ufFlmap, fc.uf, fc.uf);
-			}
-			if (ufidx % 36 == 35) {
-				FtoCubie.permMult(ufrlmap, fc.uf, fc.uf);
-			}
-		}
-		return idxs;
-	}
-
-
 	function solvePhase2(solvInfos) {
-		if (!p2erPrun) {
+		if (!solv2) {
 			phase2Init();
 		}
 		var tt = +new Date();
-
 		var idxs = [];
-		var srcs = [];
 		for (var i = 0; i < solvInfos.length; i++) {
-			var curIdxs = phase2GenIdxs(solvInfos[i][0]);
-			for (var j = 0; j < curIdxs.length; j++) {
-				idxs.push(curIdxs[j]);
-				srcs.push(i);
-			}
+			idxs.push([
+				p2epMoves[1][phase2EdgeHash(solvInfos[i][0].ep)],
+				p2rlMoves[1][phase2CtHash(solvInfos[i][0].rl)],
+				p2ccMoves[1][phase2CpcoHash(solvInfos[i][0])],
+				p2ufMoves[1][phase2CtHash(solvInfos[i][0].uf)],
+			]);
 		}
-
 		var sol2s = solv2.solveMulti(idxs, 25);
-
 		var sol = sol2s[0];
-		var src = srcs[sol2s[1]];
+		var src = sol2s[1];
 		var solvInfo = solvInfos[src];
 		var fc = solvInfo[0];
 		for (var i = 0; i < sol.length; i++) {
@@ -783,7 +729,7 @@ var ftosolver = (function() {
 	function FtoSolver() {}
 
 	FtoSolver.prototype.solveFto = function(fc, invSol) {
-		if (!p1epPrun) {
+		if (!solv1) {
 			var tt = +new Date;
 			phase1Init();
 			phase2Init();
