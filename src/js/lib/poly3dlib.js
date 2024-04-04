@@ -1010,7 +1010,7 @@ var poly3d = (function() {
 				var midx = rediShort.indexOf(p1);
 				return [midx >= 8 ? 0 : 1, rediLong[midx], p2 ? -1 : 1];
 			}, function(layer, axis, pow) {
-				return rediShort.charAt(rediLong.indexOf(axis));
+				return rediShort.charAt(rediLong.indexOf(axis)) + (pow >= 0 ? "" : "'");
 			}, function(scramble) {
 				if (/^(([LR]'? ){3,}x ){3,}/.exec(scramble)) {
 					return scramble.replace(/L/g, 'B');
@@ -1025,7 +1025,7 @@ var poly3d = (function() {
 				var midx = skbShort.indexOf(p1);
 				return [midx >= 8 ? 0 : 1, skbLong[midx], p2 ? -1 : 1];
 			}, function(layer, axis, pow) {
-				return skbShort.charAt(skbLong.indexOf(axis));
+				return skbShort.charAt(skbLong.indexOf(axis)) + (pow >= 0 ? "" : "'");
 			});
 		} else {
 			return null;

@@ -245,6 +245,28 @@ var image = execMain(function() {
 			} else {
 				drawPolygon(ctx, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
 			}
+
+			var recons = [];
+			for (var i = 0; i < moves.length; i++) {
+				if (/^\s*$/.exec(moves[i])) {
+					recons.push('/@' + (recons.length + 1) * 1000);
+					continue;
+				}
+				var m = movere.exec(moves[i]);
+				if (~~m[1]) {
+					recons.push('(' + m[1] + ',0)@' + (recons.length + 1) * 1000);
+				}
+				if (~~m[2]) {
+					recons.push('(0,' + m[2] + ')@' + (recons.length + 1) * 1000);
+				}
+				recons.push('/@' + (recons.length + 1) * 1000);
+			}
+			if (recons.length > 0 && recons[recons.length - 1][0] == '/') {
+				recons.pop();
+			} else {
+				recons.push('/@' + (recons.length + 1) * 1000);
+			}
+			return ["~", recons.join(' '), 'sq1'];
 		}
 	})();
 
@@ -394,6 +416,12 @@ var image = execMain(function() {
 			for (var i = 0; i < 6; i++) {
 				face(i, size);
 			}
+
+			var recons = moveseq.split(/\s+/);
+			for (var i = 0; i < recons.length; i++) {
+				recons[i] = recons[i] + '@' + (i + 1) * 1000;
+			}
+			return ["~", recons.join(" "), [size, size, size].join('')];
 		}
 
 		return {
@@ -575,7 +603,7 @@ var image = execMain(function() {
 				posit[i] = polys[i] && polys[i][2];
 			}
 			for (var midx = 0; midx < moves.length; midx++) {
-				var move = moves[midx];;
+				var move = moves[midx];
 				if (!(move[0] in puzzle.twistyIdx)) {
 					debugger; // error, cannot find move permutations
 				}
@@ -644,6 +672,11 @@ var image = execMain(function() {
 				ctx.fillText(face[2].toUpperCase(), face[0] * scale, face[1] * scale);
 				ctx.lineWidth = 1;
 			}
+			var recons = [];
+			for (var midx = 0; midx < moves.length; midx++) {
+				recons.push(params.parser.move2str(moves[midx]) + "@" + (midx + 1) * 1000);
+			}
+			return ["~", recons.join(" "), type];
 		}
 	})();
 
@@ -720,8 +753,9 @@ var image = execMain(function() {
 		}
 		type = tools.puzzleType(type);
 		var size = types_nnn.indexOf(type);
+		var recons;
 		if (size >= 0) {
-			nnnImage.draw(size + 2, scramble[1]);
+			recons = nnnImage.draw(size + 2, scramble[1]);
 		} else if (type == "cubennn") {
 			nnnImage.draw(scramble[2], scramble[1]);
 		} else if (/^skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto$/.exec(type)) {
@@ -731,9 +765,9 @@ var image = execMain(function() {
 			} else if (type == 'fto') {
 				faceNameMask = 0xff;
 			}
-			polyhedronImage(type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
+			recons = polyhedronImage(type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
 		} else if (type == "sq1" || type == "sq2") {
-			sq1Image(scramble[1], type == "sq2");
+			recons = sq1Image(scramble[1], type == "sq2");
 		} else if (type == "clk") {
 			clkImage(scramble[1]);
 		} else if (type == "15b" || type == "15p") {
@@ -748,6 +782,12 @@ var image = execMain(function() {
 		var scale = Math.min(1.6 / width, 1.0 / height) * kernel.getProp('imgSize') * 0.6;
 		canvas.width(width * scale + 'em');
 		canvas.height(height * scale + 'em');
+		canvas.unbind('click');
+		if (recons && kernel.getProp('imgRep')) {
+			canvas.click(function(recons) {
+				replay.popupReplay.apply(null, recons);
+			}.bind(null, recons));
+		}
 		return true;
 	}
 

@@ -190,6 +190,13 @@
 		return twisty;
 	});
 
+	twistyjs.registerTwisty("redi", function(scene, param) {
+		poly3d.getFamousPuzzle("redi", param);
+		var twisty = createCubeTwisty(scene, param);
+		bindKeyMap("I:R K:R' E:L' D:L H:F G:F' J:B F:B' L:f' S:f ;:y A:y' U:r M:r' R:l' V:l T:x Y:x N:x' B:x' P:z Q:z'", twisty);
+		return twisty;
+	});
+
 	twistyjs.registerTwisty("fto", function(scene, param) {
 		poly3d.getFamousPuzzle("fto", param);
 		var twisty = createCubeTwisty(scene, param);

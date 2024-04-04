@@ -173,7 +173,7 @@ var tools = execMain(function() {
 
 	function procSignal(signal, value) {
 		if (signal == 'property') {
-			if (value[0] == 'imgSize' || /^col/.exec(value[0])) {
+			if (/^(img|col).*/.exec(value[0])) {
 				for (var i = 0; i < kernel.getProp('NTools'); i++) {
 					if (funcs[i] == 'image') {
 						execFunc(i, signal);
@@ -241,7 +241,7 @@ var tools = execMain(function() {
 	}
 
 	$(function() {
-		kernel.regListener('tools', 'property', procSignal, /^(?:imgSize|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm)|toolHide|toolPos)$/);
+		kernel.regListener('tools', 'property', procSignal, /^(?:img(Size|Rep)|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm|fto|clk|15p|ico)|toolHide|toolPos)$/);
 		kernel.regListener('tools', 'scramble', procSignal);
 		kernel.regListener('tools', 'scrambleX', procSignal);
 		kernel.regListener('tools', 'button', procSignal, /^tools$/);
@@ -259,6 +259,7 @@ var tools = execMain(function() {
 		kernel.regProp('tools', 'toolPos', 1, PROPERTY_TOOLPOS, ['b', ['b', 'f', 't'], PROPERTY_TOOLPOS_STR.split('|')], 1);
 		kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false]);
 		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50], 1);
+		kernel.regProp('tools', 'imgRep', 0, "Show virtual cube animation when clicking scramble image", [true], 1);
 		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4], 1);
 		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
 		kernel.regProp('tools', 'toolsfunc', 5, PROPERTY_TOOLSFUNC, [defaultFunc], 1);
