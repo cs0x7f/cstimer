@@ -213,6 +213,19 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 	}
 
+	function pushScramble(_scramble) {
+		if (!isDisplayLast) {
+			lasttype = type;
+			lastscramble = scramble;
+			lastlen = len;
+		}
+		isDisplayLast = false;
+		scramble = _scramble;
+		sdiv.html(scrStd(type, scramble, len, true));
+		lastClick.addClass('click').unbind('click').click(procLastClick);
+		kernel.pushSignal('scrambleX', scrStd(type, scramble, len));
+	}
+
 	function procScrambleClick() {
 		if (!scramble) {
 			return;
@@ -841,6 +854,7 @@ var scramble = execMain(function(rn, rndEl) {
 		getTypeName: getTypeName,
 		getTypeIdx: getTypeIdx,
 		scrStd: scrStd,
+		pushScramble: pushScramble,
 		setCacheEnable: setCacheEnable
 	}
 }, [mathlib.rn, mathlib.rndEl]);

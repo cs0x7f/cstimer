@@ -496,6 +496,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var params = [cfmDiv, hideToTools, undefined, hideToTools, [STATS_SSSTAT, function(cfmIdx) {
 				hideToTools();
 				setHighlight(times_stats_table, timesAt, cfmIdx, 1, 10, true);
+			}.bind(null, cfmIdx)], ['Retry', function(cfmIdx) {
+				hideToTools();
+				var time = timesAt(cfmIdx);
+				time && scramble.pushScramble(time[1]);
 			}.bind(null, cfmIdx)]];
 			var curTime = timesAt(cfmIdx);
 			if (curTime && curTime[4]) {
