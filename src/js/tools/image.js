@@ -249,24 +249,24 @@ var image = execMain(function() {
 			var recons = [];
 			for (var i = 0; i < moves.length; i++) {
 				if (/^\s*$/.exec(moves[i])) {
-					recons.push('/@' + (recons.length + 1) * 1000);
+					recons.push('/');
 					continue;
 				}
 				var m = movere.exec(moves[i]);
 				if (~~m[1]) {
-					recons.push('(' + m[1] + ',0)@' + (recons.length + 1) * 1000);
+					recons.push('(' + m[1] + ',0)');
 				}
 				if (~~m[2]) {
-					recons.push('(0,' + m[2] + ')@' + (recons.length + 1) * 1000);
+					recons.push('(0,' + m[2] + ')');
 				}
-				recons.push('/@' + (recons.length + 1) * 1000);
+				recons.push('/');
 			}
-			if (recons.length > 0 && recons[recons.length - 1][0] == '/') {
+			if (recons[recons.length - 1] == '/') {
 				recons.pop();
 			} else {
-				recons.push('/@' + (recons.length + 1) * 1000);
+				recons.push('/');
 			}
-			return ["~", recons.join(' '), 'sq1'];
+			return ["~", recons, 'sq1'];
 		}
 	})();
 
@@ -417,11 +417,14 @@ var image = execMain(function() {
 				face(i, size);
 			}
 
-			var recons = moveseq.split(/\s+/);
-			for (var i = 0; i < recons.length; i++) {
-				recons[i] = recons[i] + '@' + (i + 1) * 1000;
+			var moves = moveseq.split(/\s+/);
+			var recons = [];
+			for (var i = 0; i < moves.length; i++) {
+				if (moves[i]) {
+					recons.push(moves[i]);
+				}
 			}
-			return ["~", recons.join(" "), [size, size, size].join('')];
+			return ["~", recons, [size, size, size].join('')];
 		}
 
 		return {
@@ -674,9 +677,9 @@ var image = execMain(function() {
 			}
 			var recons = [];
 			for (var midx = 0; midx < moves.length; midx++) {
-				recons.push(params.parser.move2str(moves[midx]) + "@" + (midx + 1) * 1000);
+				recons.push(params.parser.move2str(moves[midx]));
 			}
-			return ["~", recons.join(" "), type];
+			return ["~", recons, type];
 		}
 	})();
 
@@ -784,6 +787,10 @@ var image = execMain(function() {
 		canvas.height(height * scale + 'em');
 		canvas.unbind('click');
 		if (recons && kernel.getProp('imgRep')) {
+			for (var i = 0; i < recons[1].length; i++) {
+				recons[1][i] = recons[1][i] + '@' + (i + 1) * 1000;
+			}
+			recons[1] = recons[1].join(' ');
 			canvas.click(function(recons) {
 				replay.popupReplay.apply(null, recons);
 			}.bind(null, recons));
