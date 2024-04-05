@@ -159,7 +159,21 @@
 </ul>
 <h2>更多配色方案</h2>
 <?php include('color.php') ?>
-<div class="donate" style="line-height:1.5em;">
+<div class="donate helptable" style="line-height:1.5em;">
+<h2>与csTimer兼容的硬件</h2>
+<p>除了使用键盘计时，csTimer还支持以下蓝牙智能魔方和智能计时器。如果你使用智能魔方，csTimer会记录你每一次还原的详细解法，并提供更多统计和练习功能（例如CFOP自动分段等）。</p>
+<p>如果你使用智能魔方，csTimer会记录你每一次还原的详细解法，并提供更多统计和练习功能（例如CFOP自动分段等）。</p>
+<ul>
+<li><a class="click" href="https://www.amazon.com/dp/B0CGDHVJBL?tag=cstimer-20#" title="">Gan 12 ui FreePlay</a></li>
+<li><a class="click" href="https://www.amazon.com/dp/B083TW9WFT?tag=cstimer-20#" title="">Gan Halo Bluetooth Timer</a></li>
+</ul>
+<h2>推荐的商品</h2>
+<p>这里有一些专业的魔方或硬件。</p>
+<ul>
+<li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
+<li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
+</ul>
+<h2>直接捐赠</h2>
 <p>感谢您愿意支持csTimer！ 您的捐赠将用于支持我们后续的开发和维护费用。</p>
 <p>如果您希望通过PayPal为我们提供捐赠，请单击下面的按钮或通过<a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a></p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

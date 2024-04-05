@@ -159,7 +159,21 @@
 </ul>
 <h2>Кольорові схеми</h2>
 <?php include('color.php') ?>
-<div class="donate" style="line-height:1.5em;">
+<div class="donate helptable" style="line-height:1.5em;">
+<h2>Hardware compatible with csTimer</h2>
+<p>In addition to timing by keyboard, csTimer also supports Bluetooth Smart Cubes and Smart Timers.</p>
+<p>If you use a smart cube, csTimer will record the detailed solution of each of your solves and provide more statistics and practice functions (e.g. CFOP automatic segmentation, etc.)</p>
+<ul>
+<li><a class="click" href="https://www.amazon.com/dp/B0CGDHVJBL?tag=cstimer-20#" title="">Gan 12 ui FreePlay</a></li>
+<li><a class="click" href="https://www.amazon.com/dp/B083TW9WFT?tag=cstimer-20#" title="">Gan Halo Bluetooth Timer</a></li>
+</ul>
+<h2>Recommended products</h2>
+<p>Here are some professional cubes or hardwares.</p>
+<ul>
+<li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
+<li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
+</ul>
+<h2>Donate directly</h2>
 <p>Дякуємо за ваше бажання підтримати csTimer! Ваше пожертвування буде використане для підтримки нашої розробки та витрат на обслуговування.</p>
 <p>Якщо ви хочете запропонувати нам пожертвування через PayPal, будь ласка, натисніть на кнопку нижче або скористайтеся посиланням: <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

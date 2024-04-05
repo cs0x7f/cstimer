@@ -159,7 +159,21 @@
 </ul>
 <h2>Color schemes</h2>
 <?php include('color.php') ?>
-<div class="donate" style="line-height:1.5em;">
+<div class="donate helptable" style="line-height:1.5em;">
+<h2>Hardware compatible with csTimer</h2>
+<p>In addition to timing by keyboard, csTimer also supports Bluetooth Smart Cubes and Smart Timers.</p>
+<p>If you use a smart cube, csTimer will record the detailed solution of each of your solves and provide more statistics and practice functions (e.g. CFOP automatic segmentation, etc.)</p>
+<ul>
+<li><a class="click" href="https://www.amazon.com/dp/B0CGDHVJBL?tag=cstimer-20#" title="">Gan 12 ui FreePlay</a></li>
+<li><a class="click" href="https://www.amazon.com/dp/B083TW9WFT?tag=cstimer-20#" title="">Gan Halo Bluetooth Timer</a></li>
+</ul>
+<h2>Recommended products</h2>
+<p>Here are some professional cubes or hardwares.</p>
+<ul>
+<li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
+<li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
+</ul>
+<h2>Donate directly</h2>
 <p>Thank you for your willingness to support csTimer! La tua donazione sarà usata per sostenere i nostri costi di sviluppo e manutenzione.</p>
 <p>Se desideri offrirci una donazione attraverso PayPal, clicca il pulsante sottostante o attraverso</p>
 <p>PayPal.me&lt;0&gt;</p> </p>
@@ -173,7 +187,7 @@
 <p>Grazie ancora per la tua donazione!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong>  </p>
+<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
 <p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
 <ul>
 <li>Chrome on macOS, Linux, Android or Windows</li>

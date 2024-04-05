@@ -24,6 +24,7 @@
 <option value="?lang=ro-ro">Română</option>
 <option value="?lang=ru-ru">Pусский</option>
 <option value="?lang=sk-sk">Slovenčina</option>
+<option value="?lang=sl-si">English</option>
 <option value="?lang=sr-sp">Српски</option>
 <option value="?lang=sv-se">Svenska</option>
 <option value="?lang=tr-tr">Türkçe</option>
