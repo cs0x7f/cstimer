@@ -36,6 +36,16 @@ execWorker(function() {
 });
 
 execMain(function() {
+	$.beacon = function(obj, url) {
+		url = url || 'stat.php';
+		obj = typeof(obj) == 'string' ? obj : JSON.stringify(obj);
+		if (navigator.sendBeacon) {
+			navigator.sendBeacon(url, obj);
+		} else {
+			$.post(url, obj);
+		}
+	};
+
 	window.onerror = function(msg, url, line, col, error) {
 		if (!line && !col || /extension|adsbygoogle/i.exec(url) || !/\.js/i.exec(url)) {
 			return;
@@ -47,7 +57,7 @@ execMain(function() {
 		try {
 			fingerprint = $.fingerprint();
 		} catch (e) {}
-		$.post('bug.php', {
+		$.beacon({
 			'version': CSTIMER_VERSION,
 			'fp': fingerprint,
 			'msg': msg,
@@ -55,7 +65,7 @@ execMain(function() {
 			'line': line,
 			'col': col,
 			'stack': error.stack
-		});
+		}, 'bug.php');
 		DEBUG && console.log(CSTIMER_VERSION, fingerprint, msg, url, line, col, error);
 	};
 

@@ -863,7 +863,7 @@ div.helptable ul {
 	bottom: 30%;
 }
 
-.dialoginput, .dialogstats, .dialogexport, .dialogscropt {
+.dialoginput, .dialogstats, .dialogexport, .dialogscropt, .dialogdonate {
 	left: 20%;
 	right: 20%;
 	top: 20%;
@@ -1191,7 +1191,7 @@ html.m .mhide, html:not(.m) .mshow {
 	font-size: 1.2em;
 }
 
-.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogcasestats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo {
+.m .dialogoption, .m .dialogshare, .m .dialoginput, .m .dialogstats, .m .dialogcasestats, .m .dialogssmgr, .m .dialogscropt, .m .dialogexport, .m .dialoglogo, .m .dialogdonate {
 	left: 5%;
 	right: 5%;
 }

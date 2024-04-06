@@ -532,6 +532,14 @@ var kernel = execMain(function() {
 				callback && callback();
 			});
 			gray.stop(true, true).fadeTo(100, 0.25);
+			$.beacon({
+				'ver': CSTIMER_VERSION,
+				'event': 'dialog',
+				'target': diagclass,
+				'cls': $('html').attr('class'),
+				'showad': kernel.getProp('showad'),
+				'tt': +new Date
+			});
 		}
 
 		function hideDialog() {

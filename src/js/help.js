@@ -270,12 +270,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 			$(elem).attr('target', '_blank');
 		});
 		kernel.addButton('donate', BUTTON_DONATE, function() {
-			$.get('stat.php', {
-				'version': CSTIMER_VERSION,
-				'event': 'BUTTON_DONATE',
-				'tt': +new Date
-			});
-			kernel.showDialog([donateDiv, 0, undefined, 0], 'stats', BUTTON_DONATE.replace(/-?<br>-?/g, ''));
+			kernel.showDialog([donateDiv, 0, undefined, 0], 'donate', BUTTON_DONATE.replace(/-?<br>-?/g, ''));
 		}, 5);
 	});
 
