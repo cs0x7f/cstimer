@@ -531,15 +531,9 @@ var kernel = execMain(function() {
 				values[0].focus();
 				callback && callback();
 			});
-			gray.stop(true, true).fadeTo(100, 0.25);
-			$.beacon({
-				'ver': CSTIMER_VERSION,
-				'event': 'dialog',
-				'target': diagclass,
-				'cls': $('html').attr('class'),
-				'showad': kernel.getProp('showad'),
-				'tt': +new Date
-			});
+			gray.stop(true, true).fadeIn(100, function(diagclass) {
+				pushSignal('dialog', diagclass);
+			}.bind(null, diagclass));
 		}
 
 		function hideDialog() {
@@ -672,7 +666,11 @@ var kernel = execMain(function() {
 			var cssval = getProp('uidesign') == 'ns' || getProp('uidesign') == 'mtns' ? csstmp[1] : csstmp[0];
 			var sgn = nearColor(cur_color[0]) == '#000' ? -1: 1;
 			for (var i=0; i<col_map.length; i++) {
-				cssval = cssval.replace('?', nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn));
+				var stdcolor = nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn);
+				if (i == 11) {
+					stdcolor += '4'; // opacity for #gray
+				}
+				cssval = cssval.replace('?', stdcolor);
 			}
 			if (color[0].styleSheet) {
 				color[0].styleSheet.cssText = cssval;

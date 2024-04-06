@@ -12,5 +12,15 @@ $(function() {
 		ad.setAttribute('crossorigin', 'anonymous');
 		s.parentNode.insertBefore(ad, s);
 	}
+	kernel.regListener && kernel.regListener('adstat', 'dialog', function(signal, value) {
+		$.beacon({
+			'ver': CSTIMER_VERSION,
+			'event': 'dialog',
+			'target': value,
+			'cls': $('html').attr('class'),
+			'showad': kernel.getProp('showad'),
+			'tt': +new Date
+		});
+	});
 });
 </script>
