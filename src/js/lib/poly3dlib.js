@@ -931,11 +931,11 @@ var poly3d = (function() {
 				return ["[" + move + powfix + "]", move + powfix, move.toUpperCase() + powfix, move.toUpperCase() + 'w' + powfix][layer];
 			});
 		} else if (name == "fto") {
-			polyParam = [8, [-2, 1/3]];
-			parser = makeParser(/(?:^|\s*)\[?([URFDL]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
-				return [p3 ? 0 : 1, p1[0] + p1.slice(1).toLowerCase(), p2 ? -1 : 1];
+			polyParam = [8, [-2, 1/3], [], [-2]];
+			parser = makeParser(/(?:^|\s*)\[?([URFDLT]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
+				return [p3 || p1 == 'T' ? 0 : 1, p1 == 'T' ? 'URLF' : (p1[0] + p1.slice(1).toLowerCase()), p2 ? -1 : 1];
 			}, function(layer, axis, pow) {
-				var move = axis.toUpperCase() + (pow > 0 ? "" : "'");
+				var move = (axis.length > 3 ? 'T' : axis.toUpperCase()) + (pow > 0 ? "" : "'");
 				return layer == 0 ? ('[' + move + ']') : move;
 			});
 		} else if (name == "klm" || name == "mgm" || name == "prc" || name == "giga") {

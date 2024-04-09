@@ -200,7 +200,7 @@
 	twistyjs.registerTwisty("fto", function(scene, param) {
 		poly3d.getFamousPuzzle("fto", param);
 		var twisty = createCubeTwisty(scene, param);
-		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F'] 62:BR 63:R 64:[U2] 65:[U] 67:F2 69:F 41:L' 42:BR' 45:[U'] 46:[U2'] 47:F' 49:F2' 31:U2 32:U 36:R' 37:[F'] 39:R2' 12:U' 13:U2' 14:L 17:L2 19:[F] 91:[F'] 92:BR2 93:R2 94:F2' 96:F' 97:D2' 98:D' 73:[F] 72:BR2' 71:L2' 76:F2 74:F 79:D2 78:D 21:U 23:U' 24:BR 25:[R'] 26:BR' 27:BR2 28:[R2'] 29:BR2' 52:[R] 54:[U] 56:[U'] 58:[R'] 82:[R2] 85:[R] 87:D' 89:D", twisty);
+		bindKeyMap("I:R K:R' W:BR O:BR' S:D L:D' D:L E:L' J:U F:U' H:F G:F' ;:[U] A:[U'] T:[L'] Y:[R] N:[R'] B:[L] P:[F] Q:[F'] 0:T 1:T' 62:BR 63:R 64:[U2] 65:[U] 67:F2 69:F 41:L' 42:BR' 45:[U'] 46:[U2'] 47:F' 49:F2' 31:U2 32:U 36:R' 37:[F'] 39:R2' 12:U' 13:U2' 14:L 17:L2 19:[F] 91:[F'] 92:BR2 93:R2 94:F2' 96:F' 97:D2' 98:D' 73:[F] 72:BR2' 71:L2' 76:F2 74:F 79:D2 78:D 21:U 23:U' 24:BR 25:[R'] 26:BR' 27:BR2 28:[R2'] 29:BR2' 52:[R] 54:[U] 56:[U'] 58:[R'] 82:[R2] 85:[R] 87:D' 89:D", twisty);
 		return twisty;
 	});
 
