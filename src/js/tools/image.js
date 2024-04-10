@@ -607,10 +607,10 @@ var image = execMain(function() {
 			}
 			for (var midx = 0; midx < moves.length; midx++) {
 				var move = moves[midx];
-				if (!(move[0] in puzzle.twistyIdx)) {
+				var moveIdx = puzzle.getTwistyIdx(move[0]);
+				if (moveIdx == -1) {
 					debugger; // error, cannot find move permutations
 				}
-				var moveIdx = puzzle.twistyIdx[move[0]];
 				var perm = puzzle.moveTable[moveIdx];
 				var maxPow = puzzle.twistyDetails[moveIdx][1];
 				var pow = (move[1] % maxPow + maxPow) % maxPow;

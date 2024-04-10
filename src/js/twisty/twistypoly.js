@@ -70,7 +70,7 @@
 					var incKeyCode = nIncs[i];
 					var m = /^(\d+)([a-zA-Z]+)$/.exec(moveActions[incKeyCode][0]);
 					var newAxis = "" + (~~m[1] + layerOffs[incKeyCode] + nInc) + m[2];
-					if (m[1] != '0' && newAxis[0] != '0' && (newAxis in puzzle.twistyIdx)) {
+					if (m[1] != '0' && newAxis[0] != '0' && puzzle.getTwistyIdx(newAxis) != -1) {
 						layerOffs[incKeyCode] += nInc;
 					}
 				}
@@ -88,7 +88,7 @@
 					continue;
 				}
 				var maxLayer;
-				for (maxLayer = ~~m[1]; (maxLayer + 1 + m[2]) in puzzle.twistyIdx; maxLayer++) {}
+				for (maxLayer = ~~m[1]; puzzle.getTwistyIdx(maxLayer + 1 + m[2]) != -1; maxLayer++) {}
 				var layerIncs = {};
 				for (var key2 in layerActions) { // cache the effective of all layerActions
 					var nIncs = layerActions[key2];
@@ -314,7 +314,7 @@
 
 		function animateMoveCallback(twisty, currentMove, moveProgress, moveStep) {
 			var puzzle = twisty.puzzle
-			var moveIdx = puzzle.twistyIdx[currentMove[0]];
+			var moveIdx = puzzle.getTwistyIdx(currentMove[0]);
 			if (moveIdx == undefined) {
 				debugger; // invalid move
 				return;
@@ -341,7 +341,7 @@
 
 			cntMove(twisty, currentMove);
 			var puzzle = twisty.puzzle;
-			var moveIdx = puzzle.twistyIdx[currentMove[0]];
+			var moveIdx = puzzle.getTwistyIdx(currentMove[0]);
 			if (moveIdx == undefined) {
 				debugger; // invalid move
 				return;

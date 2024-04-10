@@ -487,15 +487,56 @@ var poly3d = (function() {
 	_.setTwisty = function(twistyPlanes, twistyDetails) {
 		this.twistyPlanes = twistyPlanes.slice();
 		this.twistyDetails = twistyDetails.slice();
-		this.twistyIdx = {};
+		this._twistyCache = {};
 		for (var i = 0; i < twistyDetails.length; i++) {
-			this.twistyIdx[twistyDetails[i][0]] = i;
 			if (this.twistyDetails[i].length == 2) {
 				this.twistyDetails[i].push(i);
 			}
 		}
 		this.cutFacePolygons();
 		this.makeMoveTable();
+	}
+
+	_.getTwistyIdx = function(laxis) {
+		if (laxis in this._twistyCache) {
+			return this._twistyCache[laxis];
+		}
+		var m = /^(\d*)([A-Z][A-Za-z]*)$/.exec(laxis);
+		if (!m) {
+			return -1;
+		}
+		var layerRe = new RegExp(m[1] + "(?=[A-Z])");
+		var axis = m[2].split(/(?=[A-Z])/g);
+		var faceSet = {};
+		var faceCnt = 0;
+		for (var i = 0; i < axis.length; i++) {
+			if (faceSet[axis[i]] == undefined) {
+				faceSet[axis[i]] = new RegExp(axis[i] + "(?=[A-Z]|$)");
+				faceCnt++;
+			}
+		}
+		var minRemain = [99, -1];
+		var minIdx = -1;
+		for (var i = 0; i < this.twistyDetails.length; i++) {
+			var chkAxis = this.twistyDetails[i][0];
+			if (!layerRe.exec(chkAxis)) {
+				continue;
+			}
+			var remain = chkAxis.length - m[1].length;
+			for (var face in faceSet) {
+				if (faceSet[face].exec(chkAxis)) {
+					remain -= face.length;
+				} else {
+					remain = 99;
+					break;
+				}
+			}
+			if (remain < minRemain[0]) {
+				minRemain = [remain, i];
+			}
+		}
+		this._twistyCache[laxis] = faceCnt == 1 && minRemain[0] != 0 ? -1 : minRemain[1];
+		return this._twistyCache[laxis];
 	}
 
 	_.makeFacePolygons = function() {
@@ -877,16 +918,8 @@ var poly3d = (function() {
 			var axis = p1 || p5;
 			var pow = (p1 ? (p2 == '' ? 1 : ~~p2) : (p6 == '' ? 1 : ~~p6)) * ((p3 || p7) ? -1 : 1);
 			var faces = axis.match(/[A-Z][a-z]*/g);
-			var tmp;
-			for (var i = 0; i < [0, 1, 2, 6][faces.length]; i++) {
-				axis = faces.join('');
-				if ((layer + axis) in puzzle.twistyIdx) {
-					return [layer, axis, pow];
-				}
-				tmp = faces[0]; faces[0] = faces[1]; faces[1] = tmp;
-				if (i % 2 == 1) {
-					tmp = faces[0]; faces[0] = faces[1]; faces[1] = faces[2]; faces[2] = tmp;
-				}
+			if (puzzle.getTwistyIdx(layer + axis) != -1) {
+				return [layer, axis, pow];
 			}
 		}.bind(null, puzzle), function(layer, axis, pow) {
 			var move = axis + (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow < 0 ? "'" : "");
