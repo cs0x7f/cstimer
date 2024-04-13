@@ -273,13 +273,11 @@ var cubeutil = (function() {
 	var identPLL = (function() {
 		var pllPattern = [];
 		return function(facelet) {
-			if (pllPattern.length == 0) {
-				for (var i = 0; i < 22; i++) {
-					var param = i == 21 ? 'UUUUUUUUUFFFRRRBBBLLL' : scramble_333.getPLLImage(i)[0];
-					pllPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
-						return param[parseInt(v, 36)].toLowerCase();
-					})));
-				}
+			for (var i = pllPattern.length; i < 22; i++) {
+				var param = i == 21 ? 'UUUUUUUUUFFFRRRBBBLLL' : scramble_333.getPLLImage(i)[0];
+				pllPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
+					return param[parseInt(v, 36)].toLowerCase();
+				})));
 			}
 			return searchCaseByPattern(facelet, ollMask, pllPattern);
 		}
@@ -288,28 +286,50 @@ var cubeutil = (function() {
 	var identOLL = (function() {
 		var ollPattern = [];
 		return function(facelet) {
-			if (ollPattern.length == 0) {
-				for (var i = 0; i < 58; i++) {
-					var param = scramble_333.getOLLImage(i)[0].replace(/G/g, '-');
-					ollPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
-						return param[parseInt(v, 36)].toLowerCase();
-					})));
-				}
+			for (var i = ollPattern.length; i < 58; i++) {
+				var param = scramble_333.getOLLImage(i)[0].replace(/G/g, '-');
+				ollPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
+					return param[parseInt(v, 36)].toLowerCase();
+				})));
 			}
 			return searchCaseByPattern(facelet, f2lMask, ollPattern);
+		}
+	})();
+
+	var identCOLL = (function() {
+		var collPattern = [];
+		return function(facelet) {
+			for (var i = collPattern.length; i < 43; i++) {
+				var param = scramble_333.getCOLLImage('D', i)[0].replace(/G/g, '-');
+				collPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
+					return param[parseInt(v, 36)].toLowerCase();
+				})));
+			}
+			return searchCaseByPattern(facelet, eollMask, collPattern);
+		}
+	})();
+
+	var identZBLL = (function() {
+		var zbllPattern = [];
+		return function(facelet) {
+			for (var i = zbllPattern.length; i < 493; i++) {
+				var param = scramble_333.getZBLLImage(i)[0].replace(/G/g, '-');
+				zbllPattern.push(toEqus(LLPattern.replace(/[0-9a-z]/g, function(v) {
+					return param[parseInt(v, 36)].toLowerCase();
+				})));
+			}
+			return searchCaseByPattern(facelet, eollMask, zbllPattern);
 		}
 	})();
 
 	var identC2CLL = (function() {
 		var cllPattern = [];
 		return function(facelet) {
-			if (cllPattern.length == 0) {
-				for (var i = 0; i < 40; i++) {
-					var param = scramble_222.getEGLLImage(i)[0].replace(/G/g, '-');
-					cllPattern.push(toEqus(c2LLPattern.replace(/[0-9a-z]/g, function(v) {
-						return param[parseInt(v, 36)].toLowerCase();
-					})));
-				}
+			for (var i = cllPattern.length; i < 40; i++) {
+				var param = scramble_222.getEGLLImage(i)[0].replace(/G/g, '-');
+				cllPattern.push(toEqus(c2LLPattern.replace(/[0-9a-z]/g, function(v) {
+					return param[parseInt(v, 36)].toLowerCase();
+				})));
 			}
 			return searchCaseByPattern(facelet, c2LLMask, cllPattern);
 		}
@@ -338,6 +358,10 @@ var cubeutil = (function() {
 				return identPLL(facelet);
 			case 'OLL':
 				return identOLL(facelet);
+			case 'COLL':
+				return identCOLL(facelet);
+			case 'ZBLL':
+				return identZBLL(facelet);
 			case 'C2CLL':
 				return identC2CLL(facelet);
 		}
@@ -348,6 +372,8 @@ var cubeutil = (function() {
 			//name: [ident, genImg, startIdx, endIdx, stageIdx]
 			'PLL': [identPLL, scramble_333.getPLLImage, 0, 21, 0],
 			'OLL': [identOLL, scramble_333.getOLLImage, 1, 58, 1],
+			'COLL': [identCOLL, scramble_333.getCOLLImage.bind(null, 'D'), 0, 40, 1],
+			'ZBLL': [identCOLL, scramble_333.getZBLLImage, 0, 493, 1],
 			'CLL': [identC2CLL, scramble_222.getEGLLImage, 0, 40, 1]
 		};
 		return method ? identData[method] : identData;

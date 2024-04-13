@@ -565,23 +565,23 @@ var mpyr = (function() {
 			initPhase1();
 			initPhase2();
 		}
-		var tt1 = +new Date;
+		var tt1 = $.now();
 		var idx = [];
 		for (var i = 0; i < 6; i++) {
 			idx[i] = p1e1w2Move[1][phase1e1w2Hash(i, mc)];
 		}
 		idx[6] = mc.getCosetIdx();
 		var sol1 = solv1.solve(idx, 14);
-		tt1 = +new Date - tt1;
+		tt1 = $.now() - tt1;
 		for (var i = 0; i < sol1.length; i++) {
 			sol1[i] = phase1Moves[sol1[i][0]] + sol1[i][1];
 		}
 		mc = applyMoves(mc, sol1);
 		var p2epct = p2epctMoves[1][phase2EpCtHash(mc)];
 		var p2eoco = p2eocoMoves[1][phase2EoCoHash(mc)];
-		var tt2 = +new Date;
+		var tt2 = $.now();
 		var sol2 = solv2.solve([p2epct, p2eoco], 20);
-		tt2 = +new Date - tt2;
+		tt2 = $.now() - tt2;
 		for (var i = 0; i < sol2.length; i++) {
 			sol2[i] = phase2Moves[sol2[i][0]] + sol2[i][1];
 		}

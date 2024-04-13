@@ -504,7 +504,7 @@ var ftosolver = (function() {
 			phase1Init();
 		}
 
-		var tt = +new Date();
+		var tt = $.now();
 		var idxs = phase1GenIdxs(fc);
 		var syms = idxs[1];
 		idxs = idxs[0];
@@ -517,7 +517,7 @@ var ftosolver = (function() {
 			return p1sols.length >= N_PHASE1_SOLS;
 		});
 
-		var tt = +new Date - tt;
+		var tt = $.now() - tt;
 		for (var i = 0; i < p1sols.length; i++) {
 			p1sols[i].push(tt);
 		}
@@ -611,7 +611,7 @@ var ftosolver = (function() {
 		if (!solv2) {
 			phase2Init();
 		}
-		var tt = +new Date();
+		var tt = $.now();
 		var idxs = [];
 		for (var i = 0; i < solvInfos.length; i++) {
 			idxs.push([
@@ -631,7 +631,7 @@ var ftosolver = (function() {
 			sol[i] = FtoCubie.symMulM[FtoCubie.symMulI[0][solvInfo[3]]][move >> 1] * 2 + (move & 1);
 			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], null);
 		}
-		return [fc, sol, solvInfo[2], solvInfo[3], src, +new Date - tt];
+		return [fc, sol, solvInfo[2], solvInfo[3], src, $.now() - tt];
 	}
 
 	var phase3Moves = [8, 10, 12, 14];
@@ -670,7 +670,7 @@ var ftosolver = (function() {
 			phase3Init();
 		}
 
-		var tt = +new Date();
+		var tt = $.now();
 		var p3epidx = p3epMoves[1][phase3EdgeHash(fc.ep)];
 		var p3ufidx = p3ufMoves[1][phase3CcufHash(fc)];
 
@@ -682,7 +682,7 @@ var ftosolver = (function() {
 
 			fc = FtoCubie.FtoMult(fc, FtoCubie.moveCube[move], null);
 		}
-		return [fc, sol, solvInfo[2], solvInfo[3], +new Date - tt];
+		return [fc, sol, solvInfo[2], solvInfo[3], $.now() - tt];
 	}
 
 	// convert wide moves to face moves
@@ -730,11 +730,11 @@ var ftosolver = (function() {
 
 	FtoSolver.prototype.solveFto = function(fc, invSol) {
 		if (!solv1) {
-			var tt = +new Date;
+			var tt = $.now();
 			phase1Init();
 			phase2Init();
 			phase3Init();
-			DEBUG && console.log('[ftosolver] init time:', +new Date - tt);
+			DEBUG && console.log('[ftosolver] init time:', $.now() - tt);
 		}
 		var solvInfos = solvePhase1(fc);
 

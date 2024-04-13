@@ -445,7 +445,7 @@ var kilominx = (function() {
 		kc0.init(cc.perm, cc.twst);
 
 		var idx;
-		var tt = +new Date;
+		var tt = $.now();
 		var sols = [];
 		var solsym = 0;
 
@@ -470,10 +470,10 @@ var kilominx = (function() {
 			kc0.init(kc1.perm, kc1.twst);
 			move[0] = KiloCubie.symMulM[KiloCubie.symMulI[0][solsym]][move[0]];
 		}
-		DEBUG && console.log('[kilo] Phase1s in ', +new Date - tt, 'ms', sol1.length, 'move(s) sym=', ksym);
+		DEBUG && console.log('[kilo] Phase1s in ', $.now() - tt, 'ms', sol1.length, 'move(s) sym=', ksym);
 
 		//phase2
-		tt = +new Date;
+		tt = $.now();
 		var idx2s = [];
 		for (var s = 0; s < (useSym ? 5 : 1); s++) {
 			KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][s]], kc0, KiloCubie.symCube[s], kc1);
@@ -494,7 +494,7 @@ var kilominx = (function() {
 			kc0.init(kc1.perm, kc1.twst);
 			move[0] = KiloCubie.symMulM[KiloCubie.symMulI[0][solsym]][move[0]];
 		}
-		DEBUG && console.log('[kilo] Phase2s in ', +new Date - tt, 'ms', sol2.length, 'move(s) sym=', ksym);
+		DEBUG && console.log('[kilo] Phase2s in ', $.now() - tt, 'ms', sol2.length, 'move(s) sym=', ksym);
 
 		//phase3
 		val0 = phase3Coord.get(kc0);
@@ -503,9 +503,9 @@ var kilominx = (function() {
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][29]], kc0, KiloCubie.symCube[29], kc1);
 		var val2 = phase3Coord.get(kc1);
 		idx = [(val0[0] * 24 + val0[1]) * 81 + val0[2], (val1[0] * 24 + val1[1]) * 81 + val1[2], (val2[0] * 24 + val2[1]) * 81 + val2[2]];
-		tt = +new Date;
+		tt = $.now();
 		var sol3 = solv3.solve(idx, 14);
-		DEBUG && console.log('[kilo] Phase3 in ', +new Date - tt, 'ms', sol3.length, 'move(s)');
+		DEBUG && console.log('[kilo] Phase3 in ', $.now() - tt, 'ms', sol3.length, 'move(s)');
 		for (var i = 0; i < sol3.length; i++) {
 			var move = sol3[i];
 			move[0] = KiloCubie.symMulM[KiloCubie.symMulI[0][solsym]][move[0]];

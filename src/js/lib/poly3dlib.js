@@ -377,7 +377,7 @@ var poly3d = (function() {
 		}
 
 		var polys = [[], []];
-		DEBUG && console.log('cut bound=', JSON.stringify(cutBound));
+		// DEBUG && console.log('cut bound=', JSON.stringify(cutBound));
 
 		for (var side = 0; side < 2; side++) {
 			// mark all near-bound points
@@ -391,23 +391,23 @@ var poly3d = (function() {
 				}
 			}
 			pathStart.sort(function(a, b) { return a[1] - b[1]; });
-			DEBUG && console.log('sort result', JSON.stringify(pathStart));
+			// DEBUG && console.log('sort result', JSON.stringify(pathStart));
 			var usedCnt = 0;
 			var used = [];
-			DEBUG && console.log('handle side', side, 'pathsSide.length=', pathsSide.length, JSON.stringify(pathsSide));
+			// DEBUG && console.log('handle side', side, 'pathsSide.length=', pathsSide.length, JSON.stringify(pathsSide));
 			while (usedCnt < pathsSide.length) {
 				var curPaths = [];
 				var idx = 0;
 				while (used[idx]) {
 					idx++;
 				}
-				DEBUG && console.log('handle side', side, 'start idx=', idx);
+				// DEBUG && console.log('handle side', side, 'start idx=', idx);
 				while (true) {
 					var path = pathsSide[idx];
 					curPaths.push(path);
 					used[idx] = 1;
 					usedCnt++;
-					DEBUG && console.log('path add', JSON.stringify(path), 'used=', JSON.stringify(used), 'usedCnt=', usedCnt, curPaths.length);
+					// DEBUG && console.log('path add', JSON.stringify(path), 'used=', JSON.stringify(used), 'usedCnt=', usedCnt, curPaths.length);
 					if (path.p2.abs(curPaths[0].p1) < EPS) { // close path
 						break;
 					}
@@ -426,12 +426,12 @@ var poly3d = (function() {
 					idx = pathStart[next][0];
 					pathStart.splice(next, 1);
 					curPaths.push(cutBound.slice(path.p2, pathsSide[idx].p1));
-					DEBUG && console.log('path addcut', JSON.stringify(cutBound.slice(path.p2, pathsSide[idx].p1)), 'remain start=', pathStart, curPaths.length);
+					// DEBUG && console.log('path addcut', JSON.stringify(cutBound.slice(path.p2, pathsSide[idx].p1)), 'remain start=', pathStart, curPaths.length);
 					if (pathsSide[idx].p1.abs(curPaths[0].p1) < EPS) { // close path
 						break;
 					}
 				}
-				DEBUG && console.log('close path=', JSON.stringify(curPaths));
+				// DEBUG && console.log('close path=', JSON.stringify(curPaths));
 				var poly = new Polygon(curPaths);
 				if (poly.area > EPS) {
 					polys[side].push(poly);
@@ -692,14 +692,16 @@ var poly3d = (function() {
 			faceNames = ["U", "F", "R", "Br", "Bl", "L", "D", "B", "Dbl", "Dl", "Dr", "Dbr"];
 			facePow = 5;
 		} else if (nface == 20) { // icosahedron
-			faceNorms = [];
 			for (var i = 0; i < 5; i++) {
 				var r1 = Math.sqrt(5) + 1;
 				var r2 = Math.sqrt(5) + 3;
 				faceNorms.push(new Point(r1 * Math.sin(0.4 * i * Math.PI), Math.sqrt(5) + 2, r1 * Math.cos(0.4 * i * Math.PI)));
 				faceNorms.push(new Point(r2 * Math.sin(0.4 * i * Math.PI), 1, r2 * Math.cos(0.4 * i * Math.PI)));
+				faceVs[i * 2] = i * 2 + 11;
+				faceVs[i * 2 + 1] = i * 2
+				faceVs[i * 2 + 10] = i * 2 + 11;
+				faceVs[i * 2 + 11] = i * 2
 			}
-			faceVs = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 			faceNames = ["U", "F", "Ur", "R", "Ubr", "Br", "Ubl", "Bl", "Ul", "L", "D", "B", "Dl", "Lb", "Dfl", "Fl", "Dfr", "Fr", "Dr", "Rb"];
 			cornPow = 5;
 		} else { // invalid input
@@ -805,7 +807,7 @@ var poly3d = (function() {
 
 		puzzle.setTwisty(twistyPlanes, twistyDetails);
 
-		// console.log(puzzle);
+		DEBUG && console.log('[poly3dlib] create puzzle: ', puzzle);
 
 		return puzzle;
 	}
@@ -849,7 +851,6 @@ var poly3d = (function() {
 			var off1Y = hw * (1 / Math.sin(Math.PI * 0.2) + Math.cos(Math.PI * 0.1) * 2);
 			var off2X = hw * (4 + 5 * phi);
 			var off2Y = wec2 + hw / Math.cos(Math.PI * 0.3);;
-			faceTrans = [];
 			faceTrans[0] = [off1X, off1Y];
 			faceTrans[6] = [off2X, off2Y];
 			for (var i = 0; i < 5; i++) {
@@ -858,7 +859,15 @@ var poly3d = (function() {
 			}
 			sizes = [off1X + off2X, off1Y + off2Y];
 		} else if (nface == 20) { // icosahedron
-			//TODO
+			var phi = (Math.sqrt(5) + 1) / 2;
+			var hw = Math.sqrt(3) / Math.pow(phi, 2) * (1 + gap);
+			for (var i = 0; i < 5; i++) {
+				faceTrans[i * 2] = [((5 + i * 2) % 10 + 1) * hw, 2 * hw / Math.sqrt(3)];
+				faceTrans[i * 2 + 1] = [((5 + i * 2) % 10 + 1) * hw, 4 * hw / Math.sqrt(3)];
+				faceTrans[i * 2 + 10] = [(1 + i * 2) % 10 * hw, 7 * hw / Math.sqrt(3)];
+				faceTrans[i * 2 + 11] = [(1 + i * 2) % 10 * hw, 5 * hw / Math.sqrt(3)];
+			}
+			sizes = [hw * 11, 9 * hw / Math.sqrt(3)];
 		} else { // invalid input
 			debugger;
 		}
@@ -1053,6 +1062,8 @@ var poly3d = (function() {
 			}, function(layer, axis, pow) {
 				return skbShort.charAt(skbLong.indexOf(axis)) + (pow >= 0 ? "" : "'");
 			});
+		} else if (name == 'ctico') {
+			polyParam = [20, [], [], [-2, 0]];
 		} else {
 			return null;
 		}

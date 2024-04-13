@@ -138,26 +138,37 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		[48, 14]
 	];
 
-	function toFaceCube(cc) {
-		var c, e, f, i, j, n, ori, ts;
+	function renderFacelet(solved, cc, resultMap) {
+		var c, e, f, i, j, n, ori, ret;
 		f = [];
-		ts = [85, 82, 70, 68, 76, 66];
-		for (i = 0; i < 54; ++i) {
-			f[i] = ts[~~(i / 9)];
+		for (i = 0; i < 54; i++) {
+			f[i] = solved[i];
 		}
 		for (c = 0; c < 8; ++c) {
 			j = cc.cp[c];
 			ori = cc.co[c];
 			for (n = 0; n < 3; ++n)
-				f[cornerFacelet[c][(n + ori) % 3]] = ts[~~(cornerFacelet[j][n] / 9)];
+				f[cornerFacelet[c][(n + ori) % 3]] = solved[cornerFacelet[j][n]];
 		}
 		for (e = 0; e < 12; ++e) {
 			j = cc.ep[e];
 			ori = cc.eo[e];
 			for (n = 0; n < 2; ++n)
-				f[edgeFacelet[e][(n + ori) % 2]] = ts[~~(edgeFacelet[j][n] / 9)];
+				f[edgeFacelet[e][(n + ori) % 2]] = solved[edgeFacelet[j][n]];
 		}
-		return String.fromCharCode.apply(null, f);
+		ret = [];
+		for (i = 0; i < resultMap.length; i++) {
+			ret[i] = f[resultMap[i]];
+		}
+		return ret;
+	}
+
+	function toFaceCube(cc) {
+		var resultMap = [];
+		for (var i = 0; i < 54; i++) {
+			resultMap[i] = i;
+		}
+		return renderFacelet(mathlib.SOLVED_FACELET, cc, resultMap).join('');
 	}
 
 
@@ -515,13 +526,106 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		return getAnyScramble(0xffff7654ffff, 0xffff0000ffff, 0xffffffff, 0xffffffff, neut);
 	}
 
+	function genZBLLMap() {
+		var isVisited = [];
+		var zbll_map = [];
+		var cc = new CubieCube;
+		for (var idx = 0; idx < 27 * 24 * 24; idx++) {
+			if (isVisited[idx >> 5] >> (idx & 0x1f) & 1) {
+				continue;
+			}
+			var epi = idx % 24;
+			var cpi = ~~(idx / 24) % 24;
+			var coi = ~~(idx / 24 / 24);
+			if (mathlib.getNParity(cpi, 4) != mathlib.getNParity(epi, 4)) {
+				continue;
+			}
+			var co = mathlib.setNOri(cc.co, coi, 4, -3);
+			var cp = mathlib.setNPerm(cc.cp, cpi, 4, 0);
+			var ep = mathlib.setNPerm(cc.ep, epi, 4, 0);
+			var zbcase = [0, 0, 0, null, 0, null];
+			for (var i = 0; i < 4; i++) {
+				zbcase[0] += cp[i] << i * 4;
+				zbcase[1] += co[i] << i * 4;
+				zbcase[2] += ep[i] << i * 4;
+			}
+			for (var conj = 0; conj < 16; conj++) {
+				var c0 = conj >> 2;
+				var c1 = conj & 3;
+				var co2 = [], cp2 = [], ep2 = [];
+				for (var i = 0; i < 4; i++) {
+					co2[(i + c0) & 3] = co[i];
+					cp2[(i + c0) & 3] = (cp[i] + c1) & 3;
+					ep2[(i + c0) & 3] = (ep[i] + c1) & 3;
+				}
+				var co2i = mathlib.getNOri(co2, 4, -3);
+				var cp2i = mathlib.getNPerm(cp2, 4, 0);
+				var ep2i = mathlib.getNPerm(ep2, 4, 0);
+				var idx2 = (co2i * 24 + cp2i) * 24 + ep2i;
+				if (isVisited[idx2 >> 5] >> (idx2 & 0x1f) & 1) {
+					continue;
+				}
+				isVisited[idx2 >> 5] |= 1 << (idx2 & 0x1f);
+				zbcase[4]++;
+			}
+			zbcase[3] = renderFacelet("DDDDDDDDDLLLLLLLLLFFFFFFFFFUUUUUUUUURRRRRRRRRBBBBBBBBB",
+				cc, [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 9, 10, 11, 45, 46, 47, 36, 37, 38]);
+			if (idx > 0) { // skip solved state
+				zbll_map.push(zbcase);
+			}
+		}
+
+		var coNames = {}
+		coNames[0x0000] = 'O';
+		coNames[0x0012] = 'U';
+		coNames[0x0021] = 'T';
+		coNames[0x0102] = 'L';
+		coNames[0x0111] = 'aS';
+		coNames[0x0222] = 'S';
+		coNames[0x1122] = 'Pi';
+		coNames[0x1212] = 'H';
+		var coCnts = {};
+		for (var i = 0; i < zbll_map.length; i++) {
+			var zbcase = zbll_map[i];
+			var coName = coNames[zbcase[1]];
+			coCnts[coName] = coCnts[coName] || [];
+			var coCnt = coCnts[coName];
+			var cpIdx = coCnt.indexOf(zbcase[0]);
+			if (cpIdx == -1) {
+				cpIdx = coCnt.length;
+				coCnt.push(zbcase[0], 1);
+			} else {
+				coCnt[cpIdx + 1]++;
+			}
+			zbcase[5] = coName + ((cpIdx >> 1) + 1) + '-' + coCnts[coName][cpIdx + 1];
+		}
+		return zbll_map;
+	}
+
+	var zbll_map = genZBLLMap();
+	var zbprobs = mathlib.idxArray(zbll_map, 4);
+	var zbfilter = mathlib.idxArray(zbll_map, 5);
+
+	function getZBLLScramble(type, length, cases, neut) {
+		var zbcase = zbll_map[scrMgr.fixCase(cases, zbprobs)];
+		return getAnyScramble(zbcase[2] + 0xba9876540000, 0, zbcase[0] + 0x76540000, zbcase[1], neut, aufsuff, aufsuff);
+	}
+
+	function getZBLLImage(cases, canvas) {
+		var face = zbll_map[cases][3];
+		if (!canvas) {
+			return [face, null, zbfilter[cases]];
+		}
+		image.llImage.drawImage(face, null, canvas);
+	}
+
 	var coll_map = [
 		[0x3210, 0x2121, 'FeFeeeBeBLGRDGDRGLDGD', 2, 'H-1'],
 		[0x2301, 0x1212, 'ReLeeeReLBGBDGDFGFDGD', 2, 'H-2'],
 		[0x1203, 0x1212, 'ReBeeeLeBFGRDGDLGFDGD', 4, 'H-3'],
 		[0x2013, 0x1212, 'LeReeeFeFRGLDGDBGBDGD', 4, 'H-4'],
 		[0x3021, 0x1020, 'DeLeeeReDBGRFGBDGFLGD', 4, 'L-1'],
-		[0x1203, 0x0201, 'DeReeeLeDFDBRDFDGLBGD', 4, 'L-2'],
+		[0x1203, 0x0201, 'DeReeeLeDFGBRGFDGLBGD', 4, 'L-2'],
 		[0x2301, 0x0102, 'DeBeeeLeDFGRFGRDGLBGD', 4, 'L-3'],
 		[0x3210, 0x1020, 'DeLeeeFeDRGFLGBDGBRGD', 4, 'L-4'],
 		[0x3102, 0x1020, 'DeLeeeLeDFGBRGBDGRFGD', 4, 'L-5'],
@@ -564,7 +668,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	var coprobs = mathlib.idxArray(coll_map, 3);
 	var cofilter = mathlib.idxArray(coll_map, 4);
 
-	function getZBLLScramble(type, length, cases, neut) {
+	function getCOLLScramble(type, length, cases, neut) {
 		var cocase = coll_map[scrMgr.fixCase(cases, coprobs)];
 		return getAnyScramble(0xba987654ffff, 0, cocase[0] + 0x76540000, cocase[1], neut, aufsuff, aufsuff);
 	}
@@ -586,6 +690,9 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 
 	function getCOLLImage(efill, cases, canvas) {
 		var face = coll_map[cases][2].replace(/e/g, efill || 'U');
+		if (!canvas) {
+			return [face, null, cofilter[cases]];
+		}
 		image.llImage.drawImage(face, null, canvas);
 	}
 
@@ -1001,7 +1108,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		('ll', getLLScramble)
 		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, 'GGGGDGGGGGGGGRRGRRGGGBBGBBG', f2l_map, f2lprobs)])
 		('f2l', getF2LScramble)
-		('zbll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
+		('zbll', getZBLLScramble, [zbfilter, zbprobs, getZBLLImage])
 		('zzll', getZZLLScramble)
 		('zbls', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, 'GGGGDGGGGGGGGRRGRRGGGBBGBBG', f2l_map, f2lprobs)])
 		('ttll', getTTLLScramble, [ttllfilter, ttllprobs, getTTLLImage])
@@ -1011,7 +1118,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		('lse', getLSEScramble)
 		('cmll', getCMLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])
 		('cll', getCLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'G')])
-		('coll', getZBLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
+		('coll', getCOLLScramble, [cofilter, coprobs, getCOLLImage.bind(null, 'D')])
 		('ell', getELLScramble)
 		('pll', getPLLScramble, [pllfilter, pllprobs, getPLLImage])
 		('oll', getOLLScramble, [ollfilter, ollprobs, getOLLImage])
@@ -1042,6 +1149,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		getCornerScramble: getCornerScramble,
 		getLLScramble: getLLScramble,
 		getLSLLScramble: getLSLLScramble,
+		getCOLLScramble: getCOLLScramble,
 		getZBLLScramble: getZBLLScramble,
 		getZZLLScramble: getZZLLScramble,
 		getTTLLScramble: getTTLLScramble,
@@ -1053,6 +1161,8 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		getAnyScramble: getAnyScramble,
 		getPLLImage: getPLLImage,
 		getOLLImage: getOLLImage,
+		getCOLLImage: getCOLLImage,
+		getZBLLImage: getZBLLImage,
 		genFacelet: genFacelet,
 		solvFacelet: solvFacelet
 	};

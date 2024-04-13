@@ -132,7 +132,7 @@ var trainStat = execMain(function() {
 			tools.regTool('trainstat', TOOLS_TRAINSTAT, execFunc);
 		}
 		stats.regUtil('trainstat', update);
-		var methods = ['PLL', 'OLL', 'CLL'];
+		var methods = ['PLL', 'OLL', 'COLL', 'ZBLL', 'CLL'];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
 			stats.regExtraInfo('scramcase_' + methods[i], calcCaseExtra.bind(null, methods[i]));

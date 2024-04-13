@@ -761,12 +761,14 @@ var image = execMain(function() {
 			recons = nnnImage.draw(size + 2, scramble[1]);
 		} else if (type == "cubennn") {
 			nnnImage.draw(scramble[2], scramble[1]);
-		} else if (/^skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto$/.exec(type)) {
+		} else if (/^skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico$/.exec(type)) {
 			var faceNameMask = 0;
 			if (/^prc|giga|mgm|klm$/.exec(type)) {
 				faceNameMask = 0x3;
 			} else if (type == 'fto') {
 				faceNameMask = 0xff;
+			} else if (type == 'ctico') {
+				faceNameMask = 0xfffff;
 			}
 			recons = polyhedronImage(type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
 		} else if (type == "sq1" || type == "sq2") {
