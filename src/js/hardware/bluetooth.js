@@ -1477,7 +1477,7 @@ var GiikerCube = execMain(function() {
 		init: init,
 		stop: stop,
 		isConnected: function() {
-			return _device != null;
+			return _device != null || DEBUGBL;
 		},
 		setCallback: function(func) {
 			callback = func;
@@ -1486,7 +1486,9 @@ var GiikerCube = execMain(function() {
 			evtCallback = func;
 		},
 		getCube: function() {
-			return cube;
+			return cube || (DEBUGBL && {
+				getBatteryLevel: function() { return Promise.resolve(80); }
+			});
 		}
 	};
 });

@@ -411,6 +411,6 @@ var scramble_222 = (function(rn) {
 		('222eg', getScramble, [egfilter, egprobs]);
 
 	return {
-		getEGLLImage: getLLImage.bind(null, egll_map, egllfilter)
+		getEGLLImage: getLLImage.bind(null, false, egll_map, egllfilter)
 	}
 })(mathlib.rn);

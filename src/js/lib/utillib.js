@@ -31,7 +31,10 @@ execWorker(function() {
 		isArray: Array.isArray || function(obj) {
 			return jQuery.type(obj) === "array";
 		},
-		noop: function() {}
+		noop: function() {},
+		now: function() {
+			return +new Date;
+		}
 	};
 });
 

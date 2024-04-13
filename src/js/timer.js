@@ -1363,7 +1363,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			clearReadyTid();
 			var solvingMethod = getProp('vrcMP', 'n');
 			if (status == -1) {
-				if (!isGiiSolved(currentFacelet, true)) {
+				if (canStart(currentFacelet)) {
 					var delayStart = getProp('giiSD');
 					if (delayStart == 's') {
 						//according to scramble
@@ -1413,7 +1413,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				var curProgress = cubeutil.getProgress(facelet, solvingMethod);
 				updateMulPhase(totPhases, curProgress, locTime);
 
-				if (isGiiSolved(currentFacelet, false)) {
+				if (isGiiSolved(currentFacelet)) {
 					rawMoves.reverse();
 					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
 					var moveCnt = pretty.totalMoves;
@@ -1433,18 +1433,19 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						DEBUG && console.log('time fit, new=', curTime);
 						sol = kernel.getConjMoves(cubeutil.moveSeq2str(sol), true);
 						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
-					} else if (getProp('giiMode') == 't') {
+					} else if (getProp('giiMode') != 'n') {
 						kernel.pushSignal('ctrl', ['scramble', 'next']);
 					}
 				}
 			}
 		}
 
-		function isGiiSolved(facelet, forScr) {
-			if (forScr) {
-				return facelet == mathlib.SOLVED_FACELET && getProp('giiMode') == 'n';
-			}
-			if (getProp('giiMode') == 't') {
+		function canStart(facelet) {
+			return facelet != mathlib.SOLVED_FACELET || getProp('giiMode') != 'n';
+		}
+
+		function isGiiSolved(facelet) {
+			if (getProp('giiMode') != 'n') {
 				var curScrType = (tools.getCurScramble() || [])[0];
 				var chkstep = {
 					'coll': 'cpll',
@@ -1499,6 +1500,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					giikerVRC.setState(currentFacelet, ['U2', 'U2'], false);
 				}
 			}, /^(?:preScrT?|isTrainScr|giiOri)$/);
+			regListener('giikerVRC', 'scramble', function(signal, value) {
+				if (enableVRC && status == -1 && getProp('giiMode') == 'at' && GiikerCube.isConnected()) {
+					clearReadyTid();
+					waitReadyTid = setTimeout(function() {
+						markScrambled($.now());
+					}, 500);
+				}
+			});
 		});
 
 		return {
@@ -1538,12 +1547,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						sol = kernel.getConjMoves(cubeutil.moveSeq2str(sol), true);
 						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
 					}
-				} else if (keyCode == 32 && getProp('giiSK')) {
-					if (!isGiiSolved(currentFacelet, true)) {
-						if (status == -1) {
-							markScrambled($.now());
-						}
-					}
+				} else if (keyCode == 32 && status == -1 && getProp('giiSK') && canStart(currentFacelet)) {
+					markScrambled($.now());
 				}
 			},
 			setVRC: setVRC,
@@ -1734,7 +1739,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
 		regProp('vrc', 'vrcAH', 1, PROPERTY_VRCAH, ['01', ['00', '01', '10', '11'], PROPERTY_VRCAHS.split('|')], 1);
-		regProp('vrc', 'giiMode', 1, PROPERTY_GIIMODE, ['n', ['n', 't'], PROPERTY_GIIMODES.split('|')], 1);
+		regProp('vrc', 'giiMode', 1, PROPERTY_GIIMODE, ['n', ['n', 't', 'at'], PROPERTY_GIIMODES.split('|')], 1);
 		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q', 'ql', 'q2'], ['None', 'Virtual', 'qCube', 'qLast', 'q2Look']], 1);
 		regProp('vrc', 'giiOri', 1, PROPERTY_GIIORI, ['auto',
 			["auto", "0", "3", "2", "1", "4", "5", "6", "7", "23", "14", "19", "8", "17", "10", "21", "12", "11", "22", "13", "18", "15", "16", "9", "20"],
