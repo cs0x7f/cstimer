@@ -939,6 +939,11 @@ select {
 	max-width: 7em;
 }
 
+#toolsDiv > div > span > select.twolv1, #toolsDiv > div > span > select.twolv2 {
+	max-width: 60px;
+	max-width: 5em;
+}
+
 td.seltd {
 	padding: 0;
 	width: 0;
@@ -967,6 +972,10 @@ input[type="text"] {
 
 input[type="file"] {
 	width: 100%;
+}
+
+input[type="color"] {
+	vertical-align: middle;
 }
 
 input[type="color"].mulcolor {

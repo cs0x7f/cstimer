@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Откажи';
 var RESET_LANG = 'Поново покрени';
 var ABOUT_LANG = 'О програму';
 var ZOOM_LANG = 'Зумирај';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'LIST<br>TIMES';
 var BUTTON_OPTIONS = 'Опција';
 var BUTTON_EXPORT = 'Извоз';

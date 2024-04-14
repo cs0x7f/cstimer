@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Отмена';
 var RESET_LANG = 'Сбросить';
 var ABOUT_LANG = 'О csTimer';
 var ZOOM_LANG = 'Увеличить';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'СПИСОК<br>ВРЕМЕНИ';
 var BUTTON_OPTIONS = 'НАСТ-<br>РОЙКИ';
 var BUTTON_EXPORT = 'ЗАГРУ-<br>ЗИТЬ';

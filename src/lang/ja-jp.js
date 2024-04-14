@@ -3,6 +3,7 @@ var CANCEL_LANG = 'キャンセル';
 var RESET_LANG = 'リセット';
 var ABOUT_LANG = '概要';
 var ZOOM_LANG = '拡大';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'タイム<br>一覧';
 var BUTTON_OPTIONS = 'オプション';
 var BUTTON_EXPORT = 'エクスポート';

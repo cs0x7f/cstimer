@@ -160,20 +160,20 @@
 <h2>Farbschemen</h2>
 <?php include('color.php') ?>
 <div class="donate helptable" style="line-height:1.5em;">
-<h2>Hardware compatible with csTimer</h2>
-<p>In addition to timing by keyboard, csTimer also supports Bluetooth Smart Cubes and Smart Timers.</p>
-<p>If you use a smart cube, csTimer will record the detailed solution of each of your solves and provide more statistics and practice functions (e.g. CFOP automatic segmentation, etc.)</p>
+<h2>mit csTimer kompatible Hardware</h2>
+<p>Neben der Tastatur unterstützt csTimer auch Bluetooth Smart-Cubes und Smart-Timers zum Stoppen von Zeiten.</p>
+<p>Bei der Nutzung eines Smart-Cubes zeichnet csTimer die detaillierte Lösung jedes Solves auf und stellt erweiterte Statistiken und praktische Funktionen wie beispielsweise automatische CFOP-Einteilung bereit</p>
 <ul>
 <li><a class="click" href="https://www.amazon.com/dp/B0CGDHVJBL?tag=cstimer-20#" title="">Gan 12 ui FreePlay</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B083TW9WFT?tag=cstimer-20#" title="">Gan Halo Bluetooth Timer</a></li>
 </ul>
-<h2>Recommended products</h2>
-<p>Here are some professional cubes or hardwares.</p>
+<h2>Empfohlene Produkte</h2>
+<p>Hier sind einige professionelle Würfel und Zubehör</p>
 <ul>
 <li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
-<h2>Donate directly</h2>
+<h2>Direkt spenden</h2>
 <p>Danke für deinen Wunsch, csTimer zu unterstützen! Deine Spende wird verwendet werden, um Entwicklungs- und Instandhaltungskosten zu decken.</p>
 <p>Wenn du uns über PayPal unterstützen willst, klicke den folgenden Knopf oder gehe auf <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

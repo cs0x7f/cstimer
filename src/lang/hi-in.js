@@ -3,6 +3,7 @@ var CANCEL_LANG = 'रद्द करें';
 var RESET_LANG = 'रीसेट करें';
 var ABOUT_LANG = 'हमारे बारे में';
 var ZOOM_LANG = 'बड़ा करें';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'समय <br> सूची';
 var BUTTON_OPTIONS = 'विकल्प';
 var BUTTON_EXPORT = 'निर्यात <br> करें';

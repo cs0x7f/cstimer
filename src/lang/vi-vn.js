@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Hủy';
 var RESET_LANG = 'Thiết lập lại';
 var ABOUT_LANG = 'Thông tin';
 var ZOOM_LANG = 'Phóng to';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'THÀNH<br>TÍCH';
 var BUTTON_OPTIONS = 'Cài đặt';
 var BUTTON_EXPORT = 'Giải phóng';

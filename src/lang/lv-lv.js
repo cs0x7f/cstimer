@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Atcelt';
 var RESET_LANG = 'Reset';
 var ABOUT_LANG = 'About';
 var ZOOM_LANG = 'Zoom';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'LIST<br>TIMES';
 var BUTTON_OPTIONS = 'OPCIJA';
 var BUTTON_EXPORT = 'EKSPORTĒT';

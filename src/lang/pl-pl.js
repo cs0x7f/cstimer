@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Anuluj';
 var RESET_LANG = 'Resetuj';
 var ABOUT_LANG = 'O nas';
 var ZOOM_LANG = 'Zbliż';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'LISTA<br>CZASÓW';
 var BUTTON_OPTIONS = 'OPCJE';
 var BUTTON_EXPORT = 'EKSPORTUJ';

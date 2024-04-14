@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Відмінити';
 var RESET_LANG = 'Скинути';
 var ABOUT_LANG = 'Більше про це';
 var ZOOM_LANG = 'Масштабування';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'Список<br>РАЗІВ';
 var BUTTON_OPTIONS = 'ПАРАМЕТР';
 var BUTTON_EXPORT = 'ЕКСПОРТ';

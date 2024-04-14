@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Zrušit';
 var RESET_LANG = 'Resetovat';
 var ABOUT_LANG = 'O aplikaci';
 var ZOOM_LANG = 'Přiblížení';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'seznam časů';
 var BUTTON_OPTIONS = 'Nastavení';
 var BUTTON_EXPORT = 'EXPORTOVAT';

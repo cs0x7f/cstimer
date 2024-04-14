@@ -3,6 +3,7 @@ var CANCEL_LANG = 'İptal';
 var RESET_LANG = 'Sıfırla';
 var ABOUT_LANG = 'Hakkında';
 var ZOOM_LANG = 'Yakınlaştır';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'Süre<br>listesi';
 var BUTTON_OPTIONS = 'Ayarlar';
 var BUTTON_EXPORT = 'Dışa aktar';

@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Zrušiť';
 var RESET_LANG = 'Resetovať';
 var ABOUT_LANG = 'O programe';
 var ZOOM_LANG = 'Lupa';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'SEZNAM ČASOV';
 var BUTTON_OPTIONS = 'MOŽNOSŤ';
 var BUTTON_EXPORT = 'EXPORTOVAŤ';

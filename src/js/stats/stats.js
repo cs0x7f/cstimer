@@ -874,6 +874,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
 			exportCSV(times_stats, timesAt, start, nsolves);
 			return false;
+		}], [COPY_LANG, function() {
+			$.clipboardCopy(s).then(logohint.push.bind(logohint, COPY_LANG));
+			return false;
 		}]], 'stats', STATS_CURROUND);
 		stext[0].select();
 	}
@@ -1638,6 +1641,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 		stext.val(s);
 		kernel.showDialog([stext, clearText, undefined, clearText, [STATS_EXPORTCSV, function() {
 			exportCSV(times_stats, timesAt, 0, length);
+			return false;
+		}], [COPY_LANG, function() {
+			$.clipboardCopy(s).then(logohint.push.bind(logohint, COPY_LANG));
 			return false;
 		}]], 'stats', title || STATS_CURSESSION);
 		stext[0].select();

@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Avbryt';
 var RESET_LANG = 'Restart';
 var ABOUT_LANG = 'Om';
 var ZOOM_LANG = 'Zoom';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'Vis<br>Tider';
 var BUTTON_OPTIONS = 'Innstillinger';
 var BUTTON_EXPORT = 'Last Opp';

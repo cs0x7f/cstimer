@@ -3,6 +3,7 @@ var CANCEL_LANG = 'ביטול';
 var RESET_LANG = 'אתחל';
 var ABOUT_LANG = 'אודות';
 var ZOOM_LANG = 'שנה מרחק מתצוגה';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'הצג<br>זמנים';
 var BUTTON_OPTIONS = 'אפשרויות';
 var BUTTON_EXPORT = 'ייצוא';

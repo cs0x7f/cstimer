@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Mégse';
 var RESET_LANG = 'Visszaállít';
 var ABOUT_LANG = 'Rólunk';
 var ZOOM_LANG = 'Nagyítás';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'IDŐK<br>MUTATÁSA';
 var BUTTON_OPTIONS = 'BEÁLLÍTÁSOK';
 var BUTTON_EXPORT = 'EXPORTÁLÁS';

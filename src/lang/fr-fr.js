@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Annuler';
 var RESET_LANG = 'Réinitialiser';
 var ABOUT_LANG = 'À propos';
 var ZOOM_LANG = 'Zoom';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'MES<br>TEMPS';
 var BUTTON_OPTIONS = 'OPTIONS';
 var BUTTON_EXPORT = 'Exporter';

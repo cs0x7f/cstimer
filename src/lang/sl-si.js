@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Prekliči';
 var RESET_LANG = 'Resetiraj';
 var ABOUT_LANG = 'Vizitka';
 var ZOOM_LANG = 'Približaj';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'Seznam časov';
 var BUTTON_OPTIONS = 'OPTION';
 var BUTTON_EXPORT = 'Izvozi';

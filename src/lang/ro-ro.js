@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Anulare';
 var RESET_LANG = 'Resetare';
 var ABOUT_LANG = 'Despre';
 var ZOOM_LANG = 'Marire';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'LISTĂ de<br>ori';
 var BUTTON_OPTIONS = 'OPTIUNI';
 var BUTTON_EXPORT = 'EXPORT';

@@ -3,6 +3,7 @@ var CANCEL_LANG = '취소';
 var RESET_LANG = '초기화';
 var ABOUT_LANG = '정보';
 var ZOOM_LANG = '확대/축소';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = '시간<br>목록';
 var BUTTON_OPTIONS = '설정';
 var BUTTON_EXPORT = '내보내기';

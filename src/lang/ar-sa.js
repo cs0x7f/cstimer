@@ -3,6 +3,7 @@ var CANCEL_LANG = 'الغاء';
 var RESET_LANG = 'أعيد';
 var ABOUT_LANG = 'حول';
 var ZOOM_LANG = 'تكبير';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'لأحات<br>الأوقات';
 var BUTTON_OPTIONS = 'أعدادات';
 var BUTTON_EXPORT = 'تصدير';

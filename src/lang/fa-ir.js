@@ -3,6 +3,7 @@ var CANCEL_LANG = 'لغو';
 var RESET_LANG = 'تنطیم مجدد';
 var ABOUT_LANG = 'درباره';
 var ZOOM_LANG = 'بزرگنمایی';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'لیست زمان ها';
 var BUTTON_OPTIONS = 'تنظیمات';
 var BUTTON_EXPORT = 'صادر کردن';

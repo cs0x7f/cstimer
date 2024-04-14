@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Peruuta';
 var RESET_LANG = 'Nollaa';
 var ABOUT_LANG = 'Tietoja';
 var ZOOM_LANG = 'Zoomaus';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'Listaa<br>ajat';
 var BUTTON_OPTIONS = 'Asetukset';
 var BUTTON_EXPORT = 'Vie';

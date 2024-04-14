@@ -3,6 +3,7 @@ var CANCEL_LANG = '取消';
 var RESET_LANG = '重置';
 var ABOUT_LANG = '关于';
 var ZOOM_LANG = '缩放';
+var COPY_LANG = '复制';
 var BUTTON_TIME_LIST = '成绩<br>列表';
 var BUTTON_OPTIONS = '设置';
 var BUTTON_EXPORT = '导出';

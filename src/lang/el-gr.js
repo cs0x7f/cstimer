@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Άκυρο';
 var RESET_LANG = 'Επαναφορά';
 var ABOUT_LANG = 'Για';
 var ZOOM_LANG = 'Μεγέθυνση';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'Λίστα Χρόνων';
 var BUTTON_OPTIONS = 'ΕΠΙΛΟΓΗ';
 var BUTTON_EXPORT = 'ΕΞΑΓΩΓΉ';

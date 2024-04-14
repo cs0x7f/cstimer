@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Prekini';
 var RESET_LANG = 'Resetiraj';
 var ABOUT_LANG = 'Informacije';
 var ZOOM_LANG = 'Povećaj';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'IZLISTAJ<br>VREMENA';
 var BUTTON_OPTIONS = 'OPCIJE';
 var BUTTON_EXPORT = 'IZVEZI';

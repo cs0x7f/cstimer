@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Avbryt';
 var RESET_LANG = 'Återställ';
 var ABOUT_LANG = 'Om';
 var ZOOM_LANG = 'Zooma';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'LISTA<br>TIDER';
 var BUTTON_OPTIONS = 'ALTERNATIV';
 var BUTTON_EXPORT = 'EXPORTERA';

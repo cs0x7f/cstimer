@@ -3,6 +3,7 @@ var CANCEL_LANG = 'Fortryd';
 var RESET_LANG = 'Nulstil';
 var ABOUT_LANG = 'Omkring';
 var ZOOM_LANG = 'Zoom';
+var COPY_LANG = 'Copy';
 var BUTTON_TIME_LIST = 'List tider';
 var BUTTON_OPTIONS = 'Indstillinger';
 var BUTTON_EXPORT = 'Upload';

@@ -946,9 +946,11 @@ var kernel = execMain(function() {
 			var data2 = (this.data[idx1] || [])[1];
 			this.select2.empty();
 			if (!$.isArray(data2)) { // no 2-level data
-				this.select2.hide();
+				this.select1.removeClass('twolv1');
+				this.select2.hide().removeClass('twolv2');
 			} else {
-				this.select2.show();
+				this.select1.addClass('twolv1');
+				this.select2.show().addClass('twolv2');
 				for (var i = 0; i < data2.length; i++) {
 					this.select2.append($('<option>').html(data2[i][0]).val(data2[i][1]));
 				}
