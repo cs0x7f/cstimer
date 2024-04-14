@@ -170,17 +170,11 @@ var grouplib = (function(rn) {
 		}
 	}
 
-	SchreierSims.prototype.size = function() {
+	SchreierSims.prototype.size = function(accuracy) {
 		var n = this.sgs.length;
-		var size = 1;
+		var size = accuracy ? BigInt(1) : 1;
 		for (var j = 0; j < n; j++) {
-			var cnt = 0;
-			for (var k = 0; k < n; k++) {
-				if (this.sgs[j][k]) {
-					cnt++;
-				}
-			}
-			size *= cnt;
+			size *= accuracy ? BigInt(this.i2t[j].length) : this.i2t[j].length;
 		}
 		return size;
 	}
@@ -586,14 +580,15 @@ var grouplib = (function(rn) {
 		}.bind(this));
 	}
 
-	CanonSeqGen.prototype.countSeq = function(depth) {
-		var counts = [0, 1];
-		var ret = [1];
+	CanonSeqGen.prototype.countSeq = function(depth, accuracy) {
+		var ZERO = accuracy ? BigInt(0) : 0;
+		var counts = accuracy ? [BigInt(0), BigInt(1)] : [0, 1];
+		var ret = accuracy ? [BigInt(0), BigInt(1)] : [1];
 		for (var d = 0; d < depth; d++) {
 			var newCounts = [];
-			var depthCnt = 0;
+			var depthCnt = ZERO;
 			for (var node = 1; node < this.trieNodes.length; node++) {
-				var curCount = counts[node] || 0;
+				var curCount = counts[node] || ZERO;
 				if (curCount == 0) {
 					continue;
 				}
@@ -601,7 +596,7 @@ var grouplib = (function(rn) {
 					var next = ~~this.trieNodes[node][i];
 					if (next != -1) {
 						next = next < 0 ? ~next : next;
-						newCounts[next] = (newCounts[next] || 0) + curCount;
+						newCounts[next] = (newCounts[next] || ZERO) + curCount;
 						depthCnt += curCount;
 					}
 				}
