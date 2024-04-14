@@ -419,6 +419,9 @@ var scrdata = [
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],
+	['Icosahedron', [
+		['Icosamate 무작위 수순', "ctico", 60]
+	]],
 	['===연습용===', [
 		['--', "blank", 0]
 	]],

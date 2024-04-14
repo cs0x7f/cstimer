@@ -419,6 +419,9 @@ var scrdata = [
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0]
 	]],
+	['Icosahedron', [
+		['Icosamate Slumpmässigt drag', "ctico", 60]
+	]],
 	['===SPECIELLA===', [
 		['--', "blank", 0]
 	]],

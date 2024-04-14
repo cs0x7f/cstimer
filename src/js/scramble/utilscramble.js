@@ -499,6 +499,8 @@
 				return ssq1t_scramble(len);
 			case "bsq": // Bandaged Square-1 </,(1,0)>
 				return sq1_scramble(2, len);
+			case "ctico": // icosamate
+				return adjScramble(["UL", "UR", "UrUl", "FlFr", "LBl", "RBr"], [0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f], len, minxsuff);
 			case "-1": // -1x-1x-1 (micro style)
 				for (var i = 0; i < len; i++) {
 					ret += String.fromCharCode(32 + rn(224));
@@ -519,6 +521,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', 'ctico', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

@@ -761,7 +761,7 @@ var image = execMain(function() {
 			recons = nnnImage.draw(size + 2, scramble[1]);
 		} else if (type == "cubennn") {
 			nnnImage.draw(scramble[2], scramble[1]);
-		} else if (/^skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico$/.exec(type)) {
+		} else if (puzzleFactory.udpolyre.exec(type)) {
 			var faceNameMask = 0;
 			if (/^prc|giga|mgm|klm$/.exec(type)) {
 				faceNameMask = 0x3;

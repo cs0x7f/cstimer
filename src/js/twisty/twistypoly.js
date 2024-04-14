@@ -236,6 +236,12 @@
 		return twisty;
 	});
 
+	twistyjs.registerTwisty("ctico", function(scene, param) {
+		poly3d.getFamousPuzzle("ctico", param);
+		param.pieceGap = 0.05;
+		return createCubeTwisty(scene, param);
+	});
+
 	function createCubeTwisty(twistyScene, twistyParameters) {
 
 		var cubeObject = new THREE.Object3D();

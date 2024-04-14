@@ -126,6 +126,8 @@ var puzzleFactory = execMain(function() {
 			options["faceColors"] = col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		} else if (/^heli(?:2x2|cv)?|crz3a|redi$/.exec(puzzle)) {
 			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
+		} else if (/^ctico$/.exec(puzzle)) {
+			options["faceColors"] = col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
 		}
 		options['scale'] = 0.9;
 		child[2].twistyScene.initializeTwisty(options);
@@ -143,7 +145,12 @@ var puzzleFactory = execMain(function() {
 		return ret;
 	}
 
+	var UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico";
+	var TWISTY_RE = "sq1|clk|udpoly|" + UDPOLY_RE;
+
 	return {
+		udpolyre: new RegExp("^(" + UDPOLY_RE + ")$"),
+		twistyre: new RegExp("^(" + TWISTY_RE + ")$"),
 		init: init,
 		col2std: col2std
 	}

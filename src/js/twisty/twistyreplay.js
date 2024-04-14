@@ -277,11 +277,11 @@ var replay = execMain(function() {
 		};
 		if (size != -1) {
 			options['puzzle'] = 'cube' + (size + 2);
-		} else if (/^(skb|mgm|m?pyr|sq1|clk|fto|heli(?:cv|2x2)?|crz3a|redi|prc|klm|giga)$/.exec(puzzle)) {
-			options.puzzle = puzzle;
 		} else if (/^udpoly$/.exec(puzzle)) {
 			options.puzzle = puzzle;
 			options.scramble = scramble;
+		} else if (puzzleFactory.twistyre.exec(puzzle)) {
+			options.puzzle = puzzle;
 		}
 		kernel.showDialog([div, function() {
 			setStatus(0);
