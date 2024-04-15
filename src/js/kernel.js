@@ -545,6 +545,7 @@ var kernel = execMain(function() {
 				dialog.removeClass();
 				refocus();
 			});
+			pushSignal('dialog', null);
 			gray.hide();
 			isPopup = false;
 		}
@@ -596,7 +597,7 @@ var kernel = execMain(function() {
 			return dialog.hasClass('dialog' + diagclass);
 		}
 
-		var color = $('<style>').appendTo('head');
+		var colorTag = $('<style>').appendTo('head');
 
 		var csstmp =
 			"html,body,textarea,#leftbar{color:?;background-color:?}" +
@@ -672,10 +673,10 @@ var kernel = execMain(function() {
 				}
 				cssval = cssval.replace('?', stdcolor);
 			}
-			if (color[0].styleSheet) {
-				color[0].styleSheet.cssText = cssval;
+			if (colorTag[0].styleSheet) {
+				colorTag[0].styleSheet.cssText = cssval;
 			} else {
-				color[0].innerHTML = cssval;
+				colorTag[0].innerHTML = cssval;
 			}
 		}
 
