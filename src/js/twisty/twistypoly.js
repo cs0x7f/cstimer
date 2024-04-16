@@ -205,9 +205,9 @@
 	});
 
 	function heliTwisty(type, scene, param) {
-		param.polyParam = [6, [-2], {
-			"heli": [-2, Math.sqrt(0.5)],
-			"helicv": [-2, [2 * Math.sqrt(2), -Math.sqrt(5)]],
+		param.polyParam = [6, [-5], {
+			"heli": [-5, Math.sqrt(0.5)],
+			"helicv": [-5, [2 * Math.sqrt(2), -Math.sqrt(5)]],
 		}[type]];
 		if (type == "helicv") {
 			param.minArea = 0.15;
@@ -221,7 +221,7 @@
 	twistyjs.registerTwisty("heli", heliTwisty.bind(null, "heli"));
 	twistyjs.registerTwisty("helicv", heliTwisty.bind(null, "helicv"));
 	twistyjs.registerTwisty("heli2x2", function(scene, param) {
-		param.polyParam = [6, [-2, 0], [-2, [Math.sqrt(2), -0.6]], [-2, [Math.sqrt(3), -0.7]]];
+		param.polyParam = [6, [-5, 0], [-5, [Math.sqrt(2), -0.6]], [-5, [Math.sqrt(3), -0.7]]];
 		param.minArea = 0.01;
 		param.pieceGap = 0.05;
 		var twisty = createCubeTwisty(scene, param);

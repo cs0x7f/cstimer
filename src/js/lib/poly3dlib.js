@@ -939,7 +939,7 @@ var poly3d = (function() {
 	function parsePolyParam(polyDef) {
 		var paramCmd = polyDef.split(/\s+/g);
 		var nFace = [4, 6, 8, 12, 20]['tcodi'.indexOf(paramCmd[0])];
-		var polyParam = [nFace, [-2], [-2], [-2]];
+		var polyParam = [nFace, [-5], [-5], [-5]];
 		var cutIdx = 1;
 		var m;
 		for (var i = 1; i < paramCmd.length; i++) {
@@ -959,8 +959,8 @@ var poly3d = (function() {
 		var polyParam, parser, scale = 1, pieceGap = 0.075, colors = [];
 		if (name == "pyr" || name == "mpyr") {
 			polyParam = [4, [], [], {
-				"pyr": [-2, 5/3, 1/3],
-				"mpyr": [-2, 2, 1, 0]
+				"pyr": [-5, 5/3, 1/3],
+				"mpyr": [-5, 2, 1, 0]
 			}[name]];
 			scale = 0.51;
 			pieceGap = 0.14;
@@ -973,7 +973,7 @@ var poly3d = (function() {
 				return ["[" + move + powfix + "]", move + powfix, move.toUpperCase() + powfix, move.toUpperCase() + 'w' + powfix][layer];
 			});
 		} else if (name == "fto") {
-			polyParam = [8, [-2, 1/3], [], [-2]];
+			polyParam = [8, [-5, 1/3], [], [-5]];
 			parser = makeParser(/(?:^|\s*)\[?([URFDLT]|(?:B[RL]?))(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3) {
 				return [p3 || p1 == 'T' ? 0 : 1, p1 == 'T' ? 'URLF' : (p1[0] + p1.slice(1).toLowerCase()), p2 ? -1 : 1];
 			}, function(layer, axis, pow) {
@@ -982,10 +982,10 @@ var poly3d = (function() {
 			});
 		} else if (name == "klm" || name == "mgm" || name == "prc" || name == "giga") {
 			polyParam = [12, {
-				"klm": [-2, 0.57, -0.57],
-				"mgm": [-2, 0.72, -0.72],
-				"giga": [-2, 0.83, -0.83, 0.66, -0.66],
-				"prc": [-2, 0.4472136, -0.4472136]
+				"klm": [-5, 0.57, -0.57],
+				"mgm": [-5, 0.72, -0.72],
+				"giga": [-5, 0.83, -0.83, 0.66, -0.66],
+				"prc": [-5, 0.4472136, -0.4472136]
 			}[name]];
 			scale = 1.18;
 			pieceGap = 0.05;
@@ -1020,13 +1020,13 @@ var poly3d = (function() {
 			});
 		} else if (name == "heli" || name == "helicv" || name == "heli2x2") {
 			polyParam = {
-				"heli": [6, [-2], [-2, Math.sqrt(0.5)], [-2]],
-				"helicv": [6, [-2], [-2, [2 * Math.sqrt(2), -Math.sqrt(5)]], [-2]],
-				"heli2x2": [6, [-2, 0], [-2, [Math.sqrt(2), -0.6]], [-2, [Math.sqrt(3), -0.7]]]
+				"heli": [6, [-5], [-5, Math.sqrt(0.5)], [-5]],
+				"helicv": [6, [-5], [-5, [2 * Math.sqrt(2), -Math.sqrt(5)]], [-5]],
+				"heli2x2": [6, [-5, 0], [-5, [Math.sqrt(2), -0.6]], [-5, [Math.sqrt(3), -0.7]]]
 			}[name];
 			pieceGap = 0.05;
 		} else if (/^crz3a$/.exec(name)) {
-			polyParam = [6, [-2, 0.3333, [1, 0.75]], [], [], [0, [1, 2]]];
+			polyParam = [6, [-5, 0.3333, [1, 0.75]], [], [], [0, [1, 2]]];
 			parser = makeParser(/(?:^|\s*)([URFDLBxyz])(\d*)(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
 				var pow = (p2 == '' ? 1 : ~~p2) * (p3 ? -1 : 1);
 				if ("xyz".indexOf(p1) != -1) {
@@ -1038,7 +1038,7 @@ var poly3d = (function() {
 				return (layer == 0 ? "xyz".charAt("RUF".indexOf(axis)) : axis) + powfix;
 			});
 		} else if (/^redi$/.exec(name)) {
-			polyParam = [6, [-2], [], [-2, 0.85]];
+			polyParam = [6, [-5], [], [-5, 0.85]];
 			var rediShort = 'FLBRflbrxyz';
 			var rediLong = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'];
 			parser = makeParser(/(?:^|\s*)([FLBRflbrxyz])(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
@@ -1053,7 +1053,7 @@ var poly3d = (function() {
 				return scramble;
 			});
 		} else if (/^skb$/.exec(name)) {
-			polyParam = [6, [-2], [], [-2, 0]];
+			polyParam = [6, [-5], [], [-5, 0]];
 			var skbShort = 'FlUrDLBRxyz';
 			var skbLong = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'];
 			parser = makeParser(/(?:^|\s*)([FlUrDLBRxyz])(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
@@ -1063,7 +1063,7 @@ var poly3d = (function() {
 				return skbShort.charAt(skbLong.indexOf(axis)) + (pow >= 0 ? "" : "'");
 			});
 		} else if (name == 'ctico') {
-			polyParam = [20, [], [], [-2, 0]];
+			polyParam = [20, [], [], [-5, 0]];
 		} else {
 			return null;
 		}

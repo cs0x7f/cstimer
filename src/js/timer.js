@@ -1061,11 +1061,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				puzzle: "cube" + size,
 				allowDragging: true
 			};
-			if (puzzleFactory.twistyre.exec(curPuzzle)) {
-				options.puzzle = curPuzzle;
-			} else if (/^udpoly$/.exec(curPuzzle)) {
+			if (/^udpoly$/.exec(curPuzzle)) {
 				options.puzzle = curPuzzle;
 				options.scramble = curScramble;
+			} else if (puzzleFactory.twistyre.exec(curPuzzle)) {
+				options.puzzle = curPuzzle;
 			}
 			options['style'] = getProp('input');
 			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
