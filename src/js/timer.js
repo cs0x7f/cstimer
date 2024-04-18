@@ -1559,7 +1559,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		DEBUG && console.log('[timer] update timer offset');
 		if ($('html').hasClass('m') && !clear) {
 			var isToolTop = $('html').hasClass('toolt');
-			var winHeight = $('body').height();
+			var winHeight = $('html').height();
 			var calcTop = $('#scrambleDiv').is(':visible') ? $('#scrambleDiv').outerHeight() : 0;
 			var calcBottom = $('#stats').offset().top || winHeight;
 			if (isToolTop) {

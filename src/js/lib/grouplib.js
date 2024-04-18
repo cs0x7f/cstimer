@@ -40,7 +40,9 @@ var grouplib = (function(rn) {
 			if (shuffle) {
 				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
 			}
-			this.knutha(gen[0].length - 1, g);
+			if (this.isMember(g) < 0) {
+				this.knutha(this.e.length - 1, g);
+			}
 		}
 	}
 
@@ -411,74 +413,6 @@ var grouplib = (function(rn) {
 			}
 		}
 		return ret.reverse();
-	}
-
-	SchreierSims.prototype.intersect = function(other, thres) {
-		if (this.size() > other.size()) {
-			return other.intersect(this, thres);
-		}
-		thres = thres || 100000;
-		var ret = new SchreierSims([this.sgs[0][0]]);
-		var n = this.sgs.length;
-		ret.cnt = 0;
-		for (var i = 0; i < n; i++) {
-			for (var j = 0; j < i; j++) {
-				if (!this.sgs[i][j] || ret.sgs[i][j]) {
-					continue;
-				}
-				// console.log(i, j);
-				this.enumDFS(i - 1, this.sgs[i][j], function(perm) {
-					ret.knutha(n - 1, perm);
-					// console.log(i, j, ret.size(), perm);
-					return true;
-				}, function(depth, perm) {
-					if (ret.cnt > thres || ret.cnt == -1) {
-						ret.cnt = -1;
-						return false;
-					}
-					ret.cnt++;
-					var mchk = other.isMember(perm, depth);
-					if (!mchk) {
-						return false;
-					}
-					for (var i = 0; i < ret.sgs[depth].length - 1; i++) {
-						if (ret.sgs[depth][i]) {
-							var pp = ret.permMult(perm, ret.sgs[depth][i]);
-							if (pp[depth] < perm[depth]) {
-								return false;
-							}
-						}
-					}
-					return true;
-				});
-				if (ret.cnt == -1) {
-					return ret;
-				}
-			}
-		}
-		return ret;
-	}
-
-	SchreierSims.prototype.enumDFS = function(depth, perm, callback, checkFunc) {
-		if (checkFunc && !checkFunc(depth + 1, perm)) {
-			return;
-		}
-		if (depth == 0) {
-			return callback(perm);
-		}
-		for (var j = 0; j <= depth; j++) {
-			if (this.sgs[depth][j]) {
-				var ret = this.enumDFS(depth - 1, this.permMult(this.sgs[depth][j], perm), callback, checkFunc);
-				if (ret) {
-					// console.log(depth, j, this.sgs[depth][j])
-					return ret;
-				}
-			}
-		}
-	}
-
-	SchreierSims.prototype.enum = function(callback) {
-		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
 	}
 	*/
 

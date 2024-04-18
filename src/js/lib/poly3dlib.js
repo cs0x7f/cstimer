@@ -989,20 +989,22 @@ var poly3d = (function() {
 			}[name]];
 			scale = 1.18;
 			pieceGap = 0.05;
-			parser = makeParser(/(?:^|\s*)(?:([DLRdlr])(\+\+?|--?)|([UuFf]|D?B?[RL]|d?b?[rl]|[DdBb])(\d?)('?)|\[([ufrl])('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7) {
+			parser = makeParser(/(?:^|\s*)(?:([DLRdlr])(\+\+?|--?)|([UuFfy]|D?B?[RL]|d?b?[rl]|[DdBb])(\d?)('?)|\[([ufrl])(\d?)('?)\])(?:$|\s*)/g, function(m, p1, p2, p3, p4, p5, p6, p7, p8) {
 				if (p1) {
 					var fidx = "DLRdlr".indexOf(p1);
 					return [fidx > 2 ? 4 : 2, ["D", "Dbl", "Dbr"][fidx % 3], (p2[0] == '-' ? -1 : 1) * p2.length];
 				} else if (p3) {
-					return [p3[0] >= 'a' ? 3 : 1, p3[0].toUpperCase() + p3.slice(1).toLowerCase(), (p5 ? -1 : 1) * (~~p4 || 1)];
+					var pow = (p5 ? -1 : 1) * (~~p4 || 1);
+					return p3[0] == 'y' ? [0, 'U', pow] :
+						[p3[0] >= 'a' ? 3 : 1, p3[0].toUpperCase() + p3.slice(1).toLowerCase(), pow];
 				} else {
-					return [0, p6.toUpperCase(), p7 ? -1 : 1];
+					return [0, p6.toUpperCase(), (p8 ? -1 : 1) * (~~p7 || 1)];
 				}
 			}, function(layer, axis, pow) {
 				pow = (pow + 7) % 5 - 2;
 				var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
 				if (layer == 0) {
-					return "[" + axis.slice(1).toLowerCase() + powfix + "]";
+					return "[" + axis.toLowerCase() + powfix + "]";
 				} else if (layer == 2 || layer == 4) {
 					powfix = pow > 0 ? "+" : "-";
 					axis = "DLR".charAt(["D", "Dbl", "Dbr"].indexOf(axis));
