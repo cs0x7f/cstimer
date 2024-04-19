@@ -1722,14 +1722,14 @@ var stats = execMain(function(kpretty, round, kpround) {
 		} else if (signal == 'property') {
 			if (/^(:?useMilli|timeFormat|stat[12][tl]|statinv)$/.exec(value[0])) {
 				roundMilli = kernel.getProp('useMilli') ? 1 : 10;
+				if (/^stat[12][tl]$/.exec(value[0])) {
+					stat1 = [1, -1][~~kernel.getProp('stat1t')] * kernel.getProp('stat1l');
+					stat2 = [1, -1][~~kernel.getProp('stat2t')] * kernel.getProp('stat2l');
+					len1 = Math.abs(stat1);
+					len2 = Math.abs(stat2);
+					times_stats_list = new TimeStat([stat1, stat2], times.length, timeAt);
+				}
 				table_ctrl.updateTable(false);
-				updateUtil(['property', value[0]]);
-			} else if (/^stat[12][tl]$/.exec(value[0])) {
-				stat1 = [1, -1][~~kernel.getProp('stat1t')] * kernel.getProp('stat1l');
-				stat2 = [1, -1][~~kernel.getProp('stat2t')] * kernel.getProp('stat2l');
-				len1 = Math.abs(stat1);
-				len2 = Math.abs(stat2);
-				times_stats_list = new TimeStat([stat1, stat2], times.length, timeAt);
 				updateUtil(['property', value[0]]);
 			} else if (/^stat(sum|thres|[bw]pa)$/.exec(value[0])) {
 				updateSumTable();
