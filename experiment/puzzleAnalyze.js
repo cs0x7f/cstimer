@@ -1,18 +1,21 @@
 var puzzleAnalyzer = (function() {
 	"use strict";
 
+	var EPS = 1e-6;
+
 	function getPuzzle(puzzle) {
 		if (typeof(puzzle) == 'string') {
 			var chk = poly3d.getFamousPuzzle(puzzle);
 			var param = chk ? chk.polyParam : poly3d.parsePolyParam(puzzle);
 			puzzle = poly3d.makePuzzle.apply(poly3d, param);
 		}
+		makeCenterMoveTable(puzzle);
 		return puzzle;
 	}
 
-	function fixMoveTable(puzzle, moveTable, rotTable) {
-		for (var i = 0; i < puzzle.moveTable.length; i++) {
-			var curPerm = puzzle.moveTable[i];
+	function fixMoveTable(moveTable0, moveTable, rotTable) {
+		for (var i = 0; i < moveTable0.length; i++) {
+			var curPerm = moveTable0[i];
 			var isRotate = true;
 			for (var j = 0; j < curPerm.length; j++) {
 				if (curPerm[j] == -1) {
@@ -33,7 +36,7 @@ var puzzleAnalyzer = (function() {
 		puzzle = getPuzzle(puzzle);
 		var moveTable = [];
 		var rotTable = [];
-		fixMoveTable(puzzle, moveTable, rotTable);
+		fixMoveTable(puzzle.moveTable, moveTable, rotTable);
 		//expand move table
 		var validMoves = [];
 		var isVisited = {};
@@ -68,6 +71,63 @@ var puzzleAnalyzer = (function() {
 		return ret;
 	}
 
+	function makeCenterMoveTable(puzzle) {
+		puzzle.centerMoveTable = [];
+		var proj1d = [];
+		var projNorm = new poly3d.Point(1, 2, 3).normalized();
+		var centers = [];
+		puzzle.enumFacesPolys(function(face, p, poly, idx) {
+			var uv = this.faceUVs[face];
+			if (Math.abs(uv[0].inprod(poly.center)) >= EPS || Math.abs(uv[1].inprod(poly.center)) >= EPS) {
+				return;
+			}
+			for (var i = 0; i < poly.paths.length; i++) {
+				var pp = poly.center.add(poly.paths[i].p1).scalar(0.5);
+				centers.push([face, i, pp, centers.length]);
+				proj1d.push([proj1d.length, projNorm.inprod(pp), pp]);
+			}
+		}.bind(puzzle));
+		proj1d.sort(function(a, b) { return a[1] - b[1]; });
+		for (var i = 0; i < puzzle.twistyDetails.length; i++) {
+			var curMove = [];
+			var planes = [];
+			for (var j = 2; j < puzzle.twistyDetails[i].length; j++) {
+				planes.push(puzzle.twistyPlanes[puzzle.twistyDetails[i][j]]);
+			}
+			var trans = new poly3d.RotTrans(planes[0].norm, Math.PI * 2 / puzzle.twistyDetails[i][1]);
+			out: for (var idx = 0; idx < centers.length; idx++) {
+				var pp = centers[idx][2];
+				for (var j = 0; j < planes.length; j++) {
+					if (planes[j].side(pp) < 0) {
+						curMove[idx] = -1; // not affect by this twisty
+						continue out;
+					}
+				}
+				var movedCenter = trans.perform(pp);
+				var movedProj = projNorm.inprod(movedCenter);
+				var left = 0, right = proj1d.length - 1;
+				while (right > left) {
+					var mid = (right + left) >> 1;
+					var midval = proj1d[mid][1];
+					if (midval < movedProj - EPS) {
+						left = mid + 1;
+					} else {
+						right = mid;
+					}
+				}
+				for (var j = left; j < proj1d.length; j++) {
+					if (proj1d[j][1] > movedProj + EPS) {
+						debugger; // no moves found
+					}
+					if (movedCenter.abs(proj1d[j][2]) < EPS) {
+						curMove[idx] = proj1d[j][0];
+						break;
+					}
+				}
+			}
+			puzzle.centerMoveTable.push(curMove);
+		}
+	}
 
 	function DisJoint(n) {
 		this.fa = [];
@@ -174,11 +234,23 @@ var puzzleAnalyzer = (function() {
 		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
 	}
 
-	function countState(puzzle) {
+	function countState(puzzle, isSuper) {
 		puzzle = getPuzzle(puzzle);
+		var moveTable0 = puzzle.moveTable;
 		var moveTable = [];
 		var rotTable = [];
-		fixMoveTable(puzzle, moveTable, rotTable);
+		if (isSuper) {
+			moveTable0 = [];
+			for (var i = 0; i < puzzle.moveTable.length; i++) {
+				moveTable0[i] = puzzle.moveTable[i].slice();
+				for (var j = 0; j < puzzle.centerMoveTable[0].length; j++) {
+					moveTable0[i].push(
+						puzzle.centerMoveTable[i][j] == -1 ? -1 : 
+						(puzzle.centerMoveTable[i][j] + puzzle.moveTable[0].length));
+				}
+			}
+		}
+		fixMoveTable(moveTable0, moveTable, rotTable);
 		var move = new grouplib.SchreierSims(moveTable);
 		console.log('Move=', move.size(true));
 		var rot = new grouplib.SchreierSims(rotTable);
@@ -186,7 +258,10 @@ var puzzleAnalyzer = (function() {
 		var moverot = new grouplib.SchreierSims(move);
 		moverot.extend(rotTable);
 		console.log('Move+Rot=', moverot.size(true));
-
+		if (isSuper) {
+			console.log('state = (Move+Rot)/Rot = ', moverot.size(true) / rot.size(true));
+			return moverot.size(true) / rot.size(true);
+		}
 
 		var faceColors = [];
 		puzzle.enumFacesPolys(function(face, p, poly, idx) {
@@ -254,12 +329,13 @@ var puzzleAnalyzer = (function() {
 			debugger;
 		}
 		this.gens = gens.slice();
-		if (gens.length < 20) {
-			for (var i = 0; i < 20 - gens.length; i++) {
+		this.off = 0;
+		if (gens.length < 10) {
+			for (var i = 0; i < 10 - gens.length; i++) {
 				this.gens.push(this.gens[i]);
 			}
 		}
-		for (var i = 0; i < Math.max(20, gens.length); i++) {
+		for (var i = 0; i < this.gens.length * 2; i++) {
 			this.next();
 		}
 	}
@@ -275,11 +351,9 @@ var puzzleAnalyzer = (function() {
 	RandElem.prototype.next = function() {
 		var k = this.gens.length;
 		var n = this.gens[0].length;
-		var i1 = ~~(Math.random() * (k - 1)) + 1;
-		var j1 = ~~(Math.random() * (k - 2)) + 1;
-		if (i1 == j1) {
-			j1++;
-		}
+		this.off = (this.off + 1) % k;
+		var i1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
+		var j1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
 		var mul = [];
 		if (Math.random() < 0.5) {
 			for (var i = 0; i < n; i++) {
@@ -290,12 +364,12 @@ var puzzleAnalyzer = (function() {
 		}
 		if (Math.random() < 0.5) {
 			this.gens[i1] = permMult(this.gens[i1], mul);
-			this.gens[0] = permMult(this.gens[0], this.gens[i1]);
+			this.gens[this.off] = permMult(this.gens[this.off], this.gens[i1]);
 		} else {
 			this.gens[i1] = permMult(mul, this.gens[i1]);
-			this.gens[0] = permMult(this.gens[i1], this.gens[0]);
+			this.gens[this.off] = permMult(this.gens[i1], this.gens[this.off]);
 		}
-		return this.gens[0];
+		return this.gens[this.off];
 	}
 
 	grouplib.SchreierSims.prototype.extend = function(gen, shuffle) {
