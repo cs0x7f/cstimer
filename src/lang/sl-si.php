@@ -1,6 +1,6 @@
 <h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
+<h2>Uvod</h2>
 <p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
 <ul>
 <li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
@@ -25,7 +25,7 @@
 </ul>
 <h2>Keyboard shortcut</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Gumb</th><td>Funkcija</td></tr>
 <tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
@@ -56,11 +56,11 @@
 <h2>Option details</h2>
 <ul>
 <li><strong data="opt_ahide">Hide All Elements When Timing</strong>. Hide logo and all panels when timing.</li>
-<li><strong data="opt_useMilli">use milliseconds</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
-<li><strong data="opt_timeFormat">time format</strong>. Time format to display.</li>
+<li><strong data="opt_useMilli">Uporabi milisekunde</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
+<li><strong data="opt_timeFormat">Oblika časa</strong>. Time format to display.</li>
 <li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
+<li><strong data="opt_useLogo">Namigi v logotipu</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">Show Avg Label</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">Približaj</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">select timer&#x27;s font</strong>. Font of the main timer.</li>
@@ -70,24 +70,24 @@
 <li><strong data="opt_wndStat">Statistics panel display style</strong>. Make list times panel embedded into background.</li>
 <li><strong data="opt_wndTool">Tools panel display style</strong>. Make tool panel embedded into background.</li>
 <li><strong data="opt_bgImgO">background image opacity</strong>. Opacity of the background image.</li>
-<li><strong data="opt_bgImgS">background image</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
-<li><strong data="opt_timerSize">timer size</strong>. Set the size of main timer.</li>
-<li><strong data="opt_smallADP">use small font after decimal point</strong>. Use a smaller font size after the digital point in main timer.</li>
+<li><strong data="opt_bgImgS">slike ozadja</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
+<li><strong data="opt_timerSize">Velikost merilnika časa</strong>. Set the size of main timer.</li>
+<li><strong data="opt_smallADP">Uporabi majhno pisavo za decimalno vejico</strong>. Use a smaller font size after the digital point in main timer.</li>
 <li><strong data="opt_useMouse">use mouse timer</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
 <li><strong data="opt_useIns">Uporabi WCA pregled</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
 <li><strong data="opt_voiceIns">Zvočni opomnik od WCA pregleda</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
-<li><strong data="opt_voiceVol">Voice volume</strong>. Voice level of the alert above.</li>
+<li><strong data="opt_voiceVol">Glasnost glasu</strong>. Voice level of the alert above.</li>
 <li><strong data="opt_input">entering in times with</strong>. csTimer is able to add solves by several ways, it supports manually input, automatically record from a stackmat timer, connect to a bluetooth smart cube or play virtual Rubik's cube, besides keyboard timing.</li>
-<li><strong data="opt_intUN">Unit when entering an integer</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
+<li><strong data="opt_intUN">Enota pri vnosu časa</strong>. When you type an integer XXX in the input box, what does it mean, XXX second or XXX centisecond or XXX millisecond?</li>
 <li><strong data="opt_timeU">timer update is</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">time of keeping space down(second(s))</strong>. How long the space bar should be held before the timer turns green.</li>
-<li><strong data="opt_phases">multi-phase</strong>. Number of phases, press any key to mark a split point when timing.</li>
+<li><strong data="opt_phases">večfazno</strong>. Number of phases, press any key to mark a split point when timing.</li>
 <li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
-<li><strong data="opt_scrSize">scramble size</strong>. Size of the scramble text.</li>
+<li><strong data="opt_scrSize">Velikost mešalnega algoritma</strong>. Size of the scramble text.</li>
 <li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
-<li><strong data="opt_scrMono">monospaced scramble</strong>. Use monospaced font for scramble text.</li>
-<li><strong data="opt_scrLim">Limit the height of scramble area</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
-<li><strong data="opt_scrAlign">Alignment of scramble area</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
+<li><strong data="opt_scrMono">Enozložni mešalni algoritem</strong>. Use monospaced font for scramble text.</li>
+<li><strong data="opt_scrLim">Omejitev velikosti mešalnega algoritma</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
+<li><strong data="opt_scrAlign">Položaj mešalnega algoritma</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrFast">Using fast scramble for 4x4x4 (non-official)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Label key move(s) in scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
@@ -110,7 +110,7 @@
 <li><strong data="opt_NTools">number of tools</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">use keyboard shortcut</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
 <li><strong data="opt_vrcSpeed">VRC base speed (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
-<li><strong data="opt_vrcMP">multi-phase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
+<li><strong data="opt_vrcMP">večfazno</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
 <li><strong data="opt_giiVRC">Show virtual bluetooth cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Mark scrambled if stay</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Mark scrambled with spacebar</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

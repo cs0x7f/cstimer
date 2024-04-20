@@ -25,7 +25,7 @@
 </ul>
 <h2>Keyboard shortcut</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Tuş</th><td>Fonksiyon</td></tr>
 <tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
@@ -42,8 +42,8 @@
 <tr><th>Up left</th><td>The latest solve is DNF</td></tr>
 <tr><th>Up</th><td>The latest solve is +2</td></tr>
 <tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Sol</th><td>Önceki karıştırma</td></tr>
+<tr><th>Sağ</th><td>Sonraki karıştırma</td></tr>
 <tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
 <tr><th>Down</th><td>Remove the latest solve</td></tr>
 <tr><th>Down right</th><td>Check the latest solve</td></tr>

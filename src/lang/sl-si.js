@@ -3,7 +3,7 @@ var CANCEL_LANG = 'Prekliči';
 var RESET_LANG = 'Resetiraj';
 var ABOUT_LANG = 'Vizitka';
 var ZOOM_LANG = 'Približaj';
-var COPY_LANG = 'Copy';
+var COPY_LANG = 'Kopiraj';
 var BUTTON_TIME_LIST = 'Seznam časov';
 var BUTTON_OPTIONS = 'OPTION';
 var BUTTON_EXPORT = 'Izvozi';
@@ -14,15 +14,15 @@ var PROPERTY_USEINS_STR = 'Vedno (dol)|Vedno (gor)|Razen BLD (dol)|Razen BLD (go
 var PROPERTY_SHOWINS = 'Pokaži ikono, ko je pregled aktiviran';
 var PROPERTY_VOICEINS = 'Zvočni opomnik od WCA pregleda';
 var PROPERTY_VOICEINS_STR = 'Nič|moški glas|ženski glas';
-var PROPERTY_VOICEVOL = 'Voice volume';
-var PROPERTY_PHASES = 'multi-phase';
-var PROPERTY_TIMERSIZE = 'timer size';
-var PROPERTY_USEMILLI = 'use milliseconds';
-var PROPERTY_SMALLADP = 'use small font after decimal point';
-var PROPERTY_SCRSIZE = 'scramble size';
-var PROPERTY_SCRMONO = 'monospaced scramble';
-var PROPERTY_SCRLIM = 'Limit the height of scramble area';
-var PROPERTY_SCRALIGN = 'Alignment of scramble area';
+var PROPERTY_VOICEVOL = 'Glasnost glasu';
+var PROPERTY_PHASES = 'večfazno';
+var PROPERTY_TIMERSIZE = 'Velikost merilnika časa';
+var PROPERTY_USEMILLI = 'Uporabi milisekunde';
+var PROPERTY_SMALLADP = 'Uporabi majhno pisavo za decimalno vejico';
+var PROPERTY_SCRSIZE = 'Velikost mešalnega algoritma';
+var PROPERTY_SCRMONO = 'Enozložni mešalni algoritem';
+var PROPERTY_SCRLIM = 'Omejitev velikosti mešalnega algoritma';
+var PROPERTY_SCRALIGN = 'Položaj mešalnega algoritma';
 var PROPERTY_SCRALIGN_STR = 'Sredina|levo|desno';
 var PROPERTY_SCRNEUT = 'Barvno nevtralno';
 var PROPERTY_SCRNEUT_STR = 'Nič|Ena stran|Dve strani|Šest strani';
@@ -47,7 +47,7 @@ var EXPORT_NODATA = 'No data found for your account';
 var EXPORT_UPLOADED = 'Uploaded successfully';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
+var EXPORT_ACCOUNT = 'Izvozi račune';
 var EXPORT_LOGINGGL = 'Login Using Google Account';
 var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
@@ -117,7 +117,7 @@ var PROPERTY_TIMEU_STR = 'update|0.1s|seconds|inspection|none';
 var PROPERTY_PRETIME = 'time of keeping space down(second(s))';
 var PROPERTY_ENTERING = 'entering in times with';
 var PROPERTY_ENTERING_STR = 'timer|typing|stackmat|MoYuTimer|virtual|bluetooth|qCube|GanTimer|last layer training';
-var PROPERTY_INTUNIT = 'Unit when entering an integer';
+var PROPERTY_INTUNIT = 'Enota pri vnosu časa';
 var PROPERTY_INTUNIT_STR = 'second|centisecond|millisecond';
 var PROPERTY_COLOR = 'select color theme';
 var PROPERTY_COLORS = 'font color|background color|board color|button color|link color|Logo color|Logo bgcolor';
@@ -132,7 +132,7 @@ var PROPERTY_FONTCOLOR_STR = 'črna|bela';
 var PROPERTY_COLOR_STR = 'manual|import/export...|random|style1|style2|style3|black|white|style6|solarized dark|solarized light';
 var PROPERTY_FONT = 'select timer\'s font';
 var PROPERTY_FONT_STR = 'random digital|normal|digital1|digital2|digital3|digital4|digital5';
-var PROPERTY_FORMAT = 'time format';
+var PROPERTY_FORMAT = 'Oblika časa';
 var PROPERTY_USEKSC = 'use keyboard shortcut';
 var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'number of tools';
@@ -141,10 +141,10 @@ var SCRAMBLE_LAST = 'last';
 var SCRAMBLE_NEXT = 'Naprej';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_SCRAMBLING = 'Scrambling';
-var SCRAMBLE_LENGTH = 'length';
+var SCRAMBLE_LENGTH = 'dolžina';
 var SCRAMBLE_INPUT = 'Input Scramble(s)';
 var PROPERTY_VRCSPEED = 'VRC base speed (tps)';
-var PROPERTY_VRCMP = 'multi-phase';
+var PROPERTY_VRCMP = 'večfazno';
 var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Show virtual bluetooth cube';
 var PROPERTY_GIISOK_DELAY = 'Mark scrambled if stay';
@@ -154,12 +154,12 @@ var PROPERTY_GIISOK_MOVE = 'Mark scrambled by doing';
 var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|Never';
 var PROPERTY_GIISBEEP = 'Beep when mark scrambled';
 var PROPERTY_GIIRST = 'Reset bluetooth cube when connect';
-var PROPERTY_GIIRSTS = 'Always|Prompt|Never';
+var PROPERTY_GIIRSTS = 'Vedno|Vprašaj|Nikoli';
 var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
 var PROPERTY_GIIMODES = 'Normal|Training|Continuous training';
 var PROPERTY_VRCAH = 'Useless pieces in huge cube';
 var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
-var CONFIRM_GIIRST = 'Reset bluetooth cube as solved?';
+var CONFIRM_GIIRST = 'Ponastavi bluethooth kocko kot rešeno?';
 var PROPERTY_GIIAED = 'Auto hardware error detection';
 var scrdata = [
 	['WCA', [
@@ -172,7 +172,7 @@ var scrdata = [
 		['3x3 bld', "333ni", 0],
 		['3x3 fm', "333fm", 0],
 		['3x3 oh', "333oh", 0],
-		['clock', "clkwca", 0],
+		['ura', "clkwca", 0],
 		['megaminx', "mgmp", -70],
 		['pyraminx', "pyrso", -10],
 		['skewb', "skbso", 0],
@@ -181,7 +181,7 @@ var scrdata = [
 		['5x5 bld', "555bld", -60],
 		['3x3 mbld', "r3ni", 5]
 	]],
-	['Input', [
+	['Vnos', [
 		['Extern', "input", 0],
 		['Competition', "remoteComp", 0],
 		['Online battle', "remoteBattle", 0],
@@ -193,19 +193,19 @@ var scrdata = [
 	['3x3x3', [
 		["random state (WCA)", "333", 0],
 		['random move', "333o", 25],
-		['3x3x3 for noobs', "333noob", 25],
-		['edges only', "edges", 0],
-		['corners only', "corners", 0],
+		['3x3x3 za začetnike', "333noob", 25],
+		['Samo robovi', "edges", 0],
+		['Samo koti', "corners", 0],
 		['BLD pomočnik', "nocache_333bldspec", 0],
 		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3 ft', "333ft", 0],
-		['Custom', "333custom", 0]
+		['Po meri', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
 		['OLL', "oll", 0],
-		['last slot + last layer', "lsll2", 0],
-		['last layer', "ll", 0],
+		['Zadnja reža + zadnja plast', "lsll2", 0],
+		['Zadnja plast', "ll", 0],
 		['ZBLL', "zbll", 0],
 		['COLL', "coll", 0],
 		['CLL', "cll", 0],
@@ -216,10 +216,10 @@ var scrdata = [
 		['EOLS', "eols", 0],
 		['WVLS', "wvls", 0],
 		['VLS', "vls", 0],
-		['cross solved', "f2l", 0],
+		['Križ rešen', "f2l", 0],
 		['EOLine', "eoline", 0],
-		['easy cross', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Enostaven križ', "easyc", 3],
+		['Enostaven dodaten-križ', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -251,10 +251,10 @@ var scrdata = [
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
-		['random move', "444m", 40],
+		['naključna poteza', "444m", 40],
 		['SiGN', "444", 40],
 		['YJ', "444yj", 40],
-		['4x4x4 edges', "4edge", 0],
+		['4x4x4 robovi', "4edge", 0],
 		['R,r,U,u', "RrUu", 40],
 		['Last layer', "444ll", 0],
 		['ELL', "444ell", 0],
@@ -284,11 +284,11 @@ var scrdata = [
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['predpona', "777p", 100],
+		['pripona', "777s", 100],
+		['7x7x7 robovi', "7edge", 8]
 	]],
-	['Clock', [
+	['Ura', [
 		['jaap', "clk", 0],
 		['wca', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
@@ -301,7 +301,7 @@ var scrdata = [
 		['Carrot', "mgmc", 70],
 		['old style', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
-		['last slot + last layer', "mlsll", 0],
+		['Zadnja reža + zadnja plast', "mlsll", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],
@@ -325,7 +325,7 @@ var scrdata = [
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
-	['===OTHER===', [
+	['===OSTALO===', [
 		['--', "blank", 0]
 	]],
 	['15 puzzle', [
@@ -441,7 +441,7 @@ var scrdata = [
 		['Square-1 /,(1,0)', "bsq", 25]
 	]],
 	['Relays', [
-		['lots of 3x3x3s', "r3", 5],
+		['Veliko 3x3x3', "r3", 5],
 		['234 relay', "r234", 0],
 		['2345 relay', "r2345", 0],
 		['23456 relay', "r23456", 0],
@@ -452,7 +452,7 @@ var scrdata = [
 		['234567 relay (WCA)', "r234567w", 0],
 		['Mini Guildford', "rmngf", 0]
 	]],
-	['===JOKES===', [
+	['===ŠALE===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -472,9 +472,9 @@ var scrdata = [
 	]]
 ];
 var SCRAMBLE_NOOBST = [
-	['turn the top face', 'turn the bottom face'],
-	['turn the right face', 'turn the left face'],
-	['turn the front face', 'turn the back face']
+	['Obrni zgornjo stran', 'Obrni spodnjo stran'],
+	['Obrni desno stran', 'Obrni levo stran'],
+	['Obrni sprednjo stran', 'Obrni zadnjo stran']
 ];
 var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
 var SCROPT_TITLE = 'Scramble Options';
@@ -482,34 +482,34 @@ var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
-var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
+var STATS_CFM_DELSS = 'Izbriši sejo [%s]?';
+var STATS_CFM_DELMUL = 'Število izbrisanih vrednosti od trenutnega indeksa';
+var STATS_CFM_DELETE = 'izbriši ta čas?';
+var STATS_COMMENT = 'Komentar';
 var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Datum';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_SSRETRY = 'Retry';
 var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
+var STATS_CURSESSION = 'Trenutna statistika seje';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
+var STATS_EXPORTCSV = 'Izvozi CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
+var STATS_SSMGR_NAME = 'Ime';
+var STATS_SSMGR_DETAIL = 'Podrobnosti seje';
+var STATS_SSMGR_OPS = 'Preimenuj|Ustvari|Loči|Združi|Izbriši|Sortiraj';
 var STATS_SSMGR_ORDER = 'Order by scramble';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
+var STATS_ALERTMG = 'Združi vse čase iz seje [%f] na konec seje [%t] ?';
 var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
 var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'mean';
-var STATS_SUM = 'sum';
+var STATS_SUM = 'vsota';
 var STATS_SOLVE = 'solve';
 var STATS_TIME = 'time';
 var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
+var STATS_SESSION_NAME = 'Uredi ime seje';
 var STATS_SESSION_NAMEC = 'Name of the new session';
 var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:|solving from %s to %e|Totally spent: %d|target';
 var STATS_PREC = 'time distribution precision';
@@ -518,7 +518,7 @@ var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_NAME = 'Katerokoli ime';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
@@ -539,40 +539,40 @@ var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_HLPBS = 'Highlight PBs';
 var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bolder|None';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
-var PROPERTY_TOOLSFUNC = 'Selected Functions';
+var PROPERTY_TOOLSFUNC = 'Izbrane funkcije';
 var PROPERTY_TRIM = 'Number of solves trimmed at better side';
 var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = 'Median';
 var PROPERTY_STKHEAD = 'Use Stackmat Status Information';
-var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
+var PROPERTY_TOOLPOS = 'Pozicija orodnega panela';
+var PROPERTY_TOOLPOS_STR = 'Spodaj|Lebdeče|Zgoraj';
 var PROPERTY_HIDEFULLSOL = 'Show solution progressively';
 var PROPERTY_IMPPREV = 'Import non-latest data';
 var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account|Alert Only';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'display',
-	"color": 'color',
-	"timer": 'timer',
+	"kernel": 'globalno',
+	"ui": 'prikaz',
+	"color": 'barva',
+	"timer": 'časovnik',
 	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools',
+	"stats": 'statistika',
+	"tools": 'orodja',
 	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'please input image\'s url';
 var BGIMAGE_INVALID = 'invalid url';
 var BGIMAGE_OPACITY = 'background image opacity';
-var BGIMAGE_IMAGE = 'background image';
+var BGIMAGE_IMAGE = 'slike ozadja';
 var BGIMAGE_IMAGE_STR = 'none|manual|CCT';
 var SHOW_AVG_LABEL = 'Show Avg Label';
 var SHOW_DIFF_LABEL = 'Show Difference Label';
 var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
-var USE_LOGOHINT = 'Hint messages in logo';
+var USE_LOGOHINT = 'Namigi v logotipu';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
 var SCRGEN_NSCR = 'Number of scrambles';
-var SCRGEN_PRE = 'prefix';
+var SCRGEN_PRE = 'predpona';
 var SCRGEN_GEN = 'Generate Scrambles!';
 var VRCREPLAY_TITLE = 'Virtual Replay';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
@@ -581,9 +581,9 @@ var GIIKER_CONNECT = 'Click to connect';
 var GIIKER_RESET = 'Reset (Mark Solved)';
 var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
 var PROPERTY_GIIORI = 'Cube orientation';
-var LGHINT_INVALID = 'Invalid Value!';
-var LGHINT_NETERR = 'Network Error!';
-var LGHINT_SERVERR = 'Server Error!';
+var LGHINT_INVALID = 'Neveljavna vrednost';
+var LGHINT_NETERR = 'Napaka omrežja';
+var LGHINT_SERVERR = 'Napaka Strežnika';
 var LGHINT_SUBMITED = 'Submitted';
 var LGHINT_SSBEST = 'Session best %s!';
 var LGHINT_SCRCOPY = 'Scramble copied';
@@ -596,6 +596,6 @@ var LGHINT_BTCONSUC = 'Bluetooth successfully connected';
 var LGHINT_BTDISCON = 'Bluetooth disconnected';
 var LGHINT_BTNOTSUP = 'Not support your smart cube';
 var LGHINT_BTINVMAC = 'Not a valid mac address, cannot connect to your smart cube';
-var LGHINT_AEXPABT = 'Auto export abort';
-var LGHINT_AEXPSUC = 'Auto export success';
-var LGHINT_AEXPFAL = 'Auto export failed';
+var LGHINT_AEXPABT = 'Avtomatski izvoz preklican';
+var LGHINT_AEXPSUC = 'Avtomatski izvoz uspešen';
+var LGHINT_AEXPFAL = 'Avtomatski izvoz neuspešen';
