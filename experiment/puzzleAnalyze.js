@@ -179,12 +179,13 @@ var puzzleAnalyzer = (function() {
 		var moveTable = [];
 		var rotTable = [];
 		fixMoveTable(puzzle, moveTable, rotTable);
-		var moverot = new grouplib.SchreierSims(moveTable.concat(rotTable));
-		console.log('Move+Rot=', moverot.size(true));
 		var move = new grouplib.SchreierSims(moveTable);
 		console.log('Move=', move.size(true));
 		var rot = new grouplib.SchreierSims(rotTable);
 		console.log('Rot=', rot.size(true));
+		var moverot = new grouplib.SchreierSims(move);
+		moverot.extend(rotTable);
+		console.log('Move+Rot=', moverot.size(true));
 
 
 		var faceColors = [];
@@ -245,6 +246,117 @@ var puzzleAnalyzer = (function() {
 			console.log('stab colors=', stabColor.size(true));
 			console.log('state = (Move+Rot)/Rot/stabColor = ', moverot.size(true) / rot.size(true) / stabColor.size(true));
 			return moverot.size(true) / rot.size(true) / stabColor.size(true);
+		}
+	}
+
+	function RandElem(gens) {
+		if (gens.length == 0) {
+			debugger;
+		}
+		this.gens = gens.slice();
+		if (gens.length < 20) {
+			for (var i = 0; i < 20 - gens.length; i++) {
+				this.gens.push(this.gens[i]);
+			}
+		}
+		for (var i = 0; i < Math.max(20, gens.length); i++) {
+			this.next();
+		}
+	}
+
+	function permMult(permA, permB) {
+		var ret = [];
+		for (var i = 0; i < permA.length; i++) {
+			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	RandElem.prototype.next = function() {
+		var k = this.gens.length;
+		var n = this.gens[0].length;
+		var i1 = ~~(Math.random() * (k - 1)) + 1;
+		var j1 = ~~(Math.random() * (k - 2)) + 1;
+		if (i1 == j1) {
+			j1++;
+		}
+		var mul = [];
+		if (Math.random() < 0.5) {
+			for (var i = 0; i < n; i++) {
+				mul[this.gens[j1][i]] = i;
+			}
+		} else {
+			mul = this.gens[j1];
+		}
+		if (Math.random() < 0.5) {
+			this.gens[i1] = permMult(this.gens[i1], mul);
+			this.gens[0] = permMult(this.gens[0], this.gens[i1]);
+		} else {
+			this.gens[i1] = permMult(mul, this.gens[i1]);
+			this.gens[0] = permMult(this.gens[i1], this.gens[0]);
+		}
+		return this.gens[0];
+	}
+
+	grouplib.SchreierSims.prototype.extend = function(gen, shuffle) {
+		var pr = new RandElem(gen);
+		var naCnt = 0;
+		while (naCnt < 32) {
+			var g = pr.next();
+			if (shuffle) {
+				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
+			}
+			g = this.sift(g);
+			if (g == null) {
+				naCnt++;
+				continue;
+			}
+			this.addTk(this.e.length - 1, g);
+		}
+	}
+
+	grouplib.SchreierSims.prototype.sift = function(p) {
+		for (var i = p.length - 1; i >= 0; i--) {
+			var j = p[i];
+			if (j != i) {
+				if (!this.sgs[i][j]) {
+					return p;
+				}
+				p = this.permMult(p, this.sgsi[i][j]);
+			}
+		}
+		return null;
+	}
+
+	grouplib.SchreierSims.prototype.addSGS = function(k, p) {
+		var j = p[k];
+		if (this.sgs[k][j]) {
+			return -1;
+		}
+		this.sgs[k][j] = p;
+		this.sgsi[k][j] = this.permInv(p);
+		this.t2i[k][j] = this.i2t[k].length;
+		this.i2t[k].push(j);
+		if (this.i2t[k].length == 2) {
+			this.keyIdx.push(k);
+			this.keyIdx.sort(function(a, b) { return b - a; });
+		}
+		return 0;
+	}
+
+	grouplib.SchreierSims.prototype.addTk = function(k, p) {
+		while (p[k] == k) {
+			k--;
+		}
+		// assert !this.sgs[k][p[k]]
+		this.Tk[k].push(p);
+		this.addSGS(k, p);
+
+		for (var i = 0; i < this.i2t[k].length; i++) { // continue bfs for schreier tree
+			var i1 = this.i2t[k][i];
+			for (var j = 0; j < this.Tk[k].length; j++) {
+				this.addSGS(k, this.permMult(this.sgs[k][i1], this.Tk[k][j]));
+			}
 		}
 	}
 
