@@ -10,6 +10,7 @@ var puzzleAnalyzer = (function() {
 			puzzle = poly3d.makePuzzle.apply(poly3d, param);
 		}
 		makeCenterMoveTable(puzzle);
+		makeMirrorMoveTable(puzzle);
 		return puzzle;
 	}
 
@@ -63,12 +64,124 @@ var puzzleAnalyzer = (function() {
 				pow++;
 			}
 		}
-		console.log(validMoves);
 		var canon = new grouplib.CanonSeqGen(validMoves);
 		canon.initTrie(canonDepth || 2);
 		var ret = canon.countSeq(depth, true);
-		console.log(ret);
 		return ret;
+	}
+
+	function makeCenterMoveTable(puzzle) {
+		puzzle.centerMoveTable = [];
+		var proj1d = [];
+		var projNorm = new poly3d.Point(1, 2, 3).normalized();
+		var centers = [];
+		puzzle.enumFacesPolys(function(face, p, poly, idx) {
+			var uv = this.faceUVs[face];
+			if (Math.abs(uv[0].inprod(poly.center)) >= EPS || Math.abs(uv[1].inprod(poly.center)) >= EPS) {
+				return;
+			}
+			for (var i = 0; i < poly.paths.length; i++) {
+				var pp = poly.center.add(poly.paths[i].p1).scalar(0.5);
+				centers.push([face, i, pp, centers.length]);
+				proj1d.push([proj1d.length, projNorm.inprod(pp), pp]);
+			}
+		}.bind(puzzle));
+		proj1d.sort(function(a, b) { return a[1] - b[1]; });
+		for (var i = 0; i < puzzle.twistyDetails.length; i++) {
+			var curMove = [];
+			var planes = [];
+			for (var j = 2; j < puzzle.twistyDetails[i].length; j++) {
+				planes.push(puzzle.twistyPlanes[puzzle.twistyDetails[i][j]]);
+			}
+			var trans = new poly3d.RotTrans(planes[0].norm, Math.PI * 2 / puzzle.twistyDetails[i][1]);
+			out: for (var idx = 0; idx < centers.length; idx++) {
+				var pp = centers[idx][2];
+				for (var j = 0; j < planes.length; j++) {
+					if (planes[j].side(pp) < 0) {
+						curMove[idx] = -1; // not affect by this twisty
+						continue out;
+					}
+				}
+				var movedCenter = trans.perform(pp);
+				var movedProj = projNorm.inprod(movedCenter);
+				var left = 0, right = proj1d.length - 1;
+				while (right > left) {
+					var mid = (right + left) >> 1;
+					var midval = proj1d[mid][1];
+					if (midval < movedProj - EPS) {
+						left = mid + 1;
+					} else {
+						right = mid;
+					}
+				}
+				for (var j = left; j < proj1d.length; j++) {
+					if (proj1d[j][1] > movedProj + EPS) {
+						debugger; // no moves found
+					}
+					if (movedCenter.abs(proj1d[j][2]) < EPS) {
+						curMove[idx] = proj1d[j][0];
+						break;
+					}
+				}
+			}
+			puzzle.centerMoveTable.push(curMove);
+		}
+	}
+
+	function MirrorTrans(norm) {
+		var x = norm.x,
+			y = norm.y,
+			z = norm.z;
+		this.mat = [
+			1 - 2 * x * x, -2 * x * y, -2 * x * z,
+			-2 * x * y, 1 - 2 * y * y, -2 * y * z,
+			-2 * x * z, -2 * y * z, 1 - 2 * z * z
+		];
+	}
+
+	MirrorTrans.prototype.perform = function(p) {
+		var mat = this.mat;
+		return new poly3d.Point(
+			mat[0] * p.x + mat[1] * p.y + mat[2] * p.z,
+			mat[3] * p.x + mat[4] * p.y + mat[5] * p.z,
+			mat[6] * p.x + mat[7] * p.y + mat[8] * p.z
+		);
+	}
+
+	function makeMirrorMoveTable(puzzle) {
+		puzzle.mirrorMoveTable = [];
+		var proj1d = [];
+		var projNorm = new poly3d.Point(1, 2, 3).normalized();
+		puzzle.enumFacesPolys(function(face, p, poly, idx) {
+			proj1d[idx] = [idx, projNorm.inprod(poly.center), poly.center];
+		}.bind(puzzle));
+		proj1d.sort(function(a, b) { return a[1] - b[1]; });
+		var curMove = [];
+		var trans = new MirrorTrans(puzzle.facePlanes[0].norm.add(puzzle.facePlanes[1].norm, -1).normalized());
+		puzzle.enumFacesPolys(function(face, p, poly, idx) {
+			var movedCenter = trans.perform(poly.center);
+			var movedProj = projNorm.inprod(movedCenter);
+			var left = 0, right = proj1d.length - 1;
+			while (right > left) {
+				var mid = (right + left) >> 1;
+				var midval = proj1d[mid][1];
+				if (midval < movedProj - EPS) {
+					left = mid + 1;
+				} else {
+					right = mid;
+				}
+			}
+			for (var j = left; j < proj1d.length; j++) {
+				if (proj1d[j][1] > movedProj + EPS) {
+					debugger; // no moves found
+				}
+				if (movedCenter.abs(proj1d[j][2]) < EPS) {
+					curMove[idx] = proj1d[j][0];
+					break;
+				}
+			}
+		}.bind(puzzle));
+		puzzle.mirrorMoveTable.push(curMove);
 	}
 
 	function makeCenterMoveTable(puzzle) {
@@ -168,12 +281,9 @@ var puzzleAnalyzer = (function() {
 		return orbits.export();
 	}
 
-	grouplib.SchreierSims.prototype.intersect = function(other, thres) {
-		if (this.size() > other.size()) {
-			return other.intersect(this, thres);
-		}
+	grouplib.SchreierSims.prototype.subgroupProp = function(propFunc, thres) {
 		thres = thres || 100000;
-		var ret = new grouplib.SchreierSims([this.sgs[0][0]]);
+		var ret = new grouplib.SchreierSims([this.e]);
 		var n = this.sgs.length;
 		ret.cnt = 0;
 		for (var i = 0; i < n; i++) {
@@ -186,18 +296,17 @@ var puzzleAnalyzer = (function() {
 					return true;
 				}, function(depth, perm) {
 					if (ret.cnt > thres || ret.cnt == -1) {
-						ret.cnt = -1;
 						return false;
 					}
 					ret.cnt++;
-					var mchk = other.isMember(perm, depth);
-					if (mchk < 0) {
+					if (!propFunc(depth, perm)) {
 						return false;
 					}
 					for (var i = 0; i < ret.sgs[depth].length - 1; i++) {
 						if (ret.sgs[depth][i]) {
-							var pp = ret.permMult(perm, ret.sgs[depth][i]);
-							if (pp[depth] < perm[depth]) {
+							// var pp = ret.permMult(perm, ret.sgs[depth][i]);
+							var pp = ret.sgs[depth][i][perm[depth]];
+							if (pp < perm[depth]) {
 								return false;
 							}
 						}
@@ -212,26 +321,101 @@ var puzzleAnalyzer = (function() {
 		return ret;
 	}
 
+	grouplib.SchreierSims.prototype.intersect = function(other, thres) {
+		if (this.size() > other.size()) {
+			return other.intersect(this, thres);
+		}
+		var ret = this.subgroupProp(function(depth, perm) {
+			return other.isMember(perm, depth) >= 0;
+		}, thres);
+		return ret;
+	}
+
+	grouplib.SchreierSims.prototype.centralizer = function(perm, thres) {
+		var obits = Array.prototype.concat.apply([], getOrbits([perm]));
+		var pp2 = this.permMult(obits, this.permMult(perm, this.permInv(obits)));
+		var sgs2 = new grouplib.SchreierSims([this.e]);
+		var size = this.size();
+		do {
+			var g = this.rndElem();
+			g = this.permMult(obits, this.permMult(g, this.permInv(obits)));
+			g = sgs2.sift(g);
+			if (g != null) {
+				sgs2.addTk(this.e.length - 1, g);
+			}
+		} while (g != null || sgs2.size(true) != this.size(true));
+		var n = this.e.length;
+		var ret = sgs2.subgroupProp(function(depth, perm) {
+			for (var i = n - 1; i >= depth; i--) {
+				if (pp2[i] >= depth && perm[pp2[i]] != pp2[perm[i]]) {
+					return false;
+				}
+			}
+			return true;
+		}, thres);
+		return ret;
+	}
+
+	grouplib.SchreierSims.prototype.conjugate = function(perm1, perm2, thres) {
+		var obits = getOrbits([perm1]);
+		obits.sort(function(a, b) { return a.length - b.length; });
+		var obits = Array.prototype.concat.apply([], obits);
+		var pp1 = this.permMult(obits, this.permMult(perm1, this.permInv(obits)));
+		var pp2 = this.permMult(obits, this.permMult(perm2, this.permInv(obits)));
+		var sgs2 = new grouplib.SchreierSims([this.e]);
+		var size = this.size();
+		do {
+			var g = this.rndElem();
+			g = this.permMult(obits, this.permMult(g, this.permInv(obits)));
+			g = sgs2.sift(g);
+			if (g != null) {
+				sgs2.addTk(this.e.length - 1, g);
+			}
+		} while (g != null || sgs2.size(true) != this.size(true));
+		var n = this.e.length;
+		var ref = null;
+		var ret = sgs2.subgroupProp(function(depth, perm) {
+			if (ref) {
+				return false;
+			}
+			for (var i = n - 1; i >= depth; i--) {
+				if (pp1[i] >= depth && perm[pp1[i]] != pp2[perm[i]]) {
+					return false;
+				}
+			}
+			if (depth == 1) {
+				ref = perm;
+				return false;
+			}
+			return true;
+		}, thres);
+		return ref;
+	}
+
 	grouplib.SchreierSims.prototype.enumDFS = function(depth, perm, callback, checkFunc) {
-		if (checkFunc && !checkFunc(depth + 1, perm)) {
+		while (depth >= 1 && this.i2t[depth].length == 1) {
+			depth--;
+		}
+		if (!checkFunc(depth + 1, perm)) {
 			return;
 		}
 		if (depth == 0) {
 			return callback(perm);
 		}
-		for (var j = 0; j <= depth; j++) {
-			if (this.sgs[depth][j]) {
-				var ret = this.enumDFS(depth - 1,
-					this.permMult(this.sgs[depth][j], perm), callback, checkFunc);
-				if (ret) {
-					return ret;
-				}
+		for (var jj = 0; jj < this.i2t[depth].length; jj++) {
+			var j = this.i2t[depth][jj];
+			var ret = this.enumDFS(depth - 1,
+				this.permMult(this.sgs[depth][j], perm), callback, checkFunc);
+			if (ret) {
+				return ret;
 			}
 		}
 	}
 
 	grouplib.SchreierSims.prototype.enum = function(callback) {
-		this.enumDFS(this.sgs.length - 1, this.sgs[0][0], callback);
+		this.enumDFS(this.sgs.length - 1, this.e, callback, function() {
+			return true;
+		});
 	}
 
 	function countState(puzzle, isSuper) {
@@ -252,14 +436,14 @@ var puzzleAnalyzer = (function() {
 		}
 		fixMoveTable(moveTable0, moveTable, rotTable);
 		var move = new grouplib.SchreierSims(moveTable);
-		console.log('Move=', move.size(true));
+		DEBUG && console.log('Move=', move.size(true));
 		var rot = new grouplib.SchreierSims(rotTable);
-		console.log('Rot=', rot.size(true));
+		DEBUG && console.log('Rot=', rot.size(true));
 		var moverot = new grouplib.SchreierSims(move);
 		moverot.extend(rotTable);
-		console.log('Move+Rot=', moverot.size(true));
+		DEBUG && console.log('Move+Rot=', moverot.size(true));
 		if (isSuper) {
-			console.log('state = (Move+Rot)/Rot = ', moverot.size(true) / rot.size(true));
+			DEBUG && console.log('state = (Move+Rot)/Rot = ', moverot.size(true) / rot.size(true));
 			return moverot.size(true) / rot.size(true);
 		}
 
@@ -311,16 +495,65 @@ var puzzleAnalyzer = (function() {
 			}
 		}
 		var sgsColor = new grouplib.SchreierSims(genColor);
-		console.log('raw colors=', sgsColor.size(true));
+		DEBUG && console.log('raw colors=', sgsColor.size(true));
 		var stabColor = sgsColor.intersect(move);
+
 		if (stabColor.cnt == -1) {
-			console.log('stabColor invalid');
-			console.log('state = (Move+Rot)/Rot = ', moverot.size(true) / rot.size(true));
+			DEBUG && console.log('stabColor invalid');
+			DEBUG && console.log('state = (Move+Rot)/Rot = ', moverot.size(true) / rot.size(true));
 			return moverot.size(true) / rot.size(true);
 		} else {
-			console.log('stab colors=', stabColor.size(true));
-			console.log('state = (Move+Rot)/Rot/stabColor = ', moverot.size(true) / rot.size(true) / stabColor.size(true));
+			DEBUG && console.log('stab colors=', stabColor.size(true));
+			DEBUG && console.log('state = (Move+Rot)/Rot/stabColor = ', moverot.size(true) / rot.size(true) / stabColor.size(true));
 			return moverot.size(true) / rot.size(true) / stabColor.size(true);
+
+			// calculate number of cube states in conjugation of rotations and mirrors
+			var modCnt = 0n;
+			var rotmir = new grouplib.SchreierSims(rot);
+			rotmir.extend(rotTable.concat(puzzle.mirrorMoveTable));
+			rotmir.enum(function(perm) {
+				var ct = moverot.centralizer(perm, 1e10);
+				var ct2 = stabColor.centralizer(perm, 1e10);
+				var ct3 = rot.centralizer(perm, 1e10);
+				modCnt += ct.size(true) / (ct2.size(true) * ct3.size(true));
+				if (ct.size(true) % (ct2.size(true) * ct3.size(true)) != 0) {
+					console.log('Centralizer ERROR!');
+				}
+			});
+
+			modCnt = 0n;
+			var ccidx = 0;
+			var done = {};
+			var i1 = 0;
+			rotmir.enum(function(perm1) {
+				if (perm1.join(',') in done) {
+					return;
+				}
+				var mult = 0n;
+				rotmir.enum(function(perms) {
+					var key = rotmir.permMult(perms, rotmir.permMult(perm1, rotmir.permInv(perms))).join(',');
+					if (!(key in done)) {
+						done[key] = mult++;
+					}
+				});
+				var ct = moverot.centralizer(perm1, 1e10);
+				var ct2 = stabColor.centralizer(perm1, 1e10);
+				var curCnt = 0n;
+				rot.enum(function(perm2) {
+					var ret = moverot.conjugate(perm1, rot.permMult(perm1, perm2), 1e10);
+					if (ret) {
+						curCnt++;
+					}
+				});
+				modCnt += curCnt * mult * ct.size(true) / ct2.size(true);
+			});
+
+			if (modCnt % (rotmir.size(true) * rot.size(true)) != 0) {
+				console.log('Centralizer ERROR!');
+			}
+			modCnt = modCnt / (rotmir.size(true) * rot.size(true));
+			DEBUG && console.log('Move+Rot/Rot/stabColor mod ^Rot=', modCnt);
+			return [moverot.size(true) / rot.size(true) / stabColor.size(true), modCnt];
 		}
 	}
 
@@ -353,7 +586,10 @@ var puzzleAnalyzer = (function() {
 		var n = this.gens[0].length;
 		this.off = (this.off + 1) % k;
 		var i1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
-		var j1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
+		var j1;
+		do {
+			j1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
+		} while (i1 == j1);
 		var mul = [];
 		if (Math.random() < 0.5) {
 			for (var i = 0; i < n; i++) {
@@ -375,7 +611,7 @@ var puzzleAnalyzer = (function() {
 	grouplib.SchreierSims.prototype.extend = function(gen, shuffle) {
 		var pr = new RandElem(gen);
 		var naCnt = 0;
-		while (naCnt < 32) {
+		while (naCnt < Math.max(32, gen.length)) {
 			var g = pr.next();
 			if (shuffle) {
 				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
