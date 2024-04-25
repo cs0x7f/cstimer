@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 rubni dijelovi', "7edge", 8]
 	]],
 	['Clock', [
-		['jaap', "clk", 0],
-		['Scramble_podatci_sat_', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['Scramble_podatci_sat_ (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimalno', "clko", 0],
 		['sažet', "clkc", 0],
 		['efektivan red pin-ova', "clke", 0]

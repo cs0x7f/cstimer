@@ -289,9 +289,10 @@ var scrdata = [
 		['Arêtes 7x7x7', "7edge", 8]
 	]],
 	['Clock', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimal', "clko", 0],
 		['Concis', "clkc", 0],
 		['Ordre des boutons fixe', "clke", 0]

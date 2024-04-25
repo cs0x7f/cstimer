@@ -378,8 +378,11 @@
 				return do15puzzle(false, len, true, true);
 			case "clkwca": // Clock (WCA Notation)
 			case "clkwcab": // Clock (WCA Notation with buttons)
+			case "clknf": // Clock w/o flip
 				var clkapp = ["0+", "1+", "2+", "3+", "4+", "5+", "6+", "1-", "2-", "3-", "4-", "5-"];
-				ret = "UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
+				ret = type == "clknf" ?
+					"UR? DR? DL? UL? U(?,?) R(?,?) D(?,?) L(?,?) ALL? all?????":
+					"UR? DR? DL? UL? U? R? D? L? ALL? y2 U? R? D? L? ALL?????";
 				for (var i = 0; i < 14; i++) {
 					ret = ret.replace('?', rndEl(clkapp));
 				}
@@ -521,6 +524,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', 'ctico', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clknf', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', 'ctico', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

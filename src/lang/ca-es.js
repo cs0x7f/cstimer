@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 Arestes', "7edge", 8]
 	]],
 	['Rellotge', [
-		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
 		['WCA (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['òptim', "clko", 0],
 		['Concís', "clkc", 0],
 		['Ordre eficient de clavilles', "clke", 0]

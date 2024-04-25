@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7邊塊', "7edge", 8]
 	]],
 	['魔錶', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['最佳化', "clko", 0],
 		['簡潔', "clkc", 0],
 		['pin腳順序效率最佳化', "clke", 0]

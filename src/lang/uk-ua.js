@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 edges', "7edge", 8]
 	]],
 	['Годинник', [
-		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
 		['WCA (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimal', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]

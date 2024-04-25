@@ -113,7 +113,7 @@ var tools = execMain(function() {
 			return "skb";
 		} else if (/^sq(rs|1[ht]|rcsp)$/.exec(scrambleType)) {
 			return "sq1";
-		} else if (/^clk(wcab?|o)$/.exec(scrambleType)) {
+		} else if (/^clk(wcab?|o|nf)$/.exec(scrambleType)) {
 			return "clk";
 		} else if (/^(mgmp|mgmo|mgmc|minx2g|mlsll|mgmpll|mgmll)$/.exec(scrambleType)) {
 			return "mgm";

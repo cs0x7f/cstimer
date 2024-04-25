@@ -289,9 +289,10 @@ var scrdata = [
 		['Aristas de 7x7x7', "7edge", 8]
 	]],
 	['Reloj de Rubi', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['óptimo', "clko", 0],
 		['conciso', "clkc", 0],
 		['orden de pin eficiente', "clke", 0]

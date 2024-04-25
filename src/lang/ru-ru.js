@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 ребра', "7edge", 8]
 	]],
 	['Клок', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['оптимально', "clko", 0],
 		['сжатие', "clkc", 0],
 		['эффективный порядок контактов', "clke", 0]

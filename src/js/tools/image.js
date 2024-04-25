@@ -56,7 +56,7 @@ var image = execMain(function() {
 		}
 
 		var width = 3;
-		var movere = /([UD][RL]|ALL|[UDRLy])(\d[+-]?)?/
+		var movere = /([UD][RL]|ALL|[UDRLy]|all)(?:(\d[+-]?)|\((\d[+-]?),(\d[+-]?)\))?/
 		var movestr = ['UR', 'DR', 'DL', 'UL', 'U', 'R', 'D', 'L', 'ALL']
 		var colors = ['#f00', '#37b', '#5cf', '#ff0', '#850'];
 
@@ -73,18 +73,33 @@ var image = execMain(function() {
 					continue;
 				}
 				if (m[0] == 'y2') {
-					flip = 0;
+					flip = 9 - flip;
 					continue;
 				}
 				var axis = movestr.indexOf(m[1]) + flip;
-				if (m[2] == undefined) {
+				if (m[2] == undefined && m[3] == undefined) {
 					buttons[axis % 9] = 1;
 					continue;
 				}
-				var power = ~~m[2][0];
-				power = m[2][1] == '+' ? power : 12 - power;
-				for (var j = 0; j < 14; j++) {
-					clks[j] = (clks[j] + moveArr[axis][j] * power) % 12;
+				var power;
+				var actions = [];
+				if (m[1] == 'all') {
+					power = ~~m[2][0] * (m[2][1] == '+' ? -1 : 1) + 12;
+					actions.push(8 + 9 - flip, power);
+				} else if (m[2]) {
+					power = ~~m[2][0] * (m[2][1] == '+' ? 1 : -1) + 12;
+					actions.push(axis, power);
+				} else {
+					power = ~~m[3][0] * (m[3][1] == '+' ? 1 : -1) + 12;
+					actions.push(axis, power);
+					power = ~~m[4][0] * (m[4][1] == '+' ? -1 : 1) + 12;
+					axis = (10 - axis % 9) % 4 + 4 + 9 - flip;
+					actions.push(axis, power);
+				}
+				for (var k = 0; k < actions.length; k += 2) {
+					for (var j = 0; j < 14; j++) {
+						clks[j] = (clks[j] + moveArr[actions[k]][j] * actions[k + 1]) % 12;
+					}
 				}
 			}
 			clks = [clks[0], clks[3], clks[6], clks[1], clks[4], clks[7], clks[2], clks[5], clks[8],
@@ -97,8 +112,9 @@ var image = execMain(function() {
 
 			var y = [10, 30, 50];
 			var x = [10, 30, 50, 75, 95, 115];
-			for (var i = 0; i < 18; i++) {
-				drawClock([colors[1], colors[2]][~~(i / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[i]);
+			for (var ii = 0; ii < 18; ii++) {
+				var i = (ii + flip) % 18;
+				drawClock([colors[1], colors[2]][~~(ii / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[ii]);
 			}
 
 			y = [20, 40];

@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 Kanten', "7edge", 8]
 	]],
 	['Clock', [
-		['jaap', "clk", 0],
 		['WCA', "clkwca", 0],
 		['WCA (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimal', "clko", 0],
 		['präzise', "clkc", 0],
 		['effiziente Pin-Reihenfolge', "clke", 0]

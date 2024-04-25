@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 hrany', "7edge", 8]
 	]],
 	['Hodiny', [
-		['věci', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['věci', "clk", 0],
 		['optimální', "clko", 0],
 		['stručně', "clkc", 0],
 		['efektivní pin řád', "clke", 0]

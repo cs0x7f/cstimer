@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 cạnh', "7edge", 8]
 	]],
 	['Rubik Clock', [
-		['jaap', "clk", 0],
-		['Hiệp hội Rubik Thế giới', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['Hiệp hội Rubik Thế giới (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimal', "clko", 0],
 		['Ngắn Gọn', "clkc", 0],
 		['efficient pin order', "clke", 0]

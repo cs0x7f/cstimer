@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 élek', "7edge", 8]
 	]],
 	['Óra', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimális', "clko", 0],
 		['tömör', "clkc", 0],
 		['hatékony pöcök sorrend', "clke", 0]

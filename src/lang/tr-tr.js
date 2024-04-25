@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 kenarlar', "7edge", 8]
 	]],
 	['Saat', [
-		['jaap', "clk", 0],
-		['Dünya Küp Derneği', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['Dünya Küp Derneği (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['ideal', "clko", 0],
 		['Özlü', "clkc", 0],
 		['verimli düğme sırası', "clke", 0]

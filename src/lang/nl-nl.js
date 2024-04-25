@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 randen', "7edge", 8]
 	]],
 	['Klok', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['optimaal', "clko", 0],
 		['beknopt', "clkc", 0],
 		['Efficiente knop volgorde', "clke", 0]

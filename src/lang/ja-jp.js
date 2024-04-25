@@ -289,9 +289,10 @@ var scrdata = [
 		['7x7x7 edges', "7edge", 8]
 	]],
 	['クロック', [
-		['jaap', "clk", 0],
-		['wca', "clkwca", 0],
+		['WCA', "clkwca", 0],
 		['wca (old)', "clkwcab", 0],
+		['WCA w/o y2', "clknf", 0],
+		['jaap', "clk", 0],
 		['最適', "clko", 0],
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
