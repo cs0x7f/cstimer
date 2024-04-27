@@ -152,7 +152,13 @@ var TimerDataConverter = execMain(function() {
 			'sq1': 'sqrs',
 			'clock': 'clkwca',
 			'666': '666wca',
-			'777': '777wca'
+			'777': '777wca',
+			'333oh': '333oh',
+			'333bld': '333ni',
+			'444bld': '444bld',
+			'555bld': '555bld',
+			'333mbld': 'r3ni',
+			'333fmc': '333fm'
 		};
 		var name2idx = {};
 		var ret = [];
@@ -162,11 +168,12 @@ var TimerDataConverter = execMain(function() {
 				continue;
 			}
 			var name = line[0] + '-' + line[1];
+			var timeMs = Math.round(line[0] == '333mbld' ? ((~~(line[2] / 1000) % 1000000) * 1000) : line[2]);
 			var time = [{
 				'0': 0,
 				'1': 2000,
 				'2': -1
-			} [line[5]], Math.round(line[2])];
+			} [line[5]], timeMs];
 			if (!(name in name2idx)) {
 				name2idx[name] = ret.length;
 				ret.push({
@@ -181,6 +188,8 @@ var TimerDataConverter = execMain(function() {
 		}
 		return ret;
 	}];
+
+	Timers['CubicTimer'] = [/^"Puzzle";"Category";"Time\(millis\)";"Date\(millis\)";"Scramble";"Penalty";"Comment"/i, Timers['TwistyTimer'][1]];
 
 	Timers['BlockKeeper'] = [/^{"puzzles":\[{"name":/i, function(data) {
 		data = JSON.parse(stdStr(data))["puzzles"];
