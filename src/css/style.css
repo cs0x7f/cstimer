@@ -676,6 +676,10 @@ a {
 	width: 100%;
 }
 
+.m .myscroll {
+	min-height: 11em;
+}
+
 .myscroll::-webkit-scrollbar {
 	display: none;
 }
