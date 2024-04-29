@@ -168,12 +168,18 @@ var TimerDataConverter = execMain(function() {
 				continue;
 			}
 			var name = line[0] + '-' + line[1];
-			var timeMs = Math.round(line[0] == '333mbld' ? ((~~(line[2] / 1000) % 1000000) * 1000) : line[2]);
-			var time = [{
-				'0': 0,
-				'1': 2000,
-				'2': -1
-			} [line[5]], timeMs];
+			var comment = line[6];
+			var timeMs = parseInt(line[2]);
+			var penalty = ({ '0': 0, '1': 2000, '2': -1 }[line[5]]) || 0;
+			if (line[0] == '333mbld') {
+				timeMs = (Math.trunc(line[2] / 1000) % 1000000) * 1000;
+				var point = 1000 - Math.trunc(line[2] / 1000000000);
+				var solved = point + (line[2] % 1000);
+				var attempted = solved + (line[2] % 1000);
+				penalty = 0;
+				comment = '[' + solved + '/' + attempted + ']' + (comment ? ', ' + comment : '');
+			}
+			var time = [penalty, timeMs];
 			if (!(name in name2idx)) {
 				name2idx[name] = ret.length;
 				ret.push({
@@ -184,7 +190,7 @@ var TimerDataConverter = execMain(function() {
 					'times': []
 				});
 			}
-			ret[name2idx[name]]['times'].push([time, line[4], line[6], Math.round(line[3] / 1000)]);
+			ret[name2idx[name]]['times'].push([time, line[4], comment, Math.round(line[3] / 1000)]);
 		}
 		return ret;
 	}];
