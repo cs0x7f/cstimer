@@ -158,7 +158,7 @@ var scramble = execMain(function(rn, rndEl) {
 	};
 
 	var scrFlt = "";
-	var inputText = $('<textarea />');
+	var scrTPRe = /^\$T([a-zA-Z0-9]+)(-[0-9]+)?\$\s*(.*)$/;
 
 	function genScramble() {
 		kernel.blur();
@@ -245,21 +245,21 @@ var scramble = execMain(function(rn, rndEl) {
 	function scrStd(type, scramble, len, forDisplay, forceKeyM) {
 		scramble = scramble || '';
 		len = len || 0;
-		var m = /^\$T([a-zA-Z0-9]+)(-[0-9]+)?\$\s*(.*)$/.exec(scramble);
+		var m = scrTPRe.exec(scramble);
 		if (m) {
 			type = m[1];
 			scramble = m[3];
 			len = ~~m[2];
 		}
+		var scrTxt = scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1');
 		if (forDisplay) {
-			var scrTxtLen = scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1').length;
-			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scrTxtLen, 10), 0.30) * 20) / 20) : 1;
+			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scrTxt.length, 10), 0.30) * 20) / 20) : 1;
 			sdiv.css('font-size', fontSize + 'em');
 			DEBUG && console.log('[scrFontSize]', fontSize);
 			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
 				.replace(/`([^`]*)`/g, forceKeyM || kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 		} else {
-			return [type, scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1'), len];
+			return [type, scrTxt, len];
 		}
 	}
 
@@ -440,6 +440,24 @@ var scramble = execMain(function(rn, rndEl) {
 	var inputScrambleGen = (function() {
 
 		var inputScramble = [];
+		var inputDiv;
+		var inputText;
+		var puzzleSelect;
+
+		function init() {
+			inputDiv = $('<table>');
+			inputText = $('<textarea style="width:100%;height:100%;">');
+			puzzleSelect = $('<select>');
+			var puzzles = ["333", "222so", "444wca", "555wca", "666wca", "777wca", "clkwca", "mgmp", "pyrso", "skbso", "sqrs"];
+			for (var i = 0; i < puzzles.length; i++) {
+				puzzleSelect.append($('<option>').val(puzzles[i]).html(menu.getValName(puzzles[i])));
+			}
+			inputDiv.append(
+				$('<tr height=0%>').append($('<td>').append('Scramble type:', puzzleSelect)),
+				$('<tr height=100%>').append($('<td>').append(inputText))
+			);
+			puzzleSelect.val('333');
+		}
 
 		function next() {
 			var ret = null;
@@ -449,8 +467,11 @@ var scramble = execMain(function(rn, rndEl) {
 			if (ret) {
 				return ret;
 			}
+			if (!puzzleSelect) {
+				init();
+			}
 			inputText.val("");
-			kernel.showDialog([inputText, inputOK, inputCancel], 'input', SCRAMBLE_INPUT);
+			kernel.showDialog([inputDiv, inputOK, inputCancel], 'input', SCRAMBLE_INPUT);
 			return "";
 		}
 
@@ -476,10 +497,15 @@ var scramble = execMain(function(rn, rndEl) {
 			}
 			inputScramble = [];
 			var inputs = str.split('\n');
+			var typePrefix = '$T' + puzzleSelect.val() + '$';
 			for (var i = 0; i < inputs.length; i++) {
 				var s = inputs[i];
 				if (s.match(/^\s*$/) == null) {
-					inputScramble.push(s.replace(/^\d+[\.\),]\s*/, ''));
+					s = s.replace(/^\d+[\.\),]\s*/, '');
+					if (!scrTPRe.exec(s)) {
+						s = typePrefix + s;
+					}
+					inputScramble.push(s);
 				}
 			}
 			return inputScramble.length != 0;
