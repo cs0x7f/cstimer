@@ -3,14 +3,14 @@ var CANCEL_LANG = 'Annuleren';
 var RESET_LANG = 'Herstel';
 var ABOUT_LANG = 'Over';
 var ZOOM_LANG = 'Inzoomen';
-var COPY_LANG = 'Copy';
+var COPY_LANG = 'Kopiëren';
 var BUTTON_TIME_LIST = 'Lijst<br>Tijden';
 var BUTTON_OPTIONS = 'Opties';
 var BUTTON_EXPORT = 'Exporteren';
 var BUTTON_DONATE = 'Doneren';
 var PROPERTY_SR = 'With session';
 var PROPERTY_USEINS = 'Gebruik WCA inspectie';
-var PROPERTY_USEINS_STR = 'Always (down)|Always (up)|Except BLD (down)|Except BLD (up)|Never';
+var PROPERTY_USEINS_STR = 'Altijd (beneden)|Altijd (boven)|Behalve BLD (beneden)|Behalve BLD (boven)|Nooit';
 var PROPERTY_SHOWINS = 'Toon een pictogram wanneer inspectie is ingeschakeld';
 var PROPERTY_VOICEINS = 'Stem alarm bij WCA inspection';
 var PROPERTY_VOICEINS_STR = 'geen|mannelijke stem|vrouwlijke stem';
@@ -24,8 +24,8 @@ var PROPERTY_SCRMONO = 'Monospace scramble';
 var PROPERTY_SCRLIM = 'Limiteer de hoogte van scramble vlak';
 var PROPERTY_SCRALIGN = 'Uitlijnen van scramble vlak';
 var PROPERTY_SCRALIGN_STR = 'midden|links|rechts';
-var PROPERTY_SCRNEUT = 'Color neutral';
-var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCRNEUT = 'Kleur neutraal';
+var PROPERTY_SCRNEUT_STR = 'Geen|Enig zijde|Dubbel zijdes|Zes zijdes';
 var PROPERTY_SCRFAST = 'Gebruik snelle scramble voor 4x4x4 (niet-officiëel)';
 var PROPERTY_SCRKEYM = 'Label sleutelbeweging (en) in scramble';
 var PROPERTY_SCRCLK = 'Actie bij klikken op scramble';
@@ -108,7 +108,7 @@ var OLCOMP_WCAACCOUNT = 'WCA Account';
 var OLCOMP_ABORT = 'Competitie afbreken en resultaten laten zien?';
 var OLCOMP_WITHANONYM = 'Met anoniem';
 var PROPERTY_IMGSIZE = 'Tekstgrootte scramble';
-var PROPERTY_IMGREP = 'Show virtual cube animation when clicking scramble image';
+var PROPERTY_IMGREP = 'Laat virtuele kubus animatie zien wanneer je clickt op de foto van de scramble';
 var TIMER_INSPECT = 'Inspectie';
 var TIMER_SOLVE = 'Oplossen';
 var PROPERTY_USEMOUSE = 'gebruik muis stopwatch';
@@ -134,7 +134,7 @@ var PROPERTY_FONT = 'Selecteer lettertype timer';
 var PROPERTY_FONT_STR = 'Willekeurig digitaal|Normaal|Digitaal1|Digitaal2|Digitaal3|Digitaal4|Digitaal5';
 var PROPERTY_FORMAT = 'Tijdsindeling';
 var PROPERTY_USEKSC = 'Gebruik sneltoetsen';
-var PROPERTY_USEGES = 'use gesture control';
+var PROPERTY_USEGES = 'Gebruik gebaren controle';
 var PROPERTY_NTOOLS = 'Aantal hulpmiddelen';
 var PROPERTY_AHIDE = 'Verberg Alle Elementen wanneer je aan het timen bent';
 var SCRAMBLE_LAST = 'Laatste';
@@ -437,9 +437,9 @@ var scrdata = [
 		['Alleen halve draaien', "half", 0],
 		['Laatste slot + laatste laag (oud)', "lsll", 15]
 	]],
-	['Bandaged Cube', [
+	['Bandaged Kubus', [
 		['Bicube', "bic", 30],
-		['Square-1 /,(1,0)', "bsq", 25]
+		['Square-1 /,(0,1)', "bsq", 25]
 	]],
 	['Relays', [
 		['Veel 3x3x3s', "r3", 5],
@@ -493,18 +493,18 @@ var STATS_SSSTAT = '1-solve stat.';
 var STATS_SSRETRY = 'Retry';
 var STATS_CURROUND = 'Gegevens actuele ronde';
 var STATS_CURSESSION = 'Gegevens actuele sessie';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
+var STATS_CURSPLIT = 'Fass %d van de Huidige Sessie Statistieken';
 var STATS_EXPORTCSV = 'Exporteer CSV';
 var STATS_SSMGR_TITLE = 'Sessie manager';
 var STATS_SSMGR_NAME = 'Naam';
 var STATS_SSMGR_DETAIL = 'Sessie details';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort';
+var STATS_SSMGR_OPS = 'Hernoemen|Maken|Delen|Bijeenvoegen|Verwijderen|Sorteren';
 var STATS_SSMGR_ORDER = 'Sorteer op scramble';
 var STATS_SSMGR_ODCFM = 'Alle sessies sorteren op scramble?';
 var STATS_SSMGR_SORTCFM = '%d solve(s) will be reordered, confirm?';
-var STATS_ALERTMG = 'Merge all times in session [%f] to the end of session [%t]?';
-var STATS_PROMPTSPL = 'Number of latest times split from session [%s]?';
-var STATS_ALERTSPL = 'Should split or leave 1 time at least';
+var STATS_ALERTMG = 'Voeg alle tijden bijeen in sessie [%f] naar het eind vam sessie %t';
+var STATS_PROMPTSPL = 'Nummer van de laatste tijden die je wilt delen van sessie [%s]?';
+var STATS_ALERTSPL = 'Moet minstens 1 keer worden gesplitst worden';
 var STATS_AVG = 'Gemiddelde';
 var STATS_SUM = 'som';
 var STATS_SOLVE = 'Opgelost';
@@ -517,7 +517,7 @@ var STATS_PREC = 'precisie tijdsverdeling';
 var STATS_PREC_STR = 'Automatisch|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'lijst %d type|lijst %d lengte|average|mean';
 var STATS_STATCLR = 'Schakel sessie leegmaken in';
-var STATS_ABSIDX = 'Show absolute index in statistics report';
+var STATS_ABSIDX = 'Laat absolute index in statistiek rapport';
 var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
 var STATS_XSESSION_NAME = 'elke naam';
 var STATS_XSESSION_SCR = 'any scramble';
@@ -531,13 +531,13 @@ var PROPERTY_SCR2SS = 'maak nieuwe sessie bij wisselen van scramble type';
 var PROPERTY_SS2SCR = 'herstel scramble tytpe bij wisselen van sessie';
 var PROPERTY_SS2PHASES = 'herstel multi-fase tijdmeting bij wisselen van sessie';
 var PROPERTY_STATINV = 'Omgekeerde tijdenlijst';
-var PROPERTY_STATSSUM = 'Show sum in time list';
+var PROPERTY_STATSSUM = 'Laat som zien in tijdenlijst';
 var PROPERTY_STATTHRES = 'Doeltijd voor sessie beste tijd weergeven';
-var PROPERTY_STATBPA = 'Show best possible average (BPA)';
-var PROPERTY_STATWPA = 'Show worst possible average (WPA)';
+var PROPERTY_STATBPA = 'Laat best mogelijke gemiddelde zien (BPA)';
+var PROPERTY_STATWPA = 'Laat slechts mogelijke gemiddelde zien (WPA)';
 var PROPERTY_STATAL = 'Statistische indicatoren';
 var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_HLPBS = 'Highlight PBs';
+var PROPERTY_HLPBS = 'PBs Markeren';
 var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bolder|None';
 var PROPERTY_DELMUL = 'Inschakelen meervoudige verwijdering';
 var PROPERTY_TOOLSFUNC = 'Selected Functions';
@@ -568,7 +568,7 @@ var BGIMAGE_OPACITY = 'Transparantie achtergrondafbeelding';
 var BGIMAGE_IMAGE = 'Achtergrondafbeelding';
 var BGIMAGE_IMAGE_STR = 'Geen|Automatischl|CCT';
 var SHOW_AVG_LABEL = 'Toon gemiddelde';
-var SHOW_DIFF_LABEL = 'Show Difference Label';
+var SHOW_DIFF_LABEL = 'Laat labelverschil zien';
 var SHOW_DIFF_LABEL_STR = '-Green+Red|-Red+Green|Normal|None';
 var USE_LOGOHINT = 'Hint berichten in logo';
 var TOOLS_SCRGEN = 'ScrambleGenerator';
