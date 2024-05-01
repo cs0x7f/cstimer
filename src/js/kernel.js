@@ -867,7 +867,10 @@ var kernel = execMain(function() {
 			}
 			if (navigator.wakeLock && navigator.wakeLock.request) {
 				var requestWakeLock = function () {
-					return navigator.wakeLock.request('screen').then(function (lock) {
+					if (document.visibilityState != 'visible') {
+						return;
+					}
+					navigator.wakeLock.request('screen').then(function (lock) {
 						DEBUG && console.log('[ui]', 'Screen Wake Lock is active');
 						lock.addEventListener('release', function () {
 							DEBUG && console.log('[ui]', 'Screen Wake Lock is released');
@@ -875,11 +878,7 @@ var kernel = execMain(function() {
 					});
 				};
 				requestWakeLock();
-				document.addEventListener('visibilitychange', function () {
-					if (document.visibilityState === 'visible') {
-						requestWakeLock();
-					}
-				});
+				document.addEventListener('visibilitychange', requestWakeLock);
 			}
 		});
 
