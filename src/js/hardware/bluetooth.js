@@ -413,7 +413,7 @@ var GiikerCube = execMain(function() {
 				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 				var mac = savedMacMap[deviceName];
 				if (!mac || forcePrompt) {
-					mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + 'Please enter MAC address.\nMAC address (xx:xx:xx:xx:xx:xx) of your cube can be found using chrome://bluetooth-internals/#devices', mac || 'xx:xx:xx:xx:xx:xx');
+					mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + GIIKER_REQMACMSG, mac || 'xx:xx:xx:xx:xx:xx');
 				}
 				var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
 				if (!m) {
@@ -1403,7 +1403,7 @@ var GiikerCube = execMain(function() {
 	function init(timer) {
 
 		if (!window.navigator || !window.navigator.bluetooth) {
-			alert("Bluetooth API is not available. Ensure https access, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled");
+			alert(GIIKER_NOBLEMSG);
 			return Promise.reject();
 		}
 		var chkAvail = Promise.resolve(true);
@@ -1414,7 +1414,7 @@ var GiikerCube = execMain(function() {
 		return chkAvail.then(function(available) {
 			DEBUG && console.log('[bluetooth]', 'is available', available);
 			if (!available) {
-				return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
+				return Promise.reject(GIIKER_NOBLEMSG);
 			}
 			return window.navigator.bluetooth.requestDevice({
 				filters: [{
