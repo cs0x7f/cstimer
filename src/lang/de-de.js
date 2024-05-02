@@ -246,6 +246,7 @@ var scrdata = [
 		['EG2', "222eg2", 0],
 		['TCLL+', "222tcp", 0],
 		['TCLL-', "222tcn", 0],
+		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
 		['Keine Bar', "222nb", 0]
 	]],
@@ -580,8 +581,8 @@ var VRCREPLAY_ORI = 'raw ori|automatische ori';
 var VRCREPLAY_SHARE = 'Link teilen';
 var GIIKER_CONNECT = 'Klicke zum Verbinden';
 var GIIKER_RESET = 'Zurücksetzen (als gelöst markieren)';
-var GIIKER_REQMACMSG = 'Please enter the MAC address of your smart hardware (xx:xx:xx:xx:xx:xx). You can find the MAC address through chrome://bluetooth-internals/#devices, or modify following options to let csTimer automatically obtain it:\nChrome: Turn on chrome://flags/#enable-experimental-web-platform-features\nBluefy: Turn on Enable BLE Advertisements';
-var GIIKER_NOBLEMSG = 'Bluetooth API is not available. Ensure https access, check bluetooth is enabled on your device, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled';
+var GIIKER_REQMACMSG = 'Bitte geben Sie die MAC-Adresse Ihres Smart-Geräts (xx:xx:xx:xx:xx:xx) ein. Die MAC-Adresse finden Sie unter chrome://bluetooth-internals/#devices. Alternativ können Sie die folgenden Einstellungen vornehmen, damit csTimer diese automatisch abrufen kann:\nChrome: Aktivieren Sie chrome://flags/#enable-experimental-web-platform-features\nBluefy: Aktivieren Sie "Enable BLE Advertisements" ("Aktiviere BLE Anzeigen")';
+var GIIKER_NOBLEMSG = 'Bluetooth-API ist nicht verfügbar. Stellen Sie sicher, dass die Seite über https aufgerufen wurde, überprüfen Sie, ob Bluetooth auf Ihrem Gerät aktiviert ist, und versuchen Sie, die Seite in Chrome mit der Einstellung chrome://flags/#enable-experimental-web-platform-features neu zu laden.';
 var PROPERTY_SHOWAD = 'Werbung anzeigen (wird nach erneutem Laden angewendet)';
 var PROPERTY_GIIORI = 'Cube-Ausrichtung';
 var LGHINT_INVALID = 'Ungültiger Wert!';

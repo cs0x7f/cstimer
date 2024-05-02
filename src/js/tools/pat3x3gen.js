@@ -26,11 +26,7 @@ var pat3x3gen = (function() {
 		[48, 14] // BR
 	];
 
-	function bitCount(x) {
-		x -= (x >> 1) & 0x55555555;
-		x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
-		return ((x + (x >> 4) & 0xf0f0f0f) * 0x1010101) >> 24;
-	}
+	var bitCount = mathlib.bitCount;
 
 	function iterFill(depth, mask, ori, parity, memo, candidates, nOri, sampleArr) {
 		var key = (mask * nOri + ori) * 2 + parity;
@@ -291,7 +287,8 @@ var pat3x3gen = (function() {
 			while (facelet == mathlib.SOLVED_FACELET) {
 				facelet = pat3x3gen.genPattern.apply(null, params);
 			}
-			return scramble_333.genFacelet(facelet);
+			var solution = scramble_333.genFacelet(facelet);
+			return solution.replace(/ +/g, ' ');
 		}
 
 		function execFunc(fdiv) {

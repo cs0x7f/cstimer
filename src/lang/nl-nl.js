@@ -246,6 +246,7 @@ var scrdata = [
 		['EG2', "222eg2", 0],
 		['TCLL+', "222tcp", 0],
 		['TCLL-', "222tcn", 0],
+		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
 		['Geen balk', "222nb", 0]
 	]],

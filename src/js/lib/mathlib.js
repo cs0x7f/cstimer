@@ -1454,6 +1454,7 @@ var mathlib = (function() {
 	return {
 		Cnk: Cnk,
 		fact: fact,
+		bitCount: bitCount,
 		getPruning: getPruning,
 		setNOri: setNOri,
 		getNOri: getNOri,

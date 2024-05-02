@@ -957,7 +957,14 @@ var poly3d = (function() {
 
 	function getFamousPuzzle(name, bindObj) {
 		var polyParam, parser, scale = 1, pieceGap = 0.075, colors = [];
-		if (name == "pyr" || name == "mpyr") {
+		if (/^(\d)\1\1$/.exec(name)) {
+			var dim = /^(\d)\1\1$/.exec(name);
+			dim = ~~dim[1];
+			polyParam = [6, [-5]];
+			for (var i = 0; i < (dim >> 1); i++) {
+				polyParam[1].push(1 - (i + 1) * 2 / dim);
+			}
+		} else if (name == "pyr" || name == "mpyr") {
 			polyParam = [4, [], [], {
 				"pyr": [-5, 5/3, 1/3],
 				"mpyr": [-5, 2, 1, 0]
