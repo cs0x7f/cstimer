@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Anpassning av blandningsområdet';
 var PROPERTY_SCRALIGN_STR = 'Mitten|Vänster|Höger';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Använd snabb blandning för 4x4x4 (ej officiell)';
 var PROPERTY_SCRKEYM = 'Markeringsnyckeln flyttas i blandning';
 var PROPERTY_SCRCLK = 'Händelse vid tryckning på blanda';

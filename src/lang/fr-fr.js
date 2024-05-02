@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Alignement de la zone de mélange';
 var PROPERTY_SCRALIGN_STR = 'Centre|Gauche|Droite';
 var PROPERTY_SCRNEUT = 'Couleur neutre';
 var PROPERTY_SCRNEUT_STR = 'Aucun|Simple Face|Double Face|Six Faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Utiliser des mélanges rapides pour 4x4x4 (non officiel)';
 var PROPERTY_SCRKEYM = 'Indiquer le(s) mouvement(s) clé(s) dans Mélange';
 var PROPERTY_SCRCLK = 'Quand le mélange est cliqué';

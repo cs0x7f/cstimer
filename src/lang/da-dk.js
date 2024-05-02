@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Justering af blandings området';
 var PROPERTY_SCRALIGN_STR = 'centrum|venstre|højre';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Brug hurtig blanding til 4x4x4 (ikke officiel)';
 var PROPERTY_SCRKEYM = 'Marker nøgle rotationer i blanding';
 var PROPERTY_SCRCLK = 'Handling ved klik på blanding';

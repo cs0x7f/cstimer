@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Sekoitusalueen tasaus';
 var PROPERTY_SCRALIGN_STR = 'keskellä|vasemmalla|oikealla';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Käytä nopeaa sekoitusta 4 x 4 x 4 (Epävirallinen)';
 var PROPERTY_SCRKEYM = 'Merkkaa avainsiirto(avainsiirrot) sekoituksessa';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

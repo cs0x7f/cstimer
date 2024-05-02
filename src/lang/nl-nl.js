@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Uitlijnen van scramble vlak';
 var PROPERTY_SCRALIGN_STR = 'midden|links|rechts';
 var PROPERTY_SCRNEUT = 'Kleur neutraal';
 var PROPERTY_SCRNEUT_STR = 'Geen|Enig zijde|Dubbel zijdes|Zes zijdes';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Gebruik snelle scramble voor 4x4x4 (niet-officiëel)';
 var PROPERTY_SCRKEYM = 'Label sleutelbeweging (en) in scramble';
 var PROPERTY_SCRCLK = 'Actie bij klikken op scramble';

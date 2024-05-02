@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Alignment of scramble area';
 var PROPERTY_SCRALIGN_STR = 'Центр|ліворуч|праворуч';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Використання швидкого скрамблу для 4х4х4 (неофіційно)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

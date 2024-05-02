@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Karıştırma bölgesi hizası';
 var PROPERTY_SCRALIGN_STR = 'merkez|sol|sağ';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = '4x4x4 için hızlı karışım kullanma (resmi değil)';
 var PROPERTY_SCRKEYM = 'Karıştırmada anahtar hareket(ler)ini etiketleyin';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

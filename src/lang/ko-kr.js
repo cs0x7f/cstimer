@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = '섞기 창 정렬 방식';
 var PROPERTY_SCRALIGN_STR = '가운데|왼쪽|오른쪽';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = '빠른 4x4x4 섞기 사용 (비공인)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_SCRCLK = '섞기를 클릭할 때 동작';

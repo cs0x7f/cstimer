@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = '打亂對齊';
 var PROPERTY_SCRALIGN_STR = '置中|靠左|靠右';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = '4x4x4使用快速打亂(非官方)';
 var PROPERTY_SCRKEYM = '打亂中標記關鍵步驟';
 var PROPERTY_SCRCLK = '點擊打亂時的動作';

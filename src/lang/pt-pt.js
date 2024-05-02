@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Alinhamento da área do embaralhamento';
 var PROPERTY_SCRALIGN_STR = 'centro|esquerda|direita';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Usando embaralhamento rápido para 4x4x4 (não-oficial)';
 var PROPERTY_SCRKEYM = 'Destacar movimento(s) chave';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'יישור אזור הבלגון';
 var PROPERTY_SCRALIGN_STR = 'מרכז|שמאל|ימין';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'משתמש בבלגון מהיר ל-4×4×4 (לא רשמי)';
 var PROPERTY_SCRKEYM = 'סמן מהלך(י) מפתח בבלגון';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

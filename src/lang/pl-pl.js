@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Wyrównanie tekstu w polu mieszania';
 var PROPERTY_SCRALIGN_STR = 'Środek|Lewa|Prawa';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Używanie szybkiego algorytmu mieszającego dla 4x4x4 (nieoficjalny)';
 var PROPERTY_SCRKEYM = 'Oznacz kluczowe ruchy w scramble\'u';
 var PROPERTY_SCRCLK = 'Akcja po kliknięciu na scramble';

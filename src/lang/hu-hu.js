@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Keverési terület elhelyezése';
 var PROPERTY_SCRALIGN_STR = 'közép|bal|jobb';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Gyors keverés használata 4x4x4-hez (nem hivatalos)';
 var PROPERTY_SCRKEYM = 'Fő mozdulat(ok) megjelölése a keverésben';
 var PROPERTY_SCRCLK = 'Akció a keverésre kattintáskor';

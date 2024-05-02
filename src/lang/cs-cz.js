@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Zarovnání scramble oblasti';
 var PROPERTY_SCRALIGN_STR = 'střed|vlevo|vpravo';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Použít rychlí scramble pro 4x4x4(neoficiální)';
 var PROPERTY_SCRKEYM = 'Klíčovy krok pohybů v zamíchání';
 var PROPERTY_SCRCLK = 'Akce při kliknutí na scramble';

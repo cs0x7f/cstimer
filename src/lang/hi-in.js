@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'फेरबदल क्षेत्र का सं�
 var PROPERTY_SCRALIGN_STR = 'मध्य|बाएँ|दाएँ';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = '4x4x4 के लिए तेज़ फेरबदल का उपयोग करें (अनौपचारिक)';
 var PROPERTY_SCRKEYM = 'फेरबदल में मुख्य चालों को अंकित करें';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

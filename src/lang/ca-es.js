@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Aliniament de l\'àrea de barreja';
 var PROPERTY_SCRALIGN_STR = 'Centre|Esquerra|Dreta';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Fer servir barreja ràpida per 4x4x4 (no-oficial)';
 var PROPERTY_SCRKEYM = 'Marcar moviment(s) clau en la barreja';
 var PROPERTY_SCRCLK = 'Acció a la hora de fer clic a la barreja';

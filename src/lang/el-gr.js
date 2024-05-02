@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Τοποθέτηση της περιοχής μπερδ
 var PROPERTY_SCRALIGN_STR = 'κεντρο|αριστερα|δεξια';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Χρησιμοποίησε γρήγορο μπέρδεμα για 4x4x4 (όχι επίσημο)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

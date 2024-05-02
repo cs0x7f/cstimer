@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'تعیین تراز اسکرمبل';
 var PROPERTY_SCRALIGN_STR = 'وسط|چپ|راست';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'استفاده از اسکرمبل سریع تر برای 4x4x4 (غیر رسمی)';
 var PROPERTY_SCRKEYM = 'کلید برچسب در تقلا حرکت می کند';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

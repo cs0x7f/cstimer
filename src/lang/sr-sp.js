@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Поравнавање скрембл простора'
 var PROPERTY_SCRALIGN_STR = 'Центар|Лево|Десно';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Користи брзи скрембл за 4 x 4 x 4 (незванична)';
 var PROPERTY_SCRKEYM = 'Означи кључни потез(е) у скремблу';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

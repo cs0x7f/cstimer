@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'محاذاة منطقة الخلط';
 var PROPERTY_SCRALIGN_STR = 'وَسَط|يسار|يمين';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'استخدام الخلط السريع لـمكعب 4x4x4 (غير رسمي)';
 var PROPERTY_SCRKEYM = 'تسمية مفتاح الحركة (الحركات) في الخلط';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

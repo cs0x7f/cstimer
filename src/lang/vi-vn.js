@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Vị trí của scramble';
 var PROPERTY_SCRALIGN_STR = 'Giữa|Trái|Phải';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Dùng công thức tráo nhanh cho 4x4x4 (không chính thức)';
 var PROPERTY_SCRKEYM = 'Đánh dấu (các) bước xoay quan trọng trong công thức tráo';
 var PROPERTY_SCRCLK = 'Hành động khi bấm vào một cách tráo';

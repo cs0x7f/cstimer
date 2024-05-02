@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Aurichtung des Scramble-Bereichs';
 var PROPERTY_SCRALIGN_STR = 'mittig|links|rechts';
 var PROPERTY_SCRNEUT = 'Farbneutral';
 var PROPERTY_SCRNEUT_STR = 'Keine Seite|Eine Seite|Zwei Seiten|Sechs Seiten';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'schnellen Scramble für 4x4x4 verwenden (inoffiziell)';
 var PROPERTY_SCRKEYM = 'Schlüssel-Züge im Scramble hervorheben';
 var PROPERTY_SCRCLK = 'Aktion beim klicken des scrambles';

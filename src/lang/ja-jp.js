@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'スクランブルエリアの左右配置';
 var PROPERTY_SCRALIGN_STR = '中央|左|右';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = '4x4x4の高速スクランブルを利用する(非公式)';
 var PROPERTY_SCRKEYM = 'スクランブルの主要な動きにラベルをつける';
 var PROPERTY_SCRCLK = 'スクランブルをクリックしたときの動作';

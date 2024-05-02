@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Alinierea zonei amestecării';
 var PROPERTY_SCRALIGN_STR = 'centru|stânga|dreapta';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Amestecare rapida pentru 4x4x4 (non-oficială)';
 var PROPERTY_SCRKEYM = 'Etichetați mișcarea (mutările) cheii în amestecare';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

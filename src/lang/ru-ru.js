@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Выравнивание зоны скрамбла';
 var PROPERTY_SCRALIGN_STR = 'центр|лево|право';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Использовать быстрый скрамбл для 4х4х4(неофициально)';
 var PROPERTY_SCRKEYM = 'Главный(ые) ход(ы) в скрамбле';
 var PROPERTY_SCRCLK = 'Действие при нажатии на скрамбл';

@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Allineamento area di scramble';
 var PROPERTY_SCRALIGN_STR = 'centro|sinistra|destra';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Usa scramble veloce per il 4x4x4 (non ufficiale)';
 var PROPERTY_SCRKEYM = 'Etichetta le mosse principali nello scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

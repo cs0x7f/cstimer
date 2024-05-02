@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Položaj mešalnega algoritma';
 var PROPERTY_SCRALIGN_STR = 'Sredina|levo|desno';
 var PROPERTY_SCRNEUT = 'Barvno nevtralno';
 var PROPERTY_SCRNEUT_STR = 'Nič|Ena stran|Dve strani|Šest strani';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Using fast scramble for 4x4x4 (non-official)';
 var PROPERTY_SCRKEYM = 'Label key move(s) in scramble';
 var PROPERTY_SCRCLK = 'Action when clicking scramble';

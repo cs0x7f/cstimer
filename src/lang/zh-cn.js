@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = '打乱区对齐方式';
 var PROPERTY_SCRALIGN_STR = '居中|左对齐|右对齐';
 var PROPERTY_SCRNEUT = '六色底';
 var PROPERTY_SCRNEUT_STR = '禁用|单色|双色|六色';
+var PROPERTY_SCREQPR = '生成训练打乱时，各情况以等概率出现，而非真实概率';
 var PROPERTY_SCRFAST = '四阶魔方使用快速打乱（非官方）';
 var PROPERTY_SCRKEYM = '标记打乱中的关键转动';
 var PROPERTY_SCRCLK = '点击打乱时的动作';

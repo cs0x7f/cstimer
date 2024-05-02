@@ -26,6 +26,7 @@ var PROPERTY_SCRALIGN = 'Poravnanje okvira za scramble';
 var PROPERTY_SCRALIGN_STR = 'centrirano|lijevo|desno';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
 var PROPERTY_SCRFAST = 'Korištenje brzog rastavljanja za 4x4x4 (nije sluzbeno)';
 var PROPERTY_SCRKEYM = 'Označi ključne poteze u scrambleu';
 var PROPERTY_SCRCLK = 'Akcija prilikom klika na scramble';

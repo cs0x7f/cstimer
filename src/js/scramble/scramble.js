@@ -111,14 +111,21 @@ var scrMgr = (function(rn, rndEl) {
 		for (var i = 0; i < filter.length; i++) {
 			if (!filter[i]) {
 				ret[i] = 0;
+			} else if (equalProb) {
+				ret[i] = 1;
 			}
 		}
 		return mathlib.rndProb(ret);
 	}
 
 	function fixCase(cases, probs) {
-		return cases == undefined ? mathlib.rndProb(probs) : cases;
+		if (cases != undefined) {
+			return cases;
+		}
+		return equalProb ? mathlib.rn(probs.length) : mathlib.rndProb(probs);
 	}
+
+	var equalProb = false;
 
 	return {
 		reg: regScrambler,
@@ -129,7 +136,9 @@ var scrMgr = (function(rn, rndEl) {
 		mega: mega,
 		formatScramble: formatScramble,
 		rndState: rndState,
-		fixCase: fixCase
+		fixCase: fixCase,
+		setEqPr: function(ep) { equalProb = ep; },
+		getEqPr: function() { return equalProb; }
 	}
 })(mathlib.rn, mathlib.rndEl);
 
@@ -728,6 +737,8 @@ var scramble = execMain(function(rn, rndEl) {
 				if (value[2] == 'modify') {
 					genScramble();
 				}
+			} else if (value[0] == 'scrEqPr') {
+				scrMgr.setEqPr(!!value[1]);
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -835,7 +846,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide|Neut)$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide|Neut|EqPr)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'scrfix', procSignal);
@@ -853,6 +864,7 @@ var scramble = execMain(function(rn, rndEl) {
 			["(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
 		], 1);
 		kernel.regProp('scramble', 'scrNeut', 1, PROPERTY_SCRNEUT, ['n', ['n', '1', '2', '6'], PROPERTY_SCRNEUT_STR.split('|')], 1);
+		kernel.regProp('scramble', 'scrEqPr', 0, PROPERTY_SCREQPR, [false], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
 		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['c', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);
