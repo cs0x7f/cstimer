@@ -43,7 +43,7 @@
 			echo '{"retcode":500,"reason":"db insert error"}';
 		}
 	} else if (isset($_POST['cnt'])) {
-		$sql = "SELECT `value_len` AS size, unix_timestamp(`upload_time`) AS modifiedTime FROM `export_data` WHERE `uid` = '$uid'";
+		$sql = "SELECT `value_len` AS size, unix_timestamp(`upload_time`) AS modifiedTime FROM `export_data` WHERE `uid` = '$uid' ORDER BY `upload_time` DESC";
 		$ret = $db->query($sql);
 		if ($ret === false) {
 			echo '{"retcode":500,"reason":"db select error"}';

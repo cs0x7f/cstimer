@@ -211,7 +211,7 @@ var exportFunc = execMain(function() {
 			}
 			var idx = 1;
 			if (kernel.getProp('expp')) {
-				idx = promptWhichFile(val['files'] || mathlib.valuedArray(40, {}));
+				idx = promptWhichFile(val['files'] || mathlib.valuedArray(cnt, {}));
 				if (idx <= 0 || idx > cnt) {
 					return revert();
 				}
