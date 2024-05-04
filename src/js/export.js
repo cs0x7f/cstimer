@@ -174,6 +174,18 @@ var exportFunc = execMain(function() {
 		});
 	}
 
+	// files = [{size: xx, modifiedTime: xx}]
+	function promptWhichFile(files) {
+		var msg = 'You have %d file(s), which one should be imported?'.replace('%d', files.length);
+		var msgfmt = '%s byte(s), uploaded at %t';
+		var msgf = [msg];
+		for (var ff = 0; ff < files.length; ff++) {
+			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', files[ff].size)
+				.replace('%t', new Date(files[ff].modifiedTime).toLocaleString()));
+		}
+		return ~~prompt(msgf.join('\n'), '1');
+	}
+
 	function downloadData(e) {
 		var id = getId(e);
 		if (!id) {
@@ -199,7 +211,7 @@ var exportFunc = execMain(function() {
 			}
 			var idx = 1;
 			if (kernel.getProp('expp')) {
-				idx = ~~prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', cnt), '1');
+				idx = promptWhichFile(val['files'] || mathlib.valuedArray(40, {}));
 				if (idx <= 0 || idx > cnt) {
 					return revert();
 				}
@@ -243,7 +255,7 @@ var exportFunc = execMain(function() {
 			return;
 		}
 		inServGGL.html('Check File List...');
-		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27', {
+		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27&fields=files%28id%2Csize%2CmodifiedTime%29', {
 			'type': 'GET',
 			'beforeSend': function(xhr) {
 				xhr.setRequestHeader("Authorization", "Bearer " + gglToken);
@@ -256,7 +268,7 @@ var exportFunc = execMain(function() {
 			}
 			var idx = 1;
 			if (kernel.getProp('expp')) {
-				idx = ~~prompt('You have %d file(s), load (1 - lastest one, 2 - lastest but one, etc) ?'.replace('%d', files.length), '1');
+				idx = promptWhichFile(files);
 				if (idx <= 0 || idx > files.length) {
 					return updateUserInfoFromGGL();
 				}

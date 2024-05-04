@@ -34,7 +34,8 @@
 		$data = $_POST['data'];
 		error_log("[" . date("Y-m-d H:i:sO") . "] SET $uid " . strlen($data) . "\n", 3, CSTIMER_USERDATA_LOGFILE);
 		$data_md5 = md5($data);
-		$sql = "INSERT INTO `export_data` (`uid`, `value_hash`, `value`) VALUES ('$uid', '$data_md5', '$data')";
+		$data_len = strlen($data);
+		$sql = "INSERT INTO `export_data` (`uid`, `value_hash`, `value_len`, `value`) VALUES ('$uid', '$data_md5', '$data_len', '$data') ON DUPLICATE KEY UPDATE `upload_time` = CURRENT_TIMESTAMP";
 		$ret = $db->query($sql);
 		if ($ret === true) {
 			echo '{"retcode":0}';
@@ -42,15 +43,20 @@
 			echo '{"retcode":500,"reason":"db insert error"}';
 		}
 	} else if (isset($_POST['cnt'])) {
-		$sql = "SELECT COUNT(*) AS cnt FROM `export_data` WHERE `uid` = '$uid'";
+		$sql = "SELECT `value_len` AS size, unix_timestamp(`upload_time`) AS modifiedTime FROM `export_data` WHERE `uid` = '$uid'";
 		$ret = $db->query($sql);
 		if ($ret === false) {
 			echo '{"retcode":500,"reason":"db select error"}';
 			exit(0);
 		}
-		$ret = $ret->fetch_assoc()['cnt'];
+		$arr = array();
+		while($row = $ret->fetch_assoc()) {
+			$row['modifiedTime'] = date("c", $row['modifiedTime']);
+			$arr[] = $row;
+		}
+		$ret = json_encode($arr);
 		error_log("[" . date("Y-m-d H:i:sO") . "] CNT $uid " . $ret . "\n", 3, CSTIMER_USERDATA_LOGFILE);
-		echo '{"retcode":0,"data":"' . $ret . '"}';
+		echo '{"retcode":0,"data":"' . count($arr) . '","files":' . $ret . '}';
 	} else {//GET
 		$sql = "SELECT `value` FROM `export_data` WHERE `uid` = '$uid' ORDER BY `upload_time` DESC LIMIT $offset,1;";
 		$ret = $db->query($sql);
