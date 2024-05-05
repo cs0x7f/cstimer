@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">arkaplan resmi</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">kronometre boyutu</strong>. Set the size of main timer.</li>
 <li><strong data="opt_smallADP">noktadan sonra küçük karakter kullan</strong>. Use a smaller font size after the digital point in main timer.</li>
+<li><strong data="opt_color">renk teması seç</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">mouse kronometresi kullan</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
 <li><strong data="opt_useIns">WCA inecelemesi kullan</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
 <li><strong data="opt_voiceIns">WCA incelemesi ses uyarısı</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">karıştırma bölgesinin yüksekliğini limitle</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
 <li><strong data="opt_scrAlign">Karıştırma bölgesi hizası</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">4x4x4 için hızlı karışım kullanma (resmi değil)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Karıştırmada anahtar hareket(ler)ini etiketleyin</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
 <li><strong data="opt_trim">Number of solves trimmed at better side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">Süre listesinden önce özeti göster</strong>. Show the statistics table before time list.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">karıştırmaları istatistiklerde göster</strong>. Print scramble in round statistics dialog.</li>
 <li><strong data="opt_printDate">print solving date in statistics</strong>. Print solving date in round statistics dialog.</li>
 <li><strong data="opt_imrename">Sezon oluşturulduğunda yeniden adlandır</strong>. Immediately rename a session after creating it.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Karıştırma resmi boyutu</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">yardımcı sayısı</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">kısayol kullan</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
+<li><strong data="opt_useKSC">kısayol kullan</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC temelli hız (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">multi-evre</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
+<li><strong data="opt_giiMode">Bluetooth Küp Modu</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Sanal bluetooth kübü göster</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Beklerse Karıştırılmış Olarak işaretle</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">space basarak karıştırılmış olarak işaretle</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

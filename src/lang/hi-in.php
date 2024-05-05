@@ -35,7 +35,7 @@
 <tr><th>Alt + ऊपर/नीचे</th><td>अगले/पिछले सत्र पर जाएँ</td></tr>
 <tr><th>Alt + बाएँ/दाएँ</th><td>अगला/पिछला स्क्रैंबल प्रदर्शित करें</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>नवीनतम समय OK/+2/DNF है</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">background image</strong>. आप अपनी तस्वीर को पृष्ठभूमि चित्र के रूप में चुन सकते हैं; हालाँकि, ब्राउज़र की सुरक्षा बाधाओं के कारण केवल HTTPS URL ही उपलब्ध हैं।</li>
 <li><strong data="opt_timerSize">टाइमर का विस्तार</strong>. मुख्य टाइमर का आकार निर्धारित करें।</li>
 <li><strong data="opt_smallADP">दशमलव बिंदु के बाद छोटे फ़ॉन्ट का उपयोग करें</strong>. मुख्य टाइमर में डिजिटल बिंदु के बाद छोटे फ़ॉन्ट आकार का उपयोग करें।</li>
+<li><strong data="opt_color">रंग विषयवस्तु का चयन करें</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">माउस टाइमर का उपयोग करें</strong>. टाइमर शुरू करने के लिए माउस का उपयोग करें (कीबोर्ड-ट्रिगर भी उपलब्ध होगा)।</li>
 <li><strong data="opt_useIns">WCA निरीक्षण का उपयोग करें</strong>. WCA निरीक्षण प्रक्रिया सक्षम करें, जो 15 सेकंड की उलटी गिनती है। यदि आप 15 सेकंड से अधिक समय तक निरीक्षण करते हैं तो ऑटो +2/डीएनएफ जुर्माना भी सक्षम किया जाएगा।</li>
 <li><strong data="opt_voiceIns">WCA निरिक्षण के लिए आवाज़ की चेतावनी</strong>. WCA प्रतियोगिताओं में जज के अलर्ट का अनुकरण करने के लिए निरीक्षण के 8/12 सेकंड पर अलर्ट।</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">फेरबदल क्षेत्र की ऊंचाई सीमित करें</strong>. जब स्क्रैम्बल क्षेत्र बहुत बड़ा हो जाए, तो स्क्रैम्बल पैनल को ऊपर उठने से बचाने के लिए एक स्क्रॉल बार होगा।</li>
 <li><strong data="opt_scrAlign">फेरबदल क्षेत्र का संरेखण</strong>. स्क्रैम्बल प्रकार चयनकर्ता सहित पूरे स्क्रैम्बल क्षेत्र का संरेखण।</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">4x4x4 के लिए तेज़ फेरबदल का उपयोग करें (अनौपचारिक)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">फेरबदल में मुख्य चालों को अंकित करें</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
 <li><strong data="opt_trim">Number of solves trimmed at better side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">show summary before time list</strong>. Show the statistics table before time list.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">print scramble(s) in statistics</strong>. Print scramble in round statistics dialog.</li>
 <li><strong data="opt_printDate">print solving date in statistics</strong>. Print solving date in round statistics dialog.</li>
 <li><strong data="opt_imrename">rename session immediately after creation</strong>. Immediately rename a session after creating it.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">फेरबदल की छवि का आकार</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">उपकरणों की संख्या</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">कीबोर्ड शॉर्टकट का उपयोग करें</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions, etc.</li>
+<li><strong data="opt_useKSC">कीबोर्ड शॉर्टकट का उपयोग करें</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">वर्चुअल क्यूब - आधार गति (टीपीएस)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">एकाधिक-स्थिति</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
+<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Show virtual bluetooth cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Mark scrambled if stay</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Mark scrambled with spacebar</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

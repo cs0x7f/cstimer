@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">tło</strong>. Możesz wybrać własny obraz jako obraz tła, jednak tylko adresy https są dopuszczane ze względu na ograniczenia bezpieczeństwa przeglądarki.</li>
 <li><strong data="opt_timerSize">rozmiar timera</strong>. Ustaw rozmiar głównego zegara.</li>
 <li><strong data="opt_smallADP">używaj małej czcionki dla części dziesiętnych</strong>. Użyj mniejszego rozmiaru czcionki dla cyfr po przecinku w głównym liczniku.</li>
+<li><strong data="opt_color">wybierz kolor motywu</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">Używaj minutnika myszką i klawiaturą</strong>. Użyj myszki, aby uruchomić timer. Wyzwalanie przy użyciu klawiatury będzie również dostępne.</li>
 <li><strong data="opt_useIns">użyj inspekcji WCA</strong>. Włącz preinspekcje WCA, która jest 15-sekundowym odliczaniem, automatyczna kara +2/DNF będzie zastosowana, jeżeli przekroczysz czas.</li>
 <li><strong data="opt_voiceIns">ostrzeżenie głosowe inspekcji WCA</strong>. Ostrzeżenie przy 8/12 sekundach preinspekcji w celu symulacji ostrzeżenia ze strony sędziego na zawodach WCA.</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">Limit wysokości pola ze scramblem</strong>. Gdy obszar scrambla jest zbyt wysoki, pojawi się pasek przewijania, aby uniknąć zwiększenia wysokości pola scrambla</li>
 <li><strong data="opt_scrAlign">Wyrównanie tekstu w polu mieszania</strong>. Wyrównanie tekstu scrambla</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Ruchy uwzględniane przed scramblem podczas tworzenia podglądu scrambla i wirtualnej kostki</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">Używanie szybkiego algorytmu mieszającego dla 4x4x4 (nieoficjalny)</strong>. Oficjalny scramble 4x4x4 WCA wymaga ogromnych zasobów obliczeniowych, wybierz tę opcję, aby scramble używał losowych ruchów</li>
 <li><strong data="opt_scrKeyM">Oznacz kluczowe ruchy w scramble&#x27;u</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Akcja po kliknięciu na scramble</strong>. Zachowanie po kliknięciu na scramble'a, skopiuj scramble lub wygeneruj następne scramble.</li>
 <li><strong data="opt_trim">Liczba ułożeń niebranych pod uwagę</strong>. Liczba ułożeń z każdej strony (najlepszych i najgorszych), które nie są uwzględniane podczas obliczania średniej z ułożeń.</li>
 <li><strong data="opt_statsum">pokaż podsumowanie przed listą czasu</strong>. Pokaż tabelę statystyk przed listą czasów.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">Dołącz algorytmy mieszania do statystyk </strong>. Pokaż scrambla w oknie statystyk ułożenia.</li>
 <li><strong data="opt_printDate">Dołącz datę ułożenia do statystyk</strong>. Pokaż datę rozwiązania w oknie statystyk rundy.</li>
 <li><strong data="opt_imrename">zmień nazwę sesji po utworzeniu</strong>. Natychmiast zmień nazwę sesji po jej utworzeniu.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Pokaż stopniowo rozwiązanie</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Rozmiar grafiki algorytmu mieszającego</strong>. Ustaw rozmiar obrazu scramble'a.</li>
 <li><strong data="opt_NTools">liczba narzędzi</strong>. csTimer jest w stanie pokazać jednocześnie maksymalnie 4 narzędzia.</li>
-<li><strong data="opt_useKSC">użyj skrótu klawiszowego</strong>. Użyj skrótów klawiaturowych, aby przełączać typ scramba, generować następny scramble, przełączać się między sesjami itp.</li>
+<li><strong data="opt_useKSC">użyj skrótu klawiszowego</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">Prędkość bazowa VRC (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">wielofazowe</strong>. Automatyczny wielofazowy podział dla wirtualnej kostki Rubika i kostki bluetooth.</li>
+<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Pokaż wirtualną kostkę bluetooth</strong>. Pokaż wirtualną kostkę Rubika w głównym timerze podczas łączenia się z kostką bluetooth.</li>
 <li><strong data="opt_giiSD">Oznacz jako pomieszany po bezruchu</strong>. Dla kostek bluetooth csTimer nie może wiedzieć, czy ruch jest w celu scrambingu czy rozwiązania.</li>
 <li><strong data="opt_giiSK">Oznacz jako pomieszane po wciśnięciu spacji</strong>. Po naciśnięciu spacji kostka bluetooth jest pomieszana, obrót będzie traktowany jako rozpoczęcie liczenia czasu.</li>

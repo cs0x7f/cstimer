@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">背景圖片</strong>. 你可以自訂背景圖片，但由於瀏覽器安全性的關係，只能嵌入https的圖片連結。</li>
 <li><strong data="opt_timerSize">計時器大小</strong>. 計時器的字體大小。</li>
 <li><strong data="opt_smallADP">小數點後使用小型字體</strong>. 小數點後的字體縮小顯示。</li>
+<li><strong data="opt_color">選擇色彩樣式</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">使用滑鼠計時</strong>. 用滑鼠控制計時器，開啟這個選項後依然可以使用鍵盤。</li>
 <li><strong data="opt_useIns">使用WCA觀察</strong>. 使用WCA的15秒觀察，如果超過15秒的話會自動+2/DNF。</li>
 <li><strong data="opt_voiceIns">WCA觀察人聲提醒</strong>. 為了符合WCA的裁判規定，在觀察8秒/12秒時提醒。</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">限制打亂區高度</strong>. 如果打亂面板的位置太高的話，會顯示捲軸以避免打亂區出格。</li>
 <li><strong data="opt_scrAlign">打亂對齊</strong>. 打亂區與打亂選擇器的對齊狀況。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打亂前的前置動作。這個選項會影響虛擬方塊跟打亂圖形的顯示。</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">4x4x4使用快速打亂(非官方)</strong>. WCA的官方4x4x4打亂方法很吃運算資源。如果要改成4x4x4的隨機步驟打亂，可以勾選這個選項。</li>
 <li><strong data="opt_scrKeyM">打亂中標記關鍵步驟</strong>. 標記打亂中的關鍵步驟，例如sq-1打亂中離開正方形的那一個步驟。</li>
 <li><strong data="opt_scrClk">點擊打亂時的動作</strong>. 點擊打亂公式後會發生的事情：複製本次打亂或生成下一組打亂。</li>
 <li><strong data="opt_trim">刪減數據中的資料數</strong>. 計算平均時要去掉的頭尾數據量。</li>
 <li><strong data="opt_statsum">在時間清單前顯示摘要</strong>. 在時間列表前顯示統計資料。</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">在統計列表中顯示打亂</strong>. 在數據欄中顯示打亂。</li>
 <li><strong data="opt_printDate">在統計列表中顯示日期</strong>. 在數據欄中顯示日期。</li>
 <li><strong data="opt_imrename">創建後立即重新命名階段</strong>. 在創建階段後立即重新命名。</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">逐步顯示解法</strong>. 如果這個選項設為開啟，小幫手提供的步驟只會顯示一部份，必須一步一步點開來看。如果沒有開啟的話，就會一次看到所有步驟。</li>
 <li><strong data="opt_imgSize">打亂圖示大小</strong>. 選擇打亂圖形的大小。</li>
 <li><strong data="opt_NTools">工具數量</strong>. csTimer可以同時顯示4個小工具。</li>
-<li><strong data="opt_useKSC">使用快捷鍵</strong>. 用鍵盤快捷鍵來切換打亂模式、生成下一個打亂、切換階段等。</li>
+<li><strong data="opt_useKSC">使用快捷鍵</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC基準速度(轉/秒)</strong>. 使用虛擬方塊時的基礎轉動速度。如果有很多步驟要做的話，會自動跳過某些動畫。</li>
 <li><strong data="opt_vrcMP">分項計時</strong>. 在使用虛擬方塊或藍芽方塊時自動使用多階段計時。</li>
+<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">顯示虛擬計客魔方</strong>. 連接藍芽方塊時在螢幕中顯示虛擬方塊。</li>
 <li><strong data="opt_giiSD">停滯時當作已打亂</strong>. 使用藍牙方塊時，csTimer不知道現在的操作是打亂的一部分還是在復原。如果這個選項設為開啟，停頓過久會視為打亂結束。</li>
 <li><strong data="opt_giiSK">按下空白鍵標記打亂完成</strong>. 按下空白鍵時，藍牙方塊會被視為打亂完成，接下來進行任何轉動都會開始計時。</li>

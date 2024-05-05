@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">Bakgrundsbild</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">Timerstorlek</strong>. Set the size of main timer.</li>
 <li><strong data="opt_smallADP">Använd små tecken efter decimaltecknet</strong>. Use a smaller font size after the digital point in main timer.</li>
+<li><strong data="opt_color">Välj färgtema</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">Använd mustimer</strong>. Use mouse to start timer, keyboard-trigger will also be available.</li>
 <li><strong data="opt_useIns">använd WCA inspektion</strong>. Enable WCA inspection procedure, which is a 15-second countdown, auto +2/DNF penalty will also be enabled if you inspecting more than 15 seconds.</li>
 <li><strong data="opt_voiceIns">röstvarning av WCA inspekton</strong>. Alert at 8s/12s of inspection, to simulate the alert from judge in WCA competitions.</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">Begränsa höjden av blandningsområdet</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
 <li><strong data="opt_scrAlign">Anpassning av blandningsområdet</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">Använd snabb blandning för 4x4x4 (ej officiell)</strong>. WCA officiella 4x4x4 blandningar kräver enorma beräkningsresurser, välj det här alternativet  för att använda en slumpmässig blandning för 4x4x4 istället.</li>
 <li><strong data="opt_scrKeyM">Markeringsnyckeln flyttas i blandning</strong>. Markera ett nyckeldrag i en blandning, t. ex. draget som tar bort tillståndet från en kvadratisk form i Square-1 blandningar.</li>
 <li><strong data="opt_scrClk">Händelse vid tryckning på blanda</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
 <li><strong data="opt_trim">Antal lösningar trimmade på varje sida</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">Visa sammanfattning före tidslistan</strong>. Show the statistics table before time list.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">Visa blandning(ar) i statistik</strong>. Visa blandningen i dialogrutan för rundastatistik.</li>
 <li><strong data="opt_printDate">Visa lösningens datum i statistik</strong>. Visa lösningsdatum i dialogrutan för rundstatistik.</li>
 <li><strong data="opt_imrename">Namnge session omedelbart efter skapande</strong>. Immediately rename a session after creating it.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Visa lösning proggressivt</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Blandningsbildstorlek</strong>. Ställ in storleken på blandningsbild.</li>
 <li><strong data="opt_NTools">Antal verktyg</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
-<li><strong data="opt_useKSC">använd tangentborsgenväg</strong>. Andvänd tangentbordsgenväg för att växla blandningstyp, generera nästa blandning, växla mellan sessioner, etc.</li>
+<li><strong data="opt_useKSC">använd tangentborsgenväg</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC bashastighet (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">Flera faser</strong>. Automatisk flerfasdelning för virtuell Rubiks kub och Bluetooth kub.</li>
+<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Visa virtuell Giiker cube</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Markera blandad om stannat på blandat i antal sekunder</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Markera blandad med mellanslagstangenten</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

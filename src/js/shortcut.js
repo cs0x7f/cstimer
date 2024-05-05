@@ -35,12 +35,15 @@ var shortcuts = execMain(function(){
 	}
 
 	var ctrlAltMap = {
-		84: [['input', 't']], //t
-		73: [['input', 'i']], //i
-		83: [['input', 's']], //s
-		77: [['input', 'm']], //m
-		86: [['input', 'v']], //v
-		71: [['input', 'g']] //g
+		84: [['input', 't']], //timer
+		73: [['input', 'i']], //input
+		83: [['input', 's']], //stackmat
+		77: [['input', 'm']], //moyu
+		86: [['input', 'v']], //virtual
+		71: [['input', 'g']], //smart cube
+		81: [['input', 'q']], //qcube
+		66: [['input', 'b']], //bluetooth timer
+		76: [['input', 'l']]  //last layer
 	}
 
 	function onkeydown(signal, e) {

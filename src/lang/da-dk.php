@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">baggrunds billede</strong>. Du kan vælge dit eget billede som baggrundsbillede, dog kun fra https webadresser, på grund af sikkerhedskravet i browseren.</li>
 <li><strong data="opt_timerSize">timer størrelse</strong>. Indstil størrelsen på stopuret.</li>
 <li><strong data="opt_smallADP">brug lille font efter decimal punkt</strong>. Brug en mindre skriftstørrelse for decimaler i stopuret.</li>
+<li><strong data="opt_color">vælg farve tema</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">Brug musetimer</strong>. Brug musen til at starte stopuret, genvejstaster vil også være tilgængelig.</li>
 <li><strong data="opt_useIns">brug WCA inspektion</strong>. Aktiver WCA inspektion procedure, som er en 15-sekunders nedtælling, automatisk +2/DNF straf vil også være aktiveret, hvis du inspicerer i mere end 15 sekunder.</li>
 <li><strong data="opt_voiceIns">stemme advarsel af WCA inspektion</strong>. Advarsel ved 8/12'erne af inspektion, for at simulere advarsel fra dommer i WCA-konkurrencer.</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">Begræns højden af blandings området</strong>. I tilfælde af blandingsteksten fylder mere end der er plads til, vil der vises en rullebjælke for at undgå at forstørre blandingspanelet.</li>
 <li><strong data="opt_scrAlign">Justering af blandings området</strong>. Justering af hele blandingsområdet, inkluderer valg af blandingstype.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre rotationer før blanding, som bruges til virtuelle professorterninger og blandingsbillede.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">Brug hurtig blanding til 4x4x4 (ikke officiel)</strong>. Oficielle WCA blandinger kræver mange beregnings resurser. Brug denne indstilling for tilfældig blanding af 4x4x4.</li>
 <li><strong data="opt_scrKeyM">Marker nøgle rotationer i blanding</strong>. Marker et nøgletræk i blandingen, f.eks. det træk, der tager tilstanden væk fra dets firkantede form i SQ1-blandinger.</li>
 <li><strong data="opt_scrClk">Handling ved klik på blanding</strong>. Handling når du klikker på blandingsteksten; Kopiér blanding eller generer næste blanding.</li>
 <li><strong data="opt_trim">Antal af de bedste løsninger fjernet</strong>. Antal af løsninger fjernet i top og bund af løsninger ved beregning af gennemsnit.</li>
 <li><strong data="opt_statsum">vis sammendrag inden tidslisten</strong>. Vis statistiktabellen før tidslisten.</li>
+<li><strong data="opt_statthres">Vis måltid for sessionen bedst</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">print blanding(erne) i statistikker</strong>. Udskriv blanding i statistik.</li>
 <li><strong data="opt_printDate">Udskriv løsningsdato i statistik</strong>. Udskriv løsningdato i statistik.</li>
 <li><strong data="opt_imrename">omdøb session umiddelbart efter oprettelsen</strong>. Omdøb session efter oprettelse.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Vis løsning progressivt</strong>. Hvis valgt, vises kun længden af en løsning, og man kan se løsningen trin for trin, ellers vises hele  løsningen.</li>
 <li><strong data="opt_imgSize">Blandings billed størrelse</strong>. Størrelsen af blandingsbillede.</li>
 <li><strong data="opt_NTools">nummer af værktøj</strong>. csTimer er i stand til at vise op til 4 værktøjer samtidigt.</li>
-<li><strong data="opt_useKSC">brug tastatur genvej</strong>. Brug tastaturgenveje til at skifte blandingstype, generere næste blanding, skifte mellem sessioner osv.</li>
+<li><strong data="opt_useKSC">brug tastatur genvej</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC base hastighed (TPS)</strong>. Basis rotationshastighed på den virutelle professorterning. Hastigheden vil stige, hvis der er flere træk.</li>
 <li><strong data="opt_vrcMP">flerfaset</strong>. Automatisk flerfase deling for virtuel professorterning og bluetooth terning.</li>
+<li><strong data="opt_giiMode">Blueetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Vis virtuel Bluetooth terning</strong>. Vis en virtuel professorterning i stopuret ved tilslutning af en bluetooth terning.</li>
 <li><strong data="opt_giiSD">Marker blandet efter pause i blanding</strong>. For en bluetooth terning, kan csTimer ikke vide, om et træk er til en blanding eller løsning.</li>
 <li><strong data="opt_giiSK">Marker blandet med mellemrumstast</strong>. Når mellemrumstasten trykkes, er bluetooth terningen markeret blandet. Ethvert træk efter, vil behandles som start af løsning og start af stopuret.</li>

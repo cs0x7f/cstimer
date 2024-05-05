@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">pozadí obrázku</strong>. Zde můžete zvolit vlastní obrázek pozadí. Avšak kvůli bezpečnosti jsou povoleny jen https url.</li>
 <li><strong data="opt_timerSize">velikost timeru</strong>. Nastavení velikosti hlavního timeru.</li>
 <li><strong data="opt_smallADP">použít malé písmo za desetinnou</strong>. Použití menší velikosti písma za desetinnou čárkou hlavního timeru.</li>
+<li><strong data="opt_color">vybrat schéma barev</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">použít časovač pomocí myši</strong>. Použití myši k začátku měření.</li>
 <li><strong data="opt_useIns">použít WCA inspekci</strong>. Povolit WCA inspekci - 15 sekundový odpočet, také automatické +2/DNF, pokud Vám trvá inspekce déle než 15 sekund.</li>
 <li><strong data="opt_voiceIns">hlasové upozornění při WCA inspekci</strong>. Upozornění, že uběhlo 8/12 sekund z inspekce. (Napodobení judge na WCA soutěžích)</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">Omezit výšku v oblasti scramblu</strong>. Je-li scramble moc dlouhý, objeví se scroll bar, aby se panel scramblu nemusel zvětšovat.</li>
 <li><strong data="opt_scrAlign">Zarovnání scramble oblasti</strong>. Zarovnání celé oblasti scramblu, včetně nastavení typu scramblu.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Tahy před scramblem. Použito pro virtuální kostku a vykreslený scramble.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">Použít rychlí scramble pro 4x4x4(neoficiální)</strong>. Oficiální scrambly pro 4x4x4 jsou náročné na vygenerování. Tato možnost změní scrambly pro 4x4x4 na random-move.</li>
 <li><strong data="opt_scrKeyM">Klíčovy krok pohybů v zamíchání</strong>. Cube</li>
 <li><strong data="opt_scrClk">Akce při kliknutí na scramble</strong>. Co se stane, kliknete-li na scramble. Zkopíruje aktuální, či vygeneruje další.</li>
 <li><strong data="opt_trim">Počet nejhorších/nejlepších nepočítaných solvů</strong>. Kolik nejhorších/nejlepších solvů solvů se škrtá při počítání průměru.</li>
 <li><strong data="opt_statsum">zobrazit shrnutí před časovím listem</strong>. Statistiky před seznamem časů.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">zobrazit zamíchání ve statistikách</strong>. Vypsat scramble ve statistikách kola.</li>
 <li><strong data="opt_printDate">zobrazit datum složení ve statistikách</strong>. Viz výše pro datum složení.</li>
 <li><strong data="opt_imrename">přejmenovat relaci ihned po vytvoření</strong>. Okamžitě po vytvoření přejmenovat relaci.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Ukázat řešení postupně</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Velikost zamíchaného obrázku</strong>. Nastavit velikost vykresleného scramblu.</li>
 <li><strong data="opt_NTools">počet nástrojů</strong>. csTimer může ukazovat až 4 nástroje zároveň.</li>
-<li><strong data="opt_useKSC">použít klávesové zkratky</strong>. Použijte klávesové zkratky pro změnu scramblu, přepnutí relací, vygenerování nového scramblu atd.</li>
+<li><strong data="opt_useKSC">použít klávesové zkratky</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRS základní rychlost (tps)</strong>. Základní rychlost otáčení virtuální kostky. Bude zrychleno, pokud se má provést víc tahů.</li>
 <li><strong data="opt_vrcMP">vícefázové</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
+<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Zobrazit virtuální Giiker kostku</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Označit zamíchání pokud stojí</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Označit zamíchaní s mezerou</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

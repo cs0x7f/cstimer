@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">背景画像</strong>. 背景画像を指定します。ブラウザのセキュリティ的制約により、httpsで始まるURLのみが指定可能です。</li>
 <li><strong data="opt_timerSize">タイマー サイズ</strong>. タイマーの大きさを指定します。</li>
 <li><strong data="opt_smallADP">小数点の後に小さいフォントを使用する</strong>. タイマーの小数点より後ろの数字を小さくします。</li>
+<li><strong data="opt_color">カラーテーマの選択</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">マウスタイマーの使用</strong>. マウスでタイマースタートを行います。キーボードによる操作も可能なままになります。</li>
 <li><strong data="opt_useIns">WCA インスペクションの使用</strong>. WCA形式のインスペクションタイムを有効にします。15秒のカウントダウンおよび、15秒超過ペナルティの+2/DNFの付与を自動的に行います。</li>
 <li><strong data="opt_voiceIns">WCA インスペクションの音声警告</strong>. WCA公式大会のジャッジと同様に、8秒/12秒のコールを音声で行います。</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">スクランブル領域の高さ制限</strong>. 長いスクランブルを表示する際に、スクランブルパネルが大きくなりすぎないようにスクロールバーを表示します。</li>
 <li><strong data="opt_scrAlign">スクランブルエリアの左右配置</strong>. スクランブルパネルの(セレクタを含んだ)文字寄せ位置を指定します。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. スクランブルの前に行う回転を指定します。このオプションは仮想キューブとスクランブル描画に適用されます。</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">4x4x4の高速スクランブルを利用する(非公式)</strong>. WCA公式の4x4x4スクランブルは計算コストが高いため、このオプションを設定してランダムムーブでスクランブルを生成させることができます。</li>
 <li><strong data="opt_scrKeyM">スクランブルの主要な動きにラベルをつける</strong>. スクランブルの重要な部分に印を付けます。例えば、スクエア1のスクランブル中で長方形が崩れるような部分です。</li>
 <li><strong data="opt_scrClk">スクランブルをクリックしたときの動作</strong>. スクランブル表示をクリックしたとき、スクランブルをコピーするか、次のスクランブルを生成するか指定します。</li>
 <li><strong data="opt_trim">片側で除外するソルブ数</strong>. 平均を計算するとき、上下何%を除外するかを指定します。</li>
 <li><strong data="opt_statsum">タイム一覧の前にサマリーを表示</strong>. タイム一覧の前に統計テーブルを表示します。</li>
+<li><strong data="opt_statthres">セッションベスト記録のための目標タイムを表示</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">統計情報にスクランブルを表示</strong>. 統計情報ダイアログにスクランブルを表示します。</li>
 <li><strong data="opt_printDate">統計情報にソルブ日時を表示</strong>. 統計情報ダイアログにソルブ日時を表示します。</li>
 <li><strong data="opt_imrename">セッション作成後すぐに名前を変更する</strong>. セッション作成直後に名前変更を行います。</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">解法を段階的に表示</strong>. 有効な場合、ソルバーはまず手数のみを表示し、解法を1手ずつ見られるようになります。無効な場合、最初から解法全体が表示されます。</li>
 <li><strong data="opt_imgSize">スクランブルのイメージサイズ</strong>. スクランブル描画のサイズを指定します。</li>
 <li><strong data="opt_NTools">ツール表示数</strong>. csTimerは最大4つのツールを同時に表示できます。</li>
-<li><strong data="opt_useKSC">キーボードショートカットを有効にする</strong>. キーボードショートカットを有効にし、スクランブルの種類変更、次のスクランブル取得、セッションの移動などを行えるようにします。</li>
+<li><strong data="opt_useKSC">キーボードショートカットを有効にする</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRCの基本速度(tps)</strong>. 仮想キューブの表示速度を指定します。回転が累積されてくると、速度は上がります。</li>
 <li><strong data="opt_vrcMP">マルチフェイズ</strong>. 仮想キューブやスマートキューブ使用時に、フェーズごとのスプリットタイム測定を自動で行います。</li>
+<li><strong data="opt_giiMode">Bluetoothキューブモード</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">仮想Giikerキューブの表示</strong>. スマートキューブ接続時に、メイン画面に仮想キューブを表示します。</li>
 <li><strong data="opt_giiSD">時間経過でスクランブル状態とみなす</strong>. スマートキューブ接続時に、csTimerはある回転がスクランブルによるものかソルブによるものか特定できません。</li>
 <li><strong data="opt_giiSK">スペースバーでスクランブルとみなす</strong>. スペースキーを押すと、スマートキューブをスクランブル済とみなし、回転と同時に計測を開始するようになります。</li>

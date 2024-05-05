@@ -35,7 +35,7 @@
 <tr><th>Alt + 上/下</th><td>统计列表切换到下/上一分组</td></tr>
 <tr><th>Alt + 左/右</th><td>显示上/下一条打乱公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>将最新成绩的完成状态改为 OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>产生成绩通过 计时器/手动输入/stackmat/虚拟魔方/蓝牙魔方</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>产生成绩通过 计时器/手动输入/stackmat/虚拟魔方/蓝牙魔方/qCube/蓝牙计时器/顶层训练</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">背景图片</strong>. 你可以选择自己的图片作为计时器背景图，但由于浏览器的安全限制，只能用https开头的图片链接。</li>
 <li><strong data="opt_timerSize">计时器大小</strong>. 设置主计时器的大小。</li>
 <li><strong data="opt_smallADP">小数点后使用小字体</strong>. 主计时器的小数点后的数字用相对较小的字体。</li>
+<li><strong data="opt_color">选择颜色主题</strong>. 选择csTimer的颜色主题。 点击csTimer的logo可以看到更多颜色主题。</li>
 <li><strong data="opt_useMouse">启用鼠标计时</strong>. 使用鼠标开始计时器，当然，用键盘开始计时也依然可用。</li>
 <li><strong data="opt_useIns">使用WCA观察</strong>. 使用WCA观察阶段，即15秒倒计时，如果观察时间超过 15 秒，会自动进行+2/DNF判罚。</li>
 <li><strong data="opt_voiceIns">WCA观察语音提示</strong>. 在观察到8秒/12秒时发出语音提醒，模拟WCA比赛时裁判的提醒。</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">限制打乱区的高度</strong>. 当打乱区域太高时，将会出现滚动条，以避免打乱面板继续升高。</li>
 <li><strong data="opt_scrAlign">打乱区对齐方式</strong>. 整个打乱区域的对齐方式，包括打乱类型选项等。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打乱公式前的预转动，主要用于虚拟魔方和打乱图案。</li>
+<li><strong data="opt_scrNeut">六色底</strong>. 如果启用，训练打乱的位置、底色将会是随机的。</li>
 <li><strong data="opt_scrFast">四阶魔方使用快速打乱（非官方）</strong>. WCA官方的4x4x4打乱需要大量的计算资源，可以通过勾选此选项来启用4x4x4随即转动打乱代替。</li>
 <li><strong data="opt_scrKeyM">标记打乱中的关键转动</strong>. 标记打乱中的关键步骤，例如对于SQ1打乱会标记处让形状离开正方形的那一步。</li>
 <li><strong data="opt_scrClk">点击打乱时的动作</strong>. 当您点击打乱公式时触发的行为，复制打乱或生成下一个打乱公式。</li>
 <li><strong data="opt_trim">删去几个最好成绩</strong>. 当计算去尾平均时从最好和最坏处舍弃的成绩比例。</li>
 <li><strong data="opt_statsum">成绩列表前显示摘要</strong>. 在成绩列表前显示分组统计表。</li>
+<li><strong data="opt_statthres">显示创造最快所需的目标时间</strong>. 在统计表中显示一个时间，如果下一次还原时间低于该时间则会刷新个人最好成绩。 “N/A”表示无论下一次还原有多快都不可能刷新个人最好，“&#8734;”表示只是DNF之外的时间都可以刷新个人最好。</li>
 <li><strong data="opt_printScr">成绩统计中显示打乱</strong>. 在轮次统计中显示打乱公式。</li>
 <li><strong data="opt_printDate">成绩统计中显示日期</strong>. 在轮次统计中显示还原时间日期。</li>
 <li><strong data="opt_imrename">新建分组时重命名</strong>. 创建分组后立即重名该分组。</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">逐步显示解法</strong>. 如果勾选，求解器会只显示解法长度，接着你可以一步一步查看解法，不勾选的话求解器则会直接显示完整的解法。</li>
 <li><strong data="opt_imgSize">打乱图案大小</strong>. 设置打乱图案的大小。</li>
 <li><strong data="opt_NTools">工具栏数量</strong>. csTimer支持同时显示至多4个工具。</li>
-<li><strong data="opt_useKSC">使用键盘快捷键</strong>. 你可以使用快捷键切换打乱类型，产生下一个打乱，或在分组之间切换。</li>
+<li><strong data="opt_useKSC">使用键盘快捷键</strong>. 使用键盘快捷键来切换打乱类型、生成下一个打乱、在分组之间切换等等。 请点击csTimer的logo查看明细。</li>
+<li><strong data="opt_useGES">使用手势控制</strong>. 使用手势（向不同方向滑动）来选择OK/+2/DNF、添加注释、生成下一个打乱等等。 在非触屏的设备上只要启用“使用鼠标计时”也可以使用。 请点击csTimer的logo查看明细。</li>
 <li><strong data="opt_vrcSpeed">VRC基础速度 (tps)</strong>. 虚拟魔方的基础转动速度，如果积累了多个转动待执行，虚拟魔方会加速转动。</li>
 <li><strong data="opt_vrcMP">多阶段测速</strong>. 对于虚拟魔方和蓝牙魔法，csTimer支持自动多阶段拆分。</li>
+<li><strong data="opt_giiMode">蓝牙魔方模式</strong>. 智能魔方的使用模式：在正常模式下，你需要手动将魔方打乱到与打乱状态一致；在训练模式下，按下空格（或触碰触屏），虚拟魔方就会自动变为打乱完成的状态。 你需要还原虚拟魔方的一部分（取决于打乱，例如对于OLL训练打乱，不会检查顶层的位置）而不是实体魔方；在连续训练模式下，除训练模式外一旦虚拟魔方被还原了，你会直接开始下一次还原而不再需要按下空格。 你也可以按下ESC（在触屏上则是长按2秒）退出还原。</li>
 <li><strong data="opt_giiVRC">显示虚拟蓝牙魔方</strong>. 当与蓝牙魔方连接时在主计时界面显示一个虚拟魔方。</li>
 <li><strong data="opt_giiSD">保持几秒后标记已打乱</strong>. 对于蓝牙魔方，csTimer不知道哪些转动是打乱，哪些转动时还原。</li>
 <li><strong data="opt_giiSK">使用空格标记已打乱</strong>. 通过空格标记蓝牙魔方为已打乱，此后的任何转动都会触发计时开始。</li>

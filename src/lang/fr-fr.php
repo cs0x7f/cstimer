@@ -35,7 +35,7 @@
 <tr><th>Alt + haut/bas</th><td>Aller à la session suivante/précédente</td></tr>
 <tr><th>Alt + gauche/droite</th><td>Afficher le mélange précédent /suivant</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>La dernière résolution est OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">Image de fond</strong>. Vous pouvez afficher votre propre image en arrière-plan mais seules les urls en https fonctionnent à cause des contraintes de sécurité du navigateur.</li>
 <li><strong data="opt_timerSize">Taille du chronomètre</strong>. Définir la taille du chronomètre principal.</li>
 <li><strong data="opt_smallADP">Utiliser une petite police pour les décimales</strong>. Utiliser une police plus petite pour les décimales du chronomètre principal.</li>
+<li><strong data="opt_color">Couleur du thème</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">Lancer le chonomètre avec la souris</strong>. Utiliser la souris pour démarrer le chronomètre. Le clavier sera toujours utilisable.</li>
 <li><strong data="opt_useIns">Utiliser l&#x27;inspection WCA</strong>. Activer la procédure d'inspection WCA ce qui correspond à un compte-à-rebours de 15 secondes et des pénalités +2/DNF automatiques si vous dépassez.</li>
 <li><strong data="opt_voiceIns">Voix de l&#x27;inspection WCA</strong>. Alerte vocale à 8 et 12 secondes, pour simuler le comportement des juges en compétitions WCA.</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">Limiter la taille de la zone de mélange</strong>. Permet de scroller dans le panneau du mélange pour éviter qu'il s'étire en hauteur et cache le chronomètre.</li>
 <li><strong data="opt_scrAlign">Alignement de la zone de mélange</strong>. Alignement de toute la zone de mélange, y compris le sélecteur du type de mélange.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Mouvements préparatoires avant le mélange - utilisé pour le Rubik's cube virtuel et l'aperçu du mélange.</li>
+<li><strong data="opt_scrNeut">Couleur neutre</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">Utiliser des mélanges rapides pour 4x4x4 (non officiel)</strong>. Les mélanges 4x4x4 officiels de la WCA requièrent d'énormes ressources de calcul. Sélectionnez cette option pour utiliser plutôt un mélange 4x4x4 aléatoire.</li>
 <li><strong data="opt_scrKeyM">Indiquer le(s) mouvement(s) clé(s) dans Mélange</strong>. Marquer un mouvement clé dans le mélange, par exemple le mouvement qui fait quitter la forme carrée dans les mélanges SQ1.</li>
 <li><strong data="opt_scrClk">Quand le mélange est cliqué</strong>. Action lorsque vous cliquez sur le mélange : copier le mélange ou générer un nouveau mélange.</li>
 <li><strong data="opt_trim">Nombre de résolutions élaguées à chaque extrémité.</strong>. Nombre de résolutions élaguées lors du calcul de la moyenne (moins bonnes et meilleures)</li>
 <li><strong data="opt_statsum">Montrer le résumé avant la liste de temps</strong>. Afficher le tableau des statistiques avant la liste des temps.</li>
+<li><strong data="opt_statthres">Afficher le temps cible de la meilleure session</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">Afficher les mélanges dans les stats</strong>. Afficher le mélange dans les popups de statistiques.</li>
 <li><strong data="opt_printDate">Afficher la date des résolutions dans les stats</strong>. Afficher la date de résolution dans les popups de statistiques.</li>
 <li><strong data="opt_imrename">Renommer la session immédiatement après création</strong>. Renommer une session juste après sa création.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Afficher la solution progressivement</strong>. Si sélectionné, seule s'affiche la partie de la solution tenant dans la largeur du solveur, mouvement par mouvement. Si déselectionné, la solution complète est affichée.</li>
 <li><strong data="opt_imgSize">Taille de l&#x27;aperçu du mélange</strong>. Définit la taille de l'aperçu du mélange.</li>
 <li><strong data="opt_NTools">Nombre d&#x27;outils</strong>. csTimer peut afficher jusqu'à 4 outils simultanément.</li>
-<li><strong data="opt_useKSC">Utiliser les raccourcis clavier</strong>. Utilisez les raccourci clavier pour changer le type de mélange, générer un nouveau mélange, basculer d'une session à une autre, etc.</li>
+<li><strong data="opt_useKSC">Utiliser les raccourcis clavier</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">utiliser le contrôle gestuel</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">Vitesse de base du cube virtuel (tps)</strong>. Vitesse de base des mouvements du Rubik's Cube virtuel ; la vitesse sera accélérée s'il y a plusieurs mouvements à effectuer.</li>
 <li><strong data="opt_vrcMP">multi-phase</strong>. Séparation automatique des différentes phases de résolution sur Rubik's cube virtuel and cubes Bluetooth.</li>
+<li><strong data="opt_giiMode">Mode Cube Bluetooth</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Montrer le Giiker Cube virtuel</strong>. Lors de la connexion d'un cube bluetooth, afficher un Rubik's cube virtuel dans le panneau du chronomètre.</li>
 <li><strong data="opt_giiSD">Considérer le cube comme mélangé si immobile pendant</strong>. Avec un cube Bluetooth, csTimer ne peut pas identifier si un mouvement fait partie du mélange ou de la résolution.</li>
 <li><strong data="opt_giiSK">Considérer le cube comme mélangé avec la barre d&#x27;espace</strong>. Dès que vous pressez la barre d'espace, le cube Bluetooth est considéré comme mélangé. Tout mouvement va alors déclencher le chronomètre.</li>

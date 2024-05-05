@@ -35,7 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -74,6 +74,7 @@
 <li><strong data="opt_bgImgS">Bakgrunnsbilde</strong>. Du kan velge ditt eget bilde som bakgrunnsbilde, men kun https URL'er er tilgjengelige på grunn av sikkerhetsbegrensninger i nettleseren.</li>
 <li><strong data="opt_timerSize">timer størrelse</strong>. Angi størrelsen på hovedtidstakeren</li>
 <li><strong data="opt_smallADP">bruk liten font etter desimalplass</strong>. Bruke en mindre skriftstørrelse etter et digitalt punkt i hovedtidstakeren.</li>
+<li><strong data="opt_color">velg fargetema</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
 <li><strong data="opt_useMouse">Bruk mus som tidtaker</strong>. Bruk datamus til å starte tiden.Tastatur-aktivering vil fortsatt være tilgjengelig.</li>
 <li><strong data="opt_useIns">bruk WCA inspeksjon</strong>. Aktiver WCA inspeksjonsprosedyre, som er en 15 sekunders nedtelling, automatisk +2/DNF-straff, vil bli aktivert hvis du inspiserer mer enn 15 sekunder.</li>
 <li><strong data="opt_voiceIns">stemmealarm på WCA inspeksjonstid</strong>. Varsel når du har brukt 8 og 12 sekunder av undersøkelsen, for å simulere varsler fra en dommer i en offisiell WCA konkurranse.</li>
@@ -90,11 +91,13 @@
 <li><strong data="opt_scrLim">Begrens høyden av blandingsområde</strong>. Når blandingsområdet er for høyt, vil det oppstå en rullebar for å unngå heving av panelet.</li>
 <li><strong data="opt_scrAlign">Juster blandingsområde</strong>. Justering av hele blandingsområdet inkluderer blandingstypevelger.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre trekk før blanding, som er brukt til virtuell Rubiks kube og visuell framstilling av blanding.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrFast">Bruker rask blanding til 4x4x4 (uoffisielt)</strong>. WCA offisielle 4x4x4 blanding krever store beregningsressurser. Velg dette alternativet for å bruke en tilfeldig blanding for 4x4x4 i stedet.</li>
 <li><strong data="opt_scrKeyM">Merk viktige trekk i blanding</strong>. Marker et viktig trekk i blandingen, f.eks. trekk som forandrer formen fra kvadratisk til en annen form i SQ1-blandinger.</li>
 <li><strong data="opt_scrClk">Handling ved klikk av blanding</strong>. Hva som skjer når du klikker på blandingsteksten, kopier blanding eller generer neste blanding.</li>
 <li><strong data="opt_trim">Antall avskåret løser ved hver side</strong>. Antall tider som blir trimmet ved hodet og halen når gjennomsnittet blir kalkulert.</li>
 <li><strong data="opt_statsum">Vis sammendrag før listen med tider</strong>. Vis statistikk-tabellen før tidslisten.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">print blanding(er) i statistikken</strong>. Print blandingen i rund statistikk dialog.</li>
 <li><strong data="opt_printDate">print løsningsdato i statistikkene</strong>. Print blandingen i rund statistik dialog.</li>
 <li><strong data="opt_imrename">gi økten nytt navn umiddelbart etter opprettelse</strong>. Gi straks navn til økten etter at den er opprettet.</li>
@@ -109,9 +112,11 @@
 <li><strong data="opt_solSpl">Vis løsning progressivt</strong>. Hvis valgt, vises bare lengden på en løsning fra en løser, og man kan se løsningen steg for steg, ellers blir hele  løsningen vist.</li>
 <li><strong data="opt_imgSize">Blandings størrelse</strong>. Velg størrelse på skriften til blandingen.</li>
 <li><strong data="opt_NTools">antall verktøy</strong>. csTimer kan vise opp til 4 verktøy samtidig.</li>
-<li><strong data="opt_useKSC">bruk snarvei på tastatur</strong>. Bruk tastatur snarvei til å bytte blandingstype, generere neste blanding, bytte mellom økter</li>
+<li><strong data="opt_useKSC">bruk snarvei på tastatur</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC gjennomsnittshastighet (tps)</strong>. Utgansspunkt for hastigheten på den virtuelle rubik's kuben, tps vil øke hvis det er flere trekk.</li>
 <li><strong data="opt_vrcMP">fler-faset</strong>. Automatisk flerfasedeling for virtuell Rubiks kube og smartkube.</li>
+<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Vis virtuell smartkube</strong>. Vis en virtuell Rubiks kube på skjermen når en rubiks kube med Bluetooth er koblet til.</li>
 <li><strong data="opt_giiSD">marker blandet hvis du holder deg</strong>. for en smartkube, kan ikke csTimer vite om kuben er et trekk fra blandet eller løst</li>
 <li><strong data="opt_giiSK">Marker blandet med mellomromstast</strong>. når mellomromknappen er trykket ned, vil smartkuben bli markert blandet, hvis du vrir etter det vi det starte tiden</li>
