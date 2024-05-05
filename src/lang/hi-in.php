@@ -35,6 +35,7 @@
 <tr><th>Alt + ऊपर/नीचे</th><td>अगले/पिछले सत्र पर जाएँ</td></tr>
 <tr><th>Alt + बाएँ/दाएँ</th><td>अगला/पिछला स्क्रैंबल प्रदर्शित करें</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>नवीनतम समय OK/+2/DNF है</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">

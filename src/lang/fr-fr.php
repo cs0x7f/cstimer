@@ -35,6 +35,7 @@
 <tr><th>Alt + haut/bas</th><td>Aller à la session suivante/précédente</td></tr>
 <tr><th>Alt + gauche/droite</th><td>Afficher le mélange précédent /suivant</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>La dernière résolution est OK/+2/DNF</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">

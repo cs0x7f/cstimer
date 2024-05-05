@@ -35,6 +35,7 @@
 <tr><th>Alt + nach oben/unten</th><td>Zur nächsten/vorherigen Sitzung</td></tr>
 <tr><th>Alt + links/rechts</th><td>Vorheriges/Nächstes Scramble anzeigen</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>Der letzte Solve ist OK/+2/DNF</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">

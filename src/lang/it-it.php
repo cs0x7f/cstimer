@@ -35,6 +35,7 @@
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">

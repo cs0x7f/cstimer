@@ -35,6 +35,7 @@
 <tr><th>Alt + 上/下</th><td>统计列表切换到下/上一分组</td></tr>
 <tr><th>Alt + 左/右</th><td>显示上/下一条打乱公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>将最新成绩的完成状态改为 OK/+2/DNF</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g</th><td>产生成绩通过 计时器/手动输入/stackmat/虚拟魔方/蓝牙魔方</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
