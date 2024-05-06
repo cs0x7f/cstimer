@@ -44,3 +44,8 @@ After [8280fda](https://github.com/cs0x7f/cstimer/commit/8280fdab9628c605c9abc1b
 # Third-party Deployment
 
 Some functions of csTimer might not work properly for domains except "cstimer.net", especially online-based export/import functions due to callback address verification. If you want to make csTimer work as a part of your own website, it is recommended to use <iframe>.
+
+
+# csTimer module
+
+After [cb6c4266](https://github.com/cs0x7f/cstimer/commit/cb6c42667dc5e68717b2d5ac8fb0623f87a5f1cd), you may use some functions of csTimer by the npm package [cstimer_module](https://www.npmjs.com/package/cstimer_module), e.g. amounts of scrambles. For specific usage, please refer to npm. If you have any problems, you can directly create issues in this project.
