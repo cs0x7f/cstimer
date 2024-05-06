@@ -2,6 +2,9 @@ src = src
 ifndef dest
 	dest = dist
 endif
+ifndef destnpm
+	destnpm = npm_export
+endif
 closure = lib/compiler.jar
 externJQ = --externs lib/jquery-1.7.js
 externTwisty = --externs $(dest)/js/twisty.js
@@ -138,7 +141,7 @@ worker.js)
 
 cstimer = $(dest)/js/cstimer.js
 twisty = $(dest)/js/twisty.js
-cstimer_module = $(dest)/js/cstimer_module.js
+cstimer_module = $(destnpm)/cstimer_module.js
 css = $(addprefix $(dest)/css/, $(shell ls $(src)/css))
 langJS = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.js))
 langPHP = $(addprefix $(dest)/lang/, $(shell ls $(src)/lang/ | grep .*\.php))

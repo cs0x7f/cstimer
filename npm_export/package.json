@@ -1,0 +1,14 @@
+{
+  "name": "cstimer_module",
+  "version": "0.0.2",
+  "description": "scramble and tools used in csTimer",
+  "main": "cstimer_module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Rubik's Cube"
+  ],
+  "author": "cs0x7f",
+  "license": "GPL-3.0"
+}
