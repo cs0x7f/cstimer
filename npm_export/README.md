@@ -20,10 +20,14 @@ var cstimer = require('cstimer_module');
 // List all scramble types
 console.log(cstimer.getScrambleTypes());
 
+// Set seed of scramble generator. csTimer use a CSPRNG to generate scrambles. If not called, crypto.getRandomValues will be called if available, otherwise, current timestamp will be used to initialize the scramble generator.
+// The seed should be a string, otherwise, Object.prototype.toString() will be called.
+cstimer.setSeed("42");
+
 // Generate random-state 3x3x3 scramble
 console.log(cstimer.getScramble('333'));
 
-// Generate scrambles for all wca events
+// Generate scrambles for all wca events, all supported scrambles can be found in https://github.com/cs0x7f/cstimer/blob/master/src/lang/en-us.js
 var wca_events = [
 	["3x3x3", "333", 0],
 	["2x2x2", "222so", 0],

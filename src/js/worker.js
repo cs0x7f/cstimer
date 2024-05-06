@@ -63,6 +63,9 @@ var csTimerWorker = execBoth(function() {
 				var scrambler = scrMgr.scramblers[arguments[0]];
 				return scrambler.apply(scrambler, arguments);
 			},
+			setSeed: function(seed) {
+				mathlib.setSeed(256, seed.toString());
+			},
 			setGlobal: function(key, value) {
 				self[key] = value;
 			}
