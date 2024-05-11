@@ -1728,6 +1728,9 @@ var stats = execMain(function(kpretty, round, kpround) {
 					len1 = Math.abs(stat1);
 					len2 = Math.abs(stat2);
 					times_stats_list = new TimeStat([stat1, stat2], times.length, timeAt);
+				} else if (value[0] == 'useMilli') {
+					times_stats_table.reset(times.length);
+					times_stats_list.reset(times.length);
 				}
 				table_ctrl.updateTable(false);
 				updateUtil(['property', value[0]]);
