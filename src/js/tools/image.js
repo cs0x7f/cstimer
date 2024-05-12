@@ -2,7 +2,7 @@
 
 var image = execMain(function() {
 
-	var canvas, ctx;
+	var img;
 	var hsq3 = Math.sqrt(3) / 2;
 	var PI = Math.PI;
 
@@ -11,48 +11,26 @@ var image = execMain(function() {
 	var drawPolygon = $.ctxDrawPolygon;
 
 	var clkImage = (function() {
-		function drawClock(color, trans, time) {
-			if (!ctx) {
-				return;
-			}
+		function drawClock(svg, color, trans, time) {
 			var points = Transform(Rotate([
 				[1, 1, 0, -1, -1, -1, 1, 0],
 				[0, -1, -8, -1, 0, 1, 1, 0]
 			], time / 6 * PI), trans);
 			var x = points[0];
 			var y = points[1];
-
-			ctx.beginPath();
-			ctx.fillStyle = color;
-			ctx.arc(x[7], y[7], trans[0] * 9, 0, 2 * PI);
-			ctx.fill();
-
-			ctx.beginPath();
-			ctx.fillStyle = colors[3];
-			ctx.strokeStyle = colors[0];
-			ctx.moveTo(x[0], y[0]);
-			ctx.bezierCurveTo(x[1], y[1], x[1], y[1], x[2], y[2]);
-			ctx.bezierCurveTo(x[3], y[3], x[3], y[3], x[4], y[4]);
-			ctx.bezierCurveTo(x[5], y[5], x[6], y[6], x[0], y[0]);
-			ctx.closePath();
-			ctx.fill();
-			ctx.stroke();
+			svg.addElem('<circle cx="' + x[7] + '" cy="' + y[7] + '" r="' + trans[0] * 9 + '" style="fill:' + color + '" />');
+			var path = [];
+			path.push('M' + x[0] + ' ' + y[0]);
+			path.push('Q' + x[1] + ' ' + y[1] + ',' + x[2] + ' ' + y[2]);
+			path.push('Q' + x[3] + ' ' + y[3] + ',' + x[4] + ' ' + y[4]);
+			path.push('C' + x[5] + ' ' + y[5] + ',' + x[6] + ' ' + y[6] + ',' + x[0] + ' ' + y[0]);
+			svg.addElem('<path d="' + path.join(' ') + '" style="fill:' + colors[3] + ';stroke:' + colors[0] + '" />');
 		}
 
-		function drawButton(color, trans) {
-			if (!ctx) {
-				return;
-			}
-			var points = Transform([
-				[0],
-				[0]
-			], trans);
-			ctx.beginPath();
-			ctx.fillStyle = color;
-			ctx.strokeStyle = '#000';
-			ctx.arc(points[0][0], points[1][0], trans[0] * 3, 0, 2 * PI);
-			ctx.fill();
-			ctx.stroke();
+		function drawButton(svg, color, trans) {
+			var points = Transform([[0],[0]], trans);
+			svg.addElem('<circle cx="' + points[0][0] + '" cy="' + points[1][0] +
+				'" r="' + trans[0] * 3 + '" style="fill:' + color + ';stroke:#000;" />');
 		}
 
 		var width = 3;
@@ -60,7 +38,7 @@ var image = execMain(function() {
 		var movestr = ['UR', 'DR', 'DL', 'UL', 'U', 'R', 'D', 'L', 'ALL']
 		var colors = ['#f00', '#37b', '#5cf', '#ff0', '#850'];
 
-		return function(moveseq) {
+		return function(svg, moveseq) {
 			colors = kernel.getProp('colclk').match(colre);
 			var moves = moveseq.split(/\s+/);
 			var moveArr = clock.moveArr;
@@ -107,20 +85,20 @@ var image = execMain(function() {
 			];
 			buttons = [buttons[3], buttons[2], buttons[0], buttons[1], 1 - buttons[0], 1 - buttons[1], 1 - buttons[3], 1 - buttons[2]];
 
-			canvas.attr('width', 6.25 * 20 * width);
-			canvas.attr('height', 3 * 20 * width);
+			svg.width = 6.25 * 20 * width;
+			svg.height = 3 * 20 * width;
 
 			var y = [10, 30, 50];
 			var x = [10, 30, 50, 75, 95, 115];
 			for (var ii = 0; ii < 18; ii++) {
 				var i = (ii + flip) % 18;
-				drawClock([colors[1], colors[2]][~~(ii / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[ii]);
+				drawClock(svg, [colors[1], colors[2]][~~(ii / 9)], [width, x[~~(i / 3)], y[i % 3]], clks[ii]);
 			}
 
 			y = [20, 40];
 			x = [20, 40, 85, 105];
 			for (var i = 0; i < 8; i++) {
-				drawButton([colors[4], colors[3]][buttons[i]], [width, x[~~(i / 2)], y[i % 2]]);
+				drawButton(svg, [colors[4], colors[3]][buttons[i]], [width, x[~~(i / 2)], y[i % 2]]);
 			}
 		};
 	})();
@@ -190,7 +168,7 @@ var image = execMain(function() {
 
 		var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/;
 
-		return function(moveseq, isSQ2) {
+		return function(svg, moveseq, isSQ2) {
 			var cols = kernel.getProp('colsq1').match(colre);
 			colors = {
 				'U': cols[0],
@@ -213,8 +191,8 @@ var image = execMain(function() {
 			}
 			doMove([0, 0, 1]);
 
-			canvas.attr('width', 11 * width);
-			canvas.attr('height', 6.3 * width);
+			svg.width = 11 * width;
+			svg.height = 6.3 * width;
 
 			//draw top
 			for (var i = 0; i < 24; i++) {
@@ -233,33 +211,33 @@ var image = execMain(function() {
 						} else if (cLR && i < 12) {
 							cRot -= PI / 6;
 						}
-						drawPolygon(ctx, colors[ccol[val + cLR]],
+						drawPolygon(svg, colors[ccol[val + cLR]],
 							Rotate(cLR ? cpr : cpl, cRot), trans);
-						drawPolygon(ctx, colorUD,
+						drawPolygon(svg, colorUD,
 							Rotate(cLR ? cprs : cpls, cRot), trans);
 					} else if (val == (posit[j] >> 1)) {
-						drawPolygon(ctx, colors[ccol[val]],
+						drawPolygon(svg, colors[ccol[val]],
 							Rotate(cpl, cRot), trans);
-						drawPolygon(ctx, colors[ccol[val + 1]],
+						drawPolygon(svg, colors[ccol[val + 1]],
 							Rotate(cpr, cRot), trans);
-						drawPolygon(ctx, colorUD,
+						drawPolygon(svg, colorUD,
 							Rotate(cps, cRot), trans);
 					}
 				} else { //edge piece
-					drawPolygon(ctx, colors[ecol[val]],
+					drawPolygon(svg, colors[ecol[val]],
 						Rotate(ep, eRot), trans);
-					drawPolygon(ctx, colorUD,
+					drawPolygon(svg, colorUD,
 						Rotate(eps, eRot), trans);
 				}
 			}
 
 			var trans = [width, 2.7 + 2.7, 2.7 + 3.0];
 			//draw middle
-			drawPolygon(ctx, colors['L'], [[-hsq3 - 1, -hsq3 - 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
+			drawPolygon(svg, colors['L'], [[-hsq3 - 1, -hsq3 - 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
 			if (mid == 0) {
-				drawPolygon(ctx, colors['L'], [[hsq3 + 1, hsq3 + 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
+				drawPolygon(svg, colors['L'], [[hsq3 + 1, hsq3 + 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
 			} else {
-				drawPolygon(ctx, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
+				drawPolygon(svg, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
 			}
 
 			var recons = [];
@@ -292,7 +270,7 @@ var image = execMain(function() {
 		var posit = [];
 		var colors = ['#ff0', '#fa0', '#00f', '#fff', '#f00', '#0d0'];
 
-		function face(f, size) {
+		function face(svg, f, size) {
 			var offx = 10 / 9,
 				offy = 10 / 9;
 			if (f == 0) { //D
@@ -319,7 +297,7 @@ var image = execMain(function() {
 				var x = (f == 1 || f == 2) ? size - 1 - i : i;
 				for (var j = 0; j < size; j++) {
 					var y = (f == 0) ? size - 1 - j : j;
-					drawPolygon(ctx, colors[posit[(f * size + y) * size + x]], [
+					drawPolygon(svg, colors[posit[(f * size + y) * size + x]], [
 						[i, i, i + 1, i + 1],
 						[j, j + 1, j + 1, j]
 					], [width, offx + 0.1, offy + 0.1]);
@@ -422,15 +400,15 @@ var image = execMain(function() {
 			return posit;
 		}
 
-		function draw(size, moveseq) {
+		function draw(svg, size, moveseq) {
 			genPosit(size, moveseq);
 
-			canvas.attr('width', (39 * size / 9 + 0.2) * width);
-			canvas.attr('height', (29 * size / 9 + 0.2) * width);
+			svg.width = (39 * size / 9 + 0.2) * width;
+			svg.height = (29 * size / 9 + 0.2) * width;
 
 			colors = kernel.getProp('colcube').match(colre);
 			for (var i = 0; i < 6; i++) {
-				face(i, size);
+				face(svg, i, size);
 			}
 
 			var moves = moveseq.split(/\s+/);
@@ -459,21 +437,20 @@ var image = execMain(function() {
 	 *	   F1 F2 F3
 	 */
 	var llImage = (function() {
-		function drawImage(pieces, arrows, _canvas) {
-			var canvas = $(_canvas);
+		function drawImage(pieces, arrows, img) {
+			var svg = new $.svg();
 			var colors = kernel.getProp('colcube').match(colre);
-			var ctx = canvas[0].getContext('2d');
 			var dim = 3;
 			if (pieces.length == 12) {
 				dim = 2;
 			}
 			var width = 50;
-			canvas.attr('width', (dim + 1.2) * width);
-			canvas.attr('height', (dim + 1.2) * width);
+			svg.width = (dim + 1.2) * width;
+			svg.height = (dim + 1.2) * width;
 			for (var i = 0; i < dim * dim; i++) {
 				var x = i % dim + 0.5;
 				var y = ~~(i / dim) + 0.5;
-				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i])] || '#888', [
+				drawPolygon(svg, colors["DLBURF".indexOf(pieces[i])] || '#888', [
 					[x, x + 1, x + 1, x],
 					[y, y, y + 1, y + 1]
 				], [width, 0.1, 0.1]);
@@ -481,7 +458,7 @@ var image = execMain(function() {
 			for (var i = 0; i < dim * 4; i++) {
 				var x = i % dim;
 				var rot = ~~(i / dim);
-				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i + dim * dim])] || '#888', Rotate([
+				drawPolygon(svg, colors["DLBURF".indexOf(pieces[i + dim * dim])] || '#888', Rotate([
 					[x - dim / 2, x - dim / 2 + 1, (x - dim / 2 + 1) * 0.9, (x - dim / 2) * 0.9],
 					[dim / 2 + 0.05, dim / 2 + 0.05, dim / 2 + 0.5, dim / 2 + 0.5]
 				], -rot * PI / 2), [width, 0.6 + dim / 2, 0.6 + dim / 2]);
@@ -494,14 +471,18 @@ var image = execMain(function() {
 				var x2 = arrow[1] % dim + 1.1;
 				var y2 = ~~(arrow[1] / dim) + 1.1;
 				var length = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-				drawPolygon(ctx, '#000', Rotate([
+				drawPolygon(svg, '#000', Rotate([
 					[0.2, length - 0.4, length - 0.4, length - 0.1, length - 0.4, length - 0.4, 0.2],
 					[0.05, 0.05, 0.15, 0, -0.15, -0.05, -0.05]
 				], Math.atan2(y2 - y1, x2 - x1)), [width, x1, y1]);
 			}
+			if (img) {
+				img.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+			}
+			return svg;
 		}
 
-		function draw(size, moveseq, _canvas) {
+		function draw(size, moveseq, img) {
 			var state = nnnImage.genPosit(size, moveseq);
 			var pieces = [];
 			for (var i = 0; i < size * size; i++) {
@@ -514,7 +495,7 @@ var image = execMain(function() {
 					pieces.push("DLBURF"[state[offset + ii]]);
 				}
 			}
-			drawImage(pieces.join(''), [], _canvas);
+			return drawImage(pieces.join(''), [], img);
 		}
 
 		return {
@@ -539,20 +520,23 @@ var image = execMain(function() {
 			[width * hsq3, 0, (width * 3 + gap * 2) * hsq3, -width / 2, width, width * 3 + gap * 1.5],
 			[width * hsq3, 0, 0, width / 2, width, width * 1.5 + gap * 1.5],
 		]
-		function drawImage(pieces, _canvas) {
-			var canvas = $(_canvas);
+		function drawImage(pieces, img) {
+			var svg = new $.svg();
 			var colors = kernel.getProp('colcube').match(colre);
-			var ctx = canvas[0].getContext('2d');
-			canvas.attr('width', (6 * width + gap * 2) * hsq3 + 1);
-			canvas.attr('height', (6 * width + gap * 1.5) + 1);
+			svg.width = (6 * width + gap * 2) * hsq3;
+			svg.height = (6 * width + gap * 1.5);
 			for (var i = 0; i < 27; i++) {
 				var x = i % 3;
 				var y = ~~(i / 3) % 3;
-				drawPolygon(ctx, colors["DLBURF".indexOf(pieces[i])] || '#888', [
+				drawPolygon(svg, colors["DLBURF".indexOf(pieces[i])] || '#888', [
 					[x, x + 1, x + 1, x],
 					[y, y, y + 1, y + 1]
 				], ftrans[~~(i / 9)]);
 			}
+			if (img) {
+				img.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+			}
+			return svg;
 		}
 		return drawImage;
 	})();
@@ -563,12 +547,11 @@ var image = execMain(function() {
 	var pyrllImage = (function() {
 		var width = 20;
 
-		function drawImage(pieces, _canvas) {
-			var canvas = $(_canvas);
-			canvas.attr('width', 6 * hsq3 * width + 1);
-			canvas.attr('height', 6 * hsq3 * width + 1);
+		function drawImage(pieces, img) {
+			var svg = new $.svg();
+			svg.width = 6 * hsq3 * width;
+			svg.height = 6 * hsq3 * width;
 			var colors = kernel.getProp('colpyr').match(colre);
-			var ctx = canvas[0].getContext('2d');
 			var idx = 0;
 			for (var i = 0; i < 3; i++) {
 				for (var f = 0; f < 3; f++) {
@@ -581,11 +564,15 @@ var image = execMain(function() {
 						} else {
 							piece = [[x - hsq3, x, x + hsq3], [y, y + 0.5, y]];
 						}
-						drawPolygon(ctx, colors["FLRD".indexOf(pieces[idx])] || '#888', Rotate(piece, PI / 3 * 4 * f), [width, 3 * hsq3, 3 + (6 * hsq3 - 4.5) / 2]);
+						drawPolygon(svg, colors["FLRD".indexOf(pieces[idx])] || '#888', Rotate(piece, PI / 3 * 4 * f), [width, 3 * hsq3, 3 + (6 * hsq3 - 4.5) / 2]);
 						idx++;
 					}
 				}
 			}
+			if (img) {
+				img.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+			}
+			return svg;
 		}
 		return drawImage;
 	})();
@@ -593,7 +580,7 @@ var image = execMain(function() {
 	var polyhedronImage = (function() {
 		var puzzleCache = {};
 
-		return function(type, moveseq, faceNameMask, minArea) {
+		return function(svg, type, moveseq, faceNameMask, minArea) {
 			var colors = [];
 			var moves = [];
 			var minArea = minArea || 0;
@@ -661,35 +648,32 @@ var image = execMain(function() {
 					if (!polys[i]) {
 						continue;
 					}
-					var poly = $.ctxTransform(polys[i], trans[polys[i][2]]);
+					var poly = Transform(polys[i], trans[polys[i][2]]);
 					polys[i][0] = poly[0];
 					polys[i][1] = poly[1];
 				}
 				sizes = [8 * hsq3, 6];
 			}
 			var scale = Math.min(1.6 / sizes[0], 1.0 / sizes[1]) * 300;
-			canvas.attr('width', sizes[0] * scale + 1);
-			canvas.attr('height', sizes[1] * scale + 1);
+			svg.width = sizes[0] * scale;
+			svg.height = sizes[1] * scale;
 			for (var i = 0; i < colors.length; i++) {
 				colors[i] = '#' + colors[i].toString(16).padStart(6, '0');
 			}
 			for (var i = 0; i < posit.length; i++) {
-				polys[i] && $.ctxDrawPolygon(ctx, colors[posit[i]], polys[i], [scale, 0, 0, 0, scale, 0]);
+				polys[i] && drawPolygon(svg, colors[posit[i]], polys[i], [scale, 0, 0, 0, scale, 0]);
 			}
 			for (var i = 0; i < faces.length; i++) {
 				if ((faceNameMask >> i & 1) == 0) {
 					continue;
 				}
 				var face = faces[i];
-				ctx.textAlign = "center";
-				ctx.textBaseline = "middle";
-				ctx.font = "20px Arial";
-				ctx.lineWidth = 3;
-				ctx.strokeStyle = kernel.getProp('col-board');
-				ctx.strokeText(face[2].toUpperCase(), face[0] * scale, face[1] * scale);
-				ctx.fillStyle = kernel.getProp('col-font');
-				ctx.fillText(face[2].toUpperCase(), face[0] * scale, face[1] * scale);
-				ctx.lineWidth = 1;
+				svg.addText(face[2].toUpperCase(), [face[0] * scale, face[1] * scale], {
+					'font': '20px Arial',
+					'fill': kernel.getProp('col-font'),
+					'stroke': kernel.getProp('col-board'),
+					'stroke-width': '3px'
+				});
 			}
 			var recons = [];
 			for (var midx = 0; midx < moves.length; midx++) {
@@ -702,7 +686,7 @@ var image = execMain(function() {
 
 	var sldImage = (function() {
 
-		return function(type, size, moveseq) {
+		return function(svg, type, size, moveseq) {
 			var width = 50;
 			var gap = 0.05;
 
@@ -736,8 +720,8 @@ var image = execMain(function() {
 				}
 			}
 
-			canvas.attr('width', (size + gap * 4) * width);
-			canvas.attr('height', (size + gap * 4) * width);
+			svg.width = (size + gap * 4) * width;
+			svg.height = (size + gap * 4) * width;
 
 			var cols = kernel.getProp('col15p').match(colre);
 			cols[size - 1] = cols[cols.length - 1];
@@ -746,18 +730,17 @@ var image = execMain(function() {
 					var val = state[j * size + i];
 					var colorIdx = Math.min(~~(val / size), val % size);
 					val++;
-					drawPolygon(ctx, cols[colorIdx], [
+					drawPolygon(svg, cols[colorIdx], [
 						[i + gap, i + gap, i + 1 - gap, i + 1 - gap],
 						[j + gap, j + 1 - gap, j + 1 - gap, j + gap]
 					], [width, gap * 2, gap * 2]);
 					if (val == size * size) {
 						continue;
 					}
-					ctx.fillStyle = "#000";
-					ctx.font = width * 0.6 + "px monospace";
-					ctx.textAlign = "center";
-					ctx.textBaseline = "middle";
-					ctx.fillText(val, width * (i + 0.5 + gap * 2), width * (j + 0.5 + gap * 2));
+					svg.addText(val, [width * (i + 0.5 + gap * 2), width * (j + 0.5 + gap * 2)], {
+						'font': width * 0.6 + 'px Arial',
+						'fill': '#000'
+					});
 				}
 			}
 		}
@@ -765,7 +748,9 @@ var image = execMain(function() {
 
 	var types_nnn = ['222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
 
-	function genImage(scramble) {
+	function genImage(scramble, renderTool) {
+		var svg = new $.svg();
+
 		var type = scramble[0];
 		if (type == 'input') {
 			type = tools.scrambleType(scramble[1]);
@@ -774,9 +759,9 @@ var image = execMain(function() {
 		var size = types_nnn.indexOf(type);
 		var recons;
 		if (size >= 0) {
-			recons = nnnImage.draw(size + 2, scramble[1]);
+			recons = nnnImage.draw(svg, size + 2, scramble[1]);
 		} else if (type == "cubennn") {
-			nnnImage.draw(scramble[2], scramble[1]);
+			nnnImage.draw(svg, scramble[2], scramble[1]);
 		} else if (puzzleFactory.udpolyre.exec(type)) {
 			var faceNameMask = 0;
 			if (/^prc|giga|mgm|klm$/.exec(type)) {
@@ -786,30 +771,32 @@ var image = execMain(function() {
 			} else if (type == 'ctico') {
 				faceNameMask = 0xfffff;
 			}
-			recons = polyhedronImage(type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
+			recons = polyhedronImage(svg, type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
 		} else if (type == "sq1" || type == "sq2") {
-			recons = sq1Image(scramble[1], type == "sq2");
+			recons = sq1Image(svg, scramble[1], type == "sq2");
 		} else if (type == "clk") {
-			clkImage(scramble[1]);
+			clkImage(svg, scramble[1]);
 		} else if (type == "15b" || type == "15p") {
-			sldImage(type[2], 4, scramble[1]);
+			sldImage(svg, type[2], 4, scramble[1]);
 		} else if (type == "8b" || type == "8p") {
-			sldImage(type[1], 3, scramble[1]);
+			sldImage(svg, type[1], 3, scramble[1]);
 		} else {
 			return false;
 		}
-		var width = canvas.attr('width');
-		var height = canvas.attr('height');
-		var scale = Math.min(1.6 / width, 1.0 / height) * kernel.getProp('imgSize') * 0.6;
-		canvas.width(width * scale + 'em');
-		canvas.height(height * scale + 'em');
-		canvas.unbind('click');
+		if (!renderTool) {
+			return svg;
+		}
+		var scale = Math.min(1.6 / svg.width, 1.0 / svg.height) * kernel.getProp('imgSize') * 0.6;
+		img.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+		img.width(svg.width * scale + 'em');
+		img.height(svg.height * scale + 'em');
+
 		if (recons && kernel.getProp('imgRep')) {
 			for (var i = 0; i < recons[1].length; i++) {
 				recons[1][i] = recons[1][i] + '@' + (i + 1) * 1000;
 			}
 			recons[1] = recons[1].join(' ');
-			canvas.click(function(recons) {
+			img.click(function(recons) {
 				replay.popupReplay.apply(null, recons);
 			}.bind(null, recons));
 		}
@@ -820,10 +807,9 @@ var image = execMain(function() {
 		if (!fdiv) {
 			return;
 		}
-		canvas = $('<canvas>');
-		ctx = canvas[0].getContext('2d');
-		fdiv.empty().append(canvas);
-		if (!genImage(tools.getCurScramble())) {
+		img = img || $('<img style="display:block;">');
+		fdiv.empty().append(img);
+		if (!genImage(tools.getCurScramble(), true)) {
 			fdiv.html(IMAGE_UNAVAILABLE);
 		}
 	}
@@ -831,10 +817,7 @@ var image = execMain(function() {
 	var colre = /#[0-9a-fA-F]{3}/g;
 
 	$(function() {
-		canvas = $('<canvas>');
-		if (canvas[0].getContext) {
-			tools.regTool('image', TOOLS_IMAGE, execFunc);
-		}
+		tools.regTool('image', TOOLS_IMAGE, execFunc);
 	});
 
 	return {

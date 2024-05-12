@@ -525,7 +525,7 @@ var caseStat = execMain(function() {
 
 		var trTpl =
 			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">$1</td>' +
-			'<td rowspan=2 style="padding:0;width:2em;"><canvas/></td>' +
+			'<td rowspan=2 style="padding:0;width:2em;"><img/></td>' +
 			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">$2</td>' +
 			'<td colspan=4 style="padding:0;">' +
 			'<span class="cntbar sty2" style="height:0.25em;float:left;border:none;width:$3%;">&nbsp;</span>' +
@@ -580,14 +580,14 @@ var caseStat = execMain(function() {
 				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), row[j]);
 			}
 			curTr = $(curTr);
-			var canvas = curTr.find('canvas');
-			canvas.css({
+			var img = curTr.find('img');
+			img.css({
 				'width': '2em',
 				'height': '2em',
 				'display': 'block'
 			});
-			ident[1](row[0], canvas);
-			row.push(canvas.get(0).toDataURL());
+			ident[1](row[0], img);
+			row.push(img.attr('src'));
 			table.append(curTr);
 		}
 		methodSelect.unbind('change').change(procMethodChange);

@@ -442,7 +442,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					setStatus(getProp('phases'));
 					if (isTrain && tools.getCurPuzzle() == '333') {
 						var scr = tools.getCurScramble();
-						image.llImage.draw(3, scr[1], canvas[0]);
+						image.llImage.draw(3, scr[1], trainImg);
 					}
 				} else if (status == -4) {
 					startTime = now;
@@ -516,7 +516,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		var div = $('<div>');
-		var canvas = $('<canvas style="height:100%;">');
+		var trainImg = $('<img style="height:100%;display:inline-block;">');
 		var isTrain = false;
 
 		function reset(type) {
@@ -538,10 +538,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				return;
 			} else if (div.is(":hidden")) {
 				div.show().appendTo('#container');
-				div.empty().append(canvas);
+				div.empty().append(trainImg);
 			}
 			div.css('height', getProp('timerSize') * $('#logo').width() / 12 + 'px');
-			image.llImage.drawImage("GGGGGGGGGGGGGGGGGGGGG", [], canvas[0]);
+			image.llImage.drawImage("GGGGGGGGGGGGGGGGGGGGG", [], trainImg);
 		}
 
 		var ctrlStatus = 0x0;

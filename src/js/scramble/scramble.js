@@ -582,11 +582,11 @@ var scramble = execMain(function(rn, rndEl) {
 				chkBoxList.push(chkBox);
 				var label = $('<label>').append(chkBox, data[i]);
 				if (imgGen) {
-					var canvas = $('<canvas>');
-					canvas.width(5 + 'em');
-					canvas.height(5 + 'em');
-					label.append('<br>', canvas);
-					imgGen(i, canvas);
+					var img = $('<img style="display:block;">');
+					imgGen(i, img);
+					img.width('5em');
+					img.height('5em');
+					label.append('<br>', img);
 					label.addClass('bimg');
 				}
 				chkLabelList.push(label);

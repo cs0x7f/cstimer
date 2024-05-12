@@ -32,7 +32,7 @@ var trainStat = execMain(function() {
 
 		var trTpl =
 			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">$0</td>' +
-			'<td rowspan=2 style="padding:0"><canvas/></td>' +
+			'<td rowspan=2 style="padding:0"><img/></td>' +
 			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">$1</td>' +
 			'<td colspan=4 style="padding:0;">' +
 			'<span class="cntbar" style="height:0.25em;float:left;border:none;width:$2%;">&nbsp;</span>' +
@@ -83,13 +83,13 @@ var trainStat = execMain(function() {
 				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), trdata[j]);
 			}
 			curTr = $(curTr);
-			var canvas = curTr.find('canvas');
-			canvas.css({
+			var img = curTr.find('img');
+			img.css({
 				'width': '2em',
 				'height': '2em',
 				'display': 'block'
 			});
-			ident[1](i, canvas);
+			ident[1](i, img);
 			table.append(curTr);
 			nvalid++;
 		}
