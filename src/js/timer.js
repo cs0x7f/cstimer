@@ -1306,7 +1306,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (todoMoves.match(/^\s*$/) || !puzzleObj) {
 					scramble = [];
 				} else {
-					scramble = puzzleObj.parseScramble(kernel.getConjMoves(todoMoves, true, curVRCCubie.ori));
+					scramble = puzzleObj.parseScramble(cubeutil.getConjMoves(todoMoves, true, curVRCCubie.ori));
 				}
 				if (scramble.length < 5) {
 					puzzleObj.addMoves(scramble);
@@ -1430,7 +1430,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 							curTime[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
 						}
 						DEBUG && console.log('time fit, new=', curTime);
-						sol = kernel.getConjMoves(cubeutil.moveSeq2str(sol), true);
+						sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
 						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
 					} else if (getProp('giiMode') != 'n') {
 						kernel.pushSignal('ctrl', ['scramble', 'next']);
@@ -1467,7 +1467,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if (kernel.getProp('giiMode') == 'n') {
 					if (!giikerutil.checkScramble()) {
 						var gen = scramble_333.genFacelet(currentFacelet);
-						pushSignal('scramble', ['333', kernel.getConjMoves(gen, true), 0]);
+						pushSignal('scramble', ['333', cubeutil.getConjMoves(gen, true), 0]);
 					}
 					giikerutil.markScrambled();
 				} else {
@@ -1543,7 +1543,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 							curTime[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
 						}
 						DEBUG && console.log('time fit, new=', curTime);
-						sol = kernel.getConjMoves(cubeutil.moveSeq2str(sol), true);
+						sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
 						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
 					}
 				} else if (keyCode == 32 && status == -1 && getProp('giiSK') && canStart(currentFacelet)) {

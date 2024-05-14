@@ -10,8 +10,8 @@ var scrHinter = execMain(function(CubieCube) {
 
 	function setScramble(scramble) {
 		rawScrTxt = scramble;
-		scramble = kernel.getConjMoves(scramble);
-		var scr = kernel.parseScramble(scramble, "URFDLB");
+		scramble = cubeutil.getConjMoves(scramble);
+		var scr = cubeutil.parseScramble(scramble, "URFDLB");
 		rawScr = scr.slice();
 		genState = null;
 		genScr = null;
@@ -69,7 +69,7 @@ var scrHinter = execMain(function(CubieCube) {
 			if (i == next) ret.push(':');
 		}
 		ret = ret.join(' ');
-		ret = kernel.getConjMoves(ret, true);
+		ret = cubeutil.getConjMoves(ret, true);
 		return ret;
 	}
 
@@ -97,7 +97,7 @@ var scrHinter = execMain(function(CubieCube) {
 			CubieCube.EdgeMult(stateInv, scrState, toSolve);
 			CubieCube.CornMult(stateInv, scrState, toSolve);
 			genScr = scramble_333.genFacelet(toSolve.toFaceCube());
-			genScr = kernel.parseScramble(genScr, "URFDLB");
+			genScr = cubeutil.parseScramble(genScr, "URFDLB");
 			toMoveFix = checkInSeq(state, genState, genScr);
 		}
 		var toMove = toMoveFix ? scrambleToHtml(toMoveFix) : scrambleToHtml(toMoveRaw);
@@ -499,7 +499,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function setLastSolve(solve) {
-		updateAlgClick(lastSolveClick, "Pretty", kernel.getConjMoves(curScramble), solve)
+		updateAlgClick(lastSolveClick, "Pretty", cubeutil.getConjMoves(curScramble), solve)
 	}
 
 	function giikerEvtCallback(info, event) {
@@ -615,7 +615,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 		var c1 = new mathlib.CubieCube();
 		var solvMoves = [];
-		var conj = mathlib.CubieCube.rotMulI[0][kernel.getPreConj()];
+		var conj = mathlib.CubieCube.rotMulI[0][cubeutil.getPreConj()];
 		for (var i = startIdx; i < moveTsList.length; i++) {
 			var move = moveTsList[i].slice();
 			var m = mathlib.CubieCube.rotMulM[conj][move[0]];

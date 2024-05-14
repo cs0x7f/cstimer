@@ -385,7 +385,7 @@ var cubeutil = (function() {
 		if (!tools.isPuzzle('333', scramble)) {
 			return;
 		}
-		var scr = kernel.parseScramble(scrSeq, "URFDLB");
+		var scr = parseScramble(scrSeq, "URFDLB");
 		var c = new mathlib.CubieCube();
 		var d = new mathlib.CubieCube();
 		c.ori = 0;
@@ -464,6 +464,62 @@ var cubeutil = (function() {
 		};
 	}
 
+	var scrambleReg = /^([\d]+(?:-\d+)?)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
+
+	function parseScramble(scramble, moveMap, addPreScr) {
+		scramble = scramble || '';
+		if (addPreScr) {
+			scramble = kernel.getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr') + ' ' + scramble;
+		}
+		var moveseq = [];
+		var moves = scramble.split(' ');
+		var m, w, f, p;
+		for (var s = 0; s < moves.length; s++) {
+			m = scrambleReg.exec(moves[s]);
+			if (m == null) {
+				continue;
+			}
+			f = "FRUBLDfrubldzxySME".indexOf(m[2]);
+			if (f > 14) {
+				p = "2'".indexOf(m[5] || 'X') + 2;
+				f = [0, 4, 5][f % 3];
+				moveseq.push([moveMap.indexOf("FRUBLD".charAt(f)), 2, p]);
+				moveseq.push([moveMap.indexOf("FRUBLD".charAt(f)), 1, 4 - p]);
+				continue;
+			}
+			w = (m[1] || '').split('-');
+			var w2 = ~~w[1] || -1;
+			w = f < 12 ? (~~w[0] || ~~m[4] || ((m[3] == "w" || f > 5) && 2) || 1) : -1;
+			p = (f < 12 ? 1 : -1) * ("2'".indexOf(m[5] || 'X') + 2);
+			moveseq.push([moveMap.indexOf("FRUBLD".charAt(f % 6)), w, p, w2]);
+		}
+		return moveseq;
+	}
+
+	function getConjMoves(moves, inv, conj) {
+		if (!moves) {
+			return moves;
+		}
+		if (conj === undefined) {
+			conj = getPreConj();
+		}
+		if (inv) {
+			conj = mathlib.CubieCube.rotMulI[0][conj || 0];
+		}
+		return moves.replace(/[URFDLB]/g, function(face) {
+			return "URFDLB".charAt(mathlib.CubieCube.rotMulM[conj]["URFDLB".indexOf(face) * 3] / 3);
+		});
+	}
+
+	function getPreConj() { // TODO 24 cases, use map insetad of calculation
+		var preScr = kernel.getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr', '').split(' ');
+		var cc = new mathlib.CubieCube();
+		for (var i = 0; i < preScr.length; i++) {
+			cc.selfMoveStr(preScr[i]);
+		}
+		return cc.ori || 0;
+	}
+
 	return {
 		getProgress: getProgress,
 		getStepNames: getStepNames,
@@ -475,6 +531,8 @@ var cubeutil = (function() {
 		getScrambledState: getScrambledState,
 		identStep: identStep,
 		getIdentData: getIdentData,
+		parseScramble: parseScramble,
+		getConjMoves: getConjMoves,
+		getPreConj: getPreConj
 	}
-
 })();

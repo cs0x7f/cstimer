@@ -516,7 +516,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 
 		function execCross(scramble, fdiv) {
 			fdiv.empty();
-			curScramble = kernel.parseScramble(scramble, "FRUBLD");
+			curScramble = cubeutil.parseScramble(scramble, "FRUBLD");
 			var solutions = solve_cross(curScramble);
 			for (var face = 0; face < 6; face++) {
 				var span = $('<span class="sol"/>');

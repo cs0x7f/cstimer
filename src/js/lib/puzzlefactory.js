@@ -108,26 +108,26 @@ var puzzleFactory = execMain(function() {
 		options["type"] = puzzle;
 		if (puzzle.startsWith("cube")) {
 			options["type"] = "cube";
-			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]); // U L F D L B
+			options["faceColors"] = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]); // U L F D L B
 			options["dimension"] = ~~puzzle.slice(4) || 3;
 			options["stickerWidth"] = 1.7;
 		} else if (puzzle == "skb") {
 			options["type"] = "skewb";
-			options["faceColors"] = col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);
+			options["faceColors"] = $.col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);
 		} else if (puzzle == "mgm" || puzzle == "prc" || puzzle == "klm" || puzzle == "giga") {
-			options["faceColors"] = col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
+			options["faceColors"] = $.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
 		} else if (puzzle == "pyr" || puzzle == "mpyr") {
-			options["faceColors"] = col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
+			options["faceColors"] = $.col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
 		} else if (puzzle == "sq1") {
-			options["faceColors"] = col2std(kernel.getProp("colsq1"), [0, 5, 4, 2, 1, 3]);
+			options["faceColors"] = $.col2std(kernel.getProp("colsq1"), [0, 5, 4, 2, 1, 3]);
 		} else if (puzzle == "clk") {
-			options["faceColors"] = col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
+			options["faceColors"] = $.col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
 		} else if (puzzle == "fto") {
-			options["faceColors"] = col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
+			options["faceColors"] = $.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		} else if (/^heli(?:2x2|cv)?|crz3a|redi$/.exec(puzzle)) {
-			options["faceColors"] = col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
+			options["faceColors"] = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
 		} else if (/^ctico$/.exec(puzzle)) {
-			options["faceColors"] = col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+			options["faceColors"] = $.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
 		}
 		options['scale'] = 0.9;
 		child[2].twistyScene.initializeTwisty(options);
@@ -136,22 +136,9 @@ var puzzleFactory = execMain(function() {
 		callback(child[2], isInit);
 	}
 
-	function col2std(col, faceMap) {
-		var ret = [];
-		col = (col || '').match(/#[0-9a-fA-F]{3}/g) || [];
-		for (var i = 0; i < col.length; i++) {
-			ret.push(~~(kernel.ui.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
-		}
-		return ret;
-	}
-
-	var UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico";
-	var TWISTY_RE = "sq1|clk|udpoly|" + UDPOLY_RE;
 
 	return {
-		udpolyre: new RegExp("^(" + UDPOLY_RE + ")$"),
-		twistyre: new RegExp("^(" + TWISTY_RE + ")$"),
-		init: init,
-		col2std: col2std
+		twistyre: new RegExp("^(" + $.TWISTY_RE + ")$"),
+		init: init
 	}
 });

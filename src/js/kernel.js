@@ -131,7 +131,7 @@ var kernel = execMain(function() {
 					} else {
 						var idx = ~~target.attr('data') * 4 - 4;
 						var val = getProp(key);
-						setProp(key, [val.slice(0, idx), ui.nearColor(target.val()), val.slice(idx + 4)].join(''));
+						setProp(key, [val.slice(0, idx), $.nearColor(target.val()), val.slice(idx + 4)].join(''));
 					}
 					break;
 				case 'text':
@@ -231,7 +231,7 @@ var kernel = execMain(function() {
 						proSet[0] = $('<input type="text" name="' + key + '" style="display:none">').val(curVal);
 						var colorsInput = [];
 						for (var i = 0; i < val.length; i++) {
-							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val(ui.nearColor(val[i], 0, true)).change(procClick));
+							colorsInput.push($('<input type="color" name="' + key + '" data="' + (i + 1) + '" class="mulcolor">').val($.nearColor(val[i], 0, true)).change(procClick));
 						}
 						valTd.append(proSet[2], ': ', proSet[0], colorsInput);
 					} else if (type == 5) { //internal
@@ -639,22 +639,22 @@ var kernel = execMain(function() {
 
 		function useColorTemplate(value) {
 			for (var i=0; i<7; i++) {
-				cur_color[i] = nearColor(value.substr(i*4, 4));
+				cur_color[i] = $.nearColor(value.substr(i*4, 4));
 			}
 
-			setProp('col-font', nearColor(cur_color[0], 0, true));
-			setProp('col-back', nearColor(cur_color[1], 0, true));
-			setProp('col-board', nearColor(cur_color[2], 0, true));
-			setProp('col-button', nearColor(cur_color[3], 0, true));
-			setProp('col-link', nearColor(cur_color[4], 0, true));
-			setProp('col-logo', nearColor(cur_color[5], 0, true));
-			setProp('col-logoback', nearColor(cur_color[6], 0, true));
+			setProp('col-font', $.nearColor(cur_color[0], 0, true));
+			setProp('col-back', $.nearColor(cur_color[1], 0, true));
+			setProp('col-board', $.nearColor(cur_color[2], 0, true));
+			setProp('col-button', $.nearColor(cur_color[3], 0, true));
+			setProp('col-link', $.nearColor(cur_color[4], 0, true));
+			setProp('col-logo', $.nearColor(cur_color[5], 0, true));
+			setProp('col-logoback', $.nearColor(cur_color[6], 0, true));
 
 			releaseColor();
 		}
 
 		function setColor(idx, val) {
-			val = nearColor(val);
+			val = $.nearColor(val);
 			if (cur_color[idx] == val) {
 				return;
 			}
@@ -665,9 +665,9 @@ var kernel = execMain(function() {
 
 		function releaseColor() {
 			var cssval = getProp('uidesign') == 'ns' || getProp('uidesign') == 'mtns' ? csstmp[1] : csstmp[0];
-			var sgn = nearColor(cur_color[0]) == '#000' ? -1: 1;
+			var sgn = $.nearColor(cur_color[0]) == '#000' ? -1: 1;
 			for (var i=0; i<col_map.length; i++) {
-				var stdcolor = nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn);
+				var stdcolor = $.nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn);
 				if (i == 11) {
 					stdcolor += '4'; // opacity for #gray
 				}
@@ -678,26 +678,6 @@ var kernel = execMain(function() {
 			} else {
 				colorTag[0].innerHTML = cssval;
 			}
-		}
-
-		function nearColor(color, ref, longFormat) {
-			var col, m;
-			ref = ref || 0;
-			m = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/.exec(color);
-			if (m) {
-				col = [m[1] + m[1], m[2] + m[2], m[3] + m[3]];
-			}
-			m = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/.exec(color);
-			if (m) {
-				col = [m[1], m[2], m[3]];
-			}
-			for (var i=0; i<3; i++) {
-				col[i] = parseInt(col[i], 16);
-				col[i] += ref;
-				col[i] = Math.min(Math.max(col[i], 0), 255);
-				col[i] = (Math.round(col[i]/17)).toString(16);
-			}
-			return "#" + (longFormat ? col[0] + col[0] + col[1] + col[1] + col[2] + col[2] : col[0] + col[1] + col[2]);
 		}
 
 		function importColor(val) {
@@ -889,7 +869,6 @@ var kernel = execMain(function() {
 			hideDialog: hideDialog,
 			isDialogShown: isDialogShown,
 			exportColor: exportColor,
-			nearColor: nearColor,
 			setAutoShow: function(visible) {
 				visible = visible || !getProp('ahide');
 				if (visible) {
@@ -1137,62 +1116,6 @@ var kernel = execMain(function() {
 		return pretty(round(time), small);
 	}
 
-	var scrambleReg = /^([\d]+(?:-\d+)?)?([FRUBLDfrubldzxySME])(?:([w])|&sup([\d]);)?([2'])?$/;
-
-	function parseScramble(scramble, moveMap, addPreScr) {
-		scramble = scramble || '';
-		if (addPreScr) {
-			scramble = getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr') + ' ' + scramble;
-		}
-		var moveseq = [];
-		var moves = scramble.split(' ');
-		var m, w, f, p;
-		for (var s=0; s<moves.length; s++) {
-			m = scrambleReg.exec(moves[s]);
-			if (m == null) {
-				continue;
-			}
-			f = "FRUBLDfrubldzxySME".indexOf(m[2]);
-			if (f > 14) {
-				p = "2'".indexOf(m[5] || 'X') + 2;
-				f = [0, 4, 5][f % 3];
-				moveseq.push([moveMap.indexOf("FRUBLD".charAt(f)), 2, p]);
-				moveseq.push([moveMap.indexOf("FRUBLD".charAt(f)), 1, 4-p]);
-				continue;
-			}
-			w = (m[1] || '').split('-');
-			var w2 = ~~w[1] || -1;
-			w = f < 12 ? (~~w[0] || ~~m[4] || ((m[3] == "w" || f > 5) && 2) || 1) : -1;
-			p = (f < 12 ? 1 : -1) * ("2'".indexOf(m[5] || 'X') + 2);
-			moveseq.push([moveMap.indexOf("FRUBLD".charAt(f % 6)), w, p, w2]);
-		}
-		return moveseq;
-	}
-
-	function getConjMoves(moves, inv, conj) {
-		if (!moves) {
-			return moves;
-		}
-		if (conj === undefined) {
-			conj = getPreConj();
-		}
-		if (inv) {
-			conj = mathlib.CubieCube.rotMulI[0][conj || 0];
-		}
-		return moves.replace(/[URFDLB]/g, function(face) {
-			return "URFDLB".charAt(mathlib.CubieCube.rotMulM[conj]["URFDLB".indexOf(face) * 3] / 3);
-		});
-	}
-
-	function getPreConj() { // TODO 24 cases, use map insetad of calculation
-		var preScr = getProp(tools.isCurTrainScramble() ? 'preScrT' : 'preScr', '').split(' ');
-		var cc = new mathlib.CubieCube();
-		for (var i = 0; i < preScr.length; i++) {
-			cc.selfMoveStr(preScr[i]);
-		}
-		return cc.ori || 0;
-	}
-
 	var keyback = true;
 
 	$(function() {
@@ -1354,9 +1277,6 @@ var kernel = execMain(function() {
 		temp: temp,
 		reprop: property.reload,
 		loadProp: property.load,
-		parseScramble: parseScramble,
-		getConjMoves: getConjMoves,
-		getPreConj: getPreConj,
 		blur: refocus,
 		ui: ui,
 		TwoLvMenu: TwoLvMenu,

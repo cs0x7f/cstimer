@@ -48,7 +48,7 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 
 	function solve_eoline(scramble, fdiv) {
 		init();
-		var moves = kernel.parseScramble(scramble, "FRUBLD");
+		var moves = cubeutil.parseScramble(scramble, "FRUBLD");
 		fdiv.empty();
 		for (var face = 0; face < 12; face++) {
 			var flip = 0;
@@ -72,7 +72,7 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 
 	function solve_eocross(scramble, fdiv) {
 		init();
-		var moves = kernel.parseScramble(scramble, "FRUBLD");
+		var moves = cubeutil.parseScramble(scramble, "FRUBLD");
 		fdiv.empty();
 		for (var face = 0; face < 12; face++) {
 			var flip = 0;

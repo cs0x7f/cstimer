@@ -1078,15 +1078,15 @@ var poly3d = (function() {
 		}
 		var nFace = polyParam[0];
 		if (nFace == 4) {
-			colors = puzzleFactory.col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
+			colors = $.col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
 		} else if (nFace == 6) {
-			colors = puzzleFactory.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
+			colors = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
 		} else if (nFace == 8) {
-			colors = puzzleFactory.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
+			colors = $.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		} else if (nFace == 12) {
-			colors = puzzleFactory.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
+			colors = $.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
 		} else if (nFace == 20) {
-			colors = puzzleFactory.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+			colors = $.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
 		}
 
 		bindObj = bindObj || {};
@@ -1111,6 +1111,7 @@ var poly3d = (function() {
 		makeParser: makeParser,
 		makePuzzleParser: makePuzzleParser,
 		getFamousPuzzle: getFamousPuzzle,
+		udpolyre: new RegExp("^(" + $.UDPOLY_RE + ")$"),
 		parsePolyParam: parsePolyParam
 	}
 })();

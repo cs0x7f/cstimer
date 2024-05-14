@@ -1,4 +1,4 @@
-var gripRecons = execBoth(function() {
+var gripRecons = (function() {
 	"use strict";
 	var handPosEnum = [
 		0, // FL FR (left thumb, right thumb)
@@ -364,5 +364,5 @@ var gripRecons = execBoth(function() {
 		getPrettyReconstruction: getPrettyReconstruction,
 		updateReconsOri: updateReconsOri
 	}
-});
+})();
 

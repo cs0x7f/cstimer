@@ -86,7 +86,7 @@ var gsolver = (function() {
 		}));
 
 		function execPocketFace(scramble, span) {
-			curScramble = kernel.parseScramble(scramble, "URF");
+			curScramble = cubeutil.parseScramble(scramble, "URF");
 			var state = 'UUUURRRRFFFFDDDDLLLLBBBB';
 			for (var i = 0; i < curScramble.length; i++) {
 				var m = curScramble[i];
@@ -401,7 +401,7 @@ var gsolver = (function() {
 		var block222solv;
 
 		function block222Solver(scramble, span) {
-			curScramble = kernel.parseScramble(scramble, "URFDLB");
+			curScramble = cubeutil.parseScramble(scramble, "URFDLB");
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = "URFDLB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
@@ -486,7 +486,7 @@ var gsolver = (function() {
 			curSpan = span;
 			curType = type;
 			var moveMap = getMoveMap(curOri);
-			curScramble = kernel.parseScramble(scramble, "URFDLB");
+			curScramble = cubeutil.parseScramble(scramble, "URFDLB");
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = moveMap.charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
@@ -680,7 +680,7 @@ var gsolver = (function() {
 				'B': 0x2,
 				'b': 0x3
 			}, " '"));
-			curScramble = kernel.parseScramble(scramble, "RULB");
+			curScramble = cubeutil.parseScramble(scramble, "RULB");
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = "RULB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}
@@ -780,7 +780,7 @@ var gsolver = (function() {
 				'L': 0x2,
 				'B': 0x3
 			}, " '"));
-			curScramble = kernel.parseScramble(scramble, "RULBrulb");
+			curScramble = cubeutil.parseScramble(scramble, "RULBrulb");
 			scramble = [];
 			for (var i = 0; i < curScramble.length; i++) {
 				if (curScramble[i][1] == 1) {
@@ -1236,7 +1236,7 @@ var gsolver = (function() {
 		}
 
 		function execFunc(scramble, span) {
-			curScramble = kernel.parseScramble(scramble, "URFDLB");
+			curScramble = cubeutil.parseScramble(scramble, "URFDLB");
 			for (var i = 0; i < curScramble.length; i++) {
 				curScramble[i] = "URFDLB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
 			}

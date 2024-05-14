@@ -246,7 +246,7 @@ execMain(function() {
 	}
 });
 
-execBoth(function() {
+(function() {
 	$.svg = (function() {
 		function SVG(width, height) {
 			this.elems = [];
@@ -308,11 +308,11 @@ execBoth(function() {
 		ctx.closePath();
 		ctx.fill();
 		ctx.stroke();
-	}
+	};
 
 	$.ctxRotate = function(arr, theta) {
 		return $.ctxTransform(arr, [Math.cos(theta), -Math.sin(theta), 0, Math.sin(theta), Math.cos(theta), 0]);
-	}
+	};
 
 	$.ctxTransform = function(arr) {
 		var ret;
@@ -328,8 +328,39 @@ execBoth(function() {
 			}
 		}
 		return ret;
-	}
-});
+	};
+
+	$.nearColor = function(color, ref, longFormat) {
+		var col, m;
+		m = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/.exec(color);
+		if (m) {
+			col = [m[1] + m[1], m[2] + m[2], m[3] + m[3]];
+		}
+		m = /^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/.exec(color);
+		if (m) {
+			col = [m[1], m[2], m[3]];
+		}
+		for (var i=0; i<3; i++) {
+			col[i] = parseInt(col[i], 16) + (ref || 0);
+			col[i] = Math.min(Math.max(col[i], 0), 255);
+			col[i] = (Math.round(col[i]/17)).toString(16);
+		}
+		return "#" + (longFormat ? col[0] + col[0] + col[1] + col[1] + col[2] + col[2] : col[0] + col[1] + col[2]);
+	};
+
+	$.col2std = function(col, faceMap) {
+		var ret = [];
+		col = (col || '').match(/#[0-9a-fA-F]{3}/g) || [];
+		for (var i = 0; i < col.length; i++) {
+			ret.push(~~($.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
+		}
+		return ret;
+	};
+
+	$.UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico";
+	$.TWISTY_RE = "sq1|clk|udpoly|" + $.UDPOLY_RE;
+
+})();
 
 /** @define {boolean} */
 var DEBUGM = true;

@@ -137,17 +137,17 @@
 		param.polyParam = poly3d.parsePolyParam(params[0]);
 		var nFace = param.polyParam[0];
 		if (nFace == 4) {
-			param.faceColors = puzzleFactory.col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
+			param.faceColors = $.col2std(kernel.getProp("colpyr"), [3, 1, 2, 0]);
 			param.scale *= 0.51;
 		} else if (nFace == 6) {
-			param.faceColors = puzzleFactory.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
+			param.faceColors = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
 		} else if (nFace == 8) {
-			param.faceColors = puzzleFactory.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
+			param.faceColors = $.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		} else if (nFace == 12) {
-			param.faceColors = puzzleFactory.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
+			param.faceColors = $.col2std(kernel.getProp("colmgm"), [0, 2, 1, 5, 4, 3, 11, 9, 8, 7, 6, 10]);
 			param.scale *= 1.18;
 		} else if (nFace == 20) {
-			param.faceColors = puzzleFactory.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
+			param.faceColors = $.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);
 			param.scale *= 1.25;
 		}
 		var m = /gap:(0\.\d+)/.exec(params[1]);

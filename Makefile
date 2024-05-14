@@ -107,9 +107,9 @@ lib/utillib.js \
 lib/isaac.js \
 lib/mathlib.js \
 lib/grouplib.js \
+lib/poly3dlib.js \
 lib/min2phase.js \
 lib/cubeutil.js \
-lib/json.min.js \
 scramble/scramble.js \
 scramble/megascramble.js \
 scramble/scramble_333_edit.js \
@@ -128,14 +128,8 @@ scramble/kilominx.js \
 scramble/scramble_fto.js \
 scramble/redi.js \
 scramble/utilscramble.js \
+tools/tools.js \
 tools/image.js \
-tools/cross.js \
-tools/eoline.js \
-tools/roux1.js \
-tools/gsolver.js \
-tools/thistlethwaite.js \
-tools/pat3x3gen.js \
-tools/bldhelper.js \
 worker.js)
 
 cstimer = $(dest)/js/cstimer.js

@@ -1,40 +1,7 @@
 "use strict";
 
-var tools = execMain(function() {
+var tools = (function() {
 	var curScramble = ['-', '', 0];
-	var isEn = false;
-
-	var divs = [];
-
-	function execFunc(idx, signal) {
-		if (idx == -1) {
-			for (var i = 0; i < kernel.getProp('NTools'); i++) {
-				execFunc(i, signal);
-			}
-			return;
-		}
-		if (!isEn) {
-			for (var tool in toolBox) {
-				toolBox[tool]();
-			}
-			fdivs[idx].empty();
-			return;
-		}
-
-		for (var tool in toolBox) {
-			if (tool == funcs[idx]) {
-				toolBox[tool](fdivs[idx], signal);
-			}
-		}
-	}
-
-	function disableFunc(idx, signal) {
-		for (var tool in toolBox) {
-			if (tool == funcs[idx]) {
-				toolBox[tool](undefined, signal);
-			}
-		}
-	}
 
 	function scrambleType(scramble) {
 		if (scramble.match(/^([\d]?[xyzFRUBLDfrubldSME]([w]|&sup[\d];)?[2']?\s*)+$/) == null) {
@@ -142,197 +109,236 @@ var tools = execMain(function() {
 		}
 	}
 
-	var fdivs = [];
-	var funcs = ['image', 'stats', 'cross'];
-	var funcSpan = [];
-	var funcMenu = [];
-	var funcData = [];
+	var ret = execMain(function() {
+		var divs = [];
+		var isEn = false;
 
-	for (var i = 0; i < 4; i++) {
-		fdivs[i] = $('<div />');
-		funcSpan[i] = $('<span />');
-		funcMenu[i] = new kernel.TwoLvMenu(funcData, onFuncSelected.bind(null, i), $('<select />'), $('<select />'));
-		divs[i] = $('<div />').css('display', 'inline-block');
-	}
+		function execFunc(idx, signal) {
+			if (idx == -1) {
+				for (var i = 0; i < kernel.getProp('NTools'); i++) {
+					execFunc(i, signal);
+				}
+				return;
+			}
+			if (!isEn) {
+				for (var tool in toolBox) {
+					toolBox[tool]();
+				}
+				fdivs[idx].empty();
+				return;
+			}
 
-	function onFuncSelected(idx, val) {
-		DEBUG && console.log('[func select]', idx, val);
-		kernel.blur();
-		var start = idx === undefined ? 0 : idx;
-		var end = idx === undefined ? 4 : idx + 1;
-		for (var i = start; i < end; i++) {
-			var newVal = funcMenu[i].getSelected();
-			if (funcs[i] != newVal) {
-				disableFunc(i, 'property');
-				funcs[i] = newVal;
-				kernel.setProp('toolsfunc', JSON.stringify(funcs));
-				execFunc(i, 'property');
+			for (var tool in toolBox) {
+				if (tool == funcs[idx]) {
+					toolBox[tool](fdivs[idx], signal);
+				}
 			}
 		}
-	}
 
-	function procSignal(signal, value) {
-		if (signal == 'property') {
-			if (/^(img|col).*/.exec(value[0])) {
+		function disableFunc(idx, signal) {
+			for (var tool in toolBox) {
+				if (tool == funcs[idx]) {
+					toolBox[tool](undefined, signal);
+				}
+			}
+		}
+
+		var fdivs = [];
+		var funcs = ['image', 'stats', 'cross'];
+		var funcSpan = [];
+		var funcMenu = [];
+		var funcData = [];
+
+		for (var i = 0; i < 4; i++) {
+			fdivs[i] = $('<div />');
+			funcSpan[i] = $('<span />');
+			funcMenu[i] = new kernel.TwoLvMenu(funcData, onFuncSelected.bind(null, i), $('<select />'), $('<select />'));
+			divs[i] = $('<div />').css('display', 'inline-block');
+		}
+
+		function onFuncSelected(idx, val) {
+			DEBUG && console.log('[func select]', idx, val);
+			kernel.blur();
+			var start = idx === undefined ? 0 : idx;
+			var end = idx === undefined ? 4 : idx + 1;
+			for (var i = start; i < end; i++) {
+				var newVal = funcMenu[i].getSelected();
+				if (funcs[i] != newVal) {
+					disableFunc(i, 'property');
+					funcs[i] = newVal;
+					kernel.setProp('toolsfunc', JSON.stringify(funcs));
+					execFunc(i, 'property');
+				}
+			}
+		}
+
+		function procSignal(signal, value) {
+			if (signal == 'property') {
+				if (/^(img|col).*/.exec(value[0])) {
+					for (var i = 0; i < kernel.getProp('NTools'); i++) {
+						if (funcs[i] == 'image') {
+							execFunc(i, signal);
+						}
+					}
+				} else if (value[0] == 'NTools') {
+					for (var i = 0; i < 4; i++) {
+						if (i < value[1]) {
+							divs[i].show();
+							if (fdivs[i].html() == '') {
+								execFunc(i, signal);
+							}
+						} else {
+							divs[i].hide();
+							disableFunc(i, signal);
+						}
+					}
+				} else if (value[0] == 'toolHide') {
+					toggleFuncSpan(!value[1]);
+				} else if (value[0] == 'toolsfunc' && value[2] == 'session') {
+					var newfuncs = JSON.parse(value[1]);
+					for (var i = 0; i < 4; i++) {
+						funcMenu[i].loadVal(newfuncs[i]);
+					}
+					onFuncSelected();
+				} else if (value[0] == 'toolPos') {
+					$('html').removeClass('toolf toolt');
+					if ('ft'.indexOf(value[1]) != -1) {
+						$('html').addClass('tool' + value[1]);
+					}
+				}
+			} else if (signal == 'scramble' || signal == 'scrambleX') {
+				curScramble = value;
+				kernel.setProp('isTrainScr', !!trainScrambleRe.exec((curScramble || [])[0]));
+				execFunc(-1, signal);
+			} else if (signal == 'button' && value[0] == 'tools') {
+				isEn = value[1];
+				if (!isEn) {
+					execFunc(-1, signal);
+					return;
+				}
 				for (var i = 0; i < kernel.getProp('NTools'); i++) {
-					if (funcs[i] == 'image') {
+					if (isEn && fdivs[i].html() == '') {
 						execFunc(i, signal);
 					}
 				}
-			} else if (value[0] == 'NTools') {
-				for (var i = 0; i < 4; i++) {
-					if (i < value[1]) {
-						divs[i].show();
-						if (fdivs[i].html() == '') {
-							execFunc(i, signal);
-						}
-					} else {
-						divs[i].hide();
-						disableFunc(i, signal);
-					}
-				}
-			} else if (value[0] == 'toolHide') {
-				toggleFuncSpan(!value[1]);
-			} else if (value[0] == 'toolsfunc' && value[2] == 'session') {
-				var newfuncs = JSON.parse(value[1]);
-				for (var i = 0; i < 4; i++) {
-					funcMenu[i].loadVal(newfuncs[i]);
-				}
-				onFuncSelected();
-			} else if (value[0] == 'toolPos') {
-				$('html').removeClass('toolf toolt');
-				if ('ft'.indexOf(value[1]) != -1) {
-					$('html').addClass('tool' + value[1]);
+			}
+		}
+
+		function toggleFuncSpan(isShow) {
+			for (var i = 0; i < 4; i++) {
+				if (isShow) {
+					funcSpan[i].show();
+				} else {
+					funcSpan[i].hide();
 				}
 			}
-		} else if (signal == 'scramble' || signal == 'scrambleX') {
-			curScramble = value;
-			kernel.setProp('isTrainScr', !!trainScrambleRe.exec((curScramble || [])[0]));
-			execFunc(-1, signal);
-		} else if (signal == 'button' && value[0] == 'tools') {
-			isEn = value[1];
-			if (!isEn) {
-				execFunc(-1, signal);
+		}
+
+		function showFuncSpan(e) {
+			if ($(e.target).is('input,textarea,select,.click')) {
 				return;
 			}
-			for (var i = 0; i < kernel.getProp('NTools'); i++) {
-				if (isEn && fdivs[i].html() == '') {
-					execFunc(i, signal);
+			kernel.setProp('toolHide', false);
+		}
+
+		$(function() {
+			kernel.regListener('tools', 'property', procSignal, /^(?:img(Size|Rep)|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm|fto|clk|15p|ico)|toolHide|toolPos)$/);
+			kernel.regListener('tools', 'scramble', procSignal);
+			kernel.regListener('tools', 'scrambleX', procSignal);
+			kernel.regListener('tools', 'button', procSignal, /^tools$/);
+
+			var mainDiv = $('<div id="toolsDiv"/>');
+			for (var i = 0; i < 4; i++) {
+				fdivs[i].click(showFuncSpan);
+				funcSpan[i].append("<br>", TOOLS_SELECTFUNC, funcMenu[i].select1, funcMenu[i].select2);
+				divs[i].append(fdivs[i], funcSpan[i]).appendTo(mainDiv);
+				if (i == 1) {
+					mainDiv.append('<br>');
 				}
 			}
-		}
-	}
 
-	function toggleFuncSpan(isShow) {
-		for (var i = 0; i < 4; i++) {
-			if (isShow) {
-				funcSpan[i].show();
-			} else {
-				funcSpan[i].hide();
+			kernel.regProp('tools', 'toolPos', 1, PROPERTY_TOOLPOS, ['b', ['b', 'f', 't'], PROPERTY_TOOLPOS_STR.split('|')], 1);
+			kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false]);
+			kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50], 1);
+			kernel.regProp('tools', 'imgRep', 0, PROPERTY_IMGREP, [true], 1);
+			kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4], 1);
+			var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
+			kernel.regProp('tools', 'toolsfunc', 5, PROPERTY_TOOLSFUNC, [defaultFunc], 1);
+			kernel.regProp('tools', 'isTrainScr', ~5, 'Is Train Scramble', [false], 0);
+			var funcStr = kernel.getProp('toolsfunc', defaultFunc);
+			if (funcStr.indexOf('[') == -1) {
+				funcStr = defaultFunc.replace('image', funcStr);
+				kernel.setProp('toolsfunc', funcStr);
 			}
-		}
-	}
+			funcs = JSON.parse(funcStr);
+			kernel.addWindow('tools', BUTTON_TOOLS, mainDiv, false, true, 6);
+			kernel.regProp('ui', 'toolHide', ~0, 'Hide Tools Selector', [false]);
+		});
 
-	function showFuncSpan(e) {
-		if ($(e.target).is('input,textarea,select,.click')) {
-			return;
-		}
-		kernel.setProp('toolHide', false);
-	}
+		/**
+		 *	{name: function(fdiv, updateAll) , }
+		 */
+		var toolBox = {};
 
-	$(function() {
-		kernel.regListener('tools', 'property', procSignal, /^(?:img(Size|Rep)|image|toolsfunc|NTools|col(?:cube|pyr|skb|sq1|mgm|fto|clk|15p|ico)|toolHide|toolPos)$/);
-		kernel.regListener('tools', 'scramble', procSignal);
-		kernel.regListener('tools', 'scrambleX', procSignal);
-		kernel.regListener('tools', 'button', procSignal, /^tools$/);
-
-		var mainDiv = $('<div id="toolsDiv"/>');
-		for (var i = 0; i < 4; i++) {
-			fdivs[i].click(showFuncSpan);
-			funcSpan[i].append("<br>", TOOLS_SELECTFUNC, funcMenu[i].select1, funcMenu[i].select2);
-			divs[i].append(fdivs[i], funcSpan[i]).appendTo(mainDiv);
-			if (i == 1) {
-				mainDiv.append('<br>');
-			}
-		}
-
-		kernel.regProp('tools', 'toolPos', 1, PROPERTY_TOOLPOS, ['b', ['b', 'f', 't'], PROPERTY_TOOLPOS_STR.split('|')], 1);
-		kernel.regProp('tools', 'solSpl', 0, PROPERTY_HIDEFULLSOL, [false]);
-		kernel.regProp('tools', 'imgSize', 2, PROPERTY_IMGSIZE, [15, 5, 50], 1);
-		kernel.regProp('tools', 'imgRep', 0, PROPERTY_IMGREP, [true], 1);
-		kernel.regProp('tools', 'NTools', 2, PROPERTY_NTOOLS, [1, 1, 4], 1);
-		var defaultFunc = JSON.stringify(['image', 'stats', 'cross', 'distribution']);
-		kernel.regProp('tools', 'toolsfunc', 5, PROPERTY_TOOLSFUNC, [defaultFunc], 1);
-		kernel.regProp('tools', 'isTrainScr', ~5, 'Is Train Scramble', [false], 0);
-		var funcStr = kernel.getProp('toolsfunc', defaultFunc);
-		if (funcStr.indexOf('[') == -1) {
-			funcStr = defaultFunc.replace('image', funcStr);
-			kernel.setProp('toolsfunc', funcStr);
-		}
-		funcs = JSON.parse(funcStr);
-		kernel.addWindow('tools', BUTTON_TOOLS, mainDiv, false, true, 6);
-		kernel.regProp('ui', 'toolHide', ~0, 'Hide Tools Selector', [false]);
-	});
-
-	/**
-	 *	{name: function(fdiv, updateAll) , }
-	 */
-	var toolBox = {};
-
-	function regTool(name, str, execFunc) {
-		DEBUG && console.log('[regtool]', name, str);
-		toolBox[name] = execFunc;
-		str = str.split('>');
-		if (str.length == 2) {
-			var idx1 = -1;
-			for (var i = 0; i < funcData.length; i++) {
-				if (funcData[i][0] == str[0] && $.isArray(funcData[i][1])) {
-					idx1 = i;
-					break;
+		function regTool(name, str, execFunc) {
+			DEBUG && console.log('[regtool]', name, str);
+			toolBox[name] = execFunc;
+			str = str.split('>');
+			if (str.length == 2) {
+				var idx1 = -1;
+				for (var i = 0; i < funcData.length; i++) {
+					if (funcData[i][0] == str[0] && $.isArray(funcData[i][1])) {
+						idx1 = i;
+						break;
+					}
 				}
-			}
-			if (idx1 != -1) {
-				funcData[idx1][1].push([str[1], name]);
+				if (idx1 != -1) {
+					funcData[idx1][1].push([str[1], name]);
+				} else {
+					funcData.push([str[0], [[str[1], name]]]);
+				}
 			} else {
-				funcData.push([str[0], [[str[1], name]]]);
+				funcData.push([str[0], name]);
 			}
-		} else {
-			funcData.push([str[0], name]);
+			for (var i = 0; i < 4; i++) {
+				funcMenu[i].reset(funcs[i]);
+			}
 		}
-		for (var i = 0; i < 4; i++) {
-			funcMenu[i].reset(funcs[i]);
-		}
-	}
 
-	function getSolutionSpan(solution) {
-		var span = $('<span />');
-		for (var i = 0; i < solution.length; i++) {
-			span.append('<span style="display:none;">&nbsp;' + solution[i] + '</span>');
+		function getSolutionSpan(solution) {
+			var span = $('<span />');
+			for (var i = 0; i < solution.length; i++) {
+				span.append('<span style="display:none;">&nbsp;' + solution[i] + '</span>');
+			}
+			if (kernel.getProp('solSpl')) {
+				span.append($('<span class="click" data="n">[+1]</span>').click(procSolutionClick));
+				span.append($('<span class="click" data="a">[' + solution.length + 'f]</span>').click(procSolutionClick));
+			} else {
+				span.children().show();
+			}
+			return span;
 		}
-		if (kernel.getProp('solSpl')) {
-			span.append($('<span class="click" data="n">[+1]</span>').click(procSolutionClick));
-			span.append($('<span class="click" data="a">[' + solution.length + 'f]</span>').click(procSolutionClick));
-		} else {
-			span.children().show();
-		}
-		return span;
-	}
 
-	function procSolutionClick(e) {
-		var span = $(this);
-		if (span.attr('data') == 'a') {
-			span.prevAll().show();
-			span.prev().hide();
-			span.hide();
-		} else if (span.attr('data') == 'n') {
-			var unshown = span.prevAll(':hidden');
-			unshown.last().show();
-			if (unshown.length == 1) {
-				span.next().hide();
+		function procSolutionClick(e) {
+			var span = $(this);
+			if (span.attr('data') == 'a') {
+				span.prevAll().show();
+				span.prev().hide();
 				span.hide();
+			} else if (span.attr('data') == 'n') {
+				var unshown = span.prevAll(':hidden');
+				unshown.last().show();
+				if (unshown.length == 1) {
+					span.next().hide();
+					span.hide();
+				}
 			}
 		}
-	}
+		return {
+			regTool: regTool,
+			getSolutionSpan: getSolutionSpan,
+		}
+	});
 
 	var lastTrain = null;
 	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|333drud|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|222(eg[012]?|tc[np]|lsall))$/;
@@ -341,19 +347,21 @@ var tools = execMain(function() {
 		return !!trainScrambleRe.exec((scramble || curScramble || [])[0]);
 	}
 
-	return {
-		regTool: regTool,
+	var ret2 = {
 		getCurScramble: function() {
 			return curScramble;
 		},
 		getCurPuzzle: function() {
 			return puzzleType(curScramble[0]);
 		},
-		getSolutionSpan: getSolutionSpan,
 		scrambleType: scrambleType,
 		puzzleType: puzzleType,
 		carrot2poch: carrot2poch,
 		isCurTrainScramble: isCurTrainScramble,
 		isPuzzle: isPuzzle
 	};
-});
+	for (var key in ret2) {
+		ret[key] = ret2[key];
+	}
+	return ret;
+})();

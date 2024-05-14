@@ -1,6 +1,6 @@
 "use strict";
 
-var image = execMain(function() {
+var image = (function() {
 
 	var img;
 	var hsq3 = Math.sqrt(3) / 2;
@@ -385,7 +385,7 @@ var image = execMain(function() {
 					posit[cnt++] = i;
 				}
 			}
-			var moves = kernel.parseScramble(moveseq, "DLBURF", true);
+			var moves = cubeutil.parseScramble(moveseq, "DLBURF", true);
 			for (var s = 0; s < moves.length; s++) {
 				for (var d = 0; d < moves[s][1]; d++) {
 					doslice(moves[s][0], d, moves[s][2], size)
@@ -628,7 +628,7 @@ var image = execMain(function() {
 				posit = posit2;
 			}
 			if (type == 'skb') {
-				colors = puzzleFactory.col2std(kernel.getProp("colskb"), [0, 2, 4, 3, 5, 1])
+				colors = $.col2std(kernel.getProp("colskb"), [0, 2, 4, 3, 5, 1])
 				var trans = [
 					[hsq3, -hsq3, hsq3 * 2, 0.5, 0.5, -1],
 					[hsq3, 0, 0, -0.5, 1, 2],
@@ -762,7 +762,7 @@ var image = execMain(function() {
 			recons = nnnImage.draw(svg, size + 2, scramble[1]);
 		} else if (type == "cubennn") {
 			nnnImage.draw(svg, scramble[2], scramble[1]);
-		} else if (puzzleFactory.udpolyre.exec(type)) {
+		} else if (poly3d.udpolyre.exec(type)) {
 			var faceNameMask = 0;
 			if (/^prc|giga|mgm|klm$/.exec(type)) {
 				faceNameMask = 0x3;
@@ -803,22 +803,24 @@ var image = execMain(function() {
 		return true;
 	}
 
-	function execFunc(fdiv) {
-		if (!fdiv) {
-			return;
+	execMain(function() {
+		function execFunc(fdiv) {
+			if (!fdiv) {
+				return;
+			}
+			img = img || $('<img style="display:block;">');
+			fdiv.empty().append(img);
+			if (!genImage(tools.getCurScramble(), true)) {
+				fdiv.html(IMAGE_UNAVAILABLE);
+			}
 		}
-		img = img || $('<img style="display:block;">');
-		fdiv.empty().append(img);
-		if (!genImage(tools.getCurScramble(), true)) {
-			fdiv.html(IMAGE_UNAVAILABLE);
-		}
-	}
+
+		$(function() {
+			tools.regTool('image', TOOLS_IMAGE, execFunc);
+		});
+	});
 
 	var colre = /#[0-9a-fA-F]{3}/g;
-
-	$(function() {
-		tools.regTool('image', TOOLS_IMAGE, execFunc);
-	});
 
 	return {
 		draw: genImage,
@@ -826,4 +828,4 @@ var image = execMain(function() {
 		pyrllImage: pyrllImage,
 		face3Image: face3Image
 	}
-});
+})();

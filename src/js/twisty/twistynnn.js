@@ -554,7 +554,7 @@
 			if (!scramble || /^\s*$/.exec(scramble)) {
 				return generateScramble(this);
 			} else {
-				var moves = kernel.parseScramble(scramble, "URFDLB", addPreScr);
+				var moves = cubeutil.parseScramble(scramble, "URFDLB", addPreScr);
 				scramble = [];
 				for (var i = 0; i < moves.length; i++) {
 					if (moves[i][1] > 0) {

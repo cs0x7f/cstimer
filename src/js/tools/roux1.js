@@ -64,7 +64,7 @@ execMain(function(CubieCube) {
 		solvOri = solvOri.split('');
 		for (var s = 0; s < 4; s++) {
 			moveConj[s] = solvOri.join('');
-			var moves = kernel.parseScramble(scramble, moveConj[s]);
+			var moves = cubeutil.parseScramble(scramble, moveConj[s]);
 			for (var i = 0; i < moves.length; i++) {
 				var m = moves[i][0];
 				for (var j = 0; j < moves[i][2]; j++) {
