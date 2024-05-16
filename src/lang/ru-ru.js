@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'любой скрамбл';
 var STATS_XSESSION_CALC = 'Калькулятор';
 var STATS_RSFORSS = 'Показывать статистику при нажатии на номер сборки';
 var PROPERTY_PRINTSCR = 'печатать скрамблы в статистику';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'Добавлять дату сборки в статистику';
 var PROPERTY_SUMMARY = 'как суммарный после списка времени';
 var PROPERTY_IMRENAME = 'переименовать сессию сразу же после создания';

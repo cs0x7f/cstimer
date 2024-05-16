@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = '任意打乱';
 var STATS_XSESSION_CALC = '计算';
 var STATS_RSFORSS = '点击还原序号时显示统计';
 var PROPERTY_PRINTSCR = '成绩统计中显示打乱';
+var PROPERTY_PRINTCOMM = '成绩统计中显示注释';
 var PROPERTY_PRINTDATE = '成绩统计中显示日期';
 var PROPERTY_SUMMARY = '成绩列表前显示摘要';
 var PROPERTY_IMRENAME = '新建分组时重命名';

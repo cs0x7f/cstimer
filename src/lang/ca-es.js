@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'qualsevol barreja';
 var STATS_XSESSION_CALC = 'Calcular';
 var STATS_RSFORSS = 'Mostrar estadístiques quan es fa clic al número de la resolució';
 var PROPERTY_PRINTSCR = 'imprimir barreja/es a estadístiques';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'imprimir data de resolució a estadístiques';
 var PROPERTY_SUMMARY = 'mostrar resum abans de llista de temps';
 var PROPERTY_IMRENAME = 'canviar el nom de la sessió immediatament després de creació';

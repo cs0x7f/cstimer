@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'herhangi bir karıştırma';
 var STATS_XSESSION_CALC = 'Hesapla';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'karıştırmaları istatistiklerde göster';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'Süre listesinden önce özeti göster';
 var PROPERTY_IMRENAME = 'Sezon oluşturulduğunda yeniden adlandır';

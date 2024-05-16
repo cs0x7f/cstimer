@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'dowolny scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Pokaż statystykę po kliknięciu numeru rozwiązania';
 var PROPERTY_PRINTSCR = 'Dołącz algorytmy mieszania do statystyk ';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'Dołącz datę ułożenia do statystyk';
 var PROPERTY_SUMMARY = 'pokaż podsumowanie przed listą czasu';
 var PROPERTY_IMRENAME = 'zmień nazwę sesji po utworzeniu';

@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'jeder Scramble';
 var STATS_XSESSION_CALC = 'Berechnen';
 var STATS_RSFORSS = 'Zeige Statistik, when die Zeitnummer angeklickt wird';
 var PROPERTY_PRINTSCR = 'Scramble(s) in den Statistiken anzeigen';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'Datum des Solves in den Statistiken anzeigen';
 var PROPERTY_SUMMARY = 'Zusammenfassung vor der Zeiten-Liste anzeigen';
 var PROPERTY_IMRENAME = 'Sitzung direkt nach der Erstellung umbenennen';

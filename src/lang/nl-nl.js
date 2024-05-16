@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'afdrukken scramble(s) in statistieken';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'druk oplossingsdatum in statistieken';
 var PROPERTY_SUMMARY = 'samenvatting tonen voor tijdlijst';
 var PROPERTY_IMRENAME = 'hernoem sessie direct na aanmaken';

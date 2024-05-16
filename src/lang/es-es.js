@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'cualquier mezcla';
 var STATS_XSESSION_CALC = 'Cálculo';
 var STATS_RSFORSS = 'Mostrar estadística al hacer clic en resolver número';
 var PROPERTY_PRINTSCR = 'Publicar mezcla(s) en las estadísticas.';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'imprimir fecha de resolución en estadísticas';
 var PROPERTY_SUMMARY = 'mostrar resumen antes de la lista de tiempos';
 var PROPERTY_IMRENAME = 'renombrar sesión inmediatamente después de la creación';

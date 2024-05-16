@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'bármely keverés';
 var STATS_XSESSION_CALC = 'Számítás';
 var STATS_RSFORSS = 'A kirakás számra kattintva mutassa a statisztikát';
 var PROPERTY_PRINTSCR = 'Keverések nyomtatása a statisztikában';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'megoldási dátum megjelenítése a statisztikákban';
 var PROPERTY_SUMMARY = 'összegzés mutatása az időlista előtt';
 var PROPERTY_IMRENAME = 'a létrehozott időszak azonnali átnevezése';

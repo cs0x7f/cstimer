@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'bilo koji scramble';
 var STATS_XSESSION_CALC = 'Izračun';
 var STATS_RSFORSS = 'Prikaži statistiku prilikom klika na broj slaganja';
 var PROPERTY_PRINTSCR = 'ispiši scramble/ove u statistici';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'ispiši podatke o slaganju u statistici';
 var PROPERTY_SUMMARY = 'prikaži sažetak prije liste vremena';
 var PROPERTY_IMRENAME = 'preimenuj sesiju odmah nakon kreiranja';

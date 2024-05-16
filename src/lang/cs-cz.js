@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'jakékoliv zamíchání';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Zobrazit statistiku při kliknutí na číslo solvu';
 var PROPERTY_PRINTSCR = 'zobrazit zamíchání ve statistikách';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'zobrazit datum složení ve statistikách';
 var PROPERTY_SUMMARY = 'zobrazit shrnutí před časovím listem';
 var PROPERTY_IMRENAME = 'přejmenovat relaci ihned po vytvoření';

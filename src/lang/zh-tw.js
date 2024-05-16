@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = '任何打亂';
 var STATS_XSESSION_CALC = '計算';
 var STATS_RSFORSS = '點擊編號時顯示統計資料';
 var PROPERTY_PRINTSCR = '在統計列表中顯示打亂';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = '在統計列表中顯示日期';
 var PROPERTY_SUMMARY = '在時間清單前顯示摘要';
 var PROPERTY_IMRENAME = '創建後立即重新命名階段';

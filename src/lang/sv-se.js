@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'någon blandning';
 var STATS_XSESSION_CALC = 'Kalkyl';
 var STATS_RSFORSS = 'Visa statistik. när du klickar lös nummer';
 var PROPERTY_PRINTSCR = 'Visa blandning(ar) i statistik';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'Visa lösningens datum i statistik';
 var PROPERTY_SUMMARY = 'Visa sammanfattning före tidslistan';
 var PROPERTY_IMRENAME = 'Namnge session omedelbart efter skapande';

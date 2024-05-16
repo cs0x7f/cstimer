@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'qualsiasi scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'Stampa scramble(s) con le statistiche';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'visualizza la data di risoluzione nelle statistiche';
 var PROPERTY_SUMMARY = 'mostra riepilogo prima della lista dei tempi';
 var PROPERTY_IMRENAME = 'rinomina la sessione subito dopo la creazione';

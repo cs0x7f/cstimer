@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'Tilfældig blanding';
 var STATS_XSESSION_CALC = 'Beregn';
 var STATS_RSFORSS = 'Vis statistik når du klikker på løsning';
 var PROPERTY_PRINTSCR = 'print blanding(erne) i statistikker';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'Udskriv løsningsdato i statistik';
 var PROPERTY_SUMMARY = 'vis sammendrag inden tidslisten';
 var PROPERTY_IMRENAME = 'omdøb session umiddelbart efter oprettelsen';

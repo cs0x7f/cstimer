@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'כל ערבוב';
 var STATS_XSESSION_CALC = 'חשב';
 var STATS_RSFORSS = 'הראה סטטיסטיקות כשלוחצים על מספר פתירה';
 var PROPERTY_PRINTSCR = 'הראה ערבוב(ים) בסטטיסטיקות';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'הראה תאריך בסטטיסטיקות';
 var PROPERTY_SUMMARY = 'הראה סיכום לפני רשימת זמנים';
 var PROPERTY_IMRENAME = 'שנה שם סשן ישר אחרי יצירה';

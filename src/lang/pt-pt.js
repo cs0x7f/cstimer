@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'qualquer embaralhamento';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'mostrar embaralhamentos nas estatísticas';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'mostrar data de resolução nas estatísticas';
 var PROPERTY_SUMMARY = 'mostrar dados antes da lista de tempos';
 var PROPERTY_IMRENAME = 'renomear a sessão imediatamente depois de criar';

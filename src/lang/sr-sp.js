@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Прикажи статистику када је кликнут решен број';
 var PROPERTY_PRINTSCR = 'print scramble(s) in statistics';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = 'show summary before time list';
 var PROPERTY_IMRENAME = 'rename session immediately after creation';

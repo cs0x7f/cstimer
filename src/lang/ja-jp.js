@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = '全スクランブル';
 var STATS_XSESSION_CALC = '計算';
 var STATS_RSFORSS = 'ソルブ番号をクリックしたときに統計を表示';
 var PROPERTY_PRINTSCR = '統計情報にスクランブルを表示';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = '統計情報にソルブ日時を表示';
 var PROPERTY_SUMMARY = 'タイム一覧の前にサマリーを表示';
 var PROPERTY_IMRENAME = 'セッション作成後すぐに名前を変更する';

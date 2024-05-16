@@ -341,7 +341,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			var ii = kernel.getProp('statinv') ? shownIdxs.length + 1 - sidx : 2 + sidx;
 			var row = avgRow.parent().children().eq(ii);
-			if (sidx != ~~row.attr('data')) {
+			if (idx != ~~row.attr('data')) {
 				console.log('[stats] table_ctrl getRowIndexOf error', sidx, idx, row);
 				return null;
 			}
@@ -807,7 +807,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		if (!time) {
 			return "N/A";
 		}
-		var c = pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "");
+		var c = pretty(time[0], true) + prettyMPA(time[0]) + (kernel.getProp('printComm') && time[2] ? "[" + time[2] + "]" : "");
 		if ($.inArray(idx, trimList) != -1) {
 			c = "(" + c + ")";
 		}
@@ -1831,6 +1831,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'statbpa', 0, PROPERTY_STATBPA, [false], 1);
 		kernel.regProp('stats', 'statwpa', 0, PROPERTY_STATWPA, [false], 1);
 		kernel.regProp('stats', 'printScr', 0, PROPERTY_PRINTSCR, [true], 1);
+		kernel.regProp('stats', 'printComm', 0, PROPERTY_PRINTCOMM, [true], 1);
 		kernel.regProp('stats', 'printDate', 0, PROPERTY_PRINTDATE, [false], 1);
 		kernel.regProp('stats', 'imrename', 0, PROPERTY_IMRENAME, [false], 1);
 		kernel.regProp('stats', 'scr2ss', 0, PROPERTY_SCR2SS, [false]);

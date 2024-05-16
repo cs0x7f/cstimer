@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'hvilken som helst blanding';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Vis status ved klikk på løsningsnummer';
 var PROPERTY_PRINTSCR = 'print blanding(er) i statistikken';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'print løsningsdato i statistikkene';
 var PROPERTY_SUMMARY = 'Vis sammendrag før listen med tider';
 var PROPERTY_IMRENAME = 'gi økten nytt navn umiddelbart etter opprettelse';

@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = '계산';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = '통계 정보에 섞기 포함';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'print solving date in statistics';
 var PROPERTY_SUMMARY = '시간목록 위에 통계 요약 표시';
 var PROPERTY_IMRENAME = '새 모둠을 만들 때마다 이름 바꾸기';

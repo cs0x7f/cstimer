@@ -526,6 +526,7 @@ var STATS_XSESSION_SCR = 'Tráo bất kì';
 var STATS_XSESSION_CALC = 'Tính';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
 var PROPERTY_PRINTSCR = 'In scramble trong thành tích';
+var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'in ngày giải trong thống kê';
 var PROPERTY_SUMMARY = 'cho xem bảng thành tích	';
 var PROPERTY_IMRENAME = 'yêu cầu đặt tên ngay sau khi tạo 1 mục';
