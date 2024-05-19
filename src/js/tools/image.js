@@ -130,21 +130,23 @@ var image = (function() {
 			posit = newposit;
 		}
 
+		var sqa = hsq3 + 1;
+		var sqb = sqa * Math.sqrt(2);
 		var ep = [
 			[0, -0.5, 0.5],
-			[0, -hsq3 - 1, -hsq3 - 1]
+			[0, -sqa, -sqa]
 		];
 		var cp = [
-			[0, -0.5, -hsq3 - 1, -hsq3 - 1],
-			[0, -hsq3 - 1, -hsq3 - 1, -0.5]
+			[0, -0.5, -sqa, -sqa],
+			[0, -sqa, -sqa, -0.5]
 		];
 		var cpr = [
-			[0, -0.5, -hsq3 - 1],
-			[0, -hsq3 - 1, -hsq3 - 1]
+			[0, -0.5, -sqa],
+			[0, -sqa, -sqa]
 		];
 		var cpl = [
-			[0, -hsq3 - 1, -hsq3 - 1],
-			[0, -hsq3 - 1, -0.5]
+			[0, -sqa, -sqa],
+			[0, -sqa, -0.5]
 		];
 
 		var eps = Transform(ep, [0.66, 0, 0]);
@@ -191,15 +193,26 @@ var image = (function() {
 			}
 			doMove([0, 0, 1]);
 
-			svg.width = 11 * width;
-			svg.height = 6.3 * width;
+			svg.width = 4 * sqb * width;
+			svg.height = 2 * sqb * width;
+
+			//draw middle
+			for (var i = 0; i < 2; i++) {
+				var trans = i == 0 ? [width, sqb, sqb + sqa] : [width, sqb * 3, sqb - sqa - 0.7];
+				drawPolygon(svg, colors['L'], [[-sqa, -sqa, -0.5, -0.5], [0, 0.7, 0.7, 0]], trans);
+				if (mid == 0) {
+					drawPolygon(svg, colors['L'], [[sqa, sqa, -0.5, -0.5], [0, 0.7, 0.7, 0]], trans);
+				} else {
+					drawPolygon(svg, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0, 0.7, 0.7, 0]], trans);
+				}
+			}
 
 			//draw top
 			for (var i = 0; i < 24; i++) {
 				var cLR = (posit[i] & 1);
 				var cRot = (i < 12 ? (i - 3) : (-i)) * PI / 6;
 				var eRot = (i < 12 ? (i - 5) : (-1 - i)) * PI / 6;
-				var trans = i < 12 ? [width, 2.7, 2.7] : [width, 2.7 + 5.4, 2.7];
+				var trans = i < 12 ? [width, sqb, sqb] : [width, sqb * 3, sqb];
 				var j = (i + 1) % 12 + (i < 12 ? 0 : 12);
 				var val = posit[i] >> 1;
 				var colorUD = colors[udcol[val >= 8 ? 1 : 0]];
@@ -229,15 +242,6 @@ var image = (function() {
 					drawPolygon(svg, colorUD,
 						Rotate(eps, eRot), trans);
 				}
-			}
-
-			var trans = [width, 2.7 + 2.7, 2.7 + 3.0];
-			//draw middle
-			drawPolygon(svg, colors['L'], [[-hsq3 - 1, -hsq3 - 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
-			if (mid == 0) {
-				drawPolygon(svg, colors['L'], [[hsq3 + 1, hsq3 + 1, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
-			} else {
-				drawPolygon(svg, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0.5, -0.5, -0.5, 0.5]], trans);
 			}
 
 			var recons = [];
