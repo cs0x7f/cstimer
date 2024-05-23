@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["随机状态 (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['ftm', "sq1h", 40],
 		['ttm', "sq1t", 20]
 	]],

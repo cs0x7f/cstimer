@@ -325,6 +325,7 @@ var scrdata = [
 	['Firkant-1', [
 		["tilfældig tilstand (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['side rotér metrik', "sq1h", 40],
 		['dreje metrik', "sq1t", 20]
 	]],

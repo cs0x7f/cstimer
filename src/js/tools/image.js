@@ -104,31 +104,6 @@ var image = (function() {
 	})();
 
 	var sq1Image = (function() {
-		var posit = [];
-		var mid = 0;
-
-		//(move[0], move[1]) (/ = move[2])
-		function doMove(move) {
-			var newposit = [];
-
-			//top move
-			for (var i = 0; i < 12; i++) {
-				newposit[(i + move[0]) % 12] = posit[i];
-			}
-
-			//bottom move
-			for (var i = 0; i < 12; i++) {
-				newposit[i + 12] = posit[(i + move[1]) % 12 + 12];
-			}
-
-			if (move[2]) {
-				mid = 1 - mid;
-				for (var i = 0; i < 6; i++) {
-					mathlib.circle(newposit, i + 6, 23 - i);
-				}
-			}
-			posit = newposit;
-		}
 
 		var sqa = hsq3 + 1;
 		var sqb = sqa * Math.sqrt(2);
@@ -155,8 +130,8 @@ var image = (function() {
 		var cpls = Transform(cpl, [0.66, 0, 0]);
 
 		var udcol = 'UD';
-		var ecol = '-B-R-F-L-B-R-F-L';
-		var ccol = 'LBBRRFFLBLRBFRLF';
+		var ecol = 'R-B-L-F-F-L-B-R-';
+		var ccol = 'RBBLLFFRRFFLLBBR';
 		var colors = {
 			'U': '#ff0',
 			'R': '#f80',
@@ -170,7 +145,53 @@ var image = (function() {
 
 		var movere = /^\s*\(\s*(-?\d+),\s*(-?\d+)\s*\)\s*$/;
 
-		return function(svg, moveseq, isSQ2) {
+		function doMove(move, sc) {
+			if (move[0] != 0) {
+				sc.doMove(move[0]);
+			}
+			if (move[1] != 0) {
+				sc.doMove(-move[1]);
+			}
+			if (move[2] != 0) {
+				sc.doMove(0);
+			}
+		}
+
+		function drawPosit(svg, sc, colors, sq2sc, half) {
+			for (var i = 0; i < (half ? 12 : 24); i++) {
+				var trans = i < 12 ? [width, sqb, sqb] : [width, sqb * 3, sqb];
+				var val = sc.pieceAt(i);
+				var colorUD = colors[udcol[val >= 8 ? 1 : 0]];
+				var cRot = -(i < 12 ? (i - 1) : (i - 6)) * PI / 6;
+				var eRot = -(i < 12 ? (i) : (i - 5)) * PI / 6;
+				if (val % 2 == 1) { // corner
+					if (sq2sc) {
+						var cLR = sq2sc.pieceAt(i) & 1;
+						cRot += cLR ? 0 : PI / 6;
+						drawPolygon(svg, colors[ccol[val - cLR]],
+							Rotate(cLR ? cpr : cpl, cRot), trans);
+						drawPolygon(svg, colorUD,
+							Rotate(cLR ? cprs : cpls, cRot), trans);
+					} else {
+						drawPolygon(svg, colors[ccol[val - 1]],
+							Rotate(cpr, cRot), trans);
+						drawPolygon(svg, colors[ccol[val]],
+							Rotate(cpl, cRot), trans);
+						drawPolygon(svg, colorUD,
+							Rotate(cps, cRot), trans);
+						i++;
+					}
+				} else { // edge
+					drawPolygon(svg, colors[ecol[val]],
+						Rotate(ep, eRot), trans);
+					drawPolygon(svg, colorUD,
+						Rotate(eps, eRot), trans);
+				}
+			}
+		}
+
+		function llImage(sc, sq2sc, img) {
+			var svg = new $.svg();
 			var cols = kernel.getProp('colsq1').match(colre);
 			colors = {
 				'U': cols[0],
@@ -180,18 +201,47 @@ var image = (function() {
 				'L': cols[4],
 				'B': cols[5]
 			};
-			posit = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 17, 16, 18, 21, 20, 22, 25, 24, 26, 29, 28, 30];
-			mid = 0;
+			svg.width = 2 * sqb * width;
+			svg.height = 2 * sqb * width;
+			drawPosit(svg, sc, colors, sq2sc, true);
+			if (img) {
+				img.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+			}
+			return svg;
+		}
+
+		function scrImage(svg, moveseq, isSQ2) {
+			var cols = kernel.getProp('colsq1').match(colre);
+			colors = {
+				'U': cols[0],
+				'R': cols[1],
+				'F': cols[2],
+				'D': cols[3],
+				'L': cols[4],
+				'B': cols[5]
+			};
+			var sc = new sq1.SqCubie();
+			var sq2sc = null;
+			if (isSQ2) {
+				sq2sc = new sq1.SqCubie();
+				sq2sc.ul = sq2sc.ur = 0x010010;
+				sq2sc.dl = sq2sc.dr = 0x100100;
+			}
 			var moves = moveseq.split('/');
+			var tomove = [];
 			for (var i = 0; i < moves.length; i++) {
 				if (/^\s*$/.exec(moves[i])) {
-					doMove([0, 0, 1]);
+					tomove.push([0, 0, 1]);
 					continue;
 				}
 				var m = movere.exec(moves[i]);
-				doMove([~~m[1] + 12, ~~m[2] + 12, 1]);
+				tomove.push([(~~m[1] + 12) % 12, (~~m[2] + 12) % 12, 1]);
 			}
-			doMove([0, 0, 1]);
+			tomove.push([0, 0, 1]);
+			for (var i = 0; i < tomove.length; i++) {
+				doMove(tomove[i], sc);
+				sq2sc && doMove(tomove[i], sq2sc);
+			}
 
 			svg.width = 4 * sqb * width;
 			svg.height = 2 * sqb * width;
@@ -200,49 +250,14 @@ var image = (function() {
 			for (var i = 0; i < 2; i++) {
 				var trans = i == 0 ? [width, sqb, sqb + sqa] : [width, sqb * 3, sqb - sqa - 0.7];
 				drawPolygon(svg, colors['L'], [[-sqa, -sqa, -0.5, -0.5], [0, 0.7, 0.7, 0]], trans);
-				if (mid == 0) {
+				if (sc.ml == 0) {
 					drawPolygon(svg, colors['L'], [[sqa, sqa, -0.5, -0.5], [0, 0.7, 0.7, 0]], trans);
 				} else {
 					drawPolygon(svg, colors['R'], [[hsq3, hsq3, -0.5, -0.5], [0, 0.7, 0.7, 0]], trans);
 				}
 			}
-
-			//draw top
-			for (var i = 0; i < 24; i++) {
-				var cLR = (posit[i] & 1);
-				var cRot = (i < 12 ? (i - 3) : (-i)) * PI / 6;
-				var eRot = (i < 12 ? (i - 5) : (-1 - i)) * PI / 6;
-				var trans = i < 12 ? [width, sqb, sqb] : [width, sqb * 3, sqb];
-				var j = (i + 1) % 12 + (i < 12 ? 0 : 12);
-				var val = posit[i] >> 1;
-				var colorUD = colors[udcol[val >= 8 ? 1 : 0]];
-
-				if (val % 2 == 0) { //corner piece
-					if (isSQ2) {
-						if (!cLR && i >= 12) {
-							cRot += PI / 6;
-						} else if (cLR && i < 12) {
-							cRot -= PI / 6;
-						}
-						drawPolygon(svg, colors[ccol[val + cLR]],
-							Rotate(cLR ? cpr : cpl, cRot), trans);
-						drawPolygon(svg, colorUD,
-							Rotate(cLR ? cprs : cpls, cRot), trans);
-					} else if (val == (posit[j] >> 1)) {
-						drawPolygon(svg, colors[ccol[val]],
-							Rotate(cpl, cRot), trans);
-						drawPolygon(svg, colors[ccol[val + 1]],
-							Rotate(cpr, cRot), trans);
-						drawPolygon(svg, colorUD,
-							Rotate(cps, cRot), trans);
-					}
-				} else { //edge piece
-					drawPolygon(svg, colors[ecol[val]],
-						Rotate(ep, eRot), trans);
-					drawPolygon(svg, colorUD,
-						Rotate(eps, eRot), trans);
-				}
-			}
+			//draw top and bottom
+			drawPosit(svg, sc, colors, sq2sc);
 
 			var recons = [];
 			for (var i = 0; i < moves.length; i++) {
@@ -265,6 +280,11 @@ var image = (function() {
 				recons.push('/');
 			}
 			return ["~", recons, 'sq1'];
+		}
+
+		return {
+			scrImage: scrImage,
+			llImage: llImage
 		}
 	})();
 
@@ -777,7 +797,7 @@ var image = (function() {
 			}
 			recons = polyhedronImage(svg, type, scramble[1], faceNameMask, type == 'klm' ? 0.1 : 0);
 		} else if (type == "sq1" || type == "sq2") {
-			recons = sq1Image(svg, scramble[1], type == "sq2");
+			recons = sq1Image.scrImage(svg, scramble[1], type == "sq2");
 		} else if (type == "clk") {
 			clkImage(svg, scramble[1]);
 		} else if (type == "15b" || type == "15p") {
@@ -830,6 +850,7 @@ var image = (function() {
 		draw: genImage,
 		llImage: llImage,
 		pyrllImage: pyrllImage,
-		face3Image: face3Image
+		face3Image: face3Image,
+		sqllImage: sq1Image.llImage
 	}
 })();

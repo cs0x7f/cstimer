@@ -78,7 +78,7 @@ var tools = (function() {
 			return "pyr";
 		} else if (/^skb(s?o|nb)?$/.exec(scrambleType)) {
 			return "skb";
-		} else if (/^sq(rs|1[ht]|rcsp)$/.exec(scrambleType)) {
+		} else if (/^sq(rs|1pll|1[ht]|rcsp)$/.exec(scrambleType)) {
 			return "sq1";
 		} else if (/^clk(wcab?|o|nf)$/.exec(scrambleType)) {
 			return "clk";

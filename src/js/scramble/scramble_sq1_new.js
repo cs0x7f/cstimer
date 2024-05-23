@@ -1,70 +1,106 @@
-/*
-
-scramble_sq1.js
-
-Square-1 Solver / Scramble Generator in Javascript.
-
-Ported from PPT, written Walter Souza: https://bitbucket.org/walter/puzzle-timer/src/7049018bbdc7/src/com/puzzletimer/solvers/Square1Solver.java
-Ported by Lucas Garron, November 16, 2011.
-
-TODO:
-- Try to ini using pregenerated JSON.
-- Try to optimize arrays (byte arrays?).
-
-*/
 "use strict";
 
-(function(setNPerm, getNPerm, circle, rn) {
+var sq1 = (function(setNPerm, getNPerm, circle, rn) {
 
-	function FullCube_copy(obj, c) {
-		obj.ul = c.ul;
-		obj.ur = c.ur;
-		obj.dl = c.dl;
-		obj.dr = c.dr;
-		obj.ml = c.ml;
+	function SqCubie() {
+		this.ul = 0x011233; // 0 UB, 1 UBL, 2 UL, 3 UFL
+		this.ur = 0x455677; // 4 UF, 5 UFR, 6 UR, 7 UBR
+		this.dl = 0x998bba; // 9 DBR, 8 DR, b DFR, a DF
+		this.dr = 0xddcffe; // d DFL, c DL, f DBL, e DB
+		this.ml = 0;
 	}
 
-	function FullCube_doMove(obj, move) {
+	var _ = SqCubie.prototype;
+
+	_.toString = function() {
+		return this.ul.toString(16).padStart(6, 0) +
+			this.ur.toString(16).padStart(6, 0) +
+			"|/".charAt(this.ml) +
+			this.dl.toString(16).padStart(6, 0) +
+			this.dr.toString(16).padStart(6, 0);
+	}
+
+	_.pieceAt = function(idx) {
+		var ret;
+		if (idx < 6) {
+			ret = this.ul >> ((5 - idx) << 2);
+		} else if (idx < 12) {
+			ret = this.ur >> ((11 - idx) << 2);
+		} else if (idx < 18) {
+			ret = this.dl >> ((17 - idx) << 2);
+		} else {
+			ret = this.dr >> ((23 - idx) << 2);
+		}
+		return ret & 0xf;
+	}
+
+	_.setPiece = function(idx, value) {
+		if (idx < 6) {
+			this.ul &= ~(0xf << ((5 - idx) << 2));
+			this.ul |= value << ((5 - idx) << 2);
+		} else if (idx < 12) {
+			this.ur &= ~(0xf << ((11 - idx) << 2));
+			this.ur |= value << ((11 - idx) << 2);
+		} else if (idx < 18) {
+			this.dl &= ~(0xf << ((17 - idx) << 2));
+			this.dl |= value << ((17 - idx) << 2);
+		} else {
+			this.dr &= ~(0xf << ((23 - idx) << 2));
+			this.dr |= value << ((23 - idx) << 2);
+		}
+	}
+
+	_.copy = function(c) {
+		this.ul = c.ul;
+		this.ur = c.ur;
+		this.dl = c.dl;
+		this.dr = c.dr;
+		this.ml = c.ml;
+	}
+
+	_.doMove = function(move) {
 		var temp;
 		move <<= 2;
 		if (move > 24) {
 			move = 48 - move;
-			temp = obj.ul;
-			obj.ul = (obj.ul >> move | obj.ur << 24 - move) & 16777215;
-			obj.ur = (obj.ur >> move | temp << 24 - move) & 16777215;
+			temp = this.ul;
+			this.ul = (this.ul >> move | this.ur << 24 - move) & 0xffffff;
+			this.ur = (this.ur >> move | temp << 24 - move) & 0xffffff;
 		} else if (move > 0) {
-			temp = obj.ul;
-			obj.ul = (obj.ul << move | obj.ur >> 24 - move) & 16777215;
-			obj.ur = (obj.ur << move | temp >> 24 - move) & 16777215;
+			temp = this.ul;
+			this.ul = (this.ul << move | this.ur >> 24 - move) & 0xffffff;
+			this.ur = (this.ur << move | temp >> 24 - move) & 0xffffff;
 		} else if (move == 0) {
-			temp = obj.ur;
-			obj.ur = obj.dl;
-			obj.dl = temp;
-			obj.ml = 1 - obj.ml;
+			temp = this.ur;
+			this.ur = this.dl;
+			this.dl = temp;
+			this.ml = 1 - this.ml;
 		} else if (move >= -24) {
 			move = -move;
-			temp = obj.dl;
-			obj.dl = (obj.dl << move | obj.dr >> 24 - move) & 16777215;
-			obj.dr = (obj.dr << move | temp >> 24 - move) & 16777215;
+			temp = this.dl;
+			this.dl = (this.dl << move | this.dr >> 24 - move) & 0xffffff;
+			this.dr = (this.dr << move | temp >> 24 - move) & 0xffffff;
 		} else if (move < -24) {
 			move = 48 + move;
-			temp = obj.dl;
-			obj.dl = (obj.dl >> move | obj.dr << 24 - move) & 16777215;
-			obj.dr = (obj.dr >> move | temp << 24 - move) & 16777215;
+			temp = this.dl;
+			this.dl = (this.dl >> move | this.dr << 24 - move) & 0xffffff;
+			this.dr = (this.dr >> move | temp << 24 - move) & 0xffffff;
 		}
 	}
 
 	function FullCube_getParity(obj) {
-		var a, b, cnt, i, p;
+		var a, b, cnt, i, p, arr;
 		cnt = 0;
-		obj.arr[0] = FullCube_pieceAt(obj, 0);
+		arr = [obj.pieceAt(0)];
 		for (i = 1; i < 24; ++i) {
-			FullCube_pieceAt(obj, i) != obj.arr[cnt] && (obj.arr[++cnt] = FullCube_pieceAt(obj, i));
+			if (obj.pieceAt(i) != arr[cnt]) {
+				arr[++cnt] = obj.pieceAt(i);
+			}
 		}
 		p = 0;
 		for (a = 0; a < 16; ++a) {
 			for (b = a + 1; b < 16; ++b) {
-				obj.arr[a] > obj.arr[b] && (p ^= 1);
+				arr[a] > arr[b] && (p ^= 1);
 			}
 		}
 		return p;
@@ -72,19 +108,19 @@ TODO:
 
 	function FullCube_getShapeIdx(obj) {
 		var dlx, drx, ulx, urx;
-		urx = obj.ur & 1118481;
+		urx = obj.ur & 0x111111;
 		urx |= urx >> 3;
 		urx |= urx >> 6;
 		urx = urx & 15 | urx >> 12 & 48;
-		ulx = obj.ul & 1118481;
+		ulx = obj.ul & 0x111111;
 		ulx |= ulx >> 3;
 		ulx |= ulx >> 6;
 		ulx = ulx & 15 | ulx >> 12 & 48;
-		drx = obj.dr & 1118481;
+		drx = obj.dr & 0x111111;
 		drx |= drx >> 3;
 		drx |= drx >> 6;
 		drx = drx & 15 | drx >> 12 & 48;
-		dlx = obj.dl & 1118481;
+		dlx = obj.dl & 0x111111;
 		dlx |= dlx >> 3;
 		dlx |= dlx >> 6;
 		dlx = dlx & 15 | dlx >> 12 & 48;
@@ -93,68 +129,21 @@ TODO:
 
 	function FullCube_getSquare(obj, sq) {
 		var a, b;
+		var prm = [];
 		for (a = 0; a < 8; ++a) {
-			obj.prm[a] = FullCube_pieceAt(obj, a * 3 + 1) >> 1;
+			prm[a] = obj.pieceAt(a * 3 + 1) >> 1;
 		}
-		sq.cornperm = getNPerm(obj.prm, 8);
-		sq.topEdgeFirst = FullCube_pieceAt(obj, 0) == FullCube_pieceAt(obj, 1);
+		sq.cornperm = getNPerm(prm, 8);
+		sq.topEdgeFirst = obj.pieceAt(0) == obj.pieceAt(1);
 		a = sq.topEdgeFirst ? 2 : 0;
 		for (b = 0; b < 4; a += 3, ++b)
-			obj.prm[b] = FullCube_pieceAt(obj, a) >> 1;
-		sq.botEdgeFirst = FullCube_pieceAt(obj, 12) == FullCube_pieceAt(obj, 13);
+			prm[b] = obj.pieceAt(a) >> 1;
+		sq.botEdgeFirst = obj.pieceAt(12) == obj.pieceAt(13);
 		a = sq.botEdgeFirst ? 14 : 12;
 		for (; b < 8; a += 3, ++b)
-			obj.prm[b] = FullCube_pieceAt(obj, a) >> 1;
-		sq.edgeperm = getNPerm(obj.prm, 8);
+			prm[b] = obj.pieceAt(a) >> 1;
+		sq.edgeperm = getNPerm(prm, 8);
 		sq.ml = obj.ml;
-	}
-
-	function FullCube_pieceAt(obj, idx) {
-		var ret;
-		idx < 6 ? (ret = obj.ul >> (5 - idx << 2)) : idx < 12 ? (ret = obj.ur >> (11 - idx << 2)) : idx < 18 ? (ret = obj.dl >> (17 - idx << 2)) : (ret = obj.dr >> (23 - idx << 2));
-		return (ret & 15);
-	}
-
-	function FullCube_setPiece(obj, idx, value) {
-		if (idx < 6) {
-			obj.ul &= ~(0xf << ((5 - idx) << 2));
-			obj.ul |= value << ((5 - idx) << 2);
-		} else if (idx < 12) {
-			obj.ur &= ~(0xf << ((11 - idx) << 2));
-			obj.ur |= value << ((11 - idx) << 2);
-		} else if (idx < 18) {
-			obj.dl &= ~(0xf << ((17 - idx) << 2));
-			obj.dl |= value << ((17 - idx) << 2);
-		} else {
-			obj.dr &= ~(0xf << ((23 - idx) << 2));
-			obj.dr |= value << ((23 - idx) << 2);
-		}
-	}
-
-	function FullCube_FullCube__Ljava_lang_String_2V() {
-		this.arr = [];
-		this.prm = [];
-	}
-
-	function FullCube_randomEP() {
-		var f, i, shape, edge, n_edge, n_corner, rnd, m;
-		f = new FullCube_FullCube__Ljava_lang_String_2V;
-		shape = Shape_ShapeIdx[FullCube_getShapeIdx(f) >> 1];
-		edge = 0x01234567 << 1;
-		n_edge = 8;
-		for (i = 0; i < 24; i++) {
-			if (((shape >> i) & 1) == 0) { //edge
-				rnd = rn(n_edge) << 2;
-				FullCube_setPiece(f, 23 - i, (edge >> rnd) & 0xf);
-				m = (1 << rnd) - 1;
-				edge = (edge & m) + ((edge >> 4) & ~m);
-				--n_edge;
-			} else {
-				++i;
-			}
-		}
-		f.ml = rn(2);
-		return f;
 	}
 
 	function FullCube_randomCube(indice) {
@@ -162,7 +151,7 @@ TODO:
 		if (indice === undefined) {
 			indice = rn(3678);
 		}
-		f = new FullCube_FullCube__Ljava_lang_String_2V;
+		f = new SqCubie;
 		shape = Shape_ShapeIdx[indice];
 		corner = 0x01234567 << 1 | 0x11111111;
 		edge = 0x01234567 << 1;
@@ -170,14 +159,14 @@ TODO:
 		for (i = 0; i < 24; i++) {
 			if (((shape >> i) & 1) == 0) { //edge
 				rnd = rn(n_edge) << 2;
-				FullCube_setPiece(f, 23 - i, (edge >> rnd) & 0xf);
+				f.setPiece(23 - i, (edge >> rnd) & 0xf);
 				m = (1 << rnd) - 1;
 				edge = (edge & m) + ((edge >> 4) & ~m);
 				--n_edge;
 			} else { //corner
 				rnd = rn(n_corner) << 2;
-				FullCube_setPiece(f, 23 - i, (corner >> rnd) & 0xf);
-				FullCube_setPiece(f, 22 - i, (corner >> rnd) & 0xf);
+				f.setPiece(23 - i, (corner >> rnd) & 0xf);
+				f.setPiece(22 - i, (corner >> rnd) & 0xf);
 				m = (1 << rnd) - 1;
 				corner = (corner & m) + ((corner >> 4) & ~m);
 				--n_corner;
@@ -188,20 +177,11 @@ TODO:
 		return f;
 	}
 
-	function FullCube() {}
-
-	var _ = FullCube_FullCube__Ljava_lang_String_2V.prototype = FullCube.prototype;
-	_.dl = 10062778;
-	_.dr = 14536702;
-	_.ml = 0;
-	_.ul = 70195;
-	_.ur = 4544119;
-
 	function Search_init2(obj) {
 		var corner, edge, i, j, ml, prun;
-		FullCube_copy(obj.Search_d, obj.Search_c);
+		obj.Search_d.copy(obj.Search_c);
 		for (i = 0; i < obj.Search_length1; ++i) {
-			FullCube_doMove(obj.Search_d, obj.Search_move[i]);
+			obj.Search_d.doMove(obj.Search_move[i]);
 		}
 		FullCube_getSquare(obj.Search_d, obj.Search_sq);
 		edge = obj.Search_sq.edgeperm;
@@ -211,7 +191,7 @@ TODO:
 		for (i = prun; i < obj.Search_maxlen2; ++i) {
 			if (Search_phase2(obj, edge, corner, obj.Search_sq.topEdgeFirst, obj.Search_sq.botEdgeFirst, ml, i, obj.Search_length1, 0)) {
 				for (j = 0; j < i; ++j) {
-					FullCube_doMove(obj.Search_d, obj.Search_move[obj.Search_length1 + j]);
+					obj.Search_d.doMove(obj.Search_move[obj.Search_length1 + j]);
 				}
 				obj.Search_sol_string = Search_move2string(obj, i + obj.Search_length1);
 				return true;
@@ -399,7 +379,7 @@ TODO:
 
 	function Search_Search() {
 		this.Search_move = [];
-		this.Search_d = new FullCube_FullCube__Ljava_lang_String_2V;
+		this.Search_d = new SqCubie;
 		this.Search_sq = new Square_Square;
 	}
 
@@ -477,7 +457,7 @@ TODO:
 
 	function Shape_getShape2Idx(shp) {
 		var ret;
-		ret = binarySearch(Shape_ShapeIdx, shp & 16777215) << 1 | shp >> 24;
+		ret = binarySearch(Shape_ShapeIdx, shp & 0xffffff) << 1 | shp >> 24;
 		return ret;
 	}
 
@@ -823,7 +803,7 @@ TODO:
 		return scrambleString;
 	}
 
-	function square1CubeShapeParityScramble(type, length, cases) {
+	function getCSPScramble(type, length, cases) {
 		Shape_$clinit();
 		Square_$clinit();
 		CSPInit();
@@ -832,12 +812,96 @@ TODO:
 		return scrambleString;
 	}
 
-	scrMgr.reg('sqrs', square1SolverGetRandomScramble);
-	scrMgr.reg('sqrcsp', square1CubeShapeParityScramble, [cspfilter, cspprobs]);
+	var pll_map = [
+		[0x1032, 0x3210], // H
+		[0x3102, 0x3210], // Ua
+		[0x3021, 0x3210], // Ub
+		[0x2301, 0x3210], // Z
+		[0x3210, 0x3021], // Aa
+		[0x3210, 0x3102], // Ab
+		[0x3210, 0x2301], // E
+		[0x3012, 0x3201], // F
+		[0x2130, 0x3021], // Gb
+		[0x1320, 0x3102], // Ga
+		[0x3021, 0x3102], // Gc
+		[0x3102, 0x3021], // Gd
+		[0x3201, 0x3201], // Ja
+		[0x3120, 0x3201], // Jb
+		[0x1230, 0x3012], // Na
+		[0x3012, 0x3012], // Nb
+		[0x0213, 0x3201], // Ra
+		[0x2310, 0x3201], // Rb
+		[0x1230, 0x3201], // T
+		[0x3120, 0x3012], // V
+		[0x3201, 0x3012] // Y
+	];
 
+	var pllprobs = [
+		1, 4, 4, 2,
+		4, 4, 2, 4,
+		4, 4, 4, 4,
+		4, 4, 1, 1,
+		4, 4, 4, 4, 4
+	];
+
+	var pllfilter = [
+		'H', 'Ua', 'Ub', 'Z',
+		'Aa', 'Ab', 'E', 'F',
+		'Ga', 'Gb', 'Gc', 'Gd',
+		'Ja', 'Jb', 'Na', 'Nb',
+		'Ra', 'Rb', 'T', 'V', 'Y'
+	];
+
+	function getPLLScramble(type, length, cases) {
+		Shape_$clinit();
+		Square_$clinit();
+		var pllcase = pll_map[scrMgr.fixCase(cases, pllprobs)];
+		var cc = new SqCubie;
+		var rn = mathlib.rn(4) * 0x1111;
+		var rn2 = mathlib.rn(4) * 4;
+		var ep = (0x4444 - pllcase[0] + rn) & 0x3333;
+		var cp = (0x3333 - pllcase[1] + rn) & 0x3333;
+		ep = (ep | ep << 16) >> rn2;
+		cp = (cp | cp << 16) >> rn2;
+		for (var i = 0; i < 4; i++) {
+			var c = (cp >> (12 - i * 4) & 0xf) << 1 | 1;
+			cc.setPiece(i * 3 + 1, c);
+			cc.setPiece(i * 3 + 2, c);
+			cc.setPiece((i * 3 + 3) % 12, (ep >> (12 - i * 4) & 0xf) << 1);
+		}
+		if (mathlib.rn(2) != 0) {
+			cc.doMove(1);
+		}
+		cc.ml = mathlib.rn(2);
+		return Search_solution(search, cc);
+	}
+
+	function getPLLImage(cases, canvas) {
+		Shape_$clinit();
+		Square_$clinit();
+		var pllcase = pll_map[scrMgr.fixCase(cases, pllprobs)];
+		var cc = new SqCubie;
+		var ep = (0x4444 - pllcase[0]) & 0x3333;
+		var cp = (0x3333 - pllcase[1]) & 0x3333;
+		for (var i = 0; i < 4; i++) {
+			var c = (cp >> (12 - i * 4) & 0xf) << 1 | 1;
+			cc.setPiece(i * 3 + 1, c);
+			cc.setPiece(i * 3 + 2, c);
+			cc.setPiece((i * 3 + 3) % 12, (ep >> (12 - i * 4) & 0xf) << 1);
+		}
+		if (!canvas) {
+			return [cc, false, null];
+		}
+		image.sqllImage(cc, false, canvas);
+	}
+
+	scrMgr.reg('sqrs', square1SolverGetRandomScramble);
+	scrMgr.reg('sqrcsp', getCSPScramble, [cspfilter, cspprobs]);
+	scrMgr.reg('sq1pll', getPLLScramble, [pllfilter, pllprobs, getPLLImage]);
 
 	return {
 		initialize: $.noop,
+		SqCubie: SqCubie,
 		getRandomScramble: square1SolverGetRandomScramble
 	};
 

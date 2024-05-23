@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["náhodný stav (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['přední metrické otočení', "sq1h", 40],
 		['metrický twist', "sq1t", 20]
 	]],

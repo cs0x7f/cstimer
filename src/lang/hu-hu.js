@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["véletlen állapot (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['oldal fordítási rendszer', "sq1h", 40],
 		['tekerési rendszer', "sq1t", 20]
 	]],

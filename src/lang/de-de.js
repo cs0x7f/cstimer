@@ -26,7 +26,7 @@ var PROPERTY_SCRALIGN = 'Aurichtung des Scramble-Bereichs';
 var PROPERTY_SCRALIGN_STR = 'mittig|links|rechts';
 var PROPERTY_SCRNEUT = 'Farbneutral';
 var PROPERTY_SCRNEUT_STR = 'Keine Seite|Eine Seite|Zwei Seiten|Sechs Seiten';
-var PROPERTY_SCREQPR = 'Use equal probabilities for training-scramble states instead of actual probabilities';
+var PROPERTY_SCREQPR = 'Gleiche Wahrscheinlichkeiten bei Training-Scrambles anstelle von tatsächlichen Wahrscheinlichkeiten verwenden.';
 var PROPERTY_SCRFAST = 'schnellen Scramble für 4x4x4 verwenden (inoffiziell)';
 var PROPERTY_SCRKEYM = 'Schlüssel-Züge im Scramble hervorheben';
 var PROPERTY_SCRCLK = 'Aktion beim klicken des scrambles';
@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["zufälliger Status (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['Flächen-Zug-Metrik', "sq1h", 40],
 		['Zug-Metrik', "sq1t", 20]
 	]],
@@ -526,7 +527,7 @@ var STATS_XSESSION_SCR = 'jeder Scramble';
 var STATS_XSESSION_CALC = 'Berechnen';
 var STATS_RSFORSS = 'Zeige Statistik, when die Zeitnummer angeklickt wird';
 var PROPERTY_PRINTSCR = 'Scramble(s) in den Statistiken anzeigen';
-var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
+var PROPERTY_PRINTCOMM = 'Kommentare in den Statistiken anzeigen';
 var PROPERTY_PRINTDATE = 'Datum des Solves in den Statistiken anzeigen';
 var PROPERTY_SUMMARY = 'Zusammenfassung vor der Zeiten-Liste anzeigen';
 var PROPERTY_IMRENAME = 'Sitzung direkt nach der Erstellung umbenennen';

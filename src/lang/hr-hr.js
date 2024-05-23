@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["nasumično stanje (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['face-turn metrika', "sq1h", 40],
 		['twist metrika', "sq1t", 20]
 	]],

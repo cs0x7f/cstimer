@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["estado aleatorio (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['cara vuelta métrica', "sq1h", 40],
 		['giro métrico', "sq1t", 20]
 	]],

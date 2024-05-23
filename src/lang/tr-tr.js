@@ -325,6 +325,7 @@ var scrdata = [
 	['Kare-1', [
 		["Rastgele Durum (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['yüz dönüş metriği', "sq1h", 40],
 		['büküm metriği', "sq1t", 20]
 	]],

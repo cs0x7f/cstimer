@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["willekeurige staat (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['vlak draait metrisch', "sq1h", 40],
 		['draai metrisch', "sq1t", 20]
 	]],

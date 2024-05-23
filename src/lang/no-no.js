@@ -325,6 +325,7 @@ var scrdata = [
 	['Square-1', [
 		["tilfeldig tilstand (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['Måling av rotering til frontsiden', "sq1h", 40],
 		['Vri metrisk', "sq1t", 20]
 	]],

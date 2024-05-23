@@ -325,6 +325,7 @@ var scrdata = [
 	['Rubik square ', [
 		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
+		["PLL", "sq1pll", 0],
 		['face turn metric', "sq1h", 40],
 		['twist metric', "sq1t", 20]
 	]],
