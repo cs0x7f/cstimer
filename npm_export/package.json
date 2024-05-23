@@ -1,6 +1,6 @@
 {
   "name": "cstimer_module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "scramble and tools used in csTimer",
   "main": "cstimer_module.js",
   "scripts": {
