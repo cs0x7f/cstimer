@@ -130,6 +130,8 @@ scramble/redi.js \
 scramble/utilscramble.js \
 tools/tools.js \
 tools/image.js \
+tools/cross.js \
+tools/gsolver.js \
 worker.js)
 
 cstimer = $(dest)/js/cstimer.js
