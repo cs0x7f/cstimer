@@ -413,9 +413,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		[0x2418, 1, 'ECP-41'],
 		[0x0408, 1, 'Solved-42']
 	];
-
 	var f2lprobs = mathlib.idxArray(f2l_map, 1);
-
 	var f2lfilter = mathlib.idxArray(f2l_map, 2);
 
 	function getLSLLScramble(type, length, cases, neut) {
@@ -664,7 +662,6 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		[0x2301, 0x0000, 'DeDeeeDeDBGFLGRFGBRGL', 1, 'O-Diag'],
 		[0x3210, 0x0000, 'DeDeeeDeDBGBRGRFGFLGL', 1, 'O-AUF']
 	];
-
 	var coprobs = mathlib.idxArray(coll_map, 3);
 	var cofilter = mathlib.idxArray(coll_map, 4);
 
@@ -774,7 +771,6 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		[0x30412, 0x0213, 'FOpp-11'],
 		[0x30412, 0x0132, 'FOpp-12']
 	];
-
 	var ttllprobs = [];
 	var ttllfilter = [];
 	for (var i = 0; i < ttll_map.length; i++) {
@@ -822,45 +818,30 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	}
 
 	var pll_map = [
-		[0x1032, 0x3210], // H
-		[0x3102, 0x3210], // Ua
-		[0x3021, 0x3210], // Ub
-		[0x2301, 0x3210], // Z
-		[0x3210, 0x3021], // Aa
-		[0x3210, 0x3102], // Ab
-		[0x3210, 0x2301], // E
-		[0x3012, 0x3201], // F
-		[0x2130, 0x3021], // Gb
-		[0x1320, 0x3102], // Ga
-		[0x3021, 0x3102], // Gc
-		[0x3102, 0x3021], // Gd
-		[0x3201, 0x3201], // Ja
-		[0x3120, 0x3201], // Jb
-		[0x1230, 0x3012], // Na
-		[0x3012, 0x3012], // Nb
-		[0x0213, 0x3201], // Ra
-		[0x2310, 0x3201], // Rb
-		[0x1230, 0x3201], // T
-		[0x3120, 0x3012], // V
-		[0x3201, 0x3012] // Y
+		[0x1032, 0x3210, 1, 'H'],
+		[0x3102, 0x3210, 4, 'Ua'],
+		[0x3021, 0x3210, 4, 'Ub'],
+		[0x2301, 0x3210, 2, 'Z'],
+		[0x3210, 0x3021, 4, 'Aa'],
+		[0x3210, 0x3102, 4, 'Ab'],
+		[0x3210, 0x2301, 2, 'E'],
+		[0x3012, 0x3201, 4, 'F'],
+		[0x2130, 0x3021, 4, 'Ga'],
+		[0x1320, 0x3102, 4, 'Gb'],
+		[0x3021, 0x3102, 4, 'Gc'],
+		[0x3102, 0x3021, 4, 'Gd'],
+		[0x3201, 0x3201, 4, 'Ja'],
+		[0x3120, 0x3201, 4, 'Jb'],
+		[0x1230, 0x3012, 1, 'Na'],
+		[0x3012, 0x3012, 1, 'Nb'],
+		[0x0213, 0x3201, 4, 'Ra'],
+		[0x2310, 0x3201, 4, 'Rb'],
+		[0x1230, 0x3201, 4, 'T'],
+		[0x3120, 0x3012, 4, 'V'],
+		[0x3201, 0x3012, 4, 'Y']
 	];
-
-	var pllprobs = [
-		1, 4, 4, 2,
-		4, 4, 2, 4,
-		4, 4, 4, 4,
-		4, 4, 1, 1,
-		4, 4, 4, 4, 4
-	];
-
-	var pllfilter = [
-		'H', 'Ua', 'Ub', 'Z',
-		'Aa', 'Ab', 'E', 'F',
-		'Ga', 'Gb', 'Gc', 'Gd',
-		'Ja', 'Jb', 'Na', 'Nb',
-		'Ra', 'Rb', 'T', 'V', 'Y'
-	];
-
+	var pllprobs = mathlib.idxArray(pll_map, 2);
+	var pllfilter = mathlib.idxArray(pll_map, 3);
 	var pllImgParam = [
 		['BFBRLRFBFLRL', [1, 7], [3, 5]],
 		['BRBRLRFFFLBL', [3, 7], [7, 5], [5, 3]],
@@ -903,68 +884,67 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	}
 
 	var oll_map = [
-		[0x0000, 0x0000], // PLL
-		[0x1111, 0x1212], // Point-1
-		[0x1111, 0x1122], // Point-2
-		[0x1111, 0x0222], // Point-3
-		[0x1111, 0x0111], // Point-4
-		[0x0011, 0x2022], // Square-5
-		[0x0011, 0x1011], // Square-6
-		[0x0011, 0x2202], // SLBS-7
-		[0x0011, 0x0111], // SLBS-8
-		[0x0011, 0x1110], // Fish-9
-		[0x0011, 0x2220], // Fish-10
-		[0x0011, 0x0222], // SLBS-11
-		[0x0011, 0x1101], // SLBS-12
-		[0x0101, 0x2022], // Knight-13
-		[0x0101, 0x0111], // Knight-14
-		[0x0101, 0x0222], // Knight-15
-		[0x0101, 0x1011], // Knight-16
-		[0x1111, 0x0102], // Point-17
-		[0x1111, 0x0012], // Point-18
-		[0x1111, 0x0021], // Point-19
-		[0x1111, 0x0000], // CO-20
-		[0x0000, 0x1212], // OCLL-21
-		[0x0000, 0x1122], // OCLL-22
-		[0x0000, 0x0012], // OCLL-23
-		[0x0000, 0x0021], // OCLL-24
-		[0x0000, 0x0102], // OCLL-25
-		[0x0000, 0x0111], // OCLL-26
-		[0x0000, 0x0222], // OCLL-27
-		[0x0011, 0x0000], // CO-28
-		[0x0011, 0x0210], // Awkward-29
-		[0x0011, 0x2100], // Awkward-30
-		[0x0011, 0x0021], // P-31
-		[0x0011, 0x1002], // P-32
-		[0x0101, 0x0021], // T-33
-		[0x0101, 0x0210], // C-34
-		[0x0011, 0x1020], // Fish-35
-		[0x0011, 0x0102], // W-36
-		[0x0011, 0x2010], // Fish-37
-		[0x0011, 0x0201], // W-38
-		[0x0101, 0x1020], // BLBS-39
-		[0x0101, 0x0102], // BLBS-40
-		[0x0011, 0x1200], // Awkward-41
-		[0x0011, 0x0120], // Awkward-42
-		[0x0011, 0x0012], // P-43
-		[0x0011, 0x2001], // P-44
-		[0x0101, 0x0012], // T-45
-		[0x0101, 0x0120], // C-46
-		[0x0011, 0x1221], // L-47
-		[0x0011, 0x1122], // L-48
-		[0x0011, 0x2112], // L-49
-		[0x0011, 0x2211], // L-50
-		[0x0101, 0x1221], // I-51
-		[0x0101, 0x1122], // I-52
-		[0x0011, 0x2121], // L-53
-		[0x0011, 0x1212], // L-54
-		[0x0101, 0x2121], // I-55
-		[0x0101, 0x1212], // I-56
-		[0x0101, 0x0000], // CO-57
+		[0x0000, 0x0000, 1, 'PLL', 0x000ff],
+		[0x1111, 0x1212, 2, 'Point-1', 0xeba00],
+		[0x1111, 0x1122, 4, 'Point-2', 0xdda00],
+		[0x1111, 0x0222, 4, 'Point-3', 0x5b620],
+		[0x1111, 0x0111, 4, 'Point-4', 0x6d380],
+		[0x0011, 0x2022, 4, 'Square-5', 0x8360b],
+		[0x0011, 0x1011, 4, 'Square-6', 0x60b16],
+		[0x0011, 0x2202, 4, 'SLBS-7', 0x1362a],
+		[0x0011, 0x0111, 4, 'SLBS-8', 0x64392],
+		[0x0011, 0x1110, 4, 'Fish-9', 0x2538a],
+		[0x0011, 0x2220, 4, 'Fish-10', 0x9944c],
+		[0x0011, 0x0222, 4, 'SLBS-11', 0x9160e],
+		[0x0011, 0x1101, 4, 'SLBS-12', 0x44b13],
+		[0x0101, 0x2022, 4, 'Knight-13', 0x1a638],
+		[0x0101, 0x0111, 4, 'Knight-14', 0x2c398],
+		[0x0101, 0x0222, 4, 'Knight-15', 0x8a619],
+		[0x0101, 0x1011, 4, 'Knight-16', 0x28b1c],
+		[0x1111, 0x0102, 4, 'Point-17', 0x4b381],
+		[0x1111, 0x0012, 4, 'Point-18', 0x49705],
+		[0x1111, 0x0021, 4, 'Point-19', 0xc9a05],
+		[0x1111, 0x0000, 1, 'CO-20', 0x492a5],
+		[0x0000, 0x1212, 2, 'OCLL-21', 0x1455a],
+		[0x0000, 0x1122, 4, 'OCLL-22', 0xa445a],
+		[0x0000, 0x0012, 4, 'OCLL-23', 0x140fa],
+		[0x0000, 0x0021, 4, 'OCLL-24', 0x101de],
+		[0x0000, 0x0102, 4, 'OCLL-25', 0x2047e],
+		[0x0000, 0x0111, 4, 'OCLL-26', 0x2095e],
+		[0x0000, 0x0222, 4, 'OCLL-27', 0x1247a],
+		[0x0011, 0x0000, 4, 'CO-28', 0x012af],
+		[0x0011, 0x0210, 4, 'Awkward-29', 0x1138e],
+		[0x0011, 0x2100, 4, 'Awkward-30', 0x232aa],
+		[0x0011, 0x0021, 4, 'P-31', 0x50396],
+		[0x0011, 0x1002, 4, 'P-32', 0x0562b],
+		[0x0101, 0x0021, 4, 'T-33', 0x1839c],
+		[0x0101, 0x0210, 4, 'C-34', 0x2a2b8],
+		[0x0011, 0x1020, 4, 'Fish-35', 0x4a1d1],
+		[0x0011, 0x0102, 4, 'W-36', 0xc4293],
+		[0x0011, 0x2010, 4, 'Fish-37', 0x0338b],
+		[0x0011, 0x0201, 4, 'W-38', 0x11a2e],
+		[0x0101, 0x1020, 4, 'BLBS-39', 0x18a3c],
+		[0x0101, 0x0102, 4, 'BLBS-40', 0x8c299],
+		[0x0011, 0x1200, 4, 'Awkward-41', 0x152aa],
+		[0x0011, 0x0120, 4, 'Awkward-42', 0x0954d],
+		[0x0011, 0x0012, 4, 'P-43', 0xe0296],
+		[0x0011, 0x2001, 4, 'P-44', 0x03a2b],
+		[0x0101, 0x0012, 4, 'T-45', 0xa829c],
+		[0x0101, 0x0120, 4, 'C-46', 0x43863],
+		[0x0011, 0x1221, 4, 'L-47', 0x52b12],
+		[0x0011, 0x1122, 4, 'L-48', 0xa560a],
+		[0x0011, 0x2112, 4, 'L-49', 0xe4612],
+		[0x0011, 0x2211, 4, 'L-50', 0xec450],
+		[0x0101, 0x1221, 4, 'I-51', 0x1ab18],
+		[0x0101, 0x1122, 4, 'I-52', 0x53942],
+		[0x0011, 0x2121, 4, 'L-53', 0x54712],
+		[0x0011, 0x1212, 4, 'L-54', 0x1570a],
+		[0x0101, 0x2121, 2, 'I-55', 0x1c718],
+		[0x0101, 0x1212, 2, 'I-56', 0xaaa18],
+		[0x0101, 0x0000, 2, 'CO-57', 0x082bd]
 	];
-	var ollprobs = [1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2];
-	var ollfilter = ['PLL', 'Point-1', 'Point-2', 'Point-3', 'Point-4', 'Square-5', 'Square-6', 'SLBS-7', 'SLBS-8', 'Fish-9', 'Fish-10', 'SLBS-11', 'SLBS-12', 'Knight-13', 'Knight-14', 'Knight-15', 'Knight-16', 'Point-17', 'Point-18', 'Point-19', 'CO-20', 'OCLL-21', 'OCLL-22', 'OCLL-23', 'OCLL-24', 'OCLL-25', 'OCLL-26', 'OCLL-27', 'CO-28', 'Awkward-29', 'Awkward-30', 'P-31', 'P-32', 'T-33', 'C-34', 'Fish-35', 'W-36', 'Fish-37', 'W-38', 'BLBS-39', 'BLBS-40', 'Awkward-41', 'Awkward-42', 'P-43', 'P-44', 'T-45', 'C-46', 'L-47', 'L-48', 'L-49', 'L-50', 'I-51', 'I-52', 'L-53', 'L-54', 'I-55', 'I-56', 'CO-57'];
-	var ollImgParam = [0x000ff, 0xeba00, 0xdda00, 0x5b620, 0x6d380, 0x8360b, 0x60b16, 0x1362a, 0x64392, 0x2538a, 0x9944c, 0x9160e, 0x44b13, 0x1a638, 0x2c398, 0x8a619, 0x28b1c, 0x4b381, 0x49705, 0xc9a05, 0x492a5, 0x1455a, 0xa445a, 0x140fa, 0x101de, 0x2047e, 0x2095e, 0x1247a, 0x012af, 0x1138e, 0x232aa, 0x50396, 0x0562b, 0x1839c, 0x2a2b8, 0x4a1d1, 0xc4293, 0x0338b, 0x11a2e, 0x18a3c, 0x8c299, 0x152aa, 0x0954d, 0xe0296, 0x03a2b, 0xa829c, 0x43863, 0x52b12, 0xa560a, 0xe4612, 0xec450, 0x1ab18, 0x53942, 0x54712, 0x1570a, 0x1c718, 0xaaa18, 0x082bd];
+	var ollprobs = mathlib.idxArray(oll_map, 2);
+	var ollfilter = mathlib.idxArray(oll_map, 3);
 
 	function getOLLScramble(type, length, cases, neut) {
 		var ollcase = oll_map[scrMgr.fixCase(cases, ollprobs)];
@@ -973,7 +953,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 
 	function getOLLImage(cases, canvas) {
 		var face = '';
-		var val = ollImgParam[cases];
+		var val = oll_map[cases][4];
 		for (var i = 0; i < 21; i++) {
 			if (i == 4) {
 				face += 'D';
