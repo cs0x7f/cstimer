@@ -121,14 +121,6 @@ var min2phase = (function() {
 		}
 	}
 
-	function setVal(val0, val, isEdge) {
-		return isEdge ? (val << 1 | val0 & 1) : (val | val0 & 0xf8);
-	}
-
-	function getVal(val0, isEdge) {
-		return isEdge ? val0 >> 1 : val0 & 7;
-	}
-
 	function setPruning(table, index, value) {
 		table[index >> 3] ^= value << (index << 2); // index << 2 <=> (index & 7) << 2
 	}
@@ -159,10 +151,10 @@ var min2phase = (function() {
 
 	function CubieCube() {
 		this.ca = [0, 1, 2, 3, 4, 5, 6, 7];
-		this.ea = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
+		this.ea = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 	}
 
-	function setNPerm(arr, idx, n, isEdge) {
+	function setNPerm(arr, idx, n) {
 		n--;
 		var val = 0x76543210;
 		for (var i = 0; i < n; ++i) {
@@ -170,43 +162,43 @@ var min2phase = (function() {
 			var v = ~~(idx / p);
 			idx %= p;
 			v <<= 2;
-			arr[i] = setVal(arr[i], val >> v & 0xf, isEdge);
+			arr[i] = arr[i] & 0xf0 | val >> v & 0xf;
 			var m = (1 << v) - 1;
 			val = (val & m) + (val >> 4 & ~m);
 		}
-		arr[n] = setVal(arr[n], val & 0xf, isEdge);
+		arr[n] = arr[n] & 0xf0 | val & 0xf;
 	}
 
-	function getNPerm(arr, n, isEdge) {
+	function getNPerm(arr, n) {
 		var idx = 0,
 			val = 0x76543210;
 		for (var i = 0; i < n - 1; ++i) {
-			var v = getVal(arr[i], isEdge) << 2;
+			var v = (arr[i] & 0xf) << 2;
 			idx = (n - i) * idx + (val >> v & 0xf);
 			val -= 0x11111110 << v;
 		}
 		return idx;
 	}
 
-	function setNPermFull(arr, idx, n, isEdge) {
-		arr[n - 1] = setVal(arr[n - 1], 0, isEdge);;
+	function setNPermFull(arr, idx, n) {
+		arr[n - 1] = arr[n - 1] & 0xf0;
 		for (var i = n - 2; i >= 0; --i) {
-			arr[i] = setVal(arr[i], idx % (n - i), isEdge);
+			arr[i] = arr[i] & 0xf0 | idx % (n - i);
 			idx = ~~(idx / (n - i));
 			for (var j = i + 1; j < n; ++j) {
-				if (getVal(arr[j], isEdge) >= getVal(arr[i], isEdge)) {
-					arr[j] = setVal(arr[j], getVal(arr[j], isEdge) + 1, isEdge);
+				if ((arr[j] & 0xf) >= (arr[i] & 0xf)) {
+					arr[j] += 1;
 				}
 			}
 		}
 	}
 
-	function getNPermFull(arr, n, isEdge) {
+	function getNPermFull(arr, n) {
 		var idx = 0;
 		for (var i = 0; i < n; ++i) {
 			idx *= n - i;
 			for (var j = i + 1; j < n; ++j) {
-				if (getVal(arr[j], isEdge) < getVal(arr[i], isEdge)) {
+				if ((arr[j] & 0xf) < (arr[i] & 0xf)) {
 					++idx;
 				}
 			}
@@ -214,12 +206,12 @@ var min2phase = (function() {
 		return idx;
 	}
 
-	function getComb(arr, mask, isEdge) {
+	function getComb(arr, mask) {
 		var end = arr.length - 1;
 		var idxC = 0,
 			r = 4;
 		for (var i = end; i >= 0; i--) {
-			var perm = getVal(arr[i], isEdge);
+			var perm = arr[i] & 0xf;
 			if ((perm & 0xc) == mask) {
 				idxC += Cnk[i][r--];
 			}
@@ -227,19 +219,19 @@ var min2phase = (function() {
 		return idxC;
 	}
 
-	function setComb(arr, idxC, mask, isEdge) {
+	function setComb(arr, idxC, mask) {
 		var end = arr.length - 1;
 		var r = 4,
 			fill = end;
 		for (var i = end; i >= 0; i--) {
 			if (idxC >= Cnk[i][r]) {
 				idxC -= Cnk[i][r--];
-				arr[i] = setVal(arr[i], r | mask, isEdge);
+				arr[i] = arr[i] & 0xf0 | r | mask;
 			} else {
 				if ((fill & 0xc) == mask) {
 					fill -= 4;
 				}
-				arr[i] = setVal(arr[i], fill--, isEdge);
+				arr[i] = arr[i] & 0xf0 | fill--;
 			}
 		}
 	}
@@ -254,39 +246,39 @@ var min2phase = (function() {
 	}
 	CubieCube.EdgeMult = function(a, b, prod) {
 		for (var ed = 0; ed < 12; ed++) {
-			prod.ea[ed] = a.ea[b.ea[ed] >> 1] ^ (b.ea[ed] & 1);
+			prod.ea[ed] = a.ea[b.ea[ed] & 0xf] ^ (b.ea[ed] & 0x10);
 		}
 	}
 	CubieCube.CornMult = function(a, b, prod) {
 		for (var corn = 0; corn < 8; corn++) {
-			var ori = ((a.ca[b.ca[corn] & 7] >> 3) + (b.ca[corn] >> 3)) % 3;
-			prod.ca[corn] = a.ca[b.ca[corn] & 7] & 7 | ori << 3;
+			var ori = ((a.ca[b.ca[corn] & 0xf] >> 4) + (b.ca[corn] >> 4)) % 3;
+			prod.ca[corn] = a.ca[b.ca[corn] & 0xf] & 0xf | ori << 4;
 		}
 	}
 	CubieCube.CornMultFull = function(a, b, prod) {
 		for (var corn = 0; corn < 8; corn++) {
-			var oriA = a.ca[b.ca[corn] & 7] >> 3;
-			var oriB = b.ca[corn] >> 3;
+			var oriA = a.ca[b.ca[corn] & 0xf] >> 4;
+			var oriB = b.ca[corn] >> 4;
 			var ori = oriA + ((oriA < 3) ? oriB : 6 - oriB);
 			ori = ori % 3 + ((oriA < 3) == (oriB < 3) ? 0 : 3);
-			prod.ca[corn] = a.ca[b.ca[corn] & 7] & 7 | ori << 3;
+			prod.ca[corn] = a.ca[b.ca[corn] & 0xf] & 0xf | ori << 4;
 		}
 	}
 	CubieCube.CornConjugate = function(a, idx, b) {
 		var sinv = SymCube[SymMultInv[0][idx]];
 		var s = SymCube[idx];
 		for (var corn = 0; corn < 8; corn++) {
-			var oriA = sinv.ca[a.ca[s.ca[corn] & 7] & 7] >> 3;
-			var oriB = a.ca[s.ca[corn] & 7] >> 3;
+			var oriA = sinv.ca[a.ca[s.ca[corn] & 0xf] & 0xf] >> 4;
+			var oriB = a.ca[s.ca[corn] & 0xf] >> 4;
 			var ori = (oriA < 3) ? oriB : (3 - oriB) % 3;
-			b.ca[corn] = sinv.ca[a.ca[s.ca[corn] & 7] & 7] & 7 | ori << 3;
+			b.ca[corn] = sinv.ca[a.ca[s.ca[corn] & 0xf] & 0xf] & 0xf | ori << 4;
 		}
 	}
 	CubieCube.EdgeConjugate = function(a, idx, b) {
 		var sinv = SymCube[SymMultInv[0][idx]];
 		var s = SymCube[idx];
 		for (var ed = 0; ed < 12; ed++) {
-			b.ea[ed] = sinv.ea[a.ea[s.ea[ed] >> 1] >> 1] ^ (a.ea[s.ea[ed] >> 1] & 1) ^ (s.ea[ed] & 1);
+			b.ea[ed] = sinv.ea[a.ea[s.ea[ed] & 0xf] & 0xf] ^ (a.ea[s.ea[ed] & 0xf] & 0x10) ^ (s.ea[ed] & 0x10);
 		}
 	}
 	CubieCube.prototype.init = function(ca, ea) {
@@ -295,9 +287,9 @@ var min2phase = (function() {
 		return this;
 	}
 	CubieCube.prototype.initCoord = function(cperm, twist, eperm, flip) {
-		setNPerm(this.ca, cperm, 8, false);
+		setNPerm(this.ca, cperm, 8);
 		this.setTwist(twist);
-		setNPermFull(this.ea, eperm, 12, true);
+		setNPermFull(this.ea, eperm, 12);
 		this.setFlip(flip);
 		return this;
 	}
@@ -315,18 +307,17 @@ var min2phase = (function() {
 		return true;
 	}
 	CubieCube.prototype.setFlip = function(idx) {
-		var parity = 0,
-			val;
+		var parity = 0;
 		for (var i = 10; i >= 0; i--, idx >>= 1) {
-			parity ^= (val = idx & 1);
-			this.ea[i] = this.ea[i] & 0xfe | val;
+			this.ea[i] = this.ea[i] & 0xf | (idx & 1) << 4;
+			parity ^= this.ea[i];
 		}
-		this.ea[11] = this.ea[11] & 0xfe | parity;
+		this.ea[11] = this.ea[11] & 0xf | parity & 0x10;
 	}
 	CubieCube.prototype.getFlip = function() {
 		var idx = 0;
 		for (var i = 0; i < 11; i++) {
-			idx = idx << 1 | this.ea[i] & 1;
+			idx = idx << 1 | this.ea[i] >> 4 & 1;
 		}
 		return idx;
 	}
@@ -334,60 +325,58 @@ var min2phase = (function() {
 		return FlipR2S[this.getFlip()];
 	}
 	CubieCube.prototype.setTwist = function(idx) {
-		var twst = 15,
-			val;
+		var twst = 15;
 		for (var i = 6; i >= 0; i--, idx = ~~(idx / 3)) {
-			twst -= (val = idx % 3);
-			this.ca[i] = this.ca[i] & 0x7 | val << 3;
+			this.ca[i] = this.ca[i] & 0xf | idx % 3 << 4;
+			twst -= this.ca[i] >> 4;
 		}
-		this.ca[7] = this.ca[7] & 0x7 | (twst % 3) << 3;
+		this.ca[7] = this.ca[7] & 0xf | (twst % 3) << 4;
 	}
 	CubieCube.prototype.getTwist = function() {
 		var idx = 0;
 		for (var i = 0; i < 7; i++) {
-			idx += (idx << 1) + (this.ca[i] >> 3);
+			idx += (idx << 1) + (this.ca[i] >> 4);
 		}
 		return idx;
 	}
 	CubieCube.prototype.getTwistSym = function() {
 		return TwistR2S[this.getTwist()];
-
 	}
 	CubieCube.prototype.setCPerm = function(idx) {
-		setNPerm(this.ca, idx, 8, false);
+		setNPerm(this.ca, idx, 8);
 	}
 	CubieCube.prototype.getCPerm = function() {
-		return getNPerm(this.ca, 8, false);
+		return getNPerm(this.ca, 8);
 	}
 	CubieCube.prototype.getCPermSym = function() {
-		return ESym2CSym(EPermR2S[getNPerm(this.ca, 8, false)]);
+		return ESym2CSym(EPermR2S[getNPerm(this.ca, 8)]);
 	}
 	CubieCube.prototype.setEPerm = function(idx) {
-		setNPerm(this.ea, idx, 8, true);
+		setNPerm(this.ea, idx, 8);
 	}
 	CubieCube.prototype.getEPerm = function() {
-		return getNPerm(this.ea, 8, true);
+		return getNPerm(this.ea, 8);
 	}
 	CubieCube.prototype.getEPermSym = function() {
-		return EPermR2S[getNPerm(this.ea, 8, true)];
+		return EPermR2S[getNPerm(this.ea, 8)];
 	}
 	CubieCube.prototype.getUDSlice = function() {
-		return 494 - getComb(this.ea, 8, true);
+		return 494 - getComb(this.ea, 8);
 	}
 	CubieCube.prototype.setUDSlice = function(idx) {
-		setComb(this.ea, 494 - idx, 8, true);
+		setComb(this.ea, 494 - idx, 8);
 	}
 	CubieCube.prototype.getMPerm = function() {
-		return getNPermFull(this.ea, 12, true) % 24;
+		return getNPermFull(this.ea, 12) % 24;
 	}
 	CubieCube.prototype.setMPerm = function(idx) {
-		setNPermFull(this.ea, idx, 12, true);
+		setNPermFull(this.ea, idx, 12);
 	}
 	CubieCube.prototype.getCComb = function() {
-		return getComb(this.ca, 0, false);
+		return getComb(this.ca, 0);
 	}
 	CubieCube.prototype.setCComb = function(idx) {
-		setComb(this.ca, idx, 0, false);
+		setComb(this.ca, idx, 0);
 	}
 	CubieCube.prototype.URFConjugate = function() {
 		var temps = new CubieCube();
@@ -429,14 +418,14 @@ var min2phase = (function() {
 			f[i] = ts[~~(i / 9)];
 		}
 		for (var c = 0; c < 8; c++) {
-			var j = this.ca[c] & 0x7; // cornercubie with index j is at
-			var ori = this.ca[c] >> 3; // Orientation of this cubie
+			var j = this.ca[c] & 0xf; // cornercubie with index j is at
+			var ori = this.ca[c] >> 4; // Orientation of this cubie
 			for (var n = 0; n < 3; n++)
 				f[cFacelet[c][(n + ori) % 3]] = ts[~~(cFacelet[j][n] / 9)];
 		}
 		for (var e = 0; e < 12; e++) {
-			var j = this.ea[e] >> 1; // edgecubie with index j is at edgeposition
-			var ori = this.ea[e] & 1; // Orientation of this cubie
+			var j = this.ea[e] & 0xf; // edgecubie with index j is at edgeposition
+			var ori = this.ea[e] >> 4; // Orientation of this cubie
 			for (var n = 0; n < 2; n++)
 				f[eFacelet[e][(n + ori) % 2]] = ts[~~(eFacelet[j][n] / 9)];
 		}
@@ -444,10 +433,10 @@ var min2phase = (function() {
 	}
 	CubieCube.prototype.invFrom = function(cc) {
 		for (var edge = 0; edge < 12; edge++) {
-			this.ea[cc.ea[edge] >> 1] = edge << 1 | cc.ea[edge] & 1;
+			this.ea[cc.ea[edge] & 0xf] = edge & 0xf | cc.ea[edge] & 0x10;
 		}
 		for (var corn = 0; corn < 8; corn++) {
-			this.ca[cc.ca[corn] & 0x7] = corn | 0x20 >> (cc.ca[corn] >> 3) & 0x18;
+			this.ca[cc.ca[corn] & 0xf] = corn | 0x40 >> (cc.ca[corn] >> 4) & 0x30;
 		}
 		return this;
 	}
@@ -476,7 +465,7 @@ var min2phase = (function() {
 			col2 = f[cFacelet[i][(ori + 2) % 3]];
 			for (j = 0; j < 8; ++j) {
 				if (col1 == ~~(cFacelet[j][1] / 9) && col2 == ~~(cFacelet[j][2] / 9)) {
-					this.ca[i] = j | ori % 3 << 3;
+					this.ca[i] = j | ori % 3 << 4;
 					break;
 				}
 			}
@@ -484,11 +473,11 @@ var min2phase = (function() {
 		for (i = 0; i < 12; ++i) {
 			for (j = 0; j < 12; ++j) {
 				if (f[eFacelet[i][0]] == ~~(eFacelet[j][0] / 9) && f[eFacelet[i][1]] == ~~(eFacelet[j][1] / 9)) {
-					this.ea[i] = j << 1;
+					this.ea[i] = j;
 					break;
 				}
 				if (f[eFacelet[i][0]] == ~~(eFacelet[j][1] / 9) && f[eFacelet[i][1]] == ~~(eFacelet[j][0] / 9)) {
-					this.ea[i] = j << 1 | 1;
+					this.ea[i] = j| 0x10;
 					break;
 				}
 			}
@@ -661,8 +650,8 @@ var min2phase = (function() {
 		var sum = 0;
 		var edgeMask = 0;
 		for (var e = 0; e < 12; e++) {
-			edgeMask |= 1 << (this.cc.ea[e] >> 1);
-			sum ^= this.cc.ea[e] & 1;
+			edgeMask |= 1 << (this.cc.ea[e] & 0xf);
+			sum ^= this.cc.ea[e] >> 4;
 		}
 		if (edgeMask != 0xfff) {
 			return -2; // missing edges
@@ -673,8 +662,8 @@ var min2phase = (function() {
 		var cornMask = 0;
 		sum = 0;
 		for (var c = 0; c < 8; c++) {
-			cornMask |= 1 << (this.cc.ca[c] & 7);
-			sum += this.cc.ca[c] >> 3;
+			cornMask |= 1 << (this.cc.ca[c] & 0xf);
+			sum += this.cc.ca[c] >> 4;
 		}
 		if (cornMask != 0xff) {
 			return -4; // missing corners
@@ -682,7 +671,7 @@ var min2phase = (function() {
 		if (sum % 3 != 0) {
 			return -5; // twisted corner
 		}
-		if ((getNParity(getNPermFull(this.cc.ea, 12, true), 12) ^ getNParity(this.cc.getCPerm(), 8)) != 0) {
+		if ((getNParity(getNPermFull(this.cc.ea, 12), 12) ^ getNParity(this.cc.getCPerm(), 8)) != 0) {
 			return -6; // parity error
 		}
 		return 0; // cube ok
@@ -1030,7 +1019,7 @@ var min2phase = (function() {
 		var u4 = new CubieCube().initCoord(15138, 0, 119765538, 7);
 		var lr2 = new CubieCube().initCoord(5167, 0, 83473207, 0);
 		for (var i = 0; i < 8; i++) {
-			lr2.ca[i] |= 3 << 3;
+			lr2.ca[i] |= 3 << 4;
 		}
 		for (var i = 0; i < 16; i++) {
 			SymCube[i] = new CubieCube().init(c.ca, c.ea);
@@ -1119,8 +1108,8 @@ var min2phase = (function() {
 		initSym2Raw(N_PERM, EPermS2R, EPermR2S, SymStatePerm, 2, CubieCube.prototype.setEPerm, CubieCube.prototype.getEPerm);
 		var cc = new CubieCube();
 		for (var i = 0; i < N_PERM_SYM; i++) {
-			setNPerm(cc.ea, EPermS2R[i], 8, true);
-			Perm2CombP[i] = getComb(cc.ea, 0, true) + (USE_COMBP_PRUN ? getNParity(EPermS2R[i], 8) * 70 : 0);
+			setNPerm(cc.ea, EPermS2R[i], 8);
+			Perm2CombP[i] = getComb(cc.ea, 0) + (USE_COMBP_PRUN ? getNParity(EPermS2R[i], 8) * 70 : 0);
 			c.invFrom(cc);
 			PermInvEdgeSym[i] = EPermR2S[c.getEPerm()];
 		}
@@ -1371,16 +1360,59 @@ var min2phase = (function() {
 		var cc = new CubieCube().initCoord(cp, co, ep, eo);
 		return cc.toFaceCube();
 	}
+	function fromScramble(s) {
+		var j = 0;
+		var axis = -1;
+		var c1 = new CubieCube();
+		var c2 = new CubieCube();
+		for (var i = 0; i < s.length; i++) {
+			switch (s[i]) {
+				case 'U':
+				case 'R':
+				case 'F':
+				case 'D':
+				case 'L':
+				case 'B':
+					axis = "URFDLB".indexOf(s[i]) * 3;
+					break;
+				case ' ':
+					if (axis != -1) {
+						CubieCube.CornMult(c1, moveCube[axis], c2);
+						CubieCube.EdgeMult(c1, moveCube[axis], c2);
+						c1.init(c2.ca, c2.ea);
+					}
+					axis = -1;
+					break;
+				case '2':
+					axis++;
+					break;
+				case '\'':
+					axis += 2;
+					break;
+				default:
+					continue;
+			}
+		}
+		if (axis != -1) {
+			CubieCube.CornMult(c1, moveCube[axis], c2);
+			CubieCube.EdgeMult(c1, moveCube[axis], c2);
+			c1.init(c2.ca, c2.ea);
+		}
+		return c2.toFaceCube();
+	}
+
 	return {
 		Search: Search,
 		solve: function(facelet) {
 			return new Search().solution(facelet);
 		},
 		randomCube: randomCube,
+		fromScramble: fromScramble,
 		initFull: function() {
 			PARTIAL_INIT_LEVEL = 0;
 			initPrunTables();
-		}
+		},
+		INVERSE_SOLUTION: INVERSE_SOLUTION
 	}
 })();
 
