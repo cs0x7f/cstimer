@@ -271,19 +271,32 @@ execMain(function() {
 				'" style="fill:' + fillStyle + ';stroke:' + (strokeStyle || '#000') + ';" />');
 		}
 
-		SVG.prototype.addText = function(text, points, styles) {
+		SVG.prototype.addText = function(text, points, styles, align) {
 			var styleStr = "paint-order:stroke;";
 			for (var key in styles) {
 				styleStr += key + ':' + styles[key] + ';';
 			}
+			var alignKV = 'dominant-baseline="middle" text-anchor="middle"';
+			if (align == 1) {
+				alignKV = 'dominant-baseline="hanging" text-anchor="start"';
+			}
 			this.elems.push('<text x="' + parseNumber(points[0]) + '" y="' + parseNumber(points[1]) +
-				'" style="' + styleStr + '" dominant-baseline="middle" text-anchor="middle">' +
+				'" style="' + styleStr + '" ' + alignKV + '>' +
 				encodeURIComponent(text) + '</text>');
 		}
 
 		SVG.prototype.render = function() {
 			return '<svg width="' + parseNumber(this.width) + '" height="' + parseNumber(this.height) +
 				'" xmlns="http://www.w3.org/2000/svg">' + this.elems.join('') + '</svg>';
+		}
+
+		SVG.prototype.renderGroup = function(x, y, width, height) {
+			var scale = Math.min(width / this.width, height / this.height);
+			var offset = [(width - this.width * scale) / 2, (height - this.height * scale) / 2];
+			return '<g transform="translate(' +
+				parseNumber(x + (width - this.width * scale) / 2) + ',' +
+				parseNumber(y + (height - this.height * scale) / 2) + ') scale(' +
+				parseNumber(scale) + ')">' + this.elems.join('') + '</g>';
 		}
 
 		return SVG;

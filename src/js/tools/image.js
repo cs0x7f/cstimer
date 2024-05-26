@@ -772,16 +772,14 @@ var image = (function() {
 
 	var types_nnn = ['222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
 
-	function genImage(scramble, renderTool) {
-		var svg = new $.svg();
-
+	function renderSVG(svg, scramble) {
 		var type = scramble[0];
 		if (type == 'input') {
 			type = tools.scrambleType(scramble[1]);
 		}
 		type = tools.puzzleType(type);
 		var size = types_nnn.indexOf(type);
-		var recons;
+		var recons = 0;
 		if (size >= 0) {
 			recons = nnnImage.draw(svg, size + 2, scramble[1]);
 		} else if (type == "cubennn") {
@@ -804,7 +802,41 @@ var image = (function() {
 			sldImage(svg, type[2], 4, scramble[1]);
 		} else if (type == "8b" || type == "8p") {
 			sldImage(svg, type[1], 3, scramble[1]);
+		} else if (/^r(3(ni)?|23\d+w?|mngf)$/.exec(type)) {
+			var subScrs = [];
+			scramble[1].replaceAll(/(?<=^|\n)\s*(\d+|3oh|pyr|skb|sq1|clk|mgm)\)\s*([^\0]*?)\s*(?=\n.*\)|$)/g, function(m, p1, p2) {
+				var subType = type.startsWith('r3') ? '333' :
+					type == 'rmngf' ? p1.replace('3oh', '333').padEnd(3, p1):
+					types_nnn[subScrs.length];
+				subScrs.push([subType, p2, 0]);
+			});
+			var n_height = Math.ceil(Math.sqrt(subScrs.length));
+			var n_width = Math.ceil(subScrs.length / n_height);
+			var GRID_WIDTH = 240;
+			var GRID_HEIGHT = 150;
+			svg.width = n_width * GRID_WIDTH;
+			svg.height = n_height * GRID_HEIGHT;
+			for (var i = 0; i < subScrs.length; i++) {
+				var x = i % n_width * GRID_WIDTH;
+				var y = ~~(i / n_width) * GRID_HEIGHT;
+				var subSvg = new $.svg();
+				renderSVG(subSvg, subScrs[i]);
+				svg.addElem(subSvg.renderGroup(x, y, GRID_WIDTH, GRID_HEIGHT));
+				svg.addText((i + 1).toString(), [x, y], {
+					'font': '40px Arial',
+					'fill': kernel.getProp('col-font')
+				}, 1);
+			}
 		} else {
+			return -1;
+		}
+		return recons;
+	}
+
+	function genImage(scramble, renderTool) {
+		var svg = new $.svg();
+		var recons = renderSVG(svg, scramble);
+		if (recons == -1) { // not available
 			return false;
 		}
 		if (!renderTool) {
@@ -823,6 +855,13 @@ var image = (function() {
 			img.click(function(recons) {
 				replay.popupReplay.apply(null, recons);
 			}.bind(null, recons));
+		} else {
+			img.click(function(svg, scale) {
+				var popImg = $('<img style="display:block;">');
+				popImg.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+				popImg.css('object-fit', 'contain');
+				kernel.showDialog([popImg, $.noop, undefined, $.noop], 'share', TOOLS_IMAGE);
+			}.bind(null, svg, scale));
 		}
 		return true;
 	}
