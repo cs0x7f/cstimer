@@ -439,7 +439,25 @@ var recons = execMain(function() {
 		if (typeof tools != "undefined") {
 			tools.regTool('recons', TOOLS_RECONS + '>' + 'step', execFunc);
 		}
+		kernel.regListener('recons', 'reqrec', reqRecons);
+		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
+		for (var i = 0; i < ranges.length; i++) {
+			rangeSelect.append('<option value="' + ranges[i] + '">' + ranges[i] + '</option>');
+		}
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux']];
+		for (var i = 0; i < methods.length; i++) {
+			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
+			methodSelect.append('<option value="' + methods[i][0] + '%">' + methods[i][1] + '%</option>');
+		}
+		methodSelect.val(kernel.getProp('rcMthd', 'cf4op'));
+
+	});
+
+	(function() {
 		stats.regUtil('recons', update);
+		stats.regExtraInfo('recons_n', function(times) {
+			return calcRecons(times, 'n');
+		});
 		stats.regExtraInfo('recons_cf4op', function(times) {
 			return calcRecons(times, 'cf4op');
 		});
@@ -464,18 +482,27 @@ var recons = execMain(function() {
 		stats.regExtraInfo('recons_cfop_et',
 			cumStepMetric.bind(null, 'cf4op', false),
 			['CFOP ' + titleStr[1], kernel.pretty]);
-		kernel.regListener('recons', 'reqrec', reqRecons);
-		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
-		for (var i = 0; i < ranges.length; i++) {
-			rangeSelect.append('<option value="' + ranges[i] + '">' + ranges[i] + '</option>');
-		}
-		var methods = [['cf4op', 'cfop'], ['roux', 'roux']];
-		for (var i = 0; i < methods.length; i++) {
-			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
-			methodSelect.append('<option value="' + methods[i][0] + '%">' + methods[i][1] + '%</option>');
-		}
-		methodSelect.val(kernel.getProp('rcMthd', 'cf4op'));
-	});
+		stats.regExtraInfo('recons_n_htm', function(times, idx) {
+			var rec = stats.getExtraInfo('recons_n', idx);
+			if (!rec || !rec.data[0] || !rec.data[0][3]) {
+				return -1;
+			}
+			return rec.data[0][3];
+		}, ['HTM', function(val) {
+			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
+		}, function(val) {
+			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
+		}]);
+		stats.regExtraInfo('recons_n_fps', function(times, idx) {
+			var rec = stats.getExtraInfo('recons_n', idx);
+			if (!rec || !rec.data[0] || !rec.data[0][3]) {
+				return -1;
+			}
+			return 1e9 - rec.data[0][3] / Math.max(1, times[0][1]) * 1000;
+		}, ['FPS', function(val) {
+			return "" + (val > 0 ? (1e9 - val).toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
+		}]);
+	})();
 
 	return {
 		calcRecons: calcRecons,
