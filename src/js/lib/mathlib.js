@@ -426,7 +426,7 @@ var mathlib = (function() {
 		return true;
 	};
 
-	var cornerFacelet = [
+	CubieCube.cFacelet = [
 		[8, 9, 20], // URF
 		[6, 18, 38], // UFL
 		[0, 36, 47], // ULB
@@ -436,7 +436,7 @@ var mathlib = (function() {
 		[33, 53, 42], // DBL
 		[35, 17, 51]  // DRB
 	];
-	var edgeFacelet = [
+	CubieCube.eFacelet = [
 		[5, 10], // UR
 		[7, 19], // UF
 		[3, 37], // UL
@@ -450,10 +450,23 @@ var mathlib = (function() {
 		[50, 39], // BL
 		[48, 14]  // BR
 	];
+	CubieCube.faceMap = (function() {
+		var f = [];
+		for (var c = 0; c < 8; c++) {
+			for (var n = 0; n < 3; n++) {
+				f[CubieCube.cFacelet[c][n]] = [0, c, n];
+			}
+		}
+		for (var e = 0; e < 12; e++) {
+			for (var n = 0; n < 2; n++)
+				f[CubieCube.eFacelet[e][n]] = [1, e, n];
+		}
+		return f;
+	})();
 
 	CubieCube.prototype.toFaceCube = function(cFacelet, eFacelet) {
-		cFacelet = cFacelet || cornerFacelet;
-		eFacelet = eFacelet || edgeFacelet;
+		cFacelet = cFacelet || CubieCube.cFacelet;
+		eFacelet = eFacelet || CubieCube.eFacelet;
 		var ts = "URFDLB";
 		var f = [];
 		for (var i = 0; i < 54; i++) {
@@ -485,8 +498,8 @@ var mathlib = (function() {
 	}
 
 	CubieCube.prototype.fromFacelet = function(facelet, cFacelet, eFacelet) {
-		cFacelet = cFacelet || cornerFacelet;
-		eFacelet = eFacelet || edgeFacelet;
+		cFacelet = cFacelet || CubieCube.cFacelet;
+		eFacelet = eFacelet || CubieCube.eFacelet;
 		var count = 0;
 		var f = [];
 		var centers = facelet[4] + facelet[13] + facelet[22] + facelet[31] + facelet[40] + facelet[49];

@@ -66,7 +66,6 @@ var recons = execMain(function() {
 			c.selfMoveStr(solution[i], true);
 		}
 		c.selfConj();
-		var facelet = c.toFaceCube();
 		var data = []; //[[start, firstMove, end, moveCnt, stepTransCubie, stepMoves, effMoves], [...], ...]
 		var cnter = new MoveCounter();
 		var startCubieI = new mathlib.CubieCube();
@@ -74,7 +73,7 @@ var recons = execMain(function() {
 		var tsStart = 0;
 		var tsFirst = 0;
 		var stepMoves = [];
-		var progress = cubeutil.getProgress(facelet, method);
+		var progress = cubeutil.getProgress(c, method);
 		for (var i = 0; i < solution.length; i++) {
 			var effMove = c.selfMoveStr(solution[i], false);
 			if (effMove != undefined) {
@@ -86,7 +85,7 @@ var recons = execMain(function() {
 					stepMoves.push(["DLBURF".charAt(axis % 6) + "'2 ".charAt(effMove % 3), c.tstamp]);
 				}
 			}
-			var curProg = cubeutil.getProgress(c.toFaceCube(), method);
+			var curProg = cubeutil.getProgress(c, method);
 			if (curProg < progress) {
 				var transCubie = new mathlib.CubieCube();
 				mathlib.CubieCube.EdgeMult(startCubieI, c, transCubie);

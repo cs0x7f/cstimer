@@ -72,7 +72,40 @@ var cubeutil = (function() {
 		return ret;
 	})();
 
+	function solvedProgressCubie(param, mask) {
+		var faceGetter = function(i) {
+			var src = mathlib.CubieCube.faceMap[i];
+			var ret = 0;
+			if (!src) {
+				ret = i;
+			} else if (src[0] == 0) {
+				var val = facelet.ca[src[1]];
+				ret = mathlib.CubieCube.cFacelet[val & 0x7][(3 - (val >> 3) + src[2]) % 3];
+			} else if (src[0] == 1) {
+				var val = facelet.ea[src[1]];
+				ret = mathlib.CubieCube.eFacelet[val >> 1][(val & 1) ^ src[2]];
+			}
+			return ~~(ret / 9);
+		};
+		var cubeRot = cubeRots[param[1]];
+		var facelet = param[0];
+		mask = mask || solvedMask;
+		for (var i = 0; i < mask.length; i++) {
+			var equ = mask[i];
+			var col = faceGetter(cubeRot[equ[0]]);
+			for (var j = 1; j < equ.length; j++) {
+				if (faceGetter(cubeRot[equ[j]]) != col) {
+					return 1;
+				}
+			}
+		}
+		return 0;
+	}
+
 	function solvedProgress(param, mask) {
+		if (param[0] instanceof mathlib.CubieCube) {
+			return solvedProgressCubie(param, mask);
+		}
 		var cubeRot = cubeRots[param[1]];
 		var facelet = param[0];
 		mask = mask || solvedMask;
