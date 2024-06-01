@@ -1,15 +1,14 @@
 "use strict";
 
 var min2phase = (function() {
-	var USE_TWIST_FLIP_PRUN = true;
+	var USE_TWST_FLIP_PRUN = true;
 	var PARTIAL_INIT_LEVEL = 2;
 
 	var MAX_PRE_MOVES = 20;
 	var TRY_INVERSE = true;
 	var TRY_THREE_AXES = true;
 
-	var USE_COMBP_PRUN = true; //USE_TWIST_FLIP_PRUN;
-	var USE_CONJ_PRUN = USE_TWIST_FLIP_PRUN;
+	var USE_CONJ_PRUN = USE_TWST_FLIP_PRUN;
 	var MIN_P1LENGTH_PRE = 7;
 	var MAX_DEPTH2 = 13;
 
@@ -70,14 +69,13 @@ var min2phase = (function() {
 	var N_MOVES2 = 10;
 	var N_FLIP = 2048;
 	var N_FLIP_SYM = 336;
-	var N_TWIST = 2187;
-	var N_TWIST_SYM = 324;
+	var N_TWST = 2187;
+	var N_TWST_SYM = 324;
 	var N_PERM = 40320;
 	var N_PERM_SYM = 2768;
 	var N_MPERM = 24;
 	var N_SLICE = 495;
-	var N_COMB = USE_COMBP_PRUN ? 140 : 70;
-	var P2_PARITY_MOVE = USE_COMBP_PRUN ? 0xA5 : 0;
+	var N_COMB = 140;
 
 	var SYM_E2C_MAGIC = 0x00DDDD00;
 	var Cnk = [];
@@ -286,9 +284,9 @@ var min2phase = (function() {
 		this.ea = ea.slice();
 		return this;
 	}
-	CubieCube.prototype.initCoord = function(cperm, twist, eperm, flip) {
+	CubieCube.prototype.initCoord = function(cperm, twst, eperm, flip) {
 		setNPerm(this.ca, cperm, 8);
-		this.setTwist(twist);
+		this.setTwst(twst);
 		setNPermFull(this.ea, eperm, 12);
 		this.setFlip(flip);
 		return this;
@@ -324,7 +322,7 @@ var min2phase = (function() {
 	CubieCube.prototype.getFlipSym = function() {
 		return FlipR2S[this.getFlip()];
 	}
-	CubieCube.prototype.setTwist = function(idx) {
+	CubieCube.prototype.setTwst = function(idx) {
 		var twst = 15;
 		for (var i = 6; i >= 0; i--, idx = ~~(idx / 3)) {
 			this.ca[i] = this.ca[i] & 0xf | idx % 3 << 4;
@@ -332,15 +330,15 @@ var min2phase = (function() {
 		}
 		this.ca[7] = this.ca[7] & 0xf | (twst % 3) << 4;
 	}
-	CubieCube.prototype.getTwist = function() {
+	CubieCube.prototype.getTwst = function() {
 		var idx = 0;
 		for (var i = 0; i < 7; i++) {
 			idx += (idx << 1) + (this.ca[i] >> 4);
 		}
 		return idx;
 	}
-	CubieCube.prototype.getTwistSym = function() {
-		return TwistR2S[this.getTwist()];
+	CubieCube.prototype.getTwstSym = function() {
+		return TwstR2S[this.getTwst()];
 	}
 	CubieCube.prototype.setCPerm = function(idx) {
 		setNPerm(this.ca, idx, 8);
@@ -360,10 +358,10 @@ var min2phase = (function() {
 	CubieCube.prototype.getEPermSym = function() {
 		return EPermR2S[getNPerm(this.ea, 8)];
 	}
-	CubieCube.prototype.getUDSlice = function() {
+	CubieCube.prototype.getSlice = function() {
 		return 494 - getComb(this.ea, 8);
 	}
-	CubieCube.prototype.setUDSlice = function(idx) {
+	CubieCube.prototype.setSlice = function(idx) {
 		setComb(this.ea, 494 - idx, 8);
 	}
 	CubieCube.prototype.getMPerm = function() {
@@ -477,7 +475,7 @@ var min2phase = (function() {
 					break;
 				}
 				if (f[eFacelet[i][0]] == ~~(eFacelet[j][1] / 9) && f[eFacelet[i][1]] == ~~(eFacelet[j][0] / 9)) {
-					this.ea[i] = j| 0x10;
+					this.ea[i] = j | 0x10;
 					break;
 				}
 			}
@@ -485,58 +483,49 @@ var min2phase = (function() {
 	}
 
 	function CoordCube() {
-		this.twist = 0;
-		this.tsym = 0;
+		this.twst = 0;
 		this.flip = 0;
-		this.fsym = 0;
 		this.slice = 0;
 		this.prun = 0;
-		this.twistc = 0;
+		this.twstc = 0;
 		this.flipc = 0;
 	}
 	CoordCube.prototype.set = function(node) {
-		this.twist = node.twist;
-		this.tsym = node.tsym;
+		this.twst = node.twst;
 		this.flip = node.flip;
-		this.fsym = node.fsym;
 		this.slice = node.slice;
 		this.prun = node.prun;
 		if (USE_CONJ_PRUN) {
-			this.twistc = node.twistc;
+			this.twstc = node.twstc;
 			this.flipc = node.flipc;
 		}
 	}
 	CoordCube.prototype.calcPruning = function(isPhase1) {
 		this.prun = Math.max(
-			Math.max(
-				getPruningMax(UDSliceTwistPrunMax, UDSliceTwistPrun,
-					this.twist * N_SLICE + UDSliceConj[this.slice][this.tsym]),
-				getPruningMax(UDSliceFlipPrunMax, UDSliceFlipPrun,
-					this.flip * N_SLICE + UDSliceConj[this.slice][this.fsym])),
-			Math.max(
-				USE_CONJ_PRUN ? getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
-					(this.twistc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twistc & 7)]) : 0,
-				USE_TWIST_FLIP_PRUN ? getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
-					this.twist << 11 | FlipS2RF[this.flip << 3 | (this.fsym ^ this.tsym)]) : 0));
+			getPruningMax(SliceTwstPrunMax, SliceTwstPrun,
+				(this.twst >> 3) * N_SLICE + SliceConj[this.slice << 3 | this.twst & 7]),
+			getPruningMax(SliceFlipPrunMax, SliceFlipPrun,
+				(this.flip >> 3) * N_SLICE + SliceConj[this.slice << 3 | this.flip & 7]),
+			USE_CONJ_PRUN ? getPruningMax(TwstFlipPrunMax, TwstFlipPrun,
+				(this.twstc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twstc & 7)]) : 0,
+			USE_TWST_FLIP_PRUN ? getPruningMax(TwstFlipPrunMax, TwstFlipPrun,
+				(this.twst >> 3) << 11 | FlipS2RF[this.flip ^ (this.twst & 7)]) : 0
+		);
 	}
 	CoordCube.prototype.setWithPrun = function(cc, depth) {
-		this.twist = cc.getTwistSym();
+		this.twst = cc.getTwstSym();
 		this.flip = cc.getFlipSym();
-		this.tsym = this.twist & 7;
-		this.twist = this.twist >> 3;
-		this.prun = USE_TWIST_FLIP_PRUN ? getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
-			this.twist << 11 | FlipS2RF[this.flip ^ this.tsym]) : 0;
+		this.prun = USE_TWST_FLIP_PRUN ? getPruningMax(TwstFlipPrunMax, TwstFlipPrun,
+			(this.twst >> 3) << 11 | FlipS2RF[this.flip ^ (this.twst & 7)]) : 0;
 		if (this.prun > depth) {
 			return false;
 		}
-		this.fsym = this.flip & 7;
-		this.flip = this.flip >> 3;
-		this.slice = cc.getUDSlice();
-		this.prun = Math.max(this.prun, Math.max(
-			getPruningMax(UDSliceTwistPrunMax, UDSliceTwistPrun,
-				this.twist * N_SLICE + UDSliceConj[this.slice][this.tsym]),
-			getPruningMax(UDSliceFlipPrunMax, UDSliceFlipPrun,
-				this.flip * N_SLICE + UDSliceConj[this.slice][this.fsym])));
+		this.slice = cc.getSlice();
+		this.prun = Math.max(this.prun,
+			getPruningMax(SliceTwstPrunMax, SliceTwstPrun,
+				(this.twst >> 3) * N_SLICE + SliceConj[this.slice << 3 | this.twst & 7]),
+			getPruningMax(SliceFlipPrunMax, SliceFlipPrun,
+				(this.flip >> 3) * N_SLICE + SliceConj[this.slice << 3 | this.flip & 7]));
 		if (this.prun > depth) {
 			return false;
 		}
@@ -544,38 +533,33 @@ var min2phase = (function() {
 			var pc = new CubieCube();
 			CubieCube.CornConjugate(cc, 1, pc);
 			CubieCube.EdgeConjugate(cc, 1, pc);
-			this.twistc = pc.getTwistSym();
+			this.twstc = pc.getTwstSym();
 			this.flipc = pc.getFlipSym();
 			this.prun = Math.max(this.prun,
-				getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
-					(this.twistc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twistc & 7)]));
+				getPruningMax(TwstFlipPrunMax, TwstFlipPrun,
+					(this.twstc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twstc & 7)]));
 		}
 		return this.prun <= depth;
 	}
 	CoordCube.prototype.doMovePrun = function(cc, m, isPhase1) {
-		this.slice = UDSliceMove[cc.slice][m];
-		this.flip = FlipMove[cc.flip][Sym8Move[m << 3 | cc.fsym]];
-		this.fsym = (this.flip & 7) ^ cc.fsym;
-		this.flip >>= 3;
-		this.twist = TwistMove[cc.twist][Sym8Move[m << 3 | cc.tsym]];
-		this.tsym = (this.twist & 7) ^ cc.tsym;
-		this.twist >>= 3;
+		this.slice = SliceMove[cc.slice * N_MOVES + m];
+		this.flip = FlipMove[(cc.flip >> 3) * N_MOVES + Sym8Move[m << 3 | cc.flip & 7]] ^ (cc.flip & 7);
+		this.twst = TwstMove[(cc.twst >> 3) * N_MOVES + Sym8Move[m << 3 | cc.twst & 7]] ^ (cc.twst & 7);
 		this.prun = Math.max(
-			Math.max(
-				getPruningMax(UDSliceTwistPrunMax, UDSliceTwistPrun,
-					this.twist * N_SLICE + UDSliceConj[this.slice][this.tsym]),
-				getPruningMax(UDSliceFlipPrunMax, UDSliceFlipPrun,
-					this.flip * N_SLICE + UDSliceConj[this.slice][this.fsym])),
-			USE_TWIST_FLIP_PRUN ? getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
-				this.twist << 11 | FlipS2RF[this.flip << 3 | (this.fsym ^ this.tsym)]) : 0);
+			getPruningMax(SliceTwstPrunMax, SliceTwstPrun,
+				(this.twst >> 3) * N_SLICE + SliceConj[this.slice << 3 | this.twst & 7]),
+			getPruningMax(SliceFlipPrunMax, SliceFlipPrun,
+				(this.flip >> 3) * N_SLICE + SliceConj[this.slice << 3 | this.flip & 7]),
+			USE_TWST_FLIP_PRUN ? getPruningMax(TwstFlipPrunMax, TwstFlipPrun,
+				(this.twst >> 3) << 11 | FlipS2RF[this.flip ^ (this.twst & 7)]) : 0);
 		return this.prun;
 	}
 	CoordCube.prototype.doMovePrunConj = function(cc, m) {
 		m = SymMove[3][m];
-		this.flipc = FlipMove[cc.flipc >> 3][Sym8Move[m << 3 | cc.flipc & 7]] ^ (cc.flipc & 7);
-		this.twistc = TwistMove[cc.twistc >> 3][Sym8Move[m << 3 | cc.twistc & 7]] ^ (cc.twistc & 7);
-		return getPruningMax(TwistFlipPrunMax, TwistFlipPrun,
-			(this.twistc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twistc & 7)]);
+		this.flipc = FlipMove[(cc.flipc >> 3) * N_MOVES + Sym8Move[m << 3 | cc.flipc & 7]] ^ (cc.flipc & 7);
+		this.twstc = TwstMove[(cc.twstc >> 3) * N_MOVES + Sym8Move[m << 3 | cc.twstc & 7]] ^ (cc.twstc & 7);
+		return getPruningMax(TwstFlipPrunMax, TwstFlipPrun,
+			(this.twstc >> 3) << 11 | FlipS2RF[this.flipc ^ (this.twstc & 7)]);
 	}
 	Search.prototype.solution = function(facelets, maxDepth, probeMax, probeMin, verbose, firstAxisFilter, lastAxisFilter) {
 		initPrunTables();
@@ -776,9 +760,9 @@ var min2phase = (function() {
 		var p2mid = phase2Cubie.getMPerm();
 		var prun = Math.max(
 			getPruningMax(EPermCCombPPrunMax, EPermCCombPPrun,
-				p2edge * N_COMB + CCombPConj[Perm2CombP[p2corn] & 0xff][SymMultInv[p2esym][p2csym]]),
+				p2edge * N_COMB + CCombPConj[(Perm2CombP[p2corn] & 0xff) << 4 | SymMultInv[p2esym][p2csym]]),
 			getPruningMax(MCPermPrunMax, MCPermPrun,
-				p2corn * N_MPERM + MPermConj[p2mid][p2csym]));
+				p2corn * N_MPERM + MPermConj[p2mid << 4 | p2csym]));
 		var maxDep2 = Math.min(MAX_DEPTH2, this.sol - this.length1);
 		if (prun >= maxDep2) {
 			return prun > maxDep2 ? 2 : 1;
@@ -901,25 +885,25 @@ var min2phase = (function() {
 				m += 0x42 >> m & 3;
 				continue;
 			}
-			var midx = MPermMove[mid][m];
-			var cornx = CPermMove[corn][SymMoveUD[csym][m]];
+			var midx = MPermMove[mid * N_MOVES2 + m];
+			var cornx = CPermMove[corn * N_MOVES2 + SymMoveUD[csym][m]];
 			var csymx = SymMult[cornx & 0xf][csym];
 			cornx >>= 4;
 			if (getPruningMax(MCPermPrunMax, MCPermPrun,
-					cornx * N_MPERM + MPermConj[midx][csymx]) >= maxl) {
+					cornx * N_MPERM + MPermConj[midx << 4 | csymx]) >= maxl) {
 				continue;
 			}
-			var edgex = EPermMove[edge][SymMoveUD[esym][m]];
+			var edgex = EPermMove[edge * N_MOVES2 + SymMoveUD[esym][m]];
 			var esymx = SymMult[edgex & 0xf][esym];
 			edgex >>= 4;
 			if (getPruningMax(EPermCCombPPrunMax, EPermCCombPPrun,
-					edgex * N_COMB + CCombPConj[Perm2CombP[cornx] & 0xff][SymMultInv[esymx][csymx]]) >= maxl) {
+					edgex * N_COMB + CCombPConj[(Perm2CombP[cornx] & 0xff) << 4 | SymMultInv[esymx][csymx]]) >= maxl) {
 				continue;
 			}
 			var edgei = getPermSymInv(edgex, esymx, false);
 			var corni = getPermSymInv(cornx, csymx, true);
 			if (getPruningMax(EPermCCombPPrunMax, EPermCCombPPrun,
-					(edgei >> 4) * N_COMB + CCombPConj[Perm2CombP[corni >> 4] & 0xff][SymMultInv[edgei & 0xf][corni & 0xf]]) >= maxl) {
+					(edgei >> 4) * N_COMB + CCombPConj[(Perm2CombP[corni >> 4] & 0xff) << 4 | SymMultInv[edgei & 0xf][corni & 0xf]]) >= maxl) {
 				continue;
 			}
 
@@ -955,37 +939,37 @@ var min2phase = (function() {
 	var Sym8Move = [];
 	var FlipS2R = [];
 	var FlipR2S = [];
-	var TwistS2R = [];
-	var TwistR2S = [];
+	var FlipSelfSym = [];
+	var FlipS2RF = [];
+	var TwstS2R = [];
+	var TwstR2S = [];
+	var TwstSelfSym = [];
 	var EPermS2R = [];
 	var EPermR2S = [];
-	var SymStateFlip = [];
-	var SymStateTwist = [];
-	var SymStatePerm = [];
-	var FlipS2RF = [];
+	var PermSelfSym = [];
 	var Perm2CombP = [];
 	var PermInvEdgeSym = [];
-	var UDSliceMove = [];
-	var TwistMove = [];
+	var TwstMove = [];
 	var FlipMove = [];
-	var UDSliceConj = [];
-	var UDSliceTwistPrun = [];
-	var UDSliceFlipPrun = [];
-	var TwistFlipPrun = [];
+	var SliceMove = [];
+	var SliceConj = [];
+	var SliceTwstPrun = [];
+	var SliceFlipPrun = [];
+	var TwstFlipPrun = [];
 
 	//phase2
 	var CPermMove = [];
 	var EPermMove = [];
 	var MPermMove = [];
 	var MPermConj = [];
-	var CCombPMove = []; // = new char[N_COMB][N_MOVES2];
+	var CCombPMove = [];
 	var CCombPConj = [];
 	var MCPermPrun = [];
 	var EPermCCombPPrun = [];
 
-	var TwistFlipPrunMax = 15;
-	var UDSliceTwistPrunMax = 15;
-	var UDSliceFlipPrunMax = 15;
+	var TwstFlipPrunMax = 15;
+	var SliceTwstPrunMax = 15;
+	var SliceFlipPrunMax = 15;
 	var MCPermPrunMax = 15;
 	var EPermCCombPPrunMax = 15;
 
@@ -1074,7 +1058,7 @@ var min2phase = (function() {
 		}
 
 		// init sym 2 raw tables
-		function initSym2Raw(N_RAW, Sym2Raw, Raw2Sym, SymState, coord, setFunc, getFunc) {
+		function initSym2Raw(N_RAW, Sym2Raw, Raw2Sym, SelfSym, coord, setFunc, getFunc) {
 			var N_RAW_HALF = (N_RAW + 1) >> 1;
 			var c = new CubieCube();
 			var d = new CubieCube();
@@ -1090,11 +1074,11 @@ var min2phase = (function() {
 				for (var s = 0; s < 16; s += sym_inc) {
 					conjFunc(c, s, d);
 					var idx = getFunc.call(d);
-					if (USE_TWIST_FLIP_PRUN && coord == 0) {
+					if (USE_TWST_FLIP_PRUN && coord == 0) {
 						FlipS2RF[count << 3 | s >> 1] = idx;
 					}
 					if (idx == i) {
-						SymState[count] |= 1 << (s / sym_inc);
+						SelfSym[count] |= 1 << (s / sym_inc);
 					}
 					Raw2Sym[idx] = (count << 4 | s) / sym_inc;
 				}
@@ -1103,13 +1087,14 @@ var min2phase = (function() {
 			return count;
 		}
 
-		initSym2Raw(N_FLIP, FlipS2R, FlipR2S, SymStateFlip, 0, CubieCube.prototype.setFlip, CubieCube.prototype.getFlip);
-		initSym2Raw(N_TWIST, TwistS2R, TwistR2S, SymStateTwist, 1, CubieCube.prototype.setTwist, CubieCube.prototype.getTwist);
-		initSym2Raw(N_PERM, EPermS2R, EPermR2S, SymStatePerm, 2, CubieCube.prototype.setEPerm, CubieCube.prototype.getEPerm);
+		initSym2Raw(N_FLIP, FlipS2R, FlipR2S, FlipSelfSym, 0, CubieCube.prototype.setFlip, CubieCube.prototype.getFlip);
+		initSym2Raw(N_TWST, TwstS2R, TwstR2S, TwstSelfSym, 1, CubieCube.prototype.setTwst, CubieCube.prototype.getTwst);
+		initSym2Raw(N_PERM, EPermS2R, EPermR2S, PermSelfSym, 2, CubieCube.prototype.setEPerm, CubieCube.prototype.getEPerm);
+
 		var cc = new CubieCube();
 		for (var i = 0; i < N_PERM_SYM; i++) {
 			setNPerm(cc.ea, EPermS2R[i], 8);
-			Perm2CombP[i] = getComb(cc.ea, 0) + (USE_COMBP_PRUN ? getNParity(EPermS2R[i], 8) * 70 : 0);
+			Perm2CombP[i] = getComb(cc.ea, 0) + getNParity(EPermS2R[i], 8) * 70;
 			c.invFrom(cc);
 			PermInvEdgeSym[i] = EPermR2S[c.getEPerm()];
 		}
@@ -1119,63 +1104,56 @@ var min2phase = (function() {
 		d = new CubieCube();
 		function initSymMoveTable(moveTable, SymS2R, N_SIZE, N_MOVES, setFunc, getFunc, multFunc, ud2std) {
 			for (var i = 0; i < N_SIZE; i++) {
-				moveTable[i] = [];
 				setFunc.call(c, SymS2R[i]);
 				for (var j = 0; j < N_MOVES; j++) {
 					multFunc(c, moveCube[ud2std ? ud2std[j] : j], d);
-					moveTable[i][j] = getFunc.call(d);
+					moveTable[i * N_MOVES + j] = getFunc.call(d);
 				}
 			}
 		}
 
 		initSymMoveTable(FlipMove, FlipS2R, N_FLIP_SYM, N_MOVES,
 			CubieCube.prototype.setFlip, CubieCube.prototype.getFlipSym, CubieCube.EdgeMult);
-		initSymMoveTable(TwistMove, TwistS2R, N_TWIST_SYM, N_MOVES,
-			CubieCube.prototype.setTwist, CubieCube.prototype.getTwistSym, CubieCube.CornMult);
+		initSymMoveTable(TwstMove, TwstS2R, N_TWST_SYM, N_MOVES,
+			CubieCube.prototype.setTwst, CubieCube.prototype.getTwstSym, CubieCube.CornMult);
 		initSymMoveTable(EPermMove, EPermS2R, N_PERM_SYM, N_MOVES2,
 			CubieCube.prototype.setEPerm, CubieCube.prototype.getEPermSym, CubieCube.EdgeMult, ud2std);
 		initSymMoveTable(CPermMove, EPermS2R, N_PERM_SYM, N_MOVES2,
 			CubieCube.prototype.setCPerm, CubieCube.prototype.getCPermSym, CubieCube.CornMult, ud2std);
 
 		for (var i = 0; i < N_SLICE; i++) {
-			UDSliceMove[i] = [];
-			UDSliceConj[i] = [];
-			c.setUDSlice(i);
+			c.setSlice(i);
 			for (var j = 0; j < N_MOVES; j++) {
 				CubieCube.EdgeMult(c, moveCube[j], d);
-				UDSliceMove[i][j] = d.getUDSlice();
+				SliceMove[i * N_MOVES + j] = d.getSlice();
 			}
 			for (var j = 0; j < 16; j += 2) {
 				CubieCube.EdgeConjugate(c, SymMultInv[0][j], d);
-				UDSliceConj[i][j >> 1] = d.getUDSlice();
+				SliceConj[i << 3 | j >> 1] = d.getSlice();
 			}
 		}
 
 		for (var i = 0; i < N_MPERM; i++) {
-			MPermMove[i] = [];
-			MPermConj[i] = [];
 			c.setMPerm(i);
 			for (var j = 0; j < N_MOVES2; j++) {
 				CubieCube.EdgeMult(c, moveCube[ud2std[j]], d);
-				MPermMove[i][j] = d.getMPerm();
+				MPermMove[i * N_MOVES2 + j] = d.getMPerm();
 			}
 			for (var j = 0; j < 16; j++) {
 				CubieCube.EdgeConjugate(c, SymMultInv[0][j], d);
-				MPermConj[i][j] = d.getMPerm();
+				MPermConj[i << 4 | j] = d.getMPerm();
 			}
 		}
 
 		for (var i = 0; i < N_COMB; i++) {
-			CCombPMove[i] = [];
-			CCombPConj[i] = [];
 			c.setCComb(i % 70);
 			for (var j = 0; j < N_MOVES2; j++) {
 				CubieCube.CornMult(c, moveCube[ud2std[j]], d);
-				CCombPMove[i][j] = d.getCComb() + 70 * ((P2_PARITY_MOVE >> j & 1) ^ ~~(i / 70));
+				CCombPMove[i * N_MOVES2 + j] = d.getCComb() + 70 * ((0xA5 >> j & 1) ^ ~~(i / 70));
 			}
 			for (var j = 0; j < 16; j++) {
 				CubieCube.CornConjugate(c, SymMultInv[0][j], d);
-				CCombPConj[i][j] = d.getCComb() + 70 * ~~(i / 70);
+				CCombPConj[i << 4 | j] = d.getCComb() + 70 * ~~(i / 70);
 			}
 		}
 	}
@@ -1183,7 +1161,7 @@ var min2phase = (function() {
 	//init pruning tables
 	var InitPrunProgress = -1;
 
-	function initRawSymPrun(PrunTable, N_RAW, N_SYM, RawMove, RawConj, SymMove, SymState, PrunFlag) {
+	function initRawSymPrun(PrunTable, N_RAW, N_SYM, RawMove, RawConj, SymMove, SelfSym, PrunFlag) {
 		var SYM_SHIFT = PrunFlag & 0xf;
 		var SYM_E2C_MAGIC = ((PrunFlag >> 4) & 1) == 1 ? 0x00DDDD00 : 0x00000000;
 		var IS_PHASE2 = ((PrunFlag >> 5) & 1) == 1;
@@ -1201,7 +1179,7 @@ var min2phase = (function() {
 
 		if (depth == -1) {
 			for (var i = 0; i < (N_SIZE >> 3) + 1; i++) {
-				PrunTable[i] = 0xffffffff;
+				PrunTable[i] = -1;
 			}
 			setPruning(PrunTable, 0, 0 ^ 0xf);
 			depth = 0;
@@ -1244,14 +1222,14 @@ var min2phase = (function() {
 				}
 
 				for (var m = 0; m < N_MOVES; m++) {
-					var symx = SymMove[sym][m];
+					var symx = SymMove[sym * N_MOVES + m];
 					var rawx;
 					if (ISTFP) {
 						rawx = FlipS2RF[
-							FlipMove[flip][Sym8Move[m << 3 | fsym]] ^
+							FlipMove[flip * N_MOVES + Sym8Move[m << 3 | fsym]] ^
 							fsym ^ (symx & SYM_MASK)];
 					} else {
-						rawx = RawConj[RawMove[raw][m]][symx & SYM_MASK];
+						rawx = RawConj[RawMove[raw * N_MOVES + m] << SYM_SHIFT | symx & SYM_MASK];
 					}
 					symx >>= SYM_SHIFT;
 					var idx = symx * N_RAW + rawx;
@@ -1268,16 +1246,16 @@ var min2phase = (function() {
 						break;
 					}
 					setPruning(PrunTable, idx, xorVal);
-					for (var j = 1, symState = SymState[symx];
-						(symState >>= 1) != 0; j++) {
-						if ((symState & 1) != 1) {
+					for (var j = 1, selfSym = SelfSym[symx];
+							(selfSym >>= 1) != 0; j++) {
+						if ((selfSym & 1) != 1) {
 							continue;
 						}
 						var idxx = symx * N_RAW;
 						if (ISTFP) {
 							idxx += FlipS2RF[FlipR2S[rawx] ^ j];
 						} else {
-							idxx += RawConj[rawx][j ^ (SYM_E2C_MAGIC >> (j << 1) & 3)];
+							idxx += RawConj[rawx << SYM_SHIFT | (j ^ (SYM_E2C_MAGIC >> (j << 1) & 3))];
 						}
 						if (getPruning(PrunTable, idxx) == check) {
 							setPruning(PrunTable, idxx, xorVal);
@@ -1293,44 +1271,44 @@ var min2phase = (function() {
 	}
 
 	function doInitPrunTables(targetProgress) {
-		if (USE_TWIST_FLIP_PRUN) {
-			TwistFlipPrunMax = initRawSymPrun(
-				TwistFlipPrun, 2048, 324,
+		if (USE_TWST_FLIP_PRUN) {
+			TwstFlipPrunMax = initRawSymPrun(
+				TwstFlipPrun, N_FLIP, N_TWST_SYM,
 				null, null,
-				TwistMove, SymStateTwist, 0x19603
+				TwstMove, TwstSelfSym, 0x19603
 			);
 		}
 		if (InitPrunProgress > targetProgress) {
 			return;
 		}
-		UDSliceTwistPrunMax = initRawSymPrun(
-			UDSliceTwistPrun, 495, 324,
-			UDSliceMove, UDSliceConj,
-			TwistMove, SymStateTwist, 0x69603
+		SliceTwstPrunMax = initRawSymPrun(
+			SliceTwstPrun, N_SLICE, N_TWST_SYM,
+			SliceMove, SliceConj,
+			TwstMove, TwstSelfSym, 0x69603
 		);
 		if (InitPrunProgress > targetProgress) {
 			return;
 		}
-		UDSliceFlipPrunMax = initRawSymPrun(
-			UDSliceFlipPrun, 495, 336,
-			UDSliceMove, UDSliceConj,
-			FlipMove, SymStateFlip, 0x69603
+		SliceFlipPrunMax = initRawSymPrun(
+			SliceFlipPrun, N_SLICE, N_FLIP_SYM,
+			SliceMove, SliceConj,
+			FlipMove, FlipSelfSym, 0x69603
 		);
 		if (InitPrunProgress > targetProgress) {
 			return;
 		}
 		MCPermPrunMax = initRawSymPrun(
-			MCPermPrun, 24, 2768,
+			MCPermPrun, 24, N_PERM_SYM,
 			MPermMove, MPermConj,
-			CPermMove, SymStatePerm, 0x8ea34
+			CPermMove, PermSelfSym, 0x8ea34
 		);
 		if (InitPrunProgress > targetProgress) {
 			return;
 		}
 		EPermCCombPPrunMax = initRawSymPrun(
-			EPermCCombPPrun, N_COMB, 2768,
+			EPermCCombPPrun, N_COMB, N_PERM_SYM,
 			CCombPMove, CCombPConj,
-			EPermMove, SymStatePerm, 0x7d824
+			EPermMove, PermSelfSym, 0x7d824
 		);
 	}
 
