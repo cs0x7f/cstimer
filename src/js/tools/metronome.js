@@ -3,6 +3,8 @@
 var metronome = execMain(function() {
 
 	var context;
+	var tickBuffer;
+	var beepBuffer;
 
 	var button = $('<span style="display:inline-block; text-align:center; width:100%;"/>').addClass('click');
 	var bpmInput = $('<input type="range" value="60" min="10" max="360" style="width:7em;" />');
@@ -80,16 +82,15 @@ var metronome = execMain(function() {
 		}
 	}
 
-	function playTick(freq) {
+	function playTick(buffer) {
 		if (!context) {
 			return;
 		}
-		var osc = context.createOscillator();
-		osc.type = 'sine';
-		osc.frequency.value = freq || 440;
-		osc.connect(vol);
-		osc.start(context.currentTime);
-		osc.stop(context.currentTime + 0.1);
+		var src = context.createBufferSource();
+		src.buffer = buffer || tickBuffer;
+		src.connect(vol);
+		src.start(context.currentTime);
+		src.stop(context.currentTime + 0.1);
 	}
 
 	var beepId = null;
@@ -144,8 +145,28 @@ var metronome = execMain(function() {
 			doBeep = true;
 		}
 		if (doBeep) {
-			playTick(550);
+			playTick(beepBuffer);
 		}
+	}
+
+	function createSoundBuffer(context, freq) {
+		var SR = context.sampleRate;
+		var M = 0.1 * SR;
+		var buf = context.createBuffer(1, M, SR);
+
+		var N = 0.7;
+		var S = 2 * Math.PI / SR * freq;
+		var R = 100 / SR;
+		var P = 200 / SR;
+		var O = 500 / SR;
+
+		var data = buf.getChannelData(0);
+
+		for (var Q = 0; Q < M; Q++) {
+			data[Q] = N * (0.09 * Math.exp(-Q * R) * Math.sin(S * Q) + 0.34 * Math.exp(-Q * P) * Math.sin(2 * S * Q) + 0.57 * Math.exp(-Q * O) * Math.sin(6 * S * Q));
+		}
+
+		return buf;
 	}
 
 	$(function() {
@@ -155,6 +176,8 @@ var metronome = execMain(function() {
 		if (AudioContext !== undefined) {
 			$.waitUser.reg(function() {
 				context = new AudioContext();
+				tickBuffer = createSoundBuffer(context, 440);
+				beepBuffer = createSoundBuffer(context, 550);
 				vol = context.createGain()
 				vol.gain.value = 0.3;
 				vol.connect(context.destination);
