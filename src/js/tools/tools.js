@@ -52,7 +52,7 @@ var tools = (function() {
 	}
 
 	function puzzleType(scrambleType) {
-		if (/^222(so|[236o]|eg[012]?|tc[np]|lsall|nb)$/.exec(scrambleType)) {
+		if (/^222(so|[236o]|eg[012]?|tc[np]?|lsall|nb)$/.exec(scrambleType)) {
 			return "222";
 		} else if (/^(333(oh?|ni|f[mt]|drud|custom)?|(z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|edges|corners|f2l|lsll2|(zb|w?v|eo)ls|roux|RrU|half|easyx?c|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|nocache_333(bld|pat)spec)$/.exec(scrambleType)) {
 			return "333";

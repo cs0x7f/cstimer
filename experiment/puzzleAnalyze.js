@@ -557,69 +557,29 @@ var puzzleAnalyzer = (function() {
 		}
 	}
 
-	function RandElem(gens) {
-		if (gens.length == 0) {
-			debugger;
-		}
-		this.gens = gens.slice();
-		this.off = 0;
-		if (gens.length < 10) {
-			for (var i = 0; i < 10 - gens.length; i++) {
-				this.gens.push(this.gens[i]);
-			}
-		}
-		for (var i = 0; i < this.gens.length * 2; i++) {
-			this.next();
-		}
-	}
-
-	function permMult(permA, permB) {
-		var ret = [];
-		for (var i = 0; i < permA.length; i++) {
-			ret[i] = permB[permA[i]];
-		}
-		return ret;
-	}
-
-	RandElem.prototype.next = function() {
-		var k = this.gens.length;
-		var n = this.gens[0].length;
-		this.off = (this.off + 1) % k;
-		var i1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
-		var j1;
-		do {
-			j1 = (~~(Math.random() * (k - 1)) + 1 + this.off) % k;
-		} while (i1 == j1);
-		var mul = [];
-		if (Math.random() < 0.5) {
-			for (var i = 0; i < n; i++) {
-				mul[this.gens[j1][i]] = i;
-			}
-		} else {
-			mul = this.gens[j1];
-		}
-		if (Math.random() < 0.5) {
-			this.gens[i1] = permMult(this.gens[i1], mul);
-			this.gens[this.off] = permMult(this.gens[this.off], this.gens[i1]);
-		} else {
-			this.gens[i1] = permMult(mul, this.gens[i1]);
-			this.gens[this.off] = permMult(this.gens[i1], this.gens[this.off]);
-		}
-		return this.gens[this.off];
-	}
-
 	grouplib.SchreierSims.prototype.extend = function(gen, shuffle) {
-		var pr = new RandElem(gen);
 		var naCnt = 0;
-		while (naCnt < Math.max(32, gen.length)) {
-			var g = pr.next();
+		for (var i = 0; i < gen.length; i++) {
+			var g = gen[i];
 			if (shuffle) {
 				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
 			}
 			g = this.sift(g);
 			if (g == null) {
+				continue;
+			}
+			this.addTk(this.e.length - 1, g);
+		}
+
+		while (naCnt < Math.max(32, gen.length)) {
+			var g = this.rndElem();
+			g = this.sift(g);
+			if (g == null) {
 				naCnt++;
 				continue;
+			}
+			if (naCnt > 0) {
+				DEBUG && console.log(naCnt);
 			}
 			this.addTk(this.e.length - 1, g);
 		}
