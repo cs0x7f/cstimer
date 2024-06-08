@@ -381,6 +381,8 @@ var DEBUGM = true;
 var DEBUGWK = false;
 var DEBUG = isInWorker ? DEBUGWK : (DEBUGM && !!$.urlParam('debug'));
 var DEBUGBL = false; // for debugging bluetooth
+/** @define {boolean} */
+var ISCSTIMER = true;
 
 if (!Array.prototype.indexOf) {
 	Array.prototype.indexOf = function(item) {

@@ -63,7 +63,11 @@ var csTimerWorker = execBoth(function() {
 		},
 		getScramble: function() {
 			var scrambler = scrMgr.scramblers[arguments[0]];
-			return scrambler.apply(scrambler, arguments).replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1');
+			var scramble = scrambler.apply(scrambler, arguments);
+			if (!ISCSTIMER) {
+				scramble = scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1');
+			}
+			return scramble;
 		},
 		setSeed: function(seed) {
 			mathlib.setSeed(256, seed.toString());

@@ -172,7 +172,7 @@ $(twisty): $(twistySrc)
 
 $(cstimer_module): $(moduleSrc)
 	@echo $@
-	@$(compile) $(moduleSrc) --js_output_file $(cstimer_module)
+	@$(compile) $(moduleSrc) --define='ISCSTIMER=false' --js_output_file $(cstimer_module)
 
 $(css): $(dest)/css/%.css: $(src)/css/%.css
 	@echo $@
