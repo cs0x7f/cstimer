@@ -1022,7 +1022,7 @@ var poly3d = (function() {
 					return axis.toLowerCase() + powfix;
 				}
 			}, function(scramble) {
-				if (/^(\s*([+-]{2}\s*)+U'?\s*\n)*$/.exec(scramble)) {
+				if (/^(\s*([+-]{2}\s*)+U'?\s*\n?)*$/.exec(scramble)) {
 					scramble = tools.carrot2poch(scramble);
 				}
 				return scramble;
