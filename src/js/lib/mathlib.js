@@ -206,6 +206,7 @@ var mathlib = (function() {
 				idx -= x2;
 			}
 		}
+		return arr;
 	}
 
 	// type: 'p' (permutation), 'o' (orientation), 'c' (combination)
@@ -230,6 +231,7 @@ var mathlib = (function() {
 		} else if (type == 'c') {
 			var cnts = evenbase;
 			this.cnts = cnts.slice();
+			this.cntn = this.cnts.length;
 			this.cums = [0];
 			for (var i = 1; i <= this.cntn; i++) {
 				this.cums[i] = this.cums[i - 1] + cnts[i - 1];
