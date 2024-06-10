@@ -469,12 +469,15 @@ var ftosolver = (function() {
 	var phase2Moves = [0, 12, 14, 8, 10];
 	var p2epMoves = null;
 	var p2rlMoves = null;
-	var p2ufMoves = null;
 	var p2ccMoves = null;
-	var p2cc2ufMap = {};
+	var p2cc2ufBit = {};
 	var ckmv2 = null;
 	var solv2 = null;
-	var P2EPRL_MAXL = 12;
+	var P2EPRL_MAXL = 11;
+	var p2symMap = [];
+	var ufStd2Raw = [];
+	var ufRaw2Std = [];
+	var p2ufCoord = new mathlib.coord('c', 12, [3, 3, 3, 3]);
 
 	var cornExFacelets = [
 		[U + 2, R + 2, F + 2, L + 2],
@@ -487,7 +490,7 @@ var ftosolver = (function() {
 
 	function phase2CpcoHash(fc) {
 		var ret = String.fromCharCode.apply(null, [].concat(fc.cp, fc.co));
-		if (!(ret in p2cc2ufMap)) {
+		if (!(ret in p2cc2ufBit)) {
 			var co = [];
 			for (var i = 0; i < 6; i++) {
 				co[i] = fc.co[i] * 2;
@@ -495,28 +498,107 @@ var ftosolver = (function() {
 			var facelet = fc.toFaceCube();
 			mathlib.fillFacelet(cornExFacelets, facelet, fc.cp, co, 9);
 			var fc2 = new FtoCubie().fromFacelet(facelet);
-			p2cc2ufMap[ret] = p2ufMoves[1][phase2CtHash(fc2.uf)];
+			p2cc2ufBit[ret] = phase2CtHash(fc2.uf);
 		}
 		return ret;
+	}
+
+	// re-color the cube s.t. uf is minimized in lexicographical order
+	function phase2ufStd(uf, symMap) {
+		var col1 = uf[0], col2 = -1;
+		for (var i = 1; i < 12; i++) {
+			if (uf[i] != col1) {
+				col2 = uf[i];
+				break;
+			}
+		}
+		var sym = symMap[col1 * 4 + col2];
+		for (var i = 0; i < 12; i++) {
+			uf[i] = ~~(FtoCubie.symCube[sym].uf[uf[i] * 3] / 3);
+		}
+		return sym;
+	}
+
+	function getPhase2ufIdx(uf) {
+		var ufstd = [];
+		for (var i = 0; i < 12; i++) {
+			ufstd[i] = ~~(uf[i] / 3);
+		}
+		var sym = phase2ufStd(ufstd, p2symMap);
+		return ufRaw2Std[p2ufCoord.get(ufstd)] << 4 | sym;
 	}
 
 	function phase2Init() {
 		var fc = new FtoCubie();
 		p2epMoves = mathlib.createMoveHash(fc.ep.slice(), phase2Moves, phase2EdgeHash, ftoPermMove.bind(null, 'ep'));
 		p2rlMoves = mathlib.createMoveHash(fc.rl.slice(), phase2Moves, phase2CtHash, ftoPermMove.bind(null, 'rl'));
-		p2ufMoves = mathlib.createMoveHash(fc.uf.slice(), phase2Moves, phase2CtHash, ftoPermMove.bind(null, 'uf'));
 		p2ccMoves = mathlib.createMoveHash(fc, phase2Moves, phase2CpcoHash, ftoFullMove);
+
+		var arr = [];
+		var arr2 = [];
+		var p2ufMoveStd = [[], [], [], [], []];
+		var ufStd2Bit = [];
+		var p2ccRecol = [];
+		for (var s = 0; s < 12; s++) {
+			var uf = FtoCubie.symCube[s].uf;
+			var col1 = ~~(uf.indexOf(0) / 3);
+			var col2 = ~~(uf.indexOf(3) / 3);
+			p2symMap[col1 * 4 + col2] = s;
+			p2ccRecol[s] = [];
+		}
+		out: for (var i = 0; i < 42000; i++) {
+			p2ufCoord.set(arr, i);
+			for (var j = 1; j < 12; j++) {
+				if (arr[j] > 1) {
+					continue out;
+				} else if (arr[j] == 1) {
+					break;
+				}
+			}
+			ufRaw2Std[i] = ufStd2Raw.length;
+			ufStd2Raw.push(i);
+		}
+		for (var i = 0; i < ufStd2Raw.length; i++) {
+			p2ufCoord.set(arr, ufStd2Raw[i]);
+			var hash = 0;
+			for (var j = 0; j < 12; j++) {
+				hash |= arr[j] << (j * 2);
+			}
+			ufStd2Bit[i] = hash;
+			for (var m = 0; m < phase2Moves.length; m++) {
+				FtoCubie.permMult(arr, FtoCubie.moveCube[phase2Moves[m]].uf, arr2);
+				var sym = phase2ufStd(arr2, p2symMap);
+				p2ufMoveStd[m][i] = ufRaw2Std[p2ufCoord.get(arr2)] << 4 | sym;
+			}
+		}
+		var cc2Bit = [];
+		for (var key in p2ccMoves[1]) {
+			var idx = p2ccMoves[1][key];
+			cc2Bit[idx] = p2cc2ufBit[key];
+			var cpco = [];
+			for (var s = 0; s < 12; s++) {
+				var sc = FtoCubie.symCube[s];
+				for (var i = 0; i < 6; i++) {
+					var scpi = key.charCodeAt(i);
+					cpco[i] = sc.cp[scpi];
+					cpco[i + 6] = sc.co[scpi] ^ key.charCodeAt(i + 6);
+				}
+				var hash = String.fromCharCode.apply(null, cpco);
+				p2ccRecol[s][idx] = p2ccMoves[1][hash];
+			}
+		}
+		var p2necPrun = [ // idx = a * 7 + b, a: #mismatch 3 U corners, b: other corners
+			0, 0, 3, 4, 5, 6, 8,
+			0, 2, 3, 4, 5, 6, 8,
+			1, 2, 4, 4, 5, 6, 8,
+			1, 3, 4, 5, 6, 7, 8,
+			3, 3, 4, 5, 6, 7, 9,
+			4, 4, 5, 6, 7, 8, 9,
+			5, 5, 6, 7, 8, 9, 10
+		];
+
 		var N_P2EP = p2epMoves[0][0].length;
 		var N_P2RL = p2rlMoves[0][0].length;
-		var uf2bitmap = [];
-		var cc2bitmap = [];
-		for (var key in p2ufMoves[1]) {
-			uf2bitmap[p2ufMoves[1][key]] = parseInt(key);
-		}
-		for (var key in p2ccMoves[1]) {
-			cc2bitmap[p2ccMoves[1][key]] = uf2bitmap[p2cc2ufMap[key]];
-		}
-		var p2necPrun = [0, 0, 1, 1, 3, 3, 4, 5, 6, 7, 8, 9, 10];
 		var p2eprlPrun = [];
 		mathlib.createPrun(p2eprlPrun, 0, N_P2EP * N_P2RL, P2EPRL_MAXL - 2, function(idx, move) {
 			var rl = ~~(idx / N_P2EP);
@@ -526,20 +608,23 @@ var ftosolver = (function() {
 		ckmv2 = genCkmv(phase2Moves);
 
 		solv2 = new mathlib.Searcher(function(idx) {
-			return uf2bitmap[idx[3]] == cc2bitmap[idx[2]];
+			return ufStd2Bit[idx[3] >> 4] == cc2Bit[p2ccRecol[idx[3] & 0xf][idx[2]]];
 		}, function(idx) {
-			var xors = uf2bitmap[idx[3]] ^ cc2bitmap[idx[2]];
-			var nerr = mathlib.bitCount((xors | xors >> 1) & 0x55555555);
+			var xors = ufStd2Bit[idx[3] >> 4] ^ cc2Bit[p2ccRecol[idx[3] & 0xf][idx[2]]];
+			xors = (xors | xors >> 1) & 0x555555;
+			var necIdx = mathlib.bitCount(xors & 0xc0c0ff) * 7 + mathlib.bitCount(xors & 0x3f3f00);
 			return Math.max(
 				Math.min(P2EPRL_MAXL, mathlib.getPruning(p2eprlPrun, idx[1] * N_P2EP + idx[0])),
-				p2necPrun[nerr]
+				p2necPrun[necIdx]
 			);
 		}, function(idx, move) {
+			var ufidx1 = p2ufMoveStd[move][idx[3] >> 4];
+			var ufcol = FtoCubie.symMult[ufidx1 & 0xf][idx[3] & 0xf];
 			return [
 				p2epMoves[0][move][idx[0]],
 				p2rlMoves[0][move][idx[1]],
 				p2ccMoves[0][move][idx[2]],
-				p2ufMoves[0][move][idx[3]],
+				ufidx1 & ~0xf | ufcol,
 			];
 		}, phase2Moves.length, 2, ckmv2);
 	}
@@ -555,7 +640,7 @@ var ftosolver = (function() {
 				p2epMoves[1][phase2EdgeHash(solvInfos[i][0].ep)],
 				p2rlMoves[1][phase2CtHash(solvInfos[i][0].rl)],
 				p2ccMoves[1][phase2CpcoHash(solvInfos[i][0])],
-				p2ufMoves[1][phase2CtHash(solvInfos[i][0].uf)],
+				getPhase2ufIdx(solvInfos[i][0].uf)
 			]);
 		}
 		var sol2s = solv2.solveMulti(idxs, 25);
