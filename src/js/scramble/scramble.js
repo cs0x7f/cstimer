@@ -739,6 +739,12 @@ var scramble = execMain(function(rn, rndEl) {
 				}
 			} else if (value[0] == 'scrEqPr') {
 				scrMgr.setEqPr(!!value[1]);
+			} else if (value[0] == 'scrClk') {
+				ssdiv.css('cursor', {
+					'n': 'default',
+					'c': 'copy',
+					'+': 'pointer'
+				}[value[1]]);
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];
@@ -846,7 +852,7 @@ var scramble = execMain(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide|Neut|EqPr)$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide|Neut|EqPr|Clk)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'scrfix', procSignal);
