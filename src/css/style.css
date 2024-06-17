@@ -566,7 +566,7 @@ a {
 	color: inherit;
 }
 
-.click, .times, .tab, .table, .mybutton, .tabValue, .expOauth, .title, #touch, #lcd {
+.click, .times, .tab, .table, .mybutton, .tabValue, .expOauth, .title, #touch, #lcd, .noselect {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;

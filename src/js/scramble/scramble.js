@@ -745,6 +745,11 @@ var scramble = execMain(function(rn, rndEl) {
 					'c': 'copy',
 					'+': 'pointer'
 				}[value[1]]);
+				if (value[1] == 'n') {
+					ssdiv.removeClass('noselect');
+				} else {
+					ssdiv.addClass('noselect');
+				}
 			}
 		} else if (signal == 'button' && value[0] == 'scramble') {
 			isEn = value[1];

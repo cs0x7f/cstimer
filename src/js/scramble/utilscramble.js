@@ -254,7 +254,7 @@
 			for (j = 0; j < 10; j++) {
 				ret += (j % 2 == 0 ? ("Rr".charAt(rn(2))) : ("Dd".charAt(rn(2)))) + rndEl(["+ ", "++", "- ", "--"]) + " ";
 			}
-			ret += "y" + rndEl(minxsuff) + "\\n";
+			ret += "y" + rndEl(minxsuff).padEnd(2, '~') + "\\n";
 		}
 		return ret;
 	}
