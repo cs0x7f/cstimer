@@ -480,6 +480,10 @@ var kernel = execMain(function() {
 			}
 		}
 
+		// values = [elemToPopup, callbackOk, callbackCancel, callbackGray, extraButton1, extraButton2, ...]
+		// callback: when popped up
+		// callback(Ok|Cancel|Gray): undefined => no such button (keep dialog open), $.noop => empty callback (hide the dialog)
+		// extraButton: [text, callbackWhenClicked]
 		function showDialog(values, diagclass, titlestr, callback) {
 			isPopup = true;
 			dialog.removeClass().addClass('dialog').addClass('dialog' + diagclass);

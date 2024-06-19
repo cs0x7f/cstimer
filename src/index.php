@@ -29,6 +29,8 @@
   <script type="text/javascript" src="js/export.js"></script>
   <script type="text/javascript" src="js/logohint.js"></script>
   <script type="text/javascript" src="js/timer.js"></script>
+  <script type="text/javascript" src="js/solver/ftocta.js"></script>
+  <script type="text/javascript" src="js/solver/kilominx.js"></script>
   <script type="text/javascript" src="js/scramble/scramble.js"></script>
   <script type="text/javascript" src="js/scramble/megascramble.js"></script>
   <script type="text/javascript" src="js/scramble/scramble_333_edit.js"></script>

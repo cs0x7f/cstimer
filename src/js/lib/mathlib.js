@@ -259,13 +259,14 @@ var mathlib = (function() {
 	function fillFacelet(facelets, f, perm, ori, divcol) {
 		for (var i = 0; i < facelets.length; i++) {
 			var cubie = facelets[i];
+			var p = perm[i] === undefined ? i : perm[i];
 			if (typeof(cubie) == 'number') {
-				f[cubie] = ~~(facelets[perm[i]] / divcol);
+				f[cubie] = ~~(facelets[p] / divcol);
 				continue;
 			}
 			var o = ori[i] || 0;
 			for (var j = 0; j < cubie.length; j++) {
-				f[cubie[(j + o) % cubie.length]] = ~~(facelets[perm[i]][j] / divcol);
+				f[cubie[(j + o) % cubie.length]] = ~~(facelets[p][j] / divcol);
 			}
 		}
 	}
@@ -1464,6 +1465,15 @@ var mathlib = (function() {
 		return ret;
 	}
 
+	function permOriMult(p1, p2, prod, o1, o2, ori, oriMod) {
+		for (var i = 0; i < p2.length; i++) {
+			if (oriMod) {
+				ori[i] = (o1[p2[i]] + o2[i]) % oriMod;
+			}
+			prod[i] = p1[p2[i]];
+		}
+	}
+
 	Math.TAU = Math.PI * 2;
 
 	return {
@@ -1502,6 +1512,7 @@ var mathlib = (function() {
 		Solver: Solver,
 		Searcher: Searcher,
 		rndPerm: rndPerm,
+		permOriMult: permOriMult,
 		gSolver: gSolver,
 		getSeed: randGen.getSeed,
 		setSeed: randGen.setSeed

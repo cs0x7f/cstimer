@@ -9,6 +9,8 @@ importScripts(
 	'lib/min2phase.js',
 	'lib/cubeutil.js',
 	'lib/json.min.js',
+	'solver/ftocta.js',
+	'solver/kilominx.js',
 	'scramble/scramble.js',
 	'scramble/megascramble.js',
 	'scramble/scramble_333_edit.js',

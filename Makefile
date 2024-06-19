@@ -32,6 +32,8 @@ kernel.js \
 export.js \
 logohint.js \
 timer.js \
+solver/ftocta.js \
+solver/kilominx.js \
 scramble/scramble.js \
 scramble/megascramble.js \
 scramble/scramble_333_edit.js \
@@ -110,6 +112,8 @@ lib/grouplib.js \
 lib/poly3dlib.js \
 lib/min2phase.js \
 lib/cubeutil.js \
+solver/ftocta.js \
+solver/kilominx.js \
 scramble/scramble.js \
 scramble/megascramble.js \
 scramble/scramble_333_edit.js \
