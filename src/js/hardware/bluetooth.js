@@ -1544,6 +1544,7 @@ var GiikerCube = execMain(function() {
 		var prevCubie = new mathlib.CubieCube();
 		var prevMoves = [];
 		var lastTs = 0;
+		var batteryLevel = 100;
 
 		function parseCubeData(msg) {
 			var locTime = $.now();
@@ -1557,6 +1558,8 @@ var GiikerCube = execMain(function() {
 				var newFacelet = parseFacelet(msg.slice(7, 34));
 				callback(newFacelet, [], [ts / 1.6, locTime], _deviceName);
 				prevCubie.fromFacelet(newFacelet);
+				batteryLevel = msg[35];
+				giikerutil.updateBattery([batteryLevel, _deviceName]);
 			} else if (opcode == 0x3) { // state change
 				sendMessage(msg.slice(2, 7));
 				// check timestamps
@@ -1602,6 +1605,11 @@ var GiikerCube = execMain(function() {
 						callback.apply(null, toCallback[i]);
 					}
 				}
+				var newBatteryLevel = msg[35];
+				if (newBatteryLevel != batteryLevel) {
+					batteryLevel = newBatteryLevel;
+					giikerutil.updateBattery([batteryLevel, _deviceName]);
+				}
 			}
 			lastTs = ts;
 		}
@@ -1635,7 +1643,7 @@ var GiikerCube = execMain(function() {
 		return {
 			init: init,
 			opservs: [SERVICE_UUID],
-			getBatteryLevel: function() { return Promise.resolve(80); },
+			getBatteryLevel: function() { return Promise.resolve(batteryLevel); },
 			clear: clear
 		}
 	})();

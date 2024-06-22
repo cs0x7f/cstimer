@@ -2,6 +2,34 @@
 
 var grouplib = (function(rn) {
 
+	function permMult(permA, permB) { // different from cube mult
+		var ret = [];
+		for (var i = 0; i < permA.length; i++) {
+			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	function permInv(perm) {
+		var ret = [];
+		for (var i = 0; i < perm.length; i++) {
+			ret[perm[i]] = i;
+		}
+		return ret;
+	}
+
+	function permCmp(perm1, perm2) {
+		if (perm1.length != perm2.length) {
+			return perm1.length - perm2.length;
+		}
+		for (var i = 0; i < perm1.length; i++) {
+			if (perm1[i] != perm2[i]) {
+				return perm1[i] - perm2[i];
+			}
+		}
+		return 0;
+	}
+
 	function SchreierSims(gen, shuffle) {
 		if (gen.sgs) {
 			this.copy(gen);
@@ -29,16 +57,13 @@ var grouplib = (function(rn) {
 			this.t2i[i][i] = 0;
 		}
 		this.extend(gen, shuffle);
-		// for minkwitz algorithm
-		// this.invMap = {};
-		// this.gen = gen;
 	}
 
 	SchreierSims.prototype.extend = function(gen, shuffle) {
 		for (var i = 0; i < gen.length; i++) {
 			var g = gen[i];
 			if (shuffle) {
-				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
+				g = permMult(permMult(permInv(shuffle), g), shuffle);
 			}
 			if (this.isMember(g) < 0) {
 				this.knutha(this.e.length - 1, g);
@@ -64,14 +89,6 @@ var grouplib = (function(rn) {
 		}
 	}
 
-	SchreierSims.prototype.permMult = function(permA, permB) {
-		var ret = [];
-		for (var i = 0; i < permA.length; i++) {
-			ret[i] = permB[permA[i]];
-		}
-		return ret;
-	}
-
 	SchreierSims.prototype.toKeyIdx = function(perm) {
 		var ret = [];
 		perm = perm || this.e;
@@ -79,26 +96,6 @@ var grouplib = (function(rn) {
 			ret[i] = perm[this.keyIdx[i]];
 		}
 		return ret;
-	}
-
-	SchreierSims.prototype.permInv = function(perm) {
-		var ret = [];
-		for (var i = 0; i < perm.length; i++) {
-			ret[perm[i]] = i;
-		}
-		return ret;
-	}
-
-	SchreierSims.prototype.permCmp = function(perm1, perm2) {
-		if (perm1.length != perm2.length) {
-			return perm1.length - perm2.length;
-		}
-		for (var i = 0; i < perm1.length; i++) {
-			if (perm1[i] != perm2[i]) {
-				return perm1[i] - perm2[i];
-			}
-		}
-		return 0;
 	}
 
 	SchreierSims.prototype.isMember = function(p, depth) {
@@ -145,7 +142,7 @@ var grouplib = (function(rn) {
 		this.Tk[k].push(p);
 		for (var i = 0; i < this.sgs[k].length; i++) {
 			if (this.sgs[k][i]) {
-				this.knuthb(k, this.permMult(this.sgs[k][i], p));
+				this.knuthb(k, permMult(this.sgs[k][i], p));
 			}
 		}
 	}
@@ -154,7 +151,7 @@ var grouplib = (function(rn) {
 		var j = p[k];
 		if (!this.sgs[k][j]) {
 			this.sgs[k][j] = p;
-			this.sgsi[k][j] = this.permInv(p);
+			this.sgsi[k][j] = permInv(p);
 			this.t2i[k][j] = this.i2t[k].length;
 			this.i2t[k].push(j);
 			if (this.i2t[k].length == 2) {
@@ -162,11 +159,11 @@ var grouplib = (function(rn) {
 				this.keyIdx.sort(function(a, b) { return b - a; });
 			}
 			for (var i = 0; i < this.Tk[k].length; i++) {
-				this.knuthb(k, this.permMult(p, this.Tk[k][i]));
+				this.knuthb(k, permMult(p, this.Tk[k][i]));
 			}
 			return;
 		}
-		var p2 = this.permMult(p, this.sgsi[k][j]);
+		var p2 = permMult(p, this.sgsi[k][j]);
 		if (this.isMember(p2) < 0) {
 			this.knutha(k - 1, p2);
 		}
@@ -182,7 +179,7 @@ var grouplib = (function(rn) {
 	}
 
 	SchreierSims.prototype.minElem = function(p, depth) {
-		p = this.permInv(p);
+		p = permInv(p);
 		for (var ii = 0; ii < this.keyIdx.length; ii++) {
 			var i = this.keyIdx[ii];
 			var maxi = p[i];
@@ -195,10 +192,10 @@ var grouplib = (function(rn) {
 				}
 			}
 			if (j !== i) {
-				p = this.permMult(this.sgs[i][j], p);
+				p = permMult(this.sgs[i][j], p);
 			}
 		}
-		return this.permInv(p);
+		return permInv(p);
 	}
 
 	SchreierSims.prototype.rndElem = function() {
@@ -215,206 +212,11 @@ var grouplib = (function(rn) {
 				}
 			}
 			if (p !== i) {
-				perm = this.permMult(perm, this.sgsi[i][p]);
+				perm = permMult(perm, this.sgsi[i][p]);
 			}
 		}
 		return perm;
 	}
-
-	/*
-	SchreierSims.prototype.minkwitz = function() {
-		var words = [];
-		var maxl = 8;
-		var toFill = 0;
-		var newDelay = 3;
-		this.words = [];
-		this.isNew = [];
-		for (var i = 0; i < this.e.length; i++) {
-			this.words[i] = [];
-			this.words[i][i] = [];
-			this.isNew[i] = [];
-			for (var j = 0; j < i; j++) {
-				if (this.sgs[i][j] && !this.words[i][j]) {
-					this.words[i][j] = null;
-					toFill++;
-				}
-			}
-		}
-
-		this.invMap = {};
-		for (var i = 0; i < this.gen.length; i++) {
-			var g = this.gen[i];
-			for (var j = i; j < this.gen.length; j++) {
-				var isEq = true;
-				for (var k = 0; k < this.e.length; k++) {
-					if (g[this.gen[j][k]] != k) {
-						isEq = false;
-						break;
-					}
-				}
-				if (isEq) {
-					this.invMap[i] = j;
-					this.invMap[j] = i;
-				}
-			}
-			if (this.invMap[i] == undefined) {
-				this.invMap[i] = ~i;
-				this.invMap[~i] = i;
-			}
-		}
-
-		var addWords = function(p, words) {
-			var ret = -1;
-			for (var i = p.length - 1; i >= 0; i--) {
-				var j = p[i];
-				if (!this.sgs[i][j]) {
-					return -2;
-				}
-				if (!this.words[i][j]) {
-					this.words[i][j] = words;
-					this.isNew[i][j] = newDelay;
-					this.sgs[i][j] = p;
-					this.sgsi[i][j] = this.permInv(p);
-					return 1;
-				}
-				if (words.length < this.words[i][j].length) {
-					var _p = this.sgs[i][j];
-					this.sgs[i][j] = p;
-					this.sgsi[i][j] = this.permInv(p);
-					p = _p;
-					var _words = this.words[i][j];
-					this.words[i][j] = words;
-					this.isNew[i][j] = newDelay;
-					words = _words;
-					ret = 0;
-				}
-				if (words.length + this.words[i][j].length > maxl) {
-					return ret;
-				}
-				p = this.permMult(p, this.sgsi[i][j]);
-				for (var k = this.words[i][j].length - 1; k >= 0; k--) {
-					words.push(this.invMap[this.words[i][j][k]]);
-				}
-			}
-		}
-
-		var iterGens = function(p, remain, func) {
-			if (remain <= 0) {
-				return func.call(this, p, words);
-			}
-			for (var i = 0; i < this.gen.length && toFill > 0; i++) {
-				words.push(i);
-				var ret = iterGens.call(this, this.permMult(p, this.gen[i]), remain - 1, func);
-				words.pop();
-				if (ret < 0) { // no improve
-					continue;
-				}
-				words.push(this.invMap[i]);
-				iterGens.call(this, this.permMult(p, this.permInv(this.gen[i])), remain - 1, func);
-				words.pop();
-			}
-		}
-
-		var improve = function() {
-			var n = 0;
-			var newCnt = 0;
-			for (var i1 = 0; i1 < this.e.length; i1++) {
-				for (var j1 = 0; j1 < i1; j1++) {
-					if (this.isNew[i1][j1] > 0) {
-						this.isNew[i1][j1]--;
-					}
-					if (this.isNew[i1][j1]) {
-						newCnt++;
-					}
-				}
-			}
-			console.log('newCnt', newCnt);
-			for (var i1 = 0; i1 < this.e.length; i1++) {
-				var isFilled = true;
-				for (var j1 = 0; j1 < i1; j1++) {
-					if (this.sgs[i1][j1] && !this.words[i1][j1]) {
-						isFilled = false;
-						break;
-					}
-				}
-				for (var j1 = 0; j1 < i1; j1++) {
-					if (!this.words[i1][j1]) {
-						continue;
-					}
-					for (var i2 = i1; i2 < this.e.length; i2++) {
-						if (isFilled && i1 != i2) {
-							continue;
-						}
-						for (var j2 = (i1 == i2 ? j1 : 0); j2 < i2; j2++) {
-							if (!this.words[i2][j2]) {
-								continue;
-							}
-							var cuml = this.words[i1][j1].length + this.words[i2][j2].length;
-							if (cuml > maxl) {
-								continue;
-							}
-							if (this.isNew[i1][j1] == 0 && this.isNew[i2][j2] == 0 && i1 == i2) {
-								continue;
-							}
-							var cc = this.sgs[i1][j1][this.sgs[i2][j2][i1]];
-							if (this.words[i1][cc] && this.words[i1][cc].length < cuml * 1.5 && i1 != i2) {
-								continue;
-							}
-							var ret = addWords.call(this,
-								this.permMult(this.sgs[i2][j2], this.sgs[i1][j1]),
-								this.words[i2][j2].concat(this.words[i1][j1])
-							);
-							if (ret > -1) {
-								n++;
-							}
-							if (ret > 0) {
-								toFill--;
-							}
-							// console.log(i1, i2, ret);
-						}
-					}
-				}
-			}
-			return n;
-		}
-		var start = $.now();
-		var cnt = 0;
-		for (var i = 1; i < 100 && toFill > 0; i++) {
-			iterGens.call(this, this.e, i, function(p, words) {
-				var ret = addWords.call(this, p, words.slice());
-				cnt++;
-				if (ret > 0) {
-					toFill--;
-				}
-				if (cnt % 1000 == 0) {
-					var ret2 = improve.call(this);
-					maxl = Math.round(maxl * 1.25);
-					console.log(ret2, toFill, maxl);
-				}
-				return ret;
-			});
-		}
-		console.log('final', $.now() - start);
-		improve.call(this);
-		console.log('init minkwitz', $.now() - start);
-		window.sgs1 = this;
-	}
-
-	SchreierSims.prototype.getGen = function(p) {
-		var ret = [];
-		for (var i = p.length - 1; i >= 0; i--) {
-			var j = p[i];
-			if (!this.sgs[i][j]) {
-				return null;
-			}
-			if (j !== i) {
-				p = this.permMult(p, this.sgsi[i][j]);
-				ret.push(this.words[i][j]);
-			}
-		}
-		return ret.reverse();
-	}
-	*/
 
 	function CanonSeqGen(gens) {
 		this.gens = gens;
@@ -422,14 +224,6 @@ var grouplib = (function(rn) {
 		this.trieNodes = [null];
 		this.trieNodes.push([]);
 		this.skipSeqs = [];
-	}
-
-	CanonSeqGen.prototype.permMult = function(permA, permB) {
-		var ret = [];
-		for (var i = 0; i < permA.length; i++) {
-			ret[i] = permB[permA[i]];
-		}
-		return ret;
 	}
 
 	CanonSeqGen.prototype.addSkipSeq = function(seq) {
@@ -608,7 +402,7 @@ var grouplib = (function(rn) {
 				next = ~next;
 			}
 			var gen = this.gens[i];
-			var permNew = this.permMult(gen, perm);
+			var permNew = permMult(gen, perm);
 			seq.push(i);
 			this.searchSkip(permNew, maxl - 1, seq, next, visited);
 			seq.pop();
@@ -701,7 +495,7 @@ var grouplib = (function(rn) {
 	}
 
 	SubgroupSolver.prototype.midCosetHash = function(perm) {
-		return this.sgsM == null ? this.sgsG.isMember(this.sgsG.permInv(perm), this.sgsMdepth) : this.permHash(this.sgsM.minElem(perm));
+		return this.sgsM == null ? this.sgsG.isMember(permInv(perm), this.sgsMdepth) : this.permHash(this.sgsM.minElem(perm));
 	}
 
 	SubgroupSolver.prototype.initTables = function(maxCosetSize) {
@@ -755,15 +549,15 @@ var grouplib = (function(rn) {
 				}
 				genExSet.set(key, this.genEx.length);
 				this.genEx.push(perm);
-				this.genExi.push(this.sgsG.permInv(perm));
+				this.genExi.push(permInv(perm));
 				this.genExMap.push([i, pow]);
-				perm = this.sgsG.permMult(this.genG[i], perm);
+				perm = permMult(this.genG[i], perm);
 				pow++;
 			}
 		}
 		this.glen = this.genEx.length;
 		for (var i = 0; i < this.glen; i++) {
-			var genInv = this.sgsG.permInv(this.genEx[i]);
+			var genInv = permInv(this.genEx[i]);
 			this.genExMap[i][2] = genExSet.get(this.permHash(genInv));
 		}
 
@@ -796,7 +590,7 @@ var grouplib = (function(rn) {
 				if (this.genExMap[j][1] != 1) {
 					continue;
 				}
-				var newp = this.sgsG.permMult(this.genEx[j], perm);
+				var newp = permMult(this.genEx[j], perm);
 				var key = this.midCosetHash(newp);
 				if (!(key in this.coset2idx)) {
 					this.coset2idx[key] = this.idx2coset.length;
@@ -827,7 +621,7 @@ var grouplib = (function(rn) {
 		if (maxl == 0) {
 			if (pidx >= this.clen) {
 				moves.push(-1);
-				var newPerm = this.sgsG.permMult(curPerm, insertPerm);
+				var newPerm = permMult(curPerm, insertPerm);
 				var ret = callback(moves, newPerm);
 				moves.pop();
 				return ret;
@@ -838,7 +632,7 @@ var grouplib = (function(rn) {
 		if (pidx >= this.clen && lm != 0) {
 			var newpidx = prunTable[3][pidx - this.clen];
 			moves.push(-1);
-			var newPerm = this.sgsG.permMult(curPerm, insertPerm);
+			var newPerm = permMult(curPerm, insertPerm);
 			var ret = this.idaMidSearch(newpidx, maxl, 1, trieNodes, moves, newPerm, insertPerm, prunTable, callback);
 			moves.pop();
 			if (ret) {
@@ -865,7 +659,7 @@ var grouplib = (function(rn) {
 				}
 				var nextCanon = node[midx];
 				moves.push(midx);
-				var newPerm = this.sgsG.permMult(curPerm, this.genExi[midx]);
+				var newPerm = permMult(curPerm, this.genExi[midx]);
 				var ret = this.idaMidSearch(newpidx, maxl - 1, nextCanon ^ (nextCanon >> 31), trieNodes, moves, newPerm, insertPerm, prunTable, callback);
 				moves.pop();
 				if (ret) {
@@ -889,7 +683,7 @@ var grouplib = (function(rn) {
 		if (allowPre) {
 			for (var i = 0; i < this.clen; i++) {
 				prunTable.push(-1, -1);
-				permMove[i] = this.coset2idx[this.midCosetHash(this.sgsG.permMult(perm, this.idx2coset[i]))];
+				permMove[i] = this.coset2idx[this.midCosetHash(permMult(perm, this.idx2coset[i]))];
 				permMove[permMove[i] + this.clen] = i;
 			}
 			prunTable[0] = 0;
@@ -981,7 +775,7 @@ var grouplib = (function(rn) {
 		for (var depth = prunTable1[0][pidx]; depth <= maxl; depth++) {
 			var s1tot = 0;
 			var s2tot = 0;
-			var permi = this.sgsG.permInv(perm);
+			var permi = permInv(perm);
 			if (onlyIDA || depth <= this.prunTable[4]) {
 				ret = this.idaMidSearch(allowPre ? this.clen : pidx, depth,
 						1, this.canon.trieNodes, [],
@@ -1047,7 +841,7 @@ var grouplib = (function(rn) {
 						perm0, perm, prunTable2,
 						function(moves, permKey) {
 					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
-					var finalPermKey = allowPre ? permKey : this.sgsG.permMult(permKey, perm);
+					var finalPermKey = allowPre ? permKey : permMult(permKey, perm);
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(finalPermKey);
