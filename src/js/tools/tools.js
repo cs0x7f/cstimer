@@ -300,9 +300,11 @@ var tools = (function() {
 			} else {
 				funcData.push([str[0], name]);
 			}
-			for (var i = 0; i < 4; i++) {
-				funcMenu[i].reset(funcs[i]);
-			}
+			$.delayExec('toolreset', function() {
+				for (var i = 0; i < 4; i++) {
+					funcMenu[i].reset(funcs[i]);
+				}
+			}, 0);
 		}
 
 		function getSolutionSpan(solution) {
