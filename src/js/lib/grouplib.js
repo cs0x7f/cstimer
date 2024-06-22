@@ -22,7 +22,7 @@ var grouplib = (function(rn) {
 		if (perm1.length != perm2.length) {
 			return perm1.length - perm2.length;
 		}
-		for (var i = 0; i < perm1.length; i++) {
+		for (var i = perm1.length - 1; i >= 0; i--) {
 			if (perm1[i] != perm2[i]) {
 				return perm1[i] - perm2[i];
 			}
@@ -196,6 +196,63 @@ var grouplib = (function(rn) {
 			}
 		}
 		return permInv(p);
+	}
+
+	/*
+	// to enumerate perm[depth]
+	// checkFunction(depth + 1, perm): perm[depth + 1] is set
+	// callback(perm), return true if break
+	SchreierSims.prototype.backtrack = function(depth, perm, callback, checkFunc) {
+		while (depth >= 1 && this.i2t[depth].length == 1) { // skip redaudant base
+			depth--;
+		}
+		if (!checkFunc(depth + 1, perm)) {
+			return;
+		}
+		if (depth == 0) {
+			return callback(perm);
+		}
+		for (var jj = 0; jj < this.i2t[depth].length; jj++) {
+			var j = this.i2t[depth][jj];
+			var ret = this.backtrack(depth - 1,
+				permMult(this.sgs[depth][j], perm), callback, checkFunc);
+			if (ret) {
+				return ret;
+			}
+		}
+	}
+	*/
+
+	// list all coset representative of subH in G, algorithm in Handbook of Computational Group Theory, pp128
+	SchreierSims.prototype.listCoset = function(subH) {
+		var cosetReps = [this.e.slice()];
+		var targetSize = 1;
+		out: for (var ii = this.keyIdx.length - 1; ii >= 0; ii--) {
+			var i = this.keyIdx[ii];
+			if (this.i2t[i].length == subH.i2t[i].length) { // no new coset
+				continue;
+			}
+			targetSize *= this.i2t[i].length;
+			targetSize /= subH.i2t[i].length;
+			for (var ci = 0, len = cosetReps.length; ci < len; ci++) {
+				var coset = cosetReps[ci];
+				expand: for (var jj = 1; jj < this.i2t[i].length; jj++) {
+					var j = this.i2t[i][jj];
+					var newCoset = permMult(coset, this.sgs[i][j]);
+					for (var ss = 1; ss < subH.i2t[i].length; ss++) {
+						if (newCoset[subH.i2t[i][ss]] > j) {
+							continue expand;
+						}
+					}
+					cosetReps.push(newCoset);
+					if (cosetReps.length >= targetSize) {
+						continue out;
+					}
+				}
+			}
+			console.log('[grouplib] listCoset ERROR, Not enough coset representatives');
+		}
+		return cosetReps;
 	}
 
 	SchreierSims.prototype.rndElem = function() {
@@ -932,6 +989,9 @@ var grouplib = (function(rn) {
 	}
 
 	return {
+		permMult: permMult,
+		permInv: permInv,
+		permCmp: permCmp,
 		CanonSeqGen: CanonSeqGen,
 		SchreierSims: SchreierSims,
 		SubgroupSolver: SubgroupSolver

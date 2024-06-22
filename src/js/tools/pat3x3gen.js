@@ -132,6 +132,40 @@ var pat3x3gen = (function() {
 		return cc.toFaceCube();
 	}
 
+	function genPatternGroup(solved) {
+		var params = calcPattern(solved, solved);
+		var cornCnts = params[0];
+		var edgeCnts = params[1];
+		var cornMemo = params[2];
+		var edgeMemo = params[3];
+		var cornCandidates = params[4];
+		var edgeCandidates = params[5];
+		var targetSize = cornCnts[0] * edgeCnts[0] + cornCnts[1] * edgeCnts[1];
+		var sgs = null;
+		do {
+			var parity = Math.random() < cornCnts[1] * edgeCnts[1] / (cornCnts[0] * edgeCnts[0] + cornCnts[1] * edgeCnts[1]) ? 1 : 0;
+			var cornArr = [];
+			var edgeArr = [];
+			iterFill(0, 0, 0, parity, cornMemo, cornCandidates, 3, cornArr);
+			iterFill(0, 0, 0, parity, edgeMemo, edgeCandidates, 2, edgeArr);
+			var cc = new mathlib.CubieCube();
+			for (var i = 0; i < 8; i++) {
+				cc.ca[i] = cornArr[i][1] * 8 + cornArr[i][0];
+			}
+			for (var i = 0; i < 12; i++) {
+				cc.ea[i] = edgeArr[i][0] * 2 + edgeArr[i][1];
+			}
+			var perm = cc.toPerm();
+			if (!sgs) {
+				sgs = new grouplib.SchreierSims([perm]);
+			} else {
+				sgs.extend([perm]);
+			}
+			console.log('[pat3x3] gen group ', sgs.size(), targetSize);
+		} while (sgs.size() < targetSize);
+		return sgs;
+	}
+
 	execMain(function() {
 		var selectPre = $('<select style="font-size:0.75em;">');
 		var resultSpan = $('<span>');
@@ -334,6 +368,7 @@ var pat3x3gen = (function() {
 
 	return {
 		calcPattern: calcPattern,
-		genPattern: genPattern
+		genPattern: genPattern,
+		genPatternGroup: genPatternGroup
 	}
 })();

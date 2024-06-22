@@ -1,6 +1,5 @@
+execMain(function() {
 "use strict";
-
-var gsolver = (function() {
 
 	var curScramble;
 	var curScrambleStr;
@@ -1332,8 +1331,4 @@ var gsolver = (function() {
 			tools.regTool('333udf', TOOLS_SOLVERS + '>3x3x3 General', execFunc.bind(null, '333udf'));
 		});
 	});
-
-	return {
-		rubiksCube: rubiksCube
-	}
-})();
+});

@@ -34,6 +34,5 @@ importScripts(
 	'tools/cross.js',
 	'tools/eoline.js',
 	'tools/roux1.js',
-	'tools/gsolver.js',
 	'worker.js'
 );

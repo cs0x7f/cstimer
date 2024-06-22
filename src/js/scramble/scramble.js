@@ -40,19 +40,9 @@ var scrMgr = (function(rn, rndEl) {
 	};
 
 	/**
-	 *	{type: [str1, str2, ..., strN]}
+	 *  {type: func(idx) {return [filter, probs, imgGen][idx])
 	 */
-	var filters = {};
-
-	/**
-	 *	{type: [prob1, prob2, ..., probN]}
-	 */
-	var probs = {};
-
-	/**
-	 *	{type: imgGen(case, canvas)}
-	 */
-	var imgGens = {};
+	var extra = {};
 
 	/**
 	 *	filter_and_probs: [[str1, ..., strN], [prob1, ..., probN], imgGen]
@@ -65,13 +55,23 @@ var scrMgr = (function(rn, rndEl) {
 			}
 		} else {
 			scramblers[type] = callback;
-			if (filter_and_probs != undefined) {
-				filters[type] = filter_and_probs[0];
-				probs[type] = filter_and_probs[1];
-				imgGens[type] = filter_and_probs[2]; // may be undefined
+			if ($.isArray(filter_and_probs)) {
+				extra[type] = function(ret, idx) { return ret[idx]; }.bind(null, filter_and_probs);
+			} else if (filter_and_probs) {
+				extra[type] = filter_and_probs;
 			}
 		}
 		return regScrambler;
+	}
+
+	/**
+	 *	return extra info for specific type, idx: 0 => filter, 1 => probs, 2 => imgGen
+	 */
+	function getExtra(type, idx) {
+		if (!(type in extra)) {
+			return;
+		}
+		return extra[type](idx);
 	}
 
 	/**
@@ -130,9 +130,7 @@ var scrMgr = (function(rn, rndEl) {
 	return {
 		reg: regScrambler,
 		scramblers: scramblers,
-		filters: filters,
-		probs: probs,
-		imgGens: imgGens,
+		getExtra: getExtra,
 		mega: mega,
 		formatScramble: formatScramble,
 		rndState: rndState,
@@ -145,9 +143,7 @@ var scrMgr = (function(rn, rndEl) {
 
 var scramble = execMain(function(rn, rndEl) {
 	var scramblers = scrMgr.scramblers;
-	var filters = scrMgr.filters;
-	var probs = scrMgr.probs;
-	var imgGens = scrMgr.imgGens;
+	var getExtra = scrMgr.getExtra;
 
 	var div = $('<div id="scrambleDiv"/>');
 	var title = $('<div />').addClass('title');
@@ -361,9 +357,9 @@ var scramble = execMain(function(rn, rndEl) {
 				delete cachedScr[detailType];
 				localStorage['cachedScr'] = JSON.stringify(cachedScr);
 			} else {
-				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], probs[realType]), neutLevel);
+				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], getExtra(realType, 1)), neutLevel);
 			}
-			genCachedScramble([realType, len, rndState(scrFlt[1], probs[realType]), neutLevel], detailType);
+			genCachedScramble([realType, len, rndState(scrFlt[1], getExtra(realType, 1)), neutLevel], detailType);
 			return;
 		}
 
@@ -536,10 +532,10 @@ var scramble = execMain(function(rn, rndEl) {
 		scrLen.val(Math.abs(len));
 		scrLen[0].disabled = len <= 0;
 		var curType = menu.getSelected();
-		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, filters[curType]])));
-		scrOpt[0].disabled = scrLen[0].disabled && !(curType in filters);
+		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, getExtra(curType, 0)])));
+		scrOpt[0].disabled = scrLen[0].disabled && !getExtra(curType, 0);
 		if (scrFlt[0] != curType) {
-			scrFlt = [curType, filters[curType] && mathlib.valuedArray(filters[curType].length, 1)];
+			scrFlt = [curType, getExtra(curType, 0) && mathlib.valuedArray(getExtra(curType, 0).length, 1)];
 			kernel.setProp('scrFlt', JSON.stringify(scrFlt), 'session');
 		}
 	}
@@ -554,9 +550,9 @@ var scramble = execMain(function(rn, rndEl) {
 		var chkBoxList = [];
 		var chkLabelList = [];
 		var modified = false;
-		if (type in filters) {
-			var data = filters[type];
-			var imgGen = imgGens[type];
+		var data = getExtra(type, 0);
+		if (data) {
+			var imgGen = getExtra(type, 2);
 			var curData = data;
 			if (scrFlt[0] == type) {
 				curData = scrFlt[1] || data;
@@ -658,8 +654,9 @@ var scramble = execMain(function(rn, rndEl) {
 		}
 
 		function procDialog() {
-			if (type in filters) {
-				var data = mathlib.valuedArray(filters[type].length, 1);
+			var data = getExtra(type, 0);
+			if (data) {
+				data = mathlib.valuedArray(data.length, 1);
 				var hasVal = false;
 				for (var i = 0; i < chkBoxList.length; i++) {
 					if (!chkBoxList[i][0].checked) {

@@ -467,27 +467,54 @@ var mathlib = (function() {
 		return f;
 	})();
 
-	CubieCube.prototype.toFaceCube = function(cFacelet, eFacelet) {
+	CubieCube.prototype.toPerm = function(cFacelet, eFacelet) {
 		cFacelet = cFacelet || CubieCube.cFacelet;
 		eFacelet = eFacelet || CubieCube.eFacelet;
-		var ts = "URFDLB";
 		var f = [];
 		for (var i = 0; i < 54; i++) {
-			f[i] = ts[~~(i / 9)];
+			f[i] = i;
 		}
 		for (var c = 0; c < 8; c++) {
 			var j = this.ca[c] & 0x7; // cornercubie with index j is at
 			var ori = this.ca[c] >> 3; // Orientation of this cubie
 			for (var n = 0; n < 3; n++)
-				f[cFacelet[c][(n + ori) % 3]] = ts[~~(cFacelet[j][n] / 9)];
+				f[cFacelet[c][(n + ori) % 3]] = cFacelet[j][n];
 		}
 		for (var e = 0; e < 12; e++) {
 			var j = this.ea[e] >> 1; // edgecubie with index j is at edgeposition
 			var ori = this.ea[e] & 1; // Orientation of this cubie
 			for (var n = 0; n < 2; n++)
-				f[eFacelet[e][(n + ori) % 2]] = ts[~~(eFacelet[j][n] / 9)];
+				f[eFacelet[e][(n + ori) % 2]] = eFacelet[j][n];
+		}
+		return f;
+	}
+
+	CubieCube.prototype.toFaceCube = function(cFacelet, eFacelet) {
+		var perm = this.toPerm(cFacelet, eFacelet);
+		var ts = "URFDLB";
+		var f = [];
+		for (var i = 0; i < 54; i++) {
+			f[i] = ts[~~(perm[i] / 9)];
 		}
 		return f.join("");
+	}
+
+	CubieCube.prototype.prettyString = function() {
+		var facelet = this.toFaceCube();
+		var tmp =
+			"        U0U1U2\n" +
+			"        U3U4U5\n" +
+			"        U6U7U8\n" +
+			"L0L1L2  F0F1F2  R0R1R2  B0B1B2\n" +
+			"L3L4L5  F3F4F5  R3R4R5  B3B4B5\n" +
+			"L6L7L8  F6F7F8  R6R7R8  B6B7B8\n" +
+			"        D0D1D2\n" +
+			"        D3D4D5\n" +
+			"        D6D7D8\n";
+		return tmp.replace(/[URFDLB][0-8]/g, function(m) {
+			var i1 = "URFDLB".indexOf(m[0]);
+			return facelet[i1 * 9 + ~~m[1]] + ' ';
+		});
 	}
 
 	CubieCube.prototype.invFrom = function(cc) {

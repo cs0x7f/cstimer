@@ -32,145 +32,14 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		Bx2 = 16,
 		Bx3 = 17;
 
-	function CubieCube_$$init(obj) {
-		obj.cp = [0, 1, 2, 3, 4, 5, 6, 7];
-		obj.co = [0, 0, 0, 0, 0, 0, 0, 0];
-		obj.ep = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-		obj.eo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	}
-
-	function $setFlip(obj, idx) {
-		var i, parity;
-		parity = 0;
-		for (i = 10; i >= 0; --i) {
-			parity ^= obj.eo[i] = (idx & 1);
-			idx >>= 1;
-		}
-		obj.eo[11] = parity;
-	}
-
-	function $setTwist(obj, idx) {
-		var i, twst;
-		twst = 0;
-		for (i = 6; i >= 0; --i) {
-			twst += obj.co[i] = idx % 3;
-			idx = ~~(idx / 3);
-		}
-		obj.co[7] = (15 - twst) % 3;
-	}
-
-	function CornMult(a, b, prod) {
-		var corn, ori, oriA, oriB;
-		for (corn = 0; corn < 8; ++corn) {
-			prod.cp[corn] = a.cp[b.cp[corn]];
-			oriA = a.co[b.cp[corn]];
-			oriB = b.co[corn];
-			ori = oriA;
-			ori += oriA < 3 ? oriB : 6 - oriB;
-			ori %= 3;
-			((oriA >= 3) !== (oriB >= 3)) && (ori += 3);
-			prod.co[corn] = ori;
-		}
-	}
-
-	function CubieCube() {
-		CubieCube_$$init(this);
-	}
-
-	function CubieCube1(cperm, twist, eperm, flip) {
-		CubieCube_$$init(this);
-		setNPerm(this.cp, cperm, 8);
-		$setTwist(this, twist);
-		setNPerm(this.ep, eperm, 12);
-		$setFlip(this, flip);
-	}
-
-	function EdgeMult(a, b, prod) {
-		var ed;
-		for (ed = 0; ed < 12; ++ed) {
-			prod.ep[ed] = a.ep[b.ep[ed]];
-			prod.eo[ed] = b.eo[ed] ^ a.eo[b.ep[ed]];
-		}
-	}
-
-	function initMove() {
-		initMove = $.noop;
-		var a, p;
-		moveCube[0] = new CubieCube1(15120, 0, 119750400, 0);
-		moveCube[3] = new CubieCube1(21021, 1494, 323403417, 0);
-		moveCube[6] = new CubieCube1(8064, 1236, 29441808, 550);
-		moveCube[9] = new CubieCube1(9, 0, 5880, 0);
-		moveCube[12] = new CubieCube1(1230, 412, 2949660, 0);
-		moveCube[15] = new CubieCube1(224, 137, 328552, 137);
-		for (a = 0; a < 18; a += 3) {
-			for (p = 0; p < 2; ++p) {
-				moveCube[a + p + 1] = new CubieCube;
-				EdgeMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
-				CornMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
-			}
-		}
-	}
-
-	var _ = CubieCube1.prototype = CubieCube.prototype;
-	var moveCube = [];
-	var cornerFacelet = [
-		[8, 9, 20],
-		[6, 18, 38],
-		[0, 36, 47],
-		[2, 45, 11],
-		[29, 26, 15],
-		[27, 44, 24],
-		[33, 53, 42],
-		[35, 17, 51]
-	];
-	var edgeFacelet = [
-		[5, 10],
-		[7, 19],
-		[3, 37],
-		[1, 46],
-		[32, 16],
-		[28, 25],
-		[30, 43],
-		[34, 52],
-		[23, 12],
-		[21, 41],
-		[50, 39],
-		[48, 14]
-	];
-
 	function renderFacelet(solved, cc, resultMap) {
-		var c, e, f, i, j, n, ori, ret;
-		f = [];
-		for (i = 0; i < 54; i++) {
-			f[i] = solved[i];
+		var f = cc.toPerm();
+		var ret = [];
+		for (var i = 0; i < resultMap.length; i++) {
+			ret[i] = solved[f[resultMap[i]]];
 		}
-		for (c = 0; c < 8; ++c) {
-			j = cc.cp[c];
-			ori = cc.co[c];
-			for (n = 0; n < 3; ++n)
-				f[cornerFacelet[c][(n + ori) % 3]] = solved[cornerFacelet[j][n]];
-		}
-		for (e = 0; e < 12; ++e) {
-			j = cc.ep[e];
-			ori = cc.eo[e];
-			for (n = 0; n < 2; ++n)
-				f[edgeFacelet[e][(n + ori) % 2]] = solved[edgeFacelet[j][n]];
-		}
-		ret = [];
-		for (i = 0; i < resultMap.length; i++) {
-			ret[i] = f[resultMap[i]];
-		}
-		return ret;
+		return ret.join('');
 	}
-
-	function toFaceCube(cc) {
-		var resultMap = [];
-		for (var i = 0; i < 54; i++) {
-			resultMap[i] = i;
-		}
-		return renderFacelet(mathlib.SOLVED_FACELET, cc, resultMap).join('');
-	}
-
 
 	// SCRAMBLERS
 
@@ -210,6 +79,9 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 			}
 			idx *= base;
 			idx += arr[i];
+		}
+		if (cntU == 1) {
+			arr[arr.length - 1] = ((base << 4) - sum) % base;
 		}
 		return idx;
 	}
@@ -282,7 +154,6 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	];
 
 	function getAnyScramble(_ep, _eo, _cp, _co, neut, _rndapp, _rndpre, firstAxisFilter, lastAxisFilter) {
-		initMove();
 		_rndapp = _rndapp || emptysuff;
 		_rndpre = _rndpre || emptysuff;
 		_ep = parseMask(_ep, 12);
@@ -324,35 +195,31 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 			if (ncp + nco + nep + neo == 0) {
 				continue;
 			}
-			var cc = new CubieCube1(ncp, nco, nep, neo);
-			var cc2 = new CubieCube;
 			var rndpre = rndEl(_rndpre);
 			var rndapp = rndEl(_rndapp);
+			var cc = new mathlib.CubieCube();
+			var cd = new mathlib.CubieCube();
+			for (var i = 0; i < 12; i++) {
+				cc.ea[i] = ep[i] << 1 | eo[i];
+				if (i < 8) {
+					cc.ca[i] = co[i] << 3 | cp[i];
+				}
+			}
 			for (var i = 0; i < rndpre.length; i++) {
-				CornMult(moveCube[rndpre[i]], cc, cc2);
-				EdgeMult(moveCube[rndpre[i]], cc, cc2);
-				var tmp = cc2;
-				cc2 = cc;
-				cc = tmp;
+				mathlib.CubieCube.CubeMult(mathlib.CubieCube.moveCube[rndpre[i]], cc, cd);
+				cc.init(cd.ca, cd.ea);
 			}
 			for (var i = 0; i < rndapp.length; i++) {
-				CornMult(cc, moveCube[rndapp[i]], cc2);
-				EdgeMult(cc, moveCube[rndapp[i]], cc2);
-				var tmp = cc2;
-				cc2 = cc;
-				cc = tmp;
+				mathlib.CubieCube.CubeMult(cc, mathlib.CubieCube.moveCube[rndapp[i]], cd);
+				cc.init(cd.ca, cd.ea);
 			}
-			var posit = toFaceCube(cc);
 			if (neut) {
-				cc = new mathlib.CubieCube();
-				cc.fromFacelet(posit);
 				cc.ori = mathlib.rn([1, 4, 8, 1, 1, 1, 24][neut]);
 				cc.selfConj();
 				cc.ori = 0;
-				posit = cc.toFaceCube();
 			}
-			var search0 = new min2phase.Search();
-			solution = search0.solution(posit, 21, 1e9, 50, 2, lastAxisFilter, firstAxisFilter);
+			var posit = cc.toFaceCube();
+			solution = search.solution(posit, 21, 1e9, 50, 2, lastAxisFilter, firstAxisFilter);
 		} while (solution.length <= 3);
 		return solution.replace(/ +/g, ' ');
 	}
@@ -527,7 +394,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	function genZBLLMap() {
 		var isVisited = [];
 		var zbll_map = [];
-		var cc = new CubieCube;
+		var cc = new mathlib.CubieCube();
 		for (var idx = 0; idx < 27 * 24 * 24; idx++) {
 			if (isVisited[idx >> 5] >> (idx & 0x1f) & 1) {
 				continue;
@@ -538,9 +405,9 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 			if (mathlib.getNParity(cpi, 4) != mathlib.getNParity(epi, 4)) {
 				continue;
 			}
-			var co = mathlib.setNOri(cc.co, coi, 4, -3);
-			var cp = mathlib.setNPerm(cc.cp, cpi, 4, 0);
-			var ep = mathlib.setNPerm(cc.ep, epi, 4, 0);
+			var co = mathlib.setNOri([], coi, 4, -3);
+			var cp = mathlib.setNPerm([], cpi, 4, 0);
+			var ep = mathlib.setNPerm([], epi, 4, 0);
 			var zbcase = [0, 0, 0, null, 0, null];
 			for (var i = 0; i < 4; i++) {
 				zbcase[0] += cp[i] << i * 4;
@@ -565,6 +432,12 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 				}
 				isVisited[idx2 >> 5] |= 1 << (idx2 & 0x1f);
 				zbcase[4]++;
+			}
+			for (var i = 0; i < 12; i++) {
+				cc.ea[i] = ep[i] << 1;
+				if (i < 8) {
+					cc.ca[i] = co[i] << 3 | cp[i];
+				}
 			}
 			zbcase[3] = renderFacelet("DDDDDDDDDLLLLLLLLLFFFFFFFFFUUUUUUUUURRRRRRRRRBBBBBBBBB",
 				cc, [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 9, 10, 11, 45, 46, 47, 36, 37, 38]);
@@ -1049,15 +922,9 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		if (!subsetSGSs[key]) {
 			var gens = [];
 			for (var m = 0; m < moves.length; m++) {
-				var perm = [];
-				for (var i = 0; i < 54; i++) {
-					perm[i] = i + 32;
-				}
-				var moved = gsolver.rubiksCube.move(String.fromCharCode.apply(null, perm), moves[m]);
-				for (var i = 0; i < 54; i++) {
-					perm[i] = moved.charCodeAt(i) - 32;
-				}
-				gens.push(perm);
+				var cc = new mathlib.CubieCube();
+				cc.selfMoveStr(moves[m]);
+				gens.push(cc.toPerm());
 			}
 			subsetSGSs[key] = new grouplib.SchreierSims(gens);
 		}

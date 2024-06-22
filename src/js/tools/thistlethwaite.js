@@ -18,22 +18,12 @@ var thistlethwaite = (function() {
 	var solvs = [];
 
 	function move2state(moves) {
-		var perm = [];
-		for (var j = 0; j < 54; j++) {
-			perm[j] = j + 32;
-		}
-		perm = String.fromCharCode.apply(null, perm);
+		var cc = new mathlib.CubieCube();
 		moves = moves.split(' ');
 		for (var i = 0; i < moves.length; i++) {
-			if (!/^\s*$/.exec(moves[i])) {
-				perm = gsolver.rubiksCube.move(perm, (moves[i] + ' ').slice(0, 2));
-			}
+			cc.selfMoveStr(moves[i]);
 		}
-		perm = perm.split('');
-		for (var j = 0; j < 54; j++) {
-			perm[j] = perm[j].charCodeAt(0) - 32;
-		}
-		return perm;
+		return cc.toPerm();
 	}
 
 	function move2gen(moves) {
