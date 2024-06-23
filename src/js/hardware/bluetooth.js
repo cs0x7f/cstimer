@@ -678,8 +678,7 @@ var GiikerCube = execMain(function() {
 			}
 			for (var i = moveDiff - 1; i >= 0; i--) {
 				var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + " 2'".indexOf(prevMoves[i][1]);
-				mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
-				mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+				mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				deviceTime += timeOffs[i];
 				callback(curCubie.toFaceCube(), prevMoves.slice(i), [deviceTime, i == 0 ? locTime : null], deviceName + (isV2 ? '*' : ''));
 				var tmp = curCubie;
@@ -902,8 +901,7 @@ var GiikerCube = execMain(function() {
 				} else {
 					var move = moveBuffer.shift();
 					var m = "URFDLB".indexOf(move[1][0]) * 3 + " 2'".indexOf(move[1][1]);
-					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
-					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					prevMoves.unshift(move[1]);
 					if (prevMoves.length > 8)
 						prevMoves = prevMoves.slice(0, 8);
@@ -1149,8 +1147,7 @@ var GiikerCube = execMain(function() {
 					var power = [0, 2][value.getUint8(3 + i) & 1];
 					var m = axis * 3 + power;
 					DEBUG && console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(power));
-					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
-					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					curFacelet = curCubie.toFaceCube();
 					prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(power));
 					if (prevMoves.length > 8)
@@ -1333,8 +1330,7 @@ var GiikerCube = execMain(function() {
 				}
 				var m = axis * 3 + pow;
 				DEBUG && console.log('[moyucube]', 'move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
-				mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
-				mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+				mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				curFacelet = curCubie.toFaceCube();
 				prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(pow));
 				if (prevMoves.length > 8)
@@ -1588,8 +1584,7 @@ var GiikerCube = execMain(function() {
 					var axis = [4, 1, 3, 0, 2, 5][(todoMoves[i][0] - 1) >> 1];
 					var power = [0, 2][todoMoves[i][0] & 1];
 					var m = axis * 3 + power;
-					mathlib.CubieCube.EdgeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
-					mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+					mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(power));
 					prevMoves = prevMoves.slice(0, 8);
 					curFacelet = curCubie.toFaceCube();

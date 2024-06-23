@@ -605,8 +605,7 @@ var mathlib = (function() {
 		moveCube[15].init([0, 1, 11, 23, 4, 5, 18, 14], [0, 2, 4, 23, 8, 10, 12, 21, 16, 18, 7, 15]);
 		for (var a = 0; a < 18; a += 3) {
 			for (var p = 0; p < 2; p++) {
-				CubieCube.EdgeMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
-				CubieCube.CornMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
+				CubieCube.CubeMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
 			}
 		}
 		return moveCube;
@@ -621,17 +620,14 @@ var mathlib = (function() {
 		var rotCube = [];
 		for (var i = 0; i < 24; i++) {
 			rotCube[i] = new CubieCube().init(c.ca, c.ea);
-			CubieCube.CornMult(c, u4, d);
-			CubieCube.EdgeMult(c, u4, d);
+			CubieCube.CubeMult(c, u4, d);
 			c.init(d.ca, d.ea);
 			if (i % 4 == 3) {
-				CubieCube.CornMult(c, f2, d);
-				CubieCube.EdgeMult(c, f2, d);
+				CubieCube.CubeMult(c, f2, d);
 				c.init(d.ca, d.ea);
 			}
 			if (i % 8 == 7) {
-				CubieCube.CornMult(c, urf, d);
-				CubieCube.EdgeMult(c, urf, d);
+				CubieCube.CubeMult(c, urf, d);
 				c.init(d.ca, d.ea);
 			}
 		}
@@ -652,8 +648,7 @@ var mathlib = (function() {
 		}
 		for (var i = 0; i < 24; i++) {
 			for (var j = 0; j < 24; j++) {
-				CubieCube.CornMult(rotCube[i], rotCube[j], c);
-				CubieCube.EdgeMult(rotCube[i], rotCube[j], c);
+				CubieCube.CubeMult(rotCube[i], rotCube[j], c);
 				var k = rotHash.indexOf(c.hashCode());
 				rotMult[i][j] = k;
 				rotMulI[k][j] = i;
@@ -661,10 +656,8 @@ var mathlib = (function() {
 		}
 		for (var i = 0; i < 24; i++) {
 			for (var j = 0; j < 18; j++) {
-				CubieCube.CornMult(rotCube[rotMulI[0][i]], CubieCube.moveCube[j], c);
-				CubieCube.EdgeMult(rotCube[rotMulI[0][i]], CubieCube.moveCube[j], c);
-				CubieCube.CornMult(c, rotCube[i], d);
-				CubieCube.EdgeMult(c, rotCube[i], d);
+				CubieCube.CubeMult(rotCube[rotMulI[0][i]], CubieCube.moveCube[j], c);
+				CubieCube.CubeMult(c, rotCube[i], d);
 				var k = movHash.indexOf(d.hashCode());
 				rotMulM[i][j] = k;
 			}
@@ -749,8 +742,7 @@ var mathlib = (function() {
 		if (axis != -1) {
 			m = axis * 3 + pow % 4 - 1
 			m = CubieCube.rotMulM[this.ori][m];
-			CubieCube.EdgeMult(this, CubieCube.moveCube[m], tmpCubie);
-			CubieCube.CornMult(this, CubieCube.moveCube[m], tmpCubie);
+			CubieCube.CubeMult(this, CubieCube.moveCube[m], tmpCubie);
 			this.init(tmpCubie.ca, tmpCubie.ea);
 			return m;
 		}
@@ -759,8 +751,7 @@ var mathlib = (function() {
 			axis >>= 1;
 			m = (axis + 3) % 6 * 3 + pow % 4 - 1
 			m = CubieCube.rotMulM[this.ori][m];
-			CubieCube.EdgeMult(this, CubieCube.moveCube[m], tmpCubie);
-			CubieCube.CornMult(this, CubieCube.moveCube[m], tmpCubie);
+			CubieCube.CubeMult(this, CubieCube.moveCube[m], tmpCubie);
 			this.init(tmpCubie.ca, tmpCubie.ea);
 			var rot = [3, 15, 17, 1, 11, 23][axis];
 			for (var i = 0; i < pow; i++) {
@@ -776,12 +767,10 @@ var mathlib = (function() {
 			var m1 = axis * 3 + (4 - pow) % 4 - 1;
 			var m2 = (axis + 3) % 6 * 3 + pow % 4 - 1;
 			m1 = CubieCube.rotMulM[this.ori][m1];
-			CubieCube.EdgeMult(this, CubieCube.moveCube[m1], tmpCubie);
-			CubieCube.CornMult(this, CubieCube.moveCube[m1], tmpCubie);
+			CubieCube.CubeMult(this, CubieCube.moveCube[m1], tmpCubie);
 			this.init(tmpCubie.ca, tmpCubie.ea);
 			m2 = CubieCube.rotMulM[this.ori][m2];
-			CubieCube.EdgeMult(this, CubieCube.moveCube[m2], tmpCubie);
-			CubieCube.CornMult(this, CubieCube.moveCube[m2], tmpCubie);
+			CubieCube.CubeMult(this, CubieCube.moveCube[m2], tmpCubie);
 			this.init(tmpCubie.ca, tmpCubie.ea);
 			var rot = [3, 15, 17, 1, 11, 23][axis];
 			for (var i = 0; i < pow; i++) {
@@ -804,10 +793,8 @@ var mathlib = (function() {
 			conj = this.ori;
 		}
 		if (conj != 0) {
-			CubieCube.CornMult(CubieCube.rotCube[conj], this, tmpCubie);
-			CubieCube.EdgeMult(CubieCube.rotCube[conj], this, tmpCubie);
-			CubieCube.CornMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
-			CubieCube.EdgeMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
+			CubieCube.CubeMult(CubieCube.rotCube[conj], this, tmpCubie);
+			CubieCube.CubeMult(tmpCubie, CubieCube.rotCube[CubieCube.rotMulI[0][conj]], this);
 			this.ori = CubieCube.rotMulI[this.ori][conj] || 0;
 		}
 	}

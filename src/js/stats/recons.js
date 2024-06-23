@@ -88,8 +88,7 @@ var recons = execMain(function() {
 			var curProg = cubeutil.getProgress(c, method);
 			if (curProg < progress) {
 				var transCubie = new mathlib.CubieCube();
-				mathlib.CubieCube.EdgeMult(startCubieI, c, transCubie);
-				mathlib.CubieCube.CornMult(startCubieI, c, transCubie);
+				mathlib.CubieCube.CubeMult(startCubieI, c, transCubie);
 				data[--progress] = [tsStart, tsFirst, c.tstamp, cnter.moveCnt, transCubie, stepMoves, cnter.moves.slice()];
 				while (progress > curProg) {
 					data[--progress] = [c.tstamp, c.tstamp, c.tstamp, 0, new mathlib.CubieCube(), [], []];

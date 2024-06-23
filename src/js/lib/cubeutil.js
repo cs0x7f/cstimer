@@ -436,8 +436,7 @@ var cubeutil = (function() {
 				}
 				m = mathlib.CubieCube.rotMulM[c.ori][(axis + 3) % 6 * 3 + pow - 1];
 			}
-			mathlib.CubieCube.EdgeMult(c, mathlib.CubieCube.moveCube[m], d);
-			mathlib.CubieCube.CornMult(c, mathlib.CubieCube.moveCube[m], d);
+			mathlib.CubieCube.CubeMult(c, mathlib.CubieCube.moveCube[m], d);
 			c.init(d.ca, d.ea);
 		}
 		return reqFace ? c.toFaceCube() : c;

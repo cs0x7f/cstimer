@@ -40,8 +40,7 @@ var scrHinter = execMain(function(CubieCube) {
 		for (var i = 0; i < seq.length; i++) {
 			var a = seq[i][0] * 3;
 			for (pow = 0; pow < 3; pow++) {
-				CubieCube.EdgeMult(c, CubieCube.moveCube[a + pow], d);
-				CubieCube.CornMult(c, CubieCube.moveCube[a + pow], d);
+				CubieCube.CubeMult(c, CubieCube.moveCube[a + pow], d);
 				if (d.isEqual(state)) {
 					next = (pow == seq[i][2] - 1) ? i + 1 : i;
 					break;
@@ -51,8 +50,7 @@ var scrHinter = execMain(function(CubieCube) {
 				break;
 			}
 			var m = seq[i][0] * 3 + seq[i][2] - 1;
-			CubieCube.EdgeMult(c, CubieCube.moveCube[m], d);
-			CubieCube.CornMult(c, CubieCube.moveCube[m], d);
+			CubieCube.CubeMult(c, CubieCube.moveCube[m], d);
 			c.init(d.ca, d.ea);
 		}
 		if (next == 99) {
@@ -94,8 +92,7 @@ var scrHinter = execMain(function(CubieCube) {
 			var stateInv = new CubieCube();
 			stateInv.invFrom(state);
 			var toSolve = new CubieCube();
-			CubieCube.EdgeMult(stateInv, scrState, toSolve);
-			CubieCube.CornMult(stateInv, scrState, toSolve);
+			CubieCube.CubeMult(stateInv, scrState, toSolve);
 			genScr = scramble_333.genFacelet(toSolve.toFaceCube());
 			genScr = cubeutil.parseScramble(genScr, "URFDLB");
 			toMoveFix = checkInSeq(state, genState, genScr);
@@ -375,8 +372,7 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		curRawState = facelet;
 		curRawCubie.fromFacelet(curRawState);
-		CubieCube.EdgeMult(solvedStateInv, curRawCubie, curCubie);
-		CubieCube.CornMult(solvedStateInv, curRawCubie, curCubie);
+		CubieCube.CubeMult(solvedStateInv, curRawCubie, curCubie);
 		curState = curCubie.toFaceCube();
 
 		if (prevMoves.length > 0) {
@@ -399,8 +395,7 @@ var giikerutil = execMain(function(CubieCube) {
 		giikerErrorDetect();
 		var retState = curState;
 		if (hackedSolvedCubieInv) {
-			CubieCube.EdgeMult(hackedSolvedCubieInv, curCubie, hackedCubie);
-			CubieCube.CornMult(hackedSolvedCubieInv, curCubie, hackedCubie);
+			CubieCube.CubeMult(hackedSolvedCubieInv, curCubie, hackedCubie);
 			retState = hackedCubie.toFaceCube();
 		}
 		callback(retState, prevMoves, lastTs);
@@ -651,8 +646,7 @@ var giikerutil = execMain(function(CubieCube) {
 			DEBUG && console.log('[bluetooth] scramble equal, start hack!');
 			hackedSolvedCubieInv = new mathlib.CubieCube();
 			hackedCubie.invFrom(curCubie);
-			CubieCube.EdgeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
-			CubieCube.CornMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
+			CubieCube.CubeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			moveTsStart = moveTsList.length;
 			callback(targetCubie.toFaceCube(), [], [null, $.now()]);
 		}
