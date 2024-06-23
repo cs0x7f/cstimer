@@ -1635,7 +1635,7 @@ var GiikerCube = execMain(function() {
 		function clear() {
 			var result = Promise.resolve();
 			if (_chrct_cube) {
-				_chrct_cube.removeEventListener('characteristicvaluechanged', onStateChanged);
+				_chrct_cube.removeEventListener('characteristicvaluechanged', onCubeEvent);
 				result = _chrct_cube.stopNotifications().catch($.noop);
 				_chrct_cube = null;
 			}
