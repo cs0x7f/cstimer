@@ -1560,6 +1560,12 @@ var GiikerCube = execMain(function() {
 				prevCubie.fromFacelet(newFacelet);
 				batteryLevel = msg[35];
 				giikerutil.updateBattery([batteryLevel, _deviceName]);
+				if (newFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+					var rst = kernel.getProp('giiRST');
+					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+						giikerutil.markSolved();
+					}
+				}
 			} else if (opcode == 0x3) { // state change
 				sendMessage(msg.slice(2, 7));
 				// check timestamps
