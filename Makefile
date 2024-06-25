@@ -52,6 +52,7 @@ scramble/mgmlsll.js \
 scramble/kilominx.js \
 scramble/scramble_fto.js \
 scramble/redi.js \
+scramble/slide.js \
 scramble/utilscramble.js \
 lib/storage.js \
 stats/timestat.js \
@@ -133,11 +134,11 @@ scramble/mgmlsll.js \
 scramble/kilominx.js \
 scramble/scramble_fto.js \
 scramble/redi.js \
+scramble/slide.js \
 scramble/utilscramble.js \
 tools/tools.js \
 tools/image.js \
 tools/cross.js \
-tools/gsolver.js \
 worker.js)
 
 cstimer = $(dest)/js/cstimer.js

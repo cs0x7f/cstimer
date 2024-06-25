@@ -29,6 +29,7 @@ importScripts(
 	'scramble/kilominx.js',
 	'scramble/scramble_fto.js',
 	'scramble/redi.js',
+	'scramble/slide.js',
 	'scramble/utilscramble.js',
 	'tools/tools.js',
 	'tools/image.js',
