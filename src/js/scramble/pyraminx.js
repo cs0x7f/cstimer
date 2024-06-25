@@ -69,9 +69,9 @@
 		mathlib.acycle(arr, movePieces[m]);
 	}
 
-	var eocoord = new mathlib.coord('o', 6, -2);
-	var epcoord = new mathlib.coord('p', 6, -1);
-	var cocoord = new mathlib.coord('o', 4, 3);
+	var eocoord = new mathlib.Coord('o', 6, -2);
+	var epcoord = new mathlib.Coord('p', 6, -1);
+	var cocoord = new mathlib.Coord('o', 4, 3);
 
 	function oriMove(a, c) {
 		var edgeOri = eocoord.set([], a & 0x1f);
@@ -571,7 +571,7 @@ var mpyr = (function() {
 			idx[i] = p1e1w2Move[1][phase1e1w2Hash(i, mc)];
 		}
 		idx[6] = mc.getCosetIdx();
-		var sol1 = solv1.solve(idx, 14);
+		var sol1 = solv1.solve(idx, 0, 14);
 		tt1 = $.now() - tt1;
 		for (var i = 0; i < sol1.length; i++) {
 			sol1[i] = phase1Moves[sol1[i][0]] + sol1[i][1];
@@ -580,7 +580,7 @@ var mpyr = (function() {
 		var p2epct = p2epctMoves[1][phase2EpCtHash(mc)];
 		var p2eoco = p2eocoMoves[1][phase2EoCoHash(mc)];
 		var tt2 = $.now();
-		var sol2 = solv2.solve([p2epct, p2eoco], 20);
+		var sol2 = solv2.solve([p2epct, p2eoco], 0, 20);
 		tt2 = $.now() - tt2;
 		for (var i = 0; i < sol2.length; i++) {
 			sol2[i] = phase2Moves[sol2[i][0]] + sol2[i][1];

@@ -7,10 +7,10 @@
 	move: 0=U, 1=R U R', 2=F' U F
 	*/
 
-	var epcord = new mathlib.coord('p', 6, -1);
-	var eocord = new mathlib.coord('o', 6, -2);
-	var cpcord = new mathlib.coord('p', 6, -1);
-	var cocord = new mathlib.coord('o', 6, -3);
+	var epcord = new mathlib.Coord('p', 6, -1);
+	var eocord = new mathlib.Coord('o', 6, -2);
+	var cpcord = new mathlib.Coord('p', 6, -1);
+	var cocord = new mathlib.Coord('o', 6, -3);
 
 	function eMove(idx, m) {
 		var perm = epcord.set([], idx >> 5);

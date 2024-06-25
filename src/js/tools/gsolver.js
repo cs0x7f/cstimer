@@ -1,4 +1,4 @@
-execMain(function() {
+(function() {
 "use strict";
 
 	var curScramble;
@@ -1143,7 +1143,7 @@ execMain(function() {
 			}
 			solvedState = state;
 			drawCube(ctx, solvedState);
-			params = pat3x3gen.calcPattern(solvedState, solvedState);
+			params = pat3x3.calcPattern(solvedState, solvedState);
 			var sizeH = params[0][0] * params[1][0] + params[0][1] * params[1][1];
 			var indexH = 43252003274489856000 / sizeH;
 			subsetInfo.html(
@@ -1331,4 +1331,4 @@ execMain(function() {
 			tools.regTool('333udf', TOOLS_SOLVERS + '>3x3x3 General', execFunc.bind(null, '333udf'));
 		});
 	});
-});
+})();

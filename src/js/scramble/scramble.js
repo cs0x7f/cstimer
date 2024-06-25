@@ -61,6 +61,9 @@ var scrMgr = (function(rn, rndEl) {
 				extra[type] = filter_and_probs;
 			}
 		}
+		if (type == '333') {
+			scramblers['333oh'] = scramblers['333ft'] = callback;
+		}
 		return regScrambler;
 	}
 

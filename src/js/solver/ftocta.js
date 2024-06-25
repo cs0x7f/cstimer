@@ -454,7 +454,7 @@ var ftosolver = (function() {
 
 		var p1sols = [];
 
-		var sol1s = solv1.solveMulti(idxs, 12, function(sol, sidx) {
+		var sol1s = solv1.solveMulti(idxs, 0, 12, function(sol, sidx) {
 			var param = phase1ProcSol(sol.slice(), syms[sidx].slice(), fc);
 			p1sols.push(param);
 			return p1sols.length >= N_PHASE1_SOLS;
@@ -478,7 +478,7 @@ var ftosolver = (function() {
 	var p2symMap = [];
 	var ufStd2Raw = [];
 	var ufRaw2Std = [];
-	var p2ufCoord = new mathlib.coord('c', 12, [3, 3, 3, 3]);
+	var p2ufCoord = new mathlib.Coord('c', 12, [3, 3, 3, 3]);
 
 	var cornExFacelets = [
 		[U + 2, R + 2, F + 2, L + 2],
@@ -644,7 +644,7 @@ var ftosolver = (function() {
 				getPhase2ufIdx(solvInfos[i][0].uf)
 			]);
 		}
-		var sol2s = solv2.solveMulti(idxs, 25);
+		var sol2s = solv2.solveMulti(idxs, 0, 25);
 		var sol = sol2s[0];
 		var src = sol2s[1];
 		var solvInfo = solvInfos[src];
@@ -675,9 +675,7 @@ var ftosolver = (function() {
 		mathlib.createPrun(p3ufPrun, 0, 11520, 14, p3ufMoves[0], 4, 2);
 		ckmv3 = genCkmv(phase3Moves);
 
-		solv3 = new mathlib.Searcher(function(idx) {
-			return idx[0] == 0 && idx[1] == 0;
-		}, function(idx) {
+		solv3 = new mathlib.Searcher(null, function(idx) {
 			return Math.max(
 				mathlib.getPruning(p3epPrun, idx[0]),
 				mathlib.getPruning(p3ufPrun, idx[1])
@@ -697,7 +695,7 @@ var ftosolver = (function() {
 		var p3epidx = p3epMoves[1][phase3EdgeHash(fc.ep)];
 		var p3ufidx = p3ufMoves[1][phase3CcufHash(fc)];
 
-		var sol = solv3.solve([p3epidx, p3ufidx], 25);
+		var sol = solv3.solve([p3epidx, p3ufidx], 0, 25);
 
 		for (var i = 0; i < sol.length; i++) {
 			var move = phase3Moves[sol[i][0]] + sol[i][1];

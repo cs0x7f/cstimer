@@ -13,7 +13,7 @@ var scramble_222 = (function(rn) {
 		[1, 0, 1, 0, 3]
 	];
 
-	var oriCoord = new mathlib.coord('o', 7, -3);
+	var oriCoord = new mathlib.Coord('o', 7, -3);
 
 	function doPermMove(arr, m) {
 		mathlib.acycle(arr, movePieces[m]);

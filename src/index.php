@@ -16,6 +16,7 @@
   <script type="text/javascript" src="js/lib/mathlib.js"></script>
   <script type="text/javascript" src="js/lib/grouplib.js"></script>
   <script type="text/javascript" src="js/lib/poly3dlib.js"></script>
+  <script type="text/javascript" src="js/lib/pat3x3.js"></script>
   <script type="text/javascript" src="js/lib/sbtree.js"></script>
   <script type="text/javascript" src="js/lib/sqlfile.js"></script>
   <script type="text/javascript" src="js/lib/tdconverter.js"></script>

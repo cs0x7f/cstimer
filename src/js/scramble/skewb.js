@@ -56,10 +56,10 @@
 		[1, 3, 2]
 	];
 
-	var ctcord = new mathlib.coord('p', 6, -1);
-	var cpcord = new mathlib.coord('p', 4, -1);
-	var ftcord = new mathlib.coord('o', 4, 3);
-	var twcord = new mathlib.coord('o', 4, -3);
+	var ctcord = new mathlib.Coord('p', 6, -1);
+	var cpcord = new mathlib.Coord('p', 4, -1);
+	var ftcord = new mathlib.Coord('o', 4, 3);
+	var twcord = new mathlib.Coord('o', 4, -3);
 
 	function ctcpMove(idx, m) {
 		var corner = cpcord.set([], idx % 12);

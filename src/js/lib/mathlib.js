@@ -211,7 +211,7 @@ var mathlib = (function() {
 
 	// type: 'p' (permutation), 'o' (orientation), 'c' (combination)
 	// evenbase: base for ori, sign for even parity, cnts for combination
-	function coord(type, length, evenbase) {
+	function Coord(type, length, evenbase) {
 		this.length = length;
 		this.evenbase = evenbase;
 		if (type == 'p') {
@@ -302,7 +302,7 @@ var mathlib = (function() {
 	function createMove(moveTable, size, doMove, N_MOVES) {
 		N_MOVES = N_MOVES || 6;
 		if ($.isArray(doMove)) {
-			var cord = new coord(doMove[1], doMove[2], doMove[3]);
+			var cord = new Coord(doMove[1], doMove[2], doMove[3]);
 			doMove = doMove[0];
 			for (var j = 0; j < N_MOVES; j++) {
 				moveTable[j] = [];
@@ -928,43 +928,64 @@ var mathlib = (function() {
 		}
 	}
 
-	//state_params: [[init, doMove, size, [maxd], [N_INV]], [...]...]
-	function Solver(N_MOVES, N_POWER, state_params) {
-		this.N_STATES = state_params.length;
+	// stateParams: [[init, doMove, size, [maxd], [N_INV]], [...]...]
+	function Solver(N_MOVES, N_POWER, stateParams) {
+		this.N_STATES = stateParams.length;
 		this.N_MOVES = N_MOVES;
 		this.N_POWER = N_POWER;
-		this.state_params = state_params;
+		this.stateParams = stateParams;
+		this.coords = [];
+		for (var i = 0; i < this.N_STATES; i++) {
+			var doMove = stateParams[i][1];
+			if ($.isArray(doMove)) {
+				this.coords[i] = new Coord(doMove[1], doMove[2], doMove[3]);
+			}
+		}
 		this.inited = false;
 	}
 
 	var _ = Solver.prototype;
 
+	_.init = function() {
+		if (this.inited) {
+			return;
+		}
+		this.move = [];
+		this.prun = [];
+		for (var i = 0; i < this.N_STATES; i++) {
+			var stateParam = this.stateParams[i];
+			var init = stateParam[0];
+			var doMove = stateParam[1];
+			var size = stateParam[2];
+			var maxd = stateParam[3];
+			var N_INV = stateParam[4];
+			this.move[i] = [];
+			this.prun[i] = [];
+			createMove(this.move[i], size, doMove, this.N_MOVES);
+			createPrun(this.prun[i], init, size, maxd, this.move[i], this.N_MOVES, this.N_POWER, N_INV);
+		}
+		this.solv = new Searcher(null, function(state) {
+			var prun = 0;
+			for (var i = 0; i < this.N_STATES; i++) {
+				prun = Math.max(prun, getPruning(this.prun[i], state[i]));
+			}
+			return prun;
+		}.bind(this), function(state, move) {
+			for (var i = 0; i < this.N_STATES; i++) {
+				state[i] = this.move[i][move][state[i]];
+			}
+			return state;
+		}.bind(this), this.N_MOVES, this.N_POWER);
+		this.inited = true;
+	}
+
 	_.search = function(state, minl, MAXL) {
 		MAXL = (MAXL || 99) + 1;
 		if (!this.inited) {
-			this.move = [];
-			this.prun = [];
-			for (var i = 0; i < this.N_STATES; i++) {
-				var state_param = this.state_params[i];
-				var init = state_param[0];
-				var doMove = state_param[1];
-				var size = state_param[2];
-				var maxd = state_param[3];
-				var N_INV = state_param[4];
-				this.move[i] = [];
-				this.prun[i] = [];
-				createMove(this.move[i], size, doMove, this.N_MOVES);
-				createPrun(this.prun[i], init, size, maxd, this.move[i], this.N_MOVES, this.N_POWER, N_INV);
-			}
-			this.inited = true;
+			this.init();
 		}
-		this.sol = [];
-		for (var maxl = minl; maxl < MAXL; maxl++) {
-			if (this.idaSearch(state, maxl, -1)) {
-				break;
-			}
-		}
-		return maxl == MAXL ? null : this.sol.reverse();
+		this.sol = this.solv.solve(state, minl, MAXL);
+		return this.sol;
 	};
 
 	_.toStr = function(sol, move_map, power_map) {
@@ -975,36 +996,11 @@ var mathlib = (function() {
 		return ret.join(' ').replace(/ +/g, ' ');
 	};
 
-	_.idaSearch = function(state, maxl, lm) {
-		var N_STATES = this.N_STATES;
-		for (var i = 0; i < N_STATES; i++) {
-			if (getPruning(this.prun[i], state[i]) > maxl) {
-				return false;
-			}
-		}
-		if (maxl == 0) {
-			return true;
-		}
-		var offset = state[0] + maxl + lm + 1;
-		for (var move0 = 0; move0 < this.N_MOVES; move0++) {
-			var move = (move0 + offset) % this.N_MOVES;
-			if (move == lm) {
-				continue;
-			}
-			var cur_state = state.slice();
-			for (var power = 0; power < this.N_POWER; power++) {
-				for (var i = 0; i < N_STATES; i++) {
-					cur_state[i] = this.move[i][move][cur_state[i]];
-				}
-				if (this.idaSearch(cur_state, maxl - 1, move)) {
-					this.sol.push([move, power]);
-					return true;
-				}
-			}
-		}
-		return false;
-	};
-
+	// ida search algorithm
+	// isSolved(state) -> boolean, in case isSolved = null, getPrun(idx) == 0 is used
+	// getPrun(state) -> int
+	// doMove(state) -> newState
+	// if ckmv[last_move] >> cur_move & 1, cur_move is skipped
 	function Searcher(isSolved, getPrun, doMove, N_AXIS, N_POWER, ckmv) {
 		this.isSolved = isSolved || function() { return true; };
 		this.getPrun = getPrun;
@@ -1016,15 +1012,15 @@ var mathlib = (function() {
 
 	_ = Searcher.prototype;
 
-	_.solve = function(idx, maxl, callback) {
-		var sols = this.solveMulti([idx], maxl, callback);
+	_.solve = function(idx, minl, MAXL, callback) {
+		var sols = this.solveMulti([idx], minl, MAXL, callback);
 		return sols == null ? null : sols[0];
 	};
 
-	_.solveMulti = function(idxs, maxl, callback) {
+	_.solveMulti = function(idxs, minl, MAXL, callback) {
 		this.callback = callback || function() { return true; };
 		var sol = [];
-		out: for (var l = 0; l <= maxl; l++) {
+		out: for (var l = minl; l <= MAXL; l++) {
 			for (var s = 0; s < idxs.length; s++) {
 				this.sidx = s;
 				if (this.idaSearch(idxs[s], l, -1, sol) == 0) {
@@ -1051,7 +1047,7 @@ var mathlib = (function() {
 			if (this.ckmv[lm] >> axis & 1) {
 				continue;
 			}
-			var idx1 = idx;
+			var idx1 = $.isArray(idx) ? idx.slice() : idx;
 			for (var pow = 0; pow < this.N_POWER; pow++) {
 				idx1 = this.doMove(idx1, axis);
 				if (idx1 == null) {
@@ -1500,7 +1496,7 @@ var mathlib = (function() {
 		setNPerm: setNPerm,
 		getNPerm: getNPerm,
 		getNParity: getNParity,
-		coord: coord,
+		Coord: Coord,
 		createMove: createMove,
 		createMoveHash: createMoveHash,
 		edgeMove: edgeMove,

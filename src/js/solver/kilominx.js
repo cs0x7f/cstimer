@@ -458,7 +458,7 @@ var klmsolver = (function() {
 			var val1 = phase1Coord.get(kc2, 3);
 			idx1s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
 		}
-		var sol1s = solv1.solveMulti(idx1s, 9);
+		var sol1s = solv1.solveMulti(idx1s, 0, 9);
 		var ksym = sol1s[1] * 5;
 		var sol1 = sol1s[0];
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
@@ -482,7 +482,7 @@ var klmsolver = (function() {
 			var val1 = phase2Coord.get(kc2, 3);
 			idx2s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
 		}
-		var sol2s = solv2.solveMulti(idx2s, 14);
+		var sol2s = solv2.solveMulti(idx2s, 0, 14);
 		var ksym = sol2s[1];
 		var sol2 = sol2s[0];
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
@@ -504,7 +504,7 @@ var klmsolver = (function() {
 		var val2 = phase3Coord.get(kc1);
 		idx = [(val0[0] * 24 + val0[1]) * 81 + val0[2], (val1[0] * 24 + val1[1]) * 81 + val1[2], (val2[0] * 24 + val2[1]) * 81 + val2[2]];
 		tt = $.now();
-		var sol3 = solv3.solve(idx, 14);
+		var sol3 = solv3.solve(idx, 0, 14);
 		DEBUG && console.log('[kilo] Phase3 in ', $.now() - tt, 'ms', sol3.length, 'move(s)');
 		for (var i = 0; i < sol3.length; i++) {
 			var move = sol3[i];

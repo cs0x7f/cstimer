@@ -947,6 +947,108 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		return search.solution(facelet, 21, 1e9, 50, 0);
 	}
 
+	/*
+
+	// gens: pattern (string) or [perm1, perm2, ...]
+	// assert <iniGens> >= <endGens> <> {e}
+	function CommonStep(iniGens, endGens, imgInfo, names) {
+		this.iniGens = iniGens;
+		this.endGens = endGens;
+		this.imgInfo = imgInfo;
+		this.names = names || [];
+	}
+
+	CommonStep.prototype.init = function() {
+		if (this.iniG) {
+			return;
+		}
+		this.iniG = $.isArray(this.iniGens) ? new grouplib.SchreierSims(this.iniGens) : pat3x3.genPatternGroup(this.iniGens);
+		this.endG = $.isArray(this.endGens) ? new grouplib.SchreierSims(this.endGens) : pat3x3.genPatternGroup(this.endGens);
+		var genAUF = mathlib.CubieCube.moveCube[0].toPerm();
+		this.endG.extend([genAUF]);
+		this.iniG.extend([genAUF]);
+		var cosets = this.iniG.listCoset(this.endG);
+		var probs = [];
+		for (var i = 0; i < cosets.length; i++) {
+			cosets[i] = this.endG.minElem(grouplib.permInv(cosets[i]));
+		}
+		cosets.sort(grouplib.permCmp);
+		var visited = new Set();
+		this.movePerm = [];
+		var uniqCosets = [];
+		for (var i = 0; i < cosets.length; i++) { // handle <U> equivalence
+			var coset = cosets[i];
+			if (visited.has(coset.join(','))) {
+				continue;
+			}
+			visited.add(coset.join(','));
+			var idx = uniqCosets.length;
+			this.names[idx] = this.names[idx] || (idx + 1 + "");
+			probs[idx] = 1;
+			uniqCosets.push(coset);
+			for (var m = 0; m < 3; m++) {
+				this.movePerm[m] = this.movePerm[m] || mathlib.CubieCube.moveCube[m].toPerm();
+				var key = this.endG.minElem(grouplib.permMult(this.movePerm[m], coset)).join(',');
+				if (!visited.has(key)) {
+					visited.add(key);
+					probs[idx]++;
+				}
+			}
+		}
+		this.cosets = uniqCosets;
+		this.probs = probs;
+		DEBUG && console.log('[scramble_333] common step filter init', this);
+	}
+
+	CommonStep.prototype.getScramble = function(type, length, cases, neut) { // currently not support neut
+		this.init();
+		var caze = scrMgr.fixCase(cases, this.probs);
+		var perm = grouplib.permMult(this.cosets[caze], this.endG.rndElem());
+		var auf = mathlib.rn(4);
+		if (auf != 3) {
+			perm = grouplib.permMult(this.movePerm[auf], perm);
+		}
+		var posit = "";
+		for (var i = 0; i < perm.length; i++) {
+			posit += mathlib.SOLVED_FACELET.charAt(perm[i]);
+		}
+		return search.solution(posit, 21, 1e9, 50, 2);
+	}
+
+	CommonStep.prototype.getImage = function(caze, canvas) {
+		this.init();
+		var perm = this.cosets[caze];
+		var posit = "";
+		var llIdx = [0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 9, 10, 11, 45, 46, 47, 36, 37, 38];
+		var target = "DDDDDDDDDLLLLLLLLLFFFFFFFFFUUUUUUUUURRRRRRRRRBBBBBBBBB";
+		if (this.imgInfo) {
+			target = this.imgInfo[1];
+		} else if (!$.isArray(this.endGens)) {
+			target = this.endGens;
+		}
+		for (var i = 0; i < llIdx.length; i++) {
+			posit += target.charAt(perm[llIdx[i]]);
+		}
+		if (!canvas) {
+			return [posit, null, this.names[caze]];
+		}
+		image.llImage.drawImage(posit, null, canvas);
+	}
+
+	CommonStep.prototype.regScr = function(type) {
+		scrMgr.reg(type, this.getScramble.bind(this), this.getExtra.bind(this));
+	}
+
+	CommonStep.prototype.getExtra = function(idx) {
+		this.init();
+		return [this.names, this.probs, this.getImage.bind(this)][idx];
+	}
+
+	var CLL_SOLVED = "DGDGDGDGDLGLLLLLLLFGFFFFFFFUUUUUUUUURGRRRRRRRBGBBBBBBB";
+	var F2L_SOLVED = "GGGGDGGGGGGGLLLLLLGGGFFFFFFUUUUUUUUUGGGRRRRRRGGGBBBBBB";
+	new CommonStep(F2L_SOLVED, CLL_SOLVED).regScr('cll');
+	*/
+
 	scrMgr.reg('333', getRandomScramble)
 		('333fm', getFMCScramble)
 		('edges', getEdgeScramble)

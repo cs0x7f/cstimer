@@ -115,7 +115,7 @@ var redi = (function() {
 			}
 		}
 
-		cornCoord = new mathlib.coord('o', 4, 3);
+		cornCoord = new mathlib.Coord('o', 4, 3);
 		mathlib.createMove(cornMove, 81, phase1CornMove, 8);
 		mathlib.createMove(edgeCombMove, 495, phase1EdgeCombMove, 8);
 
@@ -141,7 +141,7 @@ var redi = (function() {
 	function solveRedi(ep, co) {
 		var p1eidx = getPhase1EdgeComb(ep);
 		var p1cidx = cornCoord.get(co.slice(4));
-		var sol1 = solv1.solve([p1cidx, p1eidx[0] * 24 + p1eidx[1]], 15);
+		var sol1 = solv1.solve([p1cidx, p1eidx[0] * 24 + p1eidx[1]], 0, 15);
 
 		for (var i = 0; i < sol1.length; i++) {
 			var axis = sol1[i][0];

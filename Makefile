@@ -19,6 +19,7 @@ lib/isaac.js \
 lib/mathlib.js \
 lib/grouplib.js \
 lib/poly3dlib.js \
+lib/pat3x3.js \
 lib/sbtree.js \
 lib/sqlfile.js \
 lib/tdconverter.js \
@@ -110,6 +111,7 @@ lib/isaac.js \
 lib/mathlib.js \
 lib/grouplib.js \
 lib/poly3dlib.js \
+lib/pat3x3.js \
 lib/min2phase.js \
 lib/cubeutil.js \
 solver/ftocta.js \
@@ -135,6 +137,7 @@ scramble/utilscramble.js \
 tools/tools.js \
 tools/image.js \
 tools/cross.js \
+tools/gsolver.js \
 worker.js)
 
 cstimer = $(dest)/js/cstimer.js
