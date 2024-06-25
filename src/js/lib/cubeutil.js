@@ -48,9 +48,9 @@ var cubeutil = (function() {
 			return ret;
 		}
 
-		var cubeRotY = [2, 5, 8, 1, 4, 7, 0, 3, 6, 18, 19, 20, 21, 22, 23, 24, 25, 26, 36, 37, 38, 39, 40, 41, 42, 43, 44, 33, 30, 27, 34, 31, 28, 35, 32, 29, 45, 46, 47, 48, 49, 50, 51, 52, 53, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-		var cubeRotX = [53, 52, 51, 50, 49, 48, 47, 46, 45, 11, 14, 17, 10, 13, 16, 9, 12, 15, 0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24, 25, 26, 42, 39, 36, 43, 40, 37, 44, 41, 38, 35, 34, 33, 32, 31, 30, 29, 28, 27];
-		var cubeRotZ = [11, 14, 17, 10, 13, 16, 9, 12, 15, 29, 32, 35, 28, 31, 34, 27, 30, 33, 20, 23, 26, 19, 22, 25, 18, 21, 24, 38, 41, 44, 37, 40, 43, 36, 39, 42, 2, 5, 8, 1, 4, 7, 0, 3, 6, 51, 48, 45, 52, 49, 46, 53, 50, 47];
+		var cubeRotY = mathlib.CubieCube.rotCube[3].toPerm(); mathlib.circle(cubeRotY, 13, 49, 40, 22);
+		var cubeRotX = mathlib.CubieCube.rotCube[15].toPerm(); mathlib.circle(cubeRotX, 4, 22, 31, 49);
+		var cubeRotZ = mathlib.CubieCube.rotCube[17].toPerm(); mathlib.circle(cubeRotZ, 4, 40, 31, 13);
 
 		var ret = [];
 		var cur = [];

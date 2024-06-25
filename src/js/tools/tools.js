@@ -64,16 +64,6 @@ var tools = (function() {
 			return "666";
 		} else if (/^(777(si|[sp]|wca)?|7edge)$/.exec(scrambleType)) {
 			return "777";
-		} else if (/^888$/.exec(scrambleType)) {
-			return "888";
-		} else if (/^999$/.exec(scrambleType)) {
-			return "999";
-		} else if (/^101010$/.exec(scrambleType)) {
-			return "101010";
-		} else if (/^111111$/.exec(scrambleType)) {
-			return "111111";
-		} else if (/^cubennn$/.exec(scrambleType)) {
-			return "cubennn";
 		} else if (/^pyr(s?[om]|l4e|nb|4c)$/.exec(scrambleType)) {
 			return "pyr";
 		} else if (/^skb(s?o|nb)?$/.exec(scrambleType)) {
