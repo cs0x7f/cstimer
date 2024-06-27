@@ -483,7 +483,7 @@ var klmsolver = (function() {
 			idx2s.push([val0[0] * 27 * 6 + val0[1] * 27 + val0[2], val1[0] * 27 * 6 + val1[1] * 27 + val1[2]]);
 		}
 		var sol2s = solv2.solveMulti(idx2s, 0, 14);
-		var ksym = sol2s[1];
+		ksym = sol2s[1];
 		var sol2 = sol2s[0];
 		KiloCubie.KiloMult3(KiloCubie.symCube[KiloCubie.symMulI[0][ksym]], kc0, KiloCubie.symCube[ksym], kc1);
 		kc0.init(kc1.perm, kc1.twst);

@@ -143,7 +143,6 @@ execMain(function() {
 
 	function genPatRndState() {
 		var totalCnts = params[0][0] * params[1][0] + params[0][1] * params[1][1];
-		var facelet;
 		if (totalCnts == 0) {
 			return scramble_333.getRandomScramble();
 		}

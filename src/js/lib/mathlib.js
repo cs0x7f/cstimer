@@ -378,6 +378,7 @@ var mathlib = (function() {
 	function CubieCube() {
 		this.ca = [0, 1, 2, 3, 4, 5, 6, 7];
 		this.ea = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
+		this.ori = 0;
 	}
 
 	CubieCube.SOLVED = new CubieCube();
@@ -398,6 +399,13 @@ var mathlib = (function() {
 	CubieCube.CubeMult = function(a, b, prod) {
 		CubieCube.CornMult(a, b, prod);
 		CubieCube.EdgeMult(a, b, prod);
+	};
+
+	CubieCube.CentMult = function(a, b, prod) {
+		prod.ct = [];
+		for (var cent = 0; cent < 6; cent++) {
+			prod.ct[cent] = a.ct[b.ct[cent]];
+		}
 	};
 
 	CubieCube.prototype.init = function(ca, ea) {
@@ -453,6 +461,7 @@ var mathlib = (function() {
 		[50, 39], // BL
 		[48, 14]  // BR
 	];
+	CubieCube.ctFacelet = [4, 13, 22, 31, 40, 49]; // centers
 	CubieCube.faceMap = (function() {
 		var f = [];
 		for (var c = 0; c < 8; c++) {
@@ -467,30 +476,40 @@ var mathlib = (function() {
 		return f;
 	})();
 
-	CubieCube.prototype.toPerm = function(cFacelet, eFacelet) {
+	CubieCube.prototype.toPerm = function(cFacelet, eFacelet, ctFacelet, withOri) {
 		cFacelet = cFacelet || CubieCube.cFacelet;
 		eFacelet = eFacelet || CubieCube.eFacelet;
+		ctFacelet = ctFacelet || CubieCube.ctFacelet;
 		var f = [];
 		for (var i = 0; i < 54; i++) {
 			f[i] = i;
 		}
+		var obj = this;
+		if (withOri && obj.ori) {
+			obj = new CubieCube();
+			var rot = CubieCube.rotCube[CubieCube.rotMulI[0][this.ori]];
+			CubieCube.CubeMult(this, rot, obj);
+			for (var i = 0; i < 6; i++) {
+				f[ctFacelet[i]] = ctFacelet[rot.ct[i]];
+			}
+		}
 		for (var c = 0; c < 8; c++) {
-			var j = this.ca[c] & 0x7; // cornercubie with index j is at
-			var ori = this.ca[c] >> 3; // Orientation of this cubie
+			var j = obj.ca[c] & 0x7; // cornercubie with index j is at
+			var ori = obj.ca[c] >> 3; // Orientation of this cubie
 			for (var n = 0; n < 3; n++)
 				f[cFacelet[c][(n + ori) % 3]] = cFacelet[j][n];
 		}
 		for (var e = 0; e < 12; e++) {
-			var j = this.ea[e] >> 1; // edgecubie with index j is at edgeposition
-			var ori = this.ea[e] & 1; // Orientation of this cubie
+			var j = obj.ea[e] >> 1; // edgecubie with index j is at edgeposition
+			var ori = obj.ea[e] & 1; // Orientation of this cubie
 			for (var n = 0; n < 2; n++)
 				f[eFacelet[e][(n + ori) % 2]] = eFacelet[j][n];
 		}
 		return f;
 	}
 
-	CubieCube.prototype.toFaceCube = function(cFacelet, eFacelet) {
-		var perm = this.toPerm(cFacelet, eFacelet);
+	CubieCube.prototype.toFaceCube = function(cFacelet, eFacelet, ctFacelet, withOri) {
+		var perm = this.toPerm(cFacelet, eFacelet, ctFacelet, withOri);
 		var ts = "URFDLB";
 		var f = [];
 		for (var i = 0; i < 54; i++) {
@@ -499,8 +518,8 @@ var mathlib = (function() {
 		return f.join("");
 	}
 
-	CubieCube.prototype.prettyString = function() {
-		var facelet = this.toFaceCube();
+	CubieCube.prototype.prettyString = function(withOri) {
+		var facelet = this.toFaceCube(null, null, null, withOri);
 		var tmp =
 			"        U0U1U2\n" +
 			"        U3U4U5\n" +
@@ -613,22 +632,33 @@ var mathlib = (function() {
 
 	CubieCube.rotCube = (function() {
 		var u4 = new CubieCube().init([3, 0, 1, 2, 7, 4, 5, 6], [6, 0, 2, 4, 14, 8, 10, 12, 23, 17, 19, 21]);
+		u4.ct = [0, 5, 1, 3, 2, 4];
 		var f2 = new CubieCube().init([5, 4, 7, 6, 1, 0, 3, 2], [12, 10, 8, 14, 4, 2, 0, 6, 18, 16, 22, 20]);
+		f2.ct = [3, 4, 2, 0, 1, 5];
 		var urf = new CubieCube().init([8, 20, 13, 17, 19, 15, 22, 10], [3, 16, 11, 18, 7, 22, 15, 20, 1, 9, 13, 5]);
+		urf.ct = [2, 0, 1, 5, 3, 4];
 		var c = new CubieCube();
+		c.ct = [0, 1, 2, 3, 4, 5];
 		var d = new CubieCube();
 		var rotCube = [];
 		for (var i = 0; i < 24; i++) {
 			rotCube[i] = new CubieCube().init(c.ca, c.ea);
+			rotCube[i].ct = c.ct.slice();
 			CubieCube.CubeMult(c, u4, d);
+			CubieCube.CentMult(c, u4, d);
 			c.init(d.ca, d.ea);
+			c.ct = d.ct.slice();
 			if (i % 4 == 3) {
 				CubieCube.CubeMult(c, f2, d);
+				CubieCube.CentMult(c, f2, d);
 				c.init(d.ca, d.ea);
+				c.ct = d.ct.slice();
 			}
 			if (i % 8 == 7) {
 				CubieCube.CubeMult(c, urf, d);
+				CubieCube.CentMult(c, urf, d);
 				c.init(d.ca, d.ea);
+				c.ct = d.ct.slice();
 			}
 		}
 

@@ -460,7 +460,7 @@ var ftosolver = (function() {
 			return p1sols.length >= N_PHASE1_SOLS;
 		});
 
-		var tt = $.now() - tt;
+		tt = $.now() - tt;
 		for (var i = 0; i < p1sols.length; i++) {
 			p1sols[i].push(tt);
 		}
@@ -828,7 +828,7 @@ var ftosolver = (function() {
 	}
 
 	function testbench(ntest) {
-		var ntest = ntest || 100;
+		ntest = ntest || 100;
 		var cumlen = [];
 		for (var nsolv = 0; nsolv < ntest; nsolv++) {
 			var lengths = solveTest(200);

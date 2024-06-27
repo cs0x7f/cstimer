@@ -9,7 +9,7 @@ closure = lib/compiler.jar
 externJQ = --externs lib/jquery-1.7.js
 externTwisty = --externs $(dest)/js/twisty.js
 externLang = --externs $(src)/lang/en-us.js
-compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3 --charset UTF-8
+compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3 --charset UTF-8 --strict_mode_input
 advanced = -O ADVANCED
 debugoff = --define='DEBUGM=false' --define='DEBUGWK=false'
 timerSrc = $(addprefix $(src)/js/, \

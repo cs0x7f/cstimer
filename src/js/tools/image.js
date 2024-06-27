@@ -607,7 +607,7 @@ var image = (function() {
 		return function(svg, type, moveseq, faceNameMask, minArea) {
 			var colors = [];
 			var moves = [];
-			var minArea = minArea || 0;
+			minArea = minArea || 0;
 			var gap = 0.05;
 			var puzzle = puzzleCache[type];
 
