@@ -359,25 +359,26 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (!value) {
 				return;
 			}
-			avgDiv1.html(value[0]).unbind('click');
-			if (value[2] != undefined) {
+			var [timeStr1, timeStr2, params1, params2, clickFunc, curTimeObj, lastTimeObj] = value;
+			avgDiv1.html(timeStr1).unbind('click');
+			if (params1 != undefined) {
 				avgDiv1.addClass('click').click(function() {
-					value[4](value[2][0], value[2][1], value[2][2], value[2][3]);
+					clickFunc(params1[0], params1[1], params1[2], params1[3]);
 				});
 			} else {
 				avgDiv1.removeClass('click');
 			}
-			avgDiv2.html(value[1]).unbind('click');
-			if (value[3] != undefined) {
+			avgDiv2.html(timeStr2).unbind('click');
+			if (params2 != undefined) {
 				avgDiv2.addClass('click').click(function() {
-					value[4](value[3][0], value[3][1], value[3][2], value[3][3]);
+					clickFunc(params2[0], params2[1], params2[2], params2[3]);
 				});
 			} else {
 				avgDiv2.removeClass('click');
 			}
-			curTime = value[5] ? value[5][0].slice() : [0];
-			lastTime = value[6] ? value[6][0].slice() : null;
-			lcd.setRecons(value[5]);
+			curTime = curTimeObj ? curTimeObj[0].slice() : [0];
+			lastTime = lastTimeObj ? lastTimeObj[0].slice() : null;
+			lcd.setRecons(curTimeObj);
 			lcd.renderUtil();
 		}
 

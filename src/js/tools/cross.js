@@ -512,7 +512,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 	}
 
 
-	execMain(function() {
+	ISCSTIMER && execMain(function() {
 
 		function execCross(scramble, fdiv) {
 			fdiv.empty();

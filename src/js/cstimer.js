@@ -9,7 +9,6 @@ importScripts(
 	'lib/lzstring.js',
 	'lib/min2phase.js',
 	'lib/cubeutil.js',
-	'lib/json.min.js',
 	'solver/ftocta.js',
 	'solver/kilominx.js',
 	'scramble/scramble.js',

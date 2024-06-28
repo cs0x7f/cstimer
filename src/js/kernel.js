@@ -984,21 +984,21 @@ var kernel = execMain(function() {
 		_.loadVal = function(val) {
 			var callback = this.callback;
 			this.callback = null; // disable callback
-			procOnVal(this.data, val, function(idx1, idx2) {
+			procOnVal(this.data, val, (idx1, idx2) => {
 				this.select1.prop('selectedIndex', idx1);
 				this.loadSelect2(idx2);
-			}.bind(this));
+			});
 			this.callback = callback;
 		};
 
 		_.getValName = function(val) {
 			var name = null;
-			procOnVal(this.data, val, function(idx1, idx2) {
+			procOnVal(this.data, val, (idx1, idx2) => {
 				name = this.data[idx1][0];
 				if (idx2 != null) {
 					name += '>' + this.data[idx1][1][idx2][0];
 				}
-			}.bind(this));
+			});
 			return name;
 		};
 

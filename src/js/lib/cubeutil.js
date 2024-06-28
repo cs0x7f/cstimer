@@ -273,7 +273,7 @@ var cubeutil = (function() {
 			for (var i = 0; i < moveSeq.length; i++) {
 				var axis = center.indexOf("URFDLB".indexOf(moveSeq[i][0][0]));
 				var pow = " 2'".indexOf(moveSeq[i][0][1]) % 3;
-				if (false || i == moveSeq.length - 1 || moveSeq[i + 1][1] - moveSeq[i][1] > 100) {
+				if (i == moveSeq.length - 1 || moveSeq[i + 1][1] - moveSeq[i][1] > 100) {
 					pushSol(axis, pow);
 					continue;
 				}

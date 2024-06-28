@@ -340,16 +340,16 @@ var grouplib = (function(rn) {
 
 	CanonSeqGen.prototype.refillNext = function() {
 		// clear next nodes
-		this.traversalTrie(1, [], function(node, seq) {
+		this.traversalTrie(1, [], (node, seq) => {
 			for (var i = 0; i < this.glen; i++) {
 				var next = ~~this.trieNodes[node][i];
 				if (next != -1 && next <= node) { // skip or to sub-trie
 					this.trieNodes[node][i] = 0;
 				}
 			}
-		}.bind(this));
+		});
 		// calculate next nodes
-		this.traversalTrie(1, [], function(node, seq) {
+		this.traversalTrie(1, [], (node, seq) => {
 			for (var i = 0; i < this.glen; i++) {
 				if ((i & 0x1f) == 0) {
 					this.trieNodes[node][this.glen + (i >> 5)] = 0;
@@ -362,7 +362,7 @@ var grouplib = (function(rn) {
 					this.trieNodes[node][this.glen + (i >> 5)] |= 1 << (i & 0x1f);
 				}
 			}
-		}.bind(this));
+		});
 	}
 
 	CanonSeqGen.prototype.countSeq = function(depth, accuracy) {
@@ -837,7 +837,7 @@ var grouplib = (function(rn) {
 				ret = this.idaMidSearch(allowPre ? this.clen : pidx, depth,
 						1, this.canon.trieNodes, [],
 						this.sgsG.toKeyIdx(allowPre ? null : permi), permi, prunTable1,
-						function(moves, permKey) {
+						(moves, permKey) => {
 					s1tot++;
 					if (this.sgsG.isSubgroupMemberByKey(permKey, this.sgsH) < 0) {
 						return;
@@ -847,7 +847,7 @@ var grouplib = (function(rn) {
 						solution.push(moves[i] == -1 ? -1 : this.genExMap[moves[i]].slice(0, 2));
 					}
 					return solCallback ? solCallback(solution) : solution;
-				}.bind(this));
+				});
 				DEBUG && console.log('[Subgroup Solver] ida ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', performance.now() - tt);
 				if (ret) {
 					return ret;
@@ -878,7 +878,7 @@ var grouplib = (function(rn) {
 				this.idaMidSearch(mpidx1, mid,
 						0, this.canon.trieNodes, [],
 						perm0, permi, prunTable1,
-						function(moves, permKey) {
+						(moves, permKey) => {
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(permKey);
@@ -890,13 +890,13 @@ var grouplib = (function(rn) {
 					var sols1h = visited.get(key) || [];
 					sols1h.push(moves.slice());
 					visited.set(key, sols1h);
-				}.bind(this));
+				});
 
 				//search from mpidx to pidx
 				ret = this.idaMidSearch(mpidx2, depth - mid,
 						1, this.canoni.trieNodes, [],
 						perm0, perm, prunTable2,
-						function(moves, permKey) {
+						(moves, permKey) => {
 					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
 					var finalPermKey = allowPre ? permKey : permMult(permKey, perm);
 					var key;
@@ -943,7 +943,7 @@ var grouplib = (function(rn) {
 							}
 						}
 					}
-				}.bind(this));
+				});
 				mpsizes.push([mpidx, size1, size2]);
 				s1tot += size1;
 				s2tot += size2;
@@ -970,7 +970,7 @@ var grouplib = (function(rn) {
 				this.idaMidSearch(i, maxl,
 						1, this.canon.trieNodes, [],
 						perm0, null, this.prunTable,
-						function(moves, permKey) {
+						(moves, permKey) => {
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(permKey);
@@ -982,7 +982,7 @@ var grouplib = (function(rn) {
 						stateCnt++;
 						visited.add(key);
 					}
-				}.bind(this));
+				});
 			}
 		}
 		return stateCnt;

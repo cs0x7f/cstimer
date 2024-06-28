@@ -804,7 +804,7 @@ var image = (function() {
 			sldImage(svg, type[1], 3, scramble[1]);
 		} else if (/^r(3(ni)?|23\d+w?|mngf)$/.exec(type)) {
 			var subScrs = [];
-			scramble[1].replaceAll(/(?<=^|\n)\s*(\d+|3oh|pyr|skb|sq1|clk|mgm)\)\s*([^\0]*?)\s*(?=\n.*\)|$)/g, function(m, p1, p2) {
+			scramble[1].replaceAll(/(?:^|\n)\s*(\d+|3oh|pyr|skb|sq1|clk|mgm)\)\s*([^\0]*?)\s*(?=\n.*\)|$)/g, function(m, p1, p2) {
 				var subType = type.startsWith('r3') ? '333' :
 					type == 'rmngf' ? p1.replace('3oh', '333').padEnd(3, p1):
 					types_nnn[subScrs.length];
@@ -866,7 +866,7 @@ var image = (function() {
 		return true;
 	}
 
-	execMain(function() {
+	ISCSTIMER && execMain(function() {
 		function execFunc(fdiv) {
 			if (!fdiv) {
 				return;

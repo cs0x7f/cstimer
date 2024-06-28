@@ -99,7 +99,7 @@ var tools = (function() {
 		}
 	}
 
-	var ret = execMain(function() {
+	var ret = ISCSTIMER ? execMain(function() {
 		var divs = [];
 		var isEn = false;
 
@@ -330,7 +330,7 @@ var tools = (function() {
 			regTool: regTool,
 			getSolutionSpan: getSolutionSpan,
 		}
-	});
+	}) : {};
 
 	var lastTrain = null;
 	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|333drud|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|222(eg[012]?|tc[np]|lsall))$/;

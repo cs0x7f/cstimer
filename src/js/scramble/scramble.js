@@ -130,6 +130,10 @@ var scrMgr = (function(rn, rndEl) {
 
 	var equalProb = false;
 
+	function toTxt(scramble) {
+		return scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`(.*?)`/g, '$1');
+	}
+
 	return {
 		reg: regScrambler,
 		scramblers: scramblers,
@@ -139,12 +143,13 @@ var scrMgr = (function(rn, rndEl) {
 		rndState: rndState,
 		fixCase: fixCase,
 		setEqPr: function(ep) { equalProb = ep; },
-		getEqPr: function() { return equalProb; }
+		getEqPr: function() { return equalProb; },
+		toTxt: toTxt
 	}
 })(mathlib.rn, mathlib.rndEl);
 
 
-var scramble = execMain(function(rn, rndEl) {
+var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 	var scramblers = scrMgr.scramblers;
 	var getExtra = scrMgr.getExtra;
 
@@ -259,13 +264,13 @@ var scramble = execMain(function(rn, rndEl) {
 			scramble = m[3];
 			len = ~~m[2];
 		}
-		var scrTxt = scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1');
+		var scrTxt = scrMgr.toTxt(scramble);
 		if (forDisplay) {
 			var fontSize = kernel.getProp('scrASize') ? Math.max(0.25, Math.round(Math.pow(50 / Math.max(scrTxt.length, 10), 0.30) * 20) / 20) : 1;
 			sdiv.css('font-size', fontSize + 'em');
 			DEBUG && console.log('[scrFontSize]', fontSize);
 			return scramble.replace(/~/g, '&nbsp;').replace(/\\n/g, '\n')
-				.replace(/`([^`]*)`/g, forceKeyM || kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
+				.replace(/`(.*?)`/g, forceKeyM || kernel.getProp('scrKeyM', false) ? '<u>$1</u>' : '$1');
 		} else {
 			return [type, scrTxt, len];
 		}

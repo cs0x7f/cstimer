@@ -1,6 +1,6 @@
 "use strict";
 
-var csTimerWorker = execBoth(function() {
+var csTimerWorker = execBoth(ISCSTIMER && function() {
 	if (!window.Worker) {
 		return {};
 	}
@@ -65,7 +65,7 @@ var csTimerWorker = execBoth(function() {
 			var scrambler = scrMgr.scramblers[arguments[0]];
 			var scramble = scrambler.apply(scrambler, arguments);
 			if (!ISCSTIMER) {
-				scramble = scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`([^`]*)`/g, '$1');
+				scramble = scrMgr.toTxt(scramble);
 			}
 			return scramble;
 		},

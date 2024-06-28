@@ -390,7 +390,7 @@ var poly3d = (function() {
 					pathStart.push([nextIdx, cutBound.rankKey(pathsSide[nextIdx].p1), pathsSide[nextIdx].p1]);
 				}
 			}
-			pathStart.sort(function(a, b) { return a[1] - b[1]; });
+			pathStart.sort((a, b) => a[1] - b[1]);
 			// DEBUG && console.log('sort result', JSON.stringify(pathStart));
 			var usedCnt = 0;
 			var used = [];
@@ -572,14 +572,14 @@ var poly3d = (function() {
 		// TODO we are not able to handle holes, so cut plane first
 		for (var i = 0; i < cuts.length; i++) {
 			var plane = cuts[i];
-			this.enumFacesPolys(function(face, p, poly) {
+			this.enumFacesPolys((face, p, poly) => {
 				var polys = poly.split(plane);
 				polys = Array.prototype.concat.apply([], polys);
 				this.facesPolys[face][p] = polys[0];
 				for (var j = 1; j < polys.length; j++) {
 					this.facesPolys[face].push(polys[j]);
 				}
-			}.bind(this));
+			});
 		}
 	}
 
@@ -601,9 +601,9 @@ var poly3d = (function() {
 		this.moveTable = [];
 		var proj1d = [];
 		var projNorm = new Point(1, 2, 3).normalized();
-		this.enumFacesPolys(function(face, p, poly, idx) {
+		this.enumFacesPolys((face, p, poly, idx) => {
 			proj1d[idx] = [idx, projNorm.inprod(poly.center), poly.center];
-		}.bind(this));
+		});
 		proj1d.sort(function(a, b) { return a[1] - b[1]; });
 		for (var i = 0; i < this.twistyDetails.length; i++) {
 			var curMove = [];
@@ -612,7 +612,7 @@ var poly3d = (function() {
 				planes.push(this.twistyPlanes[this.twistyDetails[i][j]]);
 			}
 			var trans = new RotTrans(planes[0].norm, Math.PI * 2 / this.twistyDetails[i][1]);
-			this.enumFacesPolys(function(face, p, poly, idx) {
+			this.enumFacesPolys((face, p, poly, idx) => {
 				for (var j = 0; j < planes.length; j++) {
 					if (planes[j].side(poly.center) < 0) {
 						curMove[idx] = -1; // not affect by this twisty
@@ -640,7 +640,7 @@ var poly3d = (function() {
 						break;
 					}
 				}
-			}.bind(this));
+			});
 			this.moveTable.push(curMove);
 		}
 	}

@@ -6,10 +6,8 @@ ifndef destnpm
 	destnpm = npm_export
 endif
 closure = lib/compiler.jar
-externJQ = --externs lib/jquery-1.7.js
-externTwisty = --externs $(dest)/js/twisty.js
-externLang = --externs $(src)/lang/en-us.js
-compile = java -jar $(closure) --jscomp_off externsValidation --use_types_for_optimization --language_out ECMASCRIPT3 --charset UTF-8 --strict_mode_input
+compile = java -jar $(closure) --use_types_for_optimization --language_out STABLE --charset UTF-8 --strict_mode_input
+isolation = --isolation_mode IIFE
 advanced = -O ADVANCED
 debugoff = --define='DEBUGM=false' --define='DEBUGWK=false'
 timerSrc = $(addprefix $(src)/js/, \
@@ -28,7 +26,6 @@ lib/min2phase.js \
 lib/cubeutil.js \
 lib/puzzlefactory.js \
 lib/grip.js \
-lib/json.min.js \
 kernel.js \
 export.js \
 logohint.js \
@@ -171,7 +168,7 @@ local: all
 
 $(cstimer): $(twisty) $(timerSrc)
 	@echo $@
-	@$(compile) $(debugoff) $(externJQ) $(externTwisty) $(externLang) $(timerSrc) --js_output_file $(cstimer)
+	@$(compile) $(debugoff) $(timerSrc) --js_output_file $(cstimer)
 
 $(twisty): $(twistySrc)
 	@echo $@
@@ -179,7 +176,7 @@ $(twisty): $(twistySrc)
 
 $(cstimer_module): $(moduleSrc)
 	@echo $@
-	@$(compile) $(moduleSrc) --define='ISCSTIMER=false' --js_output_file $(cstimer_module)
+	@$(compile) $(debugoff) $(moduleSrc) $(isolation) --define='ISCSTIMER=false' --js_output_file $(cstimer_module)
 
 $(css): $(dest)/css/%.css: $(src)/css/%.css
 	@echo $@

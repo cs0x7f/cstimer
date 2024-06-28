@@ -994,18 +994,18 @@ var mathlib = (function() {
 			createMove(this.move[i], size, doMove, this.N_MOVES);
 			createPrun(this.prun[i], init, size, maxd, this.move[i], this.N_MOVES, this.N_POWER, N_INV);
 		}
-		this.solv = new Searcher(null, function(state) {
+		this.solv = new Searcher(null, (state) => {
 			var prun = 0;
 			for (var i = 0; i < this.N_STATES; i++) {
 				prun = Math.max(prun, getPruning(this.prun[i], state[i]));
 			}
 			return prun;
-		}.bind(this), function(state, move) {
+		}, (state, move) => {
 			for (var i = 0; i < this.N_STATES; i++) {
 				state[i] = this.move[i][move][state[i]];
 			}
 			return state;
-		}.bind(this), this.N_MOVES, this.N_POWER);
+		}, this.N_MOVES, this.N_POWER);
 		this.inited = true;
 	}
 

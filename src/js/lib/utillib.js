@@ -1,7 +1,10 @@
 'use strict';
 
-var isInNode = (typeof process === 'object' && typeof require === 'function' && typeof global === 'object');
-var isInWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) || isInNode;
+const isInNode = (typeof process === 'object' && typeof require === 'function' && typeof global === 'object');
+const isInWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) || isInNode;
+
+/** @define {boolean} */
+const ISCSTIMER = true;
 
 function execBoth(funcMain, funcWorker, params) {
 	if (!isInWorker && funcMain) {
@@ -38,7 +41,7 @@ execWorker(function() {
 	};
 });
 
-execMain(function() {
+ISCSTIMER && execMain(function() {
 	$.beacon = function(obj, url) {
 		url = url || 'stat.php';
 		obj = typeof(obj) == 'string' ? obj : JSON.stringify(obj);
@@ -246,6 +249,13 @@ execMain(function() {
 	}
 });
 
+/** @define {boolean} */
+const DEBUGM = true;
+/** @define {boolean} */
+const DEBUGWK = false;
+const DEBUG = ISCSTIMER && (isInWorker ? DEBUGWK : (DEBUGM && !!$.urlParam('debug')));
+var DEBUGBL = false; // for debugging bluetooth
+
 (function() {
 	$.svg = (function() {
 		function SVG(width, height) {
@@ -372,47 +382,4 @@ execMain(function() {
 
 	$.UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico";
 	$.TWISTY_RE = "sq1|clk|udpoly|" + $.UDPOLY_RE;
-
 })();
-
-/** @define {boolean} */
-var DEBUGM = true;
-/** @define {boolean} */
-var DEBUGWK = false;
-var DEBUG = isInWorker ? DEBUGWK : (DEBUGM && !!$.urlParam('debug'));
-var DEBUGBL = false; // for debugging bluetooth
-/** @define {boolean} */
-var ISCSTIMER = true;
-
-if (!Array.prototype.indexOf) {
-	Array.prototype.indexOf = function(item) {
-		for (var i = 0; i < this.length; i++) {
-			if (this[i] == item) {
-				return i;
-			}
-		}
-		return -1;
-	};
-}
-
-if (!Function.prototype.bind) {
-	Function.prototype.bind = function(oThis) {
-		if (typeof this !== 'function') {
-			throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-		}
-		var aArgs = Array.prototype.slice.call(arguments, 1),
-			fToBind = this,
-			fNOP = function() {},
-			fBound = function() {
-				return fToBind.apply(this instanceof fNOP ?
-					this :
-					oThis,
-					aArgs.concat(Array.prototype.slice.call(arguments)));
-			};
-		if (this.prototype) {
-			fNOP.prototype = this.prototype;
-		}
-		fBound.prototype = new fNOP();
-		return fBound;
-	};
-}
