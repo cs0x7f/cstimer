@@ -727,7 +727,7 @@ var grouplib = (function(rn) {
 		return false;
 	}
 
-	SubgroupSolver.prototype.initPrunTable = function(perm, allowPre) {
+	SubgroupSolver.prototype.initPrunTable = function(perm, tryNISS) {
 		var pidx = this.coset2idx[this.midCosetHash(perm)];
 		var prunTable = [];
 		var fartherMask = [];
@@ -737,7 +737,7 @@ var grouplib = (function(rn) {
 			prunTable[i] = -1;
 		}
 		var permMove = [];
-		if (allowPre) {
+		if (tryNISS) {
 			for (var i = 0; i < this.clen; i++) {
 				prunTable.push(-1, -1);
 				permMove[i] = this.coset2idx[this.midCosetHash(permMult(perm, this.idx2coset[i]))];
@@ -773,7 +773,7 @@ var grouplib = (function(rn) {
 						nocloserMask[idx * maskBase + (m >> 5)] |= 1 << (m & 0x1f);
 					}
 				}
-				if (!allowPre || midx != 0) {
+				if (!tryNISS || midx != 0) {
 					continue;
 				}
 				// insert perm/permi
@@ -805,7 +805,8 @@ var grouplib = (function(rn) {
 	SubgroupSolver.ONLY_IDA = 0x1;
 	SubgroupSolver.ALLOW_PRE = 0x2;
 
-	SubgroupSolver.prototype.DissectionSolve = function(perm, maxl, mask, solCallback) {
+	SubgroupSolver.prototype.DissectionSolve = function(perm, minl, maxl, permCtx, solCallback) {
+		permCtx = permCtx || {};
 		var tt = performance.now();
 		this.initTables();
 		DEBUG && console.log('[Subgroup Solver] finished init tables, tt=', performance.now() - tt);
@@ -818,25 +819,26 @@ var grouplib = (function(rn) {
 			console.log('[Subgroup Solver] ERROR!');
 			return;
 		}
-		var onlyIDA = (mask & SubgroupSolver.ONLY_IDA) != 0;
-		var allowPre = (mask & SubgroupSolver.ALLOW_PRE) != 0 && this.isCosetSearch;
+		var onlyIDA = (permCtx.mask & SubgroupSolver.ONLY_IDA) != 0;
+		var tryNISS = (permCtx.mask & SubgroupSolver.ALLOW_PRE) != 0 && this.isCosetSearch;
 		var ret = null;
 		var prunTable1 = this.prunTable;
 		var prunTable2 = null;
-		if (allowPre) {
-			prunTable2 = this.initPrunTable(perm, allowPre);
+		if (tryNISS) {
+			permCtx.prunTable = permCtx.prunTable || this.initPrunTable(perm, tryNISS);
+			prunTable2 = permCtx.prunTable;
 			prunTable1 = prunTable2;
 			pidx = this.clen;
 		}
 		DEBUG && console.log('[Subgroup Solver] finish init searching, prun value:', prunTable1[0][pidx], 'tt=', performance.now() - tt);
-		for (var depth = prunTable1[0][pidx]; depth <= maxl; depth++) {
+		for (var depth = Math.max(minl, prunTable1[0][pidx]); depth <= maxl; depth++) {
 			var s1tot = 0;
 			var s2tot = 0;
 			var permi = permInv(perm);
 			if (onlyIDA || depth <= this.prunTable[4]) {
-				ret = this.idaMidSearch(allowPre ? this.clen : pidx, depth,
+				ret = this.idaMidSearch(tryNISS ? this.clen : pidx, depth,
 						1, this.canon.trieNodes, [],
-						this.sgsG.toKeyIdx(allowPre ? null : permi), permi, prunTable1,
+						this.sgsG.toKeyIdx(tryNISS ? null : permi), permi, prunTable1,
 						(moves, permKey) => {
 					s1tot++;
 					if (this.sgsG.isSubgroupMemberByKey(permKey, this.sgsH) < 0) {
@@ -856,15 +858,15 @@ var grouplib = (function(rn) {
 			}
 			var mid = ~~(depth / 2);
 			if (!prunTable2) {
-				prunTable2 = this.initPrunTable(perm, allowPre);
+				prunTable2 = this.initPrunTable(perm, tryNISS);
 			}
-			var preSize = allowPre ? 2 : 1;
+			var preSize = tryNISS ? 2 : 1;
 			var mpcnt = 0;
 			var mpsizes = [];
 			for (var mpidx = 0; mpidx < this.clen * preSize; mpidx++) {
 				//pidx at mid == mpidx
 				var mpidx1 = mpidx;
-				var mpidx2 = mpidx + (allowPre ? (mpidx >= this.clen ? -this.clen : this.clen * 2) : 0);
+				var mpidx2 = mpidx + (tryNISS ? (mpidx >= this.clen ? -this.clen : this.clen * 2) : 0);
 				if (prunTable1[0][mpidx1] > mid || prunTable2[0][mpidx2] > depth - mid) {
 					continue;
 				}
@@ -898,7 +900,7 @@ var grouplib = (function(rn) {
 						perm0, perm, prunTable2,
 						(moves, permKey) => {
 					// mp * move2 = perm, mp * move1 = I  =>  perm * move2' * move1 = I  =>  move1 = move2 * perm'
-					var finalPermKey = allowPre ? permKey : permMult(permKey, perm);
+					var finalPermKey = tryNISS ? permKey : permMult(permKey, perm);
 					var key;
 					if (this.isCosetSearch) {
 						var permRep = this.sgsH.minElem(finalPermKey);

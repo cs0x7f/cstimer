@@ -204,61 +204,23 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 		return false;
 	}
 
-	//e4perm, e4flip, e1, c1
-	//obj: -1:only cross.
-	//	i-4: end when e==i*2, c==i*3
-	function idaxcross(q, t, e, c, obj, l, lm, sol) {
-		if (l == 0) {
-			return q == 0 && t == 0 && e == (obj + 4) * 2 && c == (obj + 4) * 3;
-		} else {
-			if (getPruning(permPrun, q) > l || getPruning(flipPrun, t) > l || getPruning(ecPrun[obj], c * 24 + e) > l) return false;
-			var p, s, ex, cx, a, m;
-			for (m = 0; m < 6; m++) {
-				if (m != lm && m != lm - 3) {
-					p = q;
-					s = t;
-					ex = e;
-					cx = c;
-					for (a = 0; a < 3; a++) {
-						p = pmv(p, m);
-						s = fmv(s, m);
-						ex = e1mv[ex][m];
-						cx = c1mv[cx][m];
-						if (idaxcross(p, s, ex, cx, obj, l - 1, m, sol)) {
-							sol.push("FRUBLD".charAt(m) + " 2'".charAt(a));
-							return (true);
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+	var solvCross = new mathlib.Searcher(
+		(idx) => idx[0] + idx[1] == 0,
+		(idx) => Math.max(getPruning(permPrun, idx[0]), getPruning(flipPrun, idx[1])),
+		(idx, move) => [pmv(idx[0], move), fmv(idx[1], move)],
+		6, 3, [1, 2, 4, 9, 18, 36]
+	);
 
-	//e4perm, e4flip
-	function idacross(q, t, l, lm, sol) {
-		if (l == 0) {
-			return q == 0 && t == 0;
-		} else {
-			if (getPruning(permPrun, q) > l || getPruning(flipPrun, t) > l) return false;
-			var p, s, a, m;
-			for (m = 0; m < 6; m++) {
-				if (m != lm && m != lm - 3) {
-					p = q;
-					s = t;
-					for (a = 0; a < 3; a++) {
-						p = pmv(p, m);
-						s = fmv(s, m);
-						if (idacross(p, s, l - 1, m, sol)) {
-							sol.push("FRUBLD".charAt(m) + " 2'".charAt(a));
-							return (true);
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+	var solvXCross = new mathlib.Searcher(
+		(idx) => idx[0] + idx[1] == 0 && idx[2] == (idx[4] + 4) * 2 && idx[3] == (idx[4] + 4) * 3,
+		(idx) => Math.max(
+			getPruning(permPrun, idx[0]),
+			getPruning(flipPrun, idx[1]),
+			getPruning(ecPrun[idx[4]], idx[3] * 24 + idx[2])
+		),
+		(idx, move) => [pmv(idx[0], move), fmv(idx[1], move), e1mv[idx[2]][move], c1mv[idx[3]][move], idx[4]],
+		6, 3, [1, 2, 4, 9, 18, 36]
+	);
 
 	var faceStr = ["D", "U", "L", "R", "F", "B"];
 	var moveIdx = ["FRUBLD", "FLDBRU", "FDRBUL", "FULBDR", "URBDLF", "DRFULB"]
@@ -281,13 +243,10 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 					perm = pmv(perm, m);
 				}
 			}
-			var sol = [];
-			for (var len = 0; len < 100; len++) {
-				if (idacross(perm, flip, len, -1, sol)) {
-					break;
-				}
+			var sol = solvCross.solve([perm, flip], 0, 50);
+			for (var i = 0; i < sol.length; i++) {
+				sol[i] = "FRUBLD".charAt(sol[i][0]) + " 2'".charAt(sol[i][1])
 			}
-			sol.reverse();
 			ret.push(sol);
 		}
 		return ret;
@@ -360,19 +319,14 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				}
 			}
 		}
-		var sol = [];
-		var found = false;
-		var len = 0;
-		while (!found) {
-			for (var obj = 0; obj < 4; obj++) {
-				if (idaxcross(perm, flip, e1[obj], c1[obj], obj, len, -1, sol)) {
-					found = true;
-					break;
-				}
-			}
-			len++;
+		var idxs = [];
+		for (var i = 0; i < 4; i++) {
+			idxs.push([perm, flip, e1[i], c1[i], i]);
 		}
-		sol.reverse();
+		var sol = solvXCross.solveMulti(idxs, 0, 20)[0];
+		for (var i = 0; i < sol.length; i++) {
+			sol[i] = "FRUBLD".charAt(sol[i][0]) + " 2'".charAt(sol[i][1])
+		}
 		return sol;
 	}
 
@@ -464,7 +418,6 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				var perm = comb * 24 + (caze >> 4) % 24;
 				var flip = comb << 4 | caze & 15;
 				var sol = [];
-				var ret = idacross(perm, flip, length, -1, sol);
 				var corns = mathlib.rndPerm(8).slice(4);
 				var edges = mathlib.rndPerm(8);
 
@@ -481,15 +434,11 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				for (var j = 0; j < 4; j++) {
 					corns[j] = corns[j] * 3 + mathlib.rn(3);
 					edges[j] = arr.indexOf(j) * 2 + mathlib.rn(2);
-					if (isFound || getPruning(ecPrun[j], corns[j] * 24 + edges[j]) > length) {
+					if (isFound) {
 						continue;
 					}
-					sol = [];
-					for (var depth = 0; depth <= length; depth++) {
-						if (idaxcross(perm, flip, edges[j], corns[j], j, depth, -1, sol)) {
-							isFound = true;
-							break;
-						}
+					if (null != solvXCross.solve([perm, flip, edges[j], corns[j], j], 0, length)) {
+						isFound = true;
 					}
 				}
 				if (!isFound) {

@@ -2,6 +2,7 @@
 
 var thistlethwaite = (function() {
 
+	var mul = grouplib.permMult;
 	var stepMoves = [
 		["U ", "R ", "F ", "D ", "L ", "B "],
 		["U ", "R ", "F2", "D ", "L ", "B2"],
@@ -13,7 +14,9 @@ var thistlethwaite = (function() {
 		["U ", "R2", "F2", "D ", "L2", "B2", "R U R U R U' R' U' R' U'"],
 		["U2", "R2", "F2", "D2", "L2", "B2", "U D"],
 		null
-	]
+	];
+	var axisSwitch = null;
+	var axisPrefix = null;
 	var gens = [];
 	var solvs = [];
 
@@ -45,31 +48,73 @@ var thistlethwaite = (function() {
 			solvs[i] = new grouplib.SubgroupSolver(gens[i], gens[i + 1], middleGroup[i] && move2gen(middleGroup[i]));
 			solvs[i].initTables();
 		}
+		var cc = new mathlib.CubieCube();
+		cc.ori = 8;
+		var rotYZ = cc.toPerm(null, null, null, true);
+		var rotYZi = mul(rotYZ, rotYZ);
+		cc.ori = 23;
+		var rotZ = cc.toPerm(null, null, null, true);
+		axisSwitch = [
+			[rotYZ, rotYZi],
+			[rotYZ, rotYZi, rotZ, mul(rotYZi, rotZ), mul(rotYZ, rotZ)],
+			[rotYZ, rotYZi],
+			[]
+		];
+		axisPrefix = [
+			['fb', 'ud', 'rl'],
+			['ud', 'rl', 'fb', 'ud', 'rl', 'fb'],
+			[''],
+			['']
+		];
 	}
 
-	function enumStepSolutions(step, scramble, useNiss, callback) {
+	function enumStepSolutions(step, scramble, useNiss, tryMultiAxis, callback) {
 		initSolvers();
 		var state = move2state(scramble);
-		var check = solvs[step].checkPerm(state);
-		if (check == 2) {
-			return null;
+		var states = [state];
+		var stateCtx = [];
+		if (tryMultiAxis) {
+			for (var i = 0; i < axisSwitch[step].length; i++) {
+				var trans = axisSwitch[step][i];
+				var transi = grouplib.permInv(trans);
+				states.push(mul(trans, mul(state, transi)));
+			}
+		}
+		for (var i = 0; i < states.length; i++) {
+			var check = solvs[step].checkPerm(states[i]);
+			if (check == 2) {
+				states[i] = null;
+			} else {
+				stateCtx[i] = {mask: useNiss ? 2 : 0};
+			}
 		}
 		var first = null;
-		solvs[step].DissectionSolve(state, 20, useNiss ? 2 : 0, function(sol) {
-			for (var i = 0; i < sol.length; i++) {
-				if (sol[i] == -1) {
-					sol[i] = '@';
+		var curStepMoves = stepMoves[step];
+		for (var depth = 0; depth < 20; depth++) {
+			for (var stateAxis = 0; stateAxis < states.length; stateAxis++) {
+				if (states[stateAxis] == null) {
 					continue;
 				}
-				var axis = sol[i][0];
-				var pow = "0 2'".indexOf(stepMoves[step][axis][1]) * sol[i][1] % 4;
-				sol[i] = "URFDLB".charAt(axis) + "0 2'".charAt(pow);
+				var conjMoves = ["URFDLB", "RFULBD", "FURBDL", "RDFLUB", "FRDBLU", "DFRUBL"][stateAxis];
+				var ret = solvs[step].DissectionSolve(states[stateAxis], depth, depth, stateCtx[stateAxis],	(sol) => {
+					sol = sol.map((mv) => {
+						if (mv == -1) {
+							return '@';
+						}
+						var axis = mv[0];
+						var pow = "0 2'".indexOf(curStepMoves[axis][1]) * mv[1] % 4;
+						return conjMoves.charAt(axis) + "0 2'".charAt(pow);
+					});
+					if (first == null) {
+						first = sol;
+					}
+					return callback ? callback(sol, axisPrefix[step][stateAxis]) : sol;
+				});
+				if (ret) {
+					return first;
+				}
 			}
-			if (!first) {
-				first = sol;
-			}
-			return callback ? callback(sol) : sol;
-		});
+		}
 		return first;
 	}
 
@@ -81,27 +126,27 @@ var thistlethwaite = (function() {
 		return ret.replace(/\s+/g, ' ');
 	}
 
-	function fillStepsCandidates(scramble, skeleton, useNiss, nSols) {
+	function fillStepsCandidates(scramble, skeleton, useNiss, tryMultiAxis, nSols) {
 		initSolvers();
 		var ret = [];
 		for (var step = 0; step < 4; step++) {
 			ret[step] = [];
 			if (skeleton[step]) {
-				var state = move2state(performSolution(scramble, skeleton[step]));
+				var state = move2state(performSolution(scramble, skeleton[step].replace(/^.*:\s*/g, '')));
 				if (solvs[step].checkPerm(state) == 1) { // valid skeleton
 					ret[step].push(skeleton[step]);
 				} else {
 					console.log('[Thistlethwaite] skeleton', scramble, skeleton[step], 'invalid');
 				}
 			}
-			enumStepSolutions(step, scramble, useNiss, function(sol) {
-				sol = sol.join(' ').replace(/\s+/g, ' ');
+			enumStepSolutions(step, scramble, useNiss, tryMultiAxis, function(sol, prefix) {
+				sol = (prefix ? (prefix + ': ') : '') + sol.join(' ').replace(/\s+/g, ' ');
 				if (ret[step].indexOf(sol) == -1) {
 					ret[step].push(sol);
 				}
 				return ret[step].length >= nSols;
 			});
-			scramble = performSolution(scramble, ret[step][0]);
+			scramble = performSolution(scramble, ret[step][0].replace(/^.*:\s*/g, ''));
 		}
 		return ret;
 	}
@@ -116,6 +161,8 @@ var thistlethwaite = (function() {
 		var scramble = "";
 		var stepData = [];
 		var useNiss = false;
+		var tryMultiAxis = true;
+		var nSols = 5;
 
 		function procClick(e) {
 			var elem = $(e.target);
@@ -135,7 +182,7 @@ var thistlethwaite = (function() {
 				var sol = ~~data[1];
 				skeleton[step] = stepData[step][sol];
 				skeleton.length = step + 1;
-				stepData = fillStepsCandidates(scramble, skeleton, useNiss, 5);
+				stepData = fillStepsCandidates(scramble, skeleton, useNiss, tryMultiAxis, nSols);
 				for (var i = 0; i < 4; i++) {
 					skeleton[i] = stepData[i][0];
 				}
@@ -168,7 +215,7 @@ var thistlethwaite = (function() {
 
 		function procScramble(_scramble) {
 			scramble = _scramble;
-			stepData = fillStepsCandidates(scramble, [], useNiss, 5);
+			stepData = fillStepsCandidates(scramble, [], useNiss, tryMultiAxis, nSols);
 			for (var i = 0; i < 4; i++) {
 				skeleton[i] = stepData[i][0];
 			}
