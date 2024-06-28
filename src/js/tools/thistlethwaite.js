@@ -17,6 +17,7 @@ var thistlethwaite = (function() {
 	];
 	var axisSwitch = null;
 	var axisPrefix = null;
+	var allowedEnds = null;
 	var gens = [];
 	var solvs = [];
 
@@ -66,6 +67,12 @@ var thistlethwaite = (function() {
 			[''],
 			['']
 		];
+		allowedEnds = [
+			[2 * 4 + 1, 5 * 4 + 1],
+			[1 * 4 + 1, 4 * 4 + 1],
+			[0 * 4 + 1, 3 * 4 + 1],
+			null
+		];
 	}
 
 	function enumStepSolutions(step, scramble, useNiss, tryMultiAxis, callback) {
@@ -90,6 +97,7 @@ var thistlethwaite = (function() {
 		}
 		var first = null;
 		var curStepMoves = stepMoves[step];
+		var allowedEnd = allowedEnds[step];
 		for (var depth = 0; depth < 20; depth++) {
 			for (var stateAxis = 0; stateAxis < states.length; stateAxis++) {
 				if (states[stateAxis] == null) {
@@ -97,6 +105,16 @@ var thistlethwaite = (function() {
 				}
 				var conjMoves = ["URFDLB", "RFULBD", "FURBDL", "RDFLUB", "FRDBLU", "DFRUBL"][stateAxis];
 				var ret = solvs[step].DissectionSolve(states[stateAxis], depth, depth, stateCtx[stateAxis],	(sol) => {
+					if (sol.indexOf(-1) == -1) {
+						sol.unshift(-1);
+					}
+					if (sol.length > 0 && allowedEnd != null) {
+						var start = sol[0];
+						var end = sol[sol.length - 1];
+						if (start != -1 && allowedEnd.indexOf(start[0] * 4 + start[1]) == -1 || end != -1 && allowedEnd.indexOf(end[0] * 4 + end[1]) == -1) {
+							return;
+						}
+					}
 					sol = sol.map((mv) => {
 						if (mv == -1) {
 							return '@';
