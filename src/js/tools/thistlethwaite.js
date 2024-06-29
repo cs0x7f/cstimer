@@ -150,12 +150,7 @@ var thistlethwaite = (function() {
 		for (var step = 0; step < 4; step++) {
 			ret[step] = [];
 			if (skeleton[step]) {
-				var state = move2state(performSolution(scramble, skeleton[step].replace(/^.*:\s*/g, '')));
-				if (solvs[step].checkPerm(state) == 1) { // valid skeleton
-					ret[step].push(skeleton[step]);
-				} else {
-					console.log('[Thistlethwaite] skeleton', scramble, skeleton[step], 'invalid');
-				}
+				ret[step].push(skeleton[step]);
 			}
 			enumStepSolutions(step, scramble, useNiss, tryMultiAxis, function(sol, prefix) {
 				sol = (prefix ? (prefix + ': ') : '') + sol.join(' ').replace(/\s+/g, ' ');
@@ -164,9 +159,30 @@ var thistlethwaite = (function() {
 				}
 				return ret[step].length >= nSols;
 			});
-			scramble = performSolution(scramble, ret[step][0].replace(/^.*:\s*/g, ''));
+			scramble = performSolution(scramble, ret[step][0].replace(/[^ ]+:/g, ''));
 		}
 		return ret;
+	}
+
+	function toPrettyStyle(solution) {
+		var m = /^(.*:\s*)?\s*(.*?)\s*@\s*(.*)$/.exec(solution);
+		if (!m) {
+			return solution;
+		}
+		var prefix = (m[1] ? (m[1] + ' ') : '')
+		var niss = m[2].split(' ');
+		var ret = [];
+		for (var i = niss.length - 1; i >= 0; i--) {
+			if (niss[i] == '') {
+				continue;
+			}
+			ret.push(niss[i][0] + "' 2'".charAt("'2 ".indexOf(niss[i][1]) + 1));
+		}
+		if (ret.length > 0) {
+			return prefix + '(' + ret.join(' ') + ')' + (m[3] ? (' ' + m[3]) : '');
+		} else {
+			return prefix + m[3];
+		}
 	}
 
 	execMain(function() {
@@ -217,15 +233,15 @@ var thistlethwaite = (function() {
 				solTd[i] = $('<td style="text-align:left" colspan=2>');
 				tr.append(solTd[i]);
 				tr.appendTo(table);
-				solTd[i].append($('<span class="click" data="step' + i + '">' + skeleton[i] + '</span>').click(procClick));
+				solTd[i].append($('<span class="click" data="step' + i + '">' + toPrettyStyle(skeleton[i]) + '</span>').click(procClick));
 			}
 			if (step != -1) {
 				var stepTd = solTd[step];
 				var stepSols = stepData[step];
 				stepTd.empty();
-				stepTd.append('<span>' + stepSols[0] + '</span>');
+				stepTd.append('<span>' + toPrettyStyle(stepSols[0]) + '</span>');
 				for (var j = 1; j < stepSols.length; j++) {
-					stepTd.append('<br>', $('<span class="click" data="sol' + step + '_' + j + '">' + stepSols[j] + '</span>').click(procClick));
+					stepTd.append('<br>', $('<span class="click" data="sol' + step + '_' + j + '">' + toPrettyStyle(stepSols[j]) + '</span>').click(procClick));
 				}
 			}
 			nisschk.unbind('click').click(procClick);
