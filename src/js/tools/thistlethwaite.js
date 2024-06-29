@@ -63,7 +63,7 @@ var thistlethwaite = (function() {
 		];
 		axisPrefix = [
 			['fb', 'ud', 'rl'],
-			['ud', 'rl', 'fb', 'ud', 'rl', 'fb'],
+			['ud', 'rl', 'fb', 'rl', 'fb', 'ud'],
 			[''],
 			['']
 		];
