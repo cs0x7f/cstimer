@@ -76,7 +76,7 @@ var tools = (function() {
 			return "mgm";
 		} else if (/^(klmso|klmp)$/.exec(scrambleType)) {
 			return "klm";
-		} else if (/^(fto|fto(so|l[34]t))$/.exec(scrambleType)) {
+		} else if (/^(fto|fto(so|l[34]t|edge|cent|corn))$/.exec(scrambleType)) {
 			return "fto";
 		} else if (/^(mpyr|mpyrso)$/.exec(scrambleType)) {
 			return "mpyr";

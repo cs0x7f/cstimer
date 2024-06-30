@@ -421,7 +421,10 @@ var scrdata = [
 		['随机状态', "ftoso", 0],
 		['随机转动', "fto", 30],
 		['L3T', "ftol3t", 0],
-		['L3T+LBT', "ftol4t", 0]
+		['L3T+LBT', "ftol4t", 0],
+		['edges only', "ftoedge", 0],
+		['centers only', "ftocent", 0],
+		['corners only', "ftocorn", 0]
 	]],
 	['Icosahedron', [
 		['Icosamate 随机转动', "ctico", 60]

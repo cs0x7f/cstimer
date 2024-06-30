@@ -421,7 +421,10 @@ var scrdata = [
 		['random state', "ftoso", 0],
 		['random move', "fto", 30],
 		['L3T', "ftol3t", 0],
-		['L3T+LBT', "ftol4t", 0]
+		['L3T+LBT', "ftol4t", 0],
+		['edges only', "ftoedge", 0],
+		['centers only', "ftocent", 0],
+		['corners only', "ftocorn", 0]
 	]],
 	['Icosahedron', [
 		['Icosamate random move', "ctico", 60]

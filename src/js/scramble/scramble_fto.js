@@ -1,13 +1,19 @@
 (function() {
 	"use strict";
 
-	function getRandomScramble() {
+	function getRandomScramble(solvedEdge, solvedCenter, solvedCorner) {
 		var fc = new ftosolver.FtoCubie();
-		fc.ep = mathlib.rndPerm(12, true);
-		fc.uf = mathlib.rndPerm(12, true);
-		fc.rl = mathlib.rndPerm(12, true);
-		fc.cp = mathlib.rndPerm(6, true);
-		mathlib.setNOri(fc.co, mathlib.rn(32), 6, -2);
+		if (!solvedEdge) {
+			fc.ep = mathlib.rndPerm(12, true);
+		}
+		if (!solvedCenter) {
+			fc.uf = mathlib.rndPerm(12, true);
+			fc.rl = mathlib.rndPerm(12, true);
+		}
+		if (!solvedCorner) {
+			fc.cp = mathlib.rndPerm(6, true);
+			mathlib.setNOri(fc.co, mathlib.rn(32), 6, -2);
+		}
 		return ftosolver.solveFacelet(fc.toFaceCube(), true);
 	}
 
@@ -40,5 +46,8 @@
 
 	scrMgr.reg('ftoso', getRandomScramble)
 		('ftol3t', getLNTScramble.bind(null, [0, 1, 2, 3, 7, 11]))
-		('ftol4t', getLNTScramble.bind(null, [0, 1, 2, 3, 6, 7, 9, 11]));
+		('ftol4t', getLNTScramble.bind(null, [0, 1, 2, 3, 6, 7, 9, 11]))
+		('ftoedge', getRandomScramble.bind(null, false, true, true))
+		('ftocent', getRandomScramble.bind(null, true, false, true))
+		('ftocorn', getRandomScramble.bind(null, true, true, false));
 })();

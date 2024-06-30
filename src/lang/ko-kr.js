@@ -421,7 +421,10 @@ var scrdata = [
 		['무작위 상태', "ftoso", 0],
 		['무작위 수순', "fto", 30],
 		['L3T', "ftol3t", 0],
-		['L3T+LBT', "ftol4t", 0]
+		['L3T+LBT', "ftol4t", 0],
+		['edges only', "ftoedge", 0],
+		['centers only', "ftocent", 0],
+		['corners only', "ftocorn", 0]
 	]],
 	['Icosahedron', [
 		['Icosamate 무작위 수순', "ctico", 60]

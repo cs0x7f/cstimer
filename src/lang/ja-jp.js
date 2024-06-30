@@ -421,7 +421,10 @@ var scrdata = [
 		['ランダム状態', "ftoso", 0],
 		['ランダムムーブ', "fto", 30],
 		['L3T', "ftol3t", 0],
-		['L3T+LBT', "ftol4t", 0]
+		['L3T+LBT', "ftol4t", 0],
+		['edges only', "ftoedge", 0],
+		['centers only', "ftocent", 0],
+		['corners only', "ftocorn", 0]
 	]],
 	['Icosahedron', [
 		['Icosamate ランダムムーブ', "ctico", 60]
