@@ -44,7 +44,7 @@
 		return ftosolver.solveFacelet(fc.toFaceCube(), true);
 	}
 
-	scrMgr.reg('ftoso', getRandomScramble)
+	scrMgr.reg('ftoso', getRandomScramble.bind(null, false, false, false))
 		('ftol3t', getLNTScramble.bind(null, [0, 1, 2, 3, 7, 11]))
 		('ftol4t', getLNTScramble.bind(null, [0, 1, 2, 3, 6, 7, 9, 11]))
 		('ftoedge', getRandomScramble.bind(null, false, true, true))
