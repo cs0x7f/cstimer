@@ -939,6 +939,9 @@ var mathlib = (function() {
 					var q = p;
 					for (var c = 0; c < N_POWER; c++) {
 						q = isMoveTable ? doMove[m][q] : doMove(q, m);
+						if (q < 0) {
+							break;
+						}
 						if (getPruning(prun, q) != check) {
 							continue;
 						}

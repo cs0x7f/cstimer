@@ -24,8 +24,8 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function nullMethod() {}
 
-	function initCenter1() {
-		initCenter1 = nullMethod;
+	function $clinit_Center1() {
+		$clinit_Center1 = nullMethod;
 		Center1SymMove = createArray(15582, 36);
 		Center1Sym2Raw = createArray(15582);
 		Center1SymPrun = createArray(15582);
@@ -53,15 +53,35 @@ var scramble_444 = (function(Cnk, circle) {
 		return idx;
 	}
 
+	function getCenter1RotThres(obj, rotPerm, thres) {
+		var idx = 0;
+		var r = 8;
+		for (var i = 23; i >= 0; --i) {
+			obj.ct[rotPerm[i]] == 1 && (idx += Cnk[i][r--]);
+			if (idx >= thres) {
+				return -1;
+			}
+		}
+		return idx;
+	}
+
 	function $getsym(obj) {
 		var cord, j;
+		var ret = 0;
 		if (Center1Raw2Sym != null) {
-			return Center1Raw2Sym[$get_1(obj)];
+			for (var s = 0; s < 48; s++) {
+				var idx = getCenter1RotThres(obj, Center1RotPerm[s], mathlib.Cnk[21][8]);
+				if (idx != -1) {
+					ret = Center1Raw2Sym[idx];
+					return ret & ~0x3f | SymMult[s][ret & 0x3f];
+				}
+			}
 		}
 		for (j = 0; j < 48; ++j) {
 			cord = raw2sym_0($get_1(obj));
-			if (cord != -1)
+			if (cord != -1) {
 				return cord * 64 + j;
+			}
 			$rot(obj, 0);
 			j % 2 == 1 && $rot(obj, 1);
 			j % 8 == 7 && $rot(obj, 2);
@@ -96,6 +116,7 @@ var scramble_444 = (function(Cnk, circle) {
 				doMoveCenter1(obj, 29);
 				doMoveCenter1(obj, 24);
 				doMoveCenter1(obj, 35);
+				break;
 		}
 	}
 
@@ -146,21 +167,37 @@ var scramble_444 = (function(Cnk, circle) {
 		return this;
 	}
 
-	function createCenter1MoveTable() {
-		var c, d, i, m_0;
-		c = new Center1();
-		d = new Center1();
-		for (i = 0; i < 15582; ++i) {
+	function initCenter1MoveTable() {
+		var c = new Center1();
+		var d = new Center1();
+		for (var i = 0; i < 15582; ++i) {
 			$set_0(d, Center1Sym2Raw[i]);
-			for (m_0 = 0; m_0 < 36; ++m_0) {
+			for (var m = 0; m < 36; ++m) {
+				if (m % 3 == 1 || Center1SymMove[i][m] !== undefined) {
+					continue;
+				}
 				$set_1(c, d);
-				doMoveCenter1(c, m_0);
-				Center1SymMove[i][m_0] = $getsym(c);
+				doMoveCenter1(c, m);
+				var idx = $getsym(c);
+				Center1SymMove[i][m] = idx;
+				var invM = SymMove[idx & 0x3f][~~(m / 3) * 3 + 2 - m % 3];
+				if (Center1SymMove[idx >> 6][invM] === undefined) {
+					Center1SymMove[idx >> 6][invM] = i << 6 | SymInv[idx & 0x3f];
+				}
+			}
+		}
+		for (var i = 0; i < 15582; i++) {
+			for (var m = 0; m < 36; m += 3) {
+				var idx = Center1SymMove[i][m];
+				var nextM = SymMove[idx & 0x3f][m];
+				var nextIdx = Center1SymMove[idx >>> 6][nextM];
+				var symx = SymMult[idx & 0x3f][nextIdx & 0x3f];
+				Center1SymMove[i][m + 1] = nextIdx & ~0x3f | symx;
 			}
 		}
 	}
 
-	function createPrun() {
+	function initCenter1Prun() {
 		var check, depth, done, i, idx, inv, m_0, select;
 		fill_0(Center1SymPrun);
 		Center1SymPrun[0] = 0;
@@ -214,7 +251,7 @@ var scramble_444 = (function(Cnk, circle) {
 		return -1;
 	}
 
-	function initCenter1Sym() {
+	function initSymMeta() {
 		var c, d, e, f, i, j, k_0;
 		c = new Center1();
 		for (i = 0; i < 24; ++i) {
@@ -272,25 +309,38 @@ var scramble_444 = (function(Cnk, circle) {
 		}
 	}
 
-	function initSym2Raw() {
-		var c, count, i, idx, j, occ;
-		c = new Center1();
+	function initCenter1Sym2Raw() {
+		var idx, j, occ;
+		var c = new Center1();
+		var d = new Center1();
+
+		Center1RotPerm = [];
+		for (var i = 0; i < 24; i++) {
+			c.ct[i] = i;
+		}
+		for (var s = 0; s < 48; s++) {
+			Center1RotPerm[s] = c.ct.slice();
+			$rot(c, 0);
+			s % 2 == 1 && $rot(c, 1);
+			s % 8 == 7 && $rot(c, 2);
+			s % 16 == 15 && $rot(c, 3);
+		}
+
 		occ = createArray(22984);
-		for (i = 0; i < 22984; i++) {
+		for (var i = 0; i < 22984; i++) {
 			occ[i] = 0;
 		}
-		count = 0;
-		for (i = 0; i < 735471; ++i) {
+		var count = 0;
+		for (var i = 0; i < mathlib.Cnk[21][8]; ++i) {
 			if ((occ[i >>> 5] & 1 << (i & 31)) == 0) {
 				$set_0(c, i);
 				for (j = 0; j < 48; ++j) {
-					idx = $get_1(c);
+					var idx = getCenter1RotThres(c, Center1RotPerm[j], mathlib.Cnk[21][8]);
+					if (idx == -1) {
+						continue;
+					}
 					occ[idx >>> 5] |= 1 << (idx & 31);
 					Center1Raw2Sym != null && (Center1Raw2Sym[idx] = count << 6 | SymInv[j]);
-					$rot(c, 0);
-					j % 2 == 1 && $rot(c, 1);
-					j % 8 == 7 && $rot(c, 2);
-					j % 16 == 15 && $rot(c, 3);
 				}
 				Center1Sym2Raw[count++] = i;
 			}
@@ -304,7 +354,7 @@ var scramble_444 = (function(Cnk, circle) {
 	}
 
 	var Center1SymPrun, Center1SymMove, finish_0, Center1Raw2Sym = null,
-		Center1Sym2Raw, SymInv, SymMove, SymMult;
+		Center1Sym2Raw, Center1RotPerm, SymInv, SymMove, SymMult;
 
 	function $clinit_Center2() {
 		$clinit_Center2 = nullMethod;
@@ -453,14 +503,27 @@ var scramble_444 = (function(Cnk, circle) {
 		}
 	}
 
-	function Center2_0() {
+	function Center2() {
 		this.rl = createArray(8);
 		this.ct = createArray(16);
+		this.parity = 0;
 	}
 
-	function init_3() {
-		var c, ct, ctx, depth, done, i, idx, j, m_0, rl, rlx;
-		c = new Center2_0;
+	Center2.prototype.copy = function(obj) {
+		for (var i = 0; i < 8; i++) {
+			this.rl[i] = obj.rl[i];
+		}
+		for (var i = 0; i < 16; i++) {
+			this.ct[i] = obj.ct[i];
+		}
+		this.parity = obj.parity;
+	}
+	var ctmv, ctprun, ctrot, pmv, rlmv, rlrot;
+
+	function initCenter2() {
+		var ct, ctx, depth, done, i, idx, j, m_0, rl, rlx;
+		var c = new Center2;
+		var d = new Center2;
 		for (i = 0; i < 70; ++i) {
 			for (m_0 = 0; m_0 < 28; ++m_0) {
 				$setrl(c, i);
@@ -480,17 +543,18 @@ var scramble_444 = (function(Cnk, circle) {
 		for (i = 0; i < 6435; ++i) {
 			$setct(c, i);
 			for (j = 0; j < 16; ++j) {
-				ctrot[i][j] = $getct(c) & 65535;
+				ctrot[i][j] = $getct(c);
 				$rot_0(c, 0);
 				j % 2 == 1 && $rot_0(c, 1);
 				j % 8 == 7 && $rot_0(c, 2);
 			}
 		}
 		for (i = 0; i < 6435; ++i) {
+			$setct(c, i);
 			for (m_0 = 0; m_0 < 28; ++m_0) {
-				$setct(c, i);
-				doMoveCenter2(c, move2std[m_0]);
-				ctmv[i][m_0] = $getct(c) & 65535;
+				d.copy(c);
+				doMoveCenter2(d, move2std[m_0]);
+				ctmv[i][m_0] = $getct(d);
 			}
 		}
 		fill_0(ctprun);
@@ -527,10 +591,6 @@ var scramble_444 = (function(Cnk, circle) {
 			}
 		}
 	}
-
-	defineClass(Center2_0);
-	_.parity = 0;
-	var ctmv, ctprun, ctrot, pmv, rlmv, rlrot;
 
 	function $clinit_Center3() {
 		$clinit_Center3 = nullMethod;
@@ -673,23 +733,36 @@ var scramble_444 = (function(Cnk, circle) {
 		}
 	}
 
-	function Center3_0() {
+	function Center3() {
 		this.ud = createArray(8);
 		this.rl = createArray(8);
 		this.fb = createArray(8);
+		this.parity = 0;
 	}
 
-	function init_4() {
-		var c, depth, done, i, m_0;
+	Center3.prototype.copy = function(obj) {
+		for (var i = 0; i < 8; i++) {
+			this.ud[i] = obj.ud[i];
+			this.rl[i] = obj.rl[i];
+			this.fb[i] = obj.fb[i];
+		}
+		this.parity = obj.parity;
+	}
+	var ctmove, pmove, prun_0, rl2std, std2rl;
+
+	function initCenter3() {
+		var depth, done, i, m_0;
 		for (i = 0; i < 12; ++i) {
 			std2rl[rl2std[i]] = i;
 		}
-		c = new Center3_0;
+		var c = new Center3;
+		var d = new Center3;
 		for (i = 0; i < 29400; ++i) {
+			$setct_0(c, i);
 			for (m_0 = 0; m_0 < 20; ++m_0) {
-				$setct_0(c, i);
-				doMoveCenter3(c, m_0);
-				ctmove[i][m_0] = $getct_0(c) & 65535;
+				d.copy(c);
+				doMoveCenter3(d, m_0);
+				ctmove[i][m_0] = $getct_0(d);
 			}
 		}
 		fill_0(prun_0);
@@ -711,10 +784,6 @@ var scramble_444 = (function(Cnk, circle) {
 			++depth;
 		}
 	}
-
-	defineClass(Center3_0);
-	_.parity = 0;
-	var ctmove, pmove, prun_0, rl2std, std2rl;
 
 	function $copy_1(obj, c) {
 		var i;
@@ -776,7 +845,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function $clinit_CornerCube() {
 		$clinit_CornerCube = nullMethod;
-		moveCube_0 = createArray(18);
+		CornerMoveCube = createArray(18);
 		cornerFacelet_0 = [
 			[8, 9, 20],
 			[6, 18, 38],
@@ -805,7 +874,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function $move_3(obj, idx) {
 		!obj.temps && (obj.temps = new CornerCube_0);
-		CornMult_0(obj, moveCube_0[idx], obj.temps);
+		CornMult_0(obj, CornerMoveCube[idx], obj.temps);
 		$copy_2(obj, obj.temps);
 	}
 
@@ -845,28 +914,28 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function initMove_0() {
 		var a, p_0;
-		moveCube_0[0] = new CornerCube_1(15120, 0);
-		moveCube_0[3] = new CornerCube_1(21021, 1494);
-		moveCube_0[6] = new CornerCube_1(8064, 1236);
-		moveCube_0[9] = new CornerCube_1(9, 0);
-		moveCube_0[12] = new CornerCube_1(1230, 412);
-		moveCube_0[15] = new CornerCube_1(224, 137);
+		CornerMoveCube[0] = new CornerCube_1(15120, 0);
+		CornerMoveCube[3] = new CornerCube_1(21021, 1494);
+		CornerMoveCube[6] = new CornerCube_1(8064, 1236);
+		CornerMoveCube[9] = new CornerCube_1(9, 0);
+		CornerMoveCube[12] = new CornerCube_1(1230, 412);
+		CornerMoveCube[15] = new CornerCube_1(224, 137);
 		for (a = 0; a < 18; a += 3) {
 			for (p_0 = 0; p_0 < 2; ++p_0) {
-				moveCube_0[a + p_0 + 1] = new CornerCube_0;
-				CornMult_0(moveCube_0[a + p_0], moveCube_0[a], moveCube_0[a + p_0 + 1]);
+				CornerMoveCube[a + p_0 + 1] = new CornerCube_0;
+				CornMult_0(CornerMoveCube[a + p_0], CornerMoveCube[a], CornerMoveCube[a + p_0 + 1]);
 			}
 		}
 	}
 
 	defineClass(CornerCube_0, CornerCube_1);
 	_.temps = null;
-	var cornerFacelet_0, moveCube_0;
+	var cornerFacelet_0, CornerMoveCube;
 
 	function $clinit_Edge3() {
 		$clinit_Edge3 = nullMethod;
 		prunValues = [1, 4, 16, 55, 324, 1922, 12275, 77640, 485359, 2778197, 11742425, 27492416, 31002941, 31006080];
-		Edge3Prun = createArray(1937880);
+		Edge3Prun = new Int32Array(1937880);
 		Edge3Sym2Raw = createArray(1538);
 		Edge3Sym2Mask = createArray(1538);
 		symstate = createArray(1538);
@@ -889,10 +958,14 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function $get_2(obj, end, returnMask) {
 		obj.isStd || $std(obj);
+		return get12Perm(obj.edge, end, returnMask);
+	}
+
+	function get12Perm(arr, end, returnMask) {
 		var idx = 0;
 		var mask = 0;
 		for (var i = 0; i < end; i++) {
-			var val = obj.edge[i];
+			var val = arr[i];
 			idx = idx * (12 - i) + val - mathlib.bitCount(mask & ((1 << val) - 1));
 			mask |= 1 << val;
 		}
@@ -1143,9 +1216,13 @@ var scramble_444 = (function(Cnk, circle) {
 	function Edge3_0() {
 		this.edge = createArray(12);
 		this.edgeo = createArray(12);
+		this.isStd = true;
+		this.temp = null;
 	}
+	var FullEdgeMap,
+		Edge3Prun, factX, mvrot, mvroto, prunValues, Edge3Raw2Sym, Edge3Sym2Raw, Edge3Sym2Mask, syminv_0, symstate;
 
-	function createPrun_0() {
+	function initEdge3Prun() {
 		var chk, cord1, cord1x, cord2, cord2x, e, f, find_0, g, j, symState, symcord1, val;
 		e = new Edge3_0;
 		f = new Edge3_0;
@@ -1153,9 +1230,10 @@ var scramble_444 = (function(Cnk, circle) {
 		fill_0(Edge3Prun);
 
 		var depth = 0;
-		done = 1;
+		var done = 1;
 		var doneRaw = 1;
 		setPruning(Edge3Prun, 0, 0);
+		var bfsMoves = [1, 0, 2, 3, 5, 4, 6, 8, 7, 9, 10, 12, 11, 13, 14, 15, 16];
 		var start = +new Date;
 		while (done != 31006080) {
 			var inv = depth > 9;
@@ -1164,12 +1242,14 @@ var scramble_444 = (function(Cnk, circle) {
 			var dep2m3 = (depth + 2) % 3;
 			find_0 = inv ? 3 : depm3;
 			chk = inv ? depm3 : 3;
+			var find_mask = find_0 * 0x55555555;
 			if (depth >= EDGE3_MAX_PRUN - 1) {
 				break;
 			}
 			for (var i_ = 0; i_ < 31006080; i_ += 16) {
 				val = Edge3Prun[i_ >> 4];
-				if (!inv && val == -1) {
+				var chkmask = val ^ find_mask;
+				if  (!inv && val == -1 || ((chkmask - 0x55555555) & ~chkmask & 0xaaaaaaaa) == 0) {
 					continue;
 				}
 				for (var i = i_, end = i_ + 16; i < end; ++i, val >>= 2) {
@@ -1180,14 +1260,15 @@ var scramble_444 = (function(Cnk, circle) {
 					cord1 = Edge3Sym2Raw[symcord1];
 					cord2 = i % 20160;
 					$set_4(e, cord1 * 20160 + cord2);
-					for (var m = 0; m < 17; ++m) {
-						var idx = getMvSym(e.edge, m);
+					for (var mi = 0; mi < 17; ++mi) {
+						var m = bfsMoves[mi]
+						var idx = getMvSym(e.edge, m, Edge3SymMove[m][symcord1]);
 						var symx = idx & 7;
 						idx >>= 3;
 						var prun = getPruning_0(Edge3Prun, idx);
 						if (prun != chk) {
 							if (prun == dep2m3 || prun == depm3 && idx < i) {
-								m = skipAxis3[m];
+								mi = skipAxis3[m];
 							}
 							continue;
 						}
@@ -1205,7 +1286,7 @@ var scramble_444 = (function(Cnk, circle) {
 						$move_4(f, m);
 						$rotate_0(f, symx);
 						for (j = 1;
-							(symState = symState >> 1 & 65535) != 0; ++j) {
+							(symState = symState >> 1) != 0; ++j) {
 							if ((symState & 1) != 1) {
 								continue;
 							}
@@ -1229,20 +1310,26 @@ var scramble_444 = (function(Cnk, circle) {
 		return table[index >> 4] >> ((index & 15) << 1) & 3;
 	}
 
-	function getMvSym(ep, mv) {
+	function getMvSym(ep, mv, assumeIdx) {
 		var mrIdx = mv << 3;
-		var movo = mvroto[mrIdx];
-		var mov = mvrot[mrIdx];
+		var movo, mov;
 		var idx = 0;
 		var mask = 0;
-		for (var i = 0; i < 4; i++) {
-			var val = movo[ep[mov[i]]];
-			idx = idx * (12 - i) + val - mathlib.bitCount(mask & ((1 << val) - 1));
-			mask |= 1 << val;
+		if (assumeIdx !== undefined && move3std[mv] % 3 == 1) {
+			mrIdx |= assumeIdx & 0x7;
+			idx = assumeIdx >> 3;
+		} else {
+			movo = mvroto[mrIdx];
+			mov = mvrot[mrIdx];
+			for (var i = 0; i < 4; i++) {
+				var val = movo[ep[mov[i]]];
+				idx = idx * (12 - i) + val - mathlib.bitCount(mask & ((1 << val) - 1));
+				mask |= 1 << val;
+			}
+			idx = Edge3Raw2Sym[idx];
+			mrIdx |= idx & 7;
+			idx >>= 3;
 		}
-		idx = Edge3Raw2Sym[idx];
-		mrIdx |= idx & 7;
-		idx >>= 3;
 		movo = mvroto[mrIdx];
 		mov = mvrot[mrIdx];
 		mask = Edge3Sym2Mask[idx];
@@ -1291,7 +1378,7 @@ var scramble_444 = (function(Cnk, circle) {
 		// (depm3 - prun + 16) % 3 + prun - 1;
 	}
 
-	function initMvRot() {
+	function initEdge3MvRot() {
 		var e = new Edge3_0;
 		for (var m = 0; m < 21; ++m) {
 			for (var r = 0; r < 8; ++r) {
@@ -1309,22 +1396,24 @@ var scramble_444 = (function(Cnk, circle) {
 		}
 	}
 
-	function initRaw2Sym() {
-		var count, e, i, idx, j, occ;
+	var Edge3SymMove = [];
+
+	function initEdge3Sym2Raw() {
+		var count, e, idx, j, occ;
 		e = new Edge3_0;
 		occ = createArray(1485);
-		for (i = 0; i < 1485; i++) {
+		for (var i = 0; i < 1485; i++) {
 			occ[i] = 0;
 		}
 		count = 0;
-		for (i = 0; i < 11880; ++i) {
+		for (var i = 0; i < 11880; ++i) {
 			if ((occ[i >>> 3] & 1 << (i & 7)) == 0) {
 				$set_4(e, i * factX[8]);
 				Edge3Sym2Raw[count] = i;
 				Edge3Sym2Mask[count] = $get_2(e, 4, true);
 				for (j = 0; j < 8; ++j) {
 					idx = $get_2(e, 4);
-					idx == i && (symstate[count] = (symstate[count] | 1 << j) & 65535);
+					idx == i && (symstate[count] = symstate[count] | 1 << j);
 					occ[idx >> 3] |= 1 << (idx & 7);
 					Edge3Raw2Sym[idx] = count << 3 | syminv_0[j];
 					$rot_1(e, 0);
@@ -1336,17 +1425,24 @@ var scramble_444 = (function(Cnk, circle) {
 				count++;
 			}
 		}
+		for (var m = 0; m < 20; m++) {
+			Edge3SymMove[m] = [];
+		}
+		for (var i = 0; i < 1538; i++) {
+			$set_4(e, Edge3Sym2Raw[i] * factX[8]);
+			for (var m = 0; m < 20; ++m) {
+				if (move3std[m] % 3 != 1) {
+					continue;
+				}
+				var idx = getMvSym(e.edge, m);
+				Edge3SymMove[m][i] = ~~((idx >> 3) / 20160) << 3 | idx & 0x7;
+			}
+		}
 	}
 
 	function setPruning(table, index, value) {
 		table[index >> 4] ^= (3 ^ value) << ((index & 15) << 1);
 	}
-
-	defineClass(Edge3_0);
-	_.isStd = true;
-	_.temp = null;
-	var FullEdgeMap, done = 0,
-		Edge3Prun, factX, mvrot, mvroto, prunValues, Edge3Raw2Sym, Edge3Sym2Raw, Edge3Sym2Mask, syminv_0, symstate;
 
 	function $checkEdge(obj) {
 		var ck, i, parity;
@@ -2012,43 +2108,22 @@ var scramble_444 = (function(Cnk, circle) {
 		this.move3 = createArray(20);
 		this.c1 = new FullCube_3;
 		this.c2 = new FullCube_3;
-		this.ct2 = new Center2_0;
-		this.ct3 = new Center3_0;
+		this.ct2 = new Center2;
+		this.ct3 = new Center3;
 		this.e12 = new Edge3_0;
 		this.tempep = createArray(20);
 		this.arr2 = createArray(100);
 		for (i = 0; i < 20; ++i) {
 			this.tempep[i] = [];
 		}
+		this.add1 = false;
+		this.arr2idx = 0;
+		this.c = null;
+		this.length1 = 0;
+		this.length2 = 0;
+		this.p1SolsCnt = 0;
+		this.solution = '';
 	}
-
-	function init_5() {
-		if (inited_2) {
-			return;
-		}
-		initCenter1Sym();
-		Center1Raw2Sym = createArray(735471);
-		initSym2Raw();
-		createCenter1MoveTable();
-		Center1Raw2Sym = null;
-		createPrun();
-		init_3();
-		init_4();
-		initMvRot();
-		initRaw2Sym();
-		createPrun_0();
-		inited_2 = true;
-	}
-
-	defineClass(Search_4);
-	_.add1 = false;
-	_.arr2idx = 0;
-	_.c = null;
-	_.length1 = 0;
-	_.length2 = 0;
-	_.p1SolsCnt = 0;
-	_.solution = '';
-	var inited_2 = false;
 
 	function parity_0(arr) {
 		var i, j, len, parity;
@@ -2209,14 +2284,37 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function init() {
 		init = nullMethod;
+		var tt = performance.now();
+		DEBUG && console.log('[scramble 444] start initialization');
 		$clinit_Moves();
-		initCenter1();
+		$clinit_Center1();
 		$clinit_Center2();
 		$clinit_Center3();
 		$clinit_Edge3();
 		$clinit_CornerCube();
 		$clinit_FullCube_0();
-		init_5();
+		DEBUG && console.log('[scramble 444] alloc tables', performance.now() - tt);
+		initSymMeta();
+		DEBUG && console.log('[scramble 444] initSymMeta', performance.now() - tt);
+		Center1Raw2Sym = createArray(735471);
+		initCenter1Sym2Raw();
+		DEBUG && console.log('[scramble 444] initCenter1Sym2Raw', performance.now() - tt);
+		initCenter1MoveTable();
+		DEBUG && console.log('[scramble 444] initCenter1MoveTable', performance.now() - tt);
+		Center1Raw2Sym = null;
+		initCenter1Prun();
+		DEBUG && console.log('[scramble 444] initCenter1Prun', performance.now() - tt);
+
+		initCenter2();
+		DEBUG && console.log('[scramble 444] initCenter2', performance.now() - tt);
+		initCenter3();
+		DEBUG && console.log('[scramble 444] initCenter3', performance.now() - tt);
+		initEdge3MvRot();
+		DEBUG && console.log('[scramble 444] initEdge3MvRot', performance.now() - tt);
+		initEdge3Sym2Raw();
+		DEBUG && console.log('[scramble 444] initEdge3Sym2Raw', performance.now() - tt);
+		initEdge3Prun();
+		DEBUG && console.log('[scramble 444] initEdge3Prun', performance.now() - tt);
 		searcher = new Search_4();
 	}
 
