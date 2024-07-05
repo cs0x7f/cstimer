@@ -2,6 +2,11 @@
 
 var scramble_444 = (function(Cnk, circle) {
 
+	var PHASE1_SOLS = 10000;
+	var PHASE2_ATTS = 500;
+	var PHASE2_SOLS = 100;
+	var MAX_SEARCH_DEPTH = 60;
+
 	function createArray(length1, length2) {
 		var result, i;
 		result = new Array(length1);
@@ -1234,7 +1239,7 @@ var scramble_444 = (function(Cnk, circle) {
 		var doneRaw = 1;
 		setPruning(Edge3Prun, 0, 0);
 		var bfsMoves = [1, 0, 2, 3, 5, 4, 6, 8, 7, 9, 10, 12, 11, 13, 14, 15, 16];
-		var start = +new Date;
+		var start = performance.now();
 		while (done != 31006080) {
 			var inv = depth > 9;
 			var depm3 = depth % 3;
@@ -1302,7 +1307,7 @@ var scramble_444 = (function(Cnk, circle) {
 				}
 			}
 			++depth;
-			DEBUG && console.log('[scramble 444] edge3 pruning ', depth, done, +new Date - start);
+			DEBUG && console.log('[scramble 444] edge3 pruning ', depth, done, performance.now() - start);
 		}
 	}
 
@@ -1838,7 +1843,7 @@ var scramble_444 = (function(Cnk, circle) {
 		obj.p1SolsCnt = 0;
 		obj.arr2idx = 0;
 		$clear(obj.p1sols);
-		for (obj.length1 = Math.min(udprun, fbprun, rlprun); obj.length1 < 100; ++obj.length1) {
+		for (obj.length1 = Math.min(udprun, fbprun, rlprun); obj.length1 < MAX_SEARCH_DEPTH; ++obj.length1) {
 			if (rlprun <= obj.length1 && phase1Search(obj, rl >>> 6, rl & 63, obj.length1, -1, 0)
 					|| udprun <= obj.length1 && phase1Search(obj, ud >>> 6, ud & 63, obj.length1, -1, 0)
 					|| fbprun <= obj.length1 && phase1Search(obj, fb >>> 6, fb & 63, obj.length1, -1, 0)) {
@@ -1853,21 +1858,22 @@ var scramble_444 = (function(Cnk, circle) {
 		});
 		MAX_LENGTH2 = 9;
 		do {
-			OUT: for (length12 = p1SolsArr[0].value; length12 < 100; ++length12) {
+			OUT: for (length12 = p1SolsArr[0].value; length12 < MAX_SEARCH_DEPTH; ++length12) {
 					for (var i = 0; i < p1SolsArr.length; ++i) {
-						if (p1SolsArr[i].value > length12) {
+						var cc = p1SolsArr[i];
+						if (cc.value > length12) {
 							break;
 						}
-						if (length12 - p1SolsArr[i].length1 > MAX_LENGTH2) {
+						if (length12 - cc.length1 > MAX_LENGTH2) {
 							continue;
 						}
-						$copy_4(obj.c1, p1SolsArr[i]);
+						$copy_4(obj.c1, cc);
 						var ep = $getEdge(obj.c1).ep;
 						$set_2(obj.ct2, getCenter(obj.c1), parity_0(ep));
 						s2ct = $getct(obj.ct2);
 						s2rl = $getrl(obj.ct2);
-						obj.length1 = p1SolsArr[i].length1;
-						obj.length2 = length12 - p1SolsArr[i].length1;
+						obj.length1 = cc.length1;
+						obj.length2 = length12 - cc.length1;
 						obj.epInv = [];
 						for (var e = 0; e < 24; e++) {
 							obj.epInv[ep[e]] = e;
@@ -1878,7 +1884,7 @@ var scramble_444 = (function(Cnk, circle) {
 					}
 				}
 				++MAX_LENGTH2;
-		} while (length12 == 100);
+		} while (length12 == MAX_SEARCH_DEPTH);
 		obj.arr2.sort(function(a, b) {
 			return a.value - b.value
 		});
@@ -1887,8 +1893,8 @@ var scramble_444 = (function(Cnk, circle) {
 		index = 0;
 		MAX_LENGTH3 = 13;
 		do {
-			OUT2: for (length123 = obj.arr2[0].value; length123 < 100; ++length123) {
-					for (var i = 0; i < Math.min(obj.arr2idx, 100); ++i) {
+			OUT2: for (length123 = obj.arr2[0].value; length123 < MAX_SEARCH_DEPTH; ++length123) {
+					for (var i = 0; i < Math.min(obj.arr2idx, PHASE2_SOLS); ++i) {
 						if (obj.arr2[i].value > length123) {
 							break;
 						}
@@ -1913,7 +1919,7 @@ var scramble_444 = (function(Cnk, circle) {
 				}
 				++MAX_LENGTH3;
 		}
-		while (length123 == 100);
+		while (length123 == MAX_SEARCH_DEPTH);
 		DEBUG && console.log('[scramble 444] Phase 3 Done in', performance.now() - tt);
 		var tt3 = performance.now() - tt - tt1 - tt2;
 
@@ -1941,7 +1947,7 @@ var scramble_444 = (function(Cnk, circle) {
 			}
 		}
 		obj.solution = getMoveString(solcube);
-		DEBUG && console.log('[scramble 444] 3x3x3 Done in', +new Date - tt);
+		DEBUG && console.log('[scramble 444] 3x3x3 Done in', performance.now() - tt);
 		DEBUG && console.log('[scramble 444] Phase depths: ', [obj.length1, obj.length2, obj.length3, length333, tt1, tt2, tt3]);
 		return [obj.length1, obj.length2, obj.length3, length333, tt1, tt2, tt3];
 	}
@@ -2004,14 +2010,14 @@ var scramble_444 = (function(Cnk, circle) {
 		obj.c1.add1 = obj.add1;
 		obj.c1.sym = sym;
 		++obj.p1SolsCnt;
-		if (obj.p1sols.size < 500) {
+		if (obj.p1sols.size < PHASE2_ATTS) {
 			next = new FullCube_4(obj.c1);
 		} else {
 			next = $poll(obj.p1sols);
 			next.value > obj.c1.value && $copy_4(next, obj.c1);
 		}
 		$add(obj.p1sols, next);
-		return obj.p1SolsCnt == 10000;
+		return obj.p1SolsCnt == PHASE1_SOLS;
 	}
 
 	function $init3(obj) {
@@ -2138,7 +2144,7 @@ var scramble_444 = (function(Cnk, circle) {
 		this.ct3 = new Center3;
 		this.e12 = new Edge3_0;
 		this.tempep = createArray(20);
-		this.arr2 = createArray(100);
+		this.arr2 = createArray(PHASE2_SOLS);
 		for (i = 0; i < 20; ++i) {
 			this.tempep[i] = [];
 		}
@@ -2227,7 +2233,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function PriorityQueue_0() {
 		this.array = [];
-		this.array.length = 500;
+		this.array.length = PHASE2_ATTS;
 		this.size = 0;
 	}
 
@@ -2521,6 +2527,6 @@ var scramble_444 = (function(Cnk, circle) {
 	return {
 		getRandomScramble: getRandomScramble,
 		getPartialScramble: getPartialScramble,
-		testbench
+		testbench: testbench
 	}
 })(mathlib.Cnk, mathlib.circle);
