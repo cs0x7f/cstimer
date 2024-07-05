@@ -1444,16 +1444,22 @@ var scramble_444 = (function(Cnk, circle) {
 		table[index >> 4] ^= (3 ^ value) << ((index & 15) << 1);
 	}
 
-	function $checkEdge(obj) {
-		var ck, i, parity;
-		ck = 0;
-		parity = false;
-		for (i = 0; i < 12; ++i) {
-			ck |= 1 << obj.ep[i];
-			parity = parity != obj.ep[i] >= 12;
+	function checkPhase2Edge(epInv, moves, length) {
+		var parity = 0;
+		for (var i = 0; i < 12; i++) {
+			var e = epInv[i];
+			var eo = epInv[i + 12];
+			for (var j = 0; j < length; j++) {
+				var moveMap = epMoveMap[moves[j]];
+				e = moveMap[e];
+				eo = moveMap[eo];
+			}
+			if ((e < 12) != (eo >= 12)) {
+				return false;
+			}
+			parity ^= e >= 12 ? 1 : 0
 		}
-		ck &= ck >> 12;
-		return ck == 0 && !parity;
+		return parity == 0;
 	}
 
 	function $copy_3(obj, c) {
@@ -1463,7 +1469,7 @@ var scramble_444 = (function(Cnk, circle) {
 		}
 	}
 
-	function $move_5(obj, m_0) {
+	function doMoveEdge(obj, m_0) {
 		var key;
 		key = m_0 % 3;
 		m_0 = ~~(m_0 / 3);
@@ -1646,7 +1652,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function $getEdge(obj) {
 		while (obj.edgeAvail < obj.moveLength) {
-			$move_5(obj.edge, obj.moveBuffer[obj.edgeAvail++]);
+			doMoveEdge(obj.edge, obj.moveBuffer[obj.edgeAvail++]);
 		}
 		return obj.edge;
 	}
@@ -1758,6 +1764,7 @@ var scramble_444 = (function(Cnk, circle) {
 		skipAxis = createArray(36);
 		skipAxis2 = createArray(28);
 		skipAxis3 = createArray(20);
+		epMoveMap = createArray(36, 24);
 		for (i = 0; i < 29; ++i) {
 			std2move[move2std[i]] = i;
 		}
@@ -1807,14 +1814,21 @@ var scramble_444 = (function(Cnk, circle) {
 				}
 			}
 		}
+		for (i = 0; i < 36; ++i) {
+			var edge = new EdgeCube();
+			doMoveEdge(edge, i);
+			for (j = 0; j < 24; j++) {
+				epMoveMap[i][edge.ep[j]] = j;
+			}
+		}
 	}
 
-	var ckmv, ckmv2_0, ckmv3, move2std, move2str_1, move3std, skipAxis, skipAxis2, skipAxis3, std2move, std3move;
+	var ckmv, ckmv2_0, ckmv3, move2std, move2str_1, move3std, skipAxis, skipAxis2, skipAxis3, std2move, std3move, epMoveMap;
 
 	function $doSearch(obj) {
-		var MAX_LENGTH2, MAX_LENGTH3, ct, edge, eparity, fb, fbprun, index, length_0, length12, length123, p1SolsArr, prun, rl, rlprun, s2ct, s2rl, solcube, ud, udprun;
+		var MAX_LENGTH2, MAX_LENGTH3, ct, edge, eparity, fb, fbprun, index, length12, length123, p1SolsArr, prun, rl, rlprun, s2ct, s2rl, solcube, ud, udprun;
 		obj.solution = '';
-		var tt = +new Date;
+		var tt = performance.now();
 		ud = $getsym(new Center1().fromCube(getCenter(obj.c), 0));
 		fb = $getsym(new Center1().fromCube(getCenter(obj.c), 1));
 		rl = $getsym(new Center1().fromCube(getCenter(obj.c), 2));
@@ -1832,7 +1846,8 @@ var scramble_444 = (function(Cnk, circle) {
 			}
 		}
 		p1SolsArr = obj.p1sols.array.slice();
-		DEBUG && console.log('[scramble 444] Phase 1 Done in', +new Date - tt);
+		var tt1 = performance.now() - tt;
+		DEBUG && console.log('[scramble 444] Phase 1 Done in', performance.now() - tt);
 		p1SolsArr.sort(function(a, b) {
 			return a.value - b.value
 		});
@@ -1847,11 +1862,16 @@ var scramble_444 = (function(Cnk, circle) {
 							continue;
 						}
 						$copy_4(obj.c1, p1SolsArr[i]);
-						$set_2(obj.ct2, getCenter(obj.c1), parity_0($getEdge(obj.c1).ep));
+						var ep = $getEdge(obj.c1).ep;
+						$set_2(obj.ct2, getCenter(obj.c1), parity_0(ep));
 						s2ct = $getct(obj.ct2);
 						s2rl = $getrl(obj.ct2);
 						obj.length1 = p1SolsArr[i].length1;
 						obj.length2 = length12 - p1SolsArr[i].length1;
+						obj.epInv = [];
+						for (var e = 0; e < 24; e++) {
+							obj.epInv[ep[e]] = e;
+						}
 						if (phase2Search(obj, s2ct, s2rl, obj.length2, 28, 0)) {
 							break OUT;
 						}
@@ -1862,7 +1882,8 @@ var scramble_444 = (function(Cnk, circle) {
 		obj.arr2.sort(function(a, b) {
 			return a.value - b.value
 		});
-		DEBUG && console.log('[scramble 444] Phase 2 Done in', +new Date - tt);
+		DEBUG && console.log('[scramble 444] Phase 2 Done in', performance.now() - tt);
+		var tt2 = performance.now() - tt - tt1;
 		index = 0;
 		MAX_LENGTH3 = 13;
 		do {
@@ -1871,7 +1892,8 @@ var scramble_444 = (function(Cnk, circle) {
 						if (obj.arr2[i].value > length123) {
 							break;
 						}
-						if (length123 - obj.arr2[i].length1 - obj.arr2[i].length2 > MAX_LENGTH3) {
+						obj.arr2[i].length3 = length123 - obj.arr2[i].length1 - obj.arr2[i].length2;
+						if (obj.arr2[i].length3 > MAX_LENGTH3) {
 							continue;
 						}
 						eparity = $set_6(obj.e12, $getEdge(obj.arr2[i]));
@@ -1882,8 +1904,8 @@ var scramble_444 = (function(Cnk, circle) {
 							obj.tempep[0][j] = obj.e12.edge[j];
 						}
 						prun = getprun($getsym_0(obj.e12));
-						if (prun <= length123 - obj.arr2[i].length1 - obj.arr2[i].length2
-								&& phase3Search(obj, obj.tempep[0], ct, prun, length123 - obj.arr2[i].length1 - obj.arr2[i].length2, 20, 0)) {
+						if (prun <= obj.arr2[i].length3
+								&& phase3Search(obj, obj.tempep[0], ct, prun, obj.arr2[i].length3, 20, 0)) {
 							index = i;
 							break OUT2;
 						}
@@ -1892,12 +1914,14 @@ var scramble_444 = (function(Cnk, circle) {
 				++MAX_LENGTH3;
 		}
 		while (length123 == 100);
-		DEBUG && console.log('[scramble 444] Phase 3 Done in', +new Date - tt);
+		DEBUG && console.log('[scramble 444] Phase 3 Done in', performance.now() - tt);
+		var tt3 = performance.now() - tt - tt1 - tt2;
+
 		solcube = new FullCube_4(obj.arr2[index]);
 		obj.length1 = solcube.length1;
 		obj.length2 = solcube.length2;
-		length_0 = length123 - obj.length1 - obj.length2;
-		for (var i = 0; i < length_0; ++i) {
+		obj.length3 = solcube.length3;
+		for (var i = 0; i < obj.length3; ++i) {
 			$move_6(solcube, move3std[obj.move3[i]]);
 		}
 		var f3 = to333Facelet(solcube);
@@ -1908,15 +1932,18 @@ var scramble_444 = (function(Cnk, circle) {
 			f3[i] = "URFDLB"[f3[i]];
 		}
 		f3 = f3.join('');
-		var sol3 = scramble_333.solvFacelet(f3);
-		sol3 = sol3.split(' ');
+		var sol3 = scramble_333.solvFacelet(f3).split(' ');
+		var length333 = 0;
 		for (var m = 0; m < sol3.length; m++) {
 			if (/^[URFDLB][2']?$/.exec(sol3[m])) {
+				length333++;
 				$move_6(solcube, "URFDLB".indexOf(sol3[m][0]) * 3 + "2'".indexOf(sol3[m][1]) + 1);
 			}
 		}
 		obj.solution = getMoveString(solcube);
 		DEBUG && console.log('[scramble 444] 3x3x3 Done in', +new Date - tt);
+		DEBUG && console.log('[scramble 444] Phase depths: ', [obj.length1, obj.length2, obj.length3, length333, tt1, tt2, tt3]);
+		return [obj.length1, obj.length2, obj.length3, length333, tt1, tt2, tt3];
 	}
 
 	function printState(state) {
@@ -1939,7 +1966,6 @@ var scramble_444 = (function(Cnk, circle) {
 			var posit = state[i1 * 16 + i2];
 			return "URFDLB"[posit] + ' ';
 		});
-		console.log(tmp);
 	}
 
 	function $init2_0(obj, sym) {
@@ -1989,13 +2015,13 @@ var scramble_444 = (function(Cnk, circle) {
 	}
 
 	function $init3(obj) {
+		if (!checkPhase2Edge(obj.epInv, obj.move2, obj.length2)) {
+			return false;
+		}
 		var ct, eparity, i, prun;
 		$copy_4(obj.c2, obj.c1);
 		for (i = 0; i < obj.length2; ++i) {
 			$move_6(obj.c2, obj.move2[i]);
-		}
-		if (!$checkEdge($getEdge(obj.c2))) {
-			return false;
 		}
 		eparity = $set_6(obj.e12, $getEdge(obj.c2));
 		$set_3(obj.ct3, getCenter(obj.c2), eparity ^ parity_0($getCorner(obj.c2).cp));
@@ -2126,14 +2152,14 @@ var scramble_444 = (function(Cnk, circle) {
 	}
 
 	function parity_0(arr) {
-		var i, j, len, parity;
-		parity = 0;
-		for (i = 0, len = arr.length; i < len; ++i) {
-			for (j = i; j < len; ++j) {
-				arr[i] > arr[j] && (parity ^= 1);
-			}
+		var parity = 0;
+		var mask = 0;
+		for (var i = 0; i < arr.length; i++) {
+			var val = arr[i];
+			parity ^= val - mathlib.bitCount(mask & ((1 << val) - 1));
+			mask |= 1 << val;
 		}
-		return parity;
+		return parity & 1;
 	}
 
 	function swap(arr, a, b, c, d, key) {
@@ -2400,6 +2426,29 @@ var scramble_444 = (function(Cnk, circle) {
 		return searcher.solution.replace(/\s+/g, ' ');
 	}
 
+	function testbench(nsolv) {
+		init();
+		nsolv = nsolv || 100;
+		var avgs = [];
+		for (var i = 0; i < nsolv; i++) {
+			var facelet = partialSolvedState(0xffffff, 0xffffff, 0xff).split('');
+			for (var j = 0; j < 96; j++) {
+				facelet[j] = "URFDLB".indexOf(facelet[j]);
+			}
+			searcher.c = new FullCube_3;
+			var chk = $fromFacelet(searcher.c, facelet);
+			if (chk != 0) {
+				console.log('[scramble 444] State Check Error!', chk, facelet);
+			}
+			var tt = performance.now();
+			var data = $doSearch(searcher);
+			for (var j = 0; j < data.length; j++) {
+				avgs[j] = (avgs[j] || 0) + data[j];
+			}
+			console.log(avgs.map((x) => ~~(100 * x / (i + 1)) / 100));
+		}
+	}
+
 	function getPartialScramble(ctMask, edMask, cnMask, neut) {
 		return genFacelet(partialSolvedState(ctMask, edMask, cnMask, neut));
 	}
@@ -2471,6 +2520,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	return {
 		getRandomScramble: getRandomScramble,
-		getPartialScramble: getPartialScramble
+		getPartialScramble: getPartialScramble,
+		testbench
 	}
 })(mathlib.Cnk, mathlib.circle);
