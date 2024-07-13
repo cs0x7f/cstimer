@@ -588,14 +588,24 @@ var ftosolver = (function() {
 				p2ccRecol[s][idx] = p2ccMoves[1][hash];
 			}
 		}
-		var p2necPrun = [ // idx = a * 7 + b, a: #mismatch 3 U corners, b: other corners
-			0, 0, 3, 4, 5, 6, 8,
-			0, 2, 3, 4, 5, 6, 8,
-			1, 2, 4, 4, 5, 6, 8,
-			1, 3, 4, 5, 6, 7, 8,
-			3, 3, 4, 5, 6, 7, 9,
-			4, 4, 5, 6, 7, 8, 9,
-			5, 5, 6, 7, 8, 9, 10
+
+		var p2necPrun = [ // idx = (a << 2 | b) * 7 + c, a: #mismatch in U faces, b: U corners w/o U faces, c: others
+			 0,99, 3, 4, 5, 6, 8,
+			99, 2, 3, 4, 5, 6, 8,
+			 1, 3, 4, 5, 6, 7, 8,
+			 1, 3, 4, 5, 6, 7, 9,
+			99, 2, 3, 4, 5, 6, 8,
+			 2, 2, 4, 4, 5, 6, 8,
+			 3, 3, 4, 5, 6, 7, 8,
+			 3, 3, 4, 5, 6, 7, 9,
+			 3, 3, 4, 5, 6, 7, 8,
+			 4, 4, 4, 5, 6, 7, 8,
+			 4, 4, 5, 6, 7, 8, 9,
+			 4, 4, 5, 6, 7, 8, 9,
+			 4, 4, 5, 6, 7, 8, 9,
+			 4, 4, 5, 6, 7, 8, 9,
+			 5, 5, 6, 7, 8, 9,10,
+			 5, 5, 6, 7, 8, 9,10
 		];
 
 		var N_P2EP = p2epMoves[0][0].length;
@@ -608,12 +618,10 @@ var ftosolver = (function() {
 		}, phase2Moves.length, 2);
 		ckmv2 = genCkmv(phase2Moves);
 
-		solv2 = new mathlib.Searcher(function(idx) {
-			return ufStd2Bit[idx[3] >> 4] == cc2Bit[p2ccRecol[idx[3] & 0xf][idx[2]]];
-		}, function(idx) {
+		solv2 = new mathlib.Searcher(null, function(idx) {
 			var xors = ufStd2Bit[idx[3] >> 4] ^ cc2Bit[p2ccRecol[idx[3] & 0xf][idx[2]]];
 			xors = (xors | xors >> 1) & 0x555555;
-			var necIdx = mathlib.bitCount(xors & 0xc0c0ff) * 7 + mathlib.bitCount(xors & 0x3f3f00);
+			var necIdx = (mathlib.bitCount(xors & 0x3f) << 2 | mathlib.bitCount(xors & 0xc0c0c0)) * 7 + mathlib.bitCount(xors & 0x3f3f00);
 			return Math.max(
 				Math.min(P2EPRL_MAXL, mathlib.getPruning(p2eprlPrun, idx[1] * N_P2EP + idx[0])),
 				p2necPrun[necIdx]
@@ -628,6 +636,65 @@ var ftosolver = (function() {
 				ufidx1 & ~0xf | ufcol,
 			];
 		}, phase2Moves.length, 2, ckmv2);
+
+		if (1 != 1 && !isInWorker) {
+			// code for init p2necPrun
+			var p2ufPrun = [];
+			var N_P2CC = p2ccMoves[0][0].length;
+			var N_P2UFSTD = ufStd2Raw.length;
+			var ufBit2Std = {};
+			for (var i = 0; i < ufStd2Bit.length; i++) {
+				ufBit2Std[ufStd2Bit[i]] = i;
+			}
+			var solved = [];
+			for (var key in p2ccMoves[1]) {
+				var ufidx = ufBit2Std[p2cc2ufBit[key]];
+				if (ufidx !== undefined) {
+					solved.push(ufidx * N_P2CC + p2ccMoves[1][key]);
+				}
+			}
+			mathlib.createPrun(p2ufPrun, solved, N_P2CC * N_P2UFSTD, 13, function(idx, move) {
+				var ufstd = ~~(idx / N_P2CC);
+				var cc = idx % N_P2CC;
+				ufstd = p2ufMoveStd[move][ufstd];
+				var ufcol = ufstd & 0xf;
+				ufstd >>= 4;
+				cc = p2ccMoves[0][move][cc]
+				return ufstd * N_P2CC + p2ccRecol[ufcol][cc];
+			}, phase2Moves.length, 2);
+
+			$.tryHashPrun = function(hashFunc) {
+				var buc = new Map();
+				for (var i = 0; i < N_P2CC * N_P2UFSTD; i++) {
+					var hash = hashFunc(ufStd2Bit[~~(i / N_P2CC)], cc2Bit[i % N_P2CC]);
+					if (!buc.has(hash)) {
+						buc.set(hash, [100, -1, 0]);
+					}
+					var prun = mathlib.getPruning(p2ufPrun, i);
+					var arr = buc.get(hash);
+					arr[0] = Math.min(arr[0], prun);
+					arr[1] = Math.max(arr[1], prun);
+					arr[2]++;
+				}
+				var cnt = 0;
+				var csum = 0;
+				var bcnt = 0;
+				for (var [k, arr] of buc) {
+					bcnt++;
+					cnt += arr[2];
+					csum += arr[2] * arr[0];
+				}
+				console.log(JSON.stringify(Object.fromEntries(buc)));
+				console.log('bcnt=', bcnt);
+				console.log('avg: ', csum / cnt);
+			}
+
+			$.tryHashPrun(function(ufbit, ccbit) {
+				var xors = ufbit ^ ccbit;
+				xors = (xors | xors >> 1) & 0x55555555;
+				return (mathlib.bitCount(xors & 0x3f) << 2 | mathlib.bitCount(xors & 0xc0c0c0)) * 7 + mathlib.bitCount(xors & 0x3f3f00);
+			});
+		}
 	}
 
 	function solvePhase2(solvInfos) {
