@@ -1504,7 +1504,7 @@ var GiikerCube = execMain(function() {
 				}
 			}).then(function() {
 				_chrct_cube.addEventListener('characteristicvaluechanged', onCubeEvent);
-				_chrct_cube.startNotifications();
+				return _chrct_cube.startNotifications();
 			}).then(function() {
 				return sendHello(deviceMac);
 			});
