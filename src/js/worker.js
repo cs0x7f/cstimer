@@ -51,7 +51,7 @@ var csTimerWorker = execBoth(ISCSTIMER && function() {
 		'colico': '#fff#084#b36#a85#088#811#e71#b9b#05a#ed1#888#6a3#e8b#a52#6cb#c10#fa0#536#49c#ec9'
 	};
 	for (var key in configs) {
-		kernel.setProp(key, configs[key]);
+		self.kernel.setProp(key, configs[key]);
 	}
 	var funcs = {
 		getScrambleTypes: function() {
@@ -73,7 +73,7 @@ var csTimerWorker = execBoth(ISCSTIMER && function() {
 			mathlib.setSeed(256, seed.toString());
 		},
 		setGlobal: function(key, value) {
-			kernel.setProp(key, value);
+			self.kernel.setProp(key, value);
 		},
 		getImage: function(scramble, type) {
 			var ret = image.draw([type || '333', scramble]);

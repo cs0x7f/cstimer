@@ -176,8 +176,8 @@ var exportFunc = execMain(function() {
 
 	// files = [{size: xx, modifiedTime: xx}]
 	function promptWhichFile(files) {
-		var msg = 'You have %d file(s), which one should be imported?'.replace('%d', files.length);
-		var msgfmt = '%s byte(s), uploaded at %t';
+		var msg = EXPORT_WHICH.replace('%d', files.length);
+		var msgfmt = EXPORT_WHICH_ITEM;
 		var msgf = [msg];
 		for (var ff = 0; ff < files.length; ff++) {
 			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', files[ff].size)

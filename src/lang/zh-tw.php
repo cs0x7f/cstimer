@@ -25,29 +25,29 @@
 </ul>
 <h2>快捷鍵</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
-<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
+<tr><th>快捷鍵</th><td>功能</td></tr>
+<tr><th>Alt + 1</th><td>打亂類型切換至 Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>打亂類型切換至 二~七階魔方</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>打亂類型切換至 金字塔/五魔方/魔錶/斜轉魔方</td></tr>
+<tr><th>Alt + i</th><td>打亂類型切換至 手動輸入</td></tr>
+<tr><th>Alt + d</th><td>刪除統計功能中本組所有成績</td></tr>
+<tr><th>Alt + z</th><td>刪除統計功能中本組最新的一個成績</td></tr>
+<tr><th>Alt + 上/下</th><td>統計列表切換到下/上一分組</td></tr>
+<tr><th>Alt + 左/右</th><td>顯示上/下一條打亂公式</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>將最新成績的完成狀態改為 OK/+2/DNF</td></tr>
 <tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
-<tr><th>Gesture</th><td>Function</td></tr>
-<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
-<tr><th>Up</th><td>The latest solve is +2</td></tr>
-<tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
-<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
-<tr><th>Down</th><td>Remove the latest solve</td></tr>
-<tr><th>Down right</th><td>Check the latest solve</td></tr>
+<tr><th>手勢</th><td>功能</td></tr>
+<tr><th>左上</th><td>將最新成績的完成狀態改為DNF</td></tr>
+<tr><th>上</th><td>將最新成績的完成狀態改為+2</td></tr>
+<tr><th>右上</th><td>將最新成績的完成狀態改為OK</td></tr>
+<tr><th>左</th><td>顯示上一條打亂公式</td></tr>
+<tr><th>右</th><td>顯示下一條打亂公式</td></tr>
+<tr><th>左下</th><td>為最新的成績添加註釋</td></tr>
+<tr><th>下</th><td>刪除統計功能中本組最新的一個成績</td></tr>
+<tr><th>右下</th><td>檢查最新的還原</td></tr>
 </table>
 
 <table class="table" id="vrckey" style="display: inline-block;">
@@ -74,7 +74,7 @@
 <li><strong data="opt_bgImgS">背景圖片</strong>. 你可以自訂背景圖片，但由於瀏覽器安全性的關係，只能嵌入https的圖片連結。</li>
 <li><strong data="opt_timerSize">計時器大小</strong>. 計時器的字體大小。</li>
 <li><strong data="opt_smallADP">小數點後使用小型字體</strong>. 小數點後的字體縮小顯示。</li>
-<li><strong data="opt_color">選擇色彩樣式</strong>. Select color schemes of csTimer. Click csTimer's logo to show more color schemes.</li>
+<li><strong data="opt_color">選擇色彩樣式</strong>. 選擇csTimer的顏色主題。 點選csTimer的logo可以看到更多顏色主題。</li>
 <li><strong data="opt_useMouse">使用滑鼠計時</strong>. 用滑鼠控制計時器，開啟這個選項後依然可以使用鍵盤。</li>
 <li><strong data="opt_useIns">使用WCA觀察</strong>. 使用WCA的15秒觀察，如果超過15秒的話會自動+2/DNF。</li>
 <li><strong data="opt_voiceIns">WCA觀察人聲提醒</strong>. 為了符合WCA的裁判規定，在觀察8秒/12秒時提醒。</li>
@@ -116,7 +116,7 @@
 <li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC基準速度(轉/秒)</strong>. 使用虛擬方塊時的基礎轉動速度。如果有很多步驟要做的話，會自動跳過某些動畫。</li>
 <li><strong data="opt_vrcMP">分項計時</strong>. 在使用虛擬方塊或藍芽方塊時自動使用多階段計時。</li>
-<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
+<li><strong data="opt_giiMode">藍芽魔方模式</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">顯示虛擬計客魔方</strong>. 連接藍芽方塊時在螢幕中顯示虛擬方塊。</li>
 <li><strong data="opt_giiSD">停滯時當作已打亂</strong>. 使用藍牙方塊時，csTimer不知道現在的操作是打亂的一部分還是在復原。如果這個選項設為開啟，停頓過久會視為打亂結束。</li>
 <li><strong data="opt_giiSK">按下空白鍵標記打亂完成</strong>. 按下空白鍵時，藍牙方塊會被視為打亂完成，接下來進行任何轉動都會開始計時。</li>

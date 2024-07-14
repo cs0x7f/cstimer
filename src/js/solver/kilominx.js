@@ -531,6 +531,6 @@ var klmsolver = (function() {
 	return {
 		KiloCubie: KiloCubie,
 		solveKiloCubie: solveKiloCubie,
-		checkSolver: checkSolver
+		checkSolver: DEBUG && checkSolver
 	};
 })();

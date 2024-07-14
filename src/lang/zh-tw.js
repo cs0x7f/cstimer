@@ -3,14 +3,14 @@ var CANCEL_LANG = '取消';
 var RESET_LANG = '重設';
 var ABOUT_LANG = '關於';
 var ZOOM_LANG = '縮放';
-var COPY_LANG = 'Copy';
+var COPY_LANG = '複製';
 var BUTTON_TIME_LIST = '成績<br>列表';
 var BUTTON_OPTIONS = '設定';
 var BUTTON_EXPORT = '匯出';
 var BUTTON_DONATE = '資助<br>我們';
 var PROPERTY_SR = '隨階段調整';
 var PROPERTY_USEINS = '使用WCA觀察';
-var PROPERTY_USEINS_STR = 'Always (down)|Always (up)|Except BLD (down)|Except BLD (up)|Never';
+var PROPERTY_USEINS_STR = '永遠 (倒數)|永遠 (up)|除了盲解 (倒數)|除了盲解 (up)|永不';
 var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
 var PROPERTY_VOICEINS = 'WCA觀察人聲提醒';
 var PROPERTY_VOICEINS_STR = '無|男聲|女聲';
@@ -54,6 +54,8 @@ var EXPORT_LOGINWCA = '使用WCA帳戶登入';
 var EXPORT_LOGOUTCFM = '確定要登出?';
 var EXPORT_LOGINAUTHED = '授權完成<br>正在取得數據...';
 var EXPORT_AEXPALERT = 'More than %d solves since last backup';
+var EXPORT_WHICH = 'You have %d file(s), which one should be imported?';
+var EXPORT_WHICH_ITEM = '%s byte(s), uploaded at %t';
 var IMPORT_FINAL_CONFIRM = '這個動作會覆蓋所有儲存的數據！更動範圍包括%d個階段，至少增加%a、減少%r條紀錄。確定要載入資料嗎？';
 var BUTTON_SCRAMBLE = '打亂';
 var BUTTON_TOOLS = '工具';
@@ -72,15 +74,15 @@ var TOOLS_TREND = '時間趨勢';
 var TOOLS_METRONOME = '節拍器';
 var TOOLS_RECONS = 'Reconstruct';
 var TOOLS_RECONS_NODATA = 'No solution found.';
-var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
+var TOOLS_RECONS_TITLE = '觀察|轉動|步數|手速';
 var TOOLS_TRAINSTAT = 'Training Stat.';
-var TOOLS_BLDHELPER = 'BLD Helper';
+var TOOLS_BLDHELPER = '盲解小幫手';
 var TOOLS_CFMTIME = '確認時間';
 var TOOLS_SOLVERS = '速解小幫手';
 var TOOLS_DLYSTAT = 'Daily Statistics';
 var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
-var TOOLS_DLYSTAT_OPT1 = 'day|week|month|year';
-var TOOLS_DLYSTAT_OPT2 = 'Sun|Mon|Tue|Wed|Thu|Fri|Sat';
+var TOOLS_DLYSTAT_OPT1 = '天|週|月|年';
+var TOOLS_DLYSTAT_OPT2 = '日|一|二|三|四|五|六';
 var TOOLS_SYNCSEED = '共同打亂';
 var TOOLS_SYNCSEED_SEED = '種子碼';
 var TOOLS_SYNCSEED_INPUT = '輸入種子碼';
@@ -88,13 +90,13 @@ var TOOLS_SYNCSEED_30S = '使用30秒種子碼';
 var TOOLS_SYNCSEED_HELP = 'If enabled, scramble will only depend on the seed and scramble settings.';
 var TOOLS_SYNCSEED_DISABLE = '是否停用目前的種子碼？';
 var TOOLS_SYNCSEED_INPUTA = '輸入種子碼 (可以包含a-zA-Z0-9)';
-var TOOLS_BATTLE = 'Online battle';
-var TOOLS_BATTLE_HEAD = 'Room|Join Room';
-var TOOLS_BATTLE_TITLE = 'Rank|Status|Time';
-var TOOLS_BATTLE_STATUS = 'Ready|Inspect|Solving|Solved|Lost';
-var TOOLS_BATTLE_INFO = 'Join a battle room with your friend, then you will battle together.';
-var TOOLS_BATTLE_JOINALERT = 'Please input the room ID';
-var TOOLS_BATTLE_LEAVEALERT = 'Leave current room';
+var TOOLS_BATTLE = '線上對戰';
+var TOOLS_BATTLE_HEAD = '房間|加入房間';
+var TOOLS_BATTLE_TITLE = '排名|狀態|時間';
+var TOOLS_BATTLE_STATUS = '就緒|觀察|還原|完成|掉線';
+var TOOLS_BATTLE_INFO = '和朋友們加入同一個房間，你們就可以進行對戰。';
+var TOOLS_BATTLE_JOINALERT = '請輸入房間ID';
+var TOOLS_BATTLE_LEAVEALERT = '離開目前房間';
 var OLCOMP_UPDATELIST = '更新比賽列表';
 var OLCOMP_VIEWRESULT = '查看結果';
 var OLCOMP_VIEWMYRESULT = '歷史紀錄';
@@ -141,9 +143,10 @@ var PROPERTY_AHIDE = '計時期間隱藏所有物件';
 var SCRAMBLE_LAST = '上一個';
 var SCRAMBLE_NEXT = '下一個';
 var SCRAMBLE_SCRAMBLE = ' 打亂';
-var SCRAMBLE_SCRAMBLING = 'Scrambling';
+var SCRAMBLE_SCRAMBLING = '打亂';
 var SCRAMBLE_LENGTH = '長度';
 var SCRAMBLE_INPUT = '輸入打亂';
+var SCRAMBLE_INPUTTYPE = 'Scramble type';
 var PROPERTY_VRCSPEED = 'VRC基準速度(轉/秒)';
 var PROPERTY_VRCMP = '分項計時';
 var PROPERTY_VRCMPS = '關閉|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|橋式';
@@ -156,7 +159,7 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4, etc|(U U\')2, (U\' U)2, etc|永不';
 var PROPERTY_GIISBEEP = '打亂完成時發出聲音';
 var PROPERTY_GIIRST = '連接時重置計客魔方';
 var PROPERTY_GIIRSTS = '永遠|提示|永不';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
+var PROPERTY_GIIMODE = '藍芽魔方模式';
 var PROPERTY_GIIMODES = 'Normal|Training|Continuous training';
 var PROPERTY_VRCAH = 'Useless pieces in huge cube';
 var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
@@ -185,7 +188,7 @@ var scrdata = [
 	['輸入', [
 		['外部', "input", 0],
 		['比賽', "remoteComp", 0],
-		['Online battle', "remoteBattle", 0],
+		['線上對戰', "remoteBattle", 0],
 		['Remote', "remoteOther", 0]
 	]],
 	['===WCA===', [
@@ -197,10 +200,10 @@ var scrdata = [
 		['笨蛋專用', "333noob", 25],
 		['僅打亂邊塊', "edges", 0],
 		['僅打亂角塊', "corners", 0],
-		['BLD Helper', "nocache_333bldspec", 0],
+		['盲解小幫手', "nocache_333bldspec", 0],
 		['Pattern Tool', "nocache_333patspec", 0],
 		['3x3x3腳解', "333ft", 0],
-		['Custom', "333custom", 0]
+		['自訂', "333custom", 0]
 	]],
 	['3x3x3 CFOP', [
 		['PLL', "pll", 0],
@@ -220,7 +223,7 @@ var scrdata = [
 		['預先解好十字', "f2l", 0],
 		['EOLine', "eoline", 0],
 		['簡單的十字', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['簡單的xcross', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -484,9 +487,9 @@ var SCRAMBLE_NOOBST = [
 	['轉動前面', '轉動後面']
 ];
 var SCRAMBLE_NOOBSS = ' 順時針九十度,| 逆時針九十度,| 一百八十度,';
-var SCROPT_TITLE = 'Scramble Options';
-var SCROPT_BTNALL = 'Full';
-var SCROPT_BTNNONE = 'Clear';
+var SCROPT_TITLE = '打亂選項';
+var SCROPT_BTNALL = '全部';
+var SCROPT_BTNNONE = '清除';
 var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = '是否重置階段中的所有時間?';
 var STATS_CFM_DELSS = '刪除階段 [%s]?';
@@ -512,7 +515,7 @@ var STATS_ALERTMG = '將 [%f] 階段中的所有時間移至 [%t] 階段?';
 var STATS_PROMPTSPL = '從階段 [%s] 分離最近幾個時間?';
 var STATS_ALERTSPL = '拆開或至少留下一組時間?';
 var STATS_AVG = '平均';
-var STATS_SUM = 'sum';
+var STATS_SUM = '總和';
 var STATS_SOLVE = '還原';
 var STATS_TIME = '時間';
 var STATS_SESSION = '階段';
@@ -538,7 +541,7 @@ var PROPERTY_SCR2SS = '更換打亂模式時創建新階段';
 var PROPERTY_SS2SCR = '更換階段時恢復打亂模式';
 var PROPERTY_SS2PHASES = '更換階段時恢復多次計時';
 var PROPERTY_STATINV = '顛倒時間清單';
-var PROPERTY_STATSSUM = 'Show sum in time list';
+var PROPERTY_STATSSUM = '在成績清單中顯示總和';
 var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATBPA = 'Show best possible average (BPA)';
 var PROPERTY_STATWPA = 'Show worst possible average (WPA)';
@@ -552,8 +555,8 @@ var PROPERTY_TRIM = '刪減數據中的資料數';
 var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
 var PROPERTY_TRIM_MED = '中位數';
 var PROPERTY_STKHEAD = '使用stackmat狀態資訊';
-var PROPERTY_TOOLPOS = 'Tools panel position';
-var PROPERTY_TOOLPOS_STR = 'Bottom|Float|Top';
+var PROPERTY_TOOLPOS = '工具面板位置';
+var PROPERTY_TOOLPOS_STR = '下面|浮動|上面';
 var PROPERTY_HIDEFULLSOL = '逐步顯示解法';
 var PROPERTY_IMPPREV = '載入更舊的數據';
 var PROPERTY_AUTOEXP = '(每100轉)自動匯出';
@@ -584,8 +587,8 @@ var SCRGEN_PRE = '前綴';
 var SCRGEN_GEN = '生成打亂!';
 var VRCREPLAY_TITLE = 'Virtual Replay';
 var VRCREPLAY_ORI = 'raw ori|auto ori';
-var VRCREPLAY_SHARE = 'share link';
-var GIIKER_CONNECT = 'Click to connect';
+var VRCREPLAY_SHARE = '分享連結';
+var GIIKER_CONNECT = '點擊連線';
 var GIIKER_RESET = 'Reset (Mark Solved)';
 var GIIKER_REQMACMSG = 'Please enter the MAC address of your smart hardware (xx:xx:xx:xx:xx:xx). You can find the MAC address through chrome://bluetooth-internals/#devices, or modify following options to let csTimer automatically obtain it:\nChrome: Turn on chrome://flags/#enable-experimental-web-platform-features\nBluefy: Turn on Enable BLE Advertisements';
 var GIIKER_NOBLEMSG = 'Bluetooth API is not available. Ensure https access, check bluetooth is enabled on your device, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled';
@@ -608,4 +611,4 @@ var LGHINT_BTNOTSUP = 'Not support your smart cube';
 var LGHINT_BTINVMAC = 'Not a valid mac address, cannot connect to your smart cube';
 var LGHINT_AEXPABT = 'Auto export abort';
 var LGHINT_AEXPSUC = 'Auto export success';
-var LGHINT_AEXPFAL = 'Auto export failed';
+var LGHINT_AEXPFAL = '自動匯出失敗';

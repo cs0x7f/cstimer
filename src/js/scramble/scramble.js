@@ -382,7 +382,6 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 
 	var remoteScrambleGen = (function() {
 		var remoteScramble = [];
-		var remoteURL = 'https://cstimer.net/testRemoteScramble.php';
 
 		function next(type) {
 			var ret = null;
@@ -416,14 +415,6 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 						}
 					}, remoteFail);
 				}
-			} else if (type == 'remoteURL') {
-				$.getJSON(remoteURL, function(ret) {
-					if (!parseInput(ret)) {
-						remoteFail();
-					} else {
-						requestAnimFrame(doScrambleIt);
-					}
-				}).error(remoteFail);
 			}
 			return "";
 		}
@@ -466,7 +457,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 				puzzleSelect.append($('<option>').val(puzzles[i]).html(menu.getValName(puzzles[i])));
 			}
 			inputDiv.append(
-				$('<tr height=0%>').append($('<td>').append('Scramble type:', puzzleSelect)),
+				$('<tr height=0%>').append($('<td>').append(SCRAMBLE_INPUTTYPE + ':', puzzleSelect)),
 				$('<tr height=100%>').append($('<td>').append(inputText))
 			);
 			puzzleSelect.val('333');

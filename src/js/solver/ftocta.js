@@ -923,6 +923,6 @@ var ftosolver = (function() {
 	return {
 		solveFacelet: solveFacelet,
 		FtoCubie: FtoCubie,
-		testbench: testbench
+		testbench: DEBUG && testbench
 	};
 })();
