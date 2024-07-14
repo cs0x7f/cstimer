@@ -25,7 +25,6 @@ lib/lzstring.js \
 lib/min2phase.js \
 lib/cubeutil.js \
 lib/puzzlefactory.js \
-lib/grip.js \
 kernel.js \
 export.js \
 logohint.js \
