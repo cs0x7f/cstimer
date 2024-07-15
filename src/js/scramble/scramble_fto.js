@@ -45,7 +45,6 @@
 	}
 
 	function getTCPScramble() {
-		var solved = false;
 		var fc = new ftosolver.FtoCubie();
 		var cp, co, uf;
 		var ufs = [1, 2, 3, 7, 11];
@@ -53,14 +52,7 @@
 			cp = mathlib.rndPerm(3, true);
 			co = [0].concat(mathlib.setNOri([], mathlib.rn(2), 2, -2));
 			uf = mathlib.rndPerm(5, true);
-			solved = true;
-			for (var i = 0; i < 5; i++) {
-				solved = solved && (~~(ufs[uf[i]] / 3) == ~~(ufs[i] / 3));
-			}
-			for (var i = 0; i < 3; i++) {
-				solved = solved && cp[i] == i && co[i] == 0;
-			}
-		} while (solved);
+		} while (ufs[uf[0]] < 3 || ufs[uf[1]] < 3);
 		for (var i = 0; i < 3; i++) {
 			fc.cp[i] = cp[i];
 			fc.co[i] = co[i];
