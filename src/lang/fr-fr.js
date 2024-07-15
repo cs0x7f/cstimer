@@ -425,6 +425,7 @@ var scrdata = [
 		['mouvements aléatoires', "fto", 30],
 		['L3T', "ftol3t", 0],
 		['L3T+LBT', "ftol4t", 0],
+		['TCP', "ftotcp", 0],
 		['edges only', "ftoedge", 0],
 		['centers only', "ftocent", 0],
 		['corners only', "ftocorn", 0]

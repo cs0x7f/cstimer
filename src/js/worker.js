@@ -47,7 +47,7 @@ var csTimerWorker = execBoth(ISCSTIMER && function() {
 		'colsq1': '#ff0#f80#0f0#fff#f00#00f',
 		'colclk': '#f00#37b#5cf#ff0#850',
 		'col15p': '#f99#9f9#99f#fff',
-		'colfto': '#fff#808#f00#0d0#00f#bbb#ff0#fa0',
+		'colfto': '#fff#808#0d0#f00#00f#bbb#ff0#fa0',
 		'colico': '#fff#084#b36#a85#088#811#e71#b9b#05a#ed1#888#6a3#e8b#a52#6cb#c10#fa0#536#49c#ec9'
 	};
 	for (var key in configs) {
