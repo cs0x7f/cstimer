@@ -1542,7 +1542,7 @@ var GiikerCube = execMain(function() {
 				DEBUG && console.log('[qiyicube] init, found cube bluetooth hardware MAC = ' + mac);
 				deviceMac = mac;
 			}, function(err) {
-				DEBUG && console.log('[gancube] init, unable to automatically determine cube MAC, error code = ' + err);
+				DEBUG && console.log('[qiyicube] init, unable to automatically determine cube MAC, error code = ' + err);
 			}).then(function() {
 				return device.gatt.connect();
 			}).then(function(gatt) {
