@@ -5,8 +5,15 @@ var GiikerCube = execMain(function() {
 	var cube = undefined;
 	var _device = null;
 
+	function toUuid128(uuid) {
+		if (/^[0-9A-Fa-f]{4}$/.exec(uuid)) {
+			uuid = "0000" + uuid + "-0000-1000-8000-00805F9B34FB";
+		}
+		return uuid.toUpperCase();
+	}
+
 	function matchUUID(uuid1, uuid2) {
-		return uuid1.toUpperCase() == uuid2.toUpperCase();
+		return toUuid128(uuid1) == toUuid128(uuid2);
 	}
 
 	var GiikerCube = (function() {
@@ -1394,6 +1401,8 @@ var GiikerCube = execMain(function() {
 		var SERVICE_UUID = '0000fff0' + UUID_SUFFIX;
 		var CHRCT_UUID_CUBE = '0000fff6' + UUID_SUFFIX;
 
+		var QIYI_CIC_LIST = [0x0504];
+
 		var decoder = null;
 		var deviceMac = null;
 		var KEYS = ['NoDg7ANAjGkEwBYCc0xQnADAVgkzGAzHNAGyRTanQi5QIFyHrjQMQgsC6QA'];
@@ -1409,11 +1418,13 @@ var GiikerCube = execMain(function() {
 					savedMacMap[_deviceName] = deviceMac;
 					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 				}
-			}
-			if (!deviceMac || forcePrompt) {
+			} else {
 				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 				var mac = savedMacMap[_deviceName];
 				if (!mac || forcePrompt) {
+					if (!mac && /^QY-QYSC-.-[0-9A-F]{4}$/.exec(_deviceName)) {
+						mac = 'CC:A3:00:00:' + _deviceName.slice(10, 12) + ':' + _deviceName.slice(12, 14);
+					}
 					mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + GIIKER_REQMACMSG, mac || 'xx:xx:xx:xx:xx:xx');
 				}
 				var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
@@ -1480,14 +1491,61 @@ var GiikerCube = execMain(function() {
 			return sendMessage(content);
 		}
 
-		function init(device) {
-			_deviceName = device.name;
-			if (/^QY-QYSC-.-[0-9A-F]{4}$/.exec(_deviceName)) {
-				deviceMac = 'cc:a3:00:00:' + _deviceName.slice(10, 12) + ':' + _deviceName.slice(12, 14);
+		function getManufacturerDataBytes(mfData) {
+			if (mfData instanceof DataView) { // this is workaround for Bluefy browser
+				return new DataView(mfData.buffer.slice(2));
 			}
-			initMac(true);
+			for (var id of QIYI_CIC_LIST) {
+				if (mfData.has(id)) {
+					DEBUG && console.log('[qiyicube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
+					return mfData.get(id);
+				}
+			}
+			DEBUG && console.log('[qiyicube] Looks like this cube has new unknown CIC');
+		}
+
+		function waitForAdvs() {
+			if (!_device || !_device.watchAdvertisements) {
+				return Promise.reject(-1);
+			}
+			var abortController = new AbortController();
+			return new Promise(function(resolve, reject) {
+				var onAdvEvent = function(event) {
+					DEBUG && console.log('[qiyicube] receive adv event', event);
+					var mfData = event.manufacturerData;
+					var dataView = getManufacturerDataBytes(mfData);
+					if (dataView && dataView.byteLength >= 6) {
+						var mac = [];
+						for (var i = 5; i >= 0; i--) {
+							mac.push((dataView.getUint8(i) + 0x100).toString(16).slice(1));
+						}
+						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+						abortController.abort();
+						resolve(mac.join(':'));
+					}
+				};
+				_device.addEventListener('advertisementreceived', onAdvEvent);
+				_device.watchAdvertisements({ signal: abortController.signal });
+				setTimeout(function() { // reject if no mac found
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+					reject(-2);
+				}, 10000);
+			});
+		}
+
+		function init(device) {
+			clear();
+			_deviceName = device.name.trim();
 			DEBUG && console.log('[qiyicube]', 'start init device');
-			return device.gatt.connect().then(function(gatt) {
+			return waitForAdvs().then(function (mac) {
+				DEBUG && console.log('[qiyicube] init, found cube bluetooth hardware MAC = ' + mac);
+				deviceMac = mac;
+			}, function(err) {
+				DEBUG && console.log('[qiyicube] init, unable to automatically determine cube MAC, error code = ' + err);
+			}).then(function() {
+				return device.gatt.connect();
+			}).then(function(gatt) {
 				_gatt = gatt;
 				return gatt.getPrimaryService(SERVICE_UUID);
 			}).then(function(service) {
@@ -1496,7 +1554,7 @@ var GiikerCube = execMain(function() {
 				return _service.getCharacteristics();
 			}).then(function(chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
-					var chrct = chrcts[i]
+					var chrct = chrcts[i];
 					DEBUG && console.log('[qiyicube]', 'init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_CUBE)) {
 						_chrct_cube = chrct;
@@ -1506,6 +1564,7 @@ var GiikerCube = execMain(function() {
 				_chrct_cube.addEventListener('characteristicvaluechanged', onCubeEvent);
 				return _chrct_cube.startNotifications();
 			}).then(function() {
+				initMac(true);
 				return sendHello(deviceMac);
 			});
 		}
@@ -1552,7 +1611,7 @@ var GiikerCube = execMain(function() {
 			if (opcode == 0x2) { // cube hello
 				sendMessage(msg.slice(2, 7));
 				var newFacelet = parseFacelet(msg.slice(7, 34));
-				callback(newFacelet, [], [ts / 1.6, locTime], _deviceName);
+				callback(newFacelet, [], [Math.trunc(ts / 1.6), locTime], _deviceName);
 				prevCubie.fromFacelet(newFacelet);
 				batteryLevel = msg[35];
 				giikerutil.updateBattery([batteryLevel, _deviceName]);
@@ -1588,7 +1647,7 @@ var GiikerCube = execMain(function() {
 					prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(power));
 					prevMoves = prevMoves.slice(0, 8);
 					curFacelet = curCubie.toFaceCube();
-					toCallback.push([curFacelet, prevMoves.slice(), [todoMoves[i][1], locTime], _deviceName]);
+					toCallback.push([curFacelet, prevMoves.slice(), [Math.trunc(todoMoves[i][1] / 1.6), locTime], _deviceName]);
 					var tmp = curCubie;
 					curCubie = prevCubie;
 					prevCubie = tmp;
@@ -1597,7 +1656,7 @@ var GiikerCube = execMain(function() {
 				if (newFacelet != curFacelet) {
 					DEBUG && console.log('[qiyicube]', 'facelet', newFacelet);
 					curCubie.fromFacelet(newFacelet);
-					callback(newFacelet, prevMoves, [ts, locTime], _deviceName);
+					callback(newFacelet, prevMoves, [Math.trunc(ts / 1.6), locTime], _deviceName);
 					var tmp = curCubie;
 					curCubie = prevCubie;
 					prevCubie = tmp;
@@ -1638,13 +1697,19 @@ var GiikerCube = execMain(function() {
 			_gatt = null;
 			_deviceName = null;
 			deviceMac = null;
+			curCubie = new mathlib.CubieCube();
+			prevCubie = new mathlib.CubieCube();
+			prevMoves = [];
+			lastTs = 0;
+			batteryLevel = 100;
 			return result;
 		}
 
 		return {
 			init: init,
 			opservs: [SERVICE_UUID],
-			getBatteryLevel: function() { return Promise.resolve(batteryLevel); },
+			cics: QIYI_CIC_LIST,
+			getBatteryLevel: function() { return Promise.resolve([batteryLevel, _deviceName]); },
 			clear: clear
 		}
 	})();
@@ -1697,8 +1762,8 @@ var GiikerCube = execMain(function() {
 				}, {
 					namePrefix: 'QY-QYSC'
 				}],
-				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs),
-				optionalManufacturerData: [].concat(GanCube.cics)
+				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs),
+				optionalManufacturerData: [].concat(GanCube.cics, QiyiCube.cics)
 			});
 		}).then(function(device) {
 			DEBUG && console.log('[bluetooth]', device);
