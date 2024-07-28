@@ -1532,12 +1532,11 @@ var GiikerCube = execMain(function() {
 		}
 
 		/**
-		 * Automatic MAC address discovery only works in Chrome when the cube is "unbound"
-		 * but enabling it at all (even with just CIC = 0x0100) causes "bound" cubes to not be able to connect.
+		 * Automatic MAC address discovery only works in Chrome when the cube is "bound"
 		 * 
 		 * Proposed explanation:
 		 * 
-		 * When the cube is "bound" in the WCU Cube app, the CIC is 0x0000, otherwise it is 0x0100.
+		 * When the cube is "bound" in the WCU Cube app, the CIC is 0x0100, otherwise it is 0x0000.
 		 * Unfortunately, Chromium has an issue when receiving advertisements with CIC 0x0000
 		 * seemingly related to its use of WTF::HashMap which disallows 0 as a key in this case (IntHashTraits: empty_value = 0).
 		 * 
@@ -1557,16 +1556,11 @@ var GiikerCube = execMain(function() {
 		 *  blink::BluetoothRemoteGATTServer::connect [0x00007FF8DBA03EF5+133]
 		 *  blink::`anonymous namespace'::v8_bluetooth_remote_gatt_server::ConnectOperationCallback [0x00007FF8DA8C69A4+1076]
 		 * 
-		 * Unfortunately, simply receiving an advertisement with CIC 0x0000 after calling watchAdvertisements triggers this.
-		 * This means that we can't simply only use CIC 0x0100 - calling watchAdvertisements at all when the cube is advertising
-		 * with CIC 0x0000 will cause device.gatt.connect() to fail.
 		 */
 
-		var MOYU32_CIC_LIST = [0x0000, 0x0100];
+		var MOYU32_CIC_LIST = [0x0100];
 
 		function waitForAdvs() {
-			return Promise.reject(-1);
-			// See above comment re: Chrome issue
 			if (!_device || !_device.watchAdvertisements) {
 				return Promise.reject(-1);
 			}
