@@ -1681,6 +1681,20 @@ var GiikerCube = execMain(function() {
 			parseData(value);
 		}
 
+		function initCubeState() {
+			var locTime = $.now();
+			DEBUG && console.log('[Moyu32Cube]', 'initialising cube state');
+			callback(latestFacelet, [], [null, locTime], deviceName);
+			prevCubie.fromFacelet(latestFacelet);
+			prevMoveCnt = moveCnt;
+			if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+				var rst = kernel.getProp('giiRST');
+				if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+					giikerutil.markSolved();
+				}
+			}
+		}
+
 		function parseData(value) {
 			var locTime = $.now();
 			value = decode(value);
@@ -1700,16 +1714,10 @@ var GiikerCube = execMain(function() {
 				DEBUG && console.log('[Moyu32Cube]', 'Software Version', softwareVersion);
 				DEBUG && console.log('[Moyu32Cube]', 'Device Name', devName);
 			} else if (msgType == 163) { // state (facelets)
-				moveCnt = parseInt(value.slice(152, 160), 2);
-				latestFacelet = parseFacelet(value.slice(8, 152));
-				callback(latestFacelet, [], [null, locTime], deviceName);
-				prevCubie.fromFacelet(latestFacelet);
-				prevMoveCnt = moveCnt;
-				if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
-					var rst = kernel.getProp('giiRST');
-					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
-						giikerutil.markSolved();
-					}
+				if (prevMoveCnt == -1) { // we only care about the initial cube state, ignore any other state messages
+					moveCnt = parseInt(value.slice(152, 160), 2);
+					latestFacelet = parseFacelet(value.slice(8, 152));
+					initCubeState();
 				}
 			} else if (msgType == 164) { // battery level
 				batteryLevel = parseInt(value.slice(8, 16), 2);
