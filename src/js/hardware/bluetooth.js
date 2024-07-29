@@ -1532,11 +1532,13 @@ var GiikerCube = execMain(function() {
 		}
 
 		/**
-		 * Automatic MAC address discovery only works in Chrome when the cube is "bound"
+		 * Automatic MAC address discovery only works when the cube is "bound" and has an account ID above 65535 (0xFFFF)
 		 * 
-		 * Proposed explanation:
+		 * Explanation:
+		 *
+		 * When the cube is "bound" in the WCU Cube app, the CIC is equal to the high bytes of the account ID (32-bit int).
+		 * The CIC is interpreted as little-endian (i.e. an account ID of 0xaabbccdd being bound to the cube results in a CIC of 0xbbaa).
 		 * 
-		 * When the cube is "bound" in the WCU Cube app, the CIC is 0x0100, otherwise it is 0x0000.
 		 * Unfortunately, Chromium has an issue when receiving advertisements with CIC 0x0000
 		 * seemingly related to its use of WTF::HashMap which disallows 0 as a key in this case (IntHashTraits: empty_value = 0).
 		 * 
@@ -1556,9 +1558,14 @@ var GiikerCube = execMain(function() {
 		 *  blink::BluetoothRemoteGATTServer::connect [0x00007FF8DBA03EF5+133]
 		 *  blink::`anonymous namespace'::v8_bluetooth_remote_gatt_server::ConnectOperationCallback [0x00007FF8DA8C69A4+1076]
 		 * 
+		 * Therefore, unbound cubes (bound account ID 0x00) and cubes with bound account IDs between 1 (0x01) and 65535 (0xFF) will not have automatic MAC address detection (even in Bluefy,
+		 * as including 0x0000 in the CIC list will completely break Chrome support for this cube).
+		 * Furthermore, the possible range of CICs is 0x0000 - 0xFFFF (65536 values). For now, we can just include CICs between 0x0100 and 0xFF00, as it is not likely that the account IDs
+		 * will reach 16777216 (0x01000000) anytime soon.
 		 */
 
-		var MOYU32_CIC_LIST = [0x0100];
+		// CICs 0x(01..=FF)00
+		var MOYU32_CIC_LIST = mathlib.valuedArray(255, function (i) { return (i + 1) << 8 });
 
 		function waitForAdvs() {
 			if (!_device || !_device.watchAdvertisements) {
@@ -2197,8 +2204,8 @@ var GiikerCube = execMain(function() {
 				}, {
 					namePrefix: 'WCU_MY32'
 				}],
-				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs, Moyu32Cube.opservs),
-				optionalManufacturerData: [].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics)
+				optionalServices: [...new Set([].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs, Moyu32Cube.opservs))],
+				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
 			});
 		}).then(function(device) {
 			DEBUG && console.log('[bluetooth]', device);
