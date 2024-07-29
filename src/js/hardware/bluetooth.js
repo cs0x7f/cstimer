@@ -1532,12 +1532,13 @@ var GiikerCube = execMain(function() {
 		}
 
 		/**
-		 * Automatic MAC address discovery only works in Chrome when the cube is "unbound"
-		 * but enabling it at all (even with just CIC = 0x0100) causes "bound" cubes to not be able to connect.
+		 * Automatic MAC address discovery only works when the cube is "bound" and has an account ID above 65535 (0xFFFF)
 		 * 
-		 * Proposed explanation:
+		 * Explanation:
+		 *
+		 * When the cube is "bound" in the WCU Cube app, the CIC is equal to the high bytes of the account ID (32-bit int).
+		 * The CIC is interpreted as little-endian (i.e. an account ID of 0xaabbccdd being bound to the cube results in a CIC of 0xbbaa).
 		 * 
-		 * When the cube is "bound" in the WCU Cube app, the CIC is 0x0000, otherwise it is 0x0100.
 		 * Unfortunately, Chromium has an issue when receiving advertisements with CIC 0x0000
 		 * seemingly related to its use of WTF::HashMap which disallows 0 as a key in this case (IntHashTraits: empty_value = 0).
 		 * 
@@ -1557,16 +1558,16 @@ var GiikerCube = execMain(function() {
 		 *  blink::BluetoothRemoteGATTServer::connect [0x00007FF8DBA03EF5+133]
 		 *  blink::`anonymous namespace'::v8_bluetooth_remote_gatt_server::ConnectOperationCallback [0x00007FF8DA8C69A4+1076]
 		 * 
-		 * Unfortunately, simply receiving an advertisement with CIC 0x0000 after calling watchAdvertisements triggers this.
-		 * This means that we can't simply only use CIC 0x0100 - calling watchAdvertisements at all when the cube is advertising
-		 * with CIC 0x0000 will cause device.gatt.connect() to fail.
+		 * Therefore, unbound cubes (bound account ID 0x00) and cubes with bound account IDs between 1 (0x01) and 65535 (0xFF) will not have automatic MAC address detection (even in Bluefy,
+		 * as including 0x0000 in the CIC list will completely break Chrome support for this cube).
+		 * Furthermore, the possible range of CICs is 0x0000 - 0xFFFF (65536 values). For now, we can just include CICs between 0x0100 and 0xFF00, as it is not likely that the account IDs
+		 * will reach 16777216 (0x01000000) anytime soon.
 		 */
 
-		var MOYU32_CIC_LIST = [0x0000, 0x0100];
+		// CICs 0x(01..=FF)00
+		var MOYU32_CIC_LIST = mathlib.valuedArray(255, function (i) { return (i + 1) << 8 });
 
 		function waitForAdvs() {
-			return Promise.reject(-1);
-			// See above comment re: Chrome issue
 			if (!_device || !_device.watchAdvertisements) {
 				return Promise.reject(-1);
 			}
@@ -1681,6 +1682,20 @@ var GiikerCube = execMain(function() {
 			parseData(value);
 		}
 
+		function initCubeState() {
+			var locTime = $.now();
+			DEBUG && console.log('[Moyu32Cube]', 'initialising cube state');
+			callback(latestFacelet, [], [null, locTime], deviceName);
+			prevCubie.fromFacelet(latestFacelet);
+			prevMoveCnt = moveCnt;
+			if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
+				var rst = kernel.getProp('giiRST');
+				if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
+					giikerutil.markSolved();
+				}
+			}
+		}
+
 		function parseData(value) {
 			var locTime = $.now();
 			value = decode(value);
@@ -1700,16 +1715,10 @@ var GiikerCube = execMain(function() {
 				DEBUG && console.log('[Moyu32Cube]', 'Software Version', softwareVersion);
 				DEBUG && console.log('[Moyu32Cube]', 'Device Name', devName);
 			} else if (msgType == 163) { // state (facelets)
-				moveCnt = parseInt(value.slice(152, 160), 2);
-				latestFacelet = parseFacelet(value.slice(8, 152));
-				callback(latestFacelet, [], [null, locTime], deviceName);
-				prevCubie.fromFacelet(latestFacelet);
-				prevMoveCnt = moveCnt;
-				if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
-					var rst = kernel.getProp('giiRST');
-					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
-						giikerutil.markSolved();
-					}
+				if (prevMoveCnt == -1) { // we only care about the initial cube state, ignore any other state messages
+					moveCnt = parseInt(value.slice(152, 160), 2);
+					latestFacelet = parseFacelet(value.slice(8, 152));
+					initCubeState();
 				}
 			} else if (msgType == 164) { // battery level
 				batteryLevel = parseInt(value.slice(8, 16), 2);
@@ -2195,8 +2204,8 @@ var GiikerCube = execMain(function() {
 				}, {
 					namePrefix: 'WCU_MY32'
 				}],
-				optionalServices: [].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs, Moyu32Cube.opservs),
-				optionalManufacturerData: [].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics)
+				optionalServices: [...new Set([].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs, Moyu32Cube.opservs))],
+				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
 			});
 		}).then(function(device) {
 			DEBUG && console.log('[bluetooth]', device);
