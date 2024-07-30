@@ -1394,8 +1394,11 @@ var GiikerCube = execMain(function() {
 	var Moyu32Cube = (function () {
 		var _gatt;
 		var _service;
+		var _otaService;
 		var _chrct_read;
 		var _chrct_write;
+		var _chrct_otaread;
+		var _chrct_otawrite;
 		var deviceName;
 		var deviceMac = null;
 		var prevMoves = [];
@@ -1409,9 +1412,14 @@ var GiikerCube = execMain(function() {
 		var prevMoveCnt = -1;
 		var batteryLevel = 100;
 
-		var SERVICE_UUID = '0783b03e-7735-b5a0-1760-a305d2795cb0';
+		// Main cube service
+		var CUBE_SERVICE_UUID = '0783b03e-7735-b5a0-1760-a305d2795cb0';
 		var CHRT_UUID_READ = '0783b03e-7735-b5a0-1760-a305d2795cb1';
 		var CHRT_UUID_WRITE = '0783b03e-7735-b5a0-1760-a305d2795cb2';
+
+		var OTA_SERVICE_UUID = '02f00000-0000-0000-0000-00000000fe00';
+		var CHRT_UUID_OTAREAD = '02f00000-0000-0000-0000-00000000ff02';
+		var CHRT_UUID_OTAWRITE = '02f00000-0000-0000-0000-00000000ff01';
 
 		var decoder = null;
 		var KEYS = [
@@ -1497,7 +1505,7 @@ var GiikerCube = execMain(function() {
 			}
 			var encodedReq = encode(req.slice());
 			DEBUG && console.log('[Moyu32Cube] sendRequest', req, encodedReq);
-			return _chrct_write.writeValue(new Uint8Array(encodedReq).buffer);
+			return _chrct_write.writeValueWithoutResponse(new Uint8Array(encodedReq).buffer);
 		}
 
 		function sendSimpleRequest(opcode) {
@@ -1516,85 +1524,6 @@ var GiikerCube = execMain(function() {
 
 		function requestCubePower() {
 			return sendSimpleRequest(164);
-		}
-
-		function getManufacturerDataBytes(mfData) {
-			if (mfData instanceof DataView) { // this is workaround for Bluefy browser
-				return new DataView(mfData.buffer.slice(2));
-			}
-			for (var id of MOYU32_CIC_LIST) {
-				if (mfData.has(id)) {
-					DEBUG && console.log('[Moyu32Cube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
-					return mfData.get(id);
-				}
-			}
-			DEBUG && console.log('[Moyu32Cube] Looks like this cube has new unknown CIC');
-		}
-
-		/**
-		 * Automatic MAC address discovery only works when the cube is "bound" and has an account ID above 65535 (0xFFFF)
-		 * 
-		 * Explanation:
-		 *
-		 * When the cube is "bound" in the WCU Cube app, the CIC is equal to the high bytes of the account ID (32-bit int).
-		 * The CIC is interpreted as little-endian (i.e. an account ID of 0xaabbccdd being bound to the cube results in a CIC of 0xbbaa).
-		 * 
-		 * Unfortunately, Chromium has an issue when receiving advertisements with CIC 0x0000
-		 * seemingly related to its use of WTF::HashMap which disallows 0 as a key in this case (IntHashTraits: empty_value = 0).
-		 * 
-		 * ERROR:map_traits_wtf_hash_map.h(52)] The key value is disallowed by WTF::HashMap
-		 * ERROR:validation_errors.cc(117)] Invalid message: VALIDATION_ERROR_DESERIALIZATION_FAILED
-		 * ERROR:interface_endpoint_client.cc(722)] Message 0 rejected by interface blink.mojom.WebBluetoothAdvertisementClient
-		 * 
-		 * This issue then also causes device.gatt.connect() to fail, seemingly causing the promise to get abandoned and cube initialisation to fail:
-		 * 
-		 * FATAL:script_promise_resolver.cc(72)] Check failed: false. ScriptPromiseResolverBase was not properly detached; created at
-		 *  base::debug::CollectStackTrace [0x00007FF9401EEFD7+39]
-		 *  base::debug::StackTrace::StackTrace [0x00007FF9401A5E76+118]
-		 *  blink::ScriptPromiseResolverBase::ScriptPromiseResolverBase [0x00007FF8F733040D+877]
-		 *  blink::ScriptPromiseResolver<blink::BluetoothRemoteGATTServer>::ScriptPromiseResolver [0x00007FF8DBA0B93D+45]
-		 *  cppgc::MakeGarbageCollectedTrait<blink::ScriptPromiseResolver<blink::BluetoothRemoteGATTServer> >::Call<blink::ScriptState *&,const blink::ExceptionContext &> [0x00007FF8DBA0B8D4+116]
-		 *  blink::MakeGarbageCollected<blink::ScriptPromiseResolver<blink::BluetoothRemoteGATTServer>,blink::ScriptState *&,const blink::ExceptionContext &> [0x00007FF8DBA0449B+107]
-		 *  blink::BluetoothRemoteGATTServer::connect [0x00007FF8DBA03EF5+133]
-		 *  blink::`anonymous namespace'::v8_bluetooth_remote_gatt_server::ConnectOperationCallback [0x00007FF8DA8C69A4+1076]
-		 * 
-		 * Therefore, unbound cubes (bound account ID 0x00) and cubes with bound account IDs between 1 (0x01) and 65535 (0xFF) will not have automatic MAC address detection (even in Bluefy,
-		 * as including 0x0000 in the CIC list will completely break Chrome support for this cube).
-		 * Furthermore, the possible range of CICs is 0x0000 - 0xFFFF (65536 values). For now, we can just include CICs between 0x0100 and 0xFF00, as it is not likely that the account IDs
-		 * will reach 16777216 (0x01000000) anytime soon.
-		 */
-
-		// CICs 0x(01..=FF)00
-		var MOYU32_CIC_LIST = mathlib.valuedArray(255, function (i) { return (i + 1) << 8 });
-
-		function waitForAdvs() {
-			if (!_device || !_device.watchAdvertisements) {
-				return Promise.reject(-1);
-			}
-			var abortController = new AbortController();
-			return new Promise(function (resolve, reject) {
-				var onAdvEvent = function (event) {
-					DEBUG && console.log('[Moyu32Cube] receive adv event', event);
-					var mfData = event.manufacturerData;
-					var dataView = getManufacturerDataBytes(mfData);
-					if (dataView && dataView.byteLength >= 6) {
-						var mac = [];
-						for (var i = 0; i < 6; i++) {
-							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
-						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
-						resolve(mac.join(':'));
-					}
-				};
-				_device.addEventListener('advertisementreceived', onAdvEvent);
-				_device.watchAdvertisements({ signal: abortController.signal });
-				setTimeout(function () { // reject if no mac found
-					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-					abortController.abort();
-					reject(-2);
-				}, 10000);
-			});
 		}
 
 		function initMac(forcePrompt, isWrongKey) {
@@ -1633,23 +1562,99 @@ var GiikerCube = execMain(function() {
 			}
 		}
 
+		/**
+		 * Abuse the OTA service to read the MAC address from the end of __jump_table
+		 */
+
+		function readMacFromMemory() {
+			if (!_chrct_otaread || !_chrct_otawrite) {
+				return Promise.reject(-1);
+			}
+
+			return new Promise(function (resolve, reject) {
+				const JUMP_TABLE_END_ADDR = 0x11000100;
+				const JUMP_TABLE_CHECKWORD = 0x51525251; // cube seems to use a Freqchip chip?
+				const MAC_ADDR = JUMP_TABLE_END_ADDR - 0x9;
+
+				var onChrctValueChanged = function (event) {
+					var dataView = event.target.value;
+					if (dataView && dataView.getUint8(1) == 0x08) { // READ MEMORY response
+						// check for JUMP_TABLE_CHECKWORD before reading MAC (just for safety)
+						if (dataView.byteLength == 14 && dataView.getUint32(4, true) == JUMP_TABLE_END_ADDR && dataView.getUint32(10) == JUMP_TABLE_CHECKWORD) {
+							_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
+								0x08, 0x09, 0x00,
+								(MAC_ADDR & 0xFF), (MAC_ADDR & 0xFF00) >> 8, (MAC_ADDR & 0xFF0000) >> 16, (MAC_ADDR & 0xFF000000) >> 24,
+								0x06, 0x00
+							])); // read 6 MAC address bytes from MAC_ADDR
+						} else if (dataView.byteLength == 16 && dataView.getUint32(4, true) == MAC_ADDR) { // MAC address
+							var mac = [];
+							for (var i = 0; i < 6; i++) {
+								mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
+							}
+							_chrct_otaread && _chrct_otaread.removeEventListener('characteristicvaluechanged', onChrctValueChanged);
+							_chrct_otaread && _chrct_otaread.stopNotifications().catch($.noop);
+							resolve(mac.join(':'));
+						}
+					}
+				}
+
+				_chrct_otaread.addEventListener('characteristicvaluechanged', onChrctValueChanged);
+				_chrct_otaread.startNotifications();
+				_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
+					0x08, 0x09, 0x00,
+					(JUMP_TABLE_END_ADDR & 0xFF), (JUMP_TABLE_END_ADDR & 0xFF00) >> 8, (JUMP_TABLE_END_ADDR & 0xFF0000) >> 16, (JUMP_TABLE_END_ADDR & 0xFF000000) >> 24,
+					0x04, 0x00
+				])); // read 4 bytes from JUMP_TABLE_END_ADDR to confirm that we're in the right spot
+
+				setTimeout(function () { // reject after 5s if something goes wrong and we can't read the MAC address
+					_chrct_otaread && _chrct_otaread.removeEventListener('characteristicvaluechanged', onChrctValueChanged);
+					_chrct_otaread && _chrct_otaread.stopNotifications().catch($.noop);
+					reject(-2);
+				}, 5000);
+			});
+		}
+
 		function init(device) {
 			clear();
 			deviceName = device.name.trim();
 			DEBUG && console.log('[Moyu32Cube]', 'start init device');
-			return waitForAdvs().then(function (mac) {
+			return device.gatt.connect().then(function (gatt) {
+				_gatt = gatt;
+				return gatt.getPrimaryServices();
+			}).then(function (services) {
+				for (var i = 0; i < services.length; i++) {
+					var service = services[i];
+					if (matchUUID(service.uuid, OTA_SERVICE_UUID)) {
+						DEBUG && console.log('[Moyu32Cube] got OTA service', service.uuid);
+						_otaService = service;
+					} else if (matchUUID(service.uuid, CUBE_SERVICE_UUID)) {
+						DEBUG && console.log('[Moyu32Cube] got cube service', service.uuid);
+						_service = service;
+					}
+				}
+				if(_otaService) {
+					return _otaService.getCharacteristics();
+				}
+				return Promise.reject(-1);
+			}).then(function(ota_chrcts) {
+				for (var i = 0; i < ota_chrcts.length; i++) {
+					var chrct = ota_chrcts[i];
+					DEBUG && console.log('[Moyu32Cube]', 'init find OTA chrct', chrct.uuid);
+					if (matchUUID(chrct.uuid, CHRT_UUID_OTAREAD)) {
+						_chrct_otaread = chrct;
+					} else if (matchUUID(chrct.uuid, CHRT_UUID_OTAWRITE)) {
+						_chrct_otawrite = chrct;
+					}
+				}
+			}).then(function() {
+				return readMacFromMemory();
+			}).then(function(mac) {
 				DEBUG && console.log('[Moyu32Cube] init, found cube bluetooth hardware MAC = ' + mac);
 				deviceMac = mac;
-			}, function (err) {
+				return new Promise(function(resolve) { setTimeout(resolve, 6500)}); // the cube doesn't respond for a while after reading memory
+			}, function(err) {
 				DEBUG && console.log('[Moyu32Cube] init, unable to automatically determine cube MAC, error code = ' + err);
-			}).then(function () {
-				return device.gatt.connect();
-			}).then(function (gatt) {
-				_gatt = gatt;
-				return gatt.getPrimaryService(SERVICE_UUID);
-			}).then(function (service) {
-				_service = service;
-				DEBUG && console.log('[Moyu32Cube]', 'got primary service', SERVICE_UUID);
+			}).then(function() {
 				return _service.getCharacteristics();
 			}).then(function (chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
@@ -1671,6 +1676,8 @@ var GiikerCube = execMain(function() {
 				return requestCubeStatus();
 			}).then(function () {
 				return requestCubePower();
+			}).then(null, function(err) {
+				DEBUG && console.log('[Moyu32Cube]', 'error in cube initialisation: ' + err);
 			});
 		}
 
@@ -1800,12 +1807,15 @@ var GiikerCube = execMain(function() {
 			var result = Promise.resolve();
 			_gatt = null;
 			_service = null;
+			_otaService = null;
 			if (_chrct_read) {
 				_chrct_read.removeEventListener('characteristicvaluechanged', onStateChanged);
 				result = _chrct_read.stopNotifications().catch($.noop);
 				_chrct_read = null;
 			}
 			_chrct_write = null;
+			_chrct_otaread = null;
+			_chrct_otawrite = null;
 			deviceName = null;
 			deviceMac = null;
 			prevMoves = [];
@@ -1824,8 +1834,7 @@ var GiikerCube = execMain(function() {
 
 		return {
 			init: init,
-			opservs: [SERVICE_UUID],
-			cics: MOYU32_CIC_LIST,
+			opservs: [CUBE_SERVICE_UUID, OTA_SERVICE_UUID],
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
 		}
@@ -2205,7 +2214,7 @@ var GiikerCube = execMain(function() {
 					namePrefix: 'WCU_MY32'
 				}],
 				optionalServices: [...new Set([].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs, Moyu32Cube.opservs))],
-				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
+				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics))]
 			});
 		}).then(function(device) {
 			DEBUG && console.log('[bluetooth]', device);
