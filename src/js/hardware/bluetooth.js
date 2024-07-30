@@ -1599,12 +1599,13 @@ var GiikerCube = execMain(function() {
 				}
 
 				_chrct_otaread.addEventListener('characteristicvaluechanged', onChrctValueChanged);
-				_chrct_otaread.startNotifications();
-				_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
-					0x08, 0x09, 0x00,
-					(JUMP_TABLE_END_ADDR & 0xFF), (JUMP_TABLE_END_ADDR & 0xFF00) >> 8, (JUMP_TABLE_END_ADDR & 0xFF0000) >> 16, (JUMP_TABLE_END_ADDR & 0xFF000000) >> 24,
-					0x04, 0x00
-				])); // read 4 bytes from JUMP_TABLE_END_ADDR to confirm that we're in the right spot
+				_chrct_otaread.startNotifications().then(function() {
+					_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
+						0x08, 0x09, 0x00,
+						(JUMP_TABLE_END_ADDR & 0xFF), (JUMP_TABLE_END_ADDR & 0xFF00) >> 8, (JUMP_TABLE_END_ADDR & 0xFF0000) >> 16, (JUMP_TABLE_END_ADDR & 0xFF000000) >> 24,
+						0x04, 0x00
+					])); // read 4 bytes from JUMP_TABLE_END_ADDR to confirm that we're in the right spot
+				});
 
 				setTimeout(function () { // reject after 5s if something goes wrong and we can't read the MAC address
 					_chrct_otaread && _chrct_otaread.removeEventListener('characteristicvaluechanged', onChrctValueChanged);
