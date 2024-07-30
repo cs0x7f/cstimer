@@ -1582,28 +1582,39 @@ var GiikerCube = execMain(function() {
 						// check for JUMP_TABLE_CHECKWORD before reading MAC (just for safety)
 						if (dataView.byteLength == 14 && dataView.getUint32(4, true) == JUMP_TABLE_END_ADDR && dataView.getUint32(10) == JUMP_TABLE_CHECKWORD) {
 							_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
-								0x08, 0x09, 0x00,
-								(MAC_ADDR & 0xFF), (MAC_ADDR & 0xFF00) >> 8, (MAC_ADDR & 0xFF0000) >> 16, (MAC_ADDR & 0xFF000000) >> 24,
-								0x06, 0x00
+								0x08, // READ MEMORY
+								0x09, 0x00, // CMD LENGTH
+								(MAC_ADDR & 0xFF), (MAC_ADDR & 0xFF00) >> 8, (MAC_ADDR & 0xFF0000) >> 16, (MAC_ADDR & 0xFF000000) >> 24, // READ ADDRESS
+								0x06, 0x00 // READ LENGTH
 							])); // read 6 MAC address bytes from MAC_ADDR
 						} else if (dataView.byteLength == 16 && dataView.getUint32(4, true) == MAC_ADDR) { // MAC address
 							var mac = [];
 							for (var i = 0; i < 6; i++) {
 								mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 							}
-							_chrct_otaread && _chrct_otaread.removeEventListener('characteristicvaluechanged', onChrctValueChanged);
-							_chrct_otaread && _chrct_otaread.stopNotifications().catch($.noop);
-							resolve(mac.join(':'));
+							_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
+								// fake write to cause OTA mode to be left instantly:
+								// https://github.com/freqchip/FR801xH/blob/64ad073d946960eb486245ce25d15067be3e9514/components/ble/profiles/ble_ota/ota.c#L423
+								0x05, // WRITE DATA
+								0x09, 0x00, // CMD LENGTH
+								0x01, 0x00, 0x00, 0x00, // ADDRESS
+								0x00, 0x00 // WRITE LENGTH
+							])).then(function () {
+								_chrct_otaread && _chrct_otaread.removeEventListener('characteristicvaluechanged', onChrctValueChanged);
+								_chrct_otaread && _chrct_otaread.stopNotifications().catch($.noop);
+								resolve(mac.join(':'));
+							});
 						}
 					}
 				}
 
 				_chrct_otaread.addEventListener('characteristicvaluechanged', onChrctValueChanged);
-				_chrct_otaread.startNotifications().then(function() {
+				_chrct_otaread.startNotifications().then(function () {
 					_chrct_otawrite.writeValueWithoutResponse(new Uint8Array([
-						0x08, 0x09, 0x00,
-						(JUMP_TABLE_END_ADDR & 0xFF), (JUMP_TABLE_END_ADDR & 0xFF00) >> 8, (JUMP_TABLE_END_ADDR & 0xFF0000) >> 16, (JUMP_TABLE_END_ADDR & 0xFF000000) >> 24,
-						0x04, 0x00
+						0x08, // READ MEMORY
+						0x09, 0x00, // CMD LENGTH
+						(JUMP_TABLE_END_ADDR & 0xFF), (JUMP_TABLE_END_ADDR & 0xFF00) >> 8, (JUMP_TABLE_END_ADDR & 0xFF0000) >> 16, (JUMP_TABLE_END_ADDR & 0xFF000000) >> 24, // READ ADDRESS
+						0x04, 0x00 // READ LENGTH
 					])); // read 4 bytes from JUMP_TABLE_END_ADDR to confirm that we're in the right spot
 				});
 
@@ -1652,7 +1663,6 @@ var GiikerCube = execMain(function() {
 			}).then(function(mac) {
 				DEBUG && console.log('[Moyu32Cube] init, found cube bluetooth hardware MAC = ' + mac);
 				deviceMac = mac;
-				return new Promise(function(resolve) { setTimeout(resolve, 6500)}); // the cube doesn't respond for a while after reading memory
 			}, function(err) {
 				DEBUG && console.log('[Moyu32Cube] init, unable to automatically determine cube MAC, error code = ' + err);
 			}).then(function() {
