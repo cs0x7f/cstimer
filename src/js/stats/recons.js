@@ -510,13 +510,6 @@ var recons = execMain(function() {
 		}, function(val) {
 			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
 		}]);
-		stats.regExtraInfo('mvcnt_lfmc', function(times, idx) {
-			return (!times || !times[4]) ? -1 : getMoveCnt(times[4][0], 'lfmc');
-		}, ['LinearFMC', function(val) {
-			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
-		}, function(val) {
-			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
-		}]);
 		stats.regExtraInfo('recons_n_fps', function(times, idx) {
 			var moveCnt = stats.getExtraInfo('mvcnt_htm', idx);
 			if (!moveCnt || moveCnt == -1 || times[0][0] < 0) {
@@ -525,6 +518,13 @@ var recons = execMain(function() {
 			return 1e9 - moveCnt / Math.max(1, times[0][1]) * 1000;
 		}, ['FPS', function(val) {
 			return "" + (val > 0 ? (1e9 - val).toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
+		}]);
+		stats.regExtraInfo('mvcnt_lfmc', function(times, idx) {
+			return (!times || !times[4]) ? -1 : getMoveCnt(times[4][0], 'lfmc');
+		}, ['Linear FMC', function(val) {
+			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
+		}, function(val) {
+			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
 		}]);
 	})();
 
