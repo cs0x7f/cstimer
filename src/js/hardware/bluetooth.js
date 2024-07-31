@@ -2188,6 +2188,8 @@ var GiikerCube = execMain(function() {
 				}, {
 					namePrefix: 'Mi Smart'
 				}, {
+					namePrefix: 'Hi-'
+				}, {
 					namePrefix: 'GAN'
 				}, {
 					namePrefix: 'MG'
@@ -2211,7 +2213,7 @@ var GiikerCube = execMain(function() {
 			DEBUG && console.log('[bluetooth]', device);
 			_device = device;
 			device.addEventListener('gattserverdisconnected', onDisconnect);
-			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube')) {
+			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube') || device.name.startsWith('Hi-')) {
 				cube = GiikerCube;
 				return GiikerCube.init(device);
 			} else if (device.name.startsWith('GAN') || device.name.startsWith('MG') || device.name.startsWith('AiCube')) {
