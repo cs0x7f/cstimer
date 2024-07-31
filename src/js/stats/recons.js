@@ -16,11 +16,11 @@ var recons = execMain(function() {
 		return movere.exec(moveStr);
 	}
 
-	function MoveCounter() {
+	function MoveCounterHTM() {
 		this.clear();
 	}
 
-	MoveCounter.prototype.push = function(move) {
+	MoveCounterHTM.prototype.push = function(move) {
 		var axis = ~~(move / 3);
 		var amask = 1 << axis;
 		if (axis % 3 != this.lastMove % 3) {
@@ -32,18 +32,41 @@ var recons = execMain(function() {
 		this.moves.push(move);
 	}
 
-	MoveCounter.prototype.clear = function() {
+	MoveCounterHTM.prototype.clear = function() {
 		this.lastPow = 0;
 		this.lastMove = -3;
 		this.moveCnt = 0;
 		this.moves = [];
 	}
 
-	function getMoveCnt(sol) {
+	function MoveCounterLFMC() {
+		this.clear();
+	}
+
+	MoveCounterLFMC.prototype.push = function(move) {
+		var axis = ~~(move / 3);
+		var pow = move % 3 + 1;
+		if (axis != this.lastAxis) {
+			this.lastAxis = axis;
+			this.lastPow = 0;
+		}
+		var newPow = (this.lastPow + pow) % 4;
+		var axisCnt = axis >= 6 ? 2 : 1; // slice move counted as 2 moves
+		this.moveCnt += (newPow == 0 ? 0 : axisCnt) - (this.lastPow == 0 ? 0 : axisCnt);
+		this.lastPow = newPow;
+	}
+
+	MoveCounterLFMC.prototype.clear = function() {
+		this.lastPow = 0;
+		this.lastAxis = -3;
+		this.moveCnt = 0;
+	}
+
+	function getMoveCnt(sol, metric) {
 		sol = sol.split(/ +/);
 		var c = new mathlib.CubieCube();
 		c.ori = 0;
-		var cnter = new MoveCounter();
+		var cnter = metric == 'lfmc' ? new MoveCounterLFMC() : new MoveCounterHTM();
 		for (var i = 0; i < sol.length; i++) {
 			var effMove = c.selfMoveStr(sol[i], false);
 			if (effMove != undefined) {
@@ -67,7 +90,7 @@ var recons = execMain(function() {
 		}
 		c.selfConj();
 		var data = []; //[[start, firstMove, end, moveCnt, stepTransCubie, stepMoves, effMoves], [...], ...]
-		var cnter = new MoveCounter();
+		var cnter = new MoveCounterHTM();
 		var startCubieI = new mathlib.CubieCube();
 		startCubieI.invFrom(c);
 		var tsStart = 0;
@@ -480,23 +503,26 @@ var recons = execMain(function() {
 		stats.regExtraInfo('recons_cfop_et',
 			cumStepMetric.bind(null, 'cf4op', false),
 			['CFOP ' + titleStr[1], kernel.pretty]);
-		stats.regExtraInfo('recons_n_htm', function(times, idx) {
-			var rec = stats.getExtraInfo('recons_n', idx);
-			if (!rec || !rec.data[0] || !rec.data[0][3]) {
-				return -1;
-			}
-			return rec.data[0][3];
+		stats.regExtraInfo('mvcnt_htm', function(times, idx) {
+			return (!times || !times[4]) ? -1 : getMoveCnt(times[4][0]);
 		}, ['HTM', function(val) {
 			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
 		}, function(val) {
 			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
 		}]);
+		stats.regExtraInfo('mvcnt_lfmc', function(times, idx) {
+			return (!times || !times[4]) ? -1 : getMoveCnt(times[4][0], 'lfmc');
+		}, ['LinearFMC', function(val) {
+			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2).replace(/\.?0+$/, '') : 'N/A');
+		}, function(val) {
+			return "" + (val >= 0 ? val.toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
+		}]);
 		stats.regExtraInfo('recons_n_fps', function(times, idx) {
-			var rec = stats.getExtraInfo('recons_n', idx);
-			if (!rec || !rec.data[0] || !rec.data[0][3]) {
+			var moveCnt = stats.getExtraInfo('mvcnt_htm', idx);
+			if (!moveCnt || moveCnt == -1 || times[0][0] < 0) {
 				return -1;
 			}
-			return 1e9 - rec.data[0][3] / Math.max(1, times[0][1]) * 1000;
+			return 1e9 - moveCnt / Math.max(1, times[0][1]) * 1000;
 		}, ['FPS', function(val) {
 			return "" + (val > 0 ? (1e9 - val).toFixed(kernel.getProp('useMilli') ? 3 : 2) : 'N/A');
 		}]);
