@@ -1602,8 +1602,8 @@ var GiikerCube = execMain(function() {
 							])).then(function () {
 								_chrct_otaread && _chrct_otaread.removeEventListener('characteristicvaluechanged', onChrctValueChanged);
 								_chrct_otaread && _chrct_otaread.stopNotifications().catch($.noop);
-								resolve(mac.join(':'));
 							});
+							resolve(mac.join(':'));
 						}
 					}
 				}
