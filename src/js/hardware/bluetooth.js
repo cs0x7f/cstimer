@@ -363,7 +363,7 @@ var GiikerCube = execMain(function() {
 
 		function getManufacturerDataBytes(mfData) {
 			if (mfData instanceof DataView) { // this is workaround for Bluefy browser
-				return mfData;
+				return new DataView(mfData.buffer.slice(2));
 			}
 			for (var id of GAN_CIC_LIST) {
 				if (mfData.has(id)) {
@@ -384,14 +384,16 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[gancube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 0; i < 6; i++) {
 							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
 						resolve(mac.join(':'));
+					} else {
+						reject(-3);
 					}
 				};
 				_device.addEventListener('advertisementreceived', onAdvEvent);
@@ -1577,14 +1579,16 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[Moyu32Cube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 0; i < 6; i++) {
 							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
 						resolve(mac.join(':'));
+					} else {
+						reject(-3);
 					}
 				};
 				_device.addEventListener('advertisementreceived', onAdvEvent);
@@ -1954,14 +1958,16 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[qiyicube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 5; i >= 0; i--) {
 							mac.push((dataView.getUint8(i) + 0x100).toString(16).slice(1));
 						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
 						resolve(mac.join(':'));
+					} else {
+						reject(-3);
 					}
 				};
 				_device.addEventListener('advertisementreceived', onAdvEvent);
