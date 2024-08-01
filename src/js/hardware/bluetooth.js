@@ -801,6 +801,8 @@ var GiikerCube = execMain(function() {
 				}
 			} else if (mode == 4) { // cube state
 				giikerutil.log('[gancube]', 'v2 received facelets event', value);
+				if (prevMoveCnt != -1)
+					return;
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
@@ -827,9 +829,7 @@ var GiikerCube = execMain(function() {
 				}
 				latestFacelet = cc.toFaceCube();
 				giikerutil.log('[gancube]', 'v2 facelets event state parsed', latestFacelet);
-				if (prevMoveCnt == -1) {
-					initCubeState();
-				}
+				initCubeState();
 			} else if (mode == 5) { // hardware info
 				giikerutil.log('[gancube]', 'v2 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(8, 16), 2) + "." + parseInt(value.slice(16, 24), 2);
@@ -970,6 +970,8 @@ var GiikerCube = execMain(function() {
 				v3EvictMoveBuffer(true);
 			} else if (mode == 2) {  // cube state
 				giikerutil.log('[gancube]', 'v3 received facelets event', value);
+				if (prevMoveCnt != -1)
+					return;
 				moveCnt = parseInt(value.slice(32, 40) + value.slice(24, 32), 2);
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
@@ -996,9 +998,7 @@ var GiikerCube = execMain(function() {
 				}
 				latestFacelet = cc.toFaceCube();
 				giikerutil.log('[gancube]', 'v3 facelets event state parsed', latestFacelet);
-				if (prevMoveCnt == -1) {
-					initCubeState();
-				}
+				initCubeState();
 			} else if (mode == 6) { // move history
 				giikerutil.log('[gancube]', 'v3 received move history event', value);
 				var startMoveCnt = parseInt(value.slice(24, 32), 2);
