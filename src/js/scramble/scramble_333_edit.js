@@ -305,7 +305,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	}
 
 	function getEOLSScramble(type, length, cases, neut) {
-		var caze = eols_map[scrMgr.fixCase(cases, eolsprobs)];
+		var caze = eols_map[scrMgr.fixCase(cases, eolsprobs)][0];
 		var ep = Math.pow(16, caze & 0xf);
 		var cp = Math.pow(16, caze >> 8 & 0xf);
 		var co = 0xf ^ (caze >> 12 & 3);
