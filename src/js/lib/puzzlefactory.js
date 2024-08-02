@@ -136,7 +136,6 @@ var puzzleFactory = execMain(function() {
 		callback(child[2], isInit);
 	}
 
-
 	return {
 		twistyre: new RegExp("^(" + $.TWISTY_RE + ")$"),
 		init: init

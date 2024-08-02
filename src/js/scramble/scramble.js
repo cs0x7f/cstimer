@@ -708,13 +708,9 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 					ssdiv.removeClass('limit');
 				}
 			} else if (value[0] == 'scrAlign') {
-				if (value[1] == 'c') {
-					div.css('text-align', 'center');
-				} else if (value[1] == 'l') {
-					div.css('text-align', 'left');
-				} else if (value[1] == 'r') {
-					div.css('text-align', 'right');
-				}
+				div.css('text-align', {'c': 'center', 'l': 'left', 'r': 'right'}[value[1]]);
+			} else if (value[0] == 'scrWrap') {
+				ssdiv.css('text-wrap', {'n': 'unset', 'b': 'balance'}[value[1]]);
 			} else if (value[0] == 'scrFast') {
 				alias['444wca'] = value[1] ? '444m' : '444wca';
 				if (type == '444wca') {
@@ -853,7 +849,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 
 	$(function() {
 		kernel.regListener('scramble', 'time', procSignal);
-		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Fast|KeyM|Hide|Neut|EqPr|Clk)$/);
+		kernel.regListener('scramble', 'property', procSignal, /^scr(?:Size|Mono|Type|Lim|Align|Wrap|Fast|KeyM|Hide|Neut|EqPr|Clk)$/);
 		kernel.regListener('scramble', 'button', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'ctrl', procSignal, /^scramble$/);
 		kernel.regListener('scramble', 'scrfix', procSignal);
@@ -862,6 +858,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 		kernel.regProp('scramble', 'scrMono', 0, PROPERTY_SCRMONO, [true], 1);
 		kernel.regProp('scramble', 'scrLim', 0, PROPERTY_SCRLIM, [false], 1);
 		kernel.regProp('scramble', 'scrAlign', 1, PROPERTY_SCRALIGN, ['c', ['c', 'l', 'r'], PROPERTY_SCRALIGN_STR.split('|')], 1);
+		kernel.regProp('scramble', 'scrWrap', 1, 'Scramble Wrap', ['b', ['b', 'n'], 'Balanced|Normal'.split('|')], 1);
 		kernel.regProp('scramble', 'preScr', 1, "pre-scramble", ['',
 			["", "y", "y2", "y'", "z2", "z2 y", "z2 y2", "z2 y'", "z'", "z' y", "z' y2", "z' y'", "z", "z y", "z y2", "z y'", "x'", "x' y", "x' y2", "x' y'", "x", "x y", "x y2", "x y'"],
 			["(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]

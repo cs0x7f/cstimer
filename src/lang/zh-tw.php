@@ -35,7 +35,7 @@
 <tr><th>Alt + 上/下</th><td>統計列表切換到下/上一分組</td></tr>
 <tr><th>Alt + 左/右</th><td>顯示上/下一條打亂公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>將最新成績的完成狀態改為 OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>將輸入模式切到計時器/手動輸入/比賽用計時器/虛擬方塊/藍芽方塊/qcube/藍芽計時器/頂層</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
@@ -91,7 +91,7 @@
 <li><strong data="opt_scrLim">限制打亂區高度</strong>. 如果打亂面板的位置太高的話，會顯示捲軸以避免打亂區出格。</li>
 <li><strong data="opt_scrAlign">打亂對齊</strong>. 打亂區與打亂選擇器的對齊狀況。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打亂前的前置動作。這個選項會影響虛擬方塊跟打亂圖形的顯示。</li>
-<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. 如果開啟，方塊的朝向或某些訓練打亂第一層顏色將變得隨機。</li>
 <li><strong data="opt_scrFast">4x4x4使用快速打亂(非官方)</strong>. WCA的官方4x4x4打亂方法很吃運算資源。如果要改成4x4x4的隨機步驟打亂，可以勾選這個選項。</li>
 <li><strong data="opt_scrKeyM">打亂中標記關鍵步驟</strong>. 標記打亂中的關鍵步驟，例如sq-1打亂中離開正方形的那一個步驟。</li>
 <li><strong data="opt_scrClk">點擊打亂時的動作</strong>. 點擊打亂公式後會發生的事情：複製本次打亂或生成下一組打亂。</li>

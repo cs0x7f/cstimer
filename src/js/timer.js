@@ -1558,6 +1558,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 	function updateTimerOffset(clear) {
 		DEBUG && console.log('[timer] update timer offset');
+		virtual333.setSize(getProp('timerSize'));
+		giikerTimer.setSize(getProp('timerSize'));
 		if ($('html').hasClass('m') && !clear) {
 			var isToolTop = $('html').hasClass('toolt');
 			var winHeight = $('html').height();
@@ -1715,6 +1717,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (value[0] == 'giiVRC' && value[2] != 'set') {
 				giikerTimer.setVRC(getProp('input') == 'g' && value[1] != 'n');
 			}
+			if (value[0] == 'vrcOri' && value[2] != 'set') {
+				virtual333.setSize(getProp('timerSize'));
+				giikerTimer.setSize(getProp('timerSize'));
+			}
 			if (['toolPos', 'scrHide', 'toolHide', 'statHide'].indexOf(value[0]) >= 0) {
 				updateTimerOffsetAsync(false);
 			}
@@ -1727,7 +1733,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if ($.inArray(value[0], resetCondition) != -1) {
 				reset();
 			}
-		}, /^(?:input|phases|scrType|preScrT?|isTrainScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|toolPos|scrHide|toolHide|statHide|useIns|showIns|col-timer)$/);
+		}, /^(?:input|phases|scrType|preScrT?|isTrainScr|giiOri|timerSize|showAvg|showDiff|useMilli|smallADP|giiVRC|vrcOri|toolPos|scrHide|toolHide|statHide|useIns|showIns|col-timer)$/);
 		regListener('timer', 'ashow', function (signal, value) {
 			updateTimerOffsetAsync(!value);
 		});
@@ -1736,9 +1742,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regListener('timer', 'scrfix', updateTimerOffsetAsync.bind(null, false));
 		$(window).bind('resize', updateTimerOffsetAsync.bind(null, false));
 		regProp('vrc', 'vrcSpeed', 1, PROPERTY_VRCSPEED, [100, [0, 50, 100, 200, 500, 1000], '\u221E|20|10|5|2|1'.split('|')], 1);
-		regProp('vrc', 'vrcOri', ~1, 'PROPERTY_VRCORI', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
+		regProp('vrc', 'vrcOri', 1, 'Virtual cube orientation', ['6,12', ['6,12', '10,11'], ['UF', 'URF']], 1);
 		regProp('vrc', 'vrcMP', 1, PROPERTY_VRCMP, ['n', ['n', 'cfop', 'fp', 'cf4op', 'cf4o2p2', 'roux'], PROPERTY_VRCMPS.split('|')], 1);
-		regProp('vrc', 'vrcAH', 1, PROPERTY_VRCAH, ['01', ['00', '01', '10', '11'], PROPERTY_VRCAHS.split('|')], 1);
+		regProp('vrc', 'vrcAH', ~1, PROPERTY_VRCAH, ['11', ['00', '01', '10', '11'], PROPERTY_VRCAHS.split('|')], 1);
 		regProp('vrc', 'giiMode', 1, PROPERTY_GIIMODE, ['n', ['n', 't', 'at'], PROPERTY_GIIMODES.split('|')], 1);
 		regProp('vrc', 'giiVRC', 1, PROPERTY_GIIKERVRC, ['v', ['n', 'v', 'q', 'ql', 'q2'], ['None', 'Virtual', 'qCube', 'qLast', 'q2Look']], 1);
 		regProp('vrc', 'giiOri', 1, PROPERTY_GIIORI, ['auto',
