@@ -142,18 +142,46 @@ var exportFunc = execMain(function() {
 	}
 
 	function uploadData(id) {
-		return new Promise(function(resolve, reject) {
-			var compExpString = LZString.compressToEncodedURIComponent(expString);
-			$.post('https://cstimer.net/userdata.php', {
-				'id': id,
-				'data': compExpString
-			}, function(val) {
-				if (val['retcode'] == 0) {
-					resolve(val);
-				} else {
-					reject(val);
+		var slices = {};
+		var baseObj = {};
+		baseObj['properties'] = mathlib.str2obj(localStorage['properties']);
+		return storage.exportAll().then(function(exportObj) {
+			for (var key in exportObj) {
+				baseObj[key] = [];
+				var times = exportObj[key];
+				for (var i = 0; i < times.length; i+= 1000) {
+					var timesSlice = LZString.compressToEncodedURIComponent(JSON.stringify(times.slice(i, i + 1000)));
+					var sliceHash = $.sha256(timesSlice);
+					slices['slice' + sliceHash] = timesSlice;
+					baseObj[key].push(sliceHash);
 				}
-			}, 'json').error(reject);
+			}
+		}).then(function() {
+			var tt = +new Date;
+			function uploadSlice(ids, datas) {
+				return new Promise(function(resolve, reject) {
+					$.post('https://cstimer.net/userdata2.php', {
+						'id': id,
+						'ids': ids.join(','),
+						'datas': datas.join(',')
+					}, function(val) {
+						if (val['retcode'] == 0) {
+							resolve(val);
+						} else {
+							reject(val);
+						}
+					}, 'json').error(reject);
+				});
+			}
+			var ret = Promise.resolve();
+			var ids = [id];
+			var datas = [LZString.compressToEncodedURIComponent(JSON.stringify(baseObj))];
+			//TODO check redaudant to reduce upload size
+			for (var key in slices) {
+				ids.push(key);
+				datas.push(slices[key]);
+			}
+			return ret.then(uploadSlice.bind(null, ids, datas));
 		});
 	}
 
@@ -180,7 +208,7 @@ var exportFunc = execMain(function() {
 		var msgfmt = EXPORT_WHICH_ITEM;
 		var msgf = [msg];
 		for (var ff = 0; ff < files.length; ff++) {
-			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', files[ff].size)
+			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', ~~files[ff].size || 'N/A')
 				.replace('%t', new Date(files[ff].modifiedTime).toLocaleString()));
 		}
 		return ~~prompt(msgf.join('\n'), '1');
@@ -217,7 +245,7 @@ var exportFunc = execMain(function() {
 				}
 			}
 			target.html('Import Data...');
-			$.post('https://cstimer.net/userdata.php', {
+			$.post('https://cstimer.net/userdata2.php', {
 				'id': id,
 				'offset': idx - 1
 			}, dataCallback, 'json').error(onerr).always(revert);
@@ -225,22 +253,71 @@ var exportFunc = execMain(function() {
 
 		var dataCallback = function(val) {
 			var retcode = val['retcode'];
-			if (retcode == 0) {
-				try {
-					loadData(JSON.parse(LZString.decompressFromEncodedURIComponent(val['data'])));
-				} catch (err) {
-					alert(EXPORT_ERROR);
-				}
-			} else if (retcode == 404) {
+			if (retcode == 404) {
 				alert(EXPORT_NODATA);
-			} else {
+				return revert();
+			} else if (retcode != 0) {
 				alert(EXPORT_ERROR);
+				return revert();
 			}
-			revert();
+			var baseObj = {};
+			var ret = Promise.resolve();
+			function downloadSlice(keys, arrs) {
+				return new Promise(function(resolve, reject) {
+					$.post('https://cstimer.net/userdata2.php', {
+						'id': id,
+						'ids': keys.join(',')
+					}, function(val) {
+						if (val['retcode'] == 0) {
+							resolve(val);
+						} else {
+							reject(val);
+						}
+					}, 'json').error(reject);
+				}).then(function(val) {
+					var datas = [];
+					for (var key in val['datas']) {
+						datas[keys.indexOf(key)] = val['datas'][key];
+					};
+					for (var i = 0; i < keys.length; i++) {
+						if (datas[i] == undefined) {
+							console.log('error, incorrect data');
+							return Promise.reject();
+						}
+						Array.prototype.push.apply(arrs[i], JSON.parse(LZString.decompressFromEncodedURIComponent(datas[i])));
+					}
+				});
+			}
+			try {
+				var metaObj = JSON.parse(LZString.decompressFromEncodedURIComponent(val['data']));
+				//TODO compare with local data to skip some of downloads
+				var keys = [];
+				var arrs = [];
+				for (var key in metaObj) {
+					if (!key.startsWith('session') || metaObj[key].length == 0 || $.isArray(metaObj[key][0])) {
+						baseObj[key] = metaObj[key];
+						continue;
+					}
+					var times = [];
+					baseObj[key] = times;
+					for (var i = 0; i < metaObj[key].length; i++) {
+						keys.push('slice' + metaObj[key][i]);
+						arrs.push(times);
+					}
+				}
+				if (keys.length > 0) {
+					ret = ret.then(downloadSlice.bind(null, keys, arrs));
+				}
+				ret.then(loadData.bind(null, baseObj));
+			} catch (err) {
+				DEBUG && console.log('[export] error', err);
+				alert(EXPORT_ERROR);
+				revert();
+			}
 		};
 
 		if (kernel.getProp('expp')) {
-			$.post('https://cstimer.net/userdata.php', {
+			$.post('https://cstimer.net/userdata2.php', {
 				'id': id,
 				'cnt': 1
 			}, cntCallback, 'json').error(onerr).always(revert);
