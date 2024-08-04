@@ -140,10 +140,10 @@ var GiikerCube = execMain(function() {
 				for (var i = 0; i < 40; i++) {
 					hexstr.push("0123456789abcdef".charAt(valhex[i]));
 				}
-				console.log('[giiker]', "Raw Data: ", valhex.join(""));
-				console.log('[giiker]', "Current State: ", facelet);
-				console.log('[giiker]', "A Valid Generator: ", scramble_333.genFacelet(facelet));
-				console.log('[giiker]', "Previous Moves: ", prevMoves.slice().reverse().join(" "));
+				giikerutil.log('[giiker]', "Raw Data: ", valhex.join(""));
+				giikerutil.log('[giiker]', "Current State: ", facelet);
+				giikerutil.log('[giiker]', "A Valid Generator: ", scramble_333.genFacelet(facelet));
+				giikerutil.log('[giiker]', "Previous Moves: ", prevMoves.slice().reverse().join(" "));
 			}
 			callback(facelet, prevMoves, [locTime, locTime], deviceName);
 			return [facelet, prevMoves];
@@ -320,12 +320,12 @@ var GiikerCube = execMain(function() {
 		}
 
 		function v1init() {
-			DEBUG && console.log('[gancube] v1init start');
+			giikerutil.log('[gancube] v1init start');
 			return _service_meta.getCharacteristic(CHRCT_UUID_VERSION).then(function(chrct) {
 				return chrct.readValue();
 			}).then(function(value) {
 				var version = value.getUint8(0) << 16 | value.getUint8(1) << 8 | value.getUint8(2);
-				DEBUG && console.log('[gancube] version', version.toString(16));
+				giikerutil.log('[gancube] version', version.toString(16));
 				decoder = null;
 				if (version > 0x010007 && (version & 0xfffe00) == 0x010000) {
 					return _service_meta.getCharacteristic(CHRCT_UUID_HARDWARE).then(function(chrct) {
@@ -336,7 +336,7 @@ var GiikerCube = execMain(function() {
 							logohint.push(LGHINT_BTNOTSUP);
 							return;
 						}
-						DEBUG && console.log('[gancube] key', JSON.stringify(key));
+						giikerutil.log('[gancube] key', JSON.stringify(key));
 						decoder = $.aes128(key);
 					});
 				} else { //not support
@@ -347,7 +347,7 @@ var GiikerCube = execMain(function() {
 			}).then(function(chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
-					DEBUG && console.log('[gancube] v1init find chrct', chrct.uuid);
+					giikerutil.log('[gancube] v1init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_F2)) {
 						_chrct_f2 = chrct;
 					} else if (matchUUID(chrct.uuid, CHRCT_UUID_F5)) {
@@ -367,11 +367,11 @@ var GiikerCube = execMain(function() {
 			}
 			for (var id of GAN_CIC_LIST) {
 				if (mfData.has(id)) {
-					DEBUG && console.log('[gancube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
+					giikerutil.log('[gancube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
 					return mfData.get(id);
 				}
 			}
-			DEBUG && console.log('[gancube] Looks like this cube has new unknown CIC');
+			giikerutil.log('[gancube] Looks like this cube has new unknown CIC');
 		}
 
 		function waitForAdvs() {
@@ -381,7 +381,7 @@ var GiikerCube = execMain(function() {
 			var abortController = new AbortController();
 			return new Promise(function(resolve, reject) {
 				var onAdvEvent = function(event) {
-					DEBUG && console.log('[gancube] receive adv event', event);
+					giikerutil.log('[gancube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
 					if (dataView && dataView.byteLength >= 6) {
@@ -409,9 +409,9 @@ var GiikerCube = execMain(function() {
 				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 				var prevMac = savedMacMap[deviceName];
 				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-					DEBUG && console.log('[gancube] v2init mac matched');
+					giikerutil.log('[gancube] v2init mac matched');
 				} else {
-					DEBUG && console.log('[gancube] v2init mac updated');
+					giikerutil.log('[gancube] v2init mac updated');
 					savedMacMap[deviceName] = deviceMac;
 					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 				}
@@ -442,18 +442,18 @@ var GiikerCube = execMain(function() {
 				value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 			}
 			var keyiv = getKeyV2(value, ver);
-			DEBUG && console.log('[gancube] ver=', ver, ' key=', JSON.stringify(keyiv));
+			giikerutil.log('[gancube] ver=', ver, ' key=', JSON.stringify(keyiv));
 			decoder = $.aes128(keyiv[0]);
 			decoder.iv = keyiv[1];
 		}
 
 		function v2sendRequest(req) {
 			if (!_chrct_v2write) {
-				DEBUG && console.log('[gancube] v2sendRequest cannot find v2write chrct');
+				giikerutil.log('[gancube] v2sendRequest cannot find v2write chrct');
 				return;
 			}
 			var encodedReq = encode(req.slice());
-			DEBUG && console.log('[gancube] v2sendRequest', req, encodedReq);
+			giikerutil.log('[gancube] v2sendRequest', req, encodedReq);
 			return _chrct_v2write.writeValue(new Uint8Array(encodedReq).buffer);
 		}
 
@@ -480,14 +480,14 @@ var GiikerCube = execMain(function() {
 		}
 
 		function v2init(ver) {
-			DEBUG && console.log('[gancube] v2init start');
+			giikerutil.log('[gancube] v2init start');
 			keyCheck = 0;
 			v2initKey(true, false, ver);
 			return _service_v2data.getCharacteristics().then(function(chrcts) {
-				DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
+				giikerutil.log('[gancube] v2init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
-					DEBUG && console.log('[gancube] v2init find chrct', chrct.uuid);
+					giikerutil.log('[gancube] v2init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_V2READ)) {
 						_chrct_v2read = chrct;
 					} else if (matchUUID(chrct.uuid, CHRCT_UUID_V2WRITE)) {
@@ -495,13 +495,13 @@ var GiikerCube = execMain(function() {
 					}
 				}
 				if (!_chrct_v2read) {
-					DEBUG && console.log('[gancube] v2init cannot find v2read chrct');
+					giikerutil.log('[gancube] v2init cannot find v2read chrct');
 				}
 			}).then(function() {
-				DEBUG && console.log('[gancube] v2init v2read start notifications');
+				giikerutil.log('[gancube] v2init v2read start notifications');
 				return _chrct_v2read.startNotifications();
 			}).then(function() {
-				DEBUG && console.log('[gancube] v2init v2read notification started');
+				giikerutil.log('[gancube] v2init v2read notification started');
 				return _chrct_v2read.addEventListener('characteristicvaluechanged', onStateChangedV2);
 			}).then(function() {
 				return v2requestHardwareInfo();
@@ -514,11 +514,11 @@ var GiikerCube = execMain(function() {
 
 		function v3sendRequest(req) {
 			if (!_chrct_v3write) {
-				DEBUG && console.log('[gancube] v3sendRequest cannot find v3write chrct');
+				giikerutil.log('[gancube] v3sendRequest cannot find v3write chrct');
 				return;
 			}
 			var encodedReq = encode(req.slice());
-			DEBUG && console.log('[gancube] v3sendRequest', req, encodedReq);
+			giikerutil.log('[gancube] v3sendRequest', req, encodedReq);
 			return _chrct_v3write.writeValue(new Uint8Array(encodedReq).buffer);
 		}
 
@@ -542,14 +542,14 @@ var GiikerCube = execMain(function() {
 		}
 
 		function v3init() {
-			DEBUG && console.log('[gancube] v3init start');
+			giikerutil.log('[gancube] v3init start');
 			keyCheck = 0;
 			v2initKey(true, false, 0);
 			return _service_v3data.getCharacteristics().then(function(chrcts) {
-				DEBUG && console.log('[gancube] v3init find chrcts', chrcts);
+				giikerutil.log('[gancube] v3init find chrcts', chrcts);
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
-					DEBUG && console.log('[gancube] v3init find chrct', chrct.uuid);
+					giikerutil.log('[gancube] v3init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_V3READ)) {
 						_chrct_v3read = chrct;
 					} else if (matchUUID(chrct.uuid, CHRCT_UUID_V3WRITE)) {
@@ -557,13 +557,13 @@ var GiikerCube = execMain(function() {
 					}
 				}
 				if (!_chrct_v3read) {
-					DEBUG && console.log('[gancube] v3init cannot find v3read chrct');
+					giikerutil.log('[gancube] v3init cannot find v3read chrct');
 				}
 			}).then(function() {
-				DEBUG && console.log('[gancube] v3init v3read start notifications');
+				giikerutil.log('[gancube] v3init v3read start notifications');
 				return _chrct_v3read.startNotifications();
 			}).then(function() {
-				DEBUG && console.log('[gancube] v3init v3read notification started');
+				giikerutil.log('[gancube] v3init v3read notification started');
 				return _chrct_v3read.addEventListener('characteristicvaluechanged', onStateChangedV3);
 			}).then(function() {
 				return v3requestHardwareInfo();
@@ -577,12 +577,12 @@ var GiikerCube = execMain(function() {
 		function init(device) {
 			clear();
 			deviceName = device.name;
-			DEBUG && console.log('[gancube] init gan cube start');
+			giikerutil.log('[gancube] init gan cube start');
 			return waitForAdvs().then(function(mac) {
-				DEBUG && console.log('[gancube] init, found cube bluetooth hardware MAC = ' + mac);
+				giikerutil.log('[gancube] init, found cube bluetooth hardware MAC = ' + mac);
 				deviceMac = mac;
 			}, function(err) {
-				DEBUG && console.log('[gancube] init, unable to automatically determine cube MAC, error code = ' + err);
+				giikerutil.log('[gancube] init, unable to automatically determine cube MAC, error code = ' + err);
 			}).then(function() {
 				return device.gatt.connect();
 			}).then(function(gatt) {
@@ -591,7 +591,7 @@ var GiikerCube = execMain(function() {
 			}).then(function(services) {
 				for (var i = 0; i < services.length; i++) {
 					var service = services[i];
-					DEBUG && console.log('[gancube] checkHardware find service', service.uuid);
+					giikerutil.log('[gancube] checkHardware find service', service.uuid);
 					if (matchUUID(service.uuid, SERVICE_UUID_META)) {
 						_service_meta = service;
 					} else if (matchUUID(service.uuid, SERVICE_UUID_DATA)) {
@@ -628,7 +628,7 @@ var GiikerCube = execMain(function() {
 
 		function initCubeState() {
 			var locTime = $.now();
-			DEBUG && console.log('[gancube]', 'init cube state');
+			giikerutil.log('[gancube]', 'init cube state');
 			callback(latestFacelet, [], [null, locTime], deviceName);
 			prevCubie.fromFacelet(latestFacelet);
 			prevMoveCnt = moveCnt;
@@ -668,7 +668,7 @@ var GiikerCube = execMain(function() {
 
 		function updateMoveTimes(locTime, isV2) {
 			var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
-			DEBUG && moveDiff > 1 && console.log('[gancube]', 'bluetooth event was lost, moveDiff = ' + moveDiff);
+			DEBUG && moveDiff > 1 && giikerutil.log('[gancube]', 'bluetooth event was lost, moveDiff = ' + moveDiff);
 			prevMoveCnt = moveCnt;
 			movesFromLastCheck += moveDiff;
 			if (moveDiff > prevMoves.length) {
@@ -680,7 +680,7 @@ var GiikerCube = execMain(function() {
 				calcTs += timeOffs[i];
 			}
 			if (!deviceTime || Math.abs(locTime - calcTs) > 2000) {
-				DEBUG && console.log('[gancube]', 'time adjust', locTime - calcTs, '@', locTime);
+				giikerutil.log('[gancube]', 'time adjust', locTime - calcTs, '@', locTime);
 				deviceTime += locTime - calcTs;
 			}
 			for (var i = moveDiff - 1; i >= 0; i--) {
@@ -691,7 +691,7 @@ var GiikerCube = execMain(function() {
 				var tmp = curCubie;
 				curCubie = prevCubie;
 				prevCubie = tmp;
-				DEBUG && console.log('[gancube] move', prevMoves[i], timeOffs[i]);
+				giikerutil.log('[gancube] move', prevMoves[i], timeOffs[i]);
 			}
 			deviceTimeOffset = locTime - deviceTime;
 		}
@@ -720,10 +720,10 @@ var GiikerCube = execMain(function() {
 				}).then(function(isUpdated) {
 
 					if (isUpdated) {
-						DEBUG && console.log('[gancube]', 'facelet state calc', prevCubie.toFaceCube());
-						DEBUG && console.log('[gancube]', 'facelet state read', latestFacelet);
+						giikerutil.log('[gancube]', 'facelet state calc', prevCubie.toFaceCube());
+						giikerutil.log('[gancube]', 'facelet state read', latestFacelet);
 						if (prevCubie.toFaceCube() != latestFacelet) {
-							DEBUG && console.log('[gancube]', 'Cube state check error');
+							giikerutil.log('[gancube]', 'Cube state check error');
 						}
 						return;
 					}
@@ -767,7 +767,7 @@ var GiikerCube = execMain(function() {
 
 		function parseV2Data(value) {
 			var locTime = $.now();
-			// DEBUG && console.log('[gancube]', 'dec v2', value);
+			// giikerutil.log('[gancube]', 'dec v2', value);
 			value = decode(value);
 			for (var i = 0; i < value.length; i++) {
 				value[i] = (value[i] + 256).toString(2).slice(1);
@@ -776,7 +776,7 @@ var GiikerCube = execMain(function() {
 			var mode = parseInt(value.slice(0, 4), 2);
 			if (mode == 1) { // gyro
 			} else if (mode == 2) { // cube move
-				DEBUG && console.log('[gancube]', 'v2 received move event', value);
+				giikerutil.log('[gancube]', 'v2 received move event', value);
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
 					return;
@@ -798,7 +798,7 @@ var GiikerCube = execMain(function() {
 					updateMoveTimes(locTime, 1);
 				}
 			} else if (mode == 4) { // cube state
-				DEBUG && console.log('[gancube]', 'v2 received facelets event', value);
+				giikerutil.log('[gancube]', 'v2 received facelets event', value);
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
@@ -820,32 +820,32 @@ var GiikerCube = execMain(function() {
 				cc.ea[11] = echk;
 				if (cc.verify() != 0) {
 					keyCheck++;
-					DEBUG && console.log('[gancube]', 'v2 facelets state verify error');
+					giikerutil.log('[gancube]', 'v2 facelets state verify error');
 					return;
 				}
 				latestFacelet = cc.toFaceCube();
-				DEBUG && console.log('[gancube]', 'v2 facelets event state parsed', latestFacelet);
+				giikerutil.log('[gancube]', 'v2 facelets event state parsed', latestFacelet);
 				if (prevMoveCnt == -1) {
 					initCubeState();
 				}
 			} else if (mode == 5) { // hardware info
-				DEBUG && console.log('[gancube]', 'v2 received hardware info event', value);
+				giikerutil.log('[gancube]', 'v2 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(8, 16), 2) + "." + parseInt(value.slice(16, 24), 2);
 				var softwareVersion = parseInt(value.slice(24, 32), 2) + "." + parseInt(value.slice(32, 40), 2);
 				var devName = '';
 				for (var i = 0; i < 8; i++)
 					devName += String.fromCharCode(parseInt(value.slice(40 + i * 8, 48 + i * 8), 2));
 				var gyroEnabled = 1 === parseInt(value.slice(104, 105), 2);
-				DEBUG && console.log('[gancube]', 'Hardware Version', hardwareVersion);
-				DEBUG && console.log('[gancube]', 'Software Version', softwareVersion);
-				DEBUG && console.log('[gancube]', 'Device Name', devName);
-				DEBUG && console.log('[gancube]', 'Gyro Enabled', gyroEnabled);
+				giikerutil.log('[gancube]', 'Hardware Version', hardwareVersion);
+				giikerutil.log('[gancube]', 'Software Version', softwareVersion);
+				giikerutil.log('[gancube]', 'Device Name', devName);
+				giikerutil.log('[gancube]', 'Gyro Enabled', gyroEnabled);
 			} else if (mode == 9) { // battery
-				DEBUG && console.log('[gancube]', 'v2 received battery event', value);
+				giikerutil.log('[gancube]', 'v2 received battery event', value);
 				batteryLevel = parseInt(value.slice(8, 16), 2);
 				giikerutil.updateBattery([batteryLevel, deviceName + '*']);
 			} else {
-				DEBUG && console.log('[gancube]', 'v2 received unknown event', value);
+				giikerutil.log('[gancube]', 'v2 received unknown event', value);
 			}
 		}
 
@@ -870,7 +870,7 @@ var GiikerCube = execMain(function() {
 				if (move[0] == ((moveBuffer[0][0] - 1) & 0xFF)) {
 					move[2] = moveBuffer[0][2] - 10; // Set lost move device hardware timestamp near to next move event
 					moveBuffer.unshift(move);
-					DEBUG && console.log('[gancube]', 'v3 lost move recovered', move[0], move[1]);
+					giikerutil.log('[gancube]', 'v3 lost move recovered', move[0], move[1]);
 				}
 			}
 		}
@@ -900,7 +900,7 @@ var GiikerCube = execMain(function() {
 			while (moveBuffer.length > 0) {
 				var diff = (moveBuffer[0][0] - prevMoveCnt) & 0xFF;
 				if (diff > 1) {
-					DEBUG && console.log('[gancube]', 'v3 lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
+					giikerutil.log('[gancube]', 'v3 lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
 					if (reqLostMoves) {
 						v3requestMoveHistory(moveBuffer[0][0], diff);
 					}
@@ -917,7 +917,7 @@ var GiikerCube = execMain(function() {
 					curCubie = prevCubie;
 					prevCubie = tmp;
 					prevMoveCnt = move[0];
-					DEBUG && console.log('[gancube]', 'v3 move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
+					giikerutil.log('[gancube]', 'v3 move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
 				}
 			}
 			if (moveBuffer.length > 32) { // Something wrong, moves are not evicted from buffer, force cube disconnection
@@ -935,22 +935,22 @@ var GiikerCube = execMain(function() {
 
 		function parseV3Data(value) {
 			var locTime = $.now();
-			DEBUG && console.log('[gancube]', 'v3 raw message', value);
+			giikerutil.log('[gancube]', 'v3 raw message', value);
 			value = decode(value);
 			for (var i = 0; i < value.length; i++) {
 				value[i] = (value[i] + 256).toString(2).slice(1);
 			}
 			value = value.join('');
-			DEBUG && console.log('[gancube]', 'v3 decrypted message', value);
+			giikerutil.log('[gancube]', 'v3 decrypted message', value);
 			var magic = parseInt(value.slice(0, 8), 2);
 			var mode = parseInt(value.slice(8, 16), 2);
 			var len = parseInt(value.slice(16, 24), 2);
 			if (magic != 0x55 || len <= 0) {
-				DEBUG && console.log('[gancube]', 'v3 invalid magic or len', value);
+				giikerutil.log('[gancube]', 'v3 invalid magic or len', value);
 				return;
 			}
 			if (mode == 1) { // cube move
-				DEBUG && console.log('[gancube]', 'v3 received move event', value);
+				giikerutil.log('[gancube]', 'v3 received move event', value);
 				moveCnt = parseInt(value.slice(64, 72) + value.slice(56, 64), 2);
 				if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
 					return;
@@ -959,15 +959,15 @@ var GiikerCube = execMain(function() {
 				var pow = parseInt(value.slice(72, 74), 2);
 				var axis = [2, 32, 8, 1, 16, 4].indexOf(parseInt(value.slice(74, 80), 2));
 				if (axis == -1) {
-					DEBUG && console.log('[gancube]', 'v3 move event invalid axis');
+					giikerutil.log('[gancube]', 'v3 move event invalid axis');
 					return;
 				}
 				var move = "URFDLB".charAt(axis) + " '".charAt(pow);
 				moveBuffer.push([moveCnt, move, ts, locTime]);
-				DEBUG && console.log('[gancube]', 'v3 move placed to fifo buffer', moveCnt, move, ts, locTime);
+				giikerutil.log('[gancube]', 'v3 move placed to fifo buffer', moveCnt, move, ts, locTime);
 				v3EvictMoveBuffer(true);
 			} else if (mode == 2) {  // cube state
-				DEBUG && console.log('[gancube]', 'v3 received facelets event', value);
+				giikerutil.log('[gancube]', 'v3 received facelets event', value);
 				moveCnt = parseInt(value.slice(32, 40) + value.slice(24, 32), 2);
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
@@ -989,16 +989,16 @@ var GiikerCube = execMain(function() {
 				cc.ea[11] = echk;
 				if (cc.verify() != 0) {
 					keyCheck++;
-					DEBUG && console.log('[gancube]', 'v3 facelets state verify error');
+					giikerutil.log('[gancube]', 'v3 facelets state verify error');
 					return;
 				}
 				latestFacelet = cc.toFaceCube();
-				DEBUG && console.log('[gancube]', 'v3 facelets event state parsed', latestFacelet);
+				giikerutil.log('[gancube]', 'v3 facelets event state parsed', latestFacelet);
 				if (prevMoveCnt == -1) {
 					initCubeState();
 				}
 			} else if (mode == 6) { // move history
-				DEBUG && console.log('[gancube]', 'v3 received move history event', value);
+				giikerutil.log('[gancube]', 'v3 received move history event', value);
 				var startMoveCnt = parseInt(value.slice(24, 32), 2);
 				var numberOfMoves = (len - 1) * 2;
 				for (var i = 0; i < numberOfMoves; i++) {
@@ -1011,21 +1011,21 @@ var GiikerCube = execMain(function() {
 				}
 				v3EvictMoveBuffer(false);
 			} else if (mode == 7) { // hardware info
-				DEBUG && console.log('[gancube]', 'v3 received hardware info event', value);
+				giikerutil.log('[gancube]', 'v3 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(80, 84), 2) + "." + parseInt(value.slice(84, 88), 2);
 				var softwareVersion = parseInt(value.slice(72, 76), 2) + "." + parseInt(value.slice(76, 80), 2);
 				var devName = '';
 				for (var i = 0; i < 5; i++)
 					devName += String.fromCharCode(parseInt(value.slice(32 + i * 8, 40 + i * 8), 2));
-				DEBUG && console.log('[gancube]', 'Hardware Version', hardwareVersion);
-				DEBUG && console.log('[gancube]', 'Software Version', softwareVersion);
-				DEBUG && console.log('[gancube]', 'Device Name', devName);
+				giikerutil.log('[gancube]', 'Hardware Version', hardwareVersion);
+				giikerutil.log('[gancube]', 'Software Version', softwareVersion);
+				giikerutil.log('[gancube]', 'Device Name', devName);
 			} else if (mode == 16) { // battery
-				DEBUG && console.log('[gancube]', 'v3 received battery event', value);
+				giikerutil.log('[gancube]', 'v3 received battery event', value);
 				batteryLevel = parseInt(value.slice(24, 32), 2);
 				giikerutil.updateBattery([batteryLevel, deviceName + '*']);
 			} else {
-				DEBUG && console.log('[gancube]', 'v3 received unknown event', value);
+				giikerutil.log('[gancube]', 'v3 received unknown event', value);
 			}
 		}
 
@@ -1148,12 +1148,12 @@ var GiikerCube = execMain(function() {
 			var msgType = value.getUint8(2);
 			var msgLen = value.byteLength - 6;
 			if (msgType == 1) { // move
-				// console.log(toHexVal(value));
+				// giikerutil.log(toHexVal(value));
 				for (var i = 0; i < msgLen; i += 2) {
 					var axis = axisPerm[value.getUint8(3 + i) >> 1];
 					var power = [0, 2][value.getUint8(3 + i) & 1];
 					var m = axis * 3 + power;
-					DEBUG && console.log('move', "URFDLB".charAt(axis) + " 2'".charAt(power));
+					giikerutil.log('move', "URFDLB".charAt(axis) + " 2'".charAt(power));
 					mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 					curFacelet = curCubie.toFaceCube();
 					prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(power));
@@ -1180,17 +1180,17 @@ var GiikerCube = execMain(function() {
 				}
 				var newFacelet = facelet.join('');
 				if (newFacelet != curFacelet) {
-					DEBUG && console.log('facelet', newFacelet);
+					giikerutil.log('facelet', newFacelet);
 					curCubie.fromFacelet(newFacelet);
 				}
 			} else if (msgType == 3) { // quaternion
 			} else if (msgType == 5) { // battery level
 				_batteryLevel = value.getUint8(3);
-				DEBUG && console.log('battery level', _batteryLevel);
+				giikerutil.log('battery level', _batteryLevel);
 			} else if (msgType == 7) { // offline stats
-				DEBUG && console.log('offline stats', toHexVal(value));
+				giikerutil.log('offline stats', toHexVal(value));
 			} else if (msgType == 8) { // cube type
-				DEBUG && console.log('cube type', toHexVal(value));
+				giikerutil.log('cube type', toHexVal(value));
 			}
 		}
 
@@ -1262,7 +1262,7 @@ var GiikerCube = execMain(function() {
 			}).then(function(chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i]
-					DEBUG && console.log('[moyucube]', 'init find chrct', chrct.uuid);
+					giikerutil.log('[moyucube]', 'init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_WRITE)) {
 						_chrct_write = chrct;
 					} else if (matchUUID(chrct.uuid, CHRCT_UUID_READ)) {
@@ -1291,17 +1291,17 @@ var GiikerCube = execMain(function() {
 
 		function onReadEvent(event) {
 			var value = event.target.value;
-			DEBUG && console.log('[moyucube]', 'Received read event', value);
+			giikerutil.log('[moyucube]', 'Received read event', value);
 		}
 
 		function onGyroEvent(event) {
 			var value = event.target.value;
-			DEBUG && console.log('[moyucube]', 'Received gyro event', value);
+			giikerutil.log('[moyucube]', 'Received gyro event', value);
 		}
 
 		function onTurnEvent(event) {
 			var value = event.target.value;
-			DEBUG && console.log('[moyucube]', 'Received turn event', value);
+			giikerutil.log('[moyucube]', 'Received turn event', value);
 			parseTurn(value);
 		}
 
@@ -1336,7 +1336,7 @@ var GiikerCube = execMain(function() {
 					continue;
 				}
 				var m = axis * 3 + pow;
-				DEBUG && console.log('[moyucube]', 'move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
+				giikerutil.log('[moyucube]', 'move', "URFDLB".charAt(axis) + " 2'".charAt(pow));
 				mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 				curFacelet = curCubie.toFaceCube();
 				prevMoves.unshift("URFDLB".charAt(axis) + " 2'".charAt(pow));
@@ -1439,7 +1439,7 @@ var GiikerCube = execMain(function() {
 				value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 			}
 			var keyiv = getKeyAndIv(value);
-			DEBUG && console.log('[Moyu32Cube] key=', JSON.stringify(keyiv));
+			giikerutil.log('[Moyu32Cube] key=', JSON.stringify(keyiv));
 			decoder = $.aes128(keyiv[0]);
 			decoder.iv = keyiv[1];
 		}
@@ -1492,11 +1492,11 @@ var GiikerCube = execMain(function() {
 
 		function sendRequest(req) {
 			if (!_chrct_write) {
-				DEBUG && console.log('[Moyu32Cube] sendRequest cannot find write chrct');
+				giikerutil.log('[Moyu32Cube] sendRequest cannot find write chrct');
 				return;
 			}
 			var encodedReq = encode(req.slice());
-			DEBUG && console.log('[Moyu32Cube] sendRequest', req, encodedReq);
+			giikerutil.log('[Moyu32Cube] sendRequest', req, encodedReq);
 			return _chrct_write.writeValue(new Uint8Array(encodedReq).buffer);
 		}
 
@@ -1524,11 +1524,11 @@ var GiikerCube = execMain(function() {
 			}
 			for (var id of MOYU32_CIC_LIST) {
 				if (mfData.has(id)) {
-					DEBUG && console.log('[Moyu32Cube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
+					giikerutil.log('[Moyu32Cube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
 					return mfData.get(id);
 				}
 			}
-			DEBUG && console.log('[Moyu32Cube] Looks like this cube has new unknown CIC');
+			giikerutil.log('[Moyu32Cube] Looks like this cube has new unknown CIC');
 		}
 
 		/**
@@ -1574,7 +1574,7 @@ var GiikerCube = execMain(function() {
 			var abortController = new AbortController();
 			return new Promise(function (resolve, reject) {
 				var onAdvEvent = function (event) {
-					DEBUG && console.log('[Moyu32Cube] receive adv event', event);
+					giikerutil.log('[Moyu32Cube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
 					if (dataView && dataView.byteLength >= 6) {
@@ -1602,9 +1602,9 @@ var GiikerCube = execMain(function() {
 				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 				var prevMac = savedMacMap[deviceName];
 				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-					DEBUG && console.log('[Moyu32Cube] mac matched');
+					giikerutil.log('[Moyu32Cube] mac matched');
 				} else {
-					DEBUG && console.log('[Moyu32Cube] mac updated');
+					giikerutil.log('[Moyu32Cube] mac updated');
 					savedMacMap[deviceName] = deviceMac;
 					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 				}
@@ -1636,12 +1636,12 @@ var GiikerCube = execMain(function() {
 		function init(device) {
 			clear();
 			deviceName = device.name.trim();
-			DEBUG && console.log('[Moyu32Cube]', 'start init device');
+			giikerutil.log('[Moyu32Cube]', 'start init device');
 			return waitForAdvs().then(function (mac) {
-				DEBUG && console.log('[Moyu32Cube] init, found cube bluetooth hardware MAC = ' + mac);
+				giikerutil.log('[Moyu32Cube] init, found cube bluetooth hardware MAC = ' + mac);
 				deviceMac = mac;
 			}, function (err) {
-				DEBUG && console.log('[Moyu32Cube] init, unable to automatically determine cube MAC, error code = ' + err);
+				giikerutil.log('[Moyu32Cube] init, unable to automatically determine cube MAC, error code = ' + err);
 			}).then(function () {
 				return device.gatt.connect();
 			}).then(function (gatt) {
@@ -1649,12 +1649,12 @@ var GiikerCube = execMain(function() {
 				return gatt.getPrimaryService(SERVICE_UUID);
 			}).then(function (service) {
 				_service = service;
-				DEBUG && console.log('[Moyu32Cube]', 'got primary service', SERVICE_UUID);
+				giikerutil.log('[Moyu32Cube]', 'got primary service', SERVICE_UUID);
 				return _service.getCharacteristics();
 			}).then(function (chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i];
-					DEBUG && console.log('[Moyu32Cube]', 'init find chrct', chrct.uuid);
+					giikerutil.log('[Moyu32Cube]', 'init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRT_UUID_READ)) {
 						_chrct_read = chrct;
 					} else if (matchUUID(chrct.uuid, CHRT_UUID_WRITE)) {
@@ -1684,7 +1684,7 @@ var GiikerCube = execMain(function() {
 
 		function initCubeState() {
 			var locTime = $.now();
-			DEBUG && console.log('[Moyu32Cube]', 'initialising cube state');
+			giikerutil.log('[Moyu32Cube]', 'initialising cube state');
 			callback(latestFacelet, [], [null, locTime], deviceName);
 			prevCubie.fromFacelet(latestFacelet);
 			prevMoveCnt = moveCnt;
@@ -1705,15 +1705,15 @@ var GiikerCube = execMain(function() {
 			value = value.join('');
 			var msgType = parseInt(value.slice(0, 8), 2);
 			if (msgType == 161) { // info
-				DEBUG && console.log('[Moyu32Cube]', 'received hardware info event', value);
+				giikerutil.log('[Moyu32Cube]', 'received hardware info event', value);
 				var devName = '';
 				for (var i = 0; i < 8; i++)
 					devName += String.fromCharCode(parseInt(value.slice(8 + i * 8, 16 + i * 8), 2));
 				var hardwareVersion = parseInt(value.slice(88, 96), 2) + "." + parseInt(value.slice(96, 104), 2);
 				var softwareVersion = parseInt(value.slice(72, 80), 2) + "." + parseInt(value.slice(80, 88), 2);
-				DEBUG && console.log('[Moyu32Cube]', 'Hardware Version (?)', hardwareVersion);
-				DEBUG && console.log('[Moyu32Cube]', 'Software Version', softwareVersion);
-				DEBUG && console.log('[Moyu32Cube]', 'Device Name', devName);
+				giikerutil.log('[Moyu32Cube]', 'Hardware Version (?)', hardwareVersion);
+				giikerutil.log('[Moyu32Cube]', 'Software Version', softwareVersion);
+				giikerutil.log('[Moyu32Cube]', 'Device Name', devName);
 			} else if (msgType == 163) { // state (facelets)
 				if (prevMoveCnt == -1) { // we only care about the initial cube state, ignore any other state messages
 					moveCnt = parseInt(value.slice(152, 160), 2);
@@ -1749,7 +1749,7 @@ var GiikerCube = execMain(function() {
 
 		function updateMoveTimes(locTime) {
 			var moveDiff = (moveCnt - prevMoveCnt) & 0xff;
-			DEBUG && moveDiff > 1 && console.log('[Moyu32Cube]', 'bluetooth event was lost, moveDiff = ' + moveDiff);
+			DEBUG && moveDiff > 1 && giikerutil.log('[Moyu32Cube]', 'bluetooth event was lost, moveDiff = ' + moveDiff);
 			prevMoveCnt = moveCnt;
 			if (moveDiff > prevMoves.length) {
 				moveDiff = prevMoves.length;
@@ -1759,7 +1759,7 @@ var GiikerCube = execMain(function() {
 				calcTs += timeOffs[i];
 			}
 			if (!deviceTime || Math.abs(locTime - calcTs) > 2000) {
-				DEBUG && console.log('[Moyu32Cube]', 'time adjust', locTime - calcTs, '@', locTime);
+				giikerutil.log('[Moyu32Cube]', 'time adjust', locTime - calcTs, '@', locTime);
 				deviceTime += locTime - calcTs;
 			}
 			for (var i = moveDiff - 1; i >= 0; i--) {
@@ -1770,7 +1770,7 @@ var GiikerCube = execMain(function() {
 				var tmp = curCubie;
 				curCubie = prevCubie;
 				prevCubie = tmp;
-				DEBUG && console.log('[Moyu32Cube] move', prevMoves[i], timeOffs[i]);
+				giikerutil.log('[Moyu32Cube] move', prevMoves[i], timeOffs[i]);
 			}
 			deviceTimeOffset = locTime - deviceTime;
 		}
@@ -1852,9 +1852,9 @@ var GiikerCube = execMain(function() {
 				var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
 				var prevMac = savedMacMap[_deviceName];
 				if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-					DEBUG && console.log('[qiyicube] mac matched');
+					giikerutil.log('[qiyicube] mac matched');
 				} else {
-					DEBUG && console.log('[qiyicube] mac updated');
+					giikerutil.log('[qiyicube] mac updated');
 					savedMacMap[_deviceName] = deviceMac;
 					kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
 				}
@@ -1916,7 +1916,7 @@ var GiikerCube = execMain(function() {
 					encMsg[i + j] = block[j];
 				}
 			}
-			DEBUG && console.log('[qiyicube]', 'send message to cube', msg, encMsg);
+			giikerutil.log('[qiyicube]', 'send message to cube', msg, encMsg);
 			return _chrct_cube.writeValue(new Uint8Array(encMsg).buffer);
 		}
 
@@ -1937,11 +1937,11 @@ var GiikerCube = execMain(function() {
 			}
 			for (var id of QIYI_CIC_LIST) {
 				if (mfData.has(id)) {
-					DEBUG && console.log('[qiyicube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
+					giikerutil.log('[qiyicube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
 					return mfData.get(id);
 				}
 			}
-			DEBUG && console.log('[qiyicube] Looks like this cube has new unknown CIC');
+			giikerutil.log('[qiyicube] Looks like this cube has new unknown CIC');
 		}
 
 		function waitForAdvs() {
@@ -1951,7 +1951,7 @@ var GiikerCube = execMain(function() {
 			var abortController = new AbortController();
 			return new Promise(function(resolve, reject) {
 				var onAdvEvent = function(event) {
-					DEBUG && console.log('[qiyicube] receive adv event', event);
+					giikerutil.log('[qiyicube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
 					if (dataView && dataView.byteLength >= 6) {
@@ -1977,12 +1977,12 @@ var GiikerCube = execMain(function() {
 		function init(device) {
 			clear();
 			_deviceName = device.name.trim();
-			DEBUG && console.log('[qiyicube]', 'start init device');
+			giikerutil.log('[qiyicube]', 'start init device');
 			return waitForAdvs().then(function (mac) {
-				DEBUG && console.log('[qiyicube] init, found cube bluetooth hardware MAC = ' + mac);
+				giikerutil.log('[qiyicube] init, found cube bluetooth hardware MAC = ' + mac);
 				deviceMac = mac;
 			}, function(err) {
-				DEBUG && console.log('[qiyicube] init, unable to automatically determine cube MAC, error code = ' + err);
+				giikerutil.log('[qiyicube] init, unable to automatically determine cube MAC, error code = ' + err);
 			}).then(function() {
 				return device.gatt.connect();
 			}).then(function(gatt) {
@@ -1990,12 +1990,12 @@ var GiikerCube = execMain(function() {
 				return gatt.getPrimaryService(SERVICE_UUID);
 			}).then(function(service) {
 				_service = service;
-				DEBUG && console.log('[qiyicube]', 'got primary service', SERVICE_UUID);
+				giikerutil.log('[qiyicube]', 'got primary service', SERVICE_UUID);
 				return _service.getCharacteristics();
 			}).then(function(chrcts) {
 				for (var i = 0; i < chrcts.length; i++) {
 					var chrct = chrcts[i];
-					DEBUG && console.log('[qiyicube]', 'init find chrct', chrct.uuid);
+					giikerutil.log('[qiyicube]', 'init find chrct', chrct.uuid);
 					if (matchUUID(chrct.uuid, CHRCT_UUID_CUBE)) {
 						_chrct_cube = chrct;
 					}
@@ -2011,12 +2011,12 @@ var GiikerCube = execMain(function() {
 
 		function onCubeEvent(event) {
 			var value = event.target.value;
-			DEBUGBL && console.log('[qiyicube]', 'Received read event', value, value.byteLength);
+			DEBUGBL && giikerutil.log('[qiyicube]', 'Received read event', value, value.byteLength);
 			var encMsg = [];
 			for (var i = 0; i < value.byteLength; i++) {
 				encMsg[i] = value.getUint8(i);
 			}
-			DEBUGBL && console.log('[qiyicube]', 'receive enc data', JSON.stringify(encMsg));
+			DEBUGBL && giikerutil.log('[qiyicube]', 'receive enc data', JSON.stringify(encMsg));
 			decoder = decoder || $.aes128(JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[0])));
 			var msg = [];
 			for (var i = 0; i < encMsg.length; i += 16) {
@@ -2026,10 +2026,10 @@ var GiikerCube = execMain(function() {
 					msg[i + j] = block[j];
 				}
 			}
-			DEBUGBL && console.log('[qiyicube]', 'decrypted msg', msg);
+			DEBUGBL && giikerutil.log('[qiyicube]', 'decrypted msg', msg);
 			msg = msg.slice(0, msg[1]);
 			if (msg.length < 3 || crc16modbus(msg) != 0) {
-				DEBUG && console.log('[qiyicube]', 'crc checked error');
+				giikerutil.log('[qiyicube]', 'crc checked error');
 				return;
 			}
 			parseCubeData(msg);
@@ -2044,7 +2044,7 @@ var GiikerCube = execMain(function() {
 		function parseCubeData(msg) {
 			var locTime = $.now();
 			if (msg[0] != 0xfe) {
-				DEBUG && console.log('[qiyicube]', 'error cube data', msg);
+				giikerutil.log('[qiyicube]', 'error cube data', msg);
 			}
 			var opcode = msg[2];
 			var ts = (msg[3] << 24 | msg[4] << 16 | msg[5] << 8 | msg[6]);
@@ -2075,7 +2075,7 @@ var GiikerCube = execMain(function() {
 					todoMoves.push([hisMv, hisTs]);
 				}
 				if (todoMoves.length > 1) {
-					DEBUG && console.log('[qiyicube]', 'miss history moves', JSON.stringify(todoMoves), lastTs);
+					giikerutil.log('[qiyicube]', 'miss history moves', JSON.stringify(todoMoves), lastTs);
 				}
 				var toCallback = [];
 				var curFacelet;
@@ -2094,7 +2094,7 @@ var GiikerCube = execMain(function() {
 				}
 				var newFacelet = parseFacelet(msg.slice(7, 34));
 				if (newFacelet != curFacelet) {
-					DEBUG && console.log('[qiyicube]', 'facelet', newFacelet);
+					giikerutil.log('[qiyicube]', 'facelet', newFacelet);
 					curCubie.fromFacelet(newFacelet);
 					callback(newFacelet, prevMoves, [Math.trunc(ts / 1.6), locTime], _deviceName);
 					var tmp = curCubie;
@@ -2122,7 +2122,7 @@ var GiikerCube = execMain(function() {
 				ret.push("LRDUFB".charAt(faceMsg[i >> 1] >> (i % 2 << 2) & 0xf));
 			}
 			ret = ret.join("");
-			// console.log('[qiyicube]', 'parsedFacelet', ret);
+			// giikerutil.log('[qiyicube]', 'parsedFacelet', ret);
 			return ret;
 		}
 
@@ -2178,7 +2178,7 @@ var GiikerCube = execMain(function() {
 		}
 
 		return chkAvail.then(function(available) {
-			DEBUG && console.log('[bluetooth]', 'is available', available);
+			giikerutil.log('[bluetooth]', 'is available', available);
 			if (!available) {
 				return Promise.reject(GIIKER_NOBLEMSG);
 			}
@@ -2210,7 +2210,7 @@ var GiikerCube = execMain(function() {
 				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
 			});
 		}).then(function(device) {
-			DEBUG && console.log('[bluetooth]', device);
+			giikerutil.log('[bluetooth]', device);
 			_device = device;
 			device.addEventListener('gattserverdisconnected', onDisconnect);
 			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube') || device.name.startsWith('Hi-')) {

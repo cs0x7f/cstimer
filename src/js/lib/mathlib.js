@@ -1459,7 +1459,8 @@ var mathlib = (function() {
 			.replace('%D', ('0' + date.getDate()).slice(-2))
 			.replace('%h', ('0' + date.getHours()).slice(-2))
 			.replace('%m', ('0' + date.getMinutes()).slice(-2))
-			.replace('%s', ('0' + date.getSeconds()).slice(-2));
+			.replace('%s', ('0' + date.getSeconds()).slice(-2))
+			.replace('%S', ('00' + date.getMilliseconds()).slice(-3));
 	}
 
 	var timeRe = /^\s*(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)\s*$/;

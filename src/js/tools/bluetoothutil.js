@@ -141,7 +141,8 @@ var scrHinter = execMain(function(CubieCube) {
 
 var giikerutil = execMain(function(CubieCube) {
 
-	var connectClick = $('<span></span>');
+	var connectClick = $('<span class="click"></span>');
+	var debugClick = $('<span class="click" style="font-family:iconfont;padding-left:0.5em;">\ue69d</span>');
 	var resetClick = $('<span>' + GIIKER_RESET + '</span>').addClass('click');
 	var algCubingClick = $('<a target="_blank">Raw(N/A)</a>').addClass('click');
 	var lastSolveClick = $('<a target="_blank">Pretty(N/A)</a>').addClass('click');
@@ -217,17 +218,18 @@ var giikerutil = execMain(function(CubieCube) {
 			statusDiv.css('font-size', '75%');
 		}
 		statusDiv.empty();
-		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick)));
+		statusDiv.append($('<tr>').append($('<td colspan=2>').append(connectClick, debugClick)));
 		if (GiikerCube.isConnected() && deviceName) {
 			statusDiv.append($('<tr>').append(batteryTd, slopeTd))
 				.append($('<tr>').append($('<td colspan=2>').append(resetClick.unbind('click').click(markSolved))))
 				.append($('<tr>').append($('<td>').append(algCubingClick),$('<td>').append(lastSolveClick)))
 				.append(canvasTd);
-			connectClick.html(deviceName).addClass('click').unbind('click').click(disconnect);
+			connectClick.html(deviceName).unbind('click').click(disconnect);
 			drawState();
 		} else {
-			connectClick.html(TOOLS_GIIKER + '<br>' + GIIKER_CONNECT).addClass('click').unbind('click').click(init);
+			connectClick.html(TOOLS_GIIKER + '<br>' + GIIKER_CONNECT).unbind('click').click(init);
 		}
+		debugClick.unbind('click').click(debugInfo.showDialog);
 	}
 
 	function execFunc(fdiv) {
@@ -670,6 +672,45 @@ var giikerutil = execMain(function(CubieCube) {
 		callback(curState, [], [null, $.now()]);
 	}
 
+	var debugInfo = (function() {
+		var msgs = [];
+		var isShow = false;
+		var debugText = $('<textarea style="width:100%;height:100%;" readonly>');
+
+		function closeCallback() {
+			isShow = false;
+		}
+
+		function showDialog() {
+			isShow = true;
+			debugText.val(msgs.join('\n'));
+			debugText[0].scrollTop = debugText[0].scrollHeight;
+			kernel.showDialog([debugText, closeCallback, closeCallback, closeCallback], 'share', 'Bluetooth Debug');
+		}
+
+		function appendLog() {
+			var tt = +new Date;
+			var msg = [];
+			for (var i = 0; i < arguments.length; i++) {
+				msg.push("" + arguments[i]);
+			}
+			msg = mathlib.time2str(tt / 1000, '[%Y-%M-%D %h:%m:%s.%S]') + ' ' + msg.join(', ');
+			DEBUG && console.log(msg);
+			msgs.push(msg);
+			if (msgs.length > 1000) {
+				msgs = msgs.slice(100);
+			}
+			if (isShow) {
+				debugText.val(msgs.join('\n'));
+				debugText[0].scrollTop = debugText[0].scrollHeight;
+			}
+		}
+		return {
+			showDialog: showDialog,
+			appendLog: appendLog
+		};
+	})();
+
 	$(function() {
 		kernel.regListener('giiker', 'scramble', procSignal);
 		kernel.regListener('giiker', 'scrambling', procSignal);
@@ -695,6 +736,7 @@ var giikerutil = execMain(function(CubieCube) {
 		reSync: reSync,
 		tsLinearFix: tsLinearFix,
 		updateBattery: updateBattery,
-		setLastSolve: setLastSolve
+		setLastSolve: setLastSolve,
+		log: debugInfo.appendLog
 	}
 }, [mathlib.CubieCube]);
