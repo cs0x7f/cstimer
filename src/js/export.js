@@ -141,11 +141,11 @@ var exportFunc = execMain(function() {
 		return id;
 	}
 
-	function uploadData(id) {
-		var slices = {};
-		var baseObj = {};
-		baseObj['properties'] = mathlib.str2obj(localStorage['properties']);
+	function getLocalDataSliced(id) {
 		return storage.exportAll().then(function(exportObj) {
+			var slices = {};
+			var baseObj = {};
+			baseObj['properties'] = mathlib.str2obj(localStorage['properties']);
 			for (var key in exportObj) {
 				baseObj[key] = [];
 				var times = exportObj[key];
@@ -156,32 +156,29 @@ var exportFunc = execMain(function() {
 					baseObj[key].push(sliceHash);
 				}
 			}
-		}).then(function() {
-			var tt = +new Date;
-			function uploadSlice(ids, datas) {
-				return new Promise(function(resolve, reject) {
-					$.post('https://cstimer.net/userdata2.php', {
-						'id': id,
-						'ids': ids.join(','),
-						'datas': datas.join(',')
-					}, function(val) {
-						if (val['retcode'] == 0) {
-							resolve(val);
-						} else {
-							reject(val);
-						}
-					}, 'json').error(reject);
-				});
+			if (id != undefined) {
+				slices[id] = LZString.compressToEncodedURIComponent(JSON.stringify(baseObj));
 			}
-			var ret = Promise.resolve();
-			var ids = [id];
-			var datas = [LZString.compressToEncodedURIComponent(JSON.stringify(baseObj))];
+			return slices;
+		}).catch(console.log);
+	}
+
+	function uploadData(id) {
+		return getLocalDataSliced(id).then(function(slices) {
+			var ids = [];
+			var datas = [];
 			//TODO check redaudant to reduce upload size
 			for (var key in slices) {
 				ids.push(key);
 				datas.push(slices[key]);
 			}
-			return ret.then(uploadSlice.bind(null, ids, datas));
+			return $.ppost('https://cstimer.net/userdata2.php', {
+				'id': id,
+				'ids': ids.join(','),
+				'datas': datas.join(',')
+			}, 'json').then(function(val) {
+				return val['retcode'] == 0 ? Promise.resolve() : Promise.reject();
+			});
 		});
 	}
 
@@ -223,107 +220,103 @@ var exportFunc = execMain(function() {
 		var rawText = target.html();
 		target.html('Check File List...');
 
-		var onerr = function() {
-			alert(EXPORT_ERROR);
-		};
-
-		var revert = function() {
-			target.html(rawText);
-		};
-
 		var cntCallback = function(val) {
 			var cnt = ~~val['data'];
 			if (cnt == 0) {
-				alert('No Data Found');
-				return revert();
+				return Promise.reject('No Data Found');
 			}
 			var idx = 1;
 			if (kernel.getProp('expp')) {
 				idx = promptWhichFile(val['files'] || mathlib.valuedArray(cnt, {}));
 				if (idx <= 0 || idx > cnt) {
-					return revert();
+					return Promise.reject('Invalid input');
 				}
 			}
 			target.html('Import Data...');
-			$.post('https://cstimer.net/userdata2.php', {
+			return $.ppost('https://cstimer.net/userdata2.php', {
 				'id': id,
 				'offset': idx - 1
-			}, dataCallback, 'json').error(onerr).always(revert);
+			}, 'json').then(dataCallback);
 		};
 
 		var dataCallback = function(val) {
 			var retcode = val['retcode'];
 			if (retcode == 404) {
-				alert(EXPORT_NODATA);
-				return revert();
+				return Promise.reject(EXPORT_NODATA);
 			} else if (retcode != 0) {
-				alert(EXPORT_ERROR);
-				return revert();
+				return Promise.reject('');
 			}
+
+			var metaObj = {};
 			var baseObj = {};
-			var ret = Promise.resolve();
-			function downloadSlice(keys, arrs) {
-				return new Promise(function(resolve, reject) {
-					$.post('https://cstimer.net/userdata2.php', {
+			var jobs = Promise.resolve(baseObj);
+			try {
+				var metaObj = JSON.parse(LZString.decompressFromEncodedURIComponent(val['data']));
+			} catch (err) {
+				DEBUG && console.log('[export] error', err);
+				return Promise.reject('');
+			}
+			var keys = [];
+			var arrs = [];
+			for (var key in metaObj) {
+				if (!key.startsWith('session') || metaObj[key].length == 0 || $.isArray(metaObj[key][0])) {
+					baseObj[key] = metaObj[key];
+					continue;
+				}
+				var times = [];
+				baseObj[key] = times;
+				for (var i = 0; i < metaObj[key].length; i++) {
+					keys.push('slice' + metaObj[key][i]);
+					arrs.push(times);
+				}
+			}
+			if (keys.length > 0) {
+				var localSlices = {};
+				jobs = jobs.then(function() {
+					return getLocalDataSliced();
+				}).then(function(slices) {
+					localSlices = slices;
+					var reqKeys = keys.filter(function(elem) { return !(elem in localSlices); });
+					if (reqKeys.length == 0) {
+						return {'retcode':0,'datas':{}};
+					}
+					return $.ppost('https://cstimer.net/userdata2.php', {
 						'id': id,
-						'ids': keys.join(',')
-					}, function(val) {
-						if (val['retcode'] == 0) {
-							resolve(val);
-						} else {
-							reject(val);
-						}
-					}, 'json').error(reject);
+						'ids': reqKeys.join(',')
+					}, 'json');
 				}).then(function(val) {
+					if (val['retcode'] != 0) {
+						return Promise.reject('retcode=' + val['retcode']);
+					}
 					var datas = [];
 					for (var key in val['datas']) {
 						datas[keys.indexOf(key)] = val['datas'][key];
 					};
 					for (var i = 0; i < keys.length; i++) {
+						datas[i] = datas[i] || localSlices[keys[i]];
 						if (datas[i] == undefined) {
-							console.log('error, incorrect data');
-							return Promise.reject();
+							return Promise.reject('error, incorrect data');
 						}
 						Array.prototype.push.apply(arrs[i], JSON.parse(LZString.decompressFromEncodedURIComponent(datas[i])));
 					}
+					return baseObj;
 				});
 			}
-			try {
-				var metaObj = JSON.parse(LZString.decompressFromEncodedURIComponent(val['data']));
-				//TODO compare with local data to skip some of downloads
-				var keys = [];
-				var arrs = [];
-				for (var key in metaObj) {
-					if (!key.startsWith('session') || metaObj[key].length == 0 || $.isArray(metaObj[key][0])) {
-						baseObj[key] = metaObj[key];
-						continue;
-					}
-					var times = [];
-					baseObj[key] = times;
-					for (var i = 0; i < metaObj[key].length; i++) {
-						keys.push('slice' + metaObj[key][i]);
-						arrs.push(times);
-					}
-				}
-				if (keys.length > 0) {
-					ret = ret.then(downloadSlice.bind(null, keys, arrs));
-				}
-				ret.then(loadData.bind(null, baseObj));
-			} catch (err) {
-				DEBUG && console.log('[export] error', err);
-				alert(EXPORT_ERROR);
-				revert();
-			}
+			return jobs.then(loadData);
 		};
 
+		var jobs = Promise.resolve({'data':1});
 		if (kernel.getProp('expp')) {
-			$.post('https://cstimer.net/userdata2.php', {
+			jobs = $.ppost('https://cstimer.net/userdata2.php', {
 				'id': id,
 				'cnt': 1
-			}, cntCallback, 'json').error(onerr).always(revert);
-		} else {
-			cntCallback({'data':1});
+			}, 'json');
 		}
+		return jobs.then(cntCallback).catch(function(msg) {
+			alert(EXPORT_ERROR + (msg ? ': ' + msg : ''));
+		}).then(function() {
+			target.html(rawText);
+		});
 	}
 
 	function downloadDataGGL() {

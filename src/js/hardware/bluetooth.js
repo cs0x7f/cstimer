@@ -1743,7 +1743,7 @@ var GiikerCube = execMain(function() {
 				if (!invalidMove) {
 					updateMoveTimes(locTime);
 				}
-			} else if (msgType == 171) { // gyro
+			// } else if (msgType == 171) { // gyro
 			}
 		}
 

@@ -221,6 +221,12 @@ ISCSTIMER && execMain(function() {
 		}
 	})();
 
+	$.ppost = function(url, data, dataType) {
+		return new Promise(function(resolve, reject) {
+			$.post(url, data, resolve, dataType).error(reject);
+		});
+	};
+
 	if ('serviceWorker' in navigator) {
 		$(function() {
 			navigator.serviceWorker.register('sw.js');
