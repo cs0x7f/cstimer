@@ -503,6 +503,7 @@ var giikerutil = execMain(function(CubieCube) {
 		if (info == 'disconnect') {
 			logohint.push(LGHINT_BTDISCON);
 			renderStatus();
+			kernel.pushSignal('scrfix', curScramble);
 			return typeof evtCallback == 'function' && evtCallback(info, event);
 		}
 	}
