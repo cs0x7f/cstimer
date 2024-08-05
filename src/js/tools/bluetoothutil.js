@@ -690,14 +690,13 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 
 		function appendLog() {
-			var tt = +new Date;
-			var msg = [];
+			var ts = new Date().toISOString();
+			var msg = ['[' + ts + ']'];
 			for (var i = 0; i < arguments.length; i++) {
-				msg.push("" + arguments[i]);
+				msg.push(String(arguments[i]));
 			}
-			msg = mathlib.time2str(tt / 1000, '[%Y-%M-%D %h:%m:%s.%S]') + ' ' + msg.join(', ');
-			DEBUG && console.log(msg);
-			msgs.push(msg);
+			DEBUG && console.log.apply(null, [].concat([ts], Array.from(arguments)));
+			msgs.push(msg.join(' '));
 			if (msgs.length > 1000) {
 				msgs = msgs.slice(100);
 			}

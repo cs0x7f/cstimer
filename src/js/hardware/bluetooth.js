@@ -894,6 +894,7 @@ var GiikerCube = execMain(function() {
 			req[3] = 0;
 			req[4] = numberOfMoves;
 			req[5] = 0;
+			giikerutil.log('[gancube]', 'v3 requesting move history', prevMoveCnt, startMoveCnt, numberOfMoves);
 			// We can safely suppress and ignore possible GATT write errors, v3requestMoveHistory command is automatically retried on each move event if needed
 			return v3sendRequest(req).catch($.noop);
 		}
@@ -922,7 +923,8 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[gancube]', 'v3 move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
 				}
 			}
-			if (moveBuffer.length > 32) { // Something wrong, moves are not evicted from buffer, force cube disconnection
+			if (moveBuffer.length > 16) {
+				giikerutil.log('[gancube]', 'v3 something wrong, moves are not evicted from buffer, force cube disconnection', prevMoveCnt, JSON.stringify(moveBuffer));
 				onDisconnect();
 			}
 		}
@@ -1000,9 +1002,9 @@ var GiikerCube = execMain(function() {
 				giikerutil.log('[gancube]', 'v3 facelets event state parsed', latestFacelet);
 				initCubeState();
 			} else if (mode == 6) { // move history
-				giikerutil.log('[gancube]', 'v3 received move history event', value);
 				var startMoveCnt = parseInt(value.slice(24, 32), 2);
 				var numberOfMoves = (len - 1) * 2;
+				giikerutil.log('[gancube]', 'v3 received move history event', startMoveCnt, numberOfMoves, value);
 				for (var i = 0; i < numberOfMoves; i++) {
 					var axis = parseInt(value.slice(32 + 4 * i, 35 + 4 * i), 2);
 					var pow = parseInt(value.slice(35 + 4 * i, 36 + 4 * i), 2);
@@ -2215,7 +2217,7 @@ var GiikerCube = execMain(function() {
 				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
 			});
 		}).then(function(device) {
-			giikerutil.log('[bluetooth]', device);
+			giikerutil.log('[bluetooth]', 'BLE device is selected, name=' + device.name, device);
 			_device = device;
 			device.addEventListener('gattserverdisconnected', onDisconnect);
 			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube') || device.name.startsWith('Hi-')) {
