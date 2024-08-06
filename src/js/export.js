@@ -199,13 +199,15 @@ var exportFunc = execMain(function() {
 		});
 	}
 
-	// files = [{size: xx, modifiedTime: xx}]
+	// files = [{nsolv: xx, size: xx, modifiedTime: xx}]
 	function promptWhichFile(files) {
 		var msg = EXPORT_WHICH.replace('%d', files.length);
 		var msgfmt = EXPORT_WHICH_ITEM;
 		var msgf = [msg];
 		for (var ff = 0; ff < files.length; ff++) {
-			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', ~~files[ff].size || 'N/A')
+			var nsolv = Math.max(0, ~~files[ff].nsolv);
+			var size = ~~files[ff].size;
+			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', nsolv || (size ? Math.ceil(size / 1024) + ' KB' : 'N/A'))
 				.replace('%t', new Date(files[ff].modifiedTime).toLocaleString()));
 		}
 		return ~~prompt(msgf.join('\n'), '1');
