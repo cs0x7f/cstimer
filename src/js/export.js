@@ -166,17 +166,35 @@ var exportFunc = execMain(function() {
 	function uploadData(id) {
 		return getLocalDataSliced(id).then(function(slices) {
 			var ids = [];
-			var datas = [];
-			//TODO check redaudant to reduce upload size
 			for (var key in slices) {
+				if (key == id) {
+					continue;
+				}
 				ids.push(key);
-				datas.push(slices[key]);
 			}
 			return $.ppost('https://cstimer.net/userdata2.php', {
 				'id': id,
-				'ids': ids.join(','),
-				'datas': datas.join(',')
+				'exists': ids.join(',')
 			}, 'json').then(function(val) {
+				if (val['retcode'] != 0) {
+					Promise.reject();
+				}
+				var exists = val['datas'];
+				var ids = [];
+				var datas = [];
+				for (var key in slices) {
+					if (exists.indexOf(key) != -1 && key != id) {
+						continue;
+					}
+					ids.push(key);
+					datas.push(slices[key]);
+				}
+				return $.ppost('https://cstimer.net/userdata2.php', {
+					'id': id,
+					'ids': ids.join(','),
+					'datas': datas.join(',')
+				}, 'json');
+			}).then(function(val) {
 				return val['retcode'] == 0 ? Promise.resolve() : Promise.reject();
 			});
 		});

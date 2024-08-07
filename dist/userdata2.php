@@ -44,11 +44,12 @@
 		}
 	} else if (isset($_POST['cnt'])) {
 		$sql = "SELECT `value_len` AS size,
+					`value_nsolv` AS nsolv,
 					unix_timestamp(`upload_time`) AS modifiedTime 
 				FROM (
-					SELECT `value_len`, `upload_time` FROM `export_data` WHERE `uid` = '$uid'
+					SELECT `value_len`, `value_nsolv`, `upload_time` FROM `export_data` WHERE `uid` = '$uid'
 					UNION ALL 
-					SELECT 0, `upload_time` FROM `export_data2` WHERE `uid` = '$uid'
+					SELECT 0, `value_nsolv`, `upload_time` FROM `export_data2` WHERE `uid` = '$uid'
 				) t1 ORDER BY `upload_time` DESC";
 		$ret = $db->query($sql);
 		if ($ret === false) {
@@ -103,6 +104,34 @@
 		} else {
 			echo '{"retcode":500,"reason":"db insert error"}';
 		}
+	} else if (isset($_POST['exists'])) {//EXISTS
+		if (!preg_match("/^[a-zA-Z0-9,]+$/", $_POST['exists'])) {
+			echo '{"retcode":400,"reason":"invalid ids"}';
+			exit(0);
+		}
+		$ids = explode(",", $_POST['exists'], 4096);
+		if (count($ids) >= 4096) {
+			echo '{"retcode":400,"reason":"invalid ids"}';
+			exit(0);
+		}
+		foreach ($ids as $id1) {
+			if (strlen($id1) >= 250 || strlen($id1) < 1) {
+				echo '{"retcode":400,"reason":"invalid ids"}';
+				exit(0);
+			}
+		}
+		$sql = "SELECT DISTINCT `uid` FROM `export_data2` WHERE `uid` in ('" . join("','", $ids) . "')";
+		$ret = $db->query($sql);
+		if ($ret === false) {
+			echo '{"retcode":500,"reason":"db select error"}';
+			exit(0);
+		}
+		$arr = array();
+		while($row = $ret->fetch_assoc()) {
+			$arr[] = $row['uid'];
+		}
+		error_log("[" . date("Y-m-d H:i:sO") . "] EXISTS $uid " . count($ids) . "\n", 3, CSTIMER_USERDATA_LOGFILE);
+		echo '{"retcode":0,"datas":' . json_encode($arr) . '}';
 	} else if (isset($_POST['ids'])) {//GETMUL
 		if (!preg_match("/^[a-zA-Z0-9,]+$/", $_POST['ids'])) {
 			echo '{"retcode":400,"reason":"invalid ids"}';
