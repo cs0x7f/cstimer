@@ -1239,7 +1239,7 @@ var scramble_444 = (function(Cnk, circle) {
 		var doneRaw = 1;
 		setPruning(Edge3Prun, 0, 0);
 		var bfsMoves = [1, 0, 2, 3, 5, 4, 6, 8, 7, 9, 10, 12, 11, 13, 14, 15, 16];
-		var start = performance.now();
+		var start = $.now();
 		while (done != 31006080) {
 			var inv = depth > 9;
 			var depm3 = depth % 3;
@@ -1307,7 +1307,7 @@ var scramble_444 = (function(Cnk, circle) {
 				}
 			}
 			++depth;
-			DEBUG && console.log('[scramble 444] edge3 pruning ', depth, done, performance.now() - start);
+			DEBUG && console.log('[scramble 444] edge3 pruning ', depth, done, $.now() - start);
 		}
 	}
 
@@ -1833,7 +1833,7 @@ var scramble_444 = (function(Cnk, circle) {
 	function $doSearch(obj) {
 		var MAX_LENGTH2, MAX_LENGTH3, ct, edge, eparity, fb, fbprun, index, length12, length123, p1SolsArr, prun, rl, rlprun, s2ct, s2rl, solcube, ud, udprun;
 		obj.solution = '';
-		var tt = performance.now();
+		var tt = $.now();
 		ud = $getsym(new Center1().fromCube(getCenter(obj.c), 0));
 		fb = $getsym(new Center1().fromCube(getCenter(obj.c), 1));
 		rl = $getsym(new Center1().fromCube(getCenter(obj.c), 2));
@@ -1851,8 +1851,8 @@ var scramble_444 = (function(Cnk, circle) {
 			}
 		}
 		p1SolsArr = obj.p1sols.array.slice();
-		var tt1 = performance.now() - tt;
-		DEBUG && console.log('[scramble 444] Phase 1 Done in', performance.now() - tt);
+		var tt1 = $.now() - tt;
+		DEBUG && console.log('[scramble 444] Phase 1 Done in', $.now() - tt);
 		p1SolsArr.sort(function(a, b) {
 			return a.value - b.value
 		});
@@ -1888,8 +1888,8 @@ var scramble_444 = (function(Cnk, circle) {
 		obj.arr2.sort(function(a, b) {
 			return a.value - b.value
 		});
-		DEBUG && console.log('[scramble 444] Phase 2 Done in', performance.now() - tt);
-		var tt2 = performance.now() - tt - tt1;
+		DEBUG && console.log('[scramble 444] Phase 2 Done in', $.now() - tt);
+		var tt2 = $.now() - tt - tt1;
 		index = 0;
 		MAX_LENGTH3 = 13;
 		do {
@@ -1920,8 +1920,8 @@ var scramble_444 = (function(Cnk, circle) {
 				++MAX_LENGTH3;
 		}
 		while (length123 == MAX_SEARCH_DEPTH);
-		DEBUG && console.log('[scramble 444] Phase 3 Done in', performance.now() - tt);
-		var tt3 = performance.now() - tt - tt1 - tt2;
+		DEBUG && console.log('[scramble 444] Phase 3 Done in', $.now() - tt);
+		var tt3 = $.now() - tt - tt1 - tt2;
 
 		solcube = new FullCube_4(obj.arr2[index]);
 		obj.length1 = solcube.length1;
@@ -1947,7 +1947,7 @@ var scramble_444 = (function(Cnk, circle) {
 			}
 		}
 		obj.solution = getMoveString(solcube);
-		DEBUG && console.log('[scramble 444] 3x3x3 Done in', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] 3x3x3 Done in', $.now() - tt);
 		DEBUG && console.log('[scramble 444] Phase depths: ', [obj.length1, obj.length2, obj.length3, length333, tt1, tt2, tt3]);
 		return [obj.length1, obj.length2, obj.length3, length333, tt1, tt2, tt3];
 	}
@@ -2316,7 +2316,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 	function init() {
 		init = nullMethod;
-		var tt = performance.now();
+		var tt = $.now();
 		DEBUG && console.log('[scramble 444] start initialization');
 		$clinit_Moves();
 		$clinit_Center1();
@@ -2325,28 +2325,28 @@ var scramble_444 = (function(Cnk, circle) {
 		$clinit_Edge3();
 		$clinit_CornerCube();
 		$clinit_FullCube_0();
-		DEBUG && console.log('[scramble 444] alloc tables', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] alloc tables', $.now() - tt);
 		initSymMeta();
-		DEBUG && console.log('[scramble 444] initSymMeta', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initSymMeta', $.now() - tt);
 		Center1Raw2Sym = createArray(735471);
 		initCenter1Sym2Raw();
-		DEBUG && console.log('[scramble 444] initCenter1Sym2Raw', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initCenter1Sym2Raw', $.now() - tt);
 		initCenter1MoveTable();
-		DEBUG && console.log('[scramble 444] initCenter1MoveTable', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initCenter1MoveTable', $.now() - tt);
 		Center1Raw2Sym = null;
 		initCenter1Prun();
-		DEBUG && console.log('[scramble 444] initCenter1Prun', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initCenter1Prun', $.now() - tt);
 
 		initCenter2();
-		DEBUG && console.log('[scramble 444] initCenter2', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initCenter2', $.now() - tt);
 		initCenter3();
-		DEBUG && console.log('[scramble 444] initCenter3', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initCenter3', $.now() - tt);
 		initEdge3MvRot();
-		DEBUG && console.log('[scramble 444] initEdge3MvRot', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initEdge3MvRot', $.now() - tt);
 		initEdge3Sym2Raw();
-		DEBUG && console.log('[scramble 444] initEdge3Sym2Raw', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initEdge3Sym2Raw', $.now() - tt);
 		initEdge3Prun();
-		DEBUG && console.log('[scramble 444] initEdge3Prun', performance.now() - tt);
+		DEBUG && console.log('[scramble 444] initEdge3Prun', $.now() - tt);
 		searcher = new Search_4();
 	}
 
@@ -2446,7 +2446,7 @@ var scramble_444 = (function(Cnk, circle) {
 			if (chk != 0) {
 				console.log('[scramble 444] State Check Error!', chk, facelet);
 			}
-			var tt = performance.now();
+			var tt = $.now();
 			var data = $doSearch(searcher);
 			for (var j = 0; j < data.length; j++) {
 				avgs[j] = (avgs[j] || 0) + data[j];

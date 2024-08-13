@@ -807,9 +807,9 @@ var grouplib = (function(rn) {
 
 	SubgroupSolver.prototype.DissectionSolve = function(perm, minl, maxl, permCtx, solCallback) {
 		permCtx = permCtx || {};
-		var tt = performance.now();
+		var tt = $.now();
 		this.initTables();
-		DEBUG && console.log('[Subgroup Solver] finished init tables, tt=', performance.now() - tt);
+		DEBUG && console.log('[Subgroup Solver] finished init tables, tt=', $.now() - tt);
 		if (this.sgsG.isMember(perm) < 0) {
 			console.log('[Subgroup Solver] NOT A MEMBER OF G');
 			return;
@@ -830,7 +830,7 @@ var grouplib = (function(rn) {
 			prunTable1 = prunTable2;
 			pidx = this.clen;
 		}
-		DEBUG && console.log('[Subgroup Solver] finish init searching, prun value:', prunTable1[0][pidx], 'tt=', performance.now() - tt);
+		DEBUG && console.log('[Subgroup Solver] finish init searching, prun value:', prunTable1[0][pidx], 'tt=', $.now() - tt);
 		for (var depth = Math.max(minl, prunTable1[0][pidx]); depth <= maxl; depth++) {
 			var s1tot = 0;
 			var s2tot = 0;
@@ -850,7 +850,7 @@ var grouplib = (function(rn) {
 					}
 					return solCallback ? solCallback(solution) : solution;
 				});
-				DEBUG && console.log('[Subgroup Solver] ida ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', performance.now() - tt);
+				DEBUG && console.log('[Subgroup Solver] ida ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', $.now() - tt);
 				if (ret) {
 					return ret;
 				}
@@ -953,7 +953,7 @@ var grouplib = (function(rn) {
 					break;
 				}
 			}
-			DEBUG && console.log('[Subgroup Solver] dis ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', performance.now() - tt);
+			DEBUG && console.log('[Subgroup Solver] dis ', s1tot + s2tot, 'node(s) checked at', depth, 'tt=', $.now() - tt);
 			if (ret) {
 				break;
 			}

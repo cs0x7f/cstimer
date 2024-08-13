@@ -280,7 +280,7 @@ var klmsolver = (function() {
 
 	function init() {
 		init = $.noop;
-		var tt = performance.now();
+		var tt = $.now();
 		createMoveCube();
 
 		function setTwst4(arr, idx) {
@@ -350,7 +350,7 @@ var klmsolver = (function() {
 		initPhase1();
 		initPhase2();
 		initPhase3();
-		DEBUG && console.log('[kilo] init finished, tt=', performance.now() - tt);
+		DEBUG && console.log('[kilo] init finished, tt=', $.now() - tt);
 	}
 
 	var Phase1Move = [];
