@@ -363,7 +363,7 @@ var GiikerCube = execMain(function() {
 
 		function getManufacturerDataBytes(mfData) {
 			if (mfData instanceof DataView) { // this is workaround for Bluefy browser
-				return mfData;
+				return new DataView(mfData.buffer.slice(2));
 			}
 			for (var id of GAN_CIC_LIST) {
 				if (mfData.has(id)) {
@@ -384,14 +384,16 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[gancube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 0; i < 6; i++) {
 							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
 						resolve(mac.join(':'));
+					} else {
+						reject(-3);
 					}
 				};
 				_device.addEventListener('advertisementreceived', onAdvEvent);
@@ -623,6 +625,7 @@ var GiikerCube = execMain(function() {
 		var deviceTimeOffset = 0;
 		var moveCnt = -1;
 		var prevMoveCnt = -1;
+		var prevMoveLocTime = null;
 		var movesFromLastCheck = 1000;
 		var batteryLevel = 100;
 
@@ -767,7 +770,6 @@ var GiikerCube = execMain(function() {
 
 		function parseV2Data(value) {
 			var locTime = $.now();
-			// giikerutil.log('[gancube]', 'dec v2', value);
 			value = decode(value);
 			for (var i = 0; i < value.length; i++) {
 				value[i] = (value[i] + 256).toString(2).slice(1);
@@ -799,6 +801,8 @@ var GiikerCube = execMain(function() {
 				}
 			} else if (mode == 4) { // cube state
 				giikerutil.log('[gancube]', 'v2 received facelets event', value);
+				if (prevMoveCnt != -1)
+					return;
 				moveCnt = parseInt(value.slice(4, 12), 2);
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
@@ -825,9 +829,7 @@ var GiikerCube = execMain(function() {
 				}
 				latestFacelet = cc.toFaceCube();
 				giikerutil.log('[gancube]', 'v2 facelets event state parsed', latestFacelet);
-				if (prevMoveCnt == -1) {
-					initCubeState();
-				}
+				initCubeState();
 			} else if (mode == 5) { // hardware info
 				giikerutil.log('[gancube]', 'v2 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(8, 16), 2) + "." + parseInt(value.slice(16, 24), 2);
@@ -851,15 +853,17 @@ var GiikerCube = execMain(function() {
 
 		$.parseV2Data = parseV2Data; // for debug
 
-		// Check if circular move number (modulo 256) fits into (start,end) range exclusive.
-		function isMoveNumberInRange(start, end, moveCnt) {
-			return ((end - start) & 0xFF) > ((moveCnt - start) & 0xFF)
-				&& ((start - moveCnt) & 0xFF) > 0
-				&& ((end - moveCnt) & 0xFF) > 0;
+		// Check if circular move number (modulo 256) fits into (start,end) open range.
+		// closedStart / closedEnd - set them to true if checked range end should be closed.
+		function isMoveNumberInRange(start, end, moveCnt, closedStart, closedEnd) {
+			return ((end - start) & 0xFF) >= ((moveCnt - start) & 0xFF)
+				&& (closedStart || ((start - moveCnt) & 0xFF) > 0)
+				&& (closedEnd || ((end - moveCnt) & 0xFF) > 0);
 		}
 
 		function v3InjectLostMoveToBuffer(move) {
 			if (moveBuffer.length > 0) {
+				giikerutil.log('[gancube]', 'v3 trying to inject lost move', prevMoveCnt, moveBuffer[0][0], move);
 				// Skip if move with the same number already in the buffer
 				if (moveBuffer.some(function (e) { return e[0] == move[0] }))
 					return;
@@ -868,9 +872,14 @@ var GiikerCube = execMain(function() {
 					return;
 				// Lost moves should be injected in reverse order, so just put suitable move on buffer head
 				if (move[0] == ((moveBuffer[0][0] - 1) & 0xFF)) {
-					move[2] = moveBuffer[0][2] - 10; // Set lost move device hardware timestamp near to next move event
 					moveBuffer.unshift(move);
 					giikerutil.log('[gancube]', 'v3 lost move recovered', move[0], move[1]);
+				}
+			} else {
+				giikerutil.log('[gancube]', 'v3 trying to inject lost move (empty buffer)', prevMoveCnt, moveCnt, move);
+				if (isMoveNumberInRange(prevMoveCnt, moveCnt, move[0], false, true)) {
+					moveBuffer.unshift(move);
+					giikerutil.log('[gancube]', 'v3 lost move recovered (empty buffer)', move[0], move[1]);
 				}
 			}
 		}
@@ -892,6 +901,7 @@ var GiikerCube = execMain(function() {
 			req[3] = 0;
 			req[4] = numberOfMoves;
 			req[5] = 0;
+			giikerutil.log('[gancube]', 'v3 requesting move history', prevMoveCnt, startMoveCnt, numberOfMoves);
 			// We can safely suppress and ignore possible GATT write errors, v3requestMoveHistory command is automatically retried on each move event if needed
 			return v3sendRequest(req).catch($.noop);
 		}
@@ -920,7 +930,8 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[gancube]', 'v3 move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
 				}
 			}
-			if (moveBuffer.length > 32) { // Something wrong, moves are not evicted from buffer, force cube disconnection
+			if (moveBuffer.length > 16) {
+				giikerutil.log('[gancube]', 'v3 something wrong, moves are not evicted from buffer, force cube disconnection', prevMoveCnt, JSON.stringify(moveBuffer));
 				onDisconnect();
 			}
 		}
@@ -935,13 +946,11 @@ var GiikerCube = execMain(function() {
 
 		function parseV3Data(value) {
 			var locTime = $.now();
-			giikerutil.log('[gancube]', 'v3 raw message', value);
 			value = decode(value);
 			for (var i = 0; i < value.length; i++) {
 				value[i] = (value[i] + 256).toString(2).slice(1);
 			}
 			value = value.join('');
-			giikerutil.log('[gancube]', 'v3 decrypted message', value);
 			var magic = parseInt(value.slice(0, 8), 2);
 			var mode = parseInt(value.slice(8, 16), 2);
 			var len = parseInt(value.slice(16, 24), 2);
@@ -950,8 +959,9 @@ var GiikerCube = execMain(function() {
 				return;
 			}
 			if (mode == 1) { // cube move
-				giikerutil.log('[gancube]', 'v3 received move event', value);
+				prevMoveLocTime = locTime;
 				moveCnt = parseInt(value.slice(64, 72) + value.slice(56, 64), 2);
+				giikerutil.log('[gancube]', 'v3 received move event', prevMoveCnt, moveCnt, value);
 				if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
 					return;
 				}
@@ -967,8 +977,20 @@ var GiikerCube = execMain(function() {
 				giikerutil.log('[gancube]', 'v3 move placed to fifo buffer', moveCnt, move, ts, locTime);
 				v3EvictMoveBuffer(true);
 			} else if (mode == 2) {  // cube state
-				giikerutil.log('[gancube]', 'v3 received facelets event', value);
 				moveCnt = parseInt(value.slice(32, 40) + value.slice(24, 32), 2);
+				if (prevMoveCnt != -1) {
+					if (prevMoveLocTime != null && locTime - prevMoveLocTime > 500) { // Debounce the facelet event if there are active cube moves
+						var diff = (moveCnt - prevMoveCnt) & 0xFF;
+						if (diff > 0) {
+							giikerutil.log('[gancube]', 'v3 cube state is ahead of the last recorded move', prevMoveCnt, moveCnt, diff);
+							if (prevMoveCnt != 255) { // Avoid iCarry2 firmware bug with facelets state event at 255 move counter
+								v3requestMoveHistory((moveCnt + 1) & 0xFF, diff);
+							}
+						}
+					}
+					return;
+				}
+				giikerutil.log('[gancube]', 'v3 processing facelets event', prevMoveCnt, moveCnt, value);
 				var cc = new mathlib.CubieCube();
 				var echk = 0;
 				var cchk = 0xf00;
@@ -994,13 +1016,11 @@ var GiikerCube = execMain(function() {
 				}
 				latestFacelet = cc.toFaceCube();
 				giikerutil.log('[gancube]', 'v3 facelets event state parsed', latestFacelet);
-				if (prevMoveCnt == -1) {
-					initCubeState();
-				}
+				initCubeState();
 			} else if (mode == 6) { // move history
-				giikerutil.log('[gancube]', 'v3 received move history event', value);
 				var startMoveCnt = parseInt(value.slice(24, 32), 2);
 				var numberOfMoves = (len - 1) * 2;
+				giikerutil.log('[gancube]', 'v3 received move history event', startMoveCnt, numberOfMoves, value);
 				for (var i = 0; i < numberOfMoves; i++) {
 					var axis = parseInt(value.slice(32 + 4 * i, 35 + 4 * i), 2);
 					var pow = parseInt(value.slice(35 + 4 * i, 36 + 4 * i), 2);
@@ -1060,6 +1080,7 @@ var GiikerCube = execMain(function() {
 			deviceTimeOffset = 0;
 			moveCnt = -1;
 			prevMoveCnt = -1;
+			prevMoveLocTime = null;
 			movesFromLastCheck = 1000;
 			batteryLevel = 100;
 			return result;
@@ -1577,14 +1598,16 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[Moyu32Cube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 0; i < 6; i++) {
 							mac.push((dataView.getUint8(dataView.byteLength - i - 1) + 0x100).toString(16).slice(1));
 						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
 						resolve(mac.join(':'));
+					} else {
+						reject(-3);
 					}
 				};
 				_device.addEventListener('advertisementreceived', onAdvEvent);
@@ -1954,14 +1977,16 @@ var GiikerCube = execMain(function() {
 					giikerutil.log('[qiyicube] receive adv event', event);
 					var mfData = event.manufacturerData;
 					var dataView = getManufacturerDataBytes(mfData);
+					_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
 					if (dataView && dataView.byteLength >= 6) {
 						var mac = [];
 						for (var i = 5; i >= 0; i--) {
 							mac.push((dataView.getUint8(i) + 0x100).toString(16).slice(1));
 						}
-						_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-						abortController.abort();
 						resolve(mac.join(':'));
+					} else {
+						reject(-3);
 					}
 				};
 				_device.addEventListener('advertisementreceived', onAdvEvent);
@@ -2209,7 +2234,7 @@ var GiikerCube = execMain(function() {
 				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
 			});
 		}).then(function(device) {
-			giikerutil.log('[bluetooth]', device);
+			giikerutil.log('[bluetooth]', 'BLE device is selected, name=' + device.name, device);
 			_device = device;
 			device.addEventListener('gattserverdisconnected', onDisconnect);
 			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube') || device.name.startsWith('Hi-')) {

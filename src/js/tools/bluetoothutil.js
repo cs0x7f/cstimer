@@ -434,10 +434,30 @@ var giikerutil = execMain(function(CubieCube) {
 		return [slope, intercept, r2, s_slope];
 	}
 
+	function tsApplyFixes(moveTsList) {
+		// Fix device timestamps values for lost and recovered cube moves.
+		// This is needed at least for iCarry2 (GAN protocol v3). Due to protocol
+		// limitations recovered moves does not have device and local timestamps.
+		if (moveTsList.length >= 2) {
+			// 1st pass - tail-to-head, align lost move device timestamps to next move -50ms
+			for (var i = moveTsList.length - 1; i > 0; i--) {
+				if (moveTsList[i][1] != null && moveTsList[i - 1][1] == null)
+					moveTsList[i - 1][1] = moveTsList[i][1] - 50;
+			}
+			// 2nd pass - head-to-tail, align lost move device timestamp to prev move +50ms
+			for (var i = 0; i < moveTsList.length - 1; i++) {
+				if (moveTsList[i][1] != null && moveTsList[i + 1][1] == null)
+					moveTsList[i + 1][1] = moveTsList[i][1] + 50;
+			}
+		}
+		return moveTsList;
+	}
+
 	function tsLinearFix(moveTsList, startTime, endTime) {
 		if (moveTsList.length == 0) {
 			return moveTsList;
 		}
+		moveTsList = tsApplyFixes(moveTsList);
 		var param = tsLinearFit(moveTsList);
 		var slope = param[0];
 		var intercept = param[1];
@@ -503,6 +523,7 @@ var giikerutil = execMain(function(CubieCube) {
 		if (info == 'disconnect') {
 			logohint.push(LGHINT_BTDISCON);
 			renderStatus();
+			kernel.pushSignal('scrfix', curScramble);
 			return typeof evtCallback == 'function' && evtCallback(info, event);
 		}
 	}
@@ -689,14 +710,13 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 
 		function appendLog() {
-			var tt = +new Date;
-			var msg = [];
+			var ts = new Date().toISOString();
+			var msg = ['[' + ts + ']'];
 			for (var i = 0; i < arguments.length; i++) {
-				msg.push("" + arguments[i]);
+				msg.push(String(arguments[i]));
 			}
-			msg = mathlib.time2str(tt / 1000, '[%Y-%M-%D %h:%m:%s.%S]') + ' ' + msg.join(', ');
-			DEBUG && console.log(msg);
-			msgs.push(msg);
+			DEBUG && console.log.apply(null, [].concat([ts], Array.from(arguments)));
+			msgs.push(msg.join(' '));
 			if (msgs.length > 1000) {
 				msgs = msgs.slice(100);
 			}
