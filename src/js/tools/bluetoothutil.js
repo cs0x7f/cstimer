@@ -73,7 +73,7 @@ var scrHinter = execMain(function(CubieCube) {
 
 	function checkState(state) {
 		if (!rawScrTxt || !GiikerCube.isConnected()
-				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0) {
+				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0 || timer.getStatus() > 0) {
 			return;
 		}
 		var toMoveFix = null;
