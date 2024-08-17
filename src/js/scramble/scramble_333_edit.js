@@ -915,22 +915,32 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		return getAnyScramble(cases[0], cases[1], cases[2], cases[3], neut);
 	}
 
-	var subsetSGSs = {};
+	var subsetSolvs = {};
 
 	function subsetScramble(moves) {
 		var key = moves.join('|');
-		if (!subsetSGSs[key]) {
+		if (!subsetSolvs[key]) {
 			var gens = [];
 			for (var m = 0; m < moves.length; m++) {
 				var cc = new mathlib.CubieCube();
 				cc.selfMoveStr(moves[m]);
 				gens.push(cc.toPerm());
 			}
-			subsetSGSs[key] = new grouplib.SchreierSims(gens);
+			subsetSolvs[key] = new grouplib.SubgroupSolver(gens);
+			subsetSolvs[key].initTables();
 		}
+		var solv = subsetSolvs[key];
 		var solution = "";
+		if (solv.sgsG.size() < 1e8) {
+			do {
+				var state = subsetSolvs[key].sgsG.rndElem();
+				var sol = subsetSolvs[key].DissectionSolve(state, 0, 20);
+				solution = sol.map((mvpow) => moves[mvpow[0]] + ["", "2", "'"][mvpow[1] - 1]).join(" ");
+			} while (solution.length <= 2);
+			return solution.replace(/ +/g, ' ');
+		}
 		do {
-			var state = subsetSGSs[key].rndElem();
+			var state = subsetSolvs[key].sgsG.rndElem();
 			for (var i = 0; i < state.length; i++) {
 				state[i] = "URFDLB".charAt(~~(state[i] / 9));
 			}
@@ -1074,11 +1084,11 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		('2gll', get2GLLScramble)
 		('sbrx', getSBRouxScramble)
 		('half', subsetScramble.bind(null, ["U2", "R2", "F2", "D2", "L2", "B2"]))
-		('333drud', subsetScramble.bind(null, ["U ", "R2", "F2", "D ", "L2", "B2"]))
-		('3gen_F', subsetScramble.bind(null, ["U ", "R ", "F "]))
-		('3gen_L', subsetScramble.bind(null, ["U ", "R ", "L "]))
-		('2gen', subsetScramble.bind(null, ["U ", "R "]))
-		('2genl', subsetScramble.bind(null, ["U ", "L "]))
+		('333drud', subsetScramble.bind(null, ["U", "R2", "F2", "D", "L2", "B2"]))
+		('3gen_F', subsetScramble.bind(null, ["U", "R", "F"]))
+		('3gen_L', subsetScramble.bind(null, ["U", "R", "L"]))
+		('2gen', subsetScramble.bind(null, ["U", "R"]))
+		('2genl', subsetScramble.bind(null, ["U", "L"]))
 		('mt3qb', getMehta3QBScramble)
 		('mteole', getMehtaEOLEScramble)
 		('mttdr', getMehtaTDRScramble)
