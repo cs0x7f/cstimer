@@ -983,8 +983,12 @@ var GiikerCube = execMain(function() {
 						var diff = (moveCnt - prevMoveCnt) & 0xFF;
 						if (diff > 0) {
 							giikerutil.log('[gancube]', 'v3 cube state is ahead of the last recorded move', prevMoveCnt, moveCnt, diff);
-							if (prevMoveCnt != 255) { // Avoid iCarry2 firmware bug with facelets state event at 255 move counter
-								v3requestMoveHistory((moveCnt + 1) & 0xFF, diff);
+							// Constraint to avoid iCarry2 firmware bug with facelets state event at 255 move counter.
+							// When receiving facelets state with 0 move counter we can't be sure that
+							// move with 0 counter is fulfilled, and wrong move from previous loop may be restored instead.
+							if (moveCnt != 0) {
+								var startMoveCnt = moveBuffer[0] ? moveBuffer[0][0] : (moveCnt + 1) & 0xFF;
+								v3requestMoveHistory(startMoveCnt, diff + 1);
 							}
 						}
 					}
