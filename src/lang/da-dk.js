@@ -225,6 +225,7 @@ var scrdata = [
 		['VLS', "vls", 0],
 		['Krydset løst', "f2l", 0],
 		['EOLine', "eoline", 0],
+		['EO Cross', "eocross", 0],
 		['Nemt kryds', "easyc", 3],
 		['Let xcross', "easyxc", 4]
 	]],

@@ -225,6 +225,7 @@ var scrdata = [
 		['VLS', "vls", 0],
 		['хрест зібрано', "f2l", 0],
 		['EOLine', "eoline", 0],
+		['EO Cross', "eocross", 0],
 		['легкий хрест', "easyc", 3],
 		['easy xcross', "easyxc", 4]
 	]],

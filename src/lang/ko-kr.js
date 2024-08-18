@@ -225,6 +225,7 @@ var scrdata = [
 		['VLS', "vls", 0],
 		['맨 위층+홈통 4개', "f2l", 0],
 		['EOLine', "eoline", 0],
+		['EO Cross', "eocross", 0],
 		['간단한 십자', "easyc", 3],
 		['easy xcross', "easyxc", 4]
 	]],

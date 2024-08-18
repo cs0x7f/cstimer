@@ -225,6 +225,7 @@ var scrdata = [
 		['VLS', "vls", 0],
 		['đã giải cross', "f2l", 0],
 		['Edge Orientation Line', "eoline", 0],
+		['EO Cross', "eocross", 0],
 		['solve dởm', "easyc", 3],
 		['Xcross dễ', "easyxc", 4]
 	]],

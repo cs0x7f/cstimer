@@ -845,6 +845,10 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		return getAnyScramble(0xffff7f5fffff, 0x000000000000, 0xffffffff, 0xffffffff, neut);
 	}
 
+	function getEOCrossScramble(type, length, cases, neut) {
+		return getAnyScramble(0xffff7654ffff, 0x000000000000, 0xffffffff, 0xffffffff, neut);
+	}
+
 	var daufsuff = [[], [Dx1], [Dx2], [Dx3]];
 	var daufrot = ["", "y", "y2", "y'"];
 	function getMehta3QBScramble() {
@@ -1097,7 +1101,8 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		('mtcdrll', getMehtaCDRLLScramble)
 		('easyc', getEasyCrossScramble)
 		('easyxc', getEasyXCrossScramble)
-		('eoline', getEOLineScramble);
+		('eoline', getEOLineScramble)
+		('eocross', getEOCrossScramble);
 
 	return {
 		/* mark2 interface */

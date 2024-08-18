@@ -225,6 +225,7 @@ var scrdata = [
 		['VLS', "vls", 0],
 		['預先解好十字', "f2l", 0],
 		['EOLine', "eoline", 0],
+		['EO Cross', "eocross", 0],
 		['簡單的十字', "easyc", 3],
 		['簡單的xcross', "easyxc", 4]
 	]],

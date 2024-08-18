@@ -225,6 +225,7 @@ var scrdata = [
 		['VLS', "vls", 0],
 		['kereszt megoldva', "f2l", 0],
 		['EOLine', "eoline", 0],
+		['EO Cross', "eocross", 0],
 		['könnyű kereszt', "easyc", 3],
 		['easy xcross', "easyxc", 4]
 	]],
