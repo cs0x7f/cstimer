@@ -234,6 +234,13 @@ var GiikerCube = execMain(function() {
 		var CHRCT_UUID_V3READ = '8653000b-43e6-47b7-9cb0-5fc21d4ae340';
 		var CHRCT_UUID_V3WRITE = '8653000c-43e6-47b7-9cb0-5fc21d4ae340';
 
+		var _service_v4data;
+		var _chrct_v4read;
+		var _chrct_v4write;
+		var SERVICE_UUID_V4DATA = '00000010-0000-fff7-fff6-fff5fff4fff0';
+		var CHRCT_UUID_V4READ = '0000fff6-0000-1000-8000-00805f9b34fb';
+		var CHRCT_UUID_V4WRITE = '0000fff5-0000-1000-8000-00805f9b34fb';
+
 		// List of Company Identifier Codes, fill with all values range [0x0001, 0xFF01] possible for GAN cubes
 		var GAN_CIC_LIST = mathlib.valuedArray(256, function (i) { return (i << 8) | 0x01 });
 
@@ -363,12 +370,12 @@ var GiikerCube = execMain(function() {
 
 		function getManufacturerDataBytes(mfData) {
 			if (mfData instanceof DataView) { // this is workaround for Bluefy browser
-				return new DataView(mfData.buffer.slice(2));
+				return new DataView(mfData.buffer.slice(2, 11));
 			}
 			for (var id of GAN_CIC_LIST) {
 				if (mfData.has(id)) {
 					giikerutil.log('[gancube] found Manufacturer Data under CIC = 0x' + id.toString(16).padStart(4, '0'));
-					return mfData.get(id);
+					return new DataView(mfData.get(id).buffer.slice(0, 9));
 				}
 			}
 			giikerutil.log('[gancube] Looks like this cube has new unknown CIC');
@@ -477,10 +484,6 @@ var GiikerCube = execMain(function() {
 			return v2sendSimpleRequest(5);
 		}
 
-		function v2requestReset() {
-			return v2sendRequest([10, 5, 57, 119, 0, 0, 1, 35, 69, 103, 137, 171, 0, 0, 0, 0, 0, 0, 0, 0]);
-		}
-
 		function v2init(ver) {
 			giikerutil.log('[gancube] v2init start');
 			keyCheck = 0;
@@ -576,6 +579,72 @@ var GiikerCube = execMain(function() {
 			});
 		}
 
+		function v4sendRequest(req) {
+			if (!_chrct_v4write) {
+				giikerutil.log('[gancube] v4sendRequest cannot find v4write chrct');
+				return;
+			}
+			var encodedReq = encode(req.slice());
+			giikerutil.log('[gancube] v4sendRequest', req, encodedReq);
+			return _chrct_v4write.writeValue(new Uint8Array(encodedReq).buffer);
+		}
+
+		function v4requestFacelets() {
+			var req = mathlib.valuedArray(20, 0);
+			req[0] = 0xDD;
+			req[1] = 0x04;
+			req[3] = 0xED;
+			return v4sendRequest(req);
+		}
+
+		function v4requestBattery() {
+			var req = mathlib.valuedArray(20, 0);
+			req[0] = 0xDD;
+			req[1] = 0x04;
+			req[3] = 0xEF;
+			return v4sendRequest(req);
+		}
+
+		function v4requestHardwareInfo() {
+			var req = mathlib.valuedArray(20, 0);
+			req[0] = 0xDF;
+			req[1] = 0x03;
+			return v4sendRequest(req);
+		}
+
+		function v4init() {
+			giikerutil.log('[gancube] v4init start');
+			keyCheck = 0;
+			v2initKey(true, false, 0);
+			return _service_v4data.getCharacteristics().then(function(chrcts) {
+				giikerutil.log('[gancube] v4init find chrcts', chrcts);
+				for (var i = 0; i < chrcts.length; i++) {
+					var chrct = chrcts[i]
+					giikerutil.log('[gancube] v4init find chrct', chrct.uuid);
+					if (matchUUID(chrct.uuid, CHRCT_UUID_V4READ)) {
+						_chrct_v4read = chrct;
+					} else if (matchUUID(chrct.uuid, CHRCT_UUID_V4WRITE)) {
+						_chrct_v4write = chrct;
+					}
+				}
+				if (!_chrct_v4read) {
+					giikerutil.log('[gancube] v4init cannot find v4read chrct');
+				}
+			}).then(function() {
+				giikerutil.log('[gancube] v4init v4read start notifications');
+				return _chrct_v4read.startNotifications();
+			}).then(function() {
+				giikerutil.log('[gancube] v4init v4read notification started');
+				return _chrct_v4read.addEventListener('characteristicvaluechanged', onStateChangedV4);
+			}).then(function() {
+				return v4requestHardwareInfo();
+			}).then(function() {
+				return v4requestFacelets();
+			}).then(function() {
+				return v4requestBattery();
+			});
+		}
+
 		function init(device) {
 			clear();
 			deviceName = device.name;
@@ -602,12 +671,16 @@ var GiikerCube = execMain(function() {
 						_service_v2data = service;
 					} else if (matchUUID(service.uuid, SERVICE_UUID_V3DATA)) {
 						_service_v3data = service;
+					} else if (matchUUID(service.uuid, SERVICE_UUID_V4DATA)) {
+						_service_v4data = service;
 					}
 				}
 				if (_service_v2data) {
 					return v2init((deviceName || '').startsWith('AiCube') ? 1 : 0);
 				} else if (_service_v3data) {
 					return v3init();
+				} else if (_service_v4data) {
+					return v4init();
 				} else if (_service_data && _service_meta) {
 					return v1init();
 				}
@@ -627,7 +700,7 @@ var GiikerCube = execMain(function() {
 		var prevMoveCnt = -1;
 		var prevMoveLocTime = null;
 		var movesFromLastCheck = 1000;
-		var batteryLevel = 100;
+		var batteryLevel = 0;
 
 		function initCubeState() {
 			var locTime = $.now();
@@ -746,7 +819,7 @@ var GiikerCube = execMain(function() {
 			if (!_gatt) {
 				return Promise.reject("Bluetooth Cube is not connected");
 			}
-			if (_service_v2data || _service_v3data) {
+			if (_service_v2data || _service_v3data || _service_v4data) {
 				return Promise.resolve([batteryLevel, deviceName + '*']);
 			} else if (_chrct_f7) {
 				return _chrct_f7.readValue().then(function(value) {
@@ -861,9 +934,9 @@ var GiikerCube = execMain(function() {
 				&& (closedEnd || ((end - moveCnt) & 0xFF) > 0);
 		}
 
-		function v3InjectLostMoveToBuffer(move) {
+		function injectLostMoveToBuffer(move) {
 			if (moveBuffer.length > 0) {
-				giikerutil.log('[gancube]', 'v3 trying to inject lost move', prevMoveCnt, moveBuffer[0][0], move);
+				giikerutil.log('[gancube]', 'trying to inject lost move', prevMoveCnt, moveBuffer[0][0], move);
 				// Skip if move with the same number already in the buffer
 				if (moveBuffer.some(function (e) { return e[0] == move[0] }))
 					return;
@@ -873,19 +946,18 @@ var GiikerCube = execMain(function() {
 				// Lost moves should be injected in reverse order, so just put suitable move on buffer head
 				if (move[0] == ((moveBuffer[0][0] - 1) & 0xFF)) {
 					moveBuffer.unshift(move);
-					giikerutil.log('[gancube]', 'v3 lost move recovered', move[0], move[1]);
+					giikerutil.log('[gancube]', 'lost move recovered', move[0], move[1]);
 				}
 			} else {
-				giikerutil.log('[gancube]', 'v3 trying to inject lost move (empty buffer)', prevMoveCnt, moveCnt, move);
+				giikerutil.log('[gancube]', 'trying to inject lost move (empty buffer)', prevMoveCnt, moveCnt, move);
 				if (isMoveNumberInRange(prevMoveCnt, moveCnt, move[0], false, true)) {
 					moveBuffer.unshift(move);
-					giikerutil.log('[gancube]', 'v3 lost move recovered (empty buffer)', move[0], move[1]);
+					giikerutil.log('[gancube]', 'lost move recovered (empty buffer)', move[0], move[1]);
 				}
 			}
 		}
 
-		function v3requestMoveHistory(startMoveCnt, numberOfMoves) {
-			var req = mathlib.valuedArray(16, 0);
+		function requestMoveHistory(startMoveCnt, numberOfMoves) {
 			// Move history response data is byte-aligned, and moves always starting with near-ceil odd serial number, regardless of requested.
 			// Adjust start move and number of moves to get odd number aligned history window with even number of moves inside.
 			if (startMoveCnt % 2 == 0)
@@ -893,26 +965,40 @@ var GiikerCube = execMain(function() {
 			if (numberOfMoves % 2 == 1)
 				numberOfMoves++;
 			// Never overflow requested history window beyond the move number cycle edge 255 -> 0.
-			// Because due to iCarry2 firmware bug the moves beyond the edge spoofed with 'D' (just zero bytes).
+			// Because due to firmware bug the moves beyond the edge spoofed with 'D' (just zero bytes).
 			numberOfMoves = Math.min(numberOfMoves, startMoveCnt + 1);
-			req[0] = 0x68;
-			req[1] = 0x03;
+			var chrct, req;
+			if (_service_v3data) {
+				req = mathlib.valuedArray(16, 0);
+				req[0] = 0x68;
+				req[1] = 0x03;
+				chrct = _chrct_v3write;
+			} else if (_service_v4data) {
+				req = mathlib.valuedArray(20, 0);
+				req[0] = 0xD1;
+				req[1] = 0x04;
+				chrct = _chrct_v4write;
+			} else {
+				return;
+			}
 			req[2] = startMoveCnt;
 			req[3] = 0;
 			req[4] = numberOfMoves;
 			req[5] = 0;
-			giikerutil.log('[gancube]', 'v3 requesting move history', prevMoveCnt, startMoveCnt, numberOfMoves);
-			// We can safely suppress and ignore possible GATT write errors, v3requestMoveHistory command is automatically retried on each move event if needed
-			return v3sendRequest(req).catch($.noop);
+			giikerutil.log('[gancube]', 'requesting move history', prevMoveCnt, startMoveCnt, numberOfMoves);
+			var encodedReq = encode(req.slice());
+			// We can safely suppress and ignore possible GATT write errors
+			// requestMoveHistory command is automatically retried on each move event if needed
+			return chrct.writeValue(new Uint8Array(encodedReq).buffer).catch($.noop);
 		}
 
-		function v3EvictMoveBuffer(reqLostMoves) {
+		function evictMoveBuffer(reqLostMoves) {
 			while (moveBuffer.length > 0) {
 				var diff = (moveBuffer[0][0] - prevMoveCnt) & 0xFF;
 				if (diff > 1) {
-					giikerutil.log('[gancube]', 'v3 lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
+					giikerutil.log('[gancube]', 'lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
 					if (reqLostMoves) {
-						v3requestMoveHistory(moveBuffer[0][0], diff);
+						requestMoveHistory(moveBuffer[0][0], diff);
 					}
 					break;
 				} else {
@@ -927,11 +1013,11 @@ var GiikerCube = execMain(function() {
 					curCubie = prevCubie;
 					prevCubie = tmp;
 					prevMoveCnt = move[0];
-					giikerutil.log('[gancube]', 'v3 move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
+					giikerutil.log('[gancube]', 'move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
 				}
 			}
 			if (moveBuffer.length > 16) {
-				giikerutil.log('[gancube]', 'v3 something wrong, moves are not evicted from buffer, force cube disconnection', prevMoveCnt, JSON.stringify(moveBuffer));
+				giikerutil.log('[gancube]', 'something wrong, moves are not evicted from buffer, force cube disconnection', prevMoveCnt, JSON.stringify(moveBuffer));
 				onDisconnect();
 			}
 		}
@@ -975,7 +1061,7 @@ var GiikerCube = execMain(function() {
 				var move = "URFDLB".charAt(axis) + " '".charAt(pow);
 				moveBuffer.push([moveCnt, move, ts, locTime]);
 				giikerutil.log('[gancube]', 'v3 move placed to fifo buffer', moveCnt, move, ts, locTime);
-				v3EvictMoveBuffer(true);
+				evictMoveBuffer(true);
 			} else if (mode == 2) {  // cube state
 				moveCnt = parseInt(value.slice(32, 40) + value.slice(24, 32), 2);
 				if (prevMoveCnt != -1) {
@@ -983,12 +1069,12 @@ var GiikerCube = execMain(function() {
 						var diff = (moveCnt - prevMoveCnt) & 0xFF;
 						if (diff > 0) {
 							giikerutil.log('[gancube]', 'v3 cube state is ahead of the last recorded move', prevMoveCnt, moveCnt, diff);
-							// Constraint to avoid iCarry2 firmware bug with facelets state event at 255 move counter.
+							// Constraint to avoid firmware bug with facelets state event at 255 move counter.
 							// When receiving facelets state with 0 move counter we can't be sure that
 							// move with 0 counter is fulfilled, and wrong move from previous loop may be restored instead.
 							if (moveCnt != 0) {
 								var startMoveCnt = moveBuffer[0] ? moveBuffer[0][0] : (moveCnt + 1) & 0xFF;
-								v3requestMoveHistory(startMoveCnt, diff + 1);
+								requestMoveHistory(startMoveCnt, diff + 1);
 							}
 						}
 					}
@@ -1030,10 +1116,10 @@ var GiikerCube = execMain(function() {
 					var pow = parseInt(value.slice(35 + 4 * i, 36 + 4 * i), 2);
 					if (axis < 6) {
 						var move = "DUBFLR".charAt(axis) + " '".charAt(pow);
-						v3InjectLostMoveToBuffer([(startMoveCnt - i) & 0xFF, move, null, null]);
+						injectLostMoveToBuffer([(startMoveCnt - i) & 0xFF, move, null, null]);
 					}
 				}
-				v3EvictMoveBuffer(false);
+				evictMoveBuffer(false);
 			} else if (mode == 7) { // hardware info
 				giikerutil.log('[gancube]', 'v3 received hardware info event', value);
 				var hardwareVersion = parseInt(value.slice(80, 84), 2) + "." + parseInt(value.slice(84, 88), 2);
@@ -1049,11 +1135,142 @@ var GiikerCube = execMain(function() {
 				batteryLevel = parseInt(value.slice(24, 32), 2);
 				giikerutil.updateBattery([batteryLevel, deviceName + '*']);
 			} else {
-				giikerutil.log('[gancube]', 'v3 received unknown event', value);
+				giikerutil.log('[gancube]', 'v3 received unknown event', mode, value);
 			}
 		}
 
 		$.parseV3Data = parseV3Data; // for debug
+
+		function onStateChangedV4(event) {
+			var value = event.target.value;
+			if (decoder == null) {
+				return;
+			}
+			parseV4Data(value);
+		}
+
+		function parseV4Data(value) {
+			var locTime = $.now();
+			value = decode(value);
+			for (var i = 0; i < value.length; i++) {
+				value[i] = (value[i] + 256).toString(2).slice(1);
+			}
+			value = value.join('');
+			var mode = parseInt(value.slice(0, 8), 2);
+			var len = parseInt(value.slice(8, 16), 2);
+			if (mode == 0x01) { // cube move
+				prevMoveLocTime = locTime;
+				moveCnt = parseInt(value.slice(56, 64) + value.slice(48, 56), 2);
+				giikerutil.log('[gancube]', 'v4 received move event', prevMoveCnt, moveCnt, value);
+				if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
+					return;
+				}
+				var ts = parseInt(value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32) + value.slice(16, 24), 2);
+				var pow = parseInt(value.slice(64, 66), 2);
+				var axis = [2, 32, 8, 1, 16, 4].indexOf(parseInt(value.slice(66, 72), 2));
+				if (axis == -1) {
+					giikerutil.log('[gancube]', 'v4 move event invalid axis');
+					return;
+				}
+				var move = "URFDLB".charAt(axis) + " '".charAt(pow);
+				moveBuffer.push([moveCnt, move, ts, locTime]);
+				giikerutil.log('[gancube]', 'v4 move placed to fifo buffer', moveCnt, move, ts, locTime);
+				evictMoveBuffer(true);
+			} else if (mode == 0xED) {  // cube state
+				moveCnt = parseInt(value.slice(24, 32) + value.slice(16, 24), 2);
+				if (prevMoveCnt != -1) {
+					if (prevMoveLocTime != null && locTime - prevMoveLocTime > 500) { // Debounce the facelet event if there are active cube moves
+						var diff = (moveCnt - prevMoveCnt) & 0xFF;
+						if (diff > 0) {
+							giikerutil.log('[gancube]', 'v4 cube state is ahead of the last recorded move', prevMoveCnt, moveCnt, diff);
+							// Constraint to avoid firmware bug with facelets state event at 255 move counter.
+							// When receiving facelets state with 0 move counter we can't be sure that
+							// move with 0 counter is fulfilled, and wrong move from previous loop may be restored instead.
+							if (moveCnt != 0) {
+								var startMoveCnt = moveBuffer[0] ? moveBuffer[0][0] : (moveCnt + 1) & 0xFF;
+								requestMoveHistory(startMoveCnt, diff + 1);
+							}
+						}
+					}
+					return;
+				}
+				giikerutil.log('[gancube]', 'v4 processing facelets event', prevMoveCnt, moveCnt, value);
+				var cc = new mathlib.CubieCube();
+				var echk = 0;
+				var cchk = 0xf00;
+				for (var i = 0; i < 7; i++) {
+					var perm = parseInt(value.slice(32 + i * 3, 35 + i * 3), 2);
+					var ori = parseInt(value.slice(53 + i * 2, 55 + i * 2), 2);
+					cchk -= ori << 3;
+					cchk ^= perm;
+					cc.ca[i] = ori << 3 | perm;
+				}
+				cc.ca[7] = (cchk & 0xff8) % 24 | cchk & 0x7;
+				for (var i = 0; i < 11; i++) {
+					var perm = parseInt(value.slice(69 + i * 4, 73 + i * 4), 2);
+					var ori = parseInt(value.slice(113 + i, 114 + i), 2);
+					echk ^= perm << 1 | ori;
+					cc.ea[i] = perm << 1 | ori;
+				}
+				cc.ea[11] = echk;
+				if (cc.verify() != 0) {
+					keyCheck++;
+					giikerutil.log('[gancube]', 'v4 facelets state verify error');
+					return;
+				}
+				latestFacelet = cc.toFaceCube();
+				giikerutil.log('[gancube]', 'v4 facelets event state parsed', latestFacelet);
+				initCubeState();
+			} else if (mode == 0xD1) { // move history
+				var startMoveCnt = parseInt(value.slice(16, 24), 2);
+				var numberOfMoves = (len - 1) * 2;
+				giikerutil.log('[gancube]', 'v4 received move history event', startMoveCnt, numberOfMoves, value);
+				for (var i = 0; i < numberOfMoves; i++) {
+					var axis = parseInt(value.slice(24 + 4 * i, 27 + 4 * i), 2);
+					var pow = parseInt(value.slice(27 + 4 * i, 28 + 4 * i), 2);
+					if (axis < 6) {
+						var move = "DUBFLR".charAt(axis) + " '".charAt(pow);
+						injectLostMoveToBuffer([(startMoveCnt - i) & 0xFF, move, null, null]);
+					}
+				}
+				evictMoveBuffer(false);
+			} else if ([0xF5, 0xF6, 0xFA, 0xFC, 0xFD, 0xFE, 0xFF].indexOf(mode) != -1) { // hardware info
+				switch (mode) {
+					case 0xFA:
+						var year = parseInt(value.slice(32, 40) + value.slice(24, 32), 2);
+						var month = parseInt(value.slice(40, 48), 2);
+						var day = parseInt(value.slice(48, 56), 2);
+						giikerutil.log('[gancube]', 'Product Date', year + "-" + month + "-" + day);
+						break;
+					case 0xFC:
+						var hwName = '';
+						for (var i = 0; i < len - 1; i++)
+							hwName += String.fromCharCode(parseInt(value.slice(24 + i * 8, 32 + i * 8), 2));
+						giikerutil.log('[gancube]', 'Hardware Name', hwName);
+						break;
+					case 0xFD:
+						var swMajor = parseInt(value.slice(24, 28), 2);
+						var swMinor = parseInt(value.slice(28, 32), 2);
+						giikerutil.log('[gancube]', 'Software Version', swMajor + "." + swMinor);
+						break;
+					case 0xFE:
+						var hwMajor = parseInt(value.slice(24, 28), 2);
+						var hwMinor = parseInt(value.slice(28, 32), 2);
+						giikerutil.log('[gancube]', 'Hardware Version', hwMajor + "." + hwMinor);
+						break;
+				}
+			} else if (mode == 0xEF) { // battery
+				giikerutil.log('[gancube]', 'v4 received battery event', value);
+				batteryLevel = parseInt(value.slice(8 + len * 8, 16 + len * 8), 2);
+				giikerutil.log('[gancube]', 'v4 battery level', batteryLevel);
+				giikerutil.updateBattery([batteryLevel, deviceName + '*']);
+			} else if (mode == 0xEC) { // gyro
+			} else {
+				giikerutil.log('[gancube]', 'v4 received unknown event', mode, value);
+			}
+		}
+
+		$.parseV4Data = parseV4Data; // for debug
 
 		function clear() {
 			var result = Promise.resolve();
@@ -1067,10 +1284,19 @@ var GiikerCube = execMain(function() {
 				result = _chrct_v3read.stopNotifications().catch($.noop);
 				_chrct_v3read = null;
 			}
+			if (_chrct_v4read) {
+				_chrct_v4read.removeEventListener('characteristicvaluechanged', onStateChangedV4);
+				result = _chrct_v4read.stopNotifications().catch($.noop);
+				_chrct_v4read = null;
+			}
 			_service_data = null;
 			_service_meta = null;
+			_chrct_v2write = null;
+			_chrct_v3write = null;
+			_chrct_v4write = null;
 			_service_v2data = null;
 			_service_v3data = null;
+			_service_v4data = null;
 			_gatt = null;
 			deviceName = null;
 			deviceMac = null;
@@ -1086,13 +1312,13 @@ var GiikerCube = execMain(function() {
 			prevMoveCnt = -1;
 			prevMoveLocTime = null;
 			movesFromLastCheck = 1000;
-			batteryLevel = 100;
+			batteryLevel = 0;
 			return result;
 		}
 
 		return {
 			init: init,
-			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META, SERVICE_UUID_V2DATA, SERVICE_UUID_V3DATA],
+			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META, SERVICE_UUID_V2DATA, SERVICE_UUID_V3DATA, SERVICE_UUID_V4DATA],
 			cics: GAN_CIC_LIST,
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
@@ -1432,7 +1658,7 @@ var GiikerCube = execMain(function() {
 		var deviceTimeOffset = 0;
 		var moveCnt = -1;
 		var prevMoveCnt = -1;
-		var batteryLevel = 100;
+		var batteryLevel = 0;
 
 		var SERVICE_UUID = '0783b03e-7735-b5a0-1760-a305d2795cb0';
 		var CHRT_UUID_READ = '0783b03e-7735-b5a0-1760-a305d2795cb1';
@@ -1844,7 +2070,7 @@ var GiikerCube = execMain(function() {
 			deviceTimeOffset = 0;
 			moveCnt = -1;
 			prevMoveCnt = -1;
-			batteryLevel = 100;
+			batteryLevel = 0;
 
 			return result;
 		}
@@ -2067,7 +2293,7 @@ var GiikerCube = execMain(function() {
 		var prevCubie = new mathlib.CubieCube();
 		var prevMoves = [];
 		var lastTs = 0;
-		var batteryLevel = 100;
+		var batteryLevel = 0;
 
 		function parseCubeData(msg) {
 			var locTime = $.now();
@@ -2077,12 +2303,11 @@ var GiikerCube = execMain(function() {
 			var opcode = msg[2];
 			var ts = (msg[3] << 24 | msg[4] << 16 | msg[5] << 8 | msg[6]);
 			if (opcode == 0x2) { // cube hello
+				batteryLevel = msg[35];
 				sendMessage(msg.slice(2, 7));
 				var newFacelet = parseFacelet(msg.slice(7, 34));
 				callback(newFacelet, [], [Math.trunc(ts / 1.6), locTime], _deviceName);
 				prevCubie.fromFacelet(newFacelet);
-				batteryLevel = msg[35];
-				giikerutil.updateBattery([batteryLevel, _deviceName]);
 				if (newFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
 					var rst = kernel.getProp('giiRST');
 					if (rst == 'a' || rst == 'p' && confirm(CONFIRM_GIIRST)) {
@@ -2169,7 +2394,7 @@ var GiikerCube = execMain(function() {
 			prevCubie = new mathlib.CubieCube();
 			prevMoves = [];
 			lastTs = 0;
-			batteryLevel = 100;
+			batteryLevel = 0;
 			return result;
 		}
 
