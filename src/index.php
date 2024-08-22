@@ -79,6 +79,12 @@
   <script type="text/javascript" src="js/hardware/stackmat.js"></script>
   <script type="text/javascript" src="js/tools/stackmatutil.js"></script>
   <script type="text/javascript" src="js/hardware/bluetooth.js"></script>
+  <script type="text/javascript" src="js/hardware/giikercube.js"></script>
+  <script type="text/javascript" src="js/hardware/gocube.js"></script>
+  <script type="text/javascript" src="js/hardware/gancube.js"></script>
+  <script type="text/javascript" src="js/hardware/moyucube.js"></script>
+  <script type="text/javascript" src="js/hardware/moyu32cube.js"></script>
+  <script type="text/javascript" src="js/hardware/qiyicube.js"></script>
   <script type="text/javascript" src="js/hardware/gantimer.js"></script>
   <script type="text/javascript" src="js/worker.js"></script>
   <script type="text/javascript" src="js/lib/threemin.js"></script>
