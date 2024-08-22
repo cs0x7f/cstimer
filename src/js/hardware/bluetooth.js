@@ -2,6 +2,19 @@
 
 var GiikerCube = execMain(function() {
 
+	/* { prefix: cubeModel } */
+	var cubeModels = {};
+
+	function regCubeModel(cubeModel) {
+		if ($.isArray(cubeModel.prefix)) {
+			cubeModel.prefix.map((prefix) => {
+				cubeModels[prefix] = cubeModel;
+			});
+		} else {
+			cubeModels[cubeModel.prefix] = cubeModel;
+		}
+	}
+
 	var cube = undefined;
 	var _device = null;
 
@@ -16,8 +29,8 @@ var GiikerCube = execMain(function() {
 		return toUuid128(uuid1) == toUuid128(uuid2);
 	}
 
-	var GiikerCube = (function() {
-
+	// GiikerCube
+	(function() {
 		var _gatt = null;
 		var _chrct = null;
 
@@ -191,16 +204,17 @@ var GiikerCube = execMain(function() {
 			return result;
 		}
 
-		return {
+		regCubeModel({
+			prefix: ['Gi', 'Mi Smart Magic Cube', 'Hi-'],
 			init: init,
 			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_RW],
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
-		}
+		});
 	})();
 
-	var GanCube = (function() {
-
+	// GanCube
+	(function() {
 		var _gatt;
 		var _service_data;
 		var _service_meta;
@@ -1316,17 +1330,18 @@ var GiikerCube = execMain(function() {
 			return result;
 		}
 
-		return {
+		regCubeModel({
+			prefix: ['GAN', 'MG', 'AiCube'],
 			init: init,
 			opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META, SERVICE_UUID_V2DATA, SERVICE_UUID_V3DATA, SERVICE_UUID_V4DATA],
 			cics: GAN_CIC_LIST,
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
-		};
+		});
 	})();
 
-	var GoCube = (function() {
-
+	// GoCube
+	(function() {
 		var _gatt;
 		var _service;
 		var _read;
@@ -1477,16 +1492,17 @@ var GiikerCube = execMain(function() {
 			return result;
 		}
 
-		return {
+		regCubeModel({
+			prefix: ['GoCube', 'Rubiks'],
 			init: init,
 			opservs: [SERVICE_UUID],
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
-		};
+		});
 	})();
 
-	var MoyuCube = (function() {
-
+	// MoyuCube
+	(function() {
 		var _gatt;
 		var _service;
 		var _deviceName;
@@ -1634,15 +1650,17 @@ var GiikerCube = execMain(function() {
 			return result;
 		}
 
-		return {
+		regCubeModel({
+			prefix: 'MHC',
 			init: init,
 			opservs: [SERVICE_UUID],
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
-		}
+		});
 	})();
 
-	var Moyu32Cube = (function () {
+	// Moyu32Cube
+	(function () {
 		var _gatt;
 		var _service;
 		var _chrct_read;
@@ -2075,17 +2093,18 @@ var GiikerCube = execMain(function() {
 			return result;
 		}
 
-		return {
+		regCubeModel({
+			prefix: 'WCU_MY32',
 			init: init,
 			opservs: [SERVICE_UUID],
 			cics: MOYU32_CIC_LIST,
 			getBatteryLevel: getBatteryLevel,
 			clear: clear
-		}
+		});
 	})();
 
-	var QiyiCube = (function() {
-
+	// QiyiCube
+	(function() {
 		var _gatt;
 		var _service;
 		var _deviceName;
@@ -2398,13 +2417,14 @@ var GiikerCube = execMain(function() {
 			return result;
 		}
 
-		return {
+		regCubeModel({
+			prefix: 'QY-QYSC',
 			init: init,
 			opservs: [SERVICE_UUID],
 			cics: QIYI_CIC_LIST,
 			getBatteryLevel: function() { return Promise.resolve([batteryLevel, _deviceName]); },
 			clear: clear
-		}
+		});
 	})();
 
 	function onHardwareEvent(info, event) {
@@ -2420,7 +2440,6 @@ var GiikerCube = execMain(function() {
 	var onDisconnect = onHardwareEvent.bind(null, 'disconnect');
 
 	function init(timer) {
-
 		if (!window.navigator || !window.navigator.bluetooth) {
 			alert(GIIKER_NOBLEMSG);
 			return Promise.reject();
@@ -2435,58 +2454,29 @@ var GiikerCube = execMain(function() {
 			if (!available) {
 				return Promise.reject(GIIKER_NOBLEMSG);
 			}
+			var filters = Object.keys(cubeModels).map((prefix) => ({ namePrefix: prefix }));
+			var opservs = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.opservs || [])))];
+			var cics = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.cics || [])))];
 			return window.navigator.bluetooth.requestDevice({
-				filters: [{
-					namePrefix: 'Gi'
-				}, {
-					namePrefix: 'Mi Smart'
-				}, {
-					namePrefix: 'Hi-'
-				}, {
-					namePrefix: 'GAN'
-				}, {
-					namePrefix: 'MG'
-				}, {
-					namePrefix: 'AiCube'
-				}, {
-					namePrefix: 'GoCube'
-				}, {
-					namePrefix: 'Rubiks'
-				}, {
-					namePrefix: 'MHC'
-				}, {
-					namePrefix: 'QY-QYSC'
-				}, {
-					namePrefix: 'WCU_MY32'
-				}],
-				optionalServices: [...new Set([].concat(GiikerCube.opservs, GanCube.opservs, GoCube.opservs, MoyuCube.opservs, QiyiCube.opservs, Moyu32Cube.opservs))],
-				optionalManufacturerData: [...new Set([].concat(GanCube.cics, QiyiCube.cics, Moyu32Cube.cics))]
+				filters: filters,
+				optionalServices: opservs,
+				optionalManufacturerData: cics
 			});
 		}).then(function(device) {
 			giikerutil.log('[bluetooth]', 'BLE device is selected, name=' + device.name, device);
 			_device = device;
 			device.addEventListener('gattserverdisconnected', onDisconnect);
-			if (device.name.startsWith('Gi') || device.name.startsWith('Mi Smart Magic Cube') || device.name.startsWith('Hi-')) {
-				cube = GiikerCube;
-				return GiikerCube.init(device);
-			} else if (device.name.startsWith('GAN') || device.name.startsWith('MG') || device.name.startsWith('AiCube')) {
-				cube = GanCube;
-				return GanCube.init(device);
-			} else if (device.name.startsWith('GoCube') || device.name.startsWith('Rubiks')) {
-				cube = GoCube;
-				return GoCube.init(device);
-			} else if (device.name.startsWith('MHC')) {
-				cube = MoyuCube;
-				return MoyuCube.init(device);
-			} else if (device.name.startsWith('QY-QYSC')) {
-				cube = QiyiCube;
-				return QiyiCube.init(device);
-			} else if (device.name.startsWith('WCU_MY32')) {
-				cube = Moyu32Cube;
-				return Moyu32Cube.init(device);
-			} else {
+			cube = null;
+			for (var prefix in cubeModels) {
+				if (device.name.startsWith(prefix)) {
+					cube = cubeModels[prefix];
+					break;
+				}
+			}
+			if (!cube) {
 				return Promise.reject('Cannot detect device type');
 			}
+			return cube.init(device);
 		});
 	}
 
@@ -2520,6 +2510,10 @@ var GiikerCube = execMain(function() {
 			return cube || (DEBUGBL && {
 				getBatteryLevel: function() { return Promise.resolve(80); }
 			});
+		},
+		regCubeModel: regCubeModel,
+		callback: function() {
+			return callback.apply(null, arguments);
 		}
 	};
 });
