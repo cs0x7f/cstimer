@@ -31,9 +31,7 @@ execWorker(function() {
 		global['self'] = global;
 	}
 	self.$ = {
-		isArray: Array.isArray || function(obj) {
-			return jQuery.type(obj) === "array";
-		},
+		isArray: Array.isArray,
 		noop: function() {},
 		now: function() {
 			return +new Date;

@@ -65,13 +65,12 @@ execMain(function(timer) {
 				}
 				comment = m[7] || "";
 				scramble = m[8];
-				//TODO timestamp = m[9]
 				var curTime = [comment, scramble, [ins, time].concat(timeSplit)];
-				timer.setCur(curTime);
 				var timestamp = mathlib.str2time(m[9]);
 				if (timestamp) {
 					curTime.push(timestamp);
 				}
+				timer.curTime(curTime);
 				kernel.pushSignal('time', curTime);
 				kernel.clrKey();
 			}
@@ -99,16 +98,16 @@ execMain(function(timer) {
 		if (!timer.checkUseIns()) {
 			return;
 		} else if (isTrigger) {
-			if (timer.getStatus() == 0) {
-				timer.setStatus(-1);
-			} else if (timer.getStatus() == -1 || timer.getStatus() == -3) {
+			if (timer.status() == 0) {
+				timer.status(-1);
+			} else if (timer.status() == -1 || timer.status() == -3) {
 				if (now - lastStop < 500) {
 					timer.lcd.fixDisplay(false, isTrigger);
 					return;
 				}
-			} else if (timer.getStatus() == -4) {
-				timer.setStart(now);
-				timer.setStatus(-3);
+			} else if (timer.status() == -4) {
+				timer.startTime(now);
+				timer.status(-3);
 			}
 		}
 		timer.lcd.fixDisplay(false, isTrigger);
@@ -123,11 +122,11 @@ execMain(function(timer) {
 			return;
 		} else if (now - lastDown < 200) {
 			return;
-		} else if (timer.getStatus() == -3 || keyCode == 27) {
-			timer.setStatus(isTrigger ? 0 : -1);
+		} else if (timer.status() == -3 || keyCode == 27) {
+			timer.status(isTrigger ? 0 : -1);
 			timer.lcd.fixDisplay(false, false);
-		} else if (isTrigger && timer.getStatus() == -1) {
-			timer.setStatus(-4);
+		} else if (isTrigger && timer.status() == -1) {
+			timer.status(-4);
 		}
 		timer.lcd.fixDisplay(true, isTrigger);
 		if (isTrigger) {

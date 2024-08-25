@@ -137,7 +137,7 @@ execMain(function(timer) {
 		}
 		clearReadyTid();
 		var solvingMethod = kernel.getProp('vrcMP', 'n');
-		if (timer.getStatus() == -1) {
+		if (timer.status() == -1) {
 			if (canStart(currentFacelet)) {
 				var delayStart = kernel.getProp('giiSD');
 				if (delayStart == 's') {
@@ -163,28 +163,28 @@ execMain(function(timer) {
 					}
 				}
 			}
-		} else if (timer.getStatus() == -3 || timer.getStatus() == -2) {
+		} else if (timer.status() == -3 || timer.status() == -2) {
 			if (timer.checkUseIns()) {
-				insTime = locTime - timer.getStart();
+				insTime = locTime - timer.startTime();
 			} else {
 				insTime = 0;
 			}
-			timer.setStart(locTime);
-			timer.setCur([insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)]);
-			timer.setStatus(cubeutil.getStepCount(solvingMethod));
+			timer.startTime(locTime);
+			timer.curTime([insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)]);
+			timer.status(cubeutil.getStepCount(solvingMethod));
 			rawMoves = [];
-			for (var i = 0; i < timer.getStatus(); i++) {
+			for (var i = 0; i < timer.status(); i++) {
 				rawMoves[i] = [];
 			}
-			totPhases = timer.getStatus();
+			totPhases = timer.status();
 			var initialProgress = cubeutil.getProgress(prevFacelet, solvingMethod);
 			timer.updateMulPhase(totPhases, initialProgress, locTime);
 			timer.lcd.reset(enableVRC);
 			timer.lcd.fixDisplay(false, true);
 		}
-		if (timer.getStatus() >= 1) {
+		if (timer.status() >= 1) {
 			if (prevMoves.length > 0)
-				rawMoves[timer.getStatus() - 1].push([prevMoves[0], lastTs[0], lastTs[1]]);
+				rawMoves[timer.status() - 1].push([prevMoves[0], lastTs[0], lastTs[1]]);
 			var curProgress = cubeutil.getProgress(facelet, solvingMethod);
 			timer.updateMulPhase(totPhases, curProgress, locTime);
 
@@ -193,21 +193,21 @@ execMain(function(timer) {
 				var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
 				var moveCnt = pretty.totalMoves;
 				giikerutil.setLastSolve(pretty.prettySolve);
-				timer.getCur()[1] = locTime - timer.getStart();
-				timer.setStatus(-1);
+				timer.curTime()[1] = locTime - timer.startTime();
+				timer.status(-1);
 				giikerutil.reSync();
 				timer.lcd.fixDisplay(false, true);
-				if (timer.getCur()[1] != 0) {
+				if (timer.curTime()[1] != 0) {
 					var sol = giikerutil.tsLinearFix(rawMoves.flat()); // fit deviceTime to locTime
 					var cnt = 0;
-					DEBUG && console.log('time fit, old=', timer.getCur());
+					DEBUG && console.log('time fit, old=', timer.curTime());
 					for (var i = 0; i < rawMoves.length; i++) {
 						cnt += rawMoves[i].length;
-						timer.getCur()[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
+						timer.curTime()[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
 					}
-					DEBUG && console.log('time fit, new=', timer.getCur());
+					DEBUG && console.log('time fit, new=', timer.curTime());
 					sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
-					kernel.pushSignal('time', ["", 0, timer.getCur(), 0, [sol, '333']]);
+					kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [sol, '333']]);
 				} else if (kernel.getProp('giiMode') != 'n') {
 					kernel.pushSignal('ctrl', ['scramble', 'next']);
 				}
@@ -239,7 +239,7 @@ execMain(function(timer) {
 
 	function markScrambled(now) {
 		clearReadyTid();
-		if (timer.getStatus() == -1) {
+		if (timer.status() == -1) {
 			if (kernel.getProp('giiMode') == 'n') {
 				if (!giikerutil.checkScramble()) {
 					var gen = scramble_333.genFacelet(currentFacelet);
@@ -249,8 +249,8 @@ execMain(function(timer) {
 			} else {
 				giikerutil.markScrambled(true);
 			}
-			timer.setStatus(-2);
-			timer.setStart(now);
+			timer.status(-2);
+			timer.startTime(now);
 			timer.lcd.reset(enableVRC);
 			timer.lcd.fixDisplay(true, true);
 			if (kernel.getProp('giiBS')) {
@@ -276,7 +276,7 @@ execMain(function(timer) {
 			}
 		}, /^(?:preScrT?|isTrainScr|giiOri)$/);
 		kernel.regListener('giikerVRC', 'scramble', function(signal, value) {
-			if (enableVRC && timer.getStatus() == -1 && kernel.getProp('giiMode') == 'at' && GiikerCube.isConnected()) {
+			if (enableVRC && timer.status() == -1 && kernel.getProp('giiMode') == 'at' && GiikerCube.isConnected()) {
 				clearReadyTid();
 				waitReadyTid = setTimeout(function() {
 					markScrambled($.now());
@@ -303,26 +303,26 @@ execMain(function(timer) {
 		onkeydown: function(keyCode) {
 			var now = $.now();
 			if (keyCode == 27 || keyCode == 28) {
-				var recordDNF = timer.getStatus() >= 1;
+				var recordDNF = timer.status() >= 1;
 				clearReadyTid();
-				timer.setStatus(-1);
+				timer.status(-1);
 				giikerutil.reSync();
 				timer.lcd.fixDisplay(false, true);
 				if (recordDNF) {
-					timer.getCur()[0] = -1;
+					timer.curTime()[0] = -1;
 					rawMoves.reverse();
 					var sol = giikerutil.tsLinearFix(rawMoves.flat()); // fit deviceTime to locTime
 					var cnt = 0;
-					DEBUG && console.log('time fit, old=', timer.getCur());
+					DEBUG && console.log('time fit, old=', timer.curTime());
 					for (var i = 0; i < rawMoves.length; i++) {
 						cnt += rawMoves[i].length;
-						timer.getCur()[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
+						timer.curTime()[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
 					}
-					DEBUG && console.log('time fit, new=', timer.getCur());
+					DEBUG && console.log('time fit, new=', timer.curTime());
 					sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
-					kernel.pushSignal('time', ["", 0, timer.getCur(), 0, [sol, '333']]);
+					kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [sol, '333']]);
 				}
-			} else if (keyCode == 32 && timer.getStatus() == -1 && kernel.getProp('giiSK') && canStart(currentFacelet)) {
+			} else if (keyCode == 32 && timer.status() == -1 && kernel.getProp('giiSK') && canStart(currentFacelet)) {
 				markScrambled($.now());
 			}
 		},

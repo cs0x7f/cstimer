@@ -12,7 +12,7 @@ execMain(function(timer) {
 			return;
 		}
 		var now = ts || $.now();
-		if (timer.getStatus() == -3 || timer.getStatus() == -2) {
+		if (timer.status() == -3 || timer.status() == -2) {
 			if (puzzleObj.isRotation(move) && !/^(333ni|444bld|555bld)$/.exec(curScrType)) {
 				if (mstep == 0) {
 					rawMoves[0].push([puzzleObj.move2str(move), 0]);
@@ -20,32 +20,32 @@ execMain(function(timer) {
 				return;
 			} else {
 				if (timer.checkUseIns()) {
-					insTime = now - timer.getStart();
+					insTime = now - timer.startTime();
 				} else {
 					insTime = 0;
 				}
-				timer.setStart(now);
+				timer.startTime(now);
 				moveCnt = 0;
-				timer.setCur([insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)]);
-				timer.setStatus(curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(kernel.getProp('vrcMP', 'n')) : 1);
+				timer.curTime([insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)]);
+				timer.status(curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(kernel.getProp('vrcMP', 'n')) : 1);
 				var inspectionMoves = rawMoves[0];
 				rawMoves = [];
-				for (var i = 0; i < timer.getStatus(); i++) {
+				for (var i = 0; i < timer.status(); i++) {
 					rawMoves[i] = [];
 				}
-				rawMoves[timer.getStatus()] = inspectionMoves;
-				totPhases = timer.getStatus();
+				rawMoves[timer.status()] = inspectionMoves;
+				totPhases = timer.status();
 				timer.updateMulPhase(totPhases, puzzleObj.isSolved(kernel.getProp('vrcMP', 'n')), now);
 				fixRelayCounter();
 				timer.lcd.fixDisplay(false, true);
 			}
 		}
-		if (timer.getStatus() >= 1) {
+		if (timer.status() >= 1) {
 			if (/^(333ni|444bld|555bld)$/.exec(curScrType) && !puzzleObj.isRotation(move)) {
 				puzzleObj.toggleColorVisible(puzzleObj.isSolved(kernel.getProp('vrcMP', 'n')) == 0);
 			}
 			if (mstep == 0) {
-				rawMoves[timer.getStatus() - 1].push([puzzleObj.move2str(move), now - timer.getStart()]);
+				rawMoves[timer.status() - 1].push([puzzleObj.move2str(move), now - timer.startTime()]);
 			}
 			var curProgress;
 			if (mstep == 2) {
@@ -64,11 +64,11 @@ execMain(function(timer) {
 					return;
 				}
 				timer.lcd.setStaticAppend('');
-				timer.setStatus(-1);
+				timer.status(-1);
 				$('#lcd').css({'visibility': 'unset'}); // disable dragging
 				timer.lcd.fixDisplay(false, true);
 				rawMoves.reverse();
-				kernel.pushSignal('time', ["", 0, timer.getCur(), 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
+				kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 			}
 		}
 	}
@@ -138,33 +138,33 @@ execMain(function(timer) {
 			return;
 		}
 		var now = $.now();
-		if (timer.getStatus() == -1) { // idle
+		if (timer.status() == -1) { // idle
 			if (keyCode == 32) {
 				if (relayScrs) {
 					curScramble = relayScrs.slice();
 				}
 				scrambleIt();
 				if (timer.checkUseIns()) {
-					timer.setStart(now);
-					timer.setStatus(-3); //inspection
+					timer.startTime(now);
+					timer.status(-3); //inspection
 				} else {
 					timer.lcd.val(0);
-					timer.setStatus(-2); //ready
+					timer.status(-2); //ready
 				}
 				$('#lcd').css({'visibility': 'hidden'}); // enable dragging
 				timer.lcd.fixDisplay(false, true);
 			}
-		} else if (timer.getStatus() == -3 || timer.getStatus() == -2 || timer.getStatus() >= 1) { // Scrambled or Running
+		} else if (timer.status() == -3 || timer.status() == -2 || timer.status() >= 1) { // Scrambled or Running
 			if (keyCode == 27 || keyCode == 28) { //ESC
-				var recordDNF = timer.getStatus() >= 1;
+				var recordDNF = timer.status() >= 1;
 				timer.lcd.setStaticAppend('');
-				timer.setStatus(-1);
+				timer.status(-1);
 				reset();
 				$('#lcd').css({'visibility': 'unset'}); // disable dragging
 				timer.lcd.fixDisplay(false, true);
 				if (recordDNF) {
 					rawMoves.reverse();
-					kernel.pushSignal('time', ["", 0, [-1, now - timer.getStart()], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
+					kernel.pushSignal('time', ["", 0, [-1, now - timer.startTime()], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
 				}
 			} else {
 				var mappedCode = help.getMappedCode(keyCode);

@@ -271,7 +271,7 @@ var exportFunc = execMain(function() {
 			var baseObj = {};
 			var jobs = Promise.resolve(baseObj);
 			try {
-				var metaObj = JSON.parse(LZString.decompressFromEncodedURIComponent(val['data']));
+				metaObj = JSON.parse(LZString.decompressFromEncodedURIComponent(val['data']));
 			} catch (err) {
 				DEBUG && console.log('[export] error', err);
 				return Promise.reject('');

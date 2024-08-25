@@ -93,7 +93,7 @@ var shortcuts = execMain(function(){
 		DEBUG && console.log('[shortcut] touch start', e);
 		clearLongTouch();
 		longTouchTid = setTimeout(longTouchCallback, 2000);
-		if (timer.getStatus() != -1 || !kernel.getProp('useGES')) {
+		if (timer.status() != -1 || !kernel.getProp('useGES')) {
 			return;
 		}
 		touchPoint = getOffXY(e);

@@ -590,7 +590,7 @@ var kernel = execMain(function() {
 					break;
 				}
 			}
-			if (avail && !isHide || show || jQuery.fx.off) {
+			if (avail && !isHide || show || $.fx.off) {
 				leftbar.stop(true, true).fadeTo(200, 1);
 			} else {
 				leftbar.stop(true, true).fadeTo(200, 0.01);

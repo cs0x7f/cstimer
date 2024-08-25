@@ -21,41 +21,41 @@ execMain(function(timer) {
 				break;
 			case GanTimerState.IDLE: // timer reset button pressed
 				inspectionTime = 0;
-				if (timer.getHard() > 0 || timer.getStatus() != -1) { // reset timer / cancel inspection timer
-					timer.setHard(0);
-					timer.setStatus(-1);
+				if (timer.hardTime() > 0 || timer.status() != -1) { // reset timer / cancel inspection timer
+					timer.hardTime(0);
+					timer.status(-1);
 					timer.lcd.reset();
 					timer.lcd.fixDisplay(false, true);
-				} else if (timer.getStatus() == -1 && timer.checkUseIns()) { // start inspection timer if was idle and inspection enabled in settings
-					timer.setStatus(-3);
-					timer.setStart($.now());
+				} else if (timer.status() == -1 && timer.checkUseIns()) { // start inspection timer if was idle and inspection enabled in settings
+					timer.status(-3);
+					timer.startTime($.now());
 					timer.lcd.fixDisplay(false, true);
 				}
 				timer.lcd.renderUtil();
 				break;
 			case GanTimerState.RUNNING: // timer is started
-				if (timer.getStatus() == -3) { // if inspection timer was running, record elapsed inspection time
-					inspectionTime = $.now() - timer.getStart();
+				if (timer.status() == -3) { // if inspection timer was running, record elapsed inspection time
+					inspectionTime = $.now() - timer.startTime();
 					// 0 == Normal, 2000 == +2, -1 == DNF
 					inspectionTime = timer.checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				}
-				timer.setStart($.now());
+				timer.startTime($.now());
 				timer.lcd.reset();
-				timer.setCur([inspectionTime]);
-				timer.setStatus(1);
+				timer.curTime([inspectionTime]);
+				timer.status(1);
 				timer.lcd.fixDisplay(false, true);
 				break;
 			case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
-				timer.setHard(timerEvent.recordedTime.asTimestamp);
-				timer.getCur()[1] = timer.getHard();
-				timer.setStatus(-1);
+				timer.hardTime(timerEvent.recordedTime.asTimestamp);
+				timer.curTime()[1] = timer.hardTime();
+				timer.status(-1);
 				timer.lcd.renderUtil();
 				timer.lcd.fixDisplay(false, true);
-				kernel.pushSignal('time', timer.getCur());
+				kernel.pushSignal('time', timer.curTime());
 				break;
 			case GanTimerState.DISCONNECT: // timer is switched off or something else
-				timer.setHard();
-				timer.setStatus(-1);
+				timer.hardTime(null);
+				timer.status(-1);
 				timer.lcd.renderUtil();
 				timer.lcd.fixDisplay(false, true);
 				reconnectTimer();
@@ -75,8 +75,8 @@ execMain(function(timer) {
 		GanTimerDriver.connect(reconnect).then(function () {
 			DEBUG && console.log('[gantimer] timer device successfully connected');
 			GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
-			timer.setHard(0);
-			timer.setStatus(-1);
+			timer.hardTime(0);
+			timer.status(-1);
 			timer.lcd.reset();
 			timer.lcd.renderUtil();
 			timer.lcd.fixDisplay(false, true);
@@ -111,7 +111,7 @@ execMain(function(timer) {
 	function setEnableImpl(input) {
 		enable = input == 'b';
 		if (enable) {
-			timer.setHard();
+			timer.hardTime(null);
 			showConnectionDialog();
 		} else {
 			disconnectTimer();

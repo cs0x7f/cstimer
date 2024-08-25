@@ -340,7 +340,7 @@ var scramble_444 = (function(Cnk, circle) {
 			if ((occ[i >>> 5] & 1 << (i & 31)) == 0) {
 				$set_0(c, i);
 				for (j = 0; j < 48; ++j) {
-					var idx = getCenter1RotThres(c, Center1RotPerm[j], mathlib.Cnk[21][8]);
+					idx = getCenter1RotThres(c, Center1RotPerm[j], mathlib.Cnk[21][8]);
 					if (idx == -1) {
 						continue;
 					}
@@ -1439,7 +1439,7 @@ var scramble_444 = (function(Cnk, circle) {
 				if (move3std[m] % 3 != 1) {
 					continue;
 				}
-				var idx = getMvSym(e.edge, m);
+				idx = getMvSym(e.edge, m);
 				Edge3SymMove[m][i] = ~~((idx >> 3) / 20160) << 3 | idx & 0x7;
 			}
 		}

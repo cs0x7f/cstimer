@@ -13,8 +13,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 	var status = -1;
 
 	function setStatus(_status) {
-		if (_status == status) {
-			return;
+		if (_status === undefined || _status == status) {
+			return status;
 		}
 		status = _status;
 		lcd.renderUtil();
@@ -807,6 +807,27 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		onkeydown({which: 29});
 	}
 
+	function setCurTime(time) {
+		if (time !== undefined) {
+			curTime = time;
+		}
+		return curTime;
+	}
+
+	function setStartTime(time) {
+		if (time !== undefined) {
+			startTime = time;
+		}
+		return startTime;
+	}
+
+	function setHardTime(time) {
+		if (time !== undefined) {
+			hardTime = time;
+		}
+		return hardTime;
+	}
+
 	return {
 		onkeydown: onkeydown,
 		onkeyup: onkeyup,
@@ -814,17 +835,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		refocus: refocus,
 		softESC: softESC,
 		checkUseIns: checkUseIns,
-		getStatus: function() { return status; },
-		setStatus: setStatus,
+		status: setStatus,
 		getCurTime: function(now) { return status > 0 ? (now || $.now()) - startTime : 0; },
 		getStartTime: function() { return startTime || $.now(); },
 		setFobj: function(obj) { fobj = obj; },
-		getStart: function() { return startTime; },
-		setStart: function(time) { startTime = time; },
-		getCur: function() { return curTime; },
-		setCur: function(time) { curTime = time; },
-		getHard: function() { return hardTime; },
-		setHard: function(time) { hardTime = time; },
+		curTime: setCurTime,
+		startTime: setStartTime,
+		hardTime: setHardTime,
 		updateMulPhase: updateMulPhase,
 		getBTDiv: function() { return bluetoothInstructDiv; },
 		keyboard: keyboardTimer,

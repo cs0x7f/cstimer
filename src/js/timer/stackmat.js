@@ -9,35 +9,35 @@ execMain(function(timer) {
 		}
 		var now = $.now();
 		if (!state.on) {
-			timer.setHard();
-			timer.setStatus(-1);
+			timer.hardTime(null);
+			timer.status(-1);
 			timer.lcd.fixDisplay(false, true);
 			lastState = state;
 			return;
 		}
-		timer.setHard(state.time_milli);
+		timer.hardTime(state.time_milli);
 		timer.lcd.renderUtil();
 		if (state.running) {
-			if (timer.getStatus() == -3 || timer.getStatus() == -4) {
-				inspectionTime = now - timer.getStart() - timer.getHard();
+			if (timer.status() == -3 || timer.status() == -4) {
+				inspectionTime = now - timer.startTime() - timer.hardTime();
 				timer.lcd.reset();
 			}
-			timer.setCur([0]);
-			timer.setStatus(1);
-			timer.setStart(now - timer.getHard());
+			timer.curTime([0]);
+			timer.status(1);
+			timer.startTime(now - timer.hardTime());
 			timer.lcd.fixDisplay(false, true);
-		} else if (timer.getStatus() == -1 && timer.checkUseIns() && timer.getHard() == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
-			timer.setStatus(-3);
-			timer.setStart(now);
+		} else if (timer.status() == -1 && timer.checkUseIns() && timer.hardTime() == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
+			timer.status(-3);
+			timer.startTime(now);
 			timer.lcd.fixDisplay(false, true);
-		} else if (timer.getStatus() != -3 && timer.getStatus() != -4) {
-			timer.setStatus(-1);
+		} else if (timer.status() != -3 && timer.status() != -4) {
+			timer.status(-1);
 			timer.lcd.fixDisplay(false, true);
 		}
 		if (lastState.running && !state.running && state.time_milli != 0) {
 			inspectionTime = timer.checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
-			timer.setCur([inspectionTime, ~~timer.getHard()]);
-			kernel.pushSignal('time', timer.getCur());
+			timer.curTime([inspectionTime, ~~timer.hardTime()]);
+			kernel.pushSignal('time', timer.curTime());
 		}
 		timerDisplay(state);
 		lastState = state;
@@ -48,20 +48,20 @@ execMain(function(timer) {
 			timer.lcd.color('g');
 		} else if (state.rightHand && state.leftHand) {
 			timer.lcd.color('r');
-		} else if (timer.getStatus() == -4) {
+		} else if (timer.status() == -4) {
 			timer.lcd.color('g');
 		} else {
 			timer.lcd.color('');
 		}
-		timer.lcd.setRunning(timer.getStatus() == -3 || (state.running && state.signalHeader != 67));
+		timer.lcd.setRunning(timer.status() == -3 || (state.running && state.signalHeader != 67));
 	}
 
 	function onkeyup(keyCode) {
 		var now = $.now();
-		if (keyCode == 32 && timer.getStatus() == -4) {
-			timer.setStatus(-3);
+		if (keyCode == 32 && timer.status() == -4) {
+			timer.status(-3);
 			timer.lcd.reset();
-			timer.setStart(now);
+			timer.startTime(now);
 			timer.lcd.fixDisplay(false, keyCode == 32);
 		}
 		if (keyCode == 32) {
@@ -72,12 +72,12 @@ execMain(function(timer) {
 	function onkeydown(keyCode) {
 		var now = $.now();
 
-		if (keyCode == 32 && timer.getStatus() == -1 && timer.checkUseIns() && lastState.on && lastState.time_milli == 0) {
-			timer.setStatus(-4);
-			timer.setStart(now);
+		if (keyCode == 32 && timer.status() == -1 && timer.checkUseIns() && lastState.on && lastState.time_milli == 0) {
+			timer.status(-4);
+			timer.startTime(now);
 			timer.lcd.fixDisplay(true, true);
-		} else if (keyCode == 27 && timer.getStatus() <= -1) { //inspection or ready to start, press ESC to reset
-			timer.setStatus(-1);
+		} else if (keyCode == 27 && timer.status() <= -1) { //inspection or ready to start, press ESC to reset
+			timer.status(-1);
 			timer.lcd.fixDisplay(true, false);
 		}
 		if (keyCode == 32) {
