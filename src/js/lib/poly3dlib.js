@@ -446,7 +446,7 @@ var poly3d = (function() {
 
 	_.trim = function(gap) {
 		var toCutPlanes = [];
-		var _point = this.paths[this.paths.length - 1].p1;
+		var _point = this.paths.at(-1).p1;
 		var poly = this;
 		for (var i = 0; i < this.paths.length; i++) { // check paths[i]
 			var path = this.paths[i];
@@ -763,7 +763,7 @@ var poly3d = (function() {
 			var edgeNorms = [];
 			var edgeNames = [];
 			puzzle.enumFacesPolys(function(face, p, poly) {
-				var _point = poly.paths[poly.paths.length - 1].p1;
+				var _point = poly.paths.at(-1).p1;
 				for (var i = 0; i < poly.paths.length; i++) {
 					var point = poly.paths[i].p1;
 					var edgeNorm = point.add(_point).normalized();

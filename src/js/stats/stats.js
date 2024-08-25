@@ -44,7 +44,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			table_ctrl.appendRow(times.length - 1);
 		}
 		updateUtil(['push']);
-		kernel.pushSignal('timestd', times[times.length - 1]);
+		kernel.pushSignal('timestd', times.at(-1));
 	}
 
 	function rollBackExec(idx, func) {
@@ -116,7 +116,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			return ""
 		}
 		var ret = [];
-		ret.push(kpretty(time[time.length - 1]));
+		ret.push(kpretty(time.at(-1)));
 		for (var j = time.length - 2; j >= 1; j--) {
 			ret.push(kpretty(time[j] - time[j + 1]));
 		}
@@ -646,7 +646,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			(st2 ? (st2pb ? tdpb : tdtm) + prettyFunc[1](st2[0][0]) : '<td>-') + '</td>'
 		);
 		if (dim > 1) {
-			ret.push('<td>' + kpretty(curTime[curTime.length - 1]) + '</td>');
+			ret.push('<td>' + kpretty(curTime.at(-1)) + '</td>');
 			for (var j = curTime.length - 2; j >= 1; j--) {
 				ret.push('<td>' + kpretty(curTime[j] - curTime[j + 1]) + '</td>');
 			}
@@ -906,7 +906,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			line.push(time[2] ? time[2] : "");
 			line.push(time[1]);
 			line.push(mathlib.time2str(time[3]));
-			line.push(kpretty(time[0][time[0].length - 1]));
+			line.push(kpretty(time[0].at(-1)));
 			for (var j = time[0].length - 2; j >= 1; j--) {
 				line.push(kpretty(time[0][j] - time[0][j + 1]));
 			}
@@ -1190,7 +1190,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'opt': {}
 			};
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats_list.getAllStats());
-			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times[times.length - 1] || [])[3]];
+			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times.at(-1) || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 			if (kernel.isDialogShown('ssmgr')) {
 				genMgrTable();
@@ -1204,7 +1204,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function save(startIdx) {
 			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats_list.getAllStats());
-			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times[times.length - 1] || [])[3]];
+			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times.at(-1) || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 			return storage.set(sessionIdx, times, startIdx);
 		}
@@ -1323,7 +1323,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				return storage.set(idx, timesNew);
 			}).then(function(timesNew) {
 				delete sessionData[idx]['stat'];
-				sessionData[sessionIdx]['date'] = [(timesNew[0] || [])[3], (timesNew[timesNew.length - 1] || [])[3]];
+				sessionData[sessionIdx]['date'] = [(timesNew[0] || [])[3], (timesNew.at(-1) || [])[3]];
 				kernel.setProp('sessionData', JSON.stringify(sessionData));
 				loadSession(idx);
 				doSessionDeletion(prevSession);
@@ -1445,7 +1445,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				var ssData = sessionData[ssSorted[i]];
 				var gKey = byGroup == 'scr' ? (ssData['opt'] || {})['scrType'] : ssData[byGroup];
 				if (byGroup && gKey == lastGKey) {
-					groups[groups.length - 1].push(i);
+					groups.at(-1).push(i);
 				} else {
 					groups.push([i]);
 					lastGKey = gKey;

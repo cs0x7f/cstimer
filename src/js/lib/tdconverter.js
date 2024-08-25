@@ -115,7 +115,7 @@ var TimerDataConverter = execMain(function() {
 			} else {
 				time[0] = 0;
 			}
-			while (line[line.length - 1] == '') {
+			while (line.at(-1) == '') {
 				line.pop();
 			}
 			for (var j = 5; j < line.length; j++) {

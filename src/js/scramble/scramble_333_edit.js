@@ -81,7 +81,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 			idx += arr[i];
 		}
 		if (cntU == 1) {
-			arr[arr.length - 1] = ((base << 4) - sum) % base;
+			arr.splice(-1, 1, ((base << 4) - sum) % base);
 		}
 		return idx;
 	}

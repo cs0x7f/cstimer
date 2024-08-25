@@ -402,7 +402,7 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				if (prun > length) {
 					continue;
 				}
-				while (rndIdx[rndIdx.length - 1] == cnt) {
+				while (rndIdx.at(-1) == cnt) {
 					rndCases.push(i);
 					rndIdx.pop();
 				}

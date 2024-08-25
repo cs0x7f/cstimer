@@ -462,7 +462,7 @@ var giikerutil = execMain(function(CubieCube) {
 		var slope = param[0];
 		var intercept = param[1];
 		var first = Math.round(slope * moveTsList[0][1] + intercept);
-		var last = Math.round(slope * moveTsList[moveTsList.length - 1][1] + intercept);
+		var last = Math.round(slope * moveTsList.at(-1)[1] + intercept);
 		if (startTime == null || startTime > first) {
 			startTime = first;
 		} else if (endTime != null && endTime < last) {

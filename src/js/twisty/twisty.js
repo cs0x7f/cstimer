@@ -454,7 +454,7 @@ window.twistyjs = (function() {
 		function startMove() {
 			currentMove.push(moveQueue.shift());
 			moveProgress.push(0);
-			fireMoveStarted(currentMove[currentMove.length - 1]);
+			fireMoveStarted(currentMove.at(-1));
 		}
 
 		this.addMoves = function(moves, ts) {

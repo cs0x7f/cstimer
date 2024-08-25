@@ -50,7 +50,7 @@ var mathlib = (function() {
 			var j = (i + pow) % plen;
 			arr[perm[j]] = tmp[i];
 			if (ori) {
-				arr[perm[j]] += ori[j] - ori[i] + ori[ori.length - 1];
+				arr[perm[j]] += ori[j] - ori[i] + ori.at(-1);
 			}
 		}
 		return acycle;
@@ -334,7 +334,7 @@ var mathlib = (function() {
 		}
 		var tt = +new Date;
 		for (var i = 0; i < states.length; i++) {
-			if (i == depthEnds[depthEnds.length - 1]) {
+			if (i == depthEnds.at(-1)) {
 				depthEnds.push(states.length);
 			}
 			if (i % 10000 == 9999) {

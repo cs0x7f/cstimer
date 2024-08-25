@@ -128,8 +128,8 @@ var slideCube = (function() {
 				pos[m] = val;
 				continue;
 			}
-			if (ret.length > 0 && ret[ret.length - 1][0] == m) {
-				var move = ret[ret.length - 1];
+			if (ret.length > 0 && ret.at(-1)[0] == m) {
+				var move = ret.at(-1);
 				move[1] += val - pos[m];
 				if (move[1] == 0) {
 					ret.pop();

@@ -234,7 +234,7 @@ var stackmat = execMain(function() {
 			}
 			checksum += ~~(byteBuffer[i]);
 		}
-		if (checksum != byteBuffer[byteBuffer.length - 3].charCodeAt(0)) {
+		if (checksum != byteBuffer.at(-3).charCodeAt(0)) {
 			return;
 		}
 		var time_milli = ~~byteBuffer[1] * 60000 +

@@ -145,13 +145,13 @@
 			}
 			arr[arr.length] = [x, y];
 			if (arr.length >= 2) {
-				if (arr[arr.length - 1][0] == arr[arr.length - 2][0]) {
-					arr[arr.length - 2][1] = (arr[arr.length - 2][1] + arr[arr.length - 1][1]) % 4;
+				if (arr.at(-1)[0] == arr.at(-2)[0]) {
+					arr.at(-2)[1] = (arr.at(-2)[1] + arr.at(-1)[1]) % 4;
 					arr = arr.slice(0, arr.length - 1);
 				}
 			}
 			if (arr.length >= 1) {
-				if (arr[arr.length - 1][1] == 0) {
+				if (arr.at(-1)[1] == 0) {
 					arr = arr.slice(0, arr.length - 1);
 				}
 			}
@@ -198,8 +198,8 @@
 			} while (x + effect[r][0] < 0 || x + effect[r][0] > 3 || y + effect[r][1] < 0 || y + effect[r][1] > 3 || r + lastr == 3);
 			x += effect[r][0];
 			y += effect[r][1];
-			if (ret.length > 0 && ret[ret.length - 1][0] == r) {
-				ret[ret.length - 1][1]++;
+			if (ret.length > 0 && ret.at(-1)[0] == r) {
+				ret.at(-1)[1]++;
 			} else {
 				ret.push([r, 1]);
 			}

@@ -171,11 +171,11 @@ var recons = execMain(function() {
 			var subt = stepData[i][1] + stepData[i][2];
 			sumSubt += subt;
 			var names = stepData[i][0].split('-');
-			if (stepSData.length == 0 || stepSData[stepSData.length - 1][0] != names[0]) {
+			if (stepSData.length == 0 || stepSData.at(-1)[0] != names[0]) {
 				stepSData.push([names[0], 0, 0, 0]);
 			}
 			sDataIdx[i] = stepSData.length - 1;
-			var lData = stepSData[stepSData.length - 1];
+			var lData = stepSData.at(-1);
 			for (var j = 1; j < 4; j++) {
 				lData[j] += stepData[i][j];
 			}

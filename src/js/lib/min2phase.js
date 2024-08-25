@@ -848,25 +848,25 @@ var min2phase = (function() {
 			return;
 		}
 		var axisCur = ~~(curMove / 3);
-		var axisLast = ~~(this.moveSol[this.moveSol.length - 1] / 3);
+		var axisLast = ~~(this.moveSol.at(-1) / 3);
 		if (axisCur == axisLast) {
-			var pow = (curMove % 3 + this.moveSol[this.moveSol.length - 1] % 3 + 1) % 4;
+			var pow = (curMove % 3 + this.moveSol.at(-1) % 3 + 1) % 4;
 			if (pow == 3) {
 				this.moveSol.pop();
 			} else {
-				this.moveSol[this.moveSol.length - 1] = axisCur * 3 + pow;
+				this.moveSol.splice(-1, 1, axisCur * 3 + pow);
 			}
 			return;
 		}
 		if (this.moveSol.length > 1 &&
 			axisCur % 3 == axisLast % 3 &&
-			axisCur == ~~(this.moveSol[this.moveSol.length - 2] / 3)) {
-			var pow = (curMove % 3 + this.moveSol[this.moveSol.length - 2] % 3 + 1) % 4;
+			axisCur == ~~(this.moveSol.at(-2) / 3)) {
+			var pow = (curMove % 3 + this.moveSol.at(-2) % 3 + 1) % 4;
 			if (pow == 3) {
-				this.moveSol[this.moveSol.length - 2] = this.moveSol[this.moveSol.length - 1];
+				this.moveSol.splice(-2, 1, this.moveSol.at(-1));
 				this.moveSol.pop();
 			} else {
-				this.moveSol[this.moveSol.length - 2] = axisCur * 3 + pow;
+				this.moveSol.splice(-2, 1, axisCur * 3 + pow);
 			}
 			return;
 		}

@@ -110,7 +110,7 @@ var thistlethwaite = (function() {
 					}
 					if (sol.length > 0 && allowedEnd != null) {
 						var start = sol[0];
-						var end = sol[sol.length - 1];
+						var end = sol.at(-1);
 						if (start != -1 && allowedEnd.indexOf(start[0] * 4 + start[1]) == -1 || end != -1 && allowedEnd.indexOf(end[0] * 4 + end[1]) == -1) {
 							return;
 						}

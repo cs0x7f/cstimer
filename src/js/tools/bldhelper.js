@@ -171,7 +171,7 @@ var bldhelper = execMain(function() {
 				var curCnt = 1;
 				mulPerm *= mathlib.Cnk[remainCnt][curLen] * mathlib.fact[curLen - 1];
 				remainCnt -= curLen;
-				while (cyclesR[cyclesR.length - 1] == curLen) {
+				while (cyclesR.at(-1) == curLen) {
 					cyclesR.pop();
 					curCnt++;
 					mulPerm *= mathlib.Cnk[remainCnt][curLen] * mathlib.fact[curLen - 1];

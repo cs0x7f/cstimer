@@ -274,7 +274,7 @@ var image = (function() {
 				}
 				recons.push('/');
 			}
-			if (recons[recons.length - 1] == '/') {
+			if (recons.at(-1) == '/') {
 				recons.pop();
 			} else {
 				recons.push('/');
@@ -748,7 +748,7 @@ var image = (function() {
 			svg.height = (size + gap * 4) * width;
 
 			var cols = kernel.getProp('col15p').match(colre);
-			cols[size - 1] = cols[cols.length - 1];
+			cols[size - 1] = cols.at(-1);
 			for (var i = 0; i < size; i++) {
 				for (var j = 0; j < size; j++) {
 					var val = state[j * size + i];

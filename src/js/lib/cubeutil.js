@@ -258,15 +258,15 @@ var cubeutil = (function() {
 			var ret = [];
 
 			function pushSol(axis, pow) {
-				if (ret.length == 0 || ~~(ret[ret.length - 1] / 3) != axis) {
+				if (ret.length == 0 || ~~(ret.at(-1) / 3) != axis) {
 					ret.push(axis * 3 + pow);
 					return;
 				}
-				pow = (pow + ret[ret.length - 1] % 3 + 1) % 4;
+				pow = (pow + ret.at(-1) % 3 + 1) % 4;
 				if (pow == 3) {
 					ret.pop();
 				} else {
-					ret[ret.length - 1] = axis * 3 + pow;
+					ret.splice(-1, 1, axis * 3 + pow);
 				}
 			}
 

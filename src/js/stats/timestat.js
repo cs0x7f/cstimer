@@ -73,7 +73,7 @@ var TimeStat = execMain(function() {
 
 	TimeStat.prototype.bestAvg = function(idx, subIdx) {
 		var arr = this._bestAvg[idx] || [];
-		var ret = arr[arr.length - 1] || [-1, 0, -1, -1, 0];
+		var ret = arr.at(-1) || [-1, 0, -1, -1, 0];
 		if (subIdx !== undefined) {
 			return ret[subIdx];
 		}
