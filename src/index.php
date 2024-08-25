@@ -28,6 +28,11 @@
   <script type="text/javascript" src="js/export.js"></script>
   <script type="text/javascript" src="js/logohint.js"></script>
   <script type="text/javascript" src="js/timer.js"></script>
+  <script type="text/javascript" src="js/timer/input.js"></script>
+  <script type="text/javascript" src="js/timer/stackmat.js"></script>
+  <script type="text/javascript" src="js/timer/gan.js"></script>
+  <script type="text/javascript" src="js/timer/virtual.js"></script>
+  <script type="text/javascript" src="js/timer/giiker.js"></script>
   <script type="text/javascript" src="js/solver/ftocta.js"></script>
   <script type="text/javascript" src="js/solver/kilominx.js"></script>
   <script type="text/javascript" src="js/scramble/scramble.js"></script>

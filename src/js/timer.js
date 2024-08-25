@@ -26,18 +26,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 	var hardTime;
 	var lastTime = [];
 
-	var rawMoves = [];
-
 	function reset() {
 		var type = getProp('input');
 		setStatus(-1);
 
-		virtual333.setEnable(type == 'v' || type == 'q');
-		virtual333.reset();
+		timer.virtual.setEnable(type == 'v' || type == 'q');
+		timer.virtual.reset();
 		lcd.setEnable(type != 'i');
 		lcd.reset(/^[ilvq]$/.exec(type) || type == 'g' && getProp('giiVRC') != 'n', type == 'i');
 		keyboardTimer.reset(type);
-		inputTimer.setEnable(type == 'i');
+		timer.input.setEnable(type == 'i');
 		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
 	}
@@ -577,989 +575,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	})();
 
-	var inputTimer = (function() {
-		var input = $('<textarea id="inputTimer" rows="1" />');
-		var lastEmptyTrigger = 0;
-
-		function parseInput() {
-			//                          |1st     |2nd    |3rd    |4th        |5th        |6th              |7th                    |8th              |9th
-			var reg = /^\s*(?:[\d]+\. )?\(?(DNF)?\(?(\d*?):?(\d*?):?(\d*\.?\d*?)(\+)?\)?(?:=([\d:.+]+?))?(?:\[([^\]]+)\])?\)?\s*(?:   ([^@].*?))?(?:   @(.*?))?\s*$/;
-			var timeRe = /^(\d*?):?(\d*?):?(\d*\.?\d*?)$/;
-			var arr = input.val();
-			var now = $.now();
-			if (/^[\s\n]*$/.exec(arr) && now > lastEmptyTrigger + 500) {
-				kernel.pushSignal('ctrl', ['scramble', 'next']);
-				lastEmptyTrigger = now;
-				input.val('');
-				return;
-			}
-			arr = arr.split(/\s*[,\n]\s*/);
-			var time, ins, comment, scramble;
-			for (var i = 0; i < arr.length; i++) {
-				var m = reg.exec(arr[i]);
-				if (m != null && m[4] != "") {
-					time = ~~Math.round(3600000 * Math.floor(m[2]) + 60000 * Math.floor(m[3]) + 1000 * parseFloat(m[4]));
-					if (time <= 0) {
-						continue;
-					}
-					if (m[2] == '' && m[3] == '' && /^\d+$/.exec(m[4])) {
-						var intUN = kernel.getProp('intUN') || 20100;
-						var modUN = intUN % 10000;
-						time = Math.floor(time / modUN);
-						var hh = Math.floor(time / 10000000);
-						var mi = Math.floor(time / 100000) % 100;
-						var ss = time % 100000;
-						if (intUN > 20000) {
-							time = (60 * hh + mi) * 60000 + ss;
-						} else if (intUN > 10000) {
-							time = (100 * hh + mi) * 60000 + ss;
-						}
-					}
-					if (m[1] == "DNF") {
-						ins = -1;
-					} else if (m[5] == "+" && time > 2000) {
-						ins = 2000;
-						time -= 2000;
-					} else {
-						ins = 0;
-					}
-					var timeSplit = [];
-					if (m[6]) { //multi-phase timing
-						timeSplit = m[6].split('+').reverse();
-						var timeRemain = time;
-						for (var j = 0; j < timeSplit.length; j++) {
-							var mt = timeRe.exec(timeSplit[j]);
-							if (mt == null) {
-								timeRemain = 1e8;
-								break;
-							}
-							timeRemain -= Math.round(3600000 * Math.floor(mt[1]) + 60000 * Math.floor(mt[2]) + 1000 * parseFloat(mt[3]));
-							timeSplit[j] = Math.max(0, timeRemain);
-						}
-						if (Math.abs(timeRemain) > 10 * timeSplit.length) {
-							timeSplit = [];
-						} else {
-							timeSplit.pop();
-						}
-					}
-					comment = m[7] || "";
-					scramble = m[8];
-					//TODO timestamp = m[9]
-					curTime = [comment, scramble, [ins, time].concat(timeSplit)];
-					var timestamp = mathlib.str2time(m[9]);
-					if (timestamp) {
-						curTime.push(timestamp);
-					}
-					pushSignal('time', curTime);
-					kernel.clrKey();
-				}
-			}
-			input.val('');
-		}
-
-		function setEnable(enable) {
-			enable ? input.show() : input.hide();
-			if (enable) {
-				fobj = input;
-				input[0].select();
-				input.unbind("click").click(function() {
-					input[0].select();
-				});
-			} else {
-				fobj = undefined;
-			}
-		}
-
-		var lastDown = 0;
-		var lastStop = 0;
-		function onkeyup(keyCode, isTrigger) {
-			var now = $.now();
-			if (!checkUseIns()) {
-				return;
-			} else if (isTrigger) {
-				if (status == 0) {
-					setStatus(-1);
-				} else if (status == -1 || status == -3) {
-					if (now - lastStop < 500) {
-						lcd.fixDisplay(false, isTrigger);
-						return;
-					}
-				} else if (status == -4) {
-					startTime = now;
-					setStatus(-3);
-				}
-			}
-			lcd.fixDisplay(false, isTrigger);
-			if (isTrigger) {
-				kernel.clrKey();
-			}
-		}
-
-		function onkeydown(keyCode, isTrigger) {
-			var now = $.now();
-			if (!checkUseIns()) {
-				return;
-			} else if (now - lastDown < 200) {
-				return;
-			} else if (status == -3 || keyCode == 27) {
-				setStatus(isTrigger ? 0 : -1);
-				lcd.fixDisplay(false, false);
-			} else if (isTrigger && status == -1) {
-				setStatus(-4);
-			}
-			lcd.fixDisplay(true, isTrigger);
-			if (isTrigger) {
-				kernel.clrKey();
-			}
-		}
-
-		$(function() {
-			$('#lcd').after(input);
-		});
-
-		return {
-			setEnable: setEnable,
-			parseInput: parseInput,
-			onkeydown: function(keyCode, e) {
-				if (keyCode == 28) {
-					return;
-				}
-				return onkeydown(keyCode, keyboardTimer.detectTrigger(keyCode, 0, e));
-			},
-			onkeyup: function(keyCode, e) {
-				return onkeyup(keyCode, keyboardTimer.detectTrigger(keyCode, 1, e));
-			},
-			clear: function() {
-				input.val('');
-			}
-		}
-	})();
-
-	var stackmatTimer = (function() {
-		var enable = false;
-		var lastState = {};
-		var inspectionTime;
-
-		function stackmatCallback(state) {
-			if (!enable) {
-				return;
-			}
-			var now = $.now();
-			if (!state.on) {
-				hardTime = undefined;
-				setStatus(-1);
-				lcd.fixDisplay(false, true);
-				lastState = state;
-				return;
-			}
-			hardTime = state.time_milli;
-			lcd.renderUtil();
-			if (state.running) {
-				if (status == -3 || status == -4) {
-					inspectionTime = now - startTime - hardTime;
-					lcd.reset();
-				}
-				curTime = [0];
-				setStatus(1);
-				startTime = now - hardTime;
-				lcd.fixDisplay(false, true);
-			} else if (status == -1 && checkUseIns() && hardTime == 0 && (state.signalHeader == 'R' || state.signalHeader == 'L')) {
-				setStatus(-3);
-				startTime = now;
-				lcd.fixDisplay(false, true);
-			} else if (status != -3 && status != -4) {
-				setStatus(-1);
-				lcd.fixDisplay(false, true);
-			}
-			if (lastState.running && !state.running && state.time_milli != 0) {
-				inspectionTime = checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
-				curTime = [inspectionTime, ~~hardTime];
-				pushSignal('time', curTime);
-			}
-			timerDisplay(state);
-			lastState = state;
-		}
-
-		function timerDisplay(state) {
-			if (state.greenLight) {
-				lcd.color('g');
-			} else if (state.rightHand && state.leftHand) {
-				lcd.color('r');
-			} else if (status == -4) {
-				lcd.color('g');
-			} else {
-				lcd.color('');
-			}
-			lcd.setRunning(status == -3 || (state.running && state.signalHeader != 67));
-		}
-
-		function onkeyup(keyCode) {
-			var now = $.now();
-			if (keyCode == 32 && status == -4) {
-				setStatus(-3);
-				lcd.reset();
-				startTime = now;
-				lcd.fixDisplay(false, keyCode == 32);
-			}
-			if (keyCode == 32) {
-				kernel.clrKey();
-			}
-		}
-
-		function onkeydown(keyCode) {
-			var now = $.now();
-
-			if (keyCode == 32 && status == -1 && checkUseIns() && lastState.on && lastState.time_milli == 0) {
-				setStatus(-4);
-				startTime = now;
-				lcd.fixDisplay(true, true);
-			} else if (keyCode == 27 && status <= -1) { //inspection or ready to start, press ESC to reset
-				setStatus(-1);
-				lcd.fixDisplay(true, false);
-			}
-			if (keyCode == 32) {
-				kernel.clrKey();
-			}
-		}
-
-		return {
-			setEnable: function(input) { //s: stackmat, m: moyu
-				enable = input == 's' || input == 'm';
-				if (enable) {
-					stackmatutil.setCallBack(stackmatCallback);
-					stackmatutil.init(input, false).then($.noop, function() {
-						kernel.showDialog([$('<div>Press OK To Connect To Stackmat</div>'), function() {
-							stackmatutil.init(input, true).then($.noop, console.log);
-						}, 0, 0], 'share', 'Stackmat Connect');
-					});
-				} else {
-					stackmatutil.stop();
-				}
-			},
-			onkeyup: onkeyup,
-			onkeydown: onkeydown
-		}
-	})();
-
-	// Timer Implementation that uses GAN Smart Timer via its Bluetooth protocol
-	var ganSmartTimer = (function () {
-
-		var enable = false;
-		var inspectionTime = 0;
-
-		function onGanTimerEvent(timerEvent) {
-			if (!enable)
-				return;
-			DEBUG && console.log('[gantimer] timer event received', GanTimerState[timerEvent.state], timerEvent);
-			switch (timerEvent.state) {
-				case GanTimerState.HANDS_ON: // both hands placed on timer
-					lcd.color('r');
-					break;
-				case GanTimerState.HANDS_OFF: // hands removed from timer before grace period expired
-					lcd.fixDisplay(false, true);
-					break;
-				case GanTimerState.GET_SET:   // grace period expired and timer is ready to start
-					lcd.color('g');
-					break;
-				case GanTimerState.IDLE: // timer reset button pressed
-					inspectionTime = 0;
-					if (hardTime > 0 || status != -1) { // reset timer / cancel inspection timer
-						hardTime = 0;
-						setStatus(-1);
-						lcd.reset();
-						lcd.fixDisplay(false, true);
-					} else if (status == -1 && checkUseIns()) { // start inspection timer if was idle and inspection enabled in settings
-						setStatus(-3);
-						startTime = $.now();
-						lcd.fixDisplay(false, true);
-					}
-					lcd.renderUtil();
-					break;
-				case GanTimerState.RUNNING: // timer is started
-					if (status == -3) { // if inspection timer was running, record elapsed inspection time
-						inspectionTime = $.now() - startTime;
-						// 0 == Normal, 2000 == +2, -1 == DNF
-						inspectionTime = checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
-					}
-					startTime = $.now();
-					lcd.reset();
-					curTime = [inspectionTime];
-					setStatus(1);
-					lcd.fixDisplay(false, true);
-					break;
-				case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
-					hardTime = timerEvent.recordedTime.asTimestamp;
-					curTime[1] = hardTime;
-					setStatus(-1);
-					lcd.renderUtil();
-					lcd.fixDisplay(false, true);
-					pushSignal('time', curTime);
-					break;
-				case GanTimerState.DISCONNECT: // timer is switched off or something else
-					hardTime = undefined;
-					setStatus(-1);
-					lcd.renderUtil();
-					lcd.fixDisplay(false, true);
-					reconnectTimer();
-					break;
-			}
-
-		}
-
-		function reconnectTimer() {
-			$.delayExec('ganTimerReconnect', function () {
-				DEBUG && console.log('[gantimer] attempting to reconnect timer device');
-				connectTimer(true);
-			}, 2500);
-		}
-
-		function connectTimer(reconnect) {
-			GanTimerDriver.connect(reconnect).then(function () {
-				DEBUG && console.log('[gantimer] timer device successfully connected');
-				GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
-				hardTime = 0;
-				setStatus(-1);
-				lcd.reset();
-				lcd.renderUtil();
-				lcd.fixDisplay(false, true);
-			}).catch(function (err) {
-				DEBUG && console.log('[gantimer] failed to connect to timer', err);
-				if (!reconnect) {
-					alert(err);
-				}
-			});
-		}
-
-		function showConnectionDialog() {
-			var inspMsg = $('<div>').addClass('click')
-				.append('If you have enabled WCA inspection in settings,<br>use GAN logo button right on the timer to start/cancel inspection.');
-			var dialogMsg = $('<div>')
-				.append('<br><br>')
-				.append('<b>Press OK to connect to GAN Smart Timer</b>')
-				.append('<br><br>')
-				.append(inspMsg)
-				.append(bluetoothInstructDiv);
-			disconnectTimer().then(function () {
-				kernel.showDialog([dialogMsg, function () {
-					connectTimer();
-				}, 0, 0], 'share', 'GAN Smart Timer');
-			});
-		}
-
-		function disconnectTimer() {
-			return GanTimerDriver.disconnect();
-		}
-
-		function setEnableImpl(input) {
-			enable = input == 'b';
-			if (enable) {
-				hardTime = undefined;
-				showConnectionDialog();
-			} else {
-				disconnectTimer();
-			}
-		}
-
-		function onKeyUpImpl(keyCode) {
-			if (keyCode == 32 && !GanTimerDriver.isConnected()) {
-				showConnectionDialog();
-			}
-		}
-
-		return {
-			setEnable: setEnableImpl,
-			onkeyup: onKeyUpImpl,
-			onkeydown: $.noop
-		};
-
-	})();
-
-	var virtual333 = (function() {
-		var puzzleObj;
-		var vrcType = '';
-		var insTime = 0;
-		var moveCnt = 0;
-		var totPhases = 1;
-
-		//mstep: 0 move start, 1 move doing, 2 move finish
-		function moveListener(move, mstep, ts) {
-			if (mstep == 1) {
-				return;
-			}
-			var now = ts || $.now();
-			if (status == -3 || status == -2) {
-				if (puzzleObj.isRotation(move) && !/^(333ni|444bld|555bld)$/.exec(curScrType)) {
-					if (mstep == 0) {
-						rawMoves[0].push([puzzleObj.move2str(move), 0]);
-					}
-					return;
-				} else {
-					if (checkUseIns()) {
-						insTime = now - startTime;
-					} else {
-						insTime = 0;
-					}
-					startTime = now;
-					moveCnt = 0;
-					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
-					setStatus(curScrSize == 3 && curScrType != "r3" ? cubeutil.getStepCount(getProp('vrcMP', 'n')) : 1);
-					var inspectionMoves = rawMoves[0];
-					rawMoves = [];
-					for (var i = 0; i < status; i++) {
-						rawMoves[i] = [];
-					}
-					rawMoves[status] = inspectionMoves;
-					totPhases = status;
-					updateMulPhase(totPhases, puzzleObj.isSolved(getProp('vrcMP', 'n')), now);
-					fixRelayCounter();
-					lcd.fixDisplay(false, true);
-				}
-			}
-			if (status >= 1) {
-				if (/^(333ni|444bld|555bld)$/.exec(curScrType) && !puzzleObj.isRotation(move)) {
-					puzzleObj.toggleColorVisible(puzzleObj.isSolved(getProp('vrcMP', 'n')) == 0);
-				}
-				if (mstep == 0) {
-					rawMoves[status - 1].push([puzzleObj.move2str(move), now - startTime]);
-				}
-				var curProgress;
-				if (mstep == 2) {
-					curProgress = puzzleObj.isSolved(getProp('vrcMP', 'n'));
-					updateMulPhase(totPhases, curProgress, now);
-					fixRelayCounter();
-				}
-				if (mstep == 2 && curProgress == 0) {
-					moveCnt += puzzleObj.moveCnt();
-					if (/^r\d+$/.exec(curScrType) && curScramble.length != 0) {
-						if (curScrType != "r3") {
-							curScrSize++;
-						}
-						reset(true);
-						scrambleIt();
-						return;
-					}
-					lcd.setStaticAppend('');
-					setStatus(-1);
-					$('#lcd').css({'visibility': 'unset'}); // disable dragging
-					lcd.fixDisplay(false, true);
-					rawMoves.reverse();
-					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
-				}
-			}
-		}
-
-		function reset(temp) {
-			if (isReseted && getProp('input') == vrcType || !isEnable) {
-				return;
-			}
-			isReseted = true;
-			vrcType = getProp('input');
-			var size = curScrSize;
-			if (!size) {
-				size = 3;
-			}
-			var options = {
-				puzzle: "cube" + size,
-				allowDragging: true
-			};
-			if (/^udpoly$/.exec(curPuzzle)) {
-				options.puzzle = curPuzzle;
-				options.scramble = curScramble;
-			} else if (puzzleFactory.twistyre.exec(curPuzzle)) {
-				options.puzzle = curPuzzle;
-			}
-			options['style'] = getProp('input');
-			puzzleFactory.init(options, moveListener, div, function(ret, isInit) {
-				puzzleObj = ret;
-				if (isInit && !puzzleObj) {
-					div.css('height', '');
-					div.html('--:--');
-				}
-				if (!temp || isInit) {
-					lcd.setStaticAppend('');
-					lcd.fixDisplay(false, true);
-					lcd.renderUtil();
-					setSize(getProp('timerSize'));
-				}
-			});
-		}
-
-		function fixRelayCounter() {
-			if (/^r\d+$/.exec(curScrType)) {
-				lcd.setStaticAppend((curScramble.length + 1) + "/" + relayScrs.length);
-				lcd.renderUtil();
-			}
-		}
-
-		function scrambleIt() {
-			reset();
-			var scramble = curScramble;
-			if (/^r\d+$/.exec(curScrType)) {
-				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
-				fixRelayCounter();
-			}
-			scramble = puzzleObj.parseScramble(scramble, true);
-			isReseted = false;
-
-			puzzleObj.applyMoves(scramble);
-			puzzleObj.moveCnt(true);
-			rawMoves = [
-				[]
-			];
-		}
-
-		function onkeydown(keyCode) {
-			if (puzzleObj == undefined) {
-				return;
-			}
-			var now = $.now();
-			if (status == -1) { // idle
-				if (keyCode == 32) {
-					if (relayScrs) {
-						curScramble = relayScrs.slice();
-					}
-					scrambleIt();
-					if (checkUseIns()) {
-						startTime = now;
-						setStatus(-3); //inspection
-					} else {
-						lcd.val(0);
-						setStatus(-2); //ready
-					}
-					$('#lcd').css({'visibility': 'hidden'}); // enable dragging
-					lcd.fixDisplay(false, true);
-				}
-			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
-				if (keyCode == 27 || keyCode == 28) { //ESC
-					var recordDNF = status >= 1;
-					lcd.setStaticAppend('');
-					setStatus(-1);
-					reset();
-					$('#lcd').css({'visibility': 'unset'}); // disable dragging
-					lcd.fixDisplay(false, true);
-					if (recordDNF) {
-						rawMoves.reverse();
-						pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
-					}
-				} else {
-					var mappedCode = help.getMappedCode(keyCode);
-					var a = {
-						"keyCode": mappedCode
-					};
-					puzzleObj.keydown(a);
-				}
-			}
-			if (keyCode == 27 || keyCode == 32) {
-				kernel.clrKey();
-			}
-		}
-
-		var curScramble;
-		var relayScrs;
-		var curScrType;
-		var curScrSize;
-		var curPuzzle;
-		var types = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'];
-		var isReseted = false;
-
-		function procSignal(signal, value) {
-			if (signal == 'scramble' || signal == 'scrambleX') {
-				curScrType = value[0];
-				curScramble = value[1];
-				var puzzle = tools.puzzleType(curScrType);
-				var size = types.indexOf(puzzle);
-				if (puzzle == 'cubennn') {
-					size = value[2];
-				}
-				if ((size != -1 || puzzleFactory.twistyre.exec(puzzle)) && (curScrSize != size || curPuzzle != puzzle)) {
-					curScrSize = size;
-					curPuzzle = puzzle;
-					isReseted = false;
-					reset();
-				}
-				var m = /^r(\d)\d*$/.exec(curScrType);
-				if (m) {
-					relayScrs = curScramble.split('\n');
-					if (curScrSize != ~~m[1]) {
-						curScrSize = ~~m[1];
-						isReseted = false;
-						reset();
-					}
-				} else {
-					relayScrs = null;
-				}
-			}
-		}
-
-		var div = $('<div />');
-		var isEnable = false;
-
-		function setEnable(enable) {
-			isEnable = enable;
-			if (enable) {
-				div.show();
-			} else {
-				div.hide();
-				isReseted = false;
-			}
-		}
-
-		function setSize(value) {
-			div.css('height', value * $('#logo').width() / 9 + 'px');
-			puzzleObj && puzzleObj.resize();
-		}
-
-		$(function() {
-			regListener('timer', 'scramble', procSignal);
-			regListener('timer', 'scrambleX', procSignal);
-			div.appendTo("#container");
-		});
-		return {
-			onkeydown: onkeydown,
-			setEnable: setEnable,
-			setSize: setSize,
-			reset: reset
-		}
-	})();
-
-
-	var giikerTimer = (function() {
-
-		var enable = false;
-		var enableVRC = false;
-		var waitReadyTid = 0;
-		var moveReadyTid = 0;
-		var insTime = 0;
-		var div = $('<div />');
-		var totPhases = 1;
-		var currentFacelet = mathlib.SOLVED_FACELET;
-
-		var giikerVRC = (function() {
-			var isReseted = false;
-			var curVRCCubie = new mathlib.CubieCube();
-			var tmpCubie1 = new mathlib.CubieCube();
-			var puzzleObj;
-			var curOri = -1;
-
-			function resetVRC(temp, force) {
-				if ((isReseted && !force) || !enableVRC) {
-					return;
-				}
-				var options = {
-					puzzle: "cube3",
-					style: getProp('giiVRC')
-				};
-				puzzleFactory.init(options, $.noop, div, function(ret, isInit) {
-					puzzleObj = ret;
-					if (isInit && !puzzleObj) {
-						div.css('height', '');
-						div.html('--:--');
-					}
-					if (!temp || isInit) {
-						lcd.fixDisplay(false, true);
-						setSize(getProp('timerSize'));
-					}
-					curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
-					if (!puzzleObj) {
-						return;
-					}
-					var preScramble = puzzleObj.parseScramble('U2 U2', true);
-					curVRCCubie.ori = 0;
-					for (var i = 0; i < preScramble.length; i++) {
-						curVRCCubie.selfMoveStr(puzzleObj.move2str(preScramble[i]));
-					}
-					puzzleObj.applyMoves(preScramble); // process pre scramble (cube orientation)
-					var targetOri = getProp('giiOri');
-					targetOri = targetOri == 'auto' ? -1 : ~~targetOri;
-					setOri(targetOri);
-				});
-				isReseted = true;
-			}
-
-			function setSize(value) {
-				div.css('height', value * $('#logo').width() / 9 + 'px');
-				puzzleObj && puzzleObj.resize();
-			}
-
-			function setState(state, prevMoves, isFast) {
-				if (puzzleObj == undefined || !enableVRC) {
-					return;
-				}
-				tmpCubie1.fromFacelet(state);
-				var todoMoves = [];
-				var shouldReset = true;
-				for (var i = 0; i < prevMoves.length; i++) {
-					todoMoves.push(prevMoves[i]);
-					tmpCubie1.selfMoveStr(prevMoves[i], true);
-					if (tmpCubie1.isEqual(curVRCCubie)) {
-						shouldReset = false;
-						break;
-					}
-				}
-				if (shouldReset) { //cannot get current state according to prevMoves
-					resetVRC(false);
-					curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
-					todoMoves = scramble_333.genFacelet(state);
-				} else {
-					todoMoves = todoMoves.reverse().join(' ');
-				}
-				var scramble;
-				if (todoMoves.match(/^\s*$/) || !puzzleObj) {
-					scramble = [];
-				} else {
-					scramble = puzzleObj.parseScramble(cubeutil.getConjMoves(todoMoves, true, curVRCCubie.ori));
-				}
-				if (scramble.length < 5) {
-					puzzleObj.addMoves(scramble);
-				} else {
-					puzzleObj.applyMoves(scramble);
-				}
-				isReseted = false;
-				curVRCCubie.fromFacelet(state);
-			}
-
-			function setOri(ori) {
-				curOri = ori;
-				if (curOri == -1 || curVRCCubie.ori == curOri) {
-					return;
-				}
-				var todoRot = mathlib.CubieCube.rotMulI[curOri][curVRCCubie.ori];
-				var todoMoves = mathlib.CubieCube.rot2str[todoRot].split(/\s+/);
-				for (var i = 0; i < todoMoves.length; i++) {
-					curVRCCubie.selfMoveStr(todoMoves[i]);
-				}
-				puzzleObj.applyMoves(puzzleObj.parseScramble(todoMoves.join(' ')));
-			}
-
-			return {
-				resetVRC: resetVRC, //reset to solved
-				setState: setState,
-				setOri: setOri,
-				setSize: setSize
-			}
-		})();
-
-		function clearReadyTid() {
-			if (waitReadyTid) {
-				clearTimeout(waitReadyTid);
-				waitReadyTid = 0;
-			}
-			if (moveReadyTid) {
-				clearTimeout(moveReadyTid);
-				moveReadyTid = 0;
-			}
-		}
-
-		function giikerCallback(facelet, prevMoves, lastTs) {
-			var locTime = lastTs[1] || $.now();
-			var prevFacelet = currentFacelet;
-			currentFacelet = facelet;
-			if (!enable) {
-				return;
-			}
-			if (enableVRC) {
-				giikerVRC.setState(facelet, prevMoves, false);
-			}
-			clearReadyTid();
-			var solvingMethod = getProp('vrcMP', 'n');
-			if (status == -1) {
-				if (canStart(currentFacelet)) {
-					var delayStart = getProp('giiSD');
-					if (delayStart == 's') {
-						//according to scramble
-						if (giikerutil.checkScramble()) {
-							markScrambled(locTime);
-						}
-					} else if (delayStart != 'n') {
-						waitReadyTid = setTimeout(function() {
-							markScrambled(locTime);
-						}, ~~delayStart * 1000);
-					}
-					var moveStart = getProp('giiSM');
-					if (moveStart != 'n') {
-						var movere = {
-							'x4': /^([URFDLB][ '])\1\1\1/,
-							'xi2': /^([URFDLB])( \1'\1 \1'|'\1 \1'\1 )/
-						} [moveStart];
-						if (movere.exec(prevMoves.join(''))) {
-							moveReadyTid = setTimeout(function() {
-								markScrambled(locTime);
-							}, 1000);
-						}
-					}
-				}
-			} else if (status == -3 || status == -2) {
-				if (checkUseIns()) {
-					insTime = locTime - startTime;
-				} else {
-					insTime = 0;
-				}
-				startTime = locTime;
-				curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
-				setStatus(cubeutil.getStepCount(solvingMethod));
-				rawMoves = [];
-				for (var i = 0; i < status; i++) {
-					rawMoves[i] = [];
-				}
-				totPhases = status;
-				var initialProgress = cubeutil.getProgress(prevFacelet, solvingMethod);
-				updateMulPhase(totPhases, initialProgress, locTime);
-				lcd.reset(enableVRC);
-				lcd.fixDisplay(false, true);
-			}
-			if (status >= 1) {
-				if (prevMoves.length > 0)
-					rawMoves[status - 1].push([prevMoves[0], lastTs[0], lastTs[1]]);
-				var curProgress = cubeutil.getProgress(facelet, solvingMethod);
-				updateMulPhase(totPhases, curProgress, locTime);
-
-				if (isGiiSolved(currentFacelet)) {
-					rawMoves.reverse();
-					var pretty = cubeutil.getPrettyReconstruction(rawMoves, solvingMethod);
-					var moveCnt = pretty.totalMoves;
-					giikerutil.setLastSolve(pretty.prettySolve);
-					curTime[1] = locTime - startTime;
-					setStatus(-1);
-					giikerutil.reSync();
-					lcd.fixDisplay(false, true);
-					if (curTime[1] != 0) {
-						var sol = giikerutil.tsLinearFix(rawMoves.flat()); // fit deviceTime to locTime
-						var cnt = 0;
-						DEBUG && console.log('time fit, old=', curTime);
-						for (var i = 0; i < rawMoves.length; i++) {
-							cnt += rawMoves[i].length;
-							curTime[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
-						}
-						DEBUG && console.log('time fit, new=', curTime);
-						sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
-						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
-					} else if (getProp('giiMode') != 'n') {
-						kernel.pushSignal('ctrl', ['scramble', 'next']);
-					}
-				}
-			}
-		}
-
-		function canStart(facelet) {
-			return facelet != mathlib.SOLVED_FACELET || getProp('giiMode') != 'n';
-		}
-
-		function isGiiSolved(facelet) {
-			if (getProp('giiMode') != 'n') {
-				var curScrType = (tools.getCurScramble() || [])[0];
-				var chkstep = {
-					'coll': 'cpll',
-					'cmll': 'cmll',
-					'oll': 'oll',
-					'eols': 'oll',
-					'wvls': 'oll',
-					'zbls': 'eoll'
-				}[curScrType];
-				if (chkstep) {
-					return cubeutil.getStepProgress(chkstep, facelet) == 0;
-				}
-			}
-			return facelet == mathlib.SOLVED_FACELET;
-		}
-
-		function markScrambled(now) {
-			clearReadyTid();
-			if (status == -1) {
-				if (kernel.getProp('giiMode') == 'n') {
-					if (!giikerutil.checkScramble()) {
-						var gen = scramble_333.genFacelet(currentFacelet);
-						pushSignal('scramble', ['333', cubeutil.getConjMoves(gen, true), 0]);
-					}
-					giikerutil.markScrambled();
-				} else {
-					giikerutil.markScrambled(true);
-				}
-				setStatus(-2);
-				startTime = now;
-				lcd.reset(enableVRC);
-				lcd.fixDisplay(true, true);
-				if (getProp('giiBS')) {
-					metronome.playTick();
-				}
-			}
-		}
-
-		function setVRC(enable) {
-			enableVRC = enable;
-			enable ? div.show() : div.hide();
-			if (enable) {
-				giikerVRC.resetVRC(true, true);
-			}
-		}
-
-		$(function() {
-			div.appendTo("#container");
-			regListener('giikerVRC', 'property', function(signal, value) {
-				if (enableVRC) {
-					giikerVRC.resetVRC(true, true);
-					giikerVRC.setState(currentFacelet, ['U2', 'U2'], false);
-				}
-			}, /^(?:preScrT?|isTrainScr|giiOri)$/);
-			regListener('giikerVRC', 'scramble', function(signal, value) {
-				if (enableVRC && status == -1 && getProp('giiMode') == 'at' && GiikerCube.isConnected()) {
-					clearReadyTid();
-					waitReadyTid = setTimeout(function() {
-						markScrambled($.now());
-					}, 500);
-				}
-			});
-		});
-
-		return {
-			setEnable: function(input) { //s: stackmat, m: moyu
-				enable = input == 'g';
-				if (enable && !GiikerCube.isConnected()) {
-					giikerutil.setCallback(giikerCallback);
-					kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(bluetoothInstructDiv), function () {
-						giikerutil.init().catch(function(error) {
-							DEBUG && console.log('[giiker] init failed', error);
-						});
-					}, 0, 0], 'share', 'Bluetooth Connect');
-				} else if (!enable) {
-					giikerutil.stop();
-				}
-				setVRC(enable && getProp('giiVRC') != 'n');
-			},
-			onkeydown: function(keyCode) {
-				var now = $.now();
-				if (keyCode == 27 || keyCode == 28) {
-					var recordDNF = status >= 1;
-					clearReadyTid();
-					setStatus(-1);
-					giikerutil.reSync();
-					lcd.fixDisplay(false, true);
-					if (recordDNF) {
-						curTime[0] = -1;
-						rawMoves.reverse();
-						var sol = giikerutil.tsLinearFix(rawMoves.flat()); // fit deviceTime to locTime
-						var cnt = 0;
-						DEBUG && console.log('time fit, old=', curTime);
-						for (var i = 0; i < rawMoves.length; i++) {
-							cnt += rawMoves[i].length;
-							curTime[rawMoves.length - i] = cnt == 0 ? 0 : sol[cnt - 1][1];
-						}
-						DEBUG && console.log('time fit, new=', curTime);
-						sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
-						pushSignal('time', ["", 0, curTime, 0, [sol, '333']]);
-					}
-				} else if (keyCode == 32 && status == -1 && getProp('giiSK') && canStart(currentFacelet)) {
-					markScrambled($.now());
-				}
-			},
-			setVRC: setVRC,
-			setSize: giikerVRC.setSize
-		}
-	})();
-
 	function updateTimerOffset(clear) {
 		DEBUG && console.log('[timer] update timer offset');
-		virtual333.setSize(getProp('timerSize'));
-		giikerTimer.setSize(getProp('timerSize'));
+		timer.virtual.setSize(getProp('timerSize'));
+		timer.giiker.setSize(getProp('timerSize'));
 		if ($('html').hasClass('m') && !clear) {
 			var isToolTop = $('html').hasClass('toolt');
 			var winHeight = $('html').height();
@@ -1612,7 +631,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		if (focusObj.is('input, textarea, select')) {
 			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer') {
 				if (keyCode == 13) {
-					inputTimer.parseInput();
+					timer.input.parseInput();
 				}
 			} else {
 				return;
@@ -1632,20 +651,20 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				keyboardTimer.onkeydown(keyCode, e);
 				break;
 			case 's':
-				stackmatTimer.onkeydown(keyCode, e);
+				timer.stackmat.onkeydown(keyCode, e);
 				break;
 			case 'b':
-				ganSmartTimer.onkeydown(keyCode, e);
+				timer.gan.onkeydown(keyCode, e);
 				break;
 			case 'i':
-				inputTimer.onkeydown(keyCode, e);
+				timer.input.onkeydown(keyCode, e);
 				break;
 			case 'v':
 			case 'q':
-				virtual333.onkeydown(keyCode, e);
+				timer.virtual.onkeydown(keyCode, e);
 				break;
 			case 'g':
-				giikerTimer.onkeydown(keyCode, e);
+				timer.giiker.onkeydown(keyCode, e);
 				break;
 		}
 	}
@@ -1659,7 +678,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		if (focusObj.is('input, textarea, select')) {
 			if (getProp('input') == 'i' && focusObj.prop('id') == 'inputTimer') {
 				if (keyCode == 13) {
-					inputTimer.clear();
+					timer.input.clear();
 				}
 			} else {
 				return;
@@ -1673,13 +692,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				keyboardTimer.onkeyup(keyCode, e);
 				break;
 			case 's':
-				stackmatTimer.onkeyup(keyCode, e);
+				timer.stackmat.onkeyup(keyCode, e);
 				break;
 			case 'b':
-				ganSmartTimer.onkeyup(keyCode, e);
+				timer.gan.onkeyup(keyCode, e);
 				break;
 			case 'i':
-				inputTimer.onkeyup(keyCode, e);
+				timer.input.onkeyup(keyCode, e);
 				break;
 		}
 	}
@@ -1699,27 +718,27 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regListener('timer', 'property', function(signal, value) {
 			if (value[0] == 'timerSize') {
 				container.css('font-size', value[1] + 'em');
-				virtual333.setSize(value[1]);
-				giikerTimer.setSize(value[1]);
+				timer.virtual.setSize(value[1]);
+				timer.giiker.setSize(value[1]);
 			}
 			if (value[0] == 'timerSize' || value[0] == 'phases') {
 				$('#multiphase').css('font-size', getProp('timerSize') / Math.max(getProp('phases'), 4) + 'em')
 			}
 			if (value[0] == 'input') {
-				stackmatTimer.setEnable(value[1]);
-				giikerTimer.setEnable(value[1]);
-				ganSmartTimer.setEnable(value[1]);
+				timer.stackmat.setEnable(value[1]);
+				timer.giiker.setEnable(value[1]);
+				timer.gan.setEnable(value[1]);
 				giikerutil.setEventCallback(giikerEvtCallback);
 			}
 			if (value[0] == 'showAvg') {
 				avgDiv.showAvgDiv(value[1]);
 			}
 			if (value[0] == 'giiVRC' && value[2] != 'set') {
-				giikerTimer.setVRC(getProp('input') == 'g' && value[1] != 'n');
+				timer.giiker.setVRC(getProp('input') == 'g' && value[1] != 'n');
 			}
 			if (value[0] == 'vrcOri' && value[2] != 'set') {
-				virtual333.setSize(getProp('timerSize'));
-				giikerTimer.setSize(getProp('timerSize'));
+				timer.virtual.setSize(getProp('timerSize'));
+				timer.giiker.setSize(getProp('timerSize'));
 			}
 			if (['toolPos', 'scrHide', 'toolHide', 'statHide'].indexOf(value[0]) >= 0) {
 				updateTimerOffsetAsync(false);
@@ -1794,14 +813,21 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		showAvgDiv: avgDiv.showAvgDiv,
 		refocus: refocus,
 		softESC: softESC,
-		getStatus: function() {
-			return status;
-		},
-		getCurTime: function(now) {
-			return status > 0 ? (now || $.now()) - startTime : 0;
-		},
-		getStartTime: function() {
-			return startTime || $.now();
-		}
+		checkUseIns: checkUseIns,
+		getStatus: function() { return status; },
+		setStatus: setStatus,
+		getCurTime: function(now) { return status > 0 ? (now || $.now()) - startTime : 0; },
+		getStartTime: function() { return startTime || $.now(); },
+		setFobj: function(obj) { fobj = obj; },
+		getStart: function() { return startTime; },
+		setStart: function(time) { startTime = time; },
+		getCur: function() { return curTime; },
+		setCur: function(time) { curTime = time; },
+		getHard: function() { return hardTime; },
+		setHard: function(time) { hardTime = time; },
+		updateMulPhase: updateMulPhase,
+		getBTDiv: function() { return bluetoothInstructDiv; },
+		keyboard: keyboardTimer,
+		lcd: lcd
 	};
 }, [kernel.regListener, kernel.regProp, kernel.getProp, kernel.pretty, kernel.ui, kernel.pushSignal]);
