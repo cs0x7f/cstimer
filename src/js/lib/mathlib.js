@@ -863,11 +863,12 @@ var mathlib = (function() {
 				var aface = adjFaces[face][i];
 				var ridx = adjFaces[aface].indexOf(face);
 				if (wide == 0 || wide == 1) {
-					swaps[i].push(base + i);
-					swaps[i].push(base + i + 5);
-					swaps[i].push(aface * 11 + ridx % 5 + 5);
-					swaps[i].push(aface * 11 + ridx % 5);
-					swaps[i].push(aface * 11 + (ridx + 1) % 5);
+					swaps[i].push(
+						base + i,
+						base + i + 5,
+						aface * 11 + ridx % 5 + 5,
+						aface * 11 + ridx % 5,
+						aface * 11 + (ridx + 1) % 5);
 				}
 				if (wide == 1 || wide == 2) {
 					swaps[i].push(aface * 11 + 10);
@@ -881,12 +882,14 @@ var mathlib = (function() {
 					var opp = oppFace[face];
 					var oaface = adjFaces[opp][ii];
 					var oridx = adjFaces[oaface].indexOf(opp);
-					swaps[i].push(opp * 11 + ii);
-					swaps[i].push(opp * 11 + ii + 5);
-					swaps[i].push(oaface * 11 + 10);
+					swaps[i].push(
+						opp * 11 + ii,
+						opp * 11 + ii + 5,
+						oaface * 11 + 10);
 					for (var j = 0; j < 5; j++) {
-						swaps[i].push(oaface * 11 + (oridx + j) % 5 + 5);
-						swaps[i].push(oaface * 11 + (oridx + j) % 5);
+						swaps[i].push(
+							oaface * 11 + (oridx + j) % 5 + 5,
+							oaface * 11 + (oridx + j) % 5);
 					}
 				}
 			}
@@ -1024,11 +1027,7 @@ var mathlib = (function() {
 	};
 
 	_.toStr = function(sol, move_map, power_map) {
-		var ret = [];
-		for (var i = 0; i < sol.length; i++) {
-			ret.push(move_map[sol[i][0]] + power_map[sol[i][1]]);
-		}
-		return ret.join(' ').replace(/ +/g, ' ');
+		return sol.map((move) => move_map[move[0]] + power_map[move[1]]).join(' ').replace(/ +/g, ' ');
 	};
 
 	// ida search algorithm
@@ -1122,89 +1121,6 @@ var mathlib = (function() {
 	}
 
 	_ = gSolver.prototype;
-
-	/*
-	_.calcNumOfStates = function() {
-		var len = this.solvedStates[0].length;
-		var genMove = [];
-		for (var moveIdx = 0; moveIdx < this.movesList.length; moveIdx++) {
-			var state = [];
-			for (var i = 0; i < len; i++) {
-				state.push(i + 32);
-			}
-			var newState = this.doMove(String.fromCharCode.apply(null, state), this.movesList[moveIdx][0]);
-			if (!newState) {
-				continue;
-			}
-			for (var i = 0; i < len; i++) {
-				state[i] = newState.charCodeAt(i) - 32;
-			}
-			genMove.push(state);
-		}
-		console.log(genMove);
-		var sgsObj = new SchreierSims(genMove);
-		console.log(sgsObj.size());
-		return sgsObj;
-
-		var genColor = [];
-		var state = this.solvedStates[0];
-		var e = [];
-		for (var i = 0; i < len; i++) {
-			e[i] = i;
-		}
-		var checked = [];
-		for (var i = 0; i < len; i++) {
-			if (checked[i]) {
-				continue;
-			}
-			for (var j = i + 1; j < len; j++) {
-				if (state[i] == state[j] && (i % 9 % 2) == (j % 9 % 2)) {
-					var perm = e.slice();
-					perm[i] = j;
-					perm[j] = i;
-					checked[j] = 1;
-					genColor.push(perm);
-				}
-			}
-		}
-
-		var sgsObj = new SchreierSims(genMove);
-		sgsObj.minkwitz();
-		var perm = e.slice();
-		var initMv = [];
-		for (var i = 0; i < 50; i++) {
-			var mv = rn(genMove.length);
-			perm = sgsObj.permMult(genMove[mv], perm);
-			initMv.push(sgsObj.invMap[mv]);
-		}
-		var sol = sgsObj.getGen(perm);
-		var move2str = function(v) { return "URFDLB"[~~(v/3)] + " 2'"[v%3]; };
-		sol = $.map(Array.prototype.concat.apply([], sol).reverse(), move2str).join(' ');
-		console.log($.map(initMv.reverse(), move2str).join(' '), '\n', sol);
-
-		var sgs0, sgs1, sgs01;
-		for (var r = 0; r < 100; r++) {
-			var shuffle = [];
-			for (var i = 0; i < len; i++) {
-				shuffle[i] = i;
-			}
-			for (var i = 0; i < len; i++) {
-				var j = ~~(Math.random() * (len - i)) + i;
-				var tmp = shuffle[i];
-				shuffle[i] = shuffle[j];
-				shuffle[j] = tmp;
-			}
-			sgs0 = new SchreierSims(genColor, shuffle);
-			sgs1 = new SchreierSims(genMove, shuffle);
-			sgs01 = sgs0.intersect(sgs1);
-			if (sgs01.cnt != -1) {
-				console.log(r);
-				break;
-			}
-		}
-		console.log(sgs01.cnt, sgs0.size(), sgs1.size(), sgs01.size(), sgs1.size() / sgs01.size());
-	};
-	*/
 
 	_.updatePrun = function(targetDepth) {
 		targetDepth = targetDepth === undefined ? this.prunDepth + 1 : targetDepth;
@@ -1304,7 +1220,7 @@ var mathlib = (function() {
 			if (this.solvedStates.indexOf(state) == -1) {
 				return false;
 			}
-			var solArr = this.getSolArr();
+			var solArr = this.sol.map((move) => this.movesList[move][0]);
 			this.subOpt = true;
 			if (solArr.join(',') == this.prevSolStr) {
 				return false;
@@ -1346,14 +1262,6 @@ var mathlib = (function() {
 		}
 		return false;
 	};
-
-	_.getSolArr = function() {
-		var solArr = [];
-		for (var i = 0; i < this.sol.length; i++) {
-			solArr.push(this.movesList[this.sol[i]][0]);
-		}
-		return solArr;
-	}
 
 	var randGen = (function() {
 		var rndFunc;
@@ -1504,11 +1412,7 @@ var mathlib = (function() {
 	}
 
 	function idxArray(arr, idx) {
-		var ret = [];
-		for (var i = 0; i < arr.length; i++) {
-			ret.push(arr[i][idx]);
-		}
-		return ret;
+		return arr.map((elem) => elem[idx]);
 	}
 
 	function permOriMult(p1, p2, prod, o1, o2, ori, oriMod) {

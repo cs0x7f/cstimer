@@ -3,21 +3,21 @@
 var stats = execMain(function(kpretty, round, kpround) {
 	//[[penalty, phaseN end time, phaseN-1 end time, ..., phase1 end time], scramble, comment, timestamp of start, extension]
 	var times = [];
-	var div = $('<div id="stats" />');
-	var stext = $('<textarea rows="10" readonly />');
-	var scrollDiv = $('<div class="myscroll" />');
+	var div = $('<div id="stats">');
+	var stext = $('<textarea rows="10" readonly>');
+	var scrollDiv = $('<div class="myscroll">');
 	var statOptDiv = $('<div>');
 
-	var table = $('<table />').click(procClick).addClass("table");
-	var title = $('<tr />');
+	var table = $('<table>').click(procClick).addClass("table");
+	var title = $('<tr>');
 
-	var avgRow = $('<tr />');
+	var avgRow = $('<tr>');
 	var showAllRow = $('<tr class="click" ><th class="click" colspan="15">...</th></tr>');
 
-	var sumtable = $('<table class="sumtable" />').click(function(e) {
+	var sumtable = $('<table class="sumtable">').click(function(e) {
 		infoClick(times_stats_table, timesAt, e);
 	}).addClass("table");
-	var sumtableDiv = $('<div class="statc" />');
+	var sumtableDiv = $('<div class="statc">');
 
 	var MAX_ITEMS = 50;
 
@@ -106,7 +106,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function pretty(time, showDNF) {
 		switch (time[0]) {
 		case 0: return kpretty(time[1]);
-		case -1: return "DNF" + (showDNF ? ("(" + kpretty(time[1]) + ")") : "");
+		case -1: return "DNF" + (showDNF ? `(${kpretty(time[1])})` : "");
 		default: return kpretty(time[0] + time[1]) + "+";
 		}
 	}
@@ -456,17 +456,15 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var time = timesAt(cfmIdx);
 			var reviewElem = '';
 			if (time[4]) {
-				// reviewElem = $('<a target="_blank">' + STATS_REVIEW + '</a>').addClass('click');
-				// reviewElem.attr('href', getReviewUrl(time));
 				reviewElem = $('<span class="click" data="r">' + STATS_REVIEW + '</span>');
 				reviewElem = $('<tr>').append($('<td>').append(reviewElem), $('<td>').append(cfmExt));
 			}
 			cfmDiv.empty().append(cfmTime, '<br>', prettyMPA(time[0]), '<br>')
 				.append('<span class="click" data="c"> &#128203; </span>|<span class="click" data="p"> OK </span>|<span class="click" data="p"> +2 </span>|<span class="click" data="p"> DNF </span>| ', cfmDelR)
 				.append('<br>', $('<table style="display:inline-block;">').append(
-					$('<tr>').append('<td>' + STATS_COMMENT + '</td>', $('<td>').append(cfmTxtR)),
-					$('<tr>').append('<td><span class="click" data="s">' + SCRAMBLE_SCRAMBLE + '</span></td>', $('<td>').append(cfmScrR)),
-					$('<tr>').append('<td>' + STATS_DATE + '</td>', $('<td>').append(cfmDate)),
+					$('<tr>').append(`<td>${STATS_COMMENT}</td>`, $('<td>').append(cfmTxtR)),
+					$('<tr>').append(`<td><span class="click" data="s">${SCRAMBLE_SCRAMBLE}</span></td>`, $('<td>').append(cfmScrR)),
+					$('<tr>').append(`<td>${STATS_DATE}</td>`, $('<td>').append(cfmDate)),
 					reviewElem
 				)).unbind('click').click(procClk);
 			cfmTime.html(pretty(time[0], true));
@@ -629,7 +627,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var tdpb = '<td class="times pb">';
 
 		var ret = [];
-		ret.push('<td class="times">' + (time[2] && "*") + (i + 1) + '</td>');
+		ret.push(`<td class="times">${time[2] && "*"}${i + 1}</td>`);
 		ret.push((st0pb ? tdpb : tdtm) + pretty(curTime, false) + '</td>');
 
 		var statSrc = kernel.getProp('statsrc', 't');
@@ -665,13 +663,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var data = times_stats_table.getAllStats();
 		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
 		var sum = len == data[0] ? 0 : (len - data[0]) * data[1];
-		avgRow.append('<th colspan="4" data="0" class="times">' + STATS_SOLVE + ': ' + (len - data[0]) + '/' + len + '<br>' +
+		avgRow.append(`<th colspan="4" data="0" class="times">${STATS_SOLVE}: ${len - data[0]}/${len}<br>` +
 			STATS_AVG + ': ' + prettyFunc[1](data[1]) +
-			(kernel.getProp('statssum') ? '<br>' + STATS_SUM + ': ' + prettyFunc[0](sum) : '') +
+			(kernel.getProp('statssum') ? `<br>${STATS_SUM}: ${prettyFunc[0](sum)}` : '') +
 			'</th>').css('font-size', '1.2em')
 		if (dim > 1) {
 			for (var j = 1; j <= dim; j++) {
-				avgRow.append('<th data="' + j + '" class="times">' + kpround(getMean(j)) + '</th>').css('font-size', '');
+				avgRow.append(`<th data="${j}" class="times">${kpround(getMean(j))}</th>`).css('font-size', '');
 			}
 		}
 	}
@@ -993,16 +991,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 		var sessionIdxMin = 1;
 		var sessionIdx = -1;
 
-		var ssmgrDiv = $('<div />');
-		var ssmgrTable = $('<table />').appendTo(ssmgrDiv).addClass('table ssmgr');
+		var ssmgrDiv = $('<div>');
+		var ssmgrTable = $('<table>').appendTo(ssmgrDiv).addClass('table ssmgr');
 		var funcButton = $('<input type="button">').val('+');
 
 		var sessionData;
 		var ssSorted;
 
-		var newSessionOption = $('<option />').val('new').html('New..');
-		var delSessionOption = $('<option />').val('del').html('Delete..');
-		var select = $('<select />').change(function() {
+		var newSessionOption = $('<option>').val('new').html('New..');
+		var delSessionOption = $('<option>').val('del').html('Delete..');
+		var select = $('<select>').change(function() {
 			kernel.blur();
 			if (select.val() == 'new') {
 				createSession(sessionIdxMax, false);
@@ -1059,7 +1057,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			fixSessionData();
 			select.empty();
 			for (var i = 0; i < ssSorted.length; i++) {
-				select.append($('<option />').val(ssSorted[i]).html(sessionData[ssSorted[i]]['name']));
+				select.append($('<option>').val(ssSorted[i]).html(sessionData[ssSorted[i]]['name']));
 			}
 			select.append(newSessionOption, delSessionOption);
 			select.val(sessionIdx);
@@ -1843,7 +1841,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		div.append(
 			statOptDiv.append(
-				$('<span class="click" />').html(STATS_SESSION).click(sessionManager.showMgrTable),
+				$('<span class="click">').html(STATS_SESSION).click(sessionManager.showMgrTable),
 				sessionManager.getSelect(), sessionManager.getButton()),
 			sumtableDiv.append(sumtable),
 			$('<div class="stattl">').append(scrollDiv.append(table))

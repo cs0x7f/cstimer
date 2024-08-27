@@ -709,41 +709,38 @@ var bldhelper = execMain(function() {
 	}
 
 	$(function() {
+		var inputNumTpl = $.format.bind(null, '<input id="{0}" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		var optTpl = $.format.bind(null, '<option value="{1}">{0}</option>');
 		var savedSets = JSON.parse(kernel.getProp('bldSets', '{}'));
 		for (var key in bldSets) {
 			if (key in savedSets) {
 				bldSets[key] = savedSets[key];
 			}
 		}
+		var schemes = [['Customed', 'customed'], ['Speffz', 'speffz'], ['ChiChu', 'chichu'], ['Custom', 'custom']];
 		schSel = $('<select id="scheme">');
-		var schemes = [['customed', 'Customed'], ['speffz', 'Speffz'], ['chichu', 'ChiChu'], ['custom', 'Custom']];
-		for (var i = 0; i < schemes.length; i++) {
-			schSel.append('<option value="' + schemes[i][0] + '">' + schemes[i][1] + '</option>');
-		}
+		schSel.append(schemes.map(optTpl).join(''));
 		cPreSel = $('<select id="bldsCorn">');
 		cbufSel = $('<select data="bufcorn" id="cbuff0" style="width:2em">');
 		cbufFlt = $('<select id="cbuff1" style="width:2em">');
 		cFixTxt = $('<input id="cfix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">');
-		cErrTxt = $('<input id="cnerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
-		cNScTxt = $('<input id="cscycLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
-		cNCoTxt = $('<input id="cncodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		cErrTxt = $(inputNumTpl(["cnerrLR"]));
+		cNScTxt = $(inputNumTpl(["cscycLR"]));
+		cNCoTxt = $(inputNumTpl(["cncodeLR"]));
 		ePreSel = $('<select id="bldsEdge">');
 		ebufSel = $('<select data="bufedge" id="ebuff0" style="width:2em">');
 		ebufFlt = $('<select id="ebuff1" style="width:2em">');
 		eFixTxt = $('<input id="efix" type="text" style="width:4em" value="" pattern="[URFDLBurfdlb +]*">');
-		eErrTxt = $('<input id="enerrLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
-		eNScTxt = $('<input id="escycLR" type="text" style="width:4em" value=""> pattern="\d{1,2}-\d{1,2}"');
-		eNCoTxt = $('<input id="encodeLR" type="text" style="width:4em" value="" pattern="\d{1,2}-\d{1,2}">');
+		eErrTxt = $(inputNumTpl(["enerrLR"]));
+		eNScTxt = $(inputNumTpl(["escycLR"]));
+		eNCoTxt = $(inputNumTpl(["encodeLR"]));
 		parityFlt = $('<select id="ceparity">');
 		var bflts = [['any', 0x7], ['ok', 0x1], ['flip', 0x2], ['move', 0x4], ['not ok', 0x6], ['ok/flip', 0x3], ['ok/move', 0x5]];
-		for (var i = 0; i < bflts.length; i++) {
-			cbufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
-			ebufFlt.append('<option value="' + bflts[i][1] + '">' + bflts[i][0] + '</option>');
-		}
+		var bfltOps = bflts.map(optTpl).join('');
+		cbufFlt.append(bfltOps);
+		ebufFlt.append(bfltOps);
 		var pflts = [['parity', 0x3], ['even', 0x1], ['odd', 0x2]];
-		for (var i = 0; i < pflts.length; i++) {
-			parityFlt.append('<option value="' + pflts[i][1] + '">' + pflts[i][0] + '</option>');
-		}
+		parityFlt.append(pflts.map(optTpl).join(''));
 		var pres = [['$', 0], ['solved', 1], ['any', 2]];
 		for (var i = 0; i < pres.length; i++) {
 			cPreSel.append('<option value="' + pres[i][1] + '">' + pres[i][0].replace('$', 'Corner') + '</option>');

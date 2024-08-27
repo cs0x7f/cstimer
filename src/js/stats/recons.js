@@ -2,12 +2,12 @@ var recons = execMain(function() {
 	var isEnable;
 	var titleStr = TOOLS_RECONS_TITLE.split('|');
 
-	var div = $('<div style="font-size:0.9em;" />');
+	var div = $('<div style="font-size:0.9em;">');
 	var reconsClick = $('<div>').append('<a target="_blank" class="exturl click"></a>');
 	var table = $('<table class="table">');
 	var rangeSelect = $('<select>');
 	var methodSelect = $('<select>');
-	var requestBack = $('<span class="click" />');
+	var requestBack = $('<span class="click">');
 	var tableTh = $('<tr>').append($('<th style="padding:0;">').append(methodSelect),
 		'<th>' + titleStr[0] + '</th><th>' + titleStr[1] + '</th><th>' + titleStr[2] + '</th><th>' + titleStr[3] + '</th>');
 
@@ -183,14 +183,14 @@ var recons = execMain(function() {
 		}
 
 		var trTpl =
-			'<tr style="$0" data="$1"><td rowspan=2 class="$8" style="padding-bottom:0;padding-top:0;">$1</td><td colspan=4 style="padding:0;">' +
-			'<span class="cntbar sty2" style="height:0.2em;float:left;border:none;width:$2%;">&nbsp;</span>' +
-			'<span class="cntbar" style="height:0.2em;float:left;border:none;width:$3%;">&nbsp;</span></td></tr>' +
-			'<tr style="$0" data="$1">' +
-			'<td style="padding-bottom:0;padding-top:0;">$4</td>' +
-			'<td style="padding-bottom:0;padding-top:0;">$5</td>' +
-			'<td style="padding-bottom:0;padding-top:0;">$6</td>' +
-			'<td style="padding-bottom:0;padding-top:0;">$7</td>' +
+			'<tr style="{0}" data="{1}"><td rowspan=2 class="{8}" style="padding-bottom:0;padding-top:0;">{1}</td><td colspan=4 style="padding:0;">' +
+			'<span class="cntbar sty2" style="height:0.2em;float:left;border:none;width:{2}%;">&nbsp;</span>' +
+			'<span class="cntbar" style="height:0.2em;float:left;border:none;width:{3}%;">&nbsp;</span></td></tr>' +
+			'<tr style="{0}" data="{1}">' +
+			'<td style="padding-bottom:0;padding-top:0;">{4}</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{5}</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{6}</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{7}</td>' +
 			'</tr>';
 
 		var str = [];
@@ -207,7 +207,7 @@ var recons = execMain(function() {
 			if (isSuperStep) {
 				curSIdx = sDataIdx[i];
 				var sval = stepSData[curSIdx];
-				var trsdata = [
+				str.push($.format(trTpl, [
 					'',
 					sval[0],
 					sval[1] / maxSubt * 100,
@@ -217,15 +217,9 @@ var recons = execMain(function() {
 					Math.round(sval[3] * 10) / 10,
 					sval[3] > 0 && sval[1] + sval[2] > 0 ? Math.round(sval[3] / (sval[1] + sval[2]) * 10000 ) / 10 : 'N/A',
 					'click sstep'
-				];
-				var curTr = trTpl;
-				for (var j = 0; j < 9; j++) {
-					curTr = curTr.replace(new RegExp('\\$' + j, 'g'), trsdata[j]);
-				}
-				str.push(curTr);
+				]));
 			}
-
-			var trdata = [
+			str.push($.format(trTpl, [
 				sDataIdx[i] == curSIdx ? 'display:none;' : '',
 				val[0],
 				val[1] / maxSubt * 100,
@@ -235,12 +229,7 @@ var recons = execMain(function() {
 				Math.round(val[3] * 10) / 10,
 				val[3] > 0 && val[1] + val[2] > 0 ? Math.round(val[3] / (val[1] + val[2]) * 10000 ) / 10 : 'N/A',
 				['oll', 'pll'].indexOf(val[0]) != -1 ? 'click' : ''
-			];
-			var curTr = trTpl;
-			for (var j = 0; j < 9; j++) {
-				curTr = curTr.replace(new RegExp('\\$' + j, 'g'),  trdata[j]);
-			}
-			str.push(curTr);
+			]));
 		}
 		var endTr = $('<tr>').append(tidx ? $('<td>').append(requestBack) : $('<td style="padding:0;">').append(rangeSelect),
 			'<td>' + (isPercent ? Math.round(totIns / sumSubt * 1000) / 10 + '%' : kernel.pretty(totIns)) + '</td>' +
@@ -538,7 +527,7 @@ var caseStat = execMain(function() {
 	var isEnable;
 	var titleStr = TOOLS_RECONS_TITLE.split('|');
 
-	var div = $('<div style="font-size:0.9em;" />');
+	var div = $('<div style="font-size:0.9em;">');
 	var table = $('<table class="table">');
 	var methodSelect = $('<select>');
 	var tableTh = $('<tr>').append(
@@ -575,17 +564,17 @@ var caseStat = execMain(function() {
 		}
 
 		var trTpl =
-			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">$1</td>' +
+			'<tr><td rowspan=2 style="padding-bottom:0;padding-top:0;">{1}</td>' +
 			'<td rowspan=2 style="padding:0;width:2em;"><img/></td>' +
-			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">$2</td>' +
+			'<td rowspan=2 style="padding-bottom:0;padding-top:0;">{2}</td>' +
 			'<td colspan=4 style="padding:0;">' +
-			'<span class="cntbar sty2" style="height:0.25em;float:left;border:none;width:$3%;">&nbsp;</span>' +
-			'<span class="cntbar" style="height:0.25em;float:left;border:none;width:$4%;">&nbsp;</span></td></tr>' +
+			'<span class="cntbar sty2" style="height:0.25em;float:left;border:none;width:{3}%;">&nbsp;</span>' +
+			'<span class="cntbar" style="height:0.25em;float:left;border:none;width:{4}%;">&nbsp;</span></td></tr>' +
 			'<tr>' +
-			'<td style="padding-bottom:0;padding-top:0;">$5</td>' +
-			'<td style="padding-bottom:0;padding-top:0;">$6</td>' +
-			'<td style="padding-bottom:0;padding-top:0;">$7</td>' +
-			'<td style="padding-bottom:0;padding-top:0;">$8</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{5}</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{6}</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{7}</td>' +
+			'<td style="padding-bottom:0;padding-top:0;">{8}</td>' +
 			'</tr>';
 
 		table.empty().append(tableTh.unbind('click').click(procHeaderClick));
@@ -626,11 +615,7 @@ var caseStat = execMain(function() {
 		});
 
 		for (var row of trdata) {
-			var curTr = trTpl;
-			for (var j = 0; j < row.length; j++) {
-				curTr = curTr.replace(new RegExp('\\$' + j, 'g'), row[j]);
-			}
-			curTr = $(curTr);
+			var curTr = $($.format(trTpl, row));
 			var img = curTr.find('img');
 			img.css({
 				'width': '2em',
@@ -717,7 +702,7 @@ var caseStat = execMain(function() {
 });
 
 var scatter = execMain(function() {
-	var canvas = $('<canvas />'), ctx;
+	var canvas = $('<canvas>'), ctx;
 	var scatterDiv = $('<div style="text-align:center">');
 	var methodSelect = $('<select>');
 	var slowSpan = $('<span style="font-size:0.8em;">');

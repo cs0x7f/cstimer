@@ -310,29 +310,29 @@ var replay = execMain(function() {
 	$(function() {
 		div = $('<table style="height:98%">');
 		puzzleDiv = $('<td style="height:80%">');
-		var span = '<span class="click playbutton" data="%">$</span>';
+		var spanTpl = $.format.bind(null, '<span class="click playbutton" data="{0}">{1}</span>');
 		rangeTime = $('<input type="range" style="width:50%;" data="r">');
 		txtTime = $('<span style="user-select:none;"></span>');
 		txtSpeed = $('<span style="user-select:none;">1x</span>');
 		algSpan = $('<a target="_blank">\u23efAlg</a>');
-		playSpan = $(span.replace('$', '\ue800').replace('%', 'p'));
+		playSpan = $(spanTpl(['p', '\ue800']));
 		moveSeqTd = $('<td style="width:0%;font-family:monospace;white-space:pre;">');
 		div.append(
 			$('<tr>').append($('<td>').append(
-				span.replace('$', vrcOriStr[1]).replace('%', 'o'), '| ',
+				spanTpl(['o', vrcOriStr[1]]), '| ',
 				algSpan, ' |',
-				span.replace('$', VRCREPLAY_SHARE).replace('%', 'a')
+				spanTpl(['a', VRCREPLAY_SHARE])
 			)),
 			$('<tr>').append(puzzleDiv, moveSeqTd),
 			$('<tr>').append($('<td style="display:flex;justify-content:center;">').append(txtSpeed, ' ', rangeTime, ' ', txtTime)),
 			$('<tr>').append($('<td>').append(
-				span.replace('$', '\ue807').replace('%', 's-'),
-				span.replace('$', '\ue806').replace('%', 's+'),
-				span.replace('$', '\ue802').replace('%', 's'),
-				span.replace('$', '\ue804').replace('%', 'l'),
+				spanTpl(['s-', '\ue807']),
+				spanTpl(['s+', '\ue806']),
+				spanTpl(['s', '\ue802']),
+				spanTpl(['l', '\ue804']),
 				playSpan,
-				span.replace('$', '\ue805').replace('%', 'n'),
-				span.replace('$', '\ue803').replace('%', 'e')
+				spanTpl(['n', '\ue805']),
+				spanTpl(['e', '\ue803'])
 			))
 		);
 		var req = $.urlParam('vrcreplay');

@@ -139,20 +139,20 @@ var ftosolver = (function() {
 	}
 
 	FtoCubie.FtoMult = function() {
-		var prod = arguments[arguments.length - 1] || new FtoCubie();
-		for (var k = 0; k < arguments.length; k++) {
-			var a = arguments[arguments.length - 1 - k];
+		var args = Array.from(arguments);
+		var prod = args.pop() || new FtoCubie();
+		return args.reduceRight((b, a) => {
 			for (var i = 0; i < 6; i++) {
-				prod.co[i] = k == 0 ? 0 : (a.co[prod.cp[i]] ^ prod.co[i]);
-				prod.cp[i] = k == 0 ? i : a.cp[prod.cp[i]];
+				prod.co[i] = a.co[b.cp[i]] ^ b.co[i];
+				prod.cp[i] = a.cp[b.cp[i]];
 			}
 			for (var i = 0; i < 12; i++) {
-				prod.ep[i] = k == 0 ? i : a.ep[prod.ep[i]];
-				prod.uf[i] = k == 0 ? i : a.uf[prod.uf[i]];
-				prod.rl[i] = k == 0 ? i : a.rl[prod.rl[i]];
+				prod.ep[i] = a.ep[b.ep[i]];
+				prod.uf[i] = a.uf[b.uf[i]];
+				prod.rl[i] = a.rl[b.rl[i]];
 			}
-		}
-		return prod;
+			return prod;
+		});
 	}
 
 	function initMoveCube() {

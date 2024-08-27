@@ -335,23 +335,23 @@ var mpyr = (function() {
 	}
 
 	MpyrCubie.MpyrMult = function() {
-		var prod = arguments[arguments.length - 1] || new MpyrCubie();
-		for (var k = 0; k < arguments.length; k++) {
-			var a = arguments[arguments.length - 1 - k];
+		var args = Array.from(arguments);
+		var prod = args.pop() || new MpyrCubie();
+		return args.reduceRight((b, a) => {
 			for (var i = 0; i < 4; i++) {
-				prod.ct[i] = k == 0 ? i : (a.ct[prod.ct[i]]);
-				prod.co[i] = k == 0 ? 0 : ((a.co[prod.cp[i]] + prod.co[i]) % 3);
-				prod.cp[i] = k == 0 ? i : (a.cp[prod.cp[i]]);
+				prod.ct[i] = a.ct[b.ct[i]];
+				prod.co[i] = (a.co[b.cp[i]] + b.co[i]) % 3;
+				prod.cp[i] = a.cp[b.cp[i]];
 			}
 			for (var i = 0; i < 6; i++) {
-				prod.eo[i] = k == 0 ? 0 : (a.eo[prod.ep[i]] ^ prod.eo[i]);
-				prod.ep[i] = k == 0 ? i : (a.ep[prod.ep[i]]);
+				prod.eo[i] = a.eo[b.ep[i]] ^ b.eo[i];
+				prod.ep[i] = a.ep[b.ep[i]];
 			}
 			for (var i = 0; i < 12; i++) {
-				prod.wp[i] = k == 0 ? i : (a.wp[prod.wp[i]]);
+				prod.wp[i] = a.wp[b.wp[i]];
 			}
-		}
-		return prod;
+			return prod;
+		});
 	}
 
 	function initMoveCube() {
@@ -546,18 +546,11 @@ var mpyr = (function() {
 	var move2str = ["U", "U'", "Uw", "Uw'", "B", "B'", "Bw", "Bw'", "R", "R'", "Rw", "Rw'", "L", "L'", "Lw", "Lw'"]
 
 	function prettyMoves(moves) {
-		var buf = [];
-		for (var i = 0; i < moves.length; i++) {
-			buf[i] = move2str[moves[i]];
-		}
-		return buf.join(' ');
+		return moves.map((move) => move2str[move]).join(' ');
 	}
 
 	function applyMoves(mc, moves) {
-		for (var i = 0; i < moves.length; i++) {
-			mc = MpyrCubie.MpyrMult(mc, MpyrCubie.moveCube[moves[i]], null);
-		}
-		return mc;
+		return moves.reduce((mc, move) => MpyrCubie.MpyrMult(mc, MpyrCubie.moveCube[move], null), mc);
 	}
 
 	function solveMpyr(mc) {

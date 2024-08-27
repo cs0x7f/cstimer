@@ -225,6 +225,10 @@ ISCSTIMER && execMain(function() {
 		});
 	};
 
+	$.fn.reclk = function(handler) {
+		return this.unbind('click').click(handler);
+	};
+
 	if ('serviceWorker' in navigator) {
 		$(function() {
 			navigator.serviceWorker.register('sw.js');
@@ -382,6 +386,10 @@ var DEBUGBL = false; // for debugging bluetooth
 			ret.push(~~($.nearColor(col[faceMap[i]], 0, true).replace('#', '0x')));
 		}
 		return ret;
+	};
+
+	$.format = function(format, args) {
+		return format.replace(/{(\d+)}/g, (m, num) => args[~~num] || '');
 	};
 
 	$.UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|ctico";

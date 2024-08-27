@@ -185,15 +185,14 @@ var trend = execMain(function(kpretty) {
 		if (/^scr/.exec(signal)) {
 			return;
 		}
-		var span = '<span class="click" data="%" style="font-family: iconfont, Arial;display:inline-block;width:2em;">$</span>';
+		var spanTpl = $.format.bind(null, '<span class="click" data="{0}" style="font-family:iconfont,Arial;display:inline-block;width:2em;">{1}</span>');
 		fdiv.empty().append(trendDiv.empty().append(canvas, '<br>', [
-			span.replace('$', '\ue80e').replace('%', 'x'),
-			span.replace('$', '&lt;').replace('%', 'p'),
-			span.replace('$', '&gt;').replace('%', 'm'),
-			span.replace('$', '\ue80f').replace('%', 'l'),
-			span.replace('$', '\ue810').replace('%', 's')
-		].join('')
-		).unbind('click').click(procClick));
+			spanTpl(['x', '\ue80e']),
+			spanTpl(['p', '&lt;']),
+			spanTpl(['m', '&gt;']),
+			spanTpl(['l', '\ue80f']),
+			spanTpl(['s', '\ue810'])
+		].join('')).unbind('click').click(procClick));
 		updateTrend();
 	}
 
