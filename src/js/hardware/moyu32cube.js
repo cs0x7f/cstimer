@@ -46,7 +46,6 @@ execMain(function() {
 			value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 		}
 		var keyiv = getKeyAndIv(value);
-		giikerutil.log('[Moyu32Cube] key=', JSON.stringify(keyiv));
 		decoder = $.aes128(keyiv[0]);
 		decoder.iv = keyiv[1];
 	}

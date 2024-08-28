@@ -217,7 +217,6 @@ execMain(function() {
 			value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 		}
 		var keyiv = getKeyV2(value, ver);
-		giikerutil.log('[gancube] ver=', ver, ' key=', JSON.stringify(keyiv));
 		decoder = $.aes128(keyiv[0]);
 		decoder.iv = keyiv[1];
 	}
