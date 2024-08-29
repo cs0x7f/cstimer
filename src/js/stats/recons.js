@@ -228,7 +228,7 @@ var recons = execMain(function() {
 				isPercent ? Math.round(val[2] / sumSubt * 1000) / 10 + '%' : kernel.pretty(val[2]),
 				Math.round(val[3] * 10) / 10,
 				val[3] > 0 && val[1] + val[2] > 0 ? Math.round(val[3] / (val[1] + val[2]) * 10000 ) / 10 : 'N/A',
-				['oll', 'pll'].indexOf(val[0]) != -1 ? 'click' : ''
+				['oll', 'pll', 'zbll'].indexOf(val[0]) != -1 ? 'click' : ''
 			]));
 		}
 		var endTr = $('<tr>').append(tidx ? $('<td>').append(requestBack) : $('<td style="padding:0;">').append(rangeSelect),
@@ -388,7 +388,7 @@ var recons = execMain(function() {
 	}
 
 	function showCasesDialog(method) {
-		kernel.setProp('rcCaseMthd', method);
+		kernel.setProp('rcCaseMthd', (method == 'ZBLL' ? 'cf3zb_' : 'cf4op_') + method);
 		caseStat.execFunc(casesDialogContent);
 		var onCloseDialog = function () {
 			caseStat.execFunc();
@@ -403,7 +403,7 @@ var recons = execMain(function() {
 			return;
 		}
 		var target = $(e.target);
-		if (['oll', 'pll'].indexOf(target.text()) != -1) {
+		if (['oll', 'pll', 'zbll'].indexOf(target.text()) != -1) {
 			return showCasesDialog(target.text().toUpperCase());
 		}
 		if (!target.is('.click') || target.is('.exturl')) {
@@ -454,7 +454,7 @@ var recons = execMain(function() {
 		for (var i = 0; i < ranges.length; i++) {
 			rangeSelect.append('<option value="' + ranges[i] + '">' + ranges[i] + '</option>');
 		}
-		var methods = [['cf4op', 'cfop'], ['roux', 'roux']];
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux'], ['cf3zb', 'cfzb']];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
 			methodSelect.append('<option value="' + methods[i][0] + '%">' + methods[i][1] + '%</option>');
@@ -465,15 +465,10 @@ var recons = execMain(function() {
 
 	(function() {
 		stats.regUtil('recons', update);
-		stats.regExtraInfo('recons_n', function(times) {
-			return calcRecons(times, 'n');
-		});
-		stats.regExtraInfo('recons_cf4op', function(times) {
-			return calcRecons(times, 'cf4op');
-		});
-		stats.regExtraInfo('recons_roux', function(times) {
-			return calcRecons(times, 'roux');
-		});
+		stats.regExtraInfo('recons_n', (times) => calcRecons(times, 'n'));
+		stats.regExtraInfo('recons_cf4op', (times) => calcRecons(times, 'cf4op'));
+		stats.regExtraInfo('recons_roux', (times) => calcRecons(times, 'roux'));
+		stats.regExtraInfo('recons_cf3zb', (times) => calcRecons(times, 'cf3zb'));
 		stats.regExtraInfo('recons_cfop_ct',
 			substepMetric.bind(null, 'cf4op', [6, 0], [6, 2]),
 			['cross ' + STATS_TIME, kernel.pretty]);
@@ -529,9 +524,9 @@ var caseStat = execMain(function() {
 
 	var div = $('<div style="font-size:0.9em;">');
 	var table = $('<table class="table">');
-	var methodSelect = $('<select>');
+	var methodStepSelect = $('<select>');
 	var tableTh = $('<tr>').append(
-		$('<th>').attr('colspan', 2).css('padding', '0').append(methodSelect),
+		$('<th>').attr('colspan', 2).css('padding', '0').append(methodStepSelect),
 		$('<th>').addClass('click').attr('data-sort-column', 2).append('N'),
 		$('<th>').addClass('click').attr('data-sort-column', 5).append(titleStr[0]),
 		$('<th>').addClass('click').attr('data-sort-column', 6).append(titleStr[1]),
@@ -545,12 +540,13 @@ var caseStat = execMain(function() {
 		}
 		var nsolv = stats.getTimesStatsTable().timesLen;
 		var nrec = nsolv;
-		var method = methodSelect.val() || 'PLL';
-		var ident = cubeutil.getIdentData(method);
+		var methodStep = methodStepSelect.val() || 'cf4op_PLL';
+		var step = methodStep.split('_')[1];
+		var ident = cubeutil.getIdentData(step);
 		var nvalid = 0;
 		var caseCnts = [];
 		for (var s = nsolv - 1; s >= nsolv - nrec; s--) {
-			var caseData = stats.getExtraInfo('recons_cf4op_' + method, s);
+			var caseData = stats.getExtraInfo('recons_' + methodStep, s);
 			if (!caseData) {
 				continue;
 			}
@@ -626,16 +622,16 @@ var caseStat = execMain(function() {
 			row.push(img.attr('src'));
 			table.append(curTr);
 		}
-		methodSelect.unbind('change').change(procMethodChange);
+		methodStepSelect.unbind('change').change(procMethodChange);
 		if (nvalid == 0) {
 			tableTh.after('<tr><td colspan=7>' + TOOLS_RECONS_NODATA + '</td></tr>');
-			return [method, []];
+			return [step, []];
 		}
-		return [method, trdata];
+		return [step, trdata];
 	}
 
 	function procMethodChange(e) {
-		kernel.setProp('rcCaseMthd', methodSelect.val());
+		kernel.setProp('rcCaseMthd', methodStepSelect.val());
 		update();
 	}
 
@@ -659,18 +655,18 @@ var caseStat = execMain(function() {
 			return;
 		}
 		fdiv.empty().append(div.append(table));
-		methodSelect.val(kernel.getProp('rcCaseMthd', 'PLL'));
+		methodStepSelect.val(kernel.getProp('rcCaseMthd', 'cf4op_PLL'));
 		update();
 	}
 
 	var c;
 
-	function calcCaseExtra(method, time, idx) {
-		var rec = stats.getExtraInfo('recons_cf4op', idx);
+	function calcCaseExtra(method, step, time, idx) {
+		var rec = stats.getExtraInfo('recons_' + method, idx);
 		if (!rec) {
 			return;
 		}
-		var ident = cubeutil.getIdentData(method);
+		var ident = cubeutil.getIdentData(step);
 		var data = rec.data;
 		var sdata = data[ident[4]];
 		if (!sdata) {
@@ -687,11 +683,11 @@ var caseStat = execMain(function() {
 			tools.regTool('casestat', TOOLS_RECONS + '>' + 'cases', execFunc);
 		}
 		stats.regUtil('casestat', update);
-		var methods = ['PLL', 'OLL'];
-		for (var i = 0; i < methods.length; i++) {
-			methodSelect.append('<option value="' + methods[i] + '">' + methods[i] + '</option>');
-			stats.regExtraInfo('recons_cf4op_' + methods[i], calcCaseExtra.bind(null, methods[i]));
-		}
+		var steps = [['cf4op', 'PLL'], ['cf4op', 'OLL'], ['cf3zb', 'ZBLL']];
+		steps.forEach((step) => {
+			methodStepSelect.append(`<option value="${step[0]}_${step[1]}">${step[1]}</option>`);
+			stats.regExtraInfo(`recons_${step[0]}_${step[1]}`, calcCaseExtra.bind(null, step[0], step[1]));
+		});
 	});
 
 	return {
@@ -906,7 +902,7 @@ var scatter = execMain(function() {
 		}
 		stats.regUtil('scatter', updateScatter);
 		kernel.regListener('scatter', 'reqrec', reqRecons);
-		var methods = [['cf4op', 'cfop'], ['roux', 'roux']];
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux'], ['cf3zb', 'cfzb']];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
 		}

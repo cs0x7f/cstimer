@@ -175,6 +175,23 @@ var cubeutil = (function() {
 		return 0;
 	}
 
+	//return 6: nothing, 5: cross solved, 2~4: nth f2l solved, 1 eoll solved, 0: solved
+	function getCF3ZBProgress(param) {
+		if (solvedProgress(param, crossMask)) {
+			return 6;
+		} else if (solvedProgress(param, eollMask)) {
+			return 1 + Math.max(1,
+				solvedProgress(param, f2l1Mask) +
+				solvedProgress(param, f2l2Mask) +
+				solvedProgress(param, f2l3Mask) +
+				solvedProgress(param, f2l4Mask)
+			);
+		} else if (solvedProgress(param)) {
+			return 1;
+		}
+		return 0;
+	}
+
 	//return 2: nothing, 1: f2l solved, 0: solved
 	function getFPProgress(param) {
 		if (solvedProgress(param, f2lMask)) {
@@ -406,7 +423,7 @@ var cubeutil = (function() {
 			'PLL': [identPLL, scramble_333.getPLLImage, 0, 21, 0],
 			'OLL': [identOLL, scramble_333.getOLLImage, 1, 58, 1],
 			'COLL': [identCOLL, scramble_333.getCOLLImage.bind(null, 'D'), 0, 40, 1],
-			'ZBLL': [identCOLL, scramble_333.getZBLLImage, 0, 493, 1],
+			'ZBLL': [identZBLL, scramble_333.getZBLLImage, 0, 493, 0],
 			'CLL': [identC2CLL, scramble_222.getEGLLImage, 0, 40, 1]
 		};
 		return method ? identData[method] : identData;
@@ -454,6 +471,8 @@ var cubeutil = (function() {
 				return getProgressNAxis(facelet, getRouxProgress, 24);
 			case 'cf4o2p2':
 				return getProgressNAxis(facelet, getCF4O2P2Progress, 6);
+			case 'cf3zb':
+				return getProgressNAxis(facelet, getCF3ZBProgress, 6);
 			case 'n':
 				return getProgressNAxis(facelet, solvedProgress, 1);
 		}
@@ -471,6 +490,8 @@ var cubeutil = (function() {
 				return ['l6e', 'cmll', 'sb', 'fb'];
 			case 'cf4o2p2':
 				return ['pll', 'cpll', 'oll', 'eoll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
+			case 'cf3zb':
+				return ['zbll', 'zbf2l', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
 			case 'n':
 				return ['solve'];
 		}
