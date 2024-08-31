@@ -13,7 +13,6 @@
 <li><a class="click" href="#000#cff#fdd#fbb#00f#ff0#000"></a></li>
 <li><a class="click" href="#000#fd8#fb6#fa5#734#000#fb6"></a></li>
 <li><a class="click" href="#000#fff#fff#fff#00f#ff0#000"></a></li>
-<li><a class="click" href="#0df#000#000#000#0ef#0ef#000"></a></li>
 <li><a class="click" href="#0f0#000#333#666#ccc#0f0#333"></a></li>
 <li><a class="click" href="#0ff#000#000#000#0ff#0ff#000"></a></li>
 <li><a class="click" href="#555#bba#ddc#edc#750#761#ddc"></a></li>
@@ -23,4 +22,11 @@
 <li><a class="click" href="#fff#000#444#e31#fe4#18f#fff"></a></li>
 <li><a class="click" href="#fff#09d#06a#f70#fff#fff#000"></a></li>
 <li><a class="click" href="#fff#69c#235#47b#fff#fff#124"></a></li>
+<li><a class="click" href="#fff#922#374#922#000#000#eb4"></a></li>
+<li><a class="click" href="#19b#bff#cff#aef#3ce#19b#cff"></a></li>
+<li><a class="click" href="#fff#000#000#666#fff#fff#000"></a></li>
+<li><a class="click" href="#9aa#023#034#157#169#678#034"></a></li>
+<li><a class="click" href="#584#cba#ddc#edc#750#761#edc"></a></li>
+<li><a class="click" href="#888#000#000#333#ccc#7d4#000"></a></li>
+<li><a class="click" href="#b00#000#000#000#c00#c00#000"></a></li>
 </ul>

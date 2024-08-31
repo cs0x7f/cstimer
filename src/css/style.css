@@ -1341,3 +1341,140 @@ html.m .mhide, html:not(.m) .mshow {
 	border: #0008 dashed;
 	margin: 0.2em;
 }
+
+/* cstimer plus */
+.cspt .mywindow, .cspt #leftbar > div, .cspt #avgstr {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+}
+
+.cspt #avgstr {
+    font-size: 2rem;
+    line-height: 1.6;
+}
+
+.cspt .mywindow {
+    padding: 1rem;
+    border: 0;
+    border-radius: 0;
+}
+
+.cspt #scrambleTxt {
+    cursor: default;
+    letter-spacing: 0.375rem;
+    padding: 7px;
+}
+
+.cspt:not(.m) #leftbar {
+    width: 17.2rem;
+}
+
+.cspt:not(.m) #scrambleDiv {
+    left: 17.2rem;
+}
+
+.cspt #leftbar, .cspt #leftbar > div {
+    border: 0;
+    border-radius: 0;
+}
+
+.cspt .mywindow:not(.fixed)::before, .cspt #leftbar::before {
+    margin: 0px !important;
+}
+
+.cspt #leftbar::before, .cspt .mywindow::before, .cspt .popup, .cspt .dialog {
+    box-shadow: 0 1px 8px rgba(0,0,0,0.2) !important;
+    border-radius: 0;
+}
+
+.cspt .mywindow > .chide {
+    background-color: rgba(0,0,0,.2);
+}
+
+.cspt select, .cspt input[type='button'], .cspt input[type='text'] {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border: 0;
+    margin: 0 0.25rem;
+}
+
+.cspt select > option {
+    color: #000000;
+}
+
+.cspt input[type='button'] {
+    padding: 0.375rem 0.75rem;
+}
+
+.cspt .table td, .cspt .table th, .cspt .table {
+    padding: 0.5rem;
+}
+
+.cspt .statc {
+    margin-top: 1rem;
+}
+
+.cspt .stattl {
+    margin-top: 0.5rem;
+}
+
+.cspt #leftbar .mybutton .icon {
+    height: 100%;
+    font-size: 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    font-variant: normal;
+}
+
+.cspt #leftbar .mybutton .icon:before {
+    font-size: 2rem;
+}
+
+.cspt #gray {
+    background-color: #000;
+}
+
+.cspt .dialog, .cspt .popup {
+    border-radius: 0;
+    border: 0;
+}
+
+.cspt .dialog .title {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+}
+
+.cspt .tab {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
+    border: 0;
+    padding: 0.375rem;
+    border-radius: 0;
+}
+
+.cspt #inputTimer {
+    width: 70% !important;
+}
+
+.cspt .tab.enable {
+    background-color: rgba(255,255,255,0.2)
+}
+
+.cspt table.opttable td {
+    padding: 0.75rem;
+}
+
+html.cspt:not(.m) .mywindow, html.cspt:not(.m) #leftbar {
+    z-index: 1 !important;
+}
+
+html.cspt:not(.m) .mywindow:hover, html.cspt:not(.m) #leftbar:hover {
+    z-index: 1 !important;
+}
