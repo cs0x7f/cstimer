@@ -1435,6 +1435,13 @@ html.m .mhide, html:not(.m) .mshow {
     font-variant: normal;
 }
 
+@-moz-document url-prefix() {
+    .cspt #leftbar .mybutton .icon {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
 .cspt #leftbar .mybutton .icon:before {
     font-size: 2rem;
 }
