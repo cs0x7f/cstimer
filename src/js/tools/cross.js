@@ -170,40 +170,6 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 		}
 	}
 
-	//e4perm, e4flip, e1, c1
-	//obj: -1:only cross.
-	//	i-4: end when e==i*2, c==i*3
-	function idaxxcross(q, t, e, c, xxPrun, l, lm, sol) {
-		if (l == 0) {
-			return q == 0 && t == 0 
-				&& e[0] == 4 * 2 && c[0] == 4 * 3
-				&& (e[1] == 5 * 2 && c[1] == 5 * 3 || e[1] == 6 * 2 && c[1] == 6 * 3);
-		} else {
-			if (getPruning(permPrun, q) > l || getPruning(flipPrun, t) > l 
-				|| getPruning(xxPrun, c[0] * 24 + e[0] + 576 * (c[1] * 24 + e[1])) > l) return false;
-			var p, s, ex, cx, a, m;
-			for (m = 0; m < 6; m++) {
-				if (m != lm && m != lm - 3) {
-					p = q;
-					s = t;
-					ex = e;
-					cx = c;
-					for (a = 0; a < 3; a++) {
-						p = pmv(p, m);
-						s = fmv(s, m);
-						ex = [e1mv[ex[0]][m], e1mv[ex[1]][m]];
-						cx = [c1mv[cx[0]][m], c1mv[cx[1]][m]];
-						if (idaxxcross(p, s, ex, cx, xxPrun, l - 1, m, sol)) {
-							sol.push("FRUBLD".charAt(m) + " 2'".charAt(a));
-							return (true);
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 	var solvCross = new mathlib.Searcher(
 		(idx) => idx[0] + idx[1] == 0,
 		(idx) => Math.max(getPruning(permPrun, idx[0]), getPruning(flipPrun, idx[1])),
@@ -219,6 +185,41 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			getPruning(ecPrun[idx[4]], idx[3] * 24 + idx[2])
 		),
 		(idx, move) => [pmv(idx[0], move), fmv(idx[1], move), e1mv[idx[2]][move], c1mv[idx[3]][move], idx[4]],
+		6, 3, [1, 2, 4, 9, 18, 36]
+	);
+
+	var solvXXCross = new mathlib.Searcher(
+		(idx) => idx[0] + idx[1] == 0 && idx[2] == 4 * 2 && idx[3] == 4 * 3
+				&& (idx[4] == 5 * 2 && idx[5] == 5 * 3 || idx[4] == 6 * 2 && idx[5] == 6 * 3),
+		(idx) => Math.max(
+			getPruning(permPrun, idx[0]),
+			getPruning(flipPrun, idx[1]),
+			getPruning(idx[6], idx[3] * 24 + idx[2] + 576 * (idx[5] * 24 + idx[4]))
+		),
+		(idx, move) => [
+			pmv(idx[0], move), fmv(idx[1], move),
+			e1mv[idx[2]][move], c1mv[idx[3]][move],
+			e1mv[idx[4]][move], c1mv[idx[5]][move],
+			idx[6]
+		],
+		6, 3, [1, 2, 4, 9, 18, 36]
+	);
+
+	var solvXXXCross = new mathlib.Searcher(
+		(idx) => idx[0] + idx[1] == 0 && idx[2] == 4 * 2 && idx[3] == 4 * 3
+				&& idx[4] == 5 * 2 && idx[5] == 5 * 3 && idx[6] == 6 * 2 && idx[7] == 6 * 3,
+		(idx) => Math.max(
+			getPruning(permPrun, idx[0]),
+			getPruning(flipPrun, idx[1]),
+			getPruning(xxPrun01, idx[3] * 24 + idx[2] + 576 * (idx[5] * 24 + idx[4])),
+			getPruning(xxPrun02, idx[3] * 24 + idx[2] + 576 * (idx[7] * 24 + idx[6]))
+		),
+		(idx, move) => [
+			pmv(idx[0], move), fmv(idx[1], move),
+			e1mv[idx[2]][move], c1mv[idx[3]][move],
+			e1mv[idx[4]][move], c1mv[idx[5]][move],
+			e1mv[idx[6]][move], c1mv[idx[7]][move]
+		],
 		6, 3, [1, 2, 4, 9, 18, 36]
 	);
 
@@ -252,55 +253,6 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 		return ret;
 	}
 
-	function solve_xxcross(moves, face) {
-		xxinit();
-		var states = [];
-		var yrot = 0;
-		for (yrot = 0; yrot < 4; yrot++) {
-			var flip = 0;
-			var perm = 0;
-			var e1 = [8, 10, 12];
-			var c1 = [12, 15, 18];
-			for (var i = 0; i < moves.length; i++) {
-				var m = yrotIdx[yrot].indexOf("FRUBLD".charAt(moveIdx[face].indexOf("FRUBLD".charAt(moves[i][0]))));
-				var p = moves[i][2];
-				for (var j = 0; j < p; j++) {
-					flip = fmv(flip, m);
-					perm = pmv(perm, m);
-					e1 = [e1mv[e1[0]][m], e1mv[e1[1]][m], e1mv[e1[2]][m]];
-					c1 = [c1mv[c1[0]][m], c1mv[c1[1]][m], c1mv[c1[2]][m]];
-				}
-			}
-			states.push([perm, flip, e1, c1]);
-		}
-		var sol = [];
-		var found = false;
-		var len = 0;
-		while (!found) {
-			for (yrot = 0; yrot < 4; yrot++) {
-				var state = states[yrot];
-				if (idaxxcross(state[0], state[1], 
-						[state[2][0], state[2][1]], [state[3][0], state[3][1]], 
-						xxPrun01, len, -1, sol)) {
-					found = true;
-					break;
-				}
-				if (idaxxcross(state[0], state[1], 
-						[state[2][0], state[2][2]], [state[3][0], state[3][2]], 
-						xxPrun02, len, -1, sol)) {
-					found = true;
-					break;
-				}
-			}
-			len++;
-		}
-		sol.reverse();
-		for (var i = 0; i < sol.length; i++) {
-			sol[i] = yrotIdx[yrot]["FRUBLD".indexOf(sol[i][0])] + sol[i][1];
-		}
-		return sol;
-	}
-
 	function solve_xcross(moves, face) {
 		xinit();
 		var flip = 0;
@@ -328,6 +280,36 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 			sol[i] = "FRUBLD".charAt(sol[i][0]) + " 2'".charAt(sol[i][1])
 		}
 		return sol;
+	}
+
+	function solve_xxcross(moves, face, is3x) {
+		xxinit();
+		var idxs = [];
+		var id3s = [];
+		var yrot = 0;
+		for (yrot = 0; yrot < 4; yrot++) {
+			var flip = 0;
+			var perm = 0;
+			var e1 = [8, 10, 12];
+			var c1 = [12, 15, 18];
+			for (var i = 0; i < moves.length; i++) {
+				var m = yrotIdx[yrot].indexOf("FRUBLD".charAt(moveIdx[face].indexOf("FRUBLD".charAt(moves[i][0]))));
+				var p = moves[i][2];
+				for (var j = 0; j < p; j++) {
+					flip = fmv(flip, m);
+					perm = pmv(perm, m);
+					e1 = [e1mv[e1[0]][m], e1mv[e1[1]][m], e1mv[e1[2]][m]];
+					c1 = [c1mv[c1[0]][m], c1mv[c1[1]][m], c1mv[c1[2]][m]];
+				}
+			}
+			idxs.push([perm, flip, e1[0], c1[0], e1[1], c1[1], xxPrun01]);
+			idxs.push([perm, flip, e1[0], c1[0], e1[2], c1[2], xxPrun02]);
+			id3s.push([perm, flip, e1[0], c1[0], e1[1], c1[1], e1[2], c1[2]]);
+		}
+		var tt = +new Date;
+		var sol = is3x ? solvXXXCross.solveMulti(id3s, 0, 20) : solvXXCross.solveMulti(idxs, 0, 20);
+		var yrot = is3x ? sol[1] : (sol[1] >> 1);
+		return sol[0].map((move) => yrotIdx[yrot][move[0]] + " 2'"[move[1]]);
 	}
 
 	function fullInit() {
@@ -485,6 +467,9 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				clktxt = 'xx';
 			} else if (clktxt == 'xx') {
 				sol = solve_xxcross(curScramble, face);
+				clktxt = '3x';
+			} else if (clktxt == '3x') {
+				sol = solve_xxcross(curScramble, face, true);
 				clktxt = '<<';
 			} else {
 				sol = solve_cross(curScramble)[face];
