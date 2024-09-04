@@ -617,4 +617,4 @@ var LGHINT_BTINVMAC = '无效的MAC地址，无法连接你的智能魔方';
 var LGHINT_AEXPABT = '自动导出中止';
 var LGHINT_AEXPSUC = '自动导出成功';
 var LGHINT_AEXPFAL = '自动导出失败';
-var EASY_SCRAMBLE_HINT = '更改长度可以限制解法长度的上限，输入2个数字可以同时限制下限（>= 8）和上限';
+var EASY_SCRAMBLE_HINT = '更改长度可以限制解法长度的上限，输入2个数字可以同时限制下限（<= 8）和上限';

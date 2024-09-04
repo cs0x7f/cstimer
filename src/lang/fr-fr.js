@@ -617,4 +617,4 @@ var LGHINT_BTINVMAC = 'Adresse mac invalide, la connexion à votre smart cube es
 var LGHINT_AEXPABT = 'Export automatique interrompu';
 var LGHINT_AEXPSUC = 'Export automatique réussi';
 var LGHINT_AEXPFAL = 'Échec de l\'export automatique';
-var EASY_SCRAMBLE_HINT = 'Change length to limit upper bound of solution length, input 2 digits to limit both lower (>= 8) and upper bound';
+var EASY_SCRAMBLE_HINT = 'Change length to limit upper bound of solution length, input 2 digits to limit both lower (<= 8) and upper bound';
