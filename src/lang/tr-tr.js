@@ -600,9 +600,9 @@ var GIIKER_NOBLEMSG = 'Bluetooth API is not available. Ensure https access, chec
 var PROPERTY_SHOWAD = 'Reklamları göster (sayfayı yeniledikten sonra etkili olur)';
 var PROPERTY_GIIORI = 'Küp Oryantasyonu';
 var LGHINT_INVALID = 'Invalid Value!';
-var LGHINT_NETERR = 'Network Error!';
-var LGHINT_SERVERR = 'Server Error!';
-var LGHINT_SUBMITED = 'Submitted';
+var LGHINT_NETERR = 'Ağ Hatası!';
+var LGHINT_SERVERR = 'Sunucu Hatası!';
+var LGHINT_SUBMITED = 'Gönderildi';
 var LGHINT_SSBEST = 'Session best %s!';
 var LGHINT_SCRCOPY = 'Scramble copied';
 var LGHINT_LINKCOPY = 'Share link copied';
@@ -617,3 +617,4 @@ var LGHINT_BTINVMAC = 'Not a valid mac address, cannot connect to your smart cub
 var LGHINT_AEXPABT = 'Auto export abort';
 var LGHINT_AEXPSUC = 'Auto export success';
 var LGHINT_AEXPFAL = 'Auto export failed';
+var EASY_SCRAMBLE_HINT = 'Change length to limit upper bound of solution length, input 2 digits to limit both lower (>= 8) and upper bound';

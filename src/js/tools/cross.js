@@ -365,8 +365,12 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 	function getEasyXCross(length) {
 		fullInit();
 		xinit();
+		var lenA = length % 10;
+		var lenB = ~~(length / 10);
+		var minLen = Math.min(lenA, lenB, 8);
+		var maxLen = Math.max(lenA, lenB);
 		var ncase = [1, 16, 174, 1568, 11377, 57758, 155012, 189978, 190080];
-		length = Math.max(0, Math.min(length, 8));
+		length = Math.max(0, Math.min(maxLen, 8)); // cross length
 		var remain = ncase[length];
 		var isFound = false;
 		var testCnt = 0;
@@ -416,10 +420,13 @@ var cross = (function(createMove, edgeMove, createPrun, setNPerm, getNPerm, Cnk,
 				for (var j = 0; j < 4; j++) {
 					corns[j] = corns[j] * 3 + mathlib.rn(3);
 					edges[j] = arr.indexOf(j) * 2 + mathlib.rn(2);
-					if (isFound) {
+					var sol = solvXCross.solve([perm, flip, edges[j], corns[j], j], 0, isFound ? minLen - 1 : maxLen);
+					if (sol == null) {
 						continue;
-					}
-					if (null != solvXCross.solve([perm, flip, edges[j], corns[j], j], 0, length)) {
+					} else if (sol.length < minLen) {
+						isFound = false; // too short
+						break;
+					} else if (sol.length <= maxLen) {
 						isFound = true;
 					}
 				}

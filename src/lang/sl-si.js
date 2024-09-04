@@ -56,7 +56,7 @@ var EXPORT_LOGINWCA = 'Login Using WCA Account';
 var EXPORT_LOGOUTCFM = 'Confirm to log out?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var EXPORT_AEXPALERT = 'More than %d solves since last backup';
-var EXPORT_WHICH = 'You have %d file(s), which one should be imported?';
+var EXPORT_WHICH = 'Imaš %d datotek, katero naj uvozimo';
 var EXPORT_WHICH_ITEM = '%s solve(s), uploaded at %t';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
@@ -69,11 +69,11 @@ var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
 var TOOLS_GIIKER = 'Bluetooth Kocka';
 var TOOLS_IMAGE = 'draw scramble';
-var TOOLS_STATS = 'Statistics';
+var TOOLS_STATS = 'Statistika';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'Časovna distribucija';
 var TOOLS_TREND = 'Časovni trend';
-var TOOLS_METRONOME = 'metronome';
+var TOOLS_METRONOME = 'metronom';
 var TOOLS_RECONS = 'Rekonstrukcija';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
@@ -142,7 +142,7 @@ var PROPERTY_USEKSC = 'use keyboard shortcut';
 var PROPERTY_USEGES = 'use gesture control';
 var PROPERTY_NTOOLS = 'number of tools';
 var PROPERTY_AHIDE = 'Hide All Elements When Timing';
-var SCRAMBLE_LAST = 'last';
+var SCRAMBLE_LAST = 'nazaj';
 var SCRAMBLE_NEXT = 'Naprej';
 var SCRAMBLE_SCRAMBLE = ' scramble';
 var SCRAMBLE_SCRAMBLING = 'Scrambling';
@@ -176,7 +176,7 @@ var scrdata = [
 		['5x5x5', "555wca", -60],
 		['6x6x6', "666wca", -80],
 		['7x7x7', "777wca", -100],
-		['3x3 bld', "333ni", 0],
+		['3x3 slepo', "333ni", 0],
 		['3x3 fm', "333fm", 0],
 		['3x3 oh', "333oh", 0],
 		['ura', "clkwca", 0],
@@ -286,9 +286,9 @@ var scrdata = [
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['predpona', "666p", 80],
+		['pripona', "666s", 80],
+		['6x6x6 robovi', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
@@ -385,7 +385,7 @@ var scrdata = [
 		['Cmetrick', "cm3", 25],
 		['Cmetrick Mini', "cm2", 25]
 	]],
-	['Helicopter Cube', [
+	['Helikopter kocka', [
 		['Heli copter', "heli", 40],
 		['Curvy copter', "helicv", 40],
 		['2x2 Heli random move', "heli2x2", 70],
@@ -437,7 +437,7 @@ var scrdata = [
 	['Icosahedron', [
 		['Icosamate random move', "ctico", 60]
 	]],
-	['===SPECIAL===', [
+	['===POSEBNO===', [
 		['--', "blank", 0]
 	]],
 	['3x3x3 subsets', [
@@ -617,3 +617,4 @@ var LGHINT_BTINVMAC = 'Not a valid mac address, cannot connect to your smart cub
 var LGHINT_AEXPABT = 'Avtomatski izvoz preklican';
 var LGHINT_AEXPSUC = 'Avtomatski izvoz uspešen';
 var LGHINT_AEXPFAL = 'Avtomatski izvoz neuspešen';
+var EASY_SCRAMBLE_HINT = 'Change length to limit upper bound of solution length, input 2 digits to limit both lower (>= 8) and upper bound';

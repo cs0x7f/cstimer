@@ -163,11 +163,16 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 	var scrFltSelAll = $('<input type="button">').val(SCROPT_BTNALL);
 	var scrFltSelNon = $('<input type="button">').val(SCROPT_BTNNONE);
 	var scrLen = $('<input type="text" maxlength="3">');
+	var scrHelp = $('<span>');
 	var sdiv = $('<div>');
 	var ssdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
 		'333oh': '333',
 		'333ft': '333'
+	};
+	var helpMsg = {
+		'easyc': EASY_SCRAMBLE_HINT,
+		'easyxc': EASY_SCRAMBLE_HINT
 	};
 
 	var scrFlt = "";
@@ -531,6 +536,11 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 		scrLen.val(Math.abs(len));
 		scrLen[0].disabled = len <= 0;
 		var curType = menu.getSelected();
+		if (curType in helpMsg) {
+			scrHelp.text(helpMsg[curType]).show();
+		} else {
+			scrHelp.hide();
+		}
 		scrFlt = JSON.parse(kernel.getProp('scrFlt', JSON.stringify([curType, getExtra(curType, 0)])));
 		scrOpt[0].disabled = scrLen[0].disabled && !getExtra(curType, 0);
 		if (scrFlt[0] != curType) {
@@ -876,7 +886,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 
 		scrLen.change(genScramble);
 		scrOpt.click(showScrOpt);
-		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrFltDiv);
+		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrHelp, scrFltDiv);
 
 		title.append($('<nobr>').append(selects[0], ' ', selects[1], ' ', scrOpt), " <wbr>");
 		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));

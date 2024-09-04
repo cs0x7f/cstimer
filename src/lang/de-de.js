@@ -617,3 +617,4 @@ var LGHINT_BTINVMAC = 'Ungültige MAC-Adresse, es kann keine Verbindung zum Smar
 var LGHINT_AEXPABT = 'Automatischer Export abgebrochen';
 var LGHINT_AEXPSUC = 'Automatischer Export erfolgreich';
 var LGHINT_AEXPFAL = 'Automatischer Export fehlgeschlagen';
+var EASY_SCRAMBLE_HINT = 'Change length to limit upper bound of solution length, input 2 digits to limit both lower (>= 8) and upper bound';

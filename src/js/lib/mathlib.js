@@ -17,6 +17,22 @@ var mathlib = (function() {
 		}
 	}
 
+	var permMul4 = [];
+	for (var i = 0; i < 24; i++) {
+		var perm1 = [];
+		var perm2 = [];
+		var perm3 = [];
+		permMul4[i] = [];
+		setNPerm(perm1, i, 4);
+		for (var j = 0; j < 24; j++) {
+			setNPerm(perm2, j, 4);
+			for (var k = 0; k < 4; k++) {
+				perm3[k] = perm1[perm2[k]];
+			}
+			permMul4[i][j] = getNPerm(perm3, 4);
+		}
+	}
+
 	function circleOri(arr, a, b, c, d, ori) {
 		var temp = arr[a];
 		arr[a] = arr[d] ^ ori;
@@ -1046,49 +1062,64 @@ var mathlib = (function() {
 
 	_ = Searcher.prototype;
 
-	_.solve = function(idx, minl, MAXL, callback) {
-		var sols = this.solveMulti([idx], minl, MAXL, callback);
+	_.solve = function(idx, minl, MAXL, callback, cost) {
+		var sols = this.solveMulti([idx], minl, MAXL, callback, cost);
 		return sols == null ? null : sols[0];
 	};
 
-	_.solveMulti = function(idxs, minl, MAXL, callback) {
-		this.callback = callback || function() { return true; };
-		var sol = [];
-		out: for (var l = minl; l <= MAXL; l++) {
-			for (var s = 0; s < idxs.length; s++) {
-				this.sidx = s;
-				if (this.idaSearch(idxs[s], l, -1, sol) == 0) {
-					break out;
-				}
-			}
-			this.sidx = -1;
-		}
-		return this.sidx == -1 ? null : [sol, this.sidx];
+	_.solveMulti = function(idxs, minl, MAXL, callback, cost) {
+		this.sidx = 0;
+		this.sol = [];
+		this.length = minl;
+		this.idxs = idxs;
+		return this.nextMulti(MAXL, callback, cost);
 	};
 
-	_.idaSearch = function(idx, maxl, lm, sol) {
+	_.next = function(MAXL, callback, cost) {
+		var sols = this.nextMulti(MAXL, callback, cost);
+		return sols == null ? null : sols[0];
+	};
+
+	_.nextMulti = function(MAXL, callback, cost) {
+		this.cost = (cost || 1e9) + 1;
+		this.callback = callback || function() { return true; };
+		for (; this.length <= MAXL; this.length++) {
+			for (; this.sidx < this.idxs.length; this.sidx++) {
+				if (this.idaSearch(this.idxs[this.sidx], this.length, 0, -1, this.sol) == 0) {
+					return this.cost <= 0 ? null : [this.sol, this.sidx];
+				}
+			}
+			this.sidx = 0;
+		}
+		return null;
+	}
+
+	_.idaSearch = function(idx, maxl, depth, lm, sol) {
+		if (--this.cost <= 0) {
+			return 0;
+		}
 		var prun = this.getPrun(idx);
 		if (prun > maxl) {
 			return prun > maxl + 1 ? 2 : 1;
-		}
-		if (maxl == 0) {
+		} else if (maxl == 0) {
 			return this.isSolved(idx) && this.callback(sol, this.sidx) ? 0 : 1;
-		}
-		if (prun == 0 && this.isSolved(idx) && maxl == 1) {
+		} else if (prun == 0 && maxl == 1 && this.isSolved(idx)) {
 			return 1;
 		}
-		for (var axis = 0; axis < this.N_AXIS; axis++) {
+		var axis = sol.length > depth ? sol[depth][0] : 0;
+		for (; axis < this.N_AXIS; axis++) {
 			if (this.ckmv[lm] >> axis & 1) {
 				continue;
 			}
 			var idx1 = $.isArray(idx) ? idx.slice() : idx;
-			for (var pow = 0; pow < this.N_POWER; pow++) {
-				idx1 = this.doMove(idx1, axis);
+			var pow = sol.length > depth ? sol[depth][1] : 0;
+			for (; pow < this.N_POWER; pow++) {
+				idx1 = this.doMove(idx1, axis, pow);
 				if (idx1 == null) {
 					break;
 				}
-				sol.push([axis, pow]);
-				var ret = this.idaSearch(idx1, maxl - 1, axis, sol);
+				sol[depth] = [axis, pow];
+				var ret = this.idaSearch(idx1, maxl - 1, depth + 1, axis, sol);
 				if (ret == 0) {
 					return 0;
 				}
@@ -1436,6 +1467,7 @@ var mathlib = (function() {
 		setNPerm: setNPerm,
 		getNPerm: getNPerm,
 		getNParity: getNParity,
+		permMul4: permMul4,
 		Coord: Coord,
 		createMove: createMove,
 		createMoveHash: createMoveHash,

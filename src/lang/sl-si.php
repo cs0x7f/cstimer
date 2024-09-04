@@ -34,18 +34,18 @@
 <tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>Zadnji poiskus je bil OK/+2/DNF</td></tr>
 <tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
-<tr><th>Gesture</th><td>Function</td></tr>
-<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
-<tr><th>Up</th><td>The latest solve is +2</td></tr>
-<tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
-<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
+<tr><th>Gesture</th><td>Funkcija</td></tr>
+<tr><th>Gor levo</th><td>The latest solve is DNF</td></tr>
+<tr><th>Gor</th><td>The latest solve is +2</td></tr>
+<tr><th>Gor desno</th><td>The latest solve is OK</td></tr>
+<tr><th>Levo</th><td>Last scramble</td></tr>
+<tr><th>Desno</th><td>Next scramble</td></tr>
+<tr><th>Desno levo</th><td>Dodaj komentar zadnjemu reševanju</td></tr>
 <tr><th>Down</th><td>Remove the latest solve</td></tr>
 <tr><th>Down right</th><td>Check the latest solve</td></tr>
 </table>
@@ -130,7 +130,7 @@
 <li><strong data="tool_scrgen">ScrambleGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
 <li><strong data="tool_cfm">Potrdi čas</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">cross-session stats</strong>. You are able to do cross-session statistics with this tool.</li>
-<li><strong data="tool_stats">Statistics</strong>. Statistic table similar with the table in the list times panel.</li>
+<li><strong data="tool_stats">Statistika</strong>. Statistic table similar with the table in the list times panel.</li>
 <li><strong data="tool_distribution">Časovna distribucija</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
 <li><strong data="tool_trend">Časovni trend</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
@@ -147,11 +147,11 @@
 <li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
 <li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
 <li><strong data="tool_giikerutil">Bluetooth Kocka</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_mtrnm">metronome</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_mtrnm">metronom</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
 <li><strong data="tool_syncseed">Common Scramble</strong>. Using same scrambles with friends by setting a common seed.</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
-<h2>Links</h2>
+<h2>Povezave</h2>
 <ul>
 <li><a class="click" href="https://cubingchina.com/" title="">Cubing China</a></li>
 <li><a class="click" href="/new/" title="">csTimer beta version</a></li>
@@ -173,13 +173,13 @@
 <li><a class="click" href="https://www.amazon.com/dp/B0CGDHVJBL?tag=cstimer-20#" title="">Gan 12 ui FreePlay</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B083TW9WFT?tag=cstimer-20#" title="">Gan Halo Bluetooth Timer</a></li>
 </ul>
-<h2>Recommended products</h2>
+<h2>Predlagani produkti</h2>
 <p>Here are some professional cubes or hardwares.</p>
 <ul>
 <li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
-<h2>Donate directly</h2>
+<h2>Donirajte neposredno</h2>
 <p>Thank you for your willingness to support csTimer! Your donation will be used to support our development and maintenance costs.</p>
 <p>If you would like to offer us a donation through PayPal, please click the button below or through <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
