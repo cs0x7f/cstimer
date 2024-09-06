@@ -443,10 +443,10 @@ var scrdata = [
 	['3x3x3 Subtipus', [
 		['2-gen R,U', "2gen", 0],
 		['2-gen L,U', "2genl", 0],
-		['Generador Roux M,U', "roux", 25],
+		['Generador Roux M,U', "roux", 0],
 		['3-gen F,R,U', "3gen_F", 0],
 		['3-gen R,U,L', "3gen_L", 0],
-		['3-gen R,r,U', "RrU", 25],
+		['3-gen R,r,U', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['Només mitjes voltes', "half", 0],
 		['Últim espai+Última capa (Antic)', "lsll", 15]

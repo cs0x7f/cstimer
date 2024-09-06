@@ -443,10 +443,10 @@ var scrdata = [
 	['3x3x3子群', [
 		['僅使用RU', "2gen", 0],
 		['僅使用LU', "2genl", 0],
-		['橋式MU', "roux", 25],
+		['橋式MU', "roux", 0],
 		['僅使用FRU', "3gen_F", 0],
 		['僅使用RUL', "3gen_L", 0],
-		['僅使用RrU', "RrU", 25],
+		['僅使用RrU', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['僅使用90度', "half", 0],
 		['最後一個F2L+頂層(舊版)', "lsll", 15]

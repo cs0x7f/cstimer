@@ -443,10 +443,10 @@ var scrdata = [
 	['3 x 3 x 3 podskupiny', [
 		['2-generátor R,U', "2gen", 0],
 		['2-generátor L.U', "2genl", 0],
-		['Roux-generátor M,U', "roux", 25],
+		['Roux-generátor M,U', "roux", 0],
 		['3-generátor F,R,U', "3gen_F", 0],
 		['3-generátor R,U,L', "3gen_L", 0],
-		['3-generátor R,r,U', "RrU", 25],
+		['3-generátor R,r,U', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['jen polovina otáčení', "half", 0],
 		['poslední slot + poslední vrstva (starý)', "lsll", 15]

@@ -451,8 +451,8 @@ var bldhelper = execMain(function() {
 			ea[edgeMap[i]] = edgeMap[ret[2][i][0]] << 1 | ret[2][i][1];
 		}
 		var cc = new mathlib.CubieCube();
-		var rndX = mathlib.rndEl(["", "Rw", "Rw2", "Rw'", "Fw", "Fw'"]);
-		var rndY = mathlib.rndEl(["", "Uw", "Uw2", "Uw'"]);
+		var rndX = bldSets['ceori'] ? mathlib.rndEl(["", "Rw", "Rw2", "Rw'", "Fw", "Fw'"]) : "";
+		var rndY = bldSets['ceori'] ? mathlib.rndEl(["", "Uw", "Uw2", "Uw'"]) : "";
 		var move1 = cc.selfMoveStr(rndX);
 		var move2 = cc.selfMoveStr(rndY);
 		cc.init(ca, ea);
@@ -490,6 +490,7 @@ var bldhelper = execMain(function() {
 		'escycLR': [0, 5],
 		'encodeLR': [0, 16],
 		'ceparity': 0x3,
+		'ceori': true,
 		'scheme': Speffz
 	};
 
@@ -512,6 +513,8 @@ var bldhelper = execMain(function() {
 			bldSets[key] = [Math.min(v1, v2), Math.max(v1, v2)];
 		} else if (key == 'ceparity') {
 			bldSets[key] = ~~obj.val();
+		} else if (key == 'ceori') {
+			bldSets[key] = obj[0].checked;
 		} else if (key.endsWith('fix')){
 			var fixs = obj.val().toUpperCase().split(' ');
 			var fixMap = {};
@@ -605,6 +608,7 @@ var bldhelper = execMain(function() {
 	var eNScTxt;
 	var eNCoTxt;
 	var parityFlt;
+	var oriFlt;
 
 	function key2Range(bldSets, key) {
 		return bldSets[key][0] + '-' + bldSets[key][1];
@@ -628,6 +632,7 @@ var bldhelper = execMain(function() {
 		cbufFlt.val(bldSets['cbuff'][1]);
 		ebufFlt.val(bldSets['ebuff'][1]);
 		parityFlt.val(bldSets['ceparity']);
+		oriFlt[0].checked = bldSets['ceori'];
 		var ret = genBLDRndState(bldSets);
 		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schSel)));
 		setDiv.append($('<tr>').append($('<td colspan=3 style="width:0;">').append(codeDiv)));
@@ -644,8 +649,12 @@ var bldhelper = execMain(function() {
 			(ret[0] == 0 ? 0 : prob < 1e-3 ? prob.toExponential(3) : Math.round(prob * 1000000) / 10000 + '%') +
 			(prob < 1e-8 ? ('<br>N=' + (ret[0] > 1e8 ? ret[0].toExponential(3) : ret[0])) : '')
 		)));
+		setDiv.append($('<tr>').append(
+			$('<td>').append($('<label>').append(oriFlt, 'ori')),
+			'<td colspan=2><span id="scr">' + SCRGEN_GEN + '</span></td>'
+		));
 		if (kernel.getProp('scrType') != 'nocache_333bldspec') {
-			setDiv.append('<tr><td colspan=3><span class="click" id="scr">' + SCRGEN_GEN + '</span></td></tr>');
+			setDiv.find('#scr').addClass('click');
 		}
 		setDiv.find('input,select').css({'padding':0}).unbind('change').change(procBLDSetEvent);
 		setDiv.find('span.click').unbind('click').click(procBLDSetEvent);
@@ -735,6 +744,7 @@ var bldhelper = execMain(function() {
 		eNScTxt = $(inputNumTpl(["escycLR"]));
 		eNCoTxt = $(inputNumTpl(["encodeLR"]));
 		parityFlt = $('<select id="ceparity">');
+		oriFlt = $('<input type="checkbox" id="ceori">');
 		var bflts = [['any', 0x7], ['ok', 0x1], ['flip', 0x2], ['move', 0x4], ['not ok', 0x6], ['ok/flip', 0x3], ['ok/move', 0x5]];
 		var bfltOps = bflts.map(optTpl).join('');
 		cbufFlt.append(bfltOps);

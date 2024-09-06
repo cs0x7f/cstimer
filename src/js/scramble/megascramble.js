@@ -34,10 +34,10 @@
 		"ufo": [[["A"],["B"],["C"],[["U","U'","U2'","U2","U3"]]]], // UFO
 		// "2gen": [[["U"],["R"]],cubesuff], // 2-generator <R,U>
 		// "2genl": [[["U"],["L"]],cubesuff], // 2-generator <L,U>
-		"roux": [[["U"],["M"]],cubesuff], // Roux-generator <M,U>
+		// "roux": [[["U"],["M"]],cubesuff], // Roux-generator <M,U>
 		// "3gen_F": [[["U"],["R"],["F"]],cubesuff], // 3-generator <F,R,U>
 		// "3gen_L": [[["U"],["R","L"]],cubesuff], // 3-generator <R,U,L>
-		"RrU": [[["U"],["R","r"]],cubesuff], // 3-generator <R,r,U>
+		// "RrU": [[["U"],["R","r"]],cubesuff], // 3-generator <R,r,U>
 		"RrUu": [[["U","u"],["R","r"]],cubesuff], // <R,r,U,u>
 		"minx2g": [[["U"],["R"]],minxsuff], // megaminx 2-gen
 		// "half": [[["U","D"],["R","L"],["F","B"]],["2"]], // 3x3x3 half turns, replaced by random state solver

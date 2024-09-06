@@ -443,10 +443,10 @@ var scrdata = [
 	['Subsets 3x3x3', [
 		['Générateur R,U', "2gen", 0],
 		['Générateur L,U', "2genl", 0],
-		['Générateur Roux M,U', "roux", 25],
+		['Générateur Roux M,U', "roux", 0],
 		['Générateur F,R,U', "3gen_F", 0],
 		['Générateur R,U,L', "3gen_L", 0],
-		['Générateur R,r,U', "RrU", 25],
+		['Générateur R,r,U', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['Demi-tours seulement', "half", 0],
 		['Dernier slot + dernier étage (ancien)', "lsll", 15]

@@ -443,10 +443,10 @@ var scrdata = [
 	['Sottoinsieme 3x3x3', [
 		['2-generatore R,U', "2gen", 0],
 		['2-generatore L,U', "2genl", 0],
-		['Roux-generatore M,U', "roux", 25],
+		['Roux-generatore M,U', "roux", 0],
 		['3-generatore F,R,U', "3gen_F", 0],
 		['3-generatore R,U,L', "3gen_L", 0],
-		['3-generatore R,r,U', "RrU", 25],
+		['3-generatore R,r,U', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['Solo mezzi giri', "half", 0],
 		['Ultimo slot + Ultimo strato (vecchio)', "lsll", 15]

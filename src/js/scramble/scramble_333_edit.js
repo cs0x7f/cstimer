@@ -919,6 +919,45 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		return getAnyScramble(cases[0], cases[1], cases[2], cases[3], neut);
 	}
 
+	var normTrans = [];
+
+	function normOrient(facelet, toAppend) {
+		var rotMoves1 = ["", "x", "x2", "x'", "z", "z'"];
+		var rotMoves2 = ["", "y", "y2", "y'"];
+		if (normTrans.length == 0) {
+			for (var i = 0; i < 24; i++) {
+				var cc = new mathlib.CubieCube();
+				cc.selfMoveStr(rotMoves2[i & 3]);
+				cc.selfMoveStr(rotMoves1[i >> 2]);
+				normTrans.push(cc.toPerm(null, null, null, true));
+			}
+		}
+		var ori = 0;
+		out: for (var i = 0; i < 24; i++) {
+			for (var j = 0; j < 6; j++) {
+				if (facelet[normTrans[i][j * 9 + 4]] != "URFDLB".charAt(j)) {
+					continue out;
+				}
+			}
+			var ret = [];
+			for (var j = 0; j < 54; j++) {
+				ret[j] = facelet[normTrans[i][j]];
+			}
+			facelet = ret.join('');
+			ori = i;
+			break;
+		}
+		var mv1 = rotMoves1[ori >> 2];
+		if (mv1 != "") {
+			toAppend.push(mv1[0] + "'2 ".charAt("2'".indexOf(mv1[1]) + 1));
+		}
+		var mv2 = rotMoves2[ori & 3];
+		if (mv2 != "") {
+			toAppend.push(mv2[0] + "'2 ".charAt("2'".indexOf(mv2[1]) + 1));
+		}
+		return facelet;
+	}
+
 	var subsetSolvs = {};
 
 	function subsetScramble(moves) {
@@ -928,7 +967,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 			for (var m = 0; m < moves.length; m++) {
 				var cc = new mathlib.CubieCube();
 				cc.selfMoveStr(moves[m]);
-				gens.push(cc.toPerm());
+				gens.push(cc.toPerm(null, null, null, true));
 			}
 			subsetSolvs[key] = new grouplib.SubgroupSolver(gens);
 			subsetSolvs[key].initTables();
@@ -938,19 +977,23 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		if (solv.sgsG.size() < 1e8) {
 			do {
 				var state = subsetSolvs[key].sgsG.rndElem();
-				var sol = subsetSolvs[key].DissectionSolve(state, 0, 20);
+				var sol = subsetSolvs[key].DissectionSolve(state, 12, 20);
 				solution = sol.map((mvpow) => moves[mvpow[0]] + ["", "2", "'"][mvpow[1] - 1]).join(" ");
 			} while (solution.length <= 2);
 			return solution.replace(/ +/g, ' ');
 		}
+		var toAppend;
 		do {
 			var state = subsetSolvs[key].sgsG.rndElem();
 			for (var i = 0; i < state.length; i++) {
 				state[i] = "URFDLB".charAt(~~(state[i] / 9));
 			}
-			solution = search.solution(state.join(''), 21, 1e9, 50, 2);
+			toAppend = [];
+			state = normOrient(state.join(''), toAppend);
+			solution = search.solution(state, 21, 1e9, 50, 2);
 		} while (solution.length <= 3);
-		return solution.replace(/ +/g, ' ');
+		toAppend.unshift(solution);
+		return toAppend.join(' ').replace(/ +/g, ' ');
 	}
 
 	function genFacelet(facelet) {
@@ -1093,6 +1136,8 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		('3gen_L', subsetScramble.bind(null, ["U", "R", "L"]))
 		('2gen', subsetScramble.bind(null, ["U", "R"]))
 		('2genl', subsetScramble.bind(null, ["U", "L"]))
+		('RrU', subsetScramble.bind(null, ["R", "Rw", "U"]))
+		('roux', subsetScramble.bind(null, ["M", "U"]))
 		('mt3qb', getMehta3QBScramble)
 		('mteole', getMehtaEOLEScramble)
 		('mttdr', getMehtaTDRScramble)

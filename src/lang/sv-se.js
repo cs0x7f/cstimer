@@ -443,10 +443,10 @@ var scrdata = [
 	['3x3x3 subsets', [
 		['2-generator R,U', "2gen", 0],
 		['2-generator L,U', "2genl", 0],
-		['Roux-generator M,U', "roux", 25],
+		['Roux-generator M,U', "roux", 0],
 		['3-generator F,R,U', "3gen_F", 0],
 		['3-generator R,U,L', "3gen_L", 0],
-		['3.generator R,r,U', "RrU", 25],
+		['3.generator R,r,U', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['endast halva drag', "half", 0],
 		['sista f2l paret + sista lagret (gammal)', "lsll", 15]

@@ -443,10 +443,10 @@ var scrdata = [
 	['3x3x3 etapy', [
 		['tylko ruchy R,U', "2gen", 0],
 		['tylko ruchy L,U', "2genl", 0],
-		['tylko ruchy M,U (Roux)', "roux", 25],
+		['tylko ruchy M,U (Roux)', "roux", 0],
 		['tylko ruchy F,R,U', "3gen_F", 0],
 		['tylko ruchy R,U,L', "3gen_L", 0],
-		['tylko ruchy R,r,U', "RrU", 25],
+		['tylko ruchy R,r,U', "RrU", 0],
 		['Domino Subgroup', "333drud", 0],
 		['tylko podwójne ruchy', "half", 0],
 		['ostatni slot + ostatnia warstwa', "lsll", 15]
