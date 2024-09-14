@@ -262,7 +262,7 @@ var bldhelper = execMain(function() {
 		return p & 1;
 	}
 
-	function getBLDcode(c, scheme, cbuf, ebuf) {
+	function getBLDcode(c, scheme, cbuf, ebuf, order) {
 		var cori = ~~(cbuf / 8);
 		cbuf %= 8;
 		if (0xa5 >> cbuf & 0x1) {
@@ -271,12 +271,16 @@ var bldhelper = execMain(function() {
 		var eori = ~~(ebuf / 12);
 		ebuf %= 12;
 		var corns = [];
+		var corders = [];
 		for (var i = 0; i < 8; i++) {
 			corns[i] = scheme.slice(i * 4, i * 4 + 3);
+			corders[i] = parseInt(order[i], 16);
 		}
 		var edges = [];
+		var eorders = [];
 		for (var i = 0; i < 12; i++) {
 			edges[i] = scheme.slice(32 + i * 3, 32 + i * 3 + 2);
+			eorders[i] = parseInt(order[i + 8], 16);
 		}
 
 		var ccode = [];
@@ -294,7 +298,8 @@ var bldhelper = execMain(function() {
 			var target = cc.ca[cbuf] & 0x7;
 			if (target == cbuf) { // buffer in place, swap with any unsolved
 				var i = -1;
-				while (done >> ++i & 1) {}
+				while (done >> corders[++i] & 1) {}
+				i = corders[i];
 				mathlib.circle(cc.ca, i, cbuf);
 				ccode.push(i);
 				continue;
@@ -315,7 +320,8 @@ var bldhelper = execMain(function() {
 			var target = cc.ea[ebuf] >> 1;
 			if (target == ebuf) { // buffer in place, swap with any unsolved
 				var i = -1;
-				while (done >> ++i & 1) {}
+				while (done >> eorders[++i] & 1) {}
+				i = eorders[i];
 				mathlib.circle(cc.ea, i, ebuf);
 				ecode.push(i * 2);
 				continue;
@@ -478,6 +484,7 @@ var bldhelper = execMain(function() {
 	var pieces = 'UFR UFL UBL UBR DFR DFL DBL DBR UR UF UL UB DR DF DL DB FR FL BL BR';
 	var ChiChu = 'JLK ABC DFE GHI XYZ WNM OPQ RTS GH AB CD EF OP IJ KL MN QR ST WX YZ';
 	var Speffz = 'CJM DIF ARE BQN VKP ULG XSH WTO BM CI DE AQ VO UK XG WS JP LF RH TN';
+	var OrdUDE = '012345670123456789ab';
 	var bldSets = {
 		'cbuff': [0, 0x7],
 		'cfix': "",
@@ -491,7 +498,8 @@ var bldhelper = execMain(function() {
 		'encodeLR': [0, 16],
 		'ceparity': 0x3,
 		'ceori': true,
-		'scheme': Speffz
+		'scheme': Speffz,
+		'order': OrdUDE
 	};
 
 	function procBLDSetEvent(e) {
@@ -585,6 +593,51 @@ var bldhelper = execMain(function() {
 				bldSets['scheme'] = ret;
 			}
 			calcResult();
+		} else if (key == 'order') {
+			var val = obj.val();
+			if (val == 'default') {
+				bldSets['order'] = OrdUDE;
+			} else if (val == 'custom' || val == 'customed') {
+				var ordStr = "";
+				var scheme = bldSets['scheme'];
+				for (var i = 0; i < 20; i++) {
+					ordStr += i < 8 ? scheme[i * 4] : scheme[8 + i * 3];
+				}
+				var ret = prompt('Code order', ordStr.slice(0, 8) + ' ' + ordStr.slice(8));
+				if (!ret) {
+					updateSchemeSelect();
+					return;
+				}
+				var isValid = true;
+				ret = ret.replace(/\s+/g, "");
+				var corders = [];
+				var eorders = [];
+				var cmask = 0;
+				var emask = 0;
+				for (var i = 0; i < ret.length; i++) {
+					var idx = scheme.indexOf(ret[i], i < 8 ? 0 : 32);
+					if (idx < 0) {
+						isValid = false;
+						break;
+					}
+					if (idx < 32) { // corner
+						idx = idx >> 2;
+						corders.push(idx.toString(16));
+						cmask |= 1 << idx;
+					} else { // edge
+						idx = ~~((idx - 32) / 3);
+						eorders.push(idx.toString(16));
+						emask |= 1 << idx;
+					}
+				}
+				if (!isValid || corders.length != 8 || eorders.length != 12 || cmask != 0xff || emask != 0xfff) {
+					alert('Invalid Order!');
+					updateSchemeSelect();
+					return;
+				}
+				bldSets['order'] = corders.join("") + eorders.join("");
+			}
+			calcResult();
 		} else if (key == 'scr') {
 			kernel.setProp('scrType', 'nocache_333bldspec');
 		}
@@ -593,6 +646,7 @@ var bldhelper = execMain(function() {
 	}
 
 	var schSel;
+	var ordSel;
 	var cPreSel;
 	var cbufSel;
 	var cbufFlt;
@@ -634,7 +688,7 @@ var bldhelper = execMain(function() {
 		parityFlt.val(bldSets['ceparity']);
 		oriFlt[0].checked = bldSets['ceori'];
 		var ret = genBLDRndState(bldSets);
-		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schSel)));
+		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schSel, ordSel)));
 		setDiv.append($('<tr>').append($('<td colspan=3 style="width:0;">').append(codeDiv)));
 		setDiv.append($('<tr>').append($('<td colspan=3 style="height:0.2em;border:none;">')));
 		setDiv.append($('<tr>').append('<th colspan=3>Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
@@ -672,6 +726,12 @@ var bldhelper = execMain(function() {
 		} else {
 			schSel.val('customed');
 		}
+		var order = bldSets['order'];
+		if (order == OrdUDE) {
+			ordSel.val('default');
+		} else {
+			ordSel.val('customed');
+		}
 	}
 
 	function updateBufSelect() {
@@ -700,7 +760,7 @@ var bldhelper = execMain(function() {
 	function calcResult() {
 		var scramble = tools.getCurScramble();
 		var state = cubeutil.getScrambledState(scramble);
-		var codes = getBLDcode(state, bldSets['scheme'], bldSets['cbuff'][0], bldSets['ebuff'][0]);
+		var codes = getBLDcode(state, bldSets['scheme'], bldSets['cbuff'][0], bldSets['ebuff'][0], bldSets['order']);
 		codeDiv.html('C: ' + codes[0].join('') + '<br>' + 'E: ' + codes[1].join(''));
 	}
 
@@ -727,8 +787,11 @@ var bldhelper = execMain(function() {
 			}
 		}
 		var schemes = [['Customed', 'customed'], ['Speffz', 'speffz'], ['ChiChu', 'chichu'], ['Custom', 'custom']];
-		schSel = $('<select id="scheme">');
+		schSel = $('<select id="scheme" style="max-width:4em">');
 		schSel.append(schemes.map(optTpl).join(''));
+		var orders = [['Customed', 'customed'], ['U>D>E', 'default'], ['Custom', 'custom']];
+		ordSel = $('<select id="order" style="max-width:4em">');
+		ordSel.append(orders.map(optTpl).join(''));
 		cPreSel = $('<select id="bldsCorn">');
 		cbufSel = $('<select data="bufcorn" id="cbuff0" style="width:2em">');
 		cbufFlt = $('<select id="cbuff1" style="width:2em">');
