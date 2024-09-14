@@ -409,7 +409,7 @@ execMain(function() {
 	}
 
 	GiikerCube.regCubeModel({
-		prefix: 'WCU_MY32',
+		prefix: 'WCU_MY3',
 		init: init,
 		opservs: [SERVICE_UUID],
 		cics: MOYU32_CIC_LIST,
