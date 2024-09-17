@@ -27,7 +27,7 @@ var LZString = (function() {
 		if (!baseReverseDic[alphabet]) {
 			baseReverseDic[alphabet] = {};
 			for (var i = 0; i < alphabet.length; i++) {
-				baseReverseDic[alphabet][alphabet.charAt(i)] = i;
+				baseReverseDic[alphabet][alphabet.charAt(i)] = bitReverse16(i) >> 10;
 			}
 		}
 		return baseReverseDic[alphabet][character];
@@ -71,7 +71,7 @@ var LZString = (function() {
 			if (compressed == null) return "";
 			if (compressed == "") return null;
 			return LZString._decompress(compressed.length, 15, function(index) {
-				return compressed.charCodeAt(index) - 32;
+				return bitReverse16(compressed.charCodeAt(index) - 32) >> 1;
 			});
 		},
 
@@ -240,7 +240,7 @@ var LZString = (function() {
 			if (compressed == null) return "";
 			if (compressed == "") return null;
 			return LZString._decompress(compressed.length, 16, function(index) {
-				return compressed.charCodeAt(index);
+				return bitReverse16(compressed.charCodeAt(index));
 			});
 		},
 
@@ -272,7 +272,7 @@ var LZString = (function() {
 					data.val >>= nFill;
 					if (data.remain == 0) {
 						data.remain = bitsPerChar;
-						data.val = bitReverse16(getNextValue(data.index++)) >> (16 - bitsPerChar);
+						data.val = getNextValue(data.index++);
 					}
 				}
 				return bits;
