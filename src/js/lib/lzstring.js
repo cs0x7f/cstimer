@@ -15,6 +15,14 @@ var LZString = (function() {
 	var keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
 	var baseReverseDic = {};
 
+	function bitReverse16(value) {
+		value = (value << 1 & 0xaaaaaaaa) | (value >> 1 & 0x55555555);
+		value = (value << 2 & 0xcccccccc) | (value >> 2 & 0x33333333);
+		value = (value << 4 & 0xf0f0f0f0) | (value >> 4 & 0x0f0f0f0f);
+		value = (value << 8 & 0xff00ff00) | (value >> 8 & 0x00ff00ff);
+		return value;
+	}
+
 	function getBaseValue(alphabet, character) {
 		if (!baseReverseDic[alphabet]) {
 			baseReverseDic[alphabet] = {};
@@ -47,7 +55,7 @@ var LZString = (function() {
 		decompressFromBase64: function(input) {
 			if (input == null) return "";
 			if (input == "") return null;
-			return LZString._decompress(input.length, 32, function(index) {
+			return LZString._decompress(input.length, 6, function(index) {
 				return getBaseValue(keyStrBase64, input.charAt(index));
 			});
 		},
@@ -62,7 +70,7 @@ var LZString = (function() {
 		decompressFromUTF16: function(compressed) {
 			if (compressed == null) return "";
 			if (compressed == "") return null;
-			return LZString._decompress(compressed.length, 16384, function(index) {
+			return LZString._decompress(compressed.length, 15, function(index) {
 				return compressed.charCodeAt(index) - 32;
 			});
 		},
@@ -113,7 +121,7 @@ var LZString = (function() {
 			if (input == null) return "";
 			if (input == "") return null;
 			input = input.replace(/ /g, "+");
-			return LZString._decompress(input.length, 32, function(index) {
+			return LZString._decompress(input.length, 6, function(index) {
 				return getBaseValue(keyStrUriSafe, input.charAt(index));
 			});
 		},
@@ -126,8 +134,8 @@ var LZString = (function() {
 		_compress: function(uncompressed, bitsPerChar, getCharFromInt) {
 			if (uncompressed == null) return "";
 			var i, value,
-				context_dictionary = {},
-				context_dictionaryToCreate = {},
+				context_dictionary = new Map(),
+				context_dictionaryToCreate = new Map(),
 				context_c = "",
 				context_wc = "",
 				context_w = "",
@@ -139,211 +147,104 @@ var LZString = (function() {
 				context_data_position = 0,
 				ii;
 
+			var appendBits = function(nBits, value) {
+				for (var i = 0; i < nBits; i++) {
+					context_data_val = (context_data_val << 1) | (value & 1);
+					if (context_data_position == bitsPerChar - 1) {
+						context_data_position = 0;
+						context_data.push(getCharFromInt(context_data_val));
+						context_data_val = 0;
+					} else {
+						context_data_position++;
+					}
+					value >>= 1;
+				}
+			};
+
 			for (ii = 0; ii < uncompressed.length; ii += 1) {
 				context_c = uncompressed.charAt(ii);
-				if (!Object.prototype.hasOwnProperty.call(context_dictionary, context_c)) {
-					context_dictionary[context_c] = context_dictSize++;
-					context_dictionaryToCreate[context_c] = true;
+				if (!context_dictionary.has(context_c)) {
+					context_dictionary.set(context_c, context_dictSize++);
+					context_dictionaryToCreate.set(context_c, true);
 				}
 
 				context_wc = context_w + context_c;
-				if (Object.prototype.hasOwnProperty.call(context_dictionary, context_wc)) {
+				if (context_dictionary.has(context_wc)) {
 					context_w = context_wc;
 				} else {
-					if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate, context_w)) {
+					if (context_dictionaryToCreate.has(context_w)) {
 						if (context_w.charCodeAt(0) < 256) {
-							for (i = 0; i < context_numBits; i++) {
-								context_data_val = (context_data_val << 1);
-								if (context_data_position == bitsPerChar - 1) {
-									context_data_position = 0;
-									context_data.push(getCharFromInt(context_data_val));
-									context_data_val = 0;
-								} else {
-									context_data_position++;
-								}
-							}
-							value = context_w.charCodeAt(0);
-							for (i = 0; i < 8; i++) {
-								context_data_val = (context_data_val << 1) | (value & 1);
-								if (context_data_position == bitsPerChar - 1) {
-									context_data_position = 0;
-									context_data.push(getCharFromInt(context_data_val));
-									context_data_val = 0;
-								} else {
-									context_data_position++;
-								}
-								value = value >> 1;
-							}
+							appendBits(context_numBits, 0);
+							appendBits(8, context_w.charCodeAt(0));
 						} else {
-							value = 1;
-							for (i = 0; i < context_numBits; i++) {
-								context_data_val = (context_data_val << 1) | value;
-								if (context_data_position == bitsPerChar - 1) {
-									context_data_position = 0;
-									context_data.push(getCharFromInt(context_data_val));
-									context_data_val = 0;
-								} else {
-									context_data_position++;
-								}
-								value = 0;
-							}
-							value = context_w.charCodeAt(0);
-							for (i = 0; i < 16; i++) {
-								context_data_val = (context_data_val << 1) | (value & 1);
-								if (context_data_position == bitsPerChar - 1) {
-									context_data_position = 0;
-									context_data.push(getCharFromInt(context_data_val));
-									context_data_val = 0;
-								} else {
-									context_data_position++;
-								}
-								value = value >> 1;
-							}
+							appendBits(context_numBits, 1);
+							appendBits(16, context_w.charCodeAt(0));
 						}
 						context_enlargeIn--;
 						if (context_enlargeIn == 0) {
-							context_enlargeIn = Math.pow(2, context_numBits);
+							context_enlargeIn = 1 << context_numBits;
 							context_numBits++;
 						}
-						delete context_dictionaryToCreate[context_w];
+						context_dictionaryToCreate.delete(context_w);
 					} else {
-						value = context_dictionary[context_w];
-						for (i = 0; i < context_numBits; i++) {
-							context_data_val = (context_data_val << 1) | (value & 1);
-							if (context_data_position == bitsPerChar - 1) {
-								context_data_position = 0;
-								context_data.push(getCharFromInt(context_data_val));
-								context_data_val = 0;
-							} else {
-								context_data_position++;
-							}
-							value = value >> 1;
-						}
+						appendBits(context_numBits, context_dictionary.get(context_w));
 					}
 					context_enlargeIn--;
 					if (context_enlargeIn == 0) {
-						context_enlargeIn = Math.pow(2, context_numBits);
+						context_enlargeIn = 1 << context_numBits;
 						context_numBits++;
 					}
 					// Add wc to the dictionary.
-					context_dictionary[context_wc] = context_dictSize++;
+					context_dictionary.set(context_wc, context_dictSize++);
 					context_w = String(context_c);
 				}
 			}
 
 			// Output the code for w.
 			if (context_w !== "") {
-				if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate, context_w)) {
+				if (context_dictionaryToCreate.get(context_w)) {
 					if (context_w.charCodeAt(0) < 256) {
-						for (i = 0; i < context_numBits; i++) {
-							context_data_val = (context_data_val << 1);
-							if (context_data_position == bitsPerChar - 1) {
-								context_data_position = 0;
-								context_data.push(getCharFromInt(context_data_val));
-								context_data_val = 0;
-							} else {
-								context_data_position++;
-							}
-						}
-						value = context_w.charCodeAt(0);
-						for (i = 0; i < 8; i++) {
-							context_data_val = (context_data_val << 1) | (value & 1);
-							if (context_data_position == bitsPerChar - 1) {
-								context_data_position = 0;
-								context_data.push(getCharFromInt(context_data_val));
-								context_data_val = 0;
-							} else {
-								context_data_position++;
-							}
-							value = value >> 1;
-						}
+						appendBits(context_numBits, 0);
+						appendBits(8, context_w.charCodeAt(0));
 					} else {
-						value = 1;
-						for (i = 0; i < context_numBits; i++) {
-							context_data_val = (context_data_val << 1) | value;
-							if (context_data_position == bitsPerChar - 1) {
-								context_data_position = 0;
-								context_data.push(getCharFromInt(context_data_val));
-								context_data_val = 0;
-							} else {
-								context_data_position++;
-							}
-							value = 0;
-						}
-						value = context_w.charCodeAt(0);
-						for (i = 0; i < 16; i++) {
-							context_data_val = (context_data_val << 1) | (value & 1);
-							if (context_data_position == bitsPerChar - 1) {
-								context_data_position = 0;
-								context_data.push(getCharFromInt(context_data_val));
-								context_data_val = 0;
-							} else {
-								context_data_position++;
-							}
-							value = value >> 1;
-						}
+						appendBits(context_numBits, 1);
+						appendBits(16, context_w.charCodeAt(0));
 					}
 					context_enlargeIn--;
 					if (context_enlargeIn == 0) {
-						context_enlargeIn = Math.pow(2, context_numBits);
+						context_enlargeIn = 1 << context_numBits;
 						context_numBits++;
 					}
-					delete context_dictionaryToCreate[context_w];
+					context_dictionaryToCreate.delete(context_w);
 				} else {
-					value = context_dictionary[context_w];
-					for (i = 0; i < context_numBits; i++) {
-						context_data_val = (context_data_val << 1) | (value & 1);
-						if (context_data_position == bitsPerChar - 1) {
-							context_data_position = 0;
-							context_data.push(getCharFromInt(context_data_val));
-							context_data_val = 0;
-						} else {
-							context_data_position++;
-						}
-						value = value >> 1;
-					}
+					appendBits(context_numBits, context_dictionary.get(context_w));
 				}
 				context_enlargeIn--;
 				if (context_enlargeIn == 0) {
-					context_enlargeIn = Math.pow(2, context_numBits);
+					context_enlargeIn = 1 << context_numBits;
 					context_numBits++;
 				}
 			}
 
 			// Mark the end of the stream
-			value = 2;
-			for (i = 0; i < context_numBits; i++) {
-				context_data_val = (context_data_val << 1) | (value & 1);
-				if (context_data_position == bitsPerChar - 1) {
-					context_data_position = 0;
-					context_data.push(getCharFromInt(context_data_val));
-					context_data_val = 0;
-				} else {
-					context_data_position++;
-				}
-				value = value >> 1;
-			}
+			appendBits(context_numBits, 2);
 
 			// Flush the last char
-			while (true) {
-				context_data_val = (context_data_val << 1);
-				if (context_data_position == bitsPerChar - 1) {
-					context_data.push(getCharFromInt(context_data_val));
-					break;
-				} else context_data_position++;
-			}
+			do {
+				appendBits(1, 0);
+			} while (context_data_position != 0);
 			return context_data.join('');
 		},
 
 		decompress: function(compressed) {
 			if (compressed == null) return "";
 			if (compressed == "") return null;
-			return LZString._decompress(compressed.length, 32768, function(index) {
+			return LZString._decompress(compressed.length, 16, function(index) {
 				return compressed.charCodeAt(index);
 			});
 		},
 
-		_decompress: function(length, resetValue, getNextValue) {
+		_decompress: function(length, bitsPerChar, getNextValue) {
 			var dictionary = [],
 				next,
 				enlargeIn = 4,
@@ -353,64 +254,40 @@ var LZString = (function() {
 				result = [],
 				i,
 				w,
-				bits, resb, maxpower, power,
 				c,
 				data = {
-					val: getNextValue(0),
-					position: resetValue,
-					index: 1
+					val: 0,
+					remain: 0,
+					index: 0
 				};
 
-			for (i = 0; i < 3; i += 1) {
+			var nextBits = function(nBits) {
+				var bits = 0;
+				var offset = 0;
+				while (nBits > offset) {
+					var nFill = Math.min(nBits - offset, data.remain);
+					bits |= (data.val & ((1 << nFill) - 1)) << offset;
+					offset += nFill;
+					data.remain -= nFill;
+					data.val >>= nFill;
+					if (data.remain == 0) {
+						data.remain = bitsPerChar;
+						data.val = bitReverse16(getNextValue(data.index++)) >> (16 - bitsPerChar);
+					}
+				}
+				return bits;
+			};
+
+			for (i = 0; i < 3; i++) {
 				dictionary[i] = i;
 			}
 
-			bits = 0;
-			maxpower = Math.pow(2, 2);
-			power = 1;
-			while (power != maxpower) {
-				resb = data.val & data.position;
-				data.position >>= 1;
-				if (data.position == 0) {
-					data.position = resetValue;
-					data.val = getNextValue(data.index++);
-				}
-				bits |= (resb > 0 ? 1 : 0) * power;
-				power <<= 1;
-			}
-
-			switch (next = bits) {
+			switch (next = nextBits(2)) {
 				case 0:
-					bits = 0;
-					maxpower = Math.pow(2, 8);
-					power = 1;
-					while (power != maxpower) {
-						resb = data.val & data.position;
-						data.position >>= 1;
-						if (data.position == 0) {
-							data.position = resetValue;
-							data.val = getNextValue(data.index++);
-						}
-						bits |= (resb > 0 ? 1 : 0) * power;
-						power <<= 1;
-					}
-					c = f(bits);
+					c = f(nextBits(8));
 					break;
 				case 1:
-					bits = 0;
-					maxpower = Math.pow(2, 16);
-					power = 1;
-					while (power != maxpower) {
-						resb = data.val & data.position;
-						data.position >>= 1;
-						if (data.position == 0) {
-							data.position = resetValue;
-							data.val = getNextValue(data.index++);
-						}
-						bits |= (resb > 0 ? 1 : 0) * power;
-						power <<= 1;
-					}
-					c = f(bits);
+					c = f(nextBits(16));
 					break;
 				case 2:
 					return "";
@@ -423,55 +300,14 @@ var LZString = (function() {
 					return "";
 				}
 
-				bits = 0;
-				maxpower = Math.pow(2, numBits);
-				power = 1;
-				while (power != maxpower) {
-					resb = data.val & data.position;
-					data.position >>= 1;
-					if (data.position == 0) {
-						data.position = resetValue;
-						data.val = getNextValue(data.index++);
-					}
-					bits |= (resb > 0 ? 1 : 0) * power;
-					power <<= 1;
-				}
-
-				switch (c = bits) {
+				switch (c = nextBits(numBits)) {
 					case 0:
-						bits = 0;
-						maxpower = Math.pow(2, 8);
-						power = 1;
-						while (power != maxpower) {
-							resb = data.val & data.position;
-							data.position >>= 1;
-							if (data.position == 0) {
-								data.position = resetValue;
-								data.val = getNextValue(data.index++);
-							}
-							bits |= (resb > 0 ? 1 : 0) * power;
-							power <<= 1;
-						}
-
-						dictionary[dictSize++] = f(bits);
+						dictionary[dictSize++] = f(nextBits(8));
 						c = dictSize - 1;
 						enlargeIn--;
 						break;
 					case 1:
-						bits = 0;
-						maxpower = Math.pow(2, 16);
-						power = 1;
-						while (power != maxpower) {
-							resb = data.val & data.position;
-							data.position >>= 1;
-							if (data.position == 0) {
-								data.position = resetValue;
-								data.val = getNextValue(data.index++);
-							}
-							bits |= (resb > 0 ? 1 : 0) * power;
-							power <<= 1;
-						}
-						dictionary[dictSize++] = f(bits);
+						dictionary[dictSize++] = f(nextBits(16));
 						c = dictSize - 1;
 						enlargeIn--;
 						break;
@@ -480,11 +316,11 @@ var LZString = (function() {
 				}
 
 				if (enlargeIn == 0) {
-					enlargeIn = Math.pow(2, numBits);
+					enlargeIn = 1 << numBits;
 					numBits++;
 				}
 
-				if (dictionary[c]) {
+				if (c < dictSize) {
 					entry = dictionary[c];
 				} else {
 					if (c === dictSize) {
@@ -502,7 +338,7 @@ var LZString = (function() {
 				w = entry;
 
 				if (enlargeIn == 0) {
-					enlargeIn = Math.pow(2, numBits);
+					enlargeIn = 1 << numBits;
 					numBits++;
 				}
 			}
