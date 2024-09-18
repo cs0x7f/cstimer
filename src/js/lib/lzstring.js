@@ -8,29 +8,37 @@
 //
 // LZ-based compression algorithm, version 1.4.4
 var LZString = (function() {
-
+	"use strict";
 	// private property
 	var f = String.fromCharCode;
-	var keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-	var keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
+	var keyStrBase64 = alphaReverse("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=");
+	var keyStrUriSafe = alphaReverse("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$");
 	var baseReverseDic = {};
 
 	function bitReverse16(value) {
-		value = (value << 1 & 0xaaaaaaaa) | (value >> 1 & 0x55555555);
-		value = (value << 2 & 0xcccccccc) | (value >> 2 & 0x33333333);
-		value = (value << 4 & 0xf0f0f0f0) | (value >> 4 & 0x0f0f0f0f);
-		value = (value << 8 & 0xff00ff00) | (value >> 8 & 0x00ff00ff);
+		value = (value << 1 & 0xaaaa) | (value >> 1 & 0x5555);
+		value = (value << 2 & 0xcccc) | (value >> 2 & 0x3333);
+		value = (value << 4 & 0xf0f0) | (value >> 4 & 0x0f0f);
+		value = (value << 8 & 0xff00) | (value >> 8 & 0x00ff);
 		return value;
 	}
 
-	function getBaseValue(alphabet, character) {
+	function alphaReverse(alphabet) {
+		var rev = [];
+		for (var i = 0; i < 64; i++) {
+			rev[i] = alphabet.charAt(bitReverse16(i) >> 10);
+		}
+		return rev.join('');
+	}
+
+	function getBaseValue(alphabet) {
 		if (!baseReverseDic[alphabet]) {
 			baseReverseDic[alphabet] = {};
 			for (var i = 0; i < alphabet.length; i++) {
-				baseReverseDic[alphabet][alphabet.charAt(i)] = bitReverse16(i) >> 10;
+				baseReverseDic[alphabet][alphabet.charAt(i)] = i;
 			}
 		}
-		return baseReverseDic[alphabet][character];
+		return baseReverseDic[alphabet];
 	}
 
 	var LZString = {
@@ -55,15 +63,16 @@ var LZString = (function() {
 		decompressFromBase64: function(input) {
 			if (input == null) return "";
 			if (input == "") return null;
+			var charMap = getBaseValue(keyStrBase64)
 			return LZString._decompress(input.length, 6, function(index) {
-				return getBaseValue(keyStrBase64, input.charAt(index));
+				return charMap[input.charAt(index)];
 			});
 		},
 
 		compressToUTF16: function(input) {
 			if (input == null) return "";
 			return LZString._compress(input, 15, function(a) {
-				return f(a + 32);
+				return f((bitReverse16(a) >> 1) + 32);
 			}) + " ";
 		},
 
@@ -103,9 +112,7 @@ var LZString = (function() {
 					result.push(f(c));
 				});
 				return LZString.decompress(result.join(''));
-
 			}
-
 		},
 
 		//compress into a string that is already URI encoded
@@ -121,118 +128,103 @@ var LZString = (function() {
 			if (input == null) return "";
 			if (input == "") return null;
 			input = input.replace(/ /g, "+");
+			var charMap = getBaseValue(keyStrUriSafe)
 			return LZString._decompress(input.length, 6, function(index) {
-				return getBaseValue(keyStrUriSafe, input.charAt(index));
+				return charMap[input.charAt(index)];
 			});
 		},
 
 		compress: function(uncompressed) {
 			return LZString._compress(uncompressed, 16, function(a) {
-				return f(a);
+				return f(bitReverse16(a));
 			});
 		},
 		_compress: function(uncompressed, bitsPerChar, getCharFromInt) {
 			if (uncompressed == null) return "";
 			var i, value,
-				context_dictionary = new Map(),
-				context_dictionaryToCreate = new Map(),
+				root = Object.create(null), // Use trie to store the dictionary
+				node = null,
 				context_c = "",
-				context_wc = "",
-				context_w = "",
 				context_enlargeIn = 2, // Compensate for the first entry which should not count
 				context_dictSize = 3,
 				context_numBits = 2,
 				context_data = [],
-				context_data_val = 0,
-				context_data_position = 0,
-				ii;
+				data = {
+					val: 0,
+					remain: bitsPerChar
+				};
 
 			var appendBits = function(nBits, value) {
-				for (var i = 0; i < nBits; i++) {
-					context_data_val = (context_data_val << 1) | (value & 1);
-					if (context_data_position == bitsPerChar - 1) {
-						context_data_position = 0;
-						context_data.push(getCharFromInt(context_data_val));
-						context_data_val = 0;
-					} else {
-						context_data_position++;
+				while (nBits > 0) {
+					var nFill = Math.min(nBits, data.remain);
+					data.val |= (value & ((1 << nFill) - 1)) << (bitsPerChar - data.remain);
+					data.remain -= nFill;
+					nBits -= nFill;
+					value >>= nFill;
+					if (data.remain == 0) {
+						context_data.push(getCharFromInt(data.val));
+						data.val = 0;
+						data.remain = bitsPerChar;
 					}
-					value >>= 1;
 				}
 			};
 
-			for (ii = 0; ii < uncompressed.length; ii += 1) {
-				context_c = uncompressed.charAt(ii);
-				if (!context_dictionary.has(context_c)) {
-					context_dictionary.set(context_c, context_dictSize++);
-					context_dictionaryToCreate.set(context_c, true);
-				}
-
-				context_wc = context_w + context_c;
-				if (context_dictionary.has(context_wc)) {
-					context_w = context_wc;
-				} else {
-					if (context_dictionaryToCreate.has(context_w)) {
-						if (context_w.charCodeAt(0) < 256) {
-							appendBits(context_numBits, 0);
-							appendBits(8, context_w.charCodeAt(0));
-						} else {
-							appendBits(context_numBits, 1);
-							appendBits(16, context_w.charCodeAt(0));
-						}
-						context_enlargeIn--;
-						if (context_enlargeIn == 0) {
-							context_enlargeIn = 1 << context_numBits;
-							context_numBits++;
-						}
-						context_dictionaryToCreate.delete(context_w);
-					} else {
-						appendBits(context_numBits, context_dictionary.get(context_w));
-					}
-					context_enlargeIn--;
-					if (context_enlargeIn == 0) {
-						context_enlargeIn = 1 << context_numBits;
-						context_numBits++;
-					}
-					// Add wc to the dictionary.
-					context_dictionary.set(context_wc, context_dictSize++);
-					context_w = String(context_c);
-				}
-			}
-
-			// Output the code for w.
-			if (context_w !== "") {
-				if (context_dictionaryToCreate.get(context_w)) {
-					if (context_w.charCodeAt(0) < 256) {
+			var writeNode = function(node) {
+				if (node.code !== undefined) {
+					if (node.code < 256) {
 						appendBits(context_numBits, 0);
-						appendBits(8, context_w.charCodeAt(0));
+						appendBits(8, node.code);
 					} else {
 						appendBits(context_numBits, 1);
-						appendBits(16, context_w.charCodeAt(0));
+						appendBits(16, node.code);
 					}
 					context_enlargeIn--;
 					if (context_enlargeIn == 0) {
 						context_enlargeIn = 1 << context_numBits;
 						context_numBits++;
 					}
-					context_dictionaryToCreate.delete(context_w);
+					delete node.code;
 				} else {
-					appendBits(context_numBits, context_dictionary.get(context_w));
+					appendBits(context_numBits, node.id);
 				}
 				context_enlargeIn--;
 				if (context_enlargeIn == 0) {
 					context_enlargeIn = 1 << context_numBits;
 					context_numBits++;
 				}
+			};
+
+			node = root;
+
+			for (i = 0; i < uncompressed.length; i += 1) {
+				context_c = uncompressed.charAt(i);
+				if (!root[context_c]) {
+					root[context_c] = Object.create(null);
+					root[context_c].id = context_dictSize++;
+					root[context_c].code = context_c.charCodeAt(0);
+				}
+
+				if (node[context_c]) {
+					node = node[context_c];
+				} else {
+					writeNode(node);
+					// Add wc to the dictionary.
+					node[context_c] = Object.create(null);
+					node[context_c].id = context_dictSize++;
+					node = root[context_c];
+				}
+			}
+
+			// Output the code for w.
+			if (node.id) {
+				writeNode(node);
 			}
 
 			// Mark the end of the stream
 			appendBits(context_numBits, 2);
 
 			// Flush the last char
-			do {
-				appendBits(1, 0);
-			} while (context_data_position != 0);
+			appendBits(data.remain, 0);
 			return context_data.join('');
 		},
 
