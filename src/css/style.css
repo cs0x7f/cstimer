@@ -831,6 +831,7 @@ div.helptable ul {
 
 #toolsDiv > div {
 	display: inline-block;
+	overflow-x: hidden;
 	margin: 3px;
 	margin: 0.2rem;
 }

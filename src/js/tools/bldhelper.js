@@ -265,22 +265,20 @@ var bldhelper = execMain(function() {
 	function getBLDcode(c, scheme, cbuf, ebuf, order) {
 		var cori = ~~(cbuf / 8);
 		cbuf %= 8;
-		if (0xa5 >> cbuf & 0x1) {
-			cori = (3 - cori) % 3;
-		}
+		cori ^= (0xa5 >> cbuf & 0x1) * 3;
 		var eori = ~~(ebuf / 12);
 		ebuf %= 12;
 		var corns = [];
 		var corders = [];
 		for (var i = 0; i < 8; i++) {
 			corns[i] = scheme.slice(i * 4, i * 4 + 3);
-			corders[i] = parseInt(order[i], 16);
+			corders[i] = parseInt(order[i], 24);
 		}
 		var edges = [];
 		var eorders = [];
 		for (var i = 0; i < 12; i++) {
 			edges[i] = scheme.slice(32 + i * 3, 32 + i * 3 + 2);
-			eorders[i] = parseInt(order[i + 8], 16);
+			eorders[i] = parseInt(order[i + 8], 24);
 		}
 
 		var ccode = [];
@@ -297,11 +295,16 @@ var bldhelper = execMain(function() {
 		while (done != 0xff) {
 			var target = cc.ca[cbuf] & 0x7;
 			if (target == cbuf) { // buffer in place, swap with any unsolved
-				var i = -1;
-				while (done >> corders[++i] & 1) {}
-				i = corders[i];
-				mathlib.circle(cc.ca, i, cbuf);
-				ccode.push(i);
+				var perm = -1;
+				while (done >> (corders[++perm] % 8) & 1) {}
+				perm = corders[perm];
+				var ori = ~~(perm / 8);
+				perm = perm % 8;
+				ori ^= (0xa5 >> perm & 0x1) * 3;
+				mathlib.circle(cc.ca, perm, cbuf);
+				cc.ca[perm] = (cc.ca[perm] + ((6 + ori - cori) << 3)) % 24;
+				cc.ca[cbuf] = (cc.ca[cbuf] + ((6 - ori + cori) << 3)) % 24;
+				ccode.push((6 - ori + cori) % 3 * 8 + perm);
 				continue;
 			}
 			ccode.push(cc.ca[cbuf]);
@@ -319,11 +322,15 @@ var bldhelper = execMain(function() {
 		while (done != 0xfff) {
 			var target = cc.ea[ebuf] >> 1;
 			if (target == ebuf) { // buffer in place, swap with any unsolved
-				var i = -1;
-				while (done >> eorders[++i] & 1) {}
-				i = eorders[i];
-				mathlib.circle(cc.ea, i, ebuf);
-				ecode.push(i * 2);
+				var perm = -1;
+				while (done >> (eorders[++perm] % 12) & 1) {}
+				perm = eorders[perm];
+				var ori = ~~(perm / 12) ^ eori;
+				perm = perm % 12;
+				mathlib.circle(cc.ea, perm, ebuf);
+				cc.ea[perm] ^= ori;
+				cc.ea[ebuf] ^= ori;
+				ecode.push(perm * 2 + ori);
 				continue;
 			}
 			ecode.push(cc.ea[ebuf]);
@@ -334,11 +341,9 @@ var bldhelper = execMain(function() {
 		var ret = [[], []];
 		for (var i = 0; i < ccode.length; i++) {
 			var val = ccode[i] & 0x7;
-			var ori = ((ccode[i] >> 3) + 3 - cori) % 3;
-			if (0xa5 >> val & 0x1) {
-				ori = (3 - ori) % 3;
-			}
-			ret[0].push(corns[val].charAt((3 - ori) % 3));
+			var ori = (6 - (ccode[i] >> 3) + cori) % 3;
+			ori ^= (0xa5 >> val & 0x1) * 3;
+			ret[0].push(corns[val].charAt(ori % 3));
 			if (i % 2 == 1) {
 				ret[0].push(' ');
 			}
@@ -351,6 +356,41 @@ var bldhelper = execMain(function() {
 			}
 		}
 		return ret;
+	}
+
+	function checkBLDcode(codes, scheme, cbuf, ebuf) {
+		var c = new mathlib.CubieCube();
+		for (var i = 0; i < 8; i++) {
+			c.ca[i] = i;
+		}
+		for (var i = 0; i < 12; i++) {
+			c.ea[i] = i * 2;
+		}
+		var cori = ~~(cbuf / 8);
+		cbuf %= 8;
+		cori ^= (0xa5 >> cbuf & 0x1) * 3;
+		var eori = ~~(ebuf / 12);
+		ebuf %= 12;
+		for (var i = 0; i < codes[0].length; i++) {
+			var perm = scheme.indexOf(codes[0][i]);
+			var ori = perm & 3;
+			perm >>= 2;
+			mathlib.circle(c.ca, perm, cbuf);
+			ori ^= (0xa5 >> perm & 0x1) * 3;
+			c.ca[perm] = (c.ca[perm] + ((6 + ori - cori) << 3)) % 24;
+			c.ca[cbuf] = (c.ca[cbuf] + ((6 - ori + cori) << 3)) % 24;
+		}
+		for (var i = 0; i < codes[1].length; i++) {
+			var perm = scheme.indexOf(codes[1][i], 32) - 32;
+			var ori = perm % 3;
+			perm = ~~(perm / 3);
+			mathlib.circle(c.ea, perm, ebuf);
+			c.ea[perm] ^= eori ^ ori;
+			c.ea[ebuf] ^= eori ^ ori;
+		}
+		var cc = new mathlib.CubieCube();
+		cc.invFrom(c);
+		return scramble_333.genFacelet(cc.toFaceCube());
 	}
 
 	function genBLDRndState(bldSets, doScramble) {
@@ -601,36 +641,38 @@ var bldhelper = execMain(function() {
 				var ordStr = "";
 				var scheme = bldSets['scheme'];
 				for (var i = 0; i < 20; i++) {
-					ordStr += i < 8 ? scheme[i * 4] : scheme[8 + i * 3];
+					var ord = parseInt(bldSets['order'][i], 24);
+					ordStr += i < 8
+						? scheme[ord % 8 * 4 + ~~(ord / 8)]
+						: scheme[32 + ord % 12 * 3 + ~~(ord / 12)];
 				}
 				var ret = prompt('Code order', ordStr.slice(0, 8) + ' ' + ordStr.slice(8));
 				if (!ret) {
 					updateSchemeSelect();
 					return;
 				}
-				var isValid = true;
 				ret = ret.replace(/\s+/g, "");
 				var corders = [];
 				var eorders = [];
-				var cmask = 0;
-				var emask = 0;
+				var mask = 0;
 				for (var i = 0; i < ret.length; i++) {
-					var idx = scheme.indexOf(ret[i], i < 8 ? 0 : 32);
+					var offset = i < 8 ? 0 : 32;
+					var idx = scheme.indexOf(ret[i], offset) - offset;
 					if (idx < 0) {
-						isValid = false;
+						mask = 0;
 						break;
 					}
-					if (idx < 32) { // corner
-						idx = idx >> 2;
-						corders.push(idx.toString(16));
-						cmask |= 1 << idx;
+					if (i < 8) { // corner
+						idx = (idx & 3) * 8 + (idx >> 2);
+						corders.push(idx.toString(24));
+						mask |= 1 << (idx % 8);
 					} else { // edge
-						idx = ~~((idx - 32) / 3);
-						eorders.push(idx.toString(16));
-						emask |= 1 << idx;
+						idx = (idx % 3) * 12 + ~~(idx / 3);
+						eorders.push(idx.toString(24));
+						mask |= 1 << (idx % 12 + 8);
 					}
 				}
-				if (!isValid || corders.length != 8 || eorders.length != 12 || cmask != 0xff || emask != 0xfff) {
+				if (corders.length != 8 || eorders.length != 12 || mask != 0xfffff) {
 					alert('Invalid Order!');
 					updateSchemeSelect();
 					return;
@@ -762,6 +804,14 @@ var bldhelper = execMain(function() {
 		var state = cubeutil.getScrambledState(scramble);
 		var codes = getBLDcode(state, bldSets['scheme'], bldSets['cbuff'][0], bldSets['ebuff'][0], bldSets['order']);
 		codeDiv.html('C: ' + codes[0].join('') + '<br>' + 'E: ' + codes[1].join(''));
+		if (DEBUG) {
+			var regen = checkBLDcode(
+				[codes[0].join('').replace(/\s/g, ''), codes[1].join('').replace(/\s/g, '')],
+				bldSets['scheme'], bldSets['cbuff'][0], bldSets['ebuff'][0]);
+			if (regen.replace(/\s/g, '') != scramble[1].replace(/\s/g, '')) {
+				console.log('[bldhelper] bld code check error', regen);
+			}
+		}
 	}
 
 	function execFunc(fdiv) {
