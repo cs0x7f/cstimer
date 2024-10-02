@@ -4,7 +4,76 @@ var stackmatutil = execMain(function(CubieCube) {
 
 	var statusSpan = $('<span>').html('status:  unknown');
 	var deviceSelect = $('<select style="font-size: 1rem;">');
+	var debugClick = $('<span class="click" style="font-family:iconfont;padding-left:0.5em;">\ue69d</span>');
 	var isShown = false;
+
+	var debugDiv;
+	var debugCanvas;
+	var debugText;
+	var debugSampleClick;
+	var debugIsShow = false;
+
+	function doDebugSample() {
+		if (!debugDiv) {
+			return;
+		}
+		stackmat.getSample(0.2, function(data) {
+			if (!debugIsShow) {
+				return;
+			}
+			debugText.html(
+				'RxBits: [' + data['bits'].join('') + ']<br>' +
+				'RxBytes: [' + escape(data['bytes'].join('')) + ']');
+			var width = Math.max(debugCanvas.width(), 1024);
+			var height = width * 0.3;
+			debugCanvas.attr('width', width);
+			debugCanvas.attr('height', height);
+			var ctx = debugCanvas[0].getContext('2d');
+			ctx.fillStyle = '#fff';
+			ctx.fillRect(0, 0, width, height);
+			var raw = data['raw'];
+			var bin = data['bin'];
+
+			ctx.strokeStyle = '#ccc';
+			ctx.beginPath();
+			ctx.moveTo(0, height * 0.5);
+			ctx.lineTo(width, height * 0.5);
+			ctx.stroke();
+
+			ctx.strokeStyle = '#444';
+			ctx.beginPath();
+			ctx.moveTo(0, height * 0.5 - height * 0.3 * raw[0]);
+			for (var i = 1; i < raw.length; i++) {
+				ctx.lineTo(i * width / (raw.length - 1), height * 0.5 - height * 0.3 * raw[i]);
+			}
+			ctx.stroke();
+
+			ctx.strokeStyle = '#00f';
+			ctx.beginPath();
+			ctx.moveTo(0, height * 0.8 - height * 0.6 * bin[0]);
+			for (var i = 1; i < bin.length; i++) {
+				ctx.lineTo(i * width / (bin.length - 1), height * 0.8 - height * 0.6 * bin[i]);
+			}
+			ctx.stroke();
+		});
+	}
+
+	function clearDebug() {
+		debugIsShow = false;
+	}
+
+	function showDebugDialog() {
+		if (!debugDiv) {
+			debugDiv = $('<div>');
+			debugCanvas = $('<canvas style="display:block; width:95%; margin:auto;">');
+			debugText = $('<span style="word-break:break-all;">');
+			debugSampleClick = $('<span class="click">Sample!</span>');
+			debugDiv.append(debugSampleClick, debugCanvas, debugText);
+		}
+		debugIsShow = true;
+		debugSampleClick.reclk(showDebugDialog);
+		kernel.showDialog([debugDiv, clearDebug, clearDebug, clearDebug], 'share', 'Stackmat Debug', doDebugSample);
+	}
 
 	function updateStatus(value) {
 		if (!isShown) {
@@ -26,7 +95,8 @@ var stackmatutil = execMain(function(CubieCube) {
 			return;
 		}
 		isShown = true;
-		fdiv.empty().append(statusSpan, '<br>', 'Device:&nbsp;&nbsp;', deviceSelect);
+		fdiv.empty().append(statusSpan, '<br>', 'Device:&nbsp;&nbsp;', deviceSelect, debugClick);
+		debugClick.reclk(showDebugDialog);
 	}
 
 	function updateDevices() {

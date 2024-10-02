@@ -159,6 +159,15 @@ var stackmat = execMain(function() {
 		} else if (last_bit_length > 100) {
 			distortionStat = 1;
 		}
+		if (sampleRemain > 0) {
+			sampleRemain--;
+			sampleData['raw'].push(signal);
+			sampleData['bin'].push(lastSgn);
+			if (sampleRemain == 0) {
+				sampleCallback && sampleCallback(sampleData);
+				sampleCallback = null;
+			}
+		}
 	}
 
 
@@ -171,6 +180,7 @@ var stackmat = execMain(function() {
 	var no_state_length = 0;
 
 	function appendBit(bit) {
+		var newByte = null;
 		bitBuffer.push(bit);
 		if (bit != last_bit) {
 			last_bit = bit;
@@ -209,9 +219,16 @@ var stackmat = execMain(function() {
 				for (var i = 8; i > 0; i--) {
 					val = val << 1 | (bitBuffer[i] == idle_val ? 1 : 0);
 				}
-				byteBuffer.push(String.fromCharCode(val));
+				newByte = String.fromCharCode(val);
+				byteBuffer.push(newByte);
 				decode(byteBuffer);
 				bitBuffer = [];
+			}
+		}
+		if (sampleRemain > 0) {
+			sampleData['bits'].push(bit);
+			if (newByte != null) {
+				sampleData['bytes'].push(newByte);
 			}
 		}
 	}
@@ -314,6 +331,24 @@ var stackmat = execMain(function() {
 				callback(stackmat_state);
 			}
 		}
+		if (sampleRemain > 0) {
+			sampleData['bits'].push(bit);
+		}
+	}
+
+	var sampleCallback = null;
+	var sampleRemain = 0;
+	var sampleData = {};
+
+	function getSample(duration, callback) {
+		sampleCallback = callback;
+		sampleRemain = Math.ceil(duration * (audio_context["sampleRate"] || 44100));
+		sampleData = {
+			'raw': [], // signal after agc
+			'bin': [], // binarized signal
+			'bits': [],
+			'bytes': []
+		};
 	}
 
 	var stackmat_state = {
@@ -336,40 +371,9 @@ var stackmat = execMain(function() {
 		init: init,
 		stop: stop,
 		updateInputDevices: updateInputDevices,
+		getSample: getSample,
 		setCallBack: function(func) {
 			callback = func;
 		}
 	}
-});
-
-execMain(function() {
-	if (!window.nativeStackmat) {
-		return;
-	}
-	stackmat = (function() {
-		DEBUG && console.log('Use Native Stackmat');
-		var callbackName = 'stackmat_callback_' + ~~(Math.random() * 10000000);
-		var callback;
-		nativeStackmat.setCallback(callbackName);
-		window[callbackName] = function(obj) {
-			DEBUG && console.log(JSON.stringify(obj));
-			callback && callback(obj);
-		}
-		return {
-			init: function() {
-				nativeStackmat.init();
-				return Promise.resolve();
-			},
-			stop: function() {
-				nativeStackmat.stop();
-				return Promise.resolve();
-			},
-			updateInputDevices: function() {
-				return Promise.resolve([[undefined, 'native']]);
-			},
-			setCallBack: function(func) {
-				callback = func;
-			}
-		}
-	})();
 });
