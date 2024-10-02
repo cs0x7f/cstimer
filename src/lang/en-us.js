@@ -555,6 +555,7 @@ var PROPERTY_STATALU = 'Customized statistical indicator';
 var PROPERTY_HLPBS = 'Highlight PBs';
 var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bold|None';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
+var PROPERTY_CONFDEL = 'Confirm deletion';
 var PROPERTY_TOOLSFUNC = 'Selected Functions';
 var PROPERTY_TRIM = 'Number of solves trimmed at better side';
 var PROPERTY_TRIMR = 'Number of solves trimmed at worse side';
