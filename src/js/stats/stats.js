@@ -70,7 +70,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 			n_del = ~~n_del;
 		} else {
-			if (!confirm(STATS_CFM_DELETE)) {
+			if (kernel.getProp("confdel") && !confirm(STATS_CFM_DELETE)) {
 				return;
 			}
 			n_del = 1;
@@ -1872,6 +1872,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			['mo3 ao5 ao12 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100', 'mo3 ao5 ao12 ao25 ao50 ao100 ao200 ao500 ao1000 ao2000 ao5000 ao10000', 'Custom']
 		], 1);
 		kernel.regProp('stats', 'delmul', 0, PROPERTY_DELMUL, [true]);
+    kernel.regProp('stats', 'confdel', 0, PROPERTY_CONFDEL, [true]);
 		kernel.regProp('ui', 'statHide', ~0, 'Hide Session Title', [false]);
 
 		kernel.setProp('sr_statalu', kernel.getProp('sr_statal'));
