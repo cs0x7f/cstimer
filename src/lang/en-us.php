@@ -108,7 +108,7 @@
 <li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
 <li><strong data="opt_statal">Statistical indicators</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">Enable Multiple Deletion</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
-<li><strong data="opt_confdel">Confirm deletion</strong>. Show a pop-up to confirm whether to delete a time.</li>
+<li><strong data="opt_confdel">Confirm deletion</strong>. Show a pop-up to confirm whether to delete a time. Doesn't take effect if Multiple Deletion is enabled.</li>
 <li><strong data="opt_disPrec">time distribution precision</strong>. Time interval for the time distribution tool.</li>
 <li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Scramble Image Size</strong>. Set the size of scramble image.</li>
