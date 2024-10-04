@@ -130,7 +130,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 		obj.find('.clpr-lk').css({'color': colors[4]});
 		obj.find('.clpr-lg').css({'color': colors[5], 'background-color': colors[6]});
 		obj.click(function(url) {
-			if (confirm('Change color scheme?')) {
+			if ($.confirm('Change color scheme?')) {
 				window.location.href = url;
 			}
 		}.bind(null, colScheme));

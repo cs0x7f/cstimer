@@ -64,13 +64,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function delIdx(index) {
 		var n_del;
 		if (kernel.getProp("delmul")) {
-			n_del = prompt(STATS_CFM_DELMUL, 1);
+			n_del = $.prompt(STATS_CFM_DELMUL, 1);
 			if (n_del == null || !/^\d+$/.exec(n_del) || ~~n_del == 0) {
 				return;
 			}
 			n_del = ~~n_del;
 		} else {
-			if (!confirm(STATS_CFM_DELETE)) {
+			if (!$.confirm(STATS_CFM_DELETE)) {
 				return;
 			}
 			n_del = 1;
@@ -227,7 +227,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function changePattern() {
-			var newpattern = prompt('Filter Pattern: (23*, 15.1*, comments, scrambles, date)');
+			var newpattern = $.prompt('Filter Pattern: (23*, 15.1*, comments, scrambles, date)');
 			if (newpattern == null || newpattern == patstr) {
 				return;
 			} else if (!newpattern) {
@@ -483,7 +483,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			cfmDiv.css('font-size', '1.2em');
 			if (action == 'comment') {
 				hideToTools();
-				var newComment = prompt('Comment for solve No. ' + (cfmIdx + 1) + ':', cfmTxtR.val());
+				var newComment = $.prompt('Comment for solve No. ' + (cfmIdx + 1) + ':', cfmTxtR.val());
 				if (newComment == null) {
 					return;
 				}
@@ -890,7 +890,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function exportCSV(times_stats, timesAt, start, nsolves) {
 		if (times_stats.timesLen == 0) return;
 		if (!window.Blob) {
-			alert('Do not support your browser!');
+			$.alert('Do not support your browser!');
 		}
 		var s = ["No.;Time;Comment;Scramble;Date"];
 		for (var i = 0; i < curDim; i++) {
@@ -1144,7 +1144,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 
 		function deleteSession(ssidx) {
 			if (('stat' in sessionData[ssidx] ? sessionData[ssidx]['stat'][0] : 1) != 0 &&
-				!confirm(STATS_CFM_DELSS.replace('%s', sessionIdent(ssidx)))) {
+				!$.confirm(STATS_CFM_DELSS.replace('%s', sessionIdent(ssidx)))) {
 				return false;
 			}
 			doSessionDeletion(ssidx);
@@ -1152,7 +1152,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function clearSession() {
-			if (!confirm(STATS_CFM_RESET)) {
+			if (!$.confirm(STATS_CFM_RESET)) {
 				return;
 			}
 			times = [];
@@ -1168,7 +1168,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			if (ssidx === undefined) {
 				ssidx = sessionIdx;
 			}
-			var sName = prompt(isCreate ? STATS_SESSION_NAMEC : STATS_SESSION_NAME, sessionData[ssidx]['name']);
+			var sName = $.prompt(isCreate ? STATS_SESSION_NAMEC : STATS_SESSION_NAME, sessionData[ssidx]['name']);
 			if (sName != null) {
 				sName = $('<div/>').text(sName).html();
 				sessionData[ssidx]['name'] = sName;
@@ -1288,13 +1288,13 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function splitSession() {
-			var n_split = prompt(STATS_PROMPTSPL.replace('%s', sessionIdent(sessionIdx)), ~~(times.length / 2));
+			var n_split = $.prompt(STATS_PROMPTSPL.replace('%s', sessionIdent(sessionIdx)), ~~(times.length / 2));
 			if (n_split == null) {
 				return;
 			}
 			n_split = ~~n_split;
 			if (n_split < 1 || n_split > times.length - 1) {
-				alert(STATS_ALERTSPL);
+				$.alert(STATS_ALERTSPL);
 				return;
 			}
 			var curSessionIdx = sessionIdx;
@@ -1312,7 +1312,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function mergeSessionTo(idx) {
-			if (sessionIdx == idx || !confirm(STATS_ALERTMG.replace('%f', sessionIdent(sessionIdx)).replace('%t', sessionIdent(idx)))) {
+			if (sessionIdx == idx || !$.confirm(STATS_ALERTMG.replace('%f', sessionIdent(sessionIdx)).replace('%t', sessionIdent(idx)))) {
 				return;
 			}
 			var prevSession = sessionIdx;
@@ -1340,7 +1340,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				logohint.push(LGHINT_SORT0);
 				return;
 			}
-			if (!confirm(STATS_SSMGR_SORTCFM.replace('%d', cntdiff))) {
+			if (!$.confirm(STATS_SSMGR_SORTCFM.replace('%d', cntdiff))) {
 				return;
 			}
 			times = timesNew;
@@ -1465,7 +1465,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		function showMgrTable() {
 			genMgrTable();
 			kernel.showDialog([ssmgrDiv, 0, undefined, 0, [STATS_SSMGR_ORDER, function() {
-				if (!confirm(STATS_SSMGR_ODCFM)) {
+				if (!$.confirm(STATS_SSMGR_ODCFM)) {
 					return false;
 				}
 				var ssSorted = [];
@@ -1678,12 +1678,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 		if (!force && /^\s*([am]o\d+[\s,;]*)+\s*$/.exec(curValue)) {
 			return;
 		}
-		var input = prompt('Statistics Details', curValue || 'mo3 ao5 ao12 ao100');
+		var input = $.prompt('Statistics Details', curValue || 'mo3 ao5 ao12 ao100');
 		if (/^\s*([am]o\d+[\s,;]*)+\s*$/.exec(input) && avgSizesStd(input)) {
 			kernel.setProp('statalu', input);
 		} else {
 			if (input != null) {
-				alert('INVALID VALUES!');
+				$.alert('INVALID VALUES!');
 			}
 			kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
 			kernel.reprop();

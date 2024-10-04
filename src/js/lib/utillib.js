@@ -225,6 +225,48 @@ ISCSTIMER && execMain(function() {
 		});
 	};
 
+	(function() {
+		// handle blocked alert/confirm/prompt
+		var lastMsg = null;
+
+		$.alert = function(msg) {
+			var tt = $.now();
+			alert(msg);
+			if ($.now() - tt < 20) {
+				logohint.push(msg);
+			}
+		};
+
+		$.confirm = function(msg) {
+			var tt = $.now();
+			var ret = confirm(msg);
+			if (!ret && $.now() - tt < 20) {
+				if (msg == lastMsg) {
+					lastMsg = null;
+					return true;
+				}
+				logohint.push(msg);
+				lastMsg = msg;
+			}
+			return ret;
+		};
+
+		$.prompt = function(msg, val) {
+			var tt = $.now();
+			var ret = prompt(msg, val);
+			if (!ret && $.now() - tt < 20) {
+				if (msg == lastMsg) {
+					lastMsg = null;
+					logohint.push($.format('Use default value [{0}]', [val || '']));
+					return val || null;
+				}
+				logohint.push('Popup dialog blocked, reclick to use default');
+				lastMsg = msg;
+			}
+			return ret;
+		};
+	})();
+
 	$.fn.reclk = function(handler) {
 		return this.unbind('click').click(handler);
 	};

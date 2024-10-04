@@ -79,7 +79,7 @@ var logohint = execMain(function() {
 			render();
 		});
 		logo.click(function() {
-			if (location.protocol != 'https:' && confirm('Your access to csTimer is unsafe. Press OK for safe access.')) {
+			if (location.protocol != 'https:' && $.confirm('Your access to csTimer is unsafe. Press OK for safe access.')) {
 				location.protocol = 'https:';
 			}
 			about.show();

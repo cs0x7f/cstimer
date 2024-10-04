@@ -74,7 +74,7 @@ var exportFunc = execMain(function() {
 					solveRm += Math.max(times.length - timesNew.length, 0);
 				}
 			}
-			if (confirm(IMPORT_FINAL_CONFIRM
+			if ($.confirm(IMPORT_FINAL_CONFIRM
 					.replace("%d", sessionDelta)
 					.replace("%a", solveAdd)
 					.replace("%r", solveRm)
@@ -127,7 +127,7 @@ var exportFunc = execMain(function() {
 		if (e.target === outServWCA[0] || e.target === inServWCA[0]) {
 			id = getDataId('wcaData', 'cstimer_token');
 		} else {
-			id = prompt(EXPORT_USERID, getDataId('locData', 'id'));
+			id = $.prompt(EXPORT_USERID, getDataId('locData', 'id'));
 			if (id == null) {
 				return;
 			}
@@ -135,7 +135,7 @@ var exportFunc = execMain(function() {
 			kernel.pushSignal('export', ['account', 'locData']);
 		}
 		if (!isValidId(id)) {
-			alert(EXPORT_INVID);
+			$.alert(EXPORT_INVID);
 			return;
 		}
 		return id;
@@ -209,9 +209,9 @@ var exportFunc = execMain(function() {
 		var rawText = target.html();
 		target.html('...');
 		uploadData(id).then(function() {
-			alert(EXPORT_UPLOADED);
+			$.alert(EXPORT_UPLOADED);
 		}, function() {
-			alert(EXPORT_ERROR);
+			$.alert(EXPORT_ERROR);
 		}).then(function() {
 			target.html(rawText);
 		});
@@ -228,7 +228,7 @@ var exportFunc = execMain(function() {
 			msgf.push((ff + 1) + '. ' + msgfmt.replace('%s', nsolv || (size ? Math.ceil(size / 1024) + ' KB' : 'N/A'))
 				.replace('%t', new Date(files[ff].modifiedTime).toLocaleString()));
 		}
-		return ~~prompt(msgf.join('\n'), '1');
+		return ~~$.prompt(msgf.join('\n'), '1');
 	}
 
 	function downloadData(e) {
@@ -333,7 +333,7 @@ var exportFunc = execMain(function() {
 			}, 'json');
 		}
 		return jobs.then(cntCallback).catch(function(msg) {
-			alert(EXPORT_ERROR + (msg ? ': ' + msg : ''));
+			$.alert(EXPORT_ERROR + (msg ? ': ' + msg : ''));
 		}).then(function() {
 			target.html(rawText);
 		});
@@ -353,7 +353,7 @@ var exportFunc = execMain(function() {
 		}).success(function(data, status, xhr) {
 			var files = data['files'];
 			if (files.length == 0) {
-				alert('No Data Found');
+				$.alert('No Data Found');
 				return updateUserInfoFromGGL();
 			}
 			var idx = 1;
@@ -374,13 +374,13 @@ var exportFunc = execMain(function() {
 				try {
 					data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
 				} catch (e) {
-					alert('No Valid Data Found');
+					$.alert('No Valid Data Found');
 					return updateUserInfoFromGGL();
 				}
 				updateUserInfoFromGGL();
 				loadData(data);
 			}).error(function() {
-				alert(EXPORT_ERROR + '\nPlease Re-login');
+				$.alert(EXPORT_ERROR + '\nPlease Re-login');
 				logoutFromGGL();
 			});
 
@@ -394,7 +394,7 @@ var exportFunc = execMain(function() {
 				});
 			}
 		}).error(function() {
-			alert(EXPORT_ERROR + '\nPlease Re-login');
+			$.alert(EXPORT_ERROR + '\nPlease Re-login');
 			logoutFromGGL();
 		});
 	}
@@ -457,7 +457,7 @@ var exportFunc = execMain(function() {
 
 	function exportByPrompt(expOpt) {
 		var compOpt = LZString.compressToEncodedURIComponent(JSON.stringify(expOpt));
-		var ret = prompt(EXPORT_CODEPROMPT, compOpt);
+		var ret = $.prompt(EXPORT_CODEPROMPT, compOpt);
 		if (!ret || ret == compOpt) {
 			return;
 		}
@@ -548,16 +548,16 @@ var exportFunc = execMain(function() {
 			inServGGL.addClass('click').click(downloadDataGGL);
 			outServGGL.addClass('click').click(function() {
 				uploadDataGGL().then(function() {
-					alert(EXPORT_UPLOADED);
+					$.alert(EXPORT_UPLOADED);
 				}, function(errmsg) {
-					alert(errmsg);
+					$.alert(errmsg);
 				});
 			});
 		}
 	}
 
 	function logoutFromWCA(cfm) {
-		if (cfm && !confirm(EXPORT_LOGOUTCFM)) {
+		if (cfm && !$.confirm(EXPORT_LOGOUTCFM)) {
 			return;
 		}
 		delete localStorage['wcaData'];
@@ -565,7 +565,7 @@ var exportFunc = execMain(function() {
 	}
 
 	function logoutFromGGL(cfm) {
-		if (cfm && !confirm(EXPORT_LOGOUTCFM)) {
+		if (cfm && !$.confirm(EXPORT_LOGOUTCFM)) {
 			return;
 		}
 		delete localStorage['gglData'];
@@ -577,10 +577,10 @@ var exportFunc = execMain(function() {
 			if (value[1] == 'id') {
 				var id = getDataId('locData', 'id');
 				if (!isValidId(id) || value[2] == 'modify') {
-					id = prompt(EXPORT_USERID, id);
+					id = $.prompt(EXPORT_USERID, id);
 					if (!isValidId(id)) {
 						if (id != null) {
-							alert(EXPORT_INVID);
+							$.alert(EXPORT_INVID);
 						}
 						kernel.setProp('atexpa', 'a');
 						return;
@@ -590,13 +590,13 @@ var exportFunc = execMain(function() {
 				}
 			} else if (value[1] == 'wca') {
 				if (!isValidId(getDataId('wcaData', 'cstimer_token'))) {
-					alert('Please Login with WCA Account in Export Panel First');
+					$.alert('Please Login with WCA Account in Export Panel First');
 					kernel.setProp('atexpa', 'a');
 					return;
 				}
 			} else if (value[1] == 'ggl') {
 				if (!getDataId('gglData', 'access_token')) {
-					alert('Please Login with Google Account in Export Panel First');
+					$.alert('Please Login with Google Account in Export Panel First');
 					kernel.setProp('atexpa', 'a');
 					return;
 				}
@@ -730,11 +730,11 @@ var exportFunc = execMain(function() {
 					localStorage['wcaData'] = JSON.stringify(val);
 					kernel.pushSignal('export', ['account', 'wcaData']);
 				} else {
-					alert(EXPORT_ERROR);
+					$.alert(EXPORT_ERROR);
 					logoutFromWCA();
 				}
 			}, 'json').error(function() {
-				alert(EXPORT_ERROR);
+				$.alert(EXPORT_ERROR);
 				logoutFromWCA();
 			}).always(function() {
 				updateUserInfoFromWCA();
@@ -759,14 +759,14 @@ var exportFunc = execMain(function() {
 					});
 					kernel.pushSignal('export', ['account', 'gglData']);
 				} else {
-					alert(EXPORT_ERROR);
+					$.alert(EXPORT_ERROR);
 					logoutFromGGL();
 				}
 			}, 'json').error(function(data, status, xhr) {
 				if (data.status == 401) {
-					alert('Timeout, Please Re-login');
+					$.alert('Timeout, Please Re-login');
 				} else {
-					alert(EXPORT_ERROR);
+					$.alert(EXPORT_ERROR);
 				}
 				logoutFromGGL();
 			}).always(function() {

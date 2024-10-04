@@ -372,7 +372,7 @@ var kernel = execMain(function() {
 			if (value[1] == curLang || value[2] != "modify") {
 				return;
 			} else if (value[1] == 'h') {
-				if (confirm('Press OK to redirect to crowdin for translating cstimer')) {
+				if ($.confirm('Press OK to redirect to crowdin for translating cstimer')) {
 					window.location.href = 'https://crowdin.com/project/cstimer';
 				}
 			} else {
@@ -738,7 +738,7 @@ var kernel = execMain(function() {
 						var val = exportColor();
 						var ret = prompt(EXPORT_CODEPROMPT, val);
 						if (ret && ret != val && !importColor(ret)) {
-							alert(COLOR_FAIL);
+							$.alert(COLOR_FAIL);
 						}
 						property.set('color', 'u');
 					} else {
@@ -1042,7 +1042,7 @@ var kernel = execMain(function() {
 							img.attr("src", src);
 							setProp('bgImgSrc', src);
 						} else {
-							alert(BGIMAGE_INVALID);
+							$.alert(BGIMAGE_INVALID);
 							setProp('bgImgS', lastidx);
 							property.reload();
 						}
