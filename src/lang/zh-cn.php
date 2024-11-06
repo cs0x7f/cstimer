@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">打乱区对齐方式</strong>. 整个打乱区域的对齐方式，包括打乱类型选项等。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打乱公式前的预转动，主要用于虚拟魔方和打乱图案。</li>
 <li><strong data="opt_scrNeut">六色底</strong>. 如果启用，训练打乱的位置、底色将会是随机的。</li>
+<li><strong data="opt_scrEqPr">训练打乱状态出现概率</strong>. 对于训练打乱，不同情况出现的概率可以设置为：按照实际还原过程的概率；或者让所有情况等概率出现；或者让所有情况随机依次出现（也就是确保所有N种情况在未来2N次还原中至少出现一次）</li>
 <li><strong data="opt_scrFast">四阶魔方使用快速打乱（非官方）</strong>. WCA官方的4x4x4打乱需要大量的计算资源，可以通过勾选此选项来启用4x4x4随即转动打乱代替。</li>
 <li><strong data="opt_scrKeyM">标记打乱中的关键转动</strong>. 标记打乱中的关键步骤，例如对于SQ1打乱会标记处让形状离开正方形的那一步。</li>
 <li><strong data="opt_scrClk">点击打乱时的动作</strong>. 当您点击打乱公式时触发的行为，复制打乱或生成下一个打乱公式。</li>

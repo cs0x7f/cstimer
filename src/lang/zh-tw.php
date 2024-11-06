@@ -30,11 +30,11 @@
 <tr><th>Alt + 2 ~ 7</th><td>打亂類型切換至 二~七階魔方</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>打亂類型切換至 金字塔/五魔方/魔錶/斜轉魔方</td></tr>
 <tr><th>Alt + i</th><td>打亂類型切換至 手動輸入</td></tr>
-<tr><th>Alt + d</th><td>刪除統計功能中本組所有成績</td></tr>
-<tr><th>Alt + z</th><td>刪除統計功能中本組最新的一個成績</td></tr>
-<tr><th>Alt + 上/下</th><td>統計列表切換到下/上一分組</td></tr>
-<tr><th>Alt + 左/右</th><td>顯示上/下一條打亂公式</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>將最新成績的完成狀態改為 OK/+2/DNF</td></tr>
+<tr><th>Alt + d</th><td>刪除本組所有成績</td></tr>
+<tr><th>Alt + z</th><td>刪除本組的最新成績</td></tr>
+<tr><th>Alt + ↑ / ↓</th><td>統計列表切換到下/上一分組</td></tr>
+<tr><th>Alt + ←/→</th><td>顯示上/下一條打亂公式</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>將最新成績的完成狀態改為 OK/+2/未完成</td></tr>
 <tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>將輸入模式切到計時器/手動輸入/比賽用計時器/虛擬方塊/藍芽方塊/qcube/藍芽計時器/頂層</td></tr>
 </table>
 
@@ -74,7 +74,7 @@
 <li><strong data="opt_bgImgS">背景圖片</strong>. 你可以自訂背景圖片，但由於瀏覽器安全性的關係，只能嵌入https的圖片連結。</li>
 <li><strong data="opt_timerSize">計時器大小</strong>. 計時器的字體大小。</li>
 <li><strong data="opt_smallADP">小數點後使用小型字體</strong>. 小數點後的字體縮小顯示。</li>
-<li><strong data="opt_color">選擇色彩樣式</strong>. 選擇csTimer的顏色主題。 點選csTimer的logo可以看到更多顏色主題。</li>
+<li><strong data="opt_color">選擇色彩樣式</strong>. 選擇csTimer的顏色主題。 點選csTimer的標誌可以看到更多顏色主題。</li>
 <li><strong data="opt_useMouse">使用滑鼠計時</strong>. 用滑鼠控制計時器，開啟這個選項後依然可以使用鍵盤。</li>
 <li><strong data="opt_useIns">使用WCA觀察</strong>. 使用WCA的15秒觀察，如果超過15秒的話會自動+2/DNF。</li>
 <li><strong data="opt_voiceIns">WCA觀察人聲提醒</strong>. 為了符合WCA的裁判規定，在觀察8秒/12秒時提醒。</li>
@@ -91,13 +91,14 @@
 <li><strong data="opt_scrLim">限制打亂區高度</strong>. 如果打亂面板的位置太高的話，會顯示捲軸以避免打亂區出格。</li>
 <li><strong data="opt_scrAlign">打亂對齊</strong>. 打亂區與打亂選擇器的對齊狀況。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打亂前的前置動作。這個選項會影響虛擬方塊跟打亂圖形的顯示。</li>
-<li><strong data="opt_scrNeut">Color neutral</strong>. 如果開啟，方塊的朝向或某些訓練打亂第一層顏色將變得隨機。</li>
+<li><strong data="opt_scrNeut">Color neutral</strong>. 在開啟的時候，方塊的朝向或第一層顏色在某些訓練打亂中將變得隨機。</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">4x4x4使用快速打亂(非官方)</strong>. WCA的官方4x4x4打亂方法很吃運算資源。如果要改成4x4x4的隨機步驟打亂，可以勾選這個選項。</li>
 <li><strong data="opt_scrKeyM">打亂中標記關鍵步驟</strong>. 標記打亂中的關鍵步驟，例如sq-1打亂中離開正方形的那一個步驟。</li>
 <li><strong data="opt_scrClk">點擊打亂時的動作</strong>. 點擊打亂公式後會發生的事情：複製本次打亂或生成下一組打亂。</li>
 <li><strong data="opt_trim">刪減數據中的資料數</strong>. 計算平均時要去掉的頭尾數據量。</li>
 <li><strong data="opt_statsum">在時間清單前顯示摘要</strong>. 在時間列表前顯示統計資料。</li>
-<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. 在資料欄中，下一次還原能更新個人紀錄所需要的時間是被顥示的 "N/A" 的意思是無論下一次還原多快都不會更新個人紀錄，"&#8734;" 的意思是未完成之外的每次還原都會更新個紀錄。</li>
 <li><strong data="opt_printScr">在統計列表中顯示打亂</strong>. 在數據欄中顯示打亂。</li>
 <li><strong data="opt_printDate">在統計列表中顯示日期</strong>. 在數據欄中顯示日期。</li>
 <li><strong data="opt_imrename">創建後立即重新命名階段</strong>. 在創建階段後立即重新命名。</li>
@@ -113,7 +114,7 @@
 <li><strong data="opt_imgSize">打亂圖示大小</strong>. 選擇打亂圖形的大小。</li>
 <li><strong data="opt_NTools">工具數量</strong>. csTimer可以同時顯示4個小工具。</li>
 <li><strong data="opt_useKSC">使用快捷鍵</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">手勢控制</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC基準速度(轉/秒)</strong>. 使用虛擬方塊時的基礎轉動速度。如果有很多步驟要做的話，會自動跳過某些動畫。</li>
 <li><strong data="opt_vrcMP">分項計時</strong>. 在使用虛擬方塊或藍芽方塊時自動使用多階段計時。</li>
 <li><strong data="opt_giiMode">藍芽魔方模式</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
@@ -166,7 +167,7 @@
 <h2>配色方案</h2>
 <?php include('color.php') ?>
 <div class="donate helptable" style="line-height:1.5em;">
-<h2>Hardware compatible with csTimer</h2>
+<h2>與 csTimer 相容的設備</h2>
 <p>In addition to timing by keyboard, csTimer also supports Bluetooth Smart Cubes and Smart Timers.</p>
 <p>If you use a smart cube, csTimer will record the detailed solution of each of your solves and provide more statistics and practice functions (e.g. CFOP automatic segmentation, etc.)</p>
 <ul>
@@ -179,7 +180,7 @@
 <li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
-<h2>Donate directly</h2>
+<h2>直接斗內</h2>
 <p>csTimer感謝你的資助！ 你的捐款會用作開發經費跟維護成本。</p>
 <p>如果想要使用PayPal捐款的話，可以按下面的按鈕或是<a class="click" href="https://www.paypal.me/cs0x7f" title="">這個連結</a>。</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

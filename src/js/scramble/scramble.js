@@ -111,12 +111,21 @@ var scrMgr = (function(rn, rndEl) {
 		if (probs[0] == 0) {
 			return filter.slice();
 		}
+		var valids = [];
 		for (var i = 0; i < filter.length; i++) {
+			valids.push(i);
 			if (!filter[i]) {
 				ret[i] = 0;
-			} else if (equalProb) {
+				valids.pop();
+			} else if (equalProb == 1) {
 				ret[i] = 1;
 			}
+		}
+		if (equalProb == 2) {
+			if (millerCnt++ < 0) {
+				millerCnt = mathlib.rn(65536);
+			}
+			return valids[MillerShuffle(millerCnt % valids.length, ~~(millerCnt / valids.length), valids.length)];
 		}
 		return mathlib.rndProb(ret);
 	}
@@ -125,13 +134,45 @@ var scrMgr = (function(rn, rndEl) {
 		if (cases != undefined) {
 			return cases;
 		}
-		return equalProb ? mathlib.rn(probs.length) : mathlib.rndProb(probs);
+		if (equalProb == 2) { // strict equal prob
+			if (millerCnt++ < 0) {
+				millerCnt = mathlib.rn(65536);
+			}
+			return MillerShuffle(millerCnt % probs.length, ~~(millerCnt / probs.length), probs.length);
+		} else if (equalProb == 1) { // weak equal prob
+			return mathlib.rn(probs.length);
+		} else {
+			return mathlib.rndProb(probs);
+		}
 	}
 
-	var equalProb = false;
+	var equalProb = 0;
+	var millerCnt = -1;
 
 	function toTxt(scramble) {
 		return scramble.replace(/<span[^>]*>(.*?)<\/span>/ig, '$1 ').replace(/~/g, '').replace(/\\n/g, '\n').replace(/`(.*?)`/g, '$1');
+	}
+
+	function MillerShuffle(idx, permIdx, length) {
+		if (length <= 0 || idx < 0 || permIdx < 0) {
+			return 0;
+		}
+		var p1 = 24317, p2 = 32141, p3 = 63629;
+		var randR = permIdx + ~~(idx / length) * 131;
+		var r1 = randR % p1 + 42;
+		var r2 = ((randR * 0x89) ^ r1) % p2;
+		var r3 = (r1 + r2 + p3) % length;
+		var r4 = r1 ^ r2 ^ r3;
+		var rx = ~~(randR / length) % length + 1;
+		var rx2 = ~~(randR / length / length) % length + 1;
+		var sidx = (idx + randR) % length;
+		if (sidx % 3 == 0) sidx = (((sidx / 3) * p1 + r1) % ~~((length + 2) / 3)) * 3;
+		if (sidx % 2 == 0) sidx = (((sidx / 2) * p2 + r2) % ~~((length + 1) / 2)) * 2;
+		if (sidx < ~~(length / 2)) sidx = (sidx * p3 + r4) % ~~(length / 2);
+		if ((sidx ^ rx) < length) sidx ^= rx;
+		sidx = (sidx * p3 + r3) % length;
+		if ((sidx ^ rx2) < length) sidx ^= rx2;
+		return sidx;
 	}
 
 	return {
@@ -142,7 +183,7 @@ var scrMgr = (function(rn, rndEl) {
 		formatScramble: formatScramble,
 		rndState: rndState,
 		fixCase: fixCase,
-		setEqPr: function(ep) { equalProb = ep; },
+		setEqPr: function(ep) { equalProb = ~~ep; },
 		getEqPr: function() { return equalProb; },
 		toTxt: toTxt
 	}
@@ -740,7 +781,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 					genScramble();
 				}
 			} else if (value[0] == 'scrEqPr') {
-				scrMgr.setEqPr(!!value[1]);
+				scrMgr.setEqPr(~~value[1]);
 			} else if (value[0] == 'scrClk') {
 				ssdiv.css('cursor', {
 					'n': 'default',
@@ -878,7 +919,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 			["(UF)", "(UR) y", "(UB) y2", "(UL) y'", "(DF) z2", "(DL) z2 y", "(DB) z2 y2", "(DR) z2 y'", "(RF) z'", "(RD) z' y", "(RB) z' y2", "(RU) z' y'", "(LF) z", "(LU) z y", "(LB) z y2", "(LD) z y'", "(BU) x'", "(BR) x' y", "(BD) x' y2", "(BL) x' y'", "(FD) x", "(FR) x y", "(FU) x y2", "(FL) x y'"]
 		], 1);
 		kernel.regProp('scramble', 'scrNeut', 1, PROPERTY_SCRNEUT, ['n', ['n', '1', '2', '6'], PROPERTY_SCRNEUT_STR.split('|')], 1);
-		kernel.regProp('scramble', 'scrEqPr', 0, PROPERTY_SCREQPR, [false], 1);
+		kernel.regProp('scramble', 'scrEqPr', 1, PROPERTY_SCREQPR, ['0', ['0', '1', '2'], PROPERTY_SCREQPR_STR.split('|')], 1);
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
 		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['c', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);

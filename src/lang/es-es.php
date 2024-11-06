@@ -43,7 +43,7 @@
 <tr><th>Up left</th><td>The latest solve is DNF</td></tr>
 <tr><th>Up</th><td>The latest solve is +2</td></tr>
 <tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
+<tr><th>Left</th><td>Última mezcla</td></tr>
 <tr><th>Right</th><td>Next scramble</td></tr>
 <tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
 <tr><th>Down</th><td>Remove the latest solve</td></tr>
@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">Alineación del área de scramble</strong>. La alineación de la zona entera de la mezcla, incluye selector de tipo de mezcla.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Movimientos previos a la mezcla, que se usan con el cubo de Rubik virtual e imagen de mezcla</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Usar scramble rápido para 4x4x4 (no oficial)</strong>. La mezcla 4x4x4 oficial de la WCA requiere una alta cantidad de recursos de cálculo, selecciona esta opción para utilizar una mezcla basada en movimientos al azar para el 4x4x4</li>
 <li><strong data="opt_scrKeyM">Movimiento(s) clave de la etiqueta en el scramble</strong>. Marque un movimiento clave en la mezcla, por ej.: el movimiento que quita el estado de forma cuadrada en las mezclas de SQ1</li>
 <li><strong data="opt_scrClk">Acción al hacer clic en mezcla</strong>. Comportamiento al hacer clic en el texto de la mezcla, copiar la mezcla o generar la siguiente mezcla.</li>

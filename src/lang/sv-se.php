@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">Anpassning av blandningsområdet</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Använd snabb blandning för 4x4x4 (ej officiell)</strong>. WCA officiella 4x4x4 blandningar kräver enorma beräkningsresurser, välj det här alternativet  för att använda en slumpmässig blandning för 4x4x4 istället.</li>
 <li><strong data="opt_scrKeyM">Markeringsnyckeln flyttas i blandning</strong>. Markera ett nyckeldrag i en blandning, t. ex. draget som tar bort tillståndet från en kvadratisk form i Square-1 blandningar.</li>
 <li><strong data="opt_scrClk">Händelse vid tryckning på blanda</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>

@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">Juster blandingsområde</strong>. Justering av hele blandingsområdet inkluderer blandingstypevelger.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre trekk før blanding, som er brukt til virtuell Rubiks kube og visuell framstilling av blanding.</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Bruker rask blanding til 4x4x4 (uoffisielt)</strong>. WCA offisielle 4x4x4 blanding krever store beregningsressurser. Velg dette alternativet for å bruke en tilfeldig blanding for 4x4x4 i stedet.</li>
 <li><strong data="opt_scrKeyM">Merk viktige trekk i blanding</strong>. Marker et viktig trekk i blandingen, f.eks. trekk som forandrer formen fra kvadratisk til en annen form i SQ1-blandinger.</li>
 <li><strong data="opt_scrClk">Handling ved klikk av blanding</strong>. Hva som skjer når du klikker på blandingsteksten, kopier blanding eller generer neste blanding.</li>

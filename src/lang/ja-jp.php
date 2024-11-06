@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">スクランブルエリアの左右配置</strong>. スクランブルパネルの(セレクタを含んだ)文字寄せ位置を指定します。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. スクランブルの前に行う回転を指定します。このオプションは仮想キューブとスクランブル描画に適用されます。</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">4x4x4の高速スクランブルを利用する(非公式)</strong>. WCA公式の4x4x4スクランブルは計算コストが高いため、このオプションを設定してランダムムーブでスクランブルを生成させることができます。</li>
 <li><strong data="opt_scrKeyM">スクランブルの主要な動きにラベルをつける</strong>. スクランブルの重要な部分に印を付けます。例えば、スクエア1のスクランブル中で長方形が崩れるような部分です。</li>
 <li><strong data="opt_scrClk">スクランブルをクリックしたときの動作</strong>. スクランブル表示をクリックしたとき、スクランブルをコピーするか、次のスクランブルを生成するか指定します。</li>

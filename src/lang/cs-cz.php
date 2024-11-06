@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">Zarovnání scramble oblasti</strong>. Zarovnání celé oblasti scramblu, včetně nastavení typu scramblu.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Tahy před scramblem. Použito pro virtuální kostku a vykreslený scramble.</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Použít rychlí scramble pro 4x4x4(neoficiální)</strong>. Oficiální scrambly pro 4x4x4 jsou náročné na vygenerování. Tato možnost změní scrambly pro 4x4x4 na random-move.</li>
 <li><strong data="opt_scrKeyM">Klíčovy krok pohybů v zamíchání</strong>. Cube</li>
 <li><strong data="opt_scrClk">Akce při kliknutí na scramble</strong>. Co se stane, kliknete-li na scramble. Zkopíruje aktuální, či vygeneruje další.</li>

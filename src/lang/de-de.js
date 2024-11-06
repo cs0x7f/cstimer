@@ -27,8 +27,9 @@ var PROPERTY_SCRALIGN_STR = 'mittig|links|rechts';
 var PROPERTY_SCRWRAP = 'Scramble Wrap';
 var PROPERTY_SCRWRAP_STR = 'Ausgeglichen|Normal';
 var PROPERTY_SCRNEUT = 'Farbneutral';
-var PROPERTY_SCRNEUT_STR = 'Keine Seite|Eine Seite|Zwei Seiten|Sechs Seiten';
-var PROPERTY_SCREQPR = 'Gleiche Wahrscheinlichkeiten bei Training-Scrambles anstelle von tatsächlichen Wahrscheinlichkeiten verwenden.';
+var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
+var PROPERTY_SCREQPR_STR = 'Actual|Equal|Random order';
 var PROPERTY_SCRFAST = 'schnellen Scramble für 4x4x4 verwenden (inoffiziell)';
 var PROPERTY_SCRKEYM = 'Schlüssel-Züge im Scramble hervorheben';
 var PROPERTY_SCRCLK = 'Aktion beim klicken des scrambles';
@@ -617,4 +618,4 @@ var LGHINT_BTINVMAC = 'Ungültige MAC-Adresse, es kann keine Verbindung zum Smar
 var LGHINT_AEXPABT = 'Automatischer Export abgebrochen';
 var LGHINT_AEXPSUC = 'Automatischer Export erfolgreich';
 var LGHINT_AEXPFAL = 'Automatischer Export fehlgeschlagen';
-var EASY_SCRAMBLE_HINT = 'Change length to limit upper bound of solution length, input 2 digits to limit both lower (<= 8) and upper bound';
+var EASY_SCRAMBLE_HINT = 'Ändere die Länge, um die Lösungslänge nach oben zu begrenzen. Gebe 2 Ziffern ein um sowohl die untere (<= 8) als auch die obere Grenze festzulegen.';

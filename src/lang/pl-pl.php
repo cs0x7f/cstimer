@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">Wyrównanie tekstu w polu mieszania</strong>. Wyrównanie tekstu scrambla</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Ruchy uwzględniane przed scramblem podczas tworzenia podglądu scrambla i wirtualnej kostki</li>
 <li><strong data="opt_scrNeut">Kolor neutralny</strong>. Jeżeli włączone na pozycji/pierwszej warstwie kolory niektórych scrambli treningowych będą losowe</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Używanie szybkiego algorytmu mieszającego dla 4x4x4 (nieoficjalny)</strong>. Oficjalny scramble 4x4x4 WCA wymaga ogromnych zasobów obliczeniowych, wybierz tę opcję, aby scramble używał losowych ruchów</li>
 <li><strong data="opt_scrKeyM">Oznacz kluczowe ruchy w scramble&#x27;u</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Akcja po kliknięciu na scramble</strong>. Zachowanie po kliknięciu na scramble'a, skopiuj scramble lub wygeneruj następne scramble.</li>

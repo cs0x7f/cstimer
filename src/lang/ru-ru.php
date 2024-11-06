@@ -92,6 +92,7 @@
 <li><strong data="opt_scrAlign">Выравнивание зоны скрамбла</strong>. Выравнивание всей зоны скрамбла, включая выбор вида скрамбла.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Использовать быстрый скрамбл для 4х4х4(неофициально)</strong>. Официальный WCA метод скрамблинга требует огромных вычислительных ресурсов, выберите эту опцию, чтобы использовать скрамблинг случайными поворотами.</li>
 <li><strong data="opt_scrKeyM">Главный(ые) ход(ы) в скрамбле</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Действие при нажатии на скрамбл</strong>. Поведение когда нажимается текст скрамбла - копировать скрамбл или сгенерировать новый скрамбл.</li>
