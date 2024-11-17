@@ -31,7 +31,7 @@
 <tr><th>Alt + p/m/c/s</th><td>打亂類型切換至 金字塔/五魔方/魔錶/斜轉魔方</td></tr>
 <tr><th>Alt + i</th><td>打亂類型切換至 手動輸入</td></tr>
 <tr><th>Alt + d</th><td>刪除本組所有成績</td></tr>
-<tr><th>Alt + z</th><td>刪除本組的最新成績</td></tr>
+<tr><th>Alt + z / Ctrl + z </th><td>刪除本組的最新成績</td></tr>
 <tr><th>Alt + ↑ / ↓</th><td>統計列表切換到下/上一分組</td></tr>
 <tr><th>Alt + ←/→</th><td>顯示上/下一條打亂公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>將最新成績的完成狀態改為 OK/+2/未完成</td></tr>

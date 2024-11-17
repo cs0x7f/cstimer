@@ -31,7 +31,7 @@
 <tr><th>Alt + p/m/c/s</th><td>Scramble-Art zu Pyraminx/Megaminx/Clock/Skweb</td></tr>
 <tr><th>Alt + i</th><td>Scramble-Art zu Eingabe</td></tr>
 <tr><th>Alt + d</th><td>Entfernt alle Solves aus der aktuellen Sitzung</td></tr>
-<tr><th>Alt + z</th><td>Entfernt den letzten Solve</td></tr>
+<tr><th>Alt + z / Ctrl + z </th><td>Entfernt den letzten Solve</td></tr>
 <tr><th>Alt + nach oben/unten</th><td>Zur nächsten/vorherigen Sitzung</td></tr>
 <tr><th>Alt + links/rechts</th><td>Vorheriges/Nächstes Scramble anzeigen</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>Der letzte Solve ist OK/+2/DNF</td></tr>

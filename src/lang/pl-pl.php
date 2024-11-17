@@ -31,7 +31,7 @@
 <tr><th>Alt + p/m/c/s</th><td>Typ mieszania do pyra/mega/clock/skewb</td></tr>
 <tr><th>Alt + i</th><td>Wprowadź scrambla</td></tr>
 <tr><th>Alt + d</th><td>Usuń wszystkie ułożenia w sesji</td></tr>
-<tr><th>Alt + z</th><td>Usuń najnowszy czas</td></tr>
+<tr><th>Alt + z / Ctrl + z </th><td>Usuń najnowszy czas</td></tr>
 <tr><th>Alt + strzałka w góre/dół</th><td>Następna/poprzednia sesja</td></tr>
 <tr><th>Alt + strzałka w lewo/prawo</th><td>Pokaż poprzedni/następny scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>Ustaw najnowszy czas na OK/+2/DNF</td></tr>
