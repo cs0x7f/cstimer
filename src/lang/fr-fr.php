@@ -31,7 +31,7 @@
 <tr><th>Alt + p/m/c/s</th><td>Type de mélange pour pyra/megaminx/clock/skewb</td></tr>
 <tr><th>Alt + i</th><td>Type de mélange à saisir</td></tr>
 <tr><th>Alt + d</th><td>Supprimer toutes les résolutions de la session en cours</td></tr>
-<tr><th>Alt + z / Ctrl + z </th><td>Supprimer la dernière résolution</td></tr>
+<tr><th>Ctrl/Alt + z</th><td>Supprimer la dernière résolution</td></tr>
 <tr><th>Alt + haut/bas</th><td>Aller à la session suivante/précédente</td></tr>
 <tr><th>Alt + gauche/droite</th><td>Afficher le mélange précédent /suivant</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>La dernière résolution est OK/+2/DNF</td></tr>

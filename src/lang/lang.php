@@ -1,5 +1,6 @@
 <p>Language: <select onchange="javascript:location.href=this.value;"><option value="#">&#127760;</option><option value="?lang=en-us">English</option>
 <option value="?lang=ar-sa">العربية</option>
+<option value="?lang=bn-bd">বাংলা</option>
 <option value="?lang=ca-es">Català</option>
 <option value="?lang=cs-cz">Čeština</option>
 <option value="?lang=da-dk">Dansk</option>
