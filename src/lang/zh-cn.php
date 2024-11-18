@@ -31,7 +31,7 @@
 <tr><th>Alt + p/m/c/s</th><td>打乱类型切换至 金字塔/五魔方/魔表/斜转魔方</td></tr>
 <tr><th>Alt + i</th><td>打乱类型切换至 手动输入</td></tr>
 <tr><th>Alt + d</th><td>删除统计功能中本组所有成绩</td></tr>
-<tr><th>Alt + z</th><td>删除统计功能中本组最新的一个成绩</td></tr>
+<tr><th>Alt + z / Ctrl + z </th><td>删除统计功能中本组最新的一个成绩</td></tr>
 <tr><th>Alt + 上/下</th><td>统计列表切换到下/上一分组</td></tr>
 <tr><th>Alt + 左/右</th><td>显示上/下一条打乱公式</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>将最新成绩的完成状态改为 OK/+2/DNF</td></tr>

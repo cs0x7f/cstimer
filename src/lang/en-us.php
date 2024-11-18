@@ -31,7 +31,7 @@
 <tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
 <tr><th>Alt + i</th><td>Scramble type to input</td></tr>
 <tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + z / Ctrl + z </th><td>Remove the latest solve</td></tr>
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
