@@ -377,3 +377,36 @@ var stackmat = execMain(function() {
 		}
 	}
 });
+
+execMain(function() {
+	if (!window.nativeStackmat) {
+		return;
+	}
+	stackmat = (function() {
+		DEBUG && console.log('Use Native Stackmat');
+		var callbackName = 'stackmat_callback_' + ~~(Math.random() * 10000000);
+		var callback;
+		nativeStackmat.setCallback(callbackName);
+		window[callbackName] = function(obj) {
+			DEBUG && console.log(JSON.stringify(obj));
+			callback && callback(obj);
+		}
+		return {
+			init: function() {
+				nativeStackmat.init();
+				return Promise.resolve();
+			},
+			stop: function() {
+				nativeStackmat.stop();
+				return Promise.resolve();
+			},
+			updateInputDevices: function() {
+				return Promise.resolve([[undefined, 'native']]);
+			},
+			setCallBack: function(func) {
+				callback = func;
+			},
+			getSample: function() {}
+		}
+	})();
+});
