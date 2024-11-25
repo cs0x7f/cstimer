@@ -111,7 +111,8 @@ twisty/twistyclk.js \
 twisty/twistypoly.js \
 twisty/qcube.js \
 twisty/qcubennn.js \
-twisty/qcubeminx.js)
+twisty/qcubeminx.js \
+twisty/qcubeclk.js)
 
 moduleSrc = $(addprefix $(src)/js/, \
 lib/utillib.js \

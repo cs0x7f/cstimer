@@ -90,15 +90,9 @@
 		axify(xxi, zyi, yzi)
 	];
 
-	var mUR = 0,
-		mUL = 1,
-		mDR = 2,
-		mDL = 3,
-		mbUR = 4,
-		mbUL = 5,
-		mbDR = 6,
-		mbDL = 7,
-		mY = 8;
+	var mUR = 0, mUL = 1, mDR = 2, mDL = 3,
+		mbUR = 4, mbUL = 5, mbDR = 6, mbDL = 7,
+		mY = 8, mF = 10, mB = 11;
 
 	var buttonAffects = [
 		[1, 2, 4, 5, 9],
@@ -278,16 +272,17 @@
 				}
 				return [];
 			}
-			if (twisty.internalState[22]) {
-				axis ^= 1;
-			}
-			if (axis >= mbUR) { //button move
+			axis ^= twisty.internalState[22];
+			if (axis >= mbUR && axis <= mbDL) { //button move
 				if (doMove) {
 					internalState[18 + axis - mbUR] ^= 1;
 				}
 				return [];
 			}
 			var face = twisty.internalState[18 + axis];
+			if (axis >= mF) { // specific face
+				face = axis & 1;
+			}
 			var affect = [];
 			for (var i = 0; i < 4; i++) {
 				if (twisty.internalState[18 + i] != face) {
@@ -336,7 +331,19 @@
 						sticker[1].update();
 					}
 				}
-			} else if (axis < mbUR) {
+			} else if (axis >= mbUR && axis <= mbDL) {
+				rots.setRotationAxis(zz, -moveStep * fullstep);
+				rotsi.setRotationAxis(zz, moveStep * fullstep);
+				axis ^= twisty.internalState[22];
+				for (var i = 0; i < 2; i++) {
+					var idx = 18 + ((axis - mbUR + i * 4) ^ (i % 2));
+					for (var j = 0; j < state[idx].length; j++) {
+						var sticker = state[idx][j];
+						sticker[1].matrix.multiply(sticker[1].matrix, i < 1 ? rots : rotsi);
+						sticker[1].update();
+					}
+				}
+			} else {
 				rots.setRotationAxis(zz, -moveStep * fullstep);
 				rotsi.setRotationAxis(zz, moveStep * fullstep);
 				for (var i = 0; i < 18; i++) {
@@ -346,18 +353,6 @@
 					for (var j = 0; j < state[i].length; j++) {
 						var sticker = state[i][j];
 						sticker[1].matrix.multiply(sticker[1].matrix, (i < 9 ^ twisty.internalState[22]) ? rots : rotsi);
-						sticker[1].update();
-					}
-				}
-			} else {
-				rots.setRotationAxis(zz, -moveStep * fullstep);
-				rotsi.setRotationAxis(zz, moveStep * fullstep);
-				axis ^= twisty.internalState[22];
-				for (var i = 0; i < 2; i++) {
-					var idx = 18 + ((axis - mbUR + i * 4) ^ (i % 2));
-					for (var j = 0; j < state[idx].length; j++) {
-						var sticker = state[idx][j];
-						sticker[1].matrix.multiply(sticker[1].matrix, i < 1 ? rots : rotsi);
 						sticker[1].update();
 					}
 				}
@@ -385,21 +380,7 @@
 						sticker[1].update();
 					}
 				}
-			} else if (axis < mbUR) {
-				rots.setRotationAxis(zz, -fullstep);
-				rotsi.setRotationAxis(zz, fullstep);
-				for (var i = 0; i < 18; i++) {
-					if (!affect[i]) {
-						continue;
-					}
-					for (var j = 0; j < state[i].length; j++) {
-						var sticker = state[i][j];
-						sticker[0].multiply(sticker[0], (i < 9 ^ twisty.internalState[22]) ? rots : rotsi);
-						sticker[1].matrix.copy(sticker[0]);
-						sticker[1].update();
-					}
-				}
-			} else {
+			} else if (axis >= mbUR && axis <= mbDL) {
 				rots.setRotationAxis(zz, -fullstep);
 				rotsi.setRotationAxis(zz, fullstep);
 				axis ^= twisty.internalState[22];
@@ -413,6 +394,20 @@
 						var color = cubeOptions.faceColors[3 + (twisty.internalState[18 + axis - mbUR] ^ i)];
 						sticker[1].children[0].materials[0].color.setHex(color);
 
+					}
+				}
+			} else {
+				rots.setRotationAxis(zz, -fullstep);
+				rotsi.setRotationAxis(zz, fullstep);
+				for (var i = 0; i < 18; i++) {
+					if (!affect[i]) {
+						continue;
+					}
+					for (var j = 0; j < state[i].length; j++) {
+						var sticker = state[i][j];
+						sticker[0].multiply(sticker[0], (i < 9 ^ twisty.internalState[22]) ? rots : rotsi);
+						sticker[1].matrix.copy(sticker[0]);
+						sticker[1].update();
 					}
 				}
 			}
@@ -492,11 +487,11 @@
 		}
 
 		function isInspectionLegalMove(twisty, move) {
-			return move[0] == mY;
+			return move[0] == mY || move[0] >= mbUR && move[0] <= mbDL;
 		}
 
 		function isParallelMove(twisty, move1, move2) {
-			return ~~(move1[0] / 4) == ~~(move2[0] / 4);
+			return move1[0] < mY && ~~(move1[0] / 4) == ~~(move2[0] / 4);
 		}
 
 		function parseScramble(scramble) {
@@ -504,7 +499,7 @@
 				return generateScramble(this);
 			} else {
 				var clkre = /^(([URDL]{1,2}|ALL)(\d+)?([+-])?|y2)$/;
-				var clkmre = /^m(b?[UD][RL]|Y)(-?\d+)$/;
+				var clkmre = /^m(b?[UD][RL]|[YFB])(-?\d+)$/;
 				var button = [1, 1, 1, 1];
 				var finalButton = [1, 1, 1, 1];
 				var moves = scramble.split(/\s/);
@@ -516,7 +511,7 @@
 					var m = clkmre.exec(move);
 					if (m) {
 						isRecons = true;
-						scramble.push([['UR', 'UL', 'DR', 'DL', 'bUR', 'bUL', 'bDR', 'bDL', 'Y'].indexOf(m[1]), ~~m[2]]);
+						scramble.push([['UR', 'UL', 'DR', 'DL', 'bUR', 'bUL', 'bDR', 'bDL', 'Y', '~', 'F', 'B'].indexOf(m[1]), ~~m[2]]);
 						continue;
 					}
 					m = clkre.exec(move);
@@ -602,7 +597,7 @@
 		}
 
 		function move2str(move) {
-			var axis = ['mUR', 'mUL', 'mDR', 'mDL', 'mbUR', 'mbUL', 'mbDR', 'mbDL', 'mY'][move[0]];
+			var axis = ['mUR', 'mUL', 'mDR', 'mDL', 'mbUR', 'mbUL', 'mbDR', 'mbDL', 'mY', 'mY', 'mF', 'mB'][move[0]];
 			return axis + move[1];
 		}
 
