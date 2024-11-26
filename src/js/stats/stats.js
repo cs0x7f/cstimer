@@ -969,8 +969,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 	var times_stats_table = new TimeStat(avgSizes, 0, timeAt);
 	var times_stats_list = new TimeStat([5, 12], 0, timeAt);
 
-	function getSortedTimesByDate(times) {
-		var sorted = [];
+	function getSortedTimesByDate(times, dedup) {
+		var sorted = [], ret = [];
 		for (var i = 0; i < times.length; i++) {
 			sorted.push(i);
 		}
@@ -979,10 +979,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 			var idxb = times[b][3] || 0;
 			return idxa == idxb ? (a - b) : (idxa - idxb);
 		});
+		var prevIdx = -1;
 		for (var i = 0; i < times.length; i++) {
-			sorted[i] = times[sorted[i]];
+			var curIdx = times[sorted[i]][3] || 0;
+			if (dedup && prevIdx == curIdx && curIdx != 0) {
+				continue;
+			}
+			ret.push(times[sorted[i]]);
+			prevIdx = curIdx;
 		}
-		return sorted;
+		return ret;
 	}
 
 	var sessionManager = (function() {
@@ -1250,7 +1256,10 @@ var stats = execMain(function(kpretty, round, kpround) {
 					deleteSession(idx);
 					break;
 				case 'm': //append current session to
-					mergeSessionTo(idx);
+					mergeSessionTo(idx, false);
+					break;
+				case 'md': //merge and dedupe
+					mergeSessionTo(idx, true);
 					break;
 				case 'o': //sort current session by date
 					sortSession();
@@ -1311,13 +1320,16 @@ var stats = execMain(function(kpretty, round, kpround) {
 			});
 		}
 
-		function mergeSessionTo(idx) {
+		function mergeSessionTo(idx, dedup) {
 			if (sessionIdx == idx || !$.confirm(STATS_ALERTMG.replace('%f', sessionIdent(sessionIdx)).replace('%t', sessionIdent(idx)))) {
 				return;
 			}
 			var prevSession = sessionIdx;
 			storage.get(idx).then(function(timesNew) {
 				Array.prototype.push.apply(timesNew, times);
+				if (dedup) {
+					timesNew = getSortedTimesByDate(timesNew, true);
+				}
 				return storage.set(idx, timesNew);
 			}).then(function(timesNew) {
 				delete sessionData[idx]['stat'];
@@ -1366,8 +1378,8 @@ var stats = execMain(function(kpretty, round, kpround) {
 				'<option value="r">' + ops[0] + '</option>' +
 				'<option value="+">' + ops[1] + '</option>' +
 				'<option value="' + (idx == sessionIdx ? ('p">' + ops[2]) : ('m">' + ops[3])) + '</option>' +
+				'<option value="' + (idx == sessionIdx ? ('o">' + ops[5]) : ('md">' + ops[6])) + '</option>' +
 				'<option value="x">' + ops[4] + '</option>' +
-				(idx == sessionIdx ? '<option value="o">' + ops[5] + '</option>' : '') +
 				'<option value="v">' + STATS_EXPORTCSV + '</option>' +
 				'</select>';
 			var uClk = rank == 1 ? '<td></td>' : '<td class="click" data="u">&#8593;</td>';
