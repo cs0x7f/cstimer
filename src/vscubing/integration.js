@@ -56,6 +56,8 @@ const api = (function () {
 api.hackForFreshLocalStorage();
 window.addEventListener("load", () => {
   api.setInputModeToVirtual();
+
+  createAnimationSettingCheckbox();
 });
 
 const POST_MESSAGE_SOURCE = "vs-solver-integration";
@@ -105,4 +107,26 @@ function getAlgCubingReconstruction(csReconstruction) {
     .replace(/2-2Fw/g, "S")
     .replace(/2-2Uw'/g, "E")
     .replace(/2-2Uw/g, "E'");
+}
+
+function createAnimationSettingCheckbox() {
+  const speed = localStorage.getItem("vrcSpeed") ?? 100;
+  window.kernel.setProp("vrcSpeed", speed);
+
+  const label = document.createElement("label");
+  label.id = "animation-setting";
+  label.textContent = "Animation enabled";
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = speed === 100;
+  label.prepend(checkbox);
+  document.querySelector("body").appendChild(label);
+
+  checkbox.addEventListener("change", (event) => {
+    const newSpeed = event.target.checked ? 100 : 0;
+    window.kernel.setProp("vrcSpeed", newSpeed);
+    localStorage.setItem("vrcSpeed", newSpeed);
+  });
+
+  return checkbox;
 }
