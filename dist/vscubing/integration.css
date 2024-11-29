@@ -33,7 +33,7 @@ body {
   padding: 0.65em 1.2em;
 }
 
-#animation-setting {
+#vs-animation-setting {
   position: fixed;
   z-index: 1000;
   left: 20px;

@@ -110,11 +110,11 @@ function getAlgCubingReconstruction(csReconstruction) {
 }
 
 function createAnimationSettingCheckbox() {
-  const speed = localStorage.getItem("vrcSpeed") ?? 100;
+  const speed = localStorage.getItem("vs-vrc-speed") ?? 100;
   window.kernel.setProp("vrcSpeed", speed);
 
   const label = document.createElement("label");
-  label.id = "animation-setting";
+  label.id = "vs-animation-setting";
   label.textContent = "Animation enabled";
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
@@ -125,7 +125,7 @@ function createAnimationSettingCheckbox() {
   checkbox.addEventListener("change", (event) => {
     const newSpeed = event.target.checked ? 100 : 0;
     window.kernel.setProp("vrcSpeed", newSpeed);
-    localStorage.setItem("vrcSpeed", newSpeed);
+    localStorage.setItem("vs-vrc-speed", newSpeed);
   });
 
   return checkbox;
