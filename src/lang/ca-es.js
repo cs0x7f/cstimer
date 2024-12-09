@@ -3,7 +3,7 @@ var CANCEL_LANG = 'Cancelar';
 var RESET_LANG = 'Restablir valors predeterminats';
 var ABOUT_LANG = 'Informació';
 var ZOOM_LANG = 'Zoom';
-var COPY_LANG = 'Copy';
+var COPY_LANG = 'Copia';
 var BUTTON_TIME_LIST = 'Llista de temps';
 var BUTTON_OPTIONS = 'Opcions';
 var BUTTON_EXPORT = 'Exportar';
@@ -25,11 +25,11 @@ var PROPERTY_SCRLIM = 'Limitar l\'altura de l\'àrea de barreja';
 var PROPERTY_SCRALIGN = 'Aliniament de l\'àrea de barreja';
 var PROPERTY_SCRALIGN_STR = 'Centre|Esquerra|Dreta';
 var PROPERTY_SCRWRAP = 'Scramble Wrap';
-var PROPERTY_SCRWRAP_STR = 'Balanced|Normal';
+var PROPERTY_SCRWRAP_STR = 'Balancejat |Normal';
 var PROPERTY_SCRNEUT = 'Color neutral';
-var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCRNEUT_STR = 'Cap |Una |Dues |Sis cares';
 var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
-var PROPERTY_SCREQPR_STR = 'Actual|Equal|Random order';
+var PROPERTY_SCREQPR_STR = 'Actual |Igual |Ordre aleatori';
 var PROPERTY_SCRFAST = 'Fer servir barreja ràpida per 4x4x4 (no-oficial)';
 var PROPERTY_SCRKEYM = 'Marcar moviment(s) clau en la barreja';
 var PROPERTY_SCRCLK = 'Acció a la hora de fer clic a la barreja';
@@ -228,7 +228,7 @@ var scrdata = [
 		['Línia EO', "eoline", 0],
 		['EO Cross', "eocross", 0],
 		['Creu fàcil', "easyc", 3],
-		['easy xcross', "easyxc", 4]
+		['Xcreu fàcil', "easyxc", 4]
 	]],
 	['3x3x3 Roux', [
 		['2nd Block', "sbrx", 0],
@@ -521,7 +521,7 @@ var STATS_ALERTMG = 'Combinar tots els temps de la sessió [%f] al final de la s
 var STATS_PROMPTSPL = 'Nombre de temps dividits de la sessió [%s]?';
 var STATS_ALERTSPL = 'Cal dividir o deixar com a mínim 1 vegada';
 var STATS_AVG = 'Mitjana';
-var STATS_SUM = 'sum';
+var STATS_SUM = 'suma';
 var STATS_SOLVE = 'Resol';
 var STATS_TIME = 'Temps';
 var STATS_SESSION = 'Sessió';

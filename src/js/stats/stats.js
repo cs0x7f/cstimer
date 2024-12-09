@@ -1182,19 +1182,22 @@ var stats = execMain(function(kpretty, round, kpround) {
 			}
 		}
 
-		function sessionLoaded(sessionIdx, timesNew) {
+		function sessionLoaded(loadedIdx, timesNew) {
+			if (loadedIdx != sessionIdx) { // session changed when loading, abort
+				return;
+			}
 			isInit = false;
 			times = timesNew;
 			timesExtra = [];
 			times_stats_table.reset(times.length);
 			times_stats_list.reset(times.length);
 			table_ctrl.updateTable(true);
-			sessionData[sessionIdx] = sessionData[sessionIdx] || {
-				'name': sessionIdx,
+			sessionData[loadedIdx] = sessionData[loadedIdx] || {
+				'name': loadedIdx,
 				'opt': {}
 			};
-			sessionData[sessionIdx]['stat'] = [times.length].concat(times_stats_list.getAllStats());
-			sessionData[sessionIdx]['date'] = [(times[0] || [])[3], (times.at(-1) || [])[3]];
+			sessionData[loadedIdx]['stat'] = [times.length].concat(times_stats_list.getAllStats());
+			sessionData[loadedIdx]['date'] = [(times[0] || [])[3], (times.at(-1) || [])[3]];
 			kernel.setProp('sessionData', JSON.stringify(sessionData));
 			if (kernel.isDialogShown('ssmgr')) {
 				genMgrTable();

@@ -1,6 +1,6 @@
-<h1>csTimer version <?php echo $version;?> - Professional Speedcubing/Training Timer</h1>
+<h1>csTimer versió <?php echo $version;?> - Cronometre Professional d'entrenament per a Speedcubing</h1>
 <?php include('lang.php') ?>
-<h2>Introduction</h2>
+<h2>Introducció</h2>
 <p>csTimer is a professional timing program designed for Rubik's cube speedsolvers, it provides:</p>
 <ul>
 <li>Amounts of scramble algorithms, including <strong>all WCA official events</strong>, varieties of twisty puzzles, <strong>training scramble</strong> for specific sub steps (e.g. <strong>F2L, OLL, PLL, ZBLL</strong>, and can filter cases), etc</li>
