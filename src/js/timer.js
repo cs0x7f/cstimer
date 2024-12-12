@@ -455,7 +455,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function onkeydown(keyCode, isTrigger) {
-			if (DEBUG && !isTrigger && keyCode >= 48 && keyCode <= 96) {
+			var stopKey = getProp('stopKey');
+			if (!isTrigger && keyCode != 27 && stopKey != 'a'
+					&& !(stopKey == 'l' && keyCode > 64 && keyCode <= 90)) {
 				return;
 			}
 			var now = $.now();
@@ -482,6 +484,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					}
 					lcd.fixDisplay(false, isTrigger);
 					pushSignal('time', curTime);
+				} else if (getProp('phaseBeep')) {
+					metronome.playTick(330);
 				}
 			} else if (isTrigger) {
 				if ((status == (checkUseIns() ? -3 : -1)) && pressreadyId == undefined) {
@@ -786,6 +790,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10], 3);
+		regProp('timer', 'stopKey', 1, "Stop/step timer by", ['a', ['a', 'l', 's'], "any key|spacebar/letters|spacebar".split('|')], 1);
+		regProp('timer', 'phaseBeep', 0, "Beep when recording phase times", [true], 1);
 		regProp('kernel', 'showAvg', 0, SHOW_AVG_LABEL, [true], 1);
 		regProp('kernel', 'showDiff', 1, SHOW_DIFF_LABEL, ['rg', ['rg', 'gr', 'b', 'n'], SHOW_DIFF_LABEL_STR.split('|')], 1);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100], 1);
