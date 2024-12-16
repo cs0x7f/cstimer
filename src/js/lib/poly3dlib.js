@@ -979,8 +979,11 @@ var poly3d = (function() {
 				var powfix = pow < 0 ? "'" : "";
 				return ["[" + move + powfix + "]", move + powfix, move.toUpperCase() + powfix, move.toUpperCase() + 'w' + powfix][layer];
 			});
-		} else if (name == "fto") {
-			polyParam = [8, [-5, 1/3, -1/3], [], [-5]];
+		} else if (name == "fto" || name == "dmd") {
+			polyParam = {
+				"fto": [8, [-5, 1/3, -1/3], [], [-5]],
+				"dmd": [8, [-5, 0], [], [-5]]
+			}[name];
 			parser = makeParser(/(?:^|\s*)\[?([URFDLT]|(?:B[RL]?))(w)?(')?(\])?(?:$|\s*)/g, function(m, p1, p2, p3, p4) {
 				return [p4 || p1 == 'T' ? 0 : p2 ? 2 : 1, p1 == 'T' ? 'URLF' : (p1[0] + p1.slice(1).toLowerCase()), p3 ? -1 : 1];
 			}, function(layer, axis, pow) {

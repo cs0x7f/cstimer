@@ -122,7 +122,7 @@ var puzzleFactory = execMain(function() {
 			options["faceColors"] = $.col2std(kernel.getProp("colsq1"), [0, 5, 4, 2, 1, 3]);
 		} else if (puzzle == "clk") {
 			options["faceColors"] = $.col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
-		} else if (puzzle == "fto") {
+		} else if (puzzle == "fto" || puzzle == "dmd") {
 			options["faceColors"] = $.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
 		} else if (/^heli(?:2x2|cv)?|crz3a|redi$/.exec(puzzle)) {
 			options["faceColors"] = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);

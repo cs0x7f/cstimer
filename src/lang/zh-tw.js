@@ -433,7 +433,8 @@ var scrdata = [
 		['TCP', "ftotcp", 0],
 		['edges only', "ftoedge", 0],
 		['centers only', "ftocent", 0],
-		['corners only', "ftocorn", 0]
+		['corners only', "ftocorn", 0],
+		['Diamond 隨機狀態', "dmdso", 0]
 	]],
 	['Icosahedron', [
 		['Icosamate 隨機步驟', "ctico", 60]

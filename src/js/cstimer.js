@@ -5,6 +5,7 @@ importScripts(
 	'lib/isaac.js',
 	'lib/mathlib.js',
 	'lib/grouplib.js',
+	'lib/poly3dlib.js',
 	'lib/pat3x3.js',
 	'lib/lzstring.js',
 	'lib/min2phase.js',

@@ -367,6 +367,64 @@
 		return scramble.substr(0, scramble.length - moveLen * cnt) + " " + rnd.join("");
 	}
 
+	function PolyScrambler(puzzle, validMoves, move2str) {
+		var pobj = poly3d.getFamousPuzzle(puzzle);
+		puzzle = poly3d.makePuzzle.apply(poly3d, pobj.polyParam);
+		var permLen = puzzle.moveTable[0].length;
+		var e = [];
+		for (var i = 0; i < permLen; i++) {
+			e[i] = i;
+		}
+		var gens = [];
+		for (var i = 0; i < validMoves.length; i++) {
+			var move = pobj.parser.parseScramble(validMoves[i]);
+			var perm = e.slice();
+			for (var j = 0; j < move.length; j++) {
+				var pow = move[j][1];
+				if (pow == 0) {
+					continue;
+				}
+				var operm = puzzle.moveTable[puzzle.getTwistyIdx(move[j][0])].slice();
+				for (var k = 0; k < operm.length; k++) {
+					operm[k] = operm[k] >= 0 ? operm[k] : k;
+				}
+				if (pow < 0) {
+					operm = grouplib.permInv(operm);
+					pow = -pow;
+				}
+				while (--pow >= 0) {
+					perm = grouplib.permMult(perm, operm);
+				}
+			}
+			gens.push(perm);
+		}
+		this.solv = new grouplib.SubgroupSolver(gens);
+		this.move2str = move2str;
+		this.moves = validMoves;
+		this.solv.initTables();
+		DEBUG && console.log('[scramble] Poly Scramble |G|=', this.solv.sgsG.size());
+	}
+
+	PolyScrambler.prototype.getScramble = function(minLen, maxLen) {
+		var solution = "";
+		do {
+			var state = this.solv.sgsG.rndElem();
+			var sol = this.solv.DissectionSolve(state, minLen, maxLen) || [];
+			solution = sol.map((mvpow) => this.move2str(this.moves[mvpow[0]], mvpow[1])).join(" ");
+		} while (solution.length <= 2);
+		return solution.replace(/ +/g, ' ');
+	}
+
+	var polyObjs = {};
+
+	function getPolyScrambler(puzzle, validMoves, move2str) {
+		var key = JSON.stringify([puzzle, validMoves]);
+		if (!(key in polyObjs)) {
+			polyObjs[key] = new PolyScrambler(puzzle, validMoves, move2str);
+		}
+		return polyObjs[key];
+	}
+
 	function utilscramble(type, len) {
 		var ret = "";
 		switch (type) {
@@ -460,6 +518,8 @@
 				return adjScramble(["L", "R", "F", "B", "l", "r", "f", "b"], [0x1c, 0x2c, 0x43, 0x83, 0xc1, 0xc2, 0x34, 0x38], len, ["", "'"]);
 			case "redim":
 				return moyuRedi(len);
+			case "dmdso":
+				return getPolyScrambler("dmd", ["U", "R", "L", "F"], (mv, pow) => mv + ["", "'"][pow - 1]).getScramble(7, 10);
 			case "pyrm": // Pyraminx (random moves)
 				ret = mega([
 					["U"],
@@ -524,6 +584,6 @@
 	}
 
 
-	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clknf', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', 'ctico', '-1', '333noob', 'lol'], utilscramble);
+	scrMgr.reg(['15p', '15pm', '15pat', 'clkwca', 'clkwcab', 'clknf', 'clk', 'clkc', 'clke', 'giga', 'mgmo', 'mgmp', 'mgmc', 'klmp', 'heli', 'helicv', 'heli2x2', 'heli2x2g', 'redi', 'redim', 'pyrm', 'prcp', 'mpyr', 'r3', 'r3ni', 'sq1h', 'sq1t', 'sq2', 'ssq1t', 'bsq', 'ctico', 'dmdso', '-1', '333noob', 'lol'], utilscramble);
 
 })(mathlib.rn, mathlib.rndEl, scrMgr.mega);

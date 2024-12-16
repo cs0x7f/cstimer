@@ -78,6 +78,8 @@ var tools = (function() {
 			return "klm";
 		} else if (/^(fto|fto(so|l[34]t|tcp|edge|cent|corn))$/.exec(scrambleType)) {
 			return "fto";
+		} else if (/^(dmdso)$/.exec(scrambleType)) {
+			return "dmd";
 		} else if (/^(mpyr|mpyrso)$/.exec(scrambleType)) {
 			return "mpyr";
 		} else if (/^15p(at|ra?p?)?$/.exec(scrambleType)) {
