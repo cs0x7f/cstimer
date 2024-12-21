@@ -1,4 +1,8 @@
 const api = (function () {
+  function regReadyListener(callback) {
+    kernel.regListener("api", "vs-ready", callback);
+  }
+
   function regSolveFinishListener(callback) {
     kernel.regListener("api", "time", (_, time) => {
       const dnf = time[2][0] === -1;
@@ -38,6 +42,7 @@ const api = (function () {
 
   return {
     setInputModeToVirtual,
+    regReadyListener,
     regSolveFinishListener,
     regStartTimeListener,
     importScramble,
@@ -49,6 +54,9 @@ window.addEventListener("load", () => {
   api.setInputModeToVirtual();
   createAnimationSettingCheckbox();
 
+  api.regReadyListener(() =>
+    parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "ready" }, "*"),
+  );
   api.regSolveFinishListener((result) => {
     parent.postMessage(
       { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },

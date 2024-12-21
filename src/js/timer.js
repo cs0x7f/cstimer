@@ -1071,10 +1071,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					setSize(getProp('timerSize'));
 				}
 
-				if (isScramblePending) {
-					window._applyScramble()
-					isScramblePending = false;
-				}
+				kernel.pushSignal('vs-ready')
 			});
 		}
 
@@ -1135,14 +1132,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		let isScramblePending = true
 		window._applyScramble = () => {
 			const SPACEBAR_CODE = 32
-			if (puzzleObj) {
-				onkeydown(SPACEBAR_CODE)
-			} else {
-				isScramblePending = true
-			}
+			onkeydown(SPACEBAR_CODE)
 		}
 
 		var curScramble;
