@@ -102,7 +102,10 @@ function getAlgCubingReconstruction(csReconstruction) {
 }
 
 function createAnimationSettingCheckbox() {
-  const speed = localStorage.getItem("vs-vrc-speed") ?? 100;
+  let speed = parseInt(localStorage.getItem("vs-vrc-speed"));
+  if (isNaN(speed)) {
+    speed = 100;
+  }
   window.kernel.setProp("vrcSpeed", speed);
 
   const label = document.createElement("label");
