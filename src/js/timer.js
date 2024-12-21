@@ -41,7 +41,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
 	}
-  window._resetTimer = reset;
+    window._resetTimer = reset;
 
 	var timerColors = ['#f00', '#0d0', '#dd0', '#080', '#f00'];
 
@@ -1080,14 +1080,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
-		function scrambleIt(forcedScramble) {
+		function scrambleIt() {
 			reset();
 			var scramble = curScramble;
 			if (/^r\d+$/.exec(curScrType)) {
 				scramble = curScramble.shift().match(/\d+\) (.*)$/)[1];
 				fixRelayCounter();
 			}
-			scramble = puzzleObj.parseScramble(forcedScramble || scramble, true);
+			scramble = puzzleObj.parseScramble(scramble, true);
 			isReseted = false;
 
 			puzzleObj.applyMoves(scramble);
@@ -1096,13 +1096,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				[]
 			];
 		}
-    window._scrambleVirtual = function(scramble) {
-      if (puzzleObj) {
-        scrambleIt(scramble)
-        setStatus(-3); // inspection
-        return
-      }
-    }
 
 		function onkeydown(keyCode) {
 			if (puzzleObj == undefined) {
@@ -1126,28 +1119,20 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.fixDisplay(false, true);
 				}
 			} else if (status == -3 || status == -2 || status >= 1) { // Scrambled or Running
-				if (keyCode == 27 || keyCode == 28) { //ESC
-					// var recordDNF = status >= 1;
-					// lcd.setStaticAppend('');
-					// setStatus(-1);
-					// reset();
-					// $('#lcd').css({'visibility': 'unset'}); // disable dragging
-					// lcd.fixDisplay(false, true);
-					// if (recordDNF) {
-					// 	rawMoves.reverse();
-					// 	pushSignal('time', ["", 0, [-1, now - startTime], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
-					// }
-				} else {
-					var mappedCode = help.getMappedCode(keyCode);
-					var a = {
-						"keyCode": mappedCode
-					};
-					puzzleObj.keydown(a);
-				}
+				var mappedCode = help.getMappedCode(keyCode);
+				var a = {
+					"keyCode": mappedCode
+				};
+				puzzleObj.keydown(a);
 			}
 			if (keyCode == 27 || keyCode == 32) {
 				kernel.clrKey();
 			}
+		}
+
+		window._applyScramble = () => {
+			const SPACEBAR_CODE = 32
+			onkeydown(SPACEBAR_CODE)
 		}
 
 		var curScramble;
