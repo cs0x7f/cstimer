@@ -1070,6 +1070,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					lcd.renderUtil();
 					setSize(getProp('timerSize'));
 				}
+
+				if (isScramblePending) {
+					window._applyScramble()
+					isScramblePending = false;
+				}
 			});
 		}
 
@@ -1130,9 +1135,14 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 		}
 
+		let isScramblePending = true
 		window._applyScramble = () => {
 			const SPACEBAR_CODE = 32
-			onkeydown(SPACEBAR_CODE)
+			if (puzzleObj) {
+				onkeydown(SPACEBAR_CODE)
+			} else {
+				isScramblePending = true
+			}
 		}
 
 		var curScramble;
