@@ -1,6 +1,10 @@
 const api = (function () {
   function regReadyListener(callback) {
-    kernel.regListener("api", "vs-ready", callback);
+    if (window._vsReady) {
+      callback(); // workaround in case integration.js runs after the signal is pushed
+    } else {
+      kernel.regListener("api", "vs-ready", callback);
+    }
   }
 
   function regSolveFinishListener(callback) {
@@ -50,26 +54,21 @@ const api = (function () {
 })();
 
 const POST_MESSAGE_SOURCE = "vs-solver-integration";
-window.addEventListener("load", () => {
-  api.setInputModeToVirtual();
-  createAnimationSettingCheckbox();
+api.setInputModeToVirtual();
+createAnimationSettingCheckbox();
 
-  api.regReadyListener(() =>
-    parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "ready" }, "*"),
+api.regReadyListener(() =>
+  parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "ready" }, "*"),
+);
+api.regSolveFinishListener((result) => {
+  parent.postMessage(
+    { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
+    "*",
   );
-  api.regSolveFinishListener((result) => {
-    parent.postMessage(
-      { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
-      "*",
-    );
-  });
-  api.regStartTimeListener(() => {
-    getOrCreateStartHint().style.visibility = "hidden";
-    parent.postMessage(
-      { source: POST_MESSAGE_SOURCE, event: "timeStart" },
-      "*",
-    );
-  });
+});
+api.regStartTimeListener(() => {
+  getOrCreateStartHint().style.visibility = "hidden";
+  parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "timeStart" }, "*");
 });
 
 window.addEventListener(

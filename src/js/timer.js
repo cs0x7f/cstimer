@@ -1071,7 +1071,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					setSize(getProp('timerSize'));
 				}
 
-				kernel.pushSignal('vs-ready')
+				if (puzzleObj) {
+					kernel.pushSignal('vs-ready')
+					window._vsReady = true // workaround in case integration.js runs after the signal is pushed
+				}
 			});
 		}
 
