@@ -52,4 +52,4 @@ self.addEventListener('activate', function(event) {
 	);
 });
 
-var CACHE_NAME = "cstimer_cache_c78686c74e276dccbbbc377b9bb9d212";
+var CACHE_NAME = "cstimer_cache_1241659462f5ecb5142d5da2cb63c554";

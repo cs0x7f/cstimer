@@ -55,14 +55,13 @@ const api = (function () {
 
 const POST_MESSAGE_SOURCE = "vs-solver-integration";
 api.setInputModeToVirtual();
-createAnimationSettingCheckbox();
 
 api.regReadyListener(() =>
   parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "ready" }, "*"),
 );
 api.regSolveFinishListener((result) => {
   parent.postMessage(
-    { source: POST_MESSAGE_SOURCE, payload: result, event: "solveFinish" },
+    { source: POST_MESSAGE_SOURCE, payload: { result }, event: "solveFinish" },
     "*",
   );
 });
@@ -73,14 +72,21 @@ api.regStartTimeListener(() => {
 
 window.addEventListener(
   "message",
-  (event) => {
-    const { source, scramble } = event.data;
-    if (source !== POST_MESSAGE_SOURCE) {
+  (message) => {
+    if (message.data.source !== POST_MESSAGE_SOURCE) {
       return;
     }
 
-    getOrCreateStartHint().style.visibility = "visible";
-    api.importScramble(scramble);
+    const { event, payload } = message.data;
+    if (event === "initSolve") {
+      getOrCreateStartHint().style.visibility = "visible";
+      api.importScramble(payload.scramble);
+    }
+    if (event === "settings") {
+      const { settings } = payload;
+      console.log(settings.csAnimationDuration);
+      window.kernel.setProp("vrcSpeed", settings.csAnimationDuration);
+    }
   },
   false,
 );
@@ -106,30 +112,4 @@ function getAlgCubingReconstruction(csReconstruction) {
     .replace(/2-2Fw/g, "S")
     .replace(/2-2Uw'/g, "E")
     .replace(/2-2Uw/g, "E'");
-}
-
-function createAnimationSettingCheckbox() {
-  let speed = parseInt(localStorage.getItem("vs-vrc-speed"));
-  if (isNaN(speed)) {
-    speed = 100;
-  }
-  window.kernel.setProp("vrcSpeed", speed);
-
-  const label = document.createElement("label");
-  label.id = "vs-animation-setting";
-  label.textContent = "Animation enabled";
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.checked = speed === 100;
-  label.prepend(checkbox);
-  document.querySelector("body").appendChild(label);
-
-  checkbox.addEventListener("change", (event) => {
-    const newSpeed = event.target.checked ? 100 : 0;
-    window.kernel.setProp("vrcSpeed", newSpeed);
-    localStorage.setItem("vs-vrc-speed", newSpeed);
-    kernel.blur();
-  });
-
-  return checkbox;
 }

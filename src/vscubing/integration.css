@@ -33,14 +33,6 @@ body {
   padding: 0.65em 1.2em;
 }
 
-#vs-animation-setting {
-  position: fixed;
-  z-index: 1000;
-  left: 20px;
-  top: 90px;
-  color: white;
-}
-
 @media screen and (max-width: 1000px) {
   #vs-start-hint {
     font-size: 16px;
