@@ -84,7 +84,6 @@ window.addEventListener(
     }
     if (event === "settings") {
       const { settings } = payload;
-      console.log(settings.csAnimationDuration);
       window.kernel.setProp("vrcSpeed", settings.csAnimationDuration);
     }
   },
