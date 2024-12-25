@@ -8,24 +8,26 @@ const api = (function () {
   }
 
   function regSolveFinishListener(callback) {
-    kernel.regListener("api", "time", (_, time) => {
-      const dnf = time[2][0] === -1;
-      if (dnf) {
-        callback({ dnf: true });
-        return;
-      }
-
-      const csReconstruction = time[4][0];
-      callback({
-        reconstruction: getAlgCubingReconstruction(csReconstruction),
-        timeMs: time[2][1],
-      });
-    });
+    kernel.regListener(
+      "api",
+      "vs-time",
+      (_, { isDnf, timeMs, reconstruction: csReconstruction }) => {
+        if (isDnf) {
+          callback({ isDnf: true });
+        } else {
+          callback({
+            isDnf: false,
+            reconstruction: csToAlgCubingReconstruction(csReconstruction),
+            timeMs,
+          });
+        }
+      },
+    );
   }
 
-  function regStartTimeListener(callback) {
+  function regSolveStartListener(callback) {
     kernel.regListener("api", "timerStatus", (_, status) => {
-      if (status === 1) {
+      if (status === -3) {
         callback();
       }
     });
@@ -34,40 +36,35 @@ const api = (function () {
   function importScramble(str) {
     window._resetTimer();
     kernel.pushSignal("scramble", ["333", str]);
-    window._applyScramble();
 
     window.focus();
     kernel.blur();
   }
 
-  function setInputModeToVirtual() {
-    window.kernel.setProp("input", "v");
-  }
-
   return {
-    setInputModeToVirtual,
     regReadyListener,
+    regSolveStartListener,
     regSolveFinishListener,
-    regStartTimeListener,
     importScramble,
   };
 })();
 
-const POST_MESSAGE_SOURCE = "vs-solver-integration";
-api.setInputModeToVirtual();
+kernel.setProp("input", "v");
+kernel.setProp("useIns", "a");
 
+const POST_MESSAGE_SOURCE = "vs-solver-integration";
 api.regReadyListener(() =>
   parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "ready" }, "*"),
 );
+api.regSolveStartListener(() => {
+  getOrCreateStartHint().style.visibility = "hidden";
+  parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "solveStart" }, "*");
+});
 api.regSolveFinishListener((result) => {
   parent.postMessage(
     { source: POST_MESSAGE_SOURCE, payload: { result }, event: "solveFinish" },
     "*",
   );
-});
-api.regStartTimeListener(() => {
-  getOrCreateStartHint().style.visibility = "hidden";
-  parent.postMessage({ source: POST_MESSAGE_SOURCE, event: "timeStart" }, "*");
 });
 
 window.addEventListener(
@@ -81,6 +78,9 @@ window.addEventListener(
     if (event === "initSolve") {
       getOrCreateStartHint().style.visibility = "visible";
       api.importScramble(payload.scramble);
+    }
+    if (event === "abortSolve") {
+      window._resetTimer();
     }
     if (event === "settings") {
       const { settings } = payload;
@@ -98,12 +98,13 @@ function getOrCreateStartHint() {
 
   const startHint = document.createElement("p");
   startHint.id = "vs-start-hint";
-  startHint.innerText = "Make a move to start";
+  startHint.innerText =
+    "Press space to scramble the cube and start the preinspection";
   document.querySelector("#container").appendChild(startHint);
   return startHint;
 }
 
-function getAlgCubingReconstruction(csReconstruction) {
+function csToAlgCubingReconstruction(csReconstruction) {
   return csReconstruction
     .replace(/@(\d+)/g, "/*$1*/")
     .replace(/2-2Lw|2-2Rw'/g, "M")
