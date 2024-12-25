@@ -67,7 +67,7 @@ var shortcuts= execMain(function(){
 	}
 	
 	$(function() {
-		kernel.regListener('shortcut', 'keydown', onkeydown);
+		// kernel.regListener('shortcut', 'keydown', onkeydown);
 		kernel.regProp('tools', 'useKSC', 0, PROPERTY_USEKSC, [true]);
 	});
 });
