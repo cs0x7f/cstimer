@@ -49,6 +49,9 @@ const api = (function () {
   };
 })();
 
+localStorage.removeItem("cachedStr");
+localStorage.removeItem("properties");
+
 kernel.setProp("input", "v");
 kernel.setProp("useIns", "a");
 
