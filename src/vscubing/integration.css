@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@500&family=Space+Grotesk&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@400&family=Space+Grotesk&display=swap");
 
 #wndctn > div,
 .dialog,
@@ -27,10 +27,10 @@ body {
   font-family: "Kanit", sans-serif;
   margin: 0 auto;
   width: max-content;
-  color: #1b1e25;
-  background-color: #70df00;
+  color: #8f8ffe;
+  background-color: #1b1e25;
   border-radius: 12px;
-  padding: 0.65em 1.2em;
+  padding: 24px 40px;
 }
 
 @media screen and (max-width: 1000px) {

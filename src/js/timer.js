@@ -41,7 +41,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
 	}
-    window._resetTimer = reset;
+    window._resetTimer = function() {
+		reset()
+		lcd.val(undefined)
+	};
 
 	var timerColors = ['#f00', '#0d0', '#dd0', '#080', '#f00'];
 
@@ -91,7 +94,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		var runningDiv;
 		var runningId;
 		var rightADiv = $('<div style="line-height:0.6em;" />');
-		var reconsDiv = $('<div style="position:relative;font-size:0.3em;">');
+		var reconsDiv = $('<div style="position:relative;font-size:0.3em;display:none;">');
 		var reconsSpan = $('<span class="click" style="position:relative;z-index:20;font-family:Arial;">');
 
 		var staticAppend = "";
@@ -130,6 +133,10 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			}
 
 			if (status == -3 || status == -2) { //inspection alert
+				if (time >= 17000) {
+					setStatus(-1);
+					pushSignal('vs-time', { isDnf: true })
+				}
 				if (runningDiv !== rightDiv) {
 					if (time >= 12000) {
 						setHtml(rightDiv, '<div style="font-family: Arial;">Go!!!</div>');
@@ -185,8 +192,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setValue(val) {
-			setHtml(isRight ? rightDiv : mainDiv, (val != undefined ? pretty(val, true) : '--:--') +
-				'<div class="insplabel">&#59062;</div><div class="difflabel"/>');
+			setHtml(isRight ? rightDiv : mainDiv, (val !== undefined ? pretty(val, true) : ''));
 		}
 
 		function setHtml(div, val) {
@@ -232,7 +238,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			divDict[0] = "";
 			divDict[1] = "";
 			setStaticAppend("", false);
-			setValue(0, isRight);
+			setValue(undefined);
 			setRunning(false);
 			avgDiv.updatePos(isoAvg ? !isRight : isRight);
 		}
@@ -274,7 +280,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				if ('sb'.indexOf(getProp('input')) != -1) {
 					lcd.val(hardTime);
 				} else {
-					lcd.val(isCleared ? 0 : (curTime[1] || 0));
+					lcd.val(isCleared ? undefined : (curTime[1] || undefined));
 					if (!isCleared && curTime[1] && lastTime && lastTime[1] && getProp('showDiff') != 'n') {
 						var diff = curTime[1] - lastTime[1];
 						var label = $('.difflabel').html('(' + (diff > 0 ? '+' : diff == 0 ? '' : '-') + pretty(Math.abs(lastTime[1] - curTime[1])) + ')');
@@ -305,7 +311,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
 		$(function() {
 			mainDiv = $('#lcd');
-			$('#multiphase').append(rightDiv, rightADiv, reconsDiv.append(reconsSpan));
+			$('#multiphase').append(rightDiv, rightADiv);
 		});
 
 		return {
@@ -346,29 +352,29 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 
 		function setValue(value) {
-			if (!value) {
-				return;
-			}
-			avgDiv1.html(value[0]).unbind('click');
-			if (value[2] != undefined) {
-				avgDiv1.addClass('click').click(function() {
-					value[4](value[2][0], value[2][1], value[2][2], value[2][3]);
-				});
-			} else {
-				avgDiv1.removeClass('click');
-			}
-			avgDiv2.html(value[1]).unbind('click');
-			if (value[3] != undefined) {
-				avgDiv2.addClass('click').click(function() {
-					value[4](value[3][0], value[3][1], value[3][2], value[3][3]);
-				});
-			} else {
-				avgDiv2.removeClass('click');
-			}
-			curTime = value[5] ? value[5][0].slice() : [0];
-			lastTime = value[6] ? value[6][0].slice() : null;
-			lcd.setRecons(value[5]);
-			lcd.renderUtil();
+			// if (!value) {
+			// 	return;
+			// }
+			// avgDiv1.html(value[0]).unbind('click');
+			// if (value[2] != undefined) {
+			// 	avgDiv1.addClass('click').click(function() {
+			// 		value[4](value[2][0], value[2][1], value[2][2], value[2][3]);
+			// 	});
+			// } else {
+			// 	avgDiv1.removeClass('click');
+			// }
+			// avgDiv2.html(value[1]).unbind('click');
+			// if (value[3] != undefined) {
+			// 	avgDiv2.addClass('click').click(function() {
+			// 		value[4](value[3][0], value[3][1], value[3][2], value[3][3]);
+			// 	});
+			// } else {
+			// 	avgDiv2.removeClass('click');
+			// }
+			// curTime = value[5] ? value[5][0].slice() : [0];
+			// lastTime = value[6] ? value[6][0].slice() : null;
+			// lcd.setRecons(value[5]);
+			// lcd.renderUtil();
 		}
 
 		function procSignal(signal, value) {
@@ -1032,7 +1038,16 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					$('#lcd').css({'visibility': 'unset'}); // disable dragging
 					lcd.fixDisplay(false, true);
 					rawMoves.reverse();
-					pushSignal('time', ["", 0, curTime, 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
+
+					const reconstruction = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')
+					pushSignal('time', ["", 0, curTime, 0, [reconstruction, curPuzzle, moveCnt]]);
+					if (curTime[0] === -1) {
+						pushSignal('vs-time', { isDnf: true })
+					} else {
+						const penalty = curTime[0]
+						const solveTime = curTime[1]
+						pushSignal('vs-time', { reconstruction, timeMs: solveTime + penalty })
+					}
 				}
 			}
 		}
@@ -1133,11 +1148,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (keyCode == 27 || keyCode == 32) {
 				kernel.clrKey();
 			}
-		}
-
-		window._applyScramble = () => {
-			const SPACEBAR_CODE = 32
-			onkeydown(SPACEBAR_CODE)
 		}
 
 		var curScramble;
