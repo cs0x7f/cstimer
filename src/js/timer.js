@@ -41,7 +41,13 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		lcd.renderUtil();
 		lcd.fixDisplay(false, true);
 	}
+
     window._resetTimer = function() {
+		curTime = [];
+		startTime;
+		hardTime;
+		lastTime = [];
+		rawMoves = [];
 		reset()
 		lcd.val(undefined)
 	};
@@ -1040,7 +1046,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					rawMoves.reverse();
 
 					const reconstruction = $.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' ')
-					pushSignal('time', ["", 0, curTime, 0, [reconstruction, curPuzzle, moveCnt]]);
+					// pushSignal('time', ["", 0, curTime, 0, [reconstruction, curPuzzle, moveCnt]]);
 					if (curTime[0] === -1) {
 						pushSignal('vs-time', { isDnf: true })
 					} else {
