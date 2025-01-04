@@ -346,7 +346,7 @@
 		var iSi = cubeOptions.dimension;
 
 		function generateCubeKeyMapping(oSl, oSr, iSi) {
-			return {
+			const map = {
 				73: [1, oSr, "R", 1], //I R
 				75: [1, oSr, "R", -1], //K R'
 				87: [1, 1, "B", 1], //W B
@@ -369,6 +369,14 @@
 				89: [1, iSi, "R", 1], //Y x
 				78: [1, iSi, "R", -1], //N x'
 				66: [1, iSi, "L", 1], //B x'
+				80: [1, iSi, "F", 1], //P z
+				81: [1, iSi, "F", -1], //Q z'
+				90: [1, 2, "D", 1], //Z d
+				67: [1, 2, "U", -1], //C u'
+				188: [1, 2, "U", 1], //, u
+				191: [1, 2, "D", -1] /// d'
+			}
+			const buggyOn222 = {
 				190: [oSr + 1, oSr + 1, "R", 1], //. M'
 				88: [oSl + 1, oSl + 1, "L", -1], //X M'
 				53: [oSl + 1, oSl + 1, "L", 1], //5 M
@@ -377,13 +385,13 @@
 				50: [2, iSi - 1, "U", -1], //2 E
 				57: [2, iSi - 1, "U", 1], //9 E'
 				48: [2, iSi - 1, "F", 1], //0 S
-				80: [1, iSi, "F", 1], //P z
-				81: [1, iSi, "F", -1], //Q z'
-				90: [1, 2, "D", 1], //Z d
-				67: [1, 2, "U", -1], //C u'
-				188: [1, 2, "U", 1], //, u
-				191: [1, 2, "D", -1] /// d'
 			}
+			if (cubeOptions.dimension > 2) {
+				for (key in buggyOn222) {
+					map[key] = buggyOn222[key]
+				}
+			}
+			return map
 		}
 
 		var cubeKeyMapping = generateCubeKeyMapping(oSl, oSr, iSi);
@@ -396,7 +404,8 @@
 			}
 			var keyCode = e.keyCode;
 			var ret = false;
-			if (keyCode == 51 || keyCode == 52 || keyCode == 55 || keyCode == 56 || keyCode == 32) {
+			// handMarks cause invalid reconstructions on 3x3 so we disable it for now
+			if (twisty.options.dimension > 3 && (keyCode == 51 || keyCode == 52 || keyCode == 55 || keyCode == 56 || keyCode == 32)) {
 				if (keyCode == 51) {
 					oSl = Math.max(1, oSl - 1);
 				} else if (keyCode == 52) {

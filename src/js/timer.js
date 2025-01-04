@@ -44,8 +44,6 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 
     window._resetTimer = function() {
 		curTime = [];
-		startTime;
-		hardTime;
 		lastTime = [];
 		rawMoves = [];
 		reset()
