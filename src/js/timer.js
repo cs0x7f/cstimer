@@ -1177,17 +1177,17 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 					isReseted = false;
 					reset();
 				}
-				var m = value[0].match(/^r(\d)\d*$/);
-				if (m) {
-					relayScrs = curScramble.split('\n');
-					if (curScrSize != ~~m[1]) {
-						curScrSize = ~~m[1];
-						isReseted = false;
-						reset();
-					}
-				} else {
-					relayScrs = null;
-				}
+				// var m = value[0].match(/^r(\d)\d*$/);
+				// if (m) {
+				// 	relayScrs = curScramble.split('\n');
+				// 	if (curScrSize != ~~m[1]) {
+				// 		curScrSize = ~~m[1];
+				// 		isReseted = false;
+				// 		reset();
+				// 	}
+				// } else {
+				// 	relayScrs = null;
+				// }
 			}
 		}
 
