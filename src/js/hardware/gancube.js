@@ -1040,6 +1040,34 @@ execMain(function() {
 			giikerutil.log('[gancube]', 'v4 battery level', batteryLevel);
 			giikerutil.updateBattery([batteryLevel, deviceName + '*']);
 		} else if (mode == 0xEC) { // gyro
+			var zero = parseInt(value.slice(0, 16), 2) / 16_384;
+			var one = parseInt(value.slice(16, 32), 2) / 16_384;
+			var two = parseInt(value.slice(32, 48), 2) / 16_384;
+			var three = parseInt(value.slice(48, 64), 2) / 16_384;
+
+			var quaterX = two;
+			var quaterY = one;
+			var quaterZ = three;
+			var quaterW = zero;
+
+			// var wSquared = 1 - (quaterX * quaterX + quaterY * quaterY + quaterZ * quaterZ);
+			// var quaterW = wSquared > 0 ? Math.sqrt(wSquared) : 0;
+
+			var angleSpeedX = parseInt(value.slice(64, 68), 2);
+			var angleSpeedY = parseInt(value.slice(68, 72), 2);
+			var angleSpeedZ = parseInt(value.slice(72, 76), 2);
+
+			var axisX = parseInt(value.slice(76, 97), 2) / 16_384;
+			var axisY = parseInt(value.slice(97, 118), 2) / 16_384;
+			var axisZ = parseInt(value.slice(118, 139), 2) / 16_384;
+			var angle = parseInt(value.slice(139, 160), 2) / 16_384;
+
+			window.puzzleObj.twisty._3d.useQuaternion = true;
+
+			var newQuat = new THREE.Quaternion(quaterX, quaterY, quaterZ, quaterW).normalize();
+			window.puzzleObj.twisty._3d.quaternion = newQuat;
+
+			window.puzzleObj.twistyScene.render()
 		} else {
 			giikerutil.log('[gancube]', 'v4 received unknown event', mode, value);
 		}
