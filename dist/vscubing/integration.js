@@ -90,10 +90,21 @@ window.addEventListener(
     if (event === "settings") {
       const { settings } = payload;
       window.kernel.setProp("vrcSpeed", settings.csAnimationDuration);
+      console.log(VOICE_INS_MAP[settings.csInspectionVoiceAlert]);
+      window.kernel.setProp(
+        "voiceIns",
+        VOICE_INS_MAP[settings.csInspectionVoiceAlert],
+      );
     }
   },
   false,
 );
+
+const VOICE_INS_MAP = {
+  None: "n",
+  Male: "1",
+  Female: "2",
+};
 
 function getOrCreateStartHint() {
   const existingStartHint = document.querySelector("#vs-start-hint");
