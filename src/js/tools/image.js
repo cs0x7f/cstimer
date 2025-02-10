@@ -451,6 +451,86 @@ var image = (function() {
 		}
 	})();
 
+	var gearImage = (function() {
+
+		var moveMaps = [
+			[3, 2, 1, 0, 4, 11, 12, 13, 14, 15, 16, 5, 6, 7, 8, 9, 10, 68, 69, 19, 20, 89, 73, 74, 75, 94, 95, 82, 28, 29, 30, 100, 101, 25, 85, 86, 36, 37, 21, 90, 91, 92, 26, 27, 99, 45, 46, 47, 32, 33, 42, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 17, 18, 70, 71, 38, 22, 23, 24, 43, 44, 31, 79, 80, 81, 49, 50, 76, 34, 35, 87, 88, 72, 39, 40, 41, 77, 78, 48, 96, 97, 98, 83, 84, 93],
+			[0, 52, 2, 54, 38, 40, 41, 11, 59, 60, 61, 46, 47, 56, 14, 15, 16, 20, 19, 18, 17, 21, 28, 29, 30, 31, 32, 33, 22, 23, 24, 25, 26, 27, 34, 87, 36, 85, 55, 57, 58, 45, 99, 100, 101, 63, 64, 96, 48, 49, 50, 51, 1, 53, 3, 89, 97, 98, 62, 8, 9, 10, 91, 92, 5, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 37, 86, 35, 88, 4, 12, 13, 39, 93, 94, 95, 6, 7, 90, 42, 43, 44],
+			[0, 1, 52, 51, 72, 5, 6, 7, 74, 75, 14, 56, 57, 58, 80, 81, 65, 71, 18, 69, 20, 4, 15, 16, 73, 25, 26, 27, 9, 10, 22, 76, 77, 78, 37, 36, 35, 34, 38, 45, 46, 47, 48, 49, 50, 39, 40, 41, 42, 43, 44, 3, 2, 53, 54, 21, 11, 12, 13, 23, 24, 8, 62, 63, 64, 29, 30, 59, 68, 19, 70, 17, 55, 66, 67, 79, 31, 32, 33, 60, 61, 28, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101]
+		];
+
+		return function(svg, moveseq) {
+			var width = 30;
+			svg.width = (39 * 3 / 9 + 0.2) * width;
+			svg.height = (29 * 3 / 9 + 0.2) * width;
+			var state = [];
+			for (var i = 0; i < 17 * 6; i++) {
+				state[i] = ~~(i / 17);
+			}
+			moveseq.replace(/([URF])([23456]?)('?)/g, function(m, g1, g2, g3) {
+				var move = moveMaps["URF".indexOf(g1)];
+				var pow = ~~g2 || 1;
+				pow = g3 ? (12 - pow) : pow;
+				for (var p = 0; p < pow; p++) {
+					var tmp = [];
+					for (var i = 0; i < 17 * 6; i++) {
+						tmp[i] = state[move[i]];
+					}
+					state = tmp;
+				}
+			});
+			var colors = kernel.getProp('colcube').match(colre);
+			for (var f = 0; f < 6; f++) {
+				var offx = 10 / 3 * [1, 2, 1, 1, 0, 3][f],
+					offy = 10 / 3 * [0, 1, 1, 2, 1, 1][f];
+				for (var s = 0; s < 5; s++) {
+					var x = [0, 2, 0, 2, 1][s],
+						y = [0, 0, 2, 2, 1][s];
+					drawPolygon(svg, colors[(state[f * 17 + s] + 3) % 6], [
+						[x, x, x + 1, x + 1],
+						[y, y + 1, y + 1, y]
+					], [width, offx + 0.1, offy + 0.1]);
+				}
+				for (var s = 0; s < 4; s++) {
+					var c1 = state[f * 17 + s * 3 + 5];
+					var c2 = state[f * 17 + s * 3 + 6];
+					var c3 = state[f * 17 + s * 3 + 7];
+					var rot = [
+						[1, 0, 0, 0, 1, 0],
+						[0, -1, 3, 1, 0, 0],
+						[-1, 0, 3, 0, -1, 3],
+						[0, 1, 0, -1, 0, 3]
+					][s];
+					if (c1 == c2 && c2 == c3) {
+						drawPolygon(svg, colors[(c1 + 3) % 6], Transform([
+							[1, 1, 2, 2],
+							[0, 1, 1, 0]
+						], rot), [width, offx + 0.1, offy + 0.1]);
+					} else if (c1 == c2) {
+						drawPolygon(svg, colors[(c1 + 3) % 6], Transform([
+							[1, 1, 2, 1.5],
+							[0, 1, 1, 0]
+						], rot), [width, offx + 0.1, offy + 0.1]);
+						drawPolygon(svg, colors[(c3 + 3) % 6], Transform([
+							[1.5, 2, 2],
+							[0, 1, 0]
+						], rot), [width, offx + 0.1, offy + 0.1]);
+					} else {
+						drawPolygon(svg, colors[(c1 + 3) % 6], Transform([
+							[1, 1, 1.5],
+							[0, 1, 0]
+						], rot), [width, offx + 0.1, offy + 0.1]);
+						drawPolygon(svg, colors[(c3 + 3) % 6], Transform([
+							[1.5, 1, 2, 2],
+							[0, 1, 1, 0]
+						], rot), [width, offx + 0.1, offy + 0.1]);
+					}
+				}
+			}
+			return svg;
+		}
+	})();
+
 	/**
 	 *	last layer image
 	 *	pieces = U1U2...U9F1..F3R1..L3
@@ -798,6 +878,8 @@ var image = (function() {
 			recons = sq1Image.scrImage(svg, scramble[1], type == "sq2");
 		} else if (type == "clk") {
 			clkImage(svg, scramble[1]);
+		} else if (type == "gear") {
+			gearImage(svg, scramble[1]);
 		} else if (type == "15b" || type == "15p") {
 			sldImage(svg, type[2], 4, scramble[1]);
 		} else if (type == "8b" || type == "8p") {
