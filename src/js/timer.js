@@ -615,7 +615,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		// right Ctrl: 257
 
 		var keyCode = e.which;
-		if (keyCode == 17) { // ctrl
+		if (keyCode == 16 || keyCode == 17 || keyCode == 18) { // ctrl or shift or alt
 			var origE = e.originalEvent;
 			if (origE.location == 1 || origE.keyLocation == 1) {
 				keyCode = 256;
