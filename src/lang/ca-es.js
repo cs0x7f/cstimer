@@ -397,6 +397,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['moviment aleatori', "redi", 20]
 	]],
+	['Dino Cube', [
+		['estat aleatori', "dinoso", 0],
+		['òptim', "dinoo", 0]
+	]],
 	['Ivy Cube', [
 		['estat aleatori', "ivyso", 0],
 		['òptim', "ivyo", 0],

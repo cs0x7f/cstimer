@@ -124,7 +124,7 @@ var puzzleFactory = execMain(function() {
 			options["faceColors"] = $.col2std(kernel.getProp("colclk"), [1, 2, 0, 3, 4]);
 		} else if (puzzle == "fto" || puzzle == "dmd") {
 			options["faceColors"] = $.col2std(kernel.getProp("colfto"), [0, 3, 1, 2, 6, 7, 5, 4]);
-		} else if (/^heli(?:2x2|cv)?|crz3a|redi$/.exec(puzzle)) {
+		} else if (/^heli(?:2x2|cv)?|crz3a|redi|dino$/.exec(puzzle)) {
 			options["faceColors"] = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]);
 		} else if (/^ctico$/.exec(puzzle)) {
 			options["faceColors"] = $.col2std(kernel.getProp("colico"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]);

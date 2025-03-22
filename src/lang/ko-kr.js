@@ -397,6 +397,10 @@ var scrdata = [
 		['모위(MoYu)', "redim", 8],
 		['무작위 수순', "redi", 20]
 	]],
+	['Dino Cube', [
+		['무작위 상태', "dinoso", 0],
+		['최적', "dinoo", 0]
+	]],
 	['Ivy cube', [
 		['무작위 상태', "ivyso", 0],
 		['최적', "ivyo", 0],

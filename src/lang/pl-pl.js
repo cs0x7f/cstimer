@@ -151,7 +151,7 @@ var SCRAMBLE_LENGTH = 'długość';
 var SCRAMBLE_INPUT = 'Wprowadź algorytm(y) mieszania';
 var SCRAMBLE_INPUTTYPE = 'Typ pomieszania';
 var PROPERTY_VRCSPEED = 'Prędkość bazowa VRC (tps)';
-var PROPERTY_VRCORI = 'Virtual cube orientation';
+var PROPERTY_VRCORI = 'Wirtualna orientacja kostki';
 var PROPERTY_VRCMP = 'wielofazowe';
 var PROPERTY_VRCMPS = 'None|CFOP|CF+OP|CFFFFOP|CFFFFOOPP|Roux';
 var PROPERTY_GIIKERVRC = 'Pokaż wirtualną kostkę bluetooth';
@@ -396,6 +396,10 @@ var scrdata = [
 		['stan losowy', "rediso", 0],
 		['MoYu', "redim", 8],
 		['losowy ruch', "redi", 20]
+	]],
+	['Dino Cube', [
+		['stan losowy', "dinoso", 0],
+		['optymalny', "dinoo", 0]
 	]],
 	['Ivy cube', [
 		['stan losowy', "ivyso", 0],

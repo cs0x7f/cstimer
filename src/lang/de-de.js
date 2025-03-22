@@ -24,12 +24,12 @@ var PROPERTY_SCRMONO = 'Monospace-Scramble';
 var PROPERTY_SCRLIM = 'Die Höhe des Scramble-Bereichs begrenzen';
 var PROPERTY_SCRALIGN = 'Aurichtung des Scramble-Bereichs';
 var PROPERTY_SCRALIGN_STR = 'mittig|links|rechts';
-var PROPERTY_SCRWRAP = 'Scramble Wrap';
+var PROPERTY_SCRWRAP = 'Scramble Wechsel';
 var PROPERTY_SCRWRAP_STR = 'Ausgeglichen|Normal';
 var PROPERTY_SCRNEUT = 'Farbneutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
-var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
-var PROPERTY_SCREQPR_STR = 'Actual|Equal|Random order';
+var PROPERTY_SCREQPR = 'Wahrscheinlichkeiten für Training-Scrambles';
+var PROPERTY_SCREQPR_STR = 'Aktuelle|Gleiche|Zufällige Reihenfolge';
 var PROPERTY_SCRFAST = 'schnellen Scramble für 4x4x4 verwenden (inoffiziell)';
 var PROPERTY_SCRKEYM = 'Schlüssel-Züge im Scramble hervorheben';
 var PROPERTY_SCRCLK = 'Aktion beim klicken des scrambles';
@@ -396,6 +396,10 @@ var scrdata = [
 		['zufälliger Status', "rediso", 0],
 		['MoYu', "redim", 8],
 		['zufällige Bewegung', "redi", 20]
+	]],
+	['Dino Cube', [
+		['zufälliger Status', "dinoso", 0],
+		['optimal', "dinoo", 0]
 	]],
 	['Ivy cube', [
 		['zufälliger Status', "ivyso", 0],

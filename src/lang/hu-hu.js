@@ -397,6 +397,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['véletlen mozdulat', "redi", 20]
 	]],
+	['Dino Cube', [
+		['véletlen állapot', "dinoso", 0],
+		['optimális', "dinoo", 0]
+	]],
 	['Ivy kocka', [
 		['véletlen állapot', "ivyso", 0],
 		['optimális', "ivyo", 0],

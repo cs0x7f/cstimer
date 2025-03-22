@@ -397,6 +397,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['Rastgele hamle', "redi", 20]
 	]],
+	['Dino Cube', [
+		['Rastgele Durum', "dinoso", 0],
+		['ideal', "dinoo", 0]
+	]],
 	['Sarmaşık Küp', [
 		['Rastgele Durum', "ivyso", 0],
 		['ideal', "ivyo", 0],

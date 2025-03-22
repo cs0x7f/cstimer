@@ -96,6 +96,8 @@ var tools = (function() {
 			return "prc";
 		} else if (/^redi(m|so)?$/.exec(scrambleType)) {
 			return "redi";
+		} else if (/^dino(o|so)?$/.exec(scrambleType)) {
+			return "dino";
 		} else if (/^gear(o|so)?$/.exec(scrambleType)) {
 			return "gear";
 		} else {

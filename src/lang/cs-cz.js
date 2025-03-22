@@ -397,6 +397,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['náhodný tah', "redi", 20]
 	]],
+	['Dino Cube', [
+		['náhodný stav', "dinoso", 0],
+		['optimální', "dinoo", 0]
+	]],
 	['Ivy cube', [
 		['náhodný stav', "ivyso", 0],
 		['optimální', "ivyo", 0],

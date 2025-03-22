@@ -10,7 +10,7 @@ var BUTTON_EXPORT = 'EXPORTAR';
 var BUTTON_DONATE = 'DONAR';
 var PROPERTY_SR = 'Con sesión';
 var PROPERTY_USEINS = 'Usar inspección de WCA';
-var PROPERTY_USEINS_STR = 'Always (down)|Always (up)|Except BLD (down)|Except BLD (up)|Never';
+var PROPERTY_USEINS_STR = 'Siempre (abajo) | Siempre (arriba) | Excepto BLD (abajo) | Excepto BLD (arriba) | Nunca';
 var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
 var PROPERTY_VOICEINS = 'voz de alerta en la inspección de la WCA';
 var PROPERTY_VOICEINS_STR = 'Ninguna | Voz masculina | Voz femenina';
@@ -25,7 +25,7 @@ var PROPERTY_SCRLIM = 'Limitar la altura de la zona de mezcla';
 var PROPERTY_SCRALIGN = 'Alineación del área de scramble';
 var PROPERTY_SCRALIGN_STR = 'Centro | Izquierda | Derecha';
 var PROPERTY_SCRWRAP = 'Scramble Wrap';
-var PROPERTY_SCRWRAP_STR = 'Balanced|Normal';
+var PROPERTY_SCRWRAP_STR = 'Equilibrado|Normal';
 var PROPERTY_SCRNEUT = 'Color neutral';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
 var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
@@ -151,7 +151,7 @@ var SCRAMBLE_LENGTH = 'Longitud';
 var SCRAMBLE_INPUT = 'Introducir mezcla(s)';
 var SCRAMBLE_INPUTTYPE = 'Scramble type';
 var PROPERTY_VRCSPEED = 'Velocidad base VRC (Giros por segundo)';
-var PROPERTY_VRCORI = 'Virtual cube orientation';
+var PROPERTY_VRCORI = 'Orientación del cubo virtual';
 var PROPERTY_VRCMP = 'Multi-fase';
 var PROPERTY_VRCMPS = 'Ninguno | CFOP | CF+OP| CFFFFOP|CFFFFOOPP| Roux';
 var PROPERTY_GIIKERVRC = 'Mostral cubo Giiker virtual';
@@ -397,6 +397,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['movimiento aleatorio', "redi", 20]
 	]],
+	['Dino Cube', [
+		['estado aleatorio', "dinoso", 0],
+		['óptimo', "dinoo", 0]
+	]],
 	['cubo Ivy', [
 		['estado aleatorio', "ivyso", 0],
 		['óptimo', "ivyo", 0],
@@ -548,7 +552,7 @@ var PROPERTY_SCR2SS = 'crear una nueva sesión al cambiar el tipo de scramble';
 var PROPERTY_SS2SCR = 'restaurar el tipo de mezcla al cambiar de sesión';
 var PROPERTY_SS2PHASES = 'Conservar tiempo multi-fase al cambiar de sesión';
 var PROPERTY_STATINV = 'Lista de tiempo inversa';
-var PROPERTY_STATSSUM = 'Show sum in time list';
+var PROPERTY_STATSSUM = 'Mostrar suma en la lista de tiempos';
 var PROPERTY_STATTHRES = 'Show target time for session best';
 var PROPERTY_STATBPA = 'Show best possible average (BPA)';
 var PROPERTY_STATWPA = 'Show worst possible average (WPA)';

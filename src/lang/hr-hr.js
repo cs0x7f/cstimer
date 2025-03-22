@@ -397,6 +397,10 @@ var scrdata = [
 		['MoYu', "redim", 8],
 		['nasumični potez', "redi", 20]
 	]],
+	['Dino Cube', [
+		['nasumično stanje', "dinoso", 0],
+		['optimalno', "dinoo", 0]
+	]],
 	['Ivy kocka', [
 		['nasumično stanje', "ivyso", 0],
 		['optimalno', "ivyo", 0],

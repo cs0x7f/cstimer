@@ -434,6 +434,6 @@ var DEBUGBL = false; // for debugging bluetooth
 		return format.replace(/{(\d+)}/g, (m, num) => args[~~num] || '');
 	};
 
-	$.UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|fto|dmd|ctico";
+	$.UDPOLY_RE = "skb|m?pyr|prc|heli(?:2x2|cv)?|crz3a|giga|mgm|klm|redi|dino|fto|dmd|ctico";
 	$.TWISTY_RE = "sq1|clk|udpoly|" + $.UDPOLY_RE;
 })();

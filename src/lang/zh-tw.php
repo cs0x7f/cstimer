@@ -91,14 +91,14 @@
 <li><strong data="opt_scrLim">限制打亂區高度</strong>. 如果打亂面板的位置太高的話，會顯示捲軸以避免打亂區出格。</li>
 <li><strong data="opt_scrAlign">打亂對齊</strong>. 打亂區與打亂選擇器的對齊狀況。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打亂前的前置動作。這個選項會影響虛擬方塊跟打亂圖形的顯示。</li>
-<li><strong data="opt_scrNeut">Color neutral</strong>. 在開啟的時候，方塊的朝向或第一層顏色在某些訓練打亂中將變得隨機。</li>
+<li><strong data="opt_scrNeut">中性色</strong>. 在開啟的時候，方塊的朝向或第一層顏色在某些訓練打亂中將變得隨機。</li>
 <li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">4x4x4使用快速打亂(非官方)</strong>. WCA的官方4x4x4打亂方法很吃運算資源。如果要改成4x4x4的隨機步驟打亂，可以勾選這個選項。</li>
 <li><strong data="opt_scrKeyM">打亂中標記關鍵步驟</strong>. 標記打亂中的關鍵步驟，例如sq-1打亂中離開正方形的那一個步驟。</li>
 <li><strong data="opt_scrClk">點擊打亂時的動作</strong>. 點擊打亂公式後會發生的事情：複製本次打亂或生成下一組打亂。</li>
 <li><strong data="opt_trim">刪減數據中的資料數</strong>. 計算平均時要去掉的頭尾數據量。</li>
 <li><strong data="opt_statsum">在時間清單前顯示摘要</strong>. 在時間列表前顯示統計資料。</li>
-<li><strong data="opt_statthres">Show target time for session best</strong>. 在資料欄中，下一次還原能更新個人紀錄所需要的時間是被顥示的 "N/A" 的意思是無論下一次還原多快都不會更新個人紀錄，"&#8734;" 的意思是未完成之外的每次還原都會更新個紀錄。</li>
+<li><strong data="opt_statthres">顯示階段最快的目標時間</strong>. 在資料欄中，下一次還原能更新個人紀錄所需要的時間是被顥示的 ‘N/A’ 表示無論下一次解開多快都不會更新個人紀錄, ‘&#8734;’ 代表未完成之外的所有時間都會更新個人紀錄.</li>
 <li><strong data="opt_printScr">在統計列表中顯示打亂</strong>. 在數據欄中顯示打亂。</li>
 <li><strong data="opt_printDate">在統計列表中顯示日期</strong>. 在數據欄中顯示日期。</li>
 <li><strong data="opt_imrename">創建後立即重新命名階段</strong>. 在創建階段後立即重新命名。</li>

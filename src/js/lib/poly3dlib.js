@@ -1049,8 +1049,8 @@ var poly3d = (function() {
 				var powfix = (Math.abs(pow) == 1 ? "" : Math.abs(pow)) + (pow >= 0 ? "" : "'");
 				return (layer == 0 ? "xyz".charAt("RUF".indexOf(axis)) : axis) + powfix;
 			});
-		} else if (/^redi$/.exec(name)) {
-			polyParam = [6, [-5], [], [-5, 0.85]];
+		} else if (/^(redi|dino)$/.exec(name)) {
+			polyParam = name == 'redi' ? [6, [-5], [], [-5, 0.85]] : [6, [-5], [], [-5, Math.sqrt(1/3)]];
 			var rediShort = 'FLBRflbrxyz';
 			var rediLong = ['URF', 'UFL', 'ULB', 'URB', 'RFD', 'FDL', 'DLB', 'RDB', 'R', 'U', 'F'];
 			parser = makeParser(/(?:^|\s*)([FLBRflbrxyz])(')?(?:$|\s*)/g, function(m, p1, p2, p3) {
