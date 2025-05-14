@@ -611,13 +611,14 @@ var kernel = execMain(function() {
 			".mybutton,.tab,.cntbar{border-color:?}" +
 			"html:not(.m) .mybutton:hover,.mybutton:active,.tab:active,.mywindow,.popup,.dialog{background-color:?}" +
 			".mybutton.enable,.tab.enable,.cntbar,.selected,table.opttable tr th:first-child,div.helptable h2,div.helptable h3,.sflt div.sgrp{background-color:?}" +
-			"#gray{background-color:?}" +
+			"#gray{background-color:?4}" +
 			"html:not(.m) .times:hover,html:not(.m) .click:hover,.times:active,.click:active,textarea{background-color:?}" +
-			".click,.linkb .times.pb{color:?}" +
+			".click{color:?}" +
 			".mywindow,.popup,.dialog,.table,.table td,.table th,textarea,.tabValue,.opttable td.sr,.sflt .bimg{border-color:?}" +
 			"html:not(.m) #avgstr .click:hover,#avgstr .click:active{background-color:?}" +
 			"select,input[type='button'],input[type='text']{color:?;background:?;border-color:?}" +
 			"input:disabled,table.opttable tr:nth-child(odd) td:first-child,div.helptable li:nth-child(odd){background:?}" +
+			".times.pb{color:?}" +
 			".mywindow::before,.popup,.dialog,#leftbar::before";
 		csstmp = [
 			csstmp + "{box-shadow:0 0 .6em ?}",
@@ -637,15 +638,17 @@ var kernel = execMain(function() {
 
 
 		// var cur_color = ["#000", "#efc", "#cda", "#ff0", "#dd0", "#000", "#dbb", "#fdd", "#fbb", "#000", "#dbb", "#00f", "#dbb"];
-		var cur_color = ["#000", "#efc", "#fdd", "#fbb", "#dbb", "#ff0", "#000"];
-		var col_map = [0, 1, 2, 0, 1|0x220, 5, 5|0x220, 6, 2|0x220, 2, 3, 0, 2|0x220, 4, 2|0x220, 1|0x220, 0, 2|0xef0, 2|0x220, 2|0x110, 0];
-		var col_props = ['font', 'back', 'board', 'button', 'link', 'logo', 'logoback'];
+		var cur_color = ["#000", "#efc", "#fdd", "#fbb", "#dbb", "#ff0", "#000", "#f40"];
+		var col_map = [0, 1, 2, 0, 1|0x220, 5, 5|0x220, 6, 2|0x220, 2, 3, 0, 2|0x220, 4, 2|0x220, 1|0x220, 0, 2|0xef0, 2|0x220, 2|0x110, 7, 0];
+		var col_props = ['font', 'back', 'board', 'button', 'link', 'logo', 'logoback', 'pbs'];
 
 		function useColorTemplate(value) {
-			for (var i=0; i<7; i++) {
-				cur_color[i] = $.nearColor(value.substr(i*4, 4));
+			if (value.length == 28) {
+				value += "#f40";
 			}
-
+			for (var i = 0; i < 8; i++) {
+				cur_color[i] = $.nearColor(value.substr(i * 4, 4));
+			}
 			setProp('col-font', $.nearColor(cur_color[0], 0, true));
 			setProp('col-back', $.nearColor(cur_color[1], 0, true));
 			setProp('col-board', $.nearColor(cur_color[2], 0, true));
@@ -653,7 +656,7 @@ var kernel = execMain(function() {
 			setProp('col-link', $.nearColor(cur_color[4], 0, true));
 			setProp('col-logo', $.nearColor(cur_color[5], 0, true));
 			setProp('col-logoback', $.nearColor(cur_color[6], 0, true));
-
+			setProp('col-pbs', $.nearColor(cur_color[7], 0, true));
 			releaseColor();
 		}
 
@@ -670,11 +673,8 @@ var kernel = execMain(function() {
 		function releaseColor() {
 			var cssval = getProp('uidesign') == 'ns' || getProp('uidesign') == 'mtns' ? csstmp[1] : csstmp[0];
 			var sgn = $.nearColor(cur_color[0]) == '#000' ? -1: 1;
-			for (var i=0; i<col_map.length; i++) {
+			for (var i = 0; i < col_map.length; i++) {
 				var stdcolor = $.nearColor(cur_color[col_map[i] & 0xf], (col_map[i] << 20 >> 24) * sgn);
-				if (i == 11) {
-					stdcolor += '4'; // opacity for #gray
-				}
 				cssval = cssval.replace('?', stdcolor);
 			}
 			if (colorTag[0].styleSheet) {
@@ -685,7 +685,7 @@ var kernel = execMain(function() {
 		}
 
 		function importColor(val) {
-			var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7})\s*$/;
+			var colstr_re = /^\s*((#[0-9a-fA-F]{3}){7,8})\s*$/;
 			var m = colstr_re.exec(val);
 			if (m) {
 				useColorTemplate(m[1]);
@@ -759,6 +759,7 @@ var kernel = execMain(function() {
 				case 'col-link':
 				case 'col-logo':
 				case 'col-logoback':
+				case 'col-pbs':
 					setColor(col_props.indexOf(value[0].substring(4, value[0].length)), value[1]);
 					break;
 				case 'zoom':
@@ -822,6 +823,7 @@ var kernel = execMain(function() {
 			regProp('color', 'col-link', 3, parr[4], ['#0000ff']);
 			regProp('color', 'col-logo', 3, parr[5], ['#ffff00']);
 			regProp('color', 'col-logoback', 3, parr[6], ['#000000']);
+			regProp('color', 'col-pbs', 3, 'PBs', ['#ff4400']);
 			regProp('color', 'col-timer', 4, 'Timer', ['#f00#0d0#dd0#080#f00']);
 			regProp('color', 'colcube', 4, 'Cube', ['#ff0#fa0#00f#fff#f00#0d0']);
 			regProp('color', 'colpyr', 4, 'Pyraminx', ['#0f0#f00#00f#ff0']);

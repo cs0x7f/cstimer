@@ -1783,8 +1783,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 				resultsHeight();
 			} else if (value[0] == 'sr_statal') {
 				kernel.setProp('sr_statalu', value[1]);
-			} else if (value[0] == 'hlpbs') {
-				table.removeClass('f40b linkb normb none').addClass(value[1]);
 			}
 		} else if (signal == 'ctrl' && value[0] == 'stats') {
 			if (value[1] == 'clr') {
@@ -1832,7 +1830,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regListener('stats', 'time', procSignal);
 		kernel.regListener('stats', 'scramble', procSignal);
 		kernel.regListener('stats', 'scrambleX', procSignal);
-		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[bw]pa|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|hlpbs|sr_.*)$/);
+		kernel.regListener('stats', 'property', procSignal, /^(:?useMilli|timeFormat|stat(:?sum|thres|[bw]pa|[12][tl]|alu?|inv|Hide|src|ssum)|session(:?Data)?|scrType|phases|trimr?|view|wndStat|sr_.*)$/);
 		kernel.regListener('stats', 'ctrl', procSignal, /^stats$/);
 		kernel.regListener('stats', 'ashow', procSignal);
 		kernel.regListener('stats', 'button', procSignal);
@@ -1852,7 +1850,6 @@ var stats = execMain(function(kpretty, round, kpround) {
 		kernel.regProp('stats', 'statinv', 0, PROPERTY_STATINV, [false], 1);
 		kernel.regProp('stats', 'statclr', 0, STATS_STATCLR, [true], 1);
 		kernel.regProp('stats', 'absidx', 0, STATS_ABSIDX, [false], 1);
-		kernel.regProp('stats', 'hlpbs', 1, PROPERTY_HLPBS, ['f40b', ['f40b', 'linkb', 'normb', 'none'], PROPERTY_HLPBS_STR.split('|')], 1);
 
 		div.append(
 			statOptDiv.append(
