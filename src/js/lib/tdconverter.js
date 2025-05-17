@@ -455,6 +455,63 @@ var TimerDataConverter = execMain(function() {
 		return ret;
 	}];
 
+	Timers['Gan_CubeStation'] = [/^{"code":200,"data":{"data":\[/i, function(data) {
+		data = JSON.parse(stdStr(data))["data"]["data"];
+		var sessions = {};
+		var moveRe = /(?:^|\s*)([URFDLBMSE])([2'_]*)(?:$|\s*)/g;
+		for (var i = 0; i < data.length; i++) {
+			var obj = data[i];
+			var timestamp = ~~obj["startTime"];
+			var sessionName = obj["leagueId"] ? "League" + obj["leagueId"] : mathlib.time2str(timestamp, "%Y-%M");
+			var session = sessions[sessionName] || {
+				"name": sessionName,
+				"opt": { "scrType": "333" },
+				"times": []
+			};
+			sessions[sessionName] = session;
+
+			var time = Math.max(1, obj["duration"]);
+			var scramble = obj["scramble"];
+			var penalty = obj["normalScore"] ? 0 : -1;
+			var solve = [[penalty, time], scramble, "", timestamp];
+			if (time > 0 && penalty == 0) {
+				var recons = [];
+				var moveCnt = 0;
+				obj["reduction"].replace(moveRe, function(m, p1, p2) {
+					moveCnt++;
+					var pow = 1;
+					for (var j = 0; j < p2.length; j++) {
+						pow *= {"'": 3, "2": 2, "_": 3}[p2[j]] || 1;
+					}
+					var axis = {"M": "2-2Lw", "S": "2-2Fw", "E": "2-2Dw"}[p1] || p1;
+					recons.push([axis + ["2", "", "2", "'"][pow % 4], moveCnt]);
+					// In gan's data, "MSE" is treated as two opposite-face moves without cube rotation.
+					if (axis != p1) {
+						var rot = {"M": ["x", 1], "S": ["z", 3], "E": ["y", 1]}[p1];
+						recons.push([rot[0] + ["2", "", "2", "'"][pow * rot[1] % 4], moveCnt]);
+					}
+				});
+				if (moveCnt > 0) {
+					solve.push([recons.map(function(value) {
+						return value[0] + "@" + ~~(value[1] * time / moveCnt);
+					}).join(" "), "333", moveCnt]);
+				}
+			}
+			session["times"].push(solve);
+		}
+		var ret = $.map(sessions, function(session) {
+			// sort by date
+			session["times"].sort(function(a, b) {
+				return a[3] - b[3];
+			});
+			return session;
+		});
+		ret.sort(function(a, b) {
+			return a["sessionName"] > b["sessionName"] ? 1 : -1;
+		});
+		return ret;
+	}]
+
 
 	function convert(data) {
 		var ret = undefined;
