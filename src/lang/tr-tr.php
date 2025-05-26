@@ -84,7 +84,7 @@
 <li><strong data="opt_timeU">kronometre güncellemesi</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">boşluk tuşuna basılı tutma süresi(saniye)</strong>. How long the space bar should be held before the timer turns green.</li>
 <li><strong data="opt_phases">çok zamanlı</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
+<li><strong data="opt_stkHead">Stackmat Durum Bilgilerini kullanın</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">karıştırma bouyutu</strong>. Size of the scramble text.</li>
 <li><strong data="opt_scrASize">Otomatik Karıştırma Boyutu</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
 <li><strong data="opt_scrMono">eş aralıklı karıştırma</strong>. Use monospaced font for scramble text.</li>
@@ -92,11 +92,11 @@
 <li><strong data="opt_scrAlign">Karıştırma bölgesi hizası</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrNeut">Renk nötr</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
-<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
+<li><strong data="opt_scrEqPr">Eğitim-karışıklık durumları için olasılıklar</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">4x4x4 için hızlı karışım kullanma (resmi değil)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Karıştırmada anahtar hareket(ler)ini etiketleyin</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
-<li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
-<li><strong data="opt_trim">Number of solves trimmed at better side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
+<li><strong data="opt_scrClk">Karıştır&#x27;a tıklandığında eylem</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
+<li><strong data="opt_trim">Çözüm sayısı daha iyi tarafa doğru kırpıldı</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">Süre listesinden önce özeti göster</strong>. Show the statistics table before time list.</li>
 <li><strong data="opt_statthres">En iyi oturum için hedef zamanı göster</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">karıştırmaları istatistiklerde göster</strong>. Print scramble in round statistics dialog.</li>
@@ -110,7 +110,7 @@
 <li><strong data="opt_statal">İstatistik göstergeleri</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">Çoklu silmeye izin ver</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">Süre dağılım aralığı</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
+<li><strong data="opt_solSpl">Çözümü aşamalı olarak göster</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Karıştırma resmi boyutu</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">yardımcı sayısı</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">kısayol kullan</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
