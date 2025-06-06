@@ -399,6 +399,8 @@ window.twistyjs = (function() {
 			moveCameraDelta(deltaTheta, 0);
 		}
 
+		this.render = render;
+
 		function render() {
 			renderer.render(scene, camera);
 		}
