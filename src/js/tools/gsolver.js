@@ -1098,6 +1098,115 @@
 		return execFunc;
 	});
 
+	var twophase = execMain(function() {
+		var isSolving = 0; //0 - idle, 1 - single, 2 - batch
+		var selectMode = $('<select style="font-size:0.75em;">');
+		var solveButton = $('<input type="button" value="Solve!" style="font-size:0.75em;">');
+		var resultText = $('<textarea rows="8" cols="30" style="font-size:0.75em;">');
+		var resultArr = [];
+		var canvas, ctx;
+		var solvedState = mathlib.SOLVED_FACELET;
+		var selColor = '-';
+
+		var search = new min2phase.Search();
+		var startTime = 0;
+		var solveTid = 0;
+
+		function searchThread() {
+			if (!isSolving) {
+				return;
+			}
+			var ret = search.next(1000, 0);
+			var curStatus = resultArr.length + ' sol(s), @' + ~~((+new Date - startTime) / 1000) + 's|' + search.length1 + 'f';
+			if (ret.startsWith('Error 7')) {
+				resultText.html(resultArr.join('\n') + '\n' + curStatus + '*');
+				solveTid = 0;
+				return;
+			} else if (!ret.startsWith('Error')) {
+				resultArr.push(ret.replace(/ +/g, ' ') + ' (' + ~~(ret.length / 3) + 'f)');
+			}
+			resultText.html(resultArr.join('\n') + '\n' + curStatus);
+			if (isSolving == 1) {
+				if (ret) {
+					solveTid = 0;
+					return;
+				}
+			} else {
+				resultText[0].scrollTop = resultText[0].scrollHeight;
+			}
+			solveTid = setTimeout(searchThread, 1);
+		}
+
+		function clearSolve() {
+			if (isSolving == 1 || isSolving == 2) {
+				toggleSolve();
+			}
+		}
+
+		function startSolve() {
+			var startState = stateInit(rubiksCube.move, solvedState);
+			var ret = search.solution(startState, 30, 0, 0);
+			startTime = +new Date;
+			resultArr = [];
+			searchThread();
+		}
+
+		function toggleSolve() {
+			if (isSolving == 0) {
+				solveButton.val('Stop!');
+				selectMode.prop('disabled', true);
+				isSolving = selectMode.val() == 'batch' ? 2 : 1;
+			} else {
+				solveButton.val('Solve!');
+				selectMode.prop('disabled', false);
+				isSolving = 0;
+			}
+			kernel.blur();
+			if (!isSolving) {
+				return;
+			}
+			startSolve();
+		}
+
+		function execFunc(scramble, span) {
+			curScramble = cubeutil.parseScramble(scramble, "URFDLB");
+			for (var i = 0; i < curScramble.length; i++) {
+				curScramble[i] = "URFDLB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1);
+			}
+			sol = [];
+			span.empty().append($('<table class="table">').append(
+				$('<tr>').append(
+					$('<td style="padding:0;">').append(
+						selectMode,
+						solveButton.unbind('click').click(toggleSolve)),
+				),
+				$('<tr>').append(
+					$('<td>').append(resultText.empty())
+				)
+			));
+
+			if (isSolving) {
+				if (solveTid) {
+					clearTimeout(solveTid);
+					solveTid = 0;
+				}
+				startSolve();
+			}
+		}
+
+		$(function() {
+			canvas = $('<canvas>');
+			if (!canvas[0].getContext) {
+				return;
+			}
+			ctx = canvas[0].getContext('2d');
+			selectMode.append($('<option>').val('single').html('Single'));
+			selectMode.append($('<option>').val('batch').html('Batch'));
+		});
+
+		return execFunc;
+	});
+
 	execMain(function() {
 		function execFunc(type, fdiv) {
 			if (!fdiv) {
@@ -1111,6 +1220,8 @@
 				pocketCube(scramble[1], span);
 			} else if (type == '333udf' && tools.isPuzzle('333') && /^[URFDLB 2']+$/.exec(scramble[1])) {
 				general333Solver(scramble[1], span);
+			} else if (type == '333koc' && tools.isPuzzle('333') && /^[URFDLB 2']+$/.exec(scramble[1])) {
+				twophase(scramble[1], span);
 			} else if (type.startsWith('333') && tools.isPuzzle('333') && /^[URFDLB 2']+$/.exec(scramble[1])) {
 				rubiksCube.exec(type.slice(3), scramble[1], span);
 			} else if (type == 'sq1cs' && tools.isPuzzle('sq1')) {
@@ -1138,6 +1249,7 @@
 			tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
 			tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));
 			tools.regTool('333udf', TOOLS_SOLVERS + '>3x3x3 General', execFunc.bind(null, '333udf'));
+			tools.regTool('333koc', TOOLS_SOLVERS + '>3x3x3 TwoPhase', execFunc.bind(null, '333koc'));
 		});
 	});
 })();
