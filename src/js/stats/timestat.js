@@ -224,15 +224,15 @@ var TimeStat = execMain(function() {
 			var toRemove = this.timeAt(this.timesLen - size);
 			var left = trimlr[0];
 			var right = size - trimlr[1] - 1;
-			if (this.timeSort(toRemove, rbt.rank(left)) < 0) {
+			if (this.timeSort(toRemove, rbt.rank(left)) <= 0) {
 				left += 1;
 				toRemove = 0;
-			} else if (this.timeSort(rbt.rank(right), toRemove) < 0) {
+			} else if (this.timeSort(rbt.rank(right), toRemove) <= 0) {
 				right -= 1;
 				toRemove = 0;
 			}
 			var tgtAvg = this.bestAvg(j, 0);
-			if (rbt.rankOf(-1) < right) { //next avg is always DNF
+			if (rbt.rankOf(-1) <= right) { //next avg is always DNF
 				thres[j] = -1;
 				continue;
 			} else if (tgtAvg == -1) {
