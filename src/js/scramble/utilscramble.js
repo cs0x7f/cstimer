@@ -241,7 +241,7 @@
 			for (j = 0; j < x / 2; j++) {
 				ret += rndEl(["+", "-"]) + rndEl(["+", "-"]) + " ";
 			}
-			ret += "U" + rndEl(["'\\n", "~\\n"]);
+			ret += "U" + (ret.endsWith("- ") ? "'\\n" : "~\\n");
 		}
 		return ret;
 	}
