@@ -32,6 +32,7 @@ timer.js \
 timer/input.js \
 timer/stackmat.js \
 timer/gan.js \
+timer/qiyi.js \
 timer/virtual.js \
 timer/giiker.js \
 solver/ftocta.js \
@@ -92,6 +93,7 @@ hardware/moyucube.js \
 hardware/moyu32cube.js \
 hardware/qiyicube.js \
 hardware/gantimer.js \
+hardware/qiyitimer.js \
 worker.js)
 
 cache = $(addprefix $(dest)/, \
