@@ -131,7 +131,7 @@
 
 		this.parseScramble = function(scramble) {
 			if (!scramble || /^\s*$/.exec(scramble)) {
-				return generateScramble(this);
+				return [];
 			} else {
 				var clkre = /^(([URDL]{1,2}|ALL)(\d+)?([+-])?|y2)$/;
 				var clkmre = /^m(b?[UD][RL]|[YFB])(-?\d+)$/;

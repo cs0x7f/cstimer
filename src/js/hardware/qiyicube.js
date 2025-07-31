@@ -14,36 +14,11 @@ execMain(function() {
 	var KEYS = ['NoDg7ANAjGkEwBYCc0xQnADAVgkzGAzHNAGyRTanQi5QIFyHrjQMQgsC6QA'];
 
 	function initMac(forcePrompt, isWrongKey) {
-		if (deviceMac) {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var prevMac = savedMacMap[_deviceName];
-			if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-				giikerutil.log('[qiyicube] mac matched');
-			} else {
-				giikerutil.log('[qiyicube] mac updated');
-				savedMacMap[_deviceName] = deviceMac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-		} else {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var mac = savedMacMap[_deviceName];
-			if (!mac || forcePrompt) {
-				if (!mac && /^QY-QYSC-.-[0-9A-F]{4}$/.exec(_deviceName)) {
-					mac = 'CC:A3:00:00:' + _deviceName.slice(10, 12) + ':' + _deviceName.slice(12, 14);
-				}
-				mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + GIIKER_REQMACMSG, mac || 'xx:xx:xx:xx:xx:xx');
-			}
-			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
-			if (!m) {
-				logohint.push(LGHINT_BTINVMAC);
-				return;
-			}
-			if (mac != savedMacMap[_deviceName]) {
-				savedMacMap[_deviceName] = mac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-			deviceMac = mac;
+		var defaultMac = null;
+		if (/^QY-QYSC-.-[0-9A-F]{4}$/.exec(_deviceName)) {
+			defaultMac = 'CC:A3:00:00:' + _deviceName.slice(10, 12) + ':' + _deviceName.slice(12, 14);
 		}
+		deviceMac = giikerutil.reqMacAddr(forcePrompt, isWrongKey, deviceMac, defaultMac);
 	}
 
 	function crc16modbus(data) {

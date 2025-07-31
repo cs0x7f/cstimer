@@ -740,6 +740,49 @@ var giikerutil = execMain(function(CubieCube) {
 		tools.regTool('giikerutil', TOOLS_GIIKER, execFunc);
 	});
 
+	function chkAvail() {
+		if (!window.navigator || !window.navigator.bluetooth) {
+			return Promise.reject(GIIKER_NOBLEMSG);
+		}
+		var ret = Promise.resolve(true);
+		if (window.navigator.bluetooth.getAvailability) {
+			ret = window.navigator.bluetooth.getAvailability();
+		}
+		return ret.then(function(available) {
+			debugInfo.appendLog('[bluetooth] is available', available);
+			if (!available) {
+				return Promise.reject(GIIKER_NOBLEMSG);
+			}
+			return;
+		});
+	}
+
+	function reqMacAddr(forcePrompt, isWrongKey, deviceMac, defaultMac) {
+		var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
+		var mac = savedMacMap[deviceName];
+		if (deviceMac) {
+			if (mac && mac.toUpperCase() == deviceMac.toUpperCase()) {
+				debugInfo.appendLog('[bluetoothutil] device mac matched');
+			} else {
+				mac = deviceMac;
+			}
+		} else {
+			if (!mac || forcePrompt) {
+				mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + GIIKER_REQMACMSG, mac || defaultMac || 'xx:xx:xx:xx:xx:xx');
+			}
+			if (!/^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac)) {
+				logohint.push(LGHINT_BTINVMAC);
+				return;
+			}
+		}
+		if (mac != savedMacMap[deviceName]) {
+			savedMacMap[deviceName] = mac;
+			kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
+			debugInfo.appendLog('[bluetoothutil] device mac updated');
+		}
+		return mac;
+	}
+
 	return {
 		setCallback: function(func) {
 			callback = func;
@@ -757,6 +800,8 @@ var giikerutil = execMain(function(CubieCube) {
 		tsLinearFix: tsLinearFix,
 		updateBattery: updateBattery,
 		setLastSolve: setLastSolve,
-		log: debugInfo.appendLog
+		log: debugInfo.appendLog,
+		chkAvail: chkAvail,
+		reqMacAddr: reqMacAddr
 	}
 }, [mathlib.CubieCube]);

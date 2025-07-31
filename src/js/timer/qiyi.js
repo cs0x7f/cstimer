@@ -1,4 +1,4 @@
-// Timer Implementation that uses GAN Smart Timer via its Bluetooth protocol
+// Timer Implementation that uses QIYI Smart Timer via its Bluetooth protocol
 execMain(function(timer) {
 	"use strict";
 
@@ -8,30 +8,10 @@ execMain(function(timer) {
 	function onQiyiTimerEvent(timerEvent) {
 		if (!enable)
 			return;
-		DEBUG && console.log('[gantimer] timer event received', QiyiTimerState[timerEvent.state], timerEvent);
+		DEBUG && console.log('[qiyitimer] timer event received', QiyiTimerState[timerEvent.state], timerEvent);
 		switch (timerEvent.state) {
-			case QiyiTimerState.HANDS_ON: // both hands placed on timer
-				timer.lcd.color('r');
-				break;
-			case QiyiTimerState.HANDS_OFF: // hands removed from timer before grace period expired
-				timer.lcd.fixDisplay(false, true);
-				break;
 			case QiyiTimerState.GET_SET:   // grace period expired and timer is ready to start
 				timer.lcd.color('g');
-				break;
-			case QiyiTimerState.IDLE: // timer reset button pressed
-				inspectionTime = 0;
-				if (timer.hardTime() > 0 || timer.status() != -1) { // reset timer / cancel inspection timer
-					timer.hardTime(0);
-					timer.status(-1);
-					timer.lcd.reset();
-					timer.lcd.fixDisplay(false, true);
-				} else if (timer.status() == -1 && timer.checkUseIns()) { // start inspection timer if was idle and inspection enabled in settings
-					timer.status(-3);
-					timer.startTime($.now());
-					timer.lcd.fixDisplay(false, true);
-				}
-				timer.lcd.renderUtil();
 				break;
 			case QiyiTimerState.RUNNING: // timer is started
 				if (timer.status() == -3) { // if inspection timer was running, record elapsed inspection time
@@ -39,7 +19,7 @@ execMain(function(timer) {
 					// 0 == Normal, 2000 == +2, -1 == DNF
 					inspectionTime = timer.checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				}
-				timer.startTime($.now());
+				timer.startTime($.now() - timerEvent.recordedTime.asTimestamp);
 				timer.lcd.reset();
 				timer.curTime([inspectionTime]);
 				timer.status(1);
@@ -61,27 +41,26 @@ execMain(function(timer) {
 				reconnectTimer();
 				break;
 		}
-
 	}
 
 	function reconnectTimer() {
-		$.delayExec('ganTimerReconnect', function () {
-			DEBUG && console.log('[gantimer] attempting to reconnect timer device');
+		$.delayExec('qiyiTimerReconnect', function () {
+			DEBUG && console.log('[qiyitimer] attempting to reconnect timer device');
 			connectTimer(true);
 		}, 2500);
 	}
 
 	function connectTimer(reconnect) {
+		QiyiTimerDriver.setStateUpdateCallback(onQiyiTimerEvent);
 		QiyiTimerDriver.connect(reconnect).then(function () {
-			DEBUG && console.log('[gantimer] timer device successfully connected');
-			QiyiTimerDriver.setStateUpdateCallback(onQiyiTimerEvent);
+			DEBUG && console.log('[qiyitimer] timer device successfully connected');
 			timer.hardTime(0);
 			timer.status(-1);
 			timer.lcd.reset();
 			timer.lcd.renderUtil();
 			timer.lcd.fixDisplay(false, true);
 		}).catch(function (err) {
-			DEBUG && console.log('[gantimer] failed to connect to timer', err);
+			DEBUG && console.log('[qiyitimer] failed to connect to timer', err);
 			if (!reconnect) {
 				alert(err);
 			}

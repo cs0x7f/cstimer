@@ -1,0 +1,9 @@
+var $ = {};
+var localStorage = {};
+var CSTIMER_VERSION = '';
+var requestAnimFrame = function() {};
+var LANG_CUR = null;
+var LANG_STR = '';
+var LANG_SET = '';
+var nativeStackmat = {};
+var twistyjs = {};

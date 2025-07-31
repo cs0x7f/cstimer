@@ -180,35 +180,12 @@ execMain(function() {
 	}
 
 	function v2initKey(forcePrompt, isWrongKey, ver) {
-		if (deviceMac) {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var prevMac = savedMacMap[deviceName];
-			if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-				giikerutil.log('[gancube] v2init mac matched');
-			} else {
-				giikerutil.log('[gancube] v2init mac updated');
-				savedMacMap[deviceName] = deviceMac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-			v2initDecoder(deviceMac, ver);
-		} else {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var mac = savedMacMap[deviceName];
-			if (!mac || forcePrompt) {
-				mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + GIIKER_REQMACMSG, mac || 'xx:xx:xx:xx:xx:xx');
-			}
-			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
-			if (!m) {
-				logohint.push(LGHINT_BTINVMAC);
-				decoder = null;
-				return;
-			}
-			if (mac != savedMacMap[deviceName]) {
-				savedMacMap[deviceName] = mac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-			v2initDecoder(mac, ver);
+		var mac = giikerutil.reqMacAddr(forcePrompt, isWrongKey, deviceMac, null);
+		if (!mac) {
+			decoder = null;
+			return;
 		}
+		v2initDecoder(mac, ver);
 	}
 
 	function v2initDecoder(mac, ver) {

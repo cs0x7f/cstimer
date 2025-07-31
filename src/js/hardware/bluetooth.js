@@ -64,20 +64,7 @@ var GiikerCube = execMain(function() {
 	var onDisconnect = onHardwareEvent.bind(null, 'disconnect');
 
 	function init(timer) {
-		if (!window.navigator || !window.navigator.bluetooth) {
-			alert(GIIKER_NOBLEMSG);
-			return Promise.reject();
-		}
-		var chkAvail = Promise.resolve(true);
-		if (window.navigator.bluetooth.getAvailability) {
-			chkAvail = window.navigator.bluetooth.getAvailability();
-		}
-
-		return chkAvail.then(function(available) {
-			giikerutil.log('[bluetooth] is available', available);
-			if (!available) {
-				return Promise.reject(GIIKER_NOBLEMSG);
-			}
+		return giikerutil.chkAvail().then(function() {
 			var filters = Object.keys(cubeModels).map((prefix) => ({ namePrefix: prefix }));
 			var opservs = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.opservs || [])))];
 			var cics = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.cics || [])))];

@@ -146,19 +146,7 @@ var GanTimerDriver = execMain(function () {
 	// perform connection to bluetooth device and characteristic
 	// if reconnect == true then no device selection dialog will popup and previously selected device will be reused
 	function connectImpl(reconnect) {
-
-		if (!window.navigator.bluetooth) {
-			return Promise.reject("Bluetooth API is not supported by this browser. Try fresh Chrome version!");
-		}
-		var chkAvail = Promise.resolve(true);
-		if (window.navigator.bluetooth.getAvailability) {
-			chkAvail = window.navigator.bluetooth.getAvailability();
-		}
-
-		return chkAvail.then(function(available) {
-			if (!available)
-				return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
-		}).then(function () {
+		return giikerutil.chkAvail().then(function() {
 			DEBUG && console.log('[GanTimerDriver] requesting for bluetooth device, reconnect = ' + !!reconnect);
 			if (bluetoothDevice && reconnect) {
 				return waitUntilDeviceAvailable(bluetoothDevice);

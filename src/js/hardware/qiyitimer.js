@@ -7,6 +7,7 @@ QiyiTimerState[QiyiTimerState["GET_SET"] = 2] = "GET_SET";
 QiyiTimerState[QiyiTimerState["RUNNING"] = 3] = "RUNNING";		// Timer is running
 QiyiTimerState[QiyiTimerState["FINISHED"] = 4] = "FINISHED";	  // Timer moves to this state immediately after STOPPED
 QiyiTimerState[QiyiTimerState["STOPPED"] = 5] = "STOPPED";		// Timer is stopped, this event includes recorded time
+QiyiTimerState[QiyiTimerState["DISCONNECT"] = 6] = "DISCONNECT";
 
 var QiyiTimerDriver = execMain(function () {
 	var UUID_SUFFIX = '-0000-1001-8001-00805f9b07d0';
@@ -20,21 +21,46 @@ var QiyiTimerDriver = execMain(function () {
 	var readChrct;
 	var writeChrct;
 	var decoder;
+	var deviceMac;
+
+	function waitUntilDeviceAvailable(device) {
+		var abortController = new AbortController();
+		return new Promise(function (resolve, reject) {
+			if (!device.watchAdvertisements) {
+				reject("Bluetooth Advertisements API is not supported by this browser");
+			} else {
+				var onAdvEvent = function (event) {
+					DEBUG && console.log('[QiyiTimerDriver] received advertisement packet from device', event);
+					delete device.stopWaiting;
+					device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+					resolve(device);
+				};
+				device.stopWaiting = function () {
+					DEBUG && console.log('[QiyiimerDriver] cancel waiting for device advertisements');
+					delete device.stopWaiting;
+					device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+				}
+				device.addEventListener('advertisementreceived', onAdvEvent);
+				device.watchAdvertisements({ signal: abortController.signal });
+				DEBUG && console.log('[QiyiimerDriver] start waiting for device advertisement packet');
+			}
+		});
+	}
+
+	// handle disconnection when timer is is powered off or something like that
+	function handleUnexpectedDisconnection() {
+		disconnect().then(function () {
+			if (typeof stateUpdateCallback == 'function') {
+				stateUpdateCallback({ state: QiyiTimerState.DISCONNECT });
+			}
+		});
+	}
 
 	function connect(reconnect) {
-		if (!window.navigator.bluetooth) {
-			return Promise.reject("Bluetooth API is not supported by this browser. Try fresh Chrome version!");
-		}
-		var chkAvail = Promise.resolve(true);
-		if (window.navigator.bluetooth.getAvailability) {
-			chkAvail = window.navigator.bluetooth.getAvailability();
-		}
-		decoder	= decoder || $.aes128([0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77]);
-
-		return chkAvail.then(function(available) {
-			if (!available)
-				return Promise.reject("Bluetooth is not available. Ensure HTTPS access, and check bluetooth is enabled on your device");
-		}).then(function () {
+		return giikerutil.chkAvail().then(function () {
+			decoder = decoder || $.aes128(Array(16).fill(0x77));
 			DEBUG && console.log('[QiyiTimerDriver] requesting for bluetooth device, reconnect = ' + !!reconnect);
 			if (bluetoothDevice && reconnect) {
 				return waitUntilDeviceAvailable(bluetoothDevice);
@@ -58,7 +84,7 @@ var QiyiTimerDriver = execMain(function () {
 			service = _service;
 			return service.getCharacteristic(QIYI_TIMER_CHRCT_WRITE);
 		}).then(function (characteristic) {
-			DEBUG && console.log('[QiyiTimerDriver] start listening to state characteristic value updates');
+			DEBUG && console.log('[QiyiTimerDriver] getting timer write characteristic');
 			writeChrct = characteristic;
 			return service.getCharacteristic(QIYI_TIMER_CHRCT_READ);
 		}).then(function (characteristic) {
@@ -66,6 +92,8 @@ var QiyiTimerDriver = execMain(function () {
 			readChrct = characteristic;
 			readChrct.addEventListener('characteristicvaluechanged', onReadEvent);
 			readChrct.startNotifications();
+			deviceMac = giikerutil.reqMacAddr(true, false, null, null);
+			sendBind(deviceMac);
 		});
 	}
 
@@ -103,7 +131,7 @@ var QiyiTimerDriver = execMain(function () {
 				curBlock.push(block[j]);
 			}
 			ret = ret.then(function (block) {
-				writeChrct.writeValue(new Uint8Array(encMsg).buffer);
+				writeChrct && writeChrct.writeValue(new Uint8Array(block).buffer);
 			}.bind(null, curBlock));
 		}
 		giikerutil.log('[QiyiTimerDriver] send message to timer', msg);
@@ -141,7 +169,7 @@ var QiyiTimerDriver = execMain(function () {
 			}
 		}
 		if (msg[0] == 0) {
-			payloadLen = msg[1];
+			payloadLen = msg[1] - 2;
 			msg = msg.slice(4);
 		} else {
 			msg = msg.slice(1);
@@ -161,19 +189,19 @@ var QiyiTimerDriver = execMain(function () {
 			return;
 		}
 		var data = payloadData.slice(0, payloadLen);
-		giikerutil.log('[QiyiTimerDriver] receive data', payloadData);
-		if (crc16modbus(data) != 0) {
-			giikerutil.log('[QiyiTimerDriver] crc checked error');
-			return;
-		}
 		waitPkg = 0;
 		payloadData = [];
 
+		giikerutil.log('[QiyiTimerDriver] receive data', data);
+		var len = data[10] << 8 | data[11];
+		if (crc16modbus(data.slice(0, len + 12).concat([data[len + 13], data[len + 12]])) != 0) {
+			giikerutil.log('[QiyiTimerDriver] crc checked error');
+			return;
+		}
 		var sendSN = data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3];
 		var ackSN = data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7];
 		var cmd = data[8] << 8 | data[9];
-		var len = data[10] << 8 | data[11];
-		data = data.slice(12);
+		data = data.slice(12, len + 12);
 		if (cmd != 0x1003) {
 			return;
 		}
@@ -184,7 +212,7 @@ var QiyiTimerDriver = execMain(function () {
 			var inspecTime = data[8] << 24 | data[9] << 16 | data[10] << 8 | data[11];
 			var solveTime = data[12] << 24 | data[13] << 16 | data[14] << 8 | data[15];
 			stateUpdateCallback && stateUpdateCallback({
-				state: state,
+				state: QiyiTimerState.STOPPED,
 				recordedTime: {
 					asTimestamp: solveTime
 				},
@@ -193,17 +221,26 @@ var QiyiTimerDriver = execMain(function () {
 			sendAck(ackSN + 1, sendSN, 0x1003);
 		} else if (dpId == 4 && dpType == 4) { // record timer status
 			var state = data[4];
-			var value = data[5] << 24 | data[6] << 16 | data[7] << 8 | data[8];
+			var timestamp = data[5] << 24 | data[6] << 16 | data[7] << 8 | data[8];
 			stateUpdateCallback && stateUpdateCallback({
 				state: state,
 				recordedTime: {
-					asTimestamp: value
+					asTimestamp: timestamp
 				}
 			});
 		} else {
 			console.log('[QiyiTimerDriver] unknown data', data);
 		}
 	}
+
+	$.qiyiMsgTest = function(byteArr) {
+		decoder = decoder || $.aes128(Array(16).fill(0x77));
+		onReadEvent({
+			target: {
+				value: new DataView(new Uint8Array(byteArr).buffer)
+			}
+		});
+	};
 
 	function disconnect() {
 		if (bluetoothDevice && bluetoothDevice.stopWaiting) {
@@ -212,7 +249,7 @@ var QiyiTimerDriver = execMain(function () {
 		if (readChrct) {
 			DEBUG && console.log('[GanTimerDriver] disconnecting from timer device');
 			readChrct.service.device.removeEventListener('gattserverdisconnected', handleUnexpectedDisconnection);
-			readChrct.removeEventListener('characteristicvaluechanged', handleStateCharacteristicUpdate);
+			readChrct.removeEventListener('characteristicvaluechanged', onReadEvent);
 			return readChrct.stopNotifications().catch($.noop).finally(function () {
 				readChrct.service.device.gatt.disconnect();
 				readChrct = undefined;
@@ -226,7 +263,7 @@ var QiyiTimerDriver = execMain(function () {
 		return !!readChrct;
 	}
 	
-	function setStateUpdateCallback() {
+	function setStateUpdateCallback(callback) {
 		stateUpdateCallback = callback;
 	}
 

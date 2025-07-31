@@ -174,39 +174,16 @@ execMain(function() {
 	var MOYU32_CIC_LIST = mathlib.valuedArray(255, function (i) { return (i + 1) << 8 });
 
 	function initMac(forcePrompt, isWrongKey) {
-		if (deviceMac) {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var prevMac = savedMacMap[deviceName];
-			if (prevMac && prevMac.toUpperCase() == deviceMac.toUpperCase()) {
-				giikerutil.log('[Moyu32Cube] mac matched');
-			} else {
-				giikerutil.log('[Moyu32Cube] mac updated');
-				savedMacMap[deviceName] = deviceMac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-			initDecoder(deviceMac);
-		} else {
-			var savedMacMap = JSON.parse(kernel.getProp('giiMacMap', '{}'));
-			var mac = savedMacMap[deviceName];
-			if (!mac || forcePrompt) {
-				if (!mac && /^WCU_MY32_[0-9A-F]{4}$/.exec(deviceName)) {
-					mac = 'CF:30:16:00:' + deviceName.slice(9, 11) + ':' + deviceName.slice(11, 13);
-				}
-				mac = prompt((isWrongKey ? 'The MAC provided might be wrong!\n' : '') + GIIKER_REQMACMSG, mac || 'xx:xx:xx:xx:xx:xx');
-			}
-			var m = /^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$/i.exec(mac);
-			if (!m) {
-				logohint.push(LGHINT_BTINVMAC);
-				decoder = null;
-				return;
-			}
-			if (mac != savedMacMap[deviceName]) {
-				savedMacMap[deviceName] = mac;
-				kernel.setProp('giiMacMap', JSON.stringify(savedMacMap));
-			}
-			deviceMac = mac;
-			initDecoder(deviceMac);
+		var defaultMac = null;
+		if (/^WCU_MY32_[0-9A-F]{4}$/.exec(deviceName)) {
+			defaultMac = 'CF:30:16:00:' + deviceName.slice(9, 11) + ':' + deviceName.slice(11, 13);
 		}
+		deviceMac = giikerutil.reqMacAddr(forcePrompt, isWrongKey, deviceMac, defaultMac);
+		if (!deviceMac) {
+			decoder = null;
+			return;
+		}
+		initDecoder(deviceMac);
 	}
 
 	function init(device) {
