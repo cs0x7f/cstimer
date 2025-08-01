@@ -30,24 +30,8 @@ var GiikerCube = execMain(function() {
 	}
 
 	function waitForAdvs() {
-		if (!_device || !_device.watchAdvertisements) {
-			return Promise.reject(-1);
-		}
-		var abortController = new AbortController();
-		return new Promise(function(resolve, reject) {
-			var onAdvEvent = function(event) {
-				giikerutil.log('[bluetooth] receive adv event', event);
-				_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-				abortController.abort();
-				resolve(event.manufacturerData);
-			};
-			_device.addEventListener('advertisementreceived', onAdvEvent);
-			_device.watchAdvertisements({ signal: abortController.signal });
-			setTimeout(function() { // reject if no mac found
-				_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
-				abortController.abort();
-				reject(-2);
-			}, 10000);
+		return giikerutil.waitForAdvs(function() {
+			return _device;
 		});
 	}
 

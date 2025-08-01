@@ -783,6 +783,31 @@ var giikerutil = execMain(function(CubieCube) {
 		return mac;
 	}
 
+	function waitForAdvs(getDevice) {
+		var device = getDevice();
+		if (!device || !device.watchAdvertisements) {
+			return Promise.reject(-1);
+		}
+		var abortController = new AbortController();
+		return new Promise(function(resolve, reject) {
+			var onAdvEvent = function(event) {
+				giikerutil.log('[bluetooth] receive adv event', event);
+				device = getDevice();
+				device && device.removeEventListener('advertisementreceived', onAdvEvent);
+				abortController.abort();
+				resolve(event.manufacturerData);
+			};
+			device.addEventListener('advertisementreceived', onAdvEvent);
+			device.watchAdvertisements({ signal: abortController.signal });
+			setTimeout(function() { // reject if no mac found
+				device = getDevice();
+				device && device.removeEventListener('advertisementreceived', onAdvEvent);
+				abortController.abort();
+				reject(-2);
+			}, 10000);
+		});
+	}
+
 	return {
 		setCallback: function(func) {
 			callback = func;
@@ -802,6 +827,7 @@ var giikerutil = execMain(function(CubieCube) {
 		setLastSolve: setLastSolve,
 		log: debugInfo.appendLog,
 		chkAvail: chkAvail,
-		reqMacAddr: reqMacAddr
+		reqMacAddr: reqMacAddr,
+		waitForAdvs: waitForAdvs
 	}
 }, [mathlib.CubieCube]);
