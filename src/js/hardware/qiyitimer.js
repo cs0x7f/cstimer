@@ -91,23 +91,24 @@ var QiyiTimerDriver = execMain(function () {
 			device.addEventListener('gattserverdisconnected', handleUnexpectedDisconnection);
 			return giikerutil.waitForAdvs(function() {
 				return bluetoothDevice;
-			});
-		}).then(function(mfData) {
-			var dataView = getManufacturerDataBytes(mfData);
-			if (dataView && dataView.byteLength >= 6) {
-				var mac = [];
-				for (var i = 5; i >= 0; i--) {
-					mac.push((dataView.getUint8(i) + 0x100).toString(16).slice(1));
+			}).then(function(mfData) {
+				var dataView = getManufacturerDataBytes(mfData);
+				if (dataView && dataView.byteLength >= 6) {
+					var mac = [];
+					for (var i = 5; i >= 0; i--) {
+						mac.push((dataView.getUint8(i) + 0x100).toString(16).slice(1));
+					}
+					return Promise.resolve(mac.join(':'));
 				}
-				return Promise.resolve(mac.join(':'));
-			}
-			return Promise.reject(-3);
-		}).then(function(mac) {
-			giikerutil.log('[QiyiTimer] init, found cube bluetooth hardware MAC = ' + mac);
-			deviceMac = mac;
-		}, function(err) {
-			giikerutil.log('[QiyiTimer] init, unable to automatically determine cube MAC, error code = ' + err);
-			return bluetoothDevice.gatt.connect();
+				return Promise.reject(-3);
+			}).then(function(mac) {
+				giikerutil.log('[QiyiTimer] init, found cube bluetooth hardware MAC = ' + mac);
+				deviceMac = mac;
+			}, function(err) {
+				giikerutil.log('[QiyiTimer] init, unable to automatically determine cube MAC, error code = ' + err);
+			}).then(function() {
+				return bluetoothDevice.gatt.connect();
+			});
 		}).then(function (gatt) {
 			giikerutil.log('[QiyiTimerDriver] getting timer primary service');
 			return gatt.getPrimaryService(QIYI_TIMER_SERVICE);
