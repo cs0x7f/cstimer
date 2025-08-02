@@ -31,8 +31,7 @@ logohint.js \
 timer.js \
 timer/input.js \
 timer/stackmat.js \
-timer/gan.js \
-timer/qiyi.js \
+timer/bttimer.js \
 timer/virtual.js \
 timer/giiker.js \
 solver/ftocta.js \

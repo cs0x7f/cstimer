@@ -1,59 +1,61 @@
-// Timer Implementation that uses GAN Smart Timer via its Bluetooth protocol
+// Timer Implementation that uses QIYI Smart Timer via its Bluetooth protocol
 execMain(function(timer) {
 	"use strict";
 
 	var enable = false;
 	var inspectionTime = 0;
 
-	function onGanTimerEvent(timerEvent) {
+	function onQiyiTimerEvent(timerEvent) {
 		if (!enable)
 			return;
-		DEBUG && console.log('[gantimer] timer event received', GanTimerState[timerEvent.state], timerEvent);
+		DEBUG && console.log('[qiyitimer] timer event received', timerEvent);
+		var CONST = BluetoothTimer.CONST;
 		switch (timerEvent.state) {
-			case GanTimerState.HANDS_ON: // both hands placed on timer
+			case CONST.HANDS_ON: // both hands placed on timer
 				timer.lcd.color('r');
 				break;
-			case GanTimerState.HANDS_OFF: // hands removed from timer before grace period expired
+			case CONST.HANDS_OFF: // hands removed from timer before grace period expired
 				timer.lcd.fixDisplay(false, true);
 				break;
-			case GanTimerState.GET_SET:   // grace period expired and timer is ready to start
-				timer.lcd.color('g');
-				break;
-			case GanTimerState.IDLE: // timer reset button pressed
+			case CONST.GAN_RESET: // timer reset button pressed
+			case CONST.IDLE: // timer reset button pressed
 				inspectionTime = 0;
 				if (timer.hardTime() > 0 || timer.status() != -1) { // reset timer / cancel inspection timer
 					timer.hardTime(0);
 					timer.status(-1);
 					timer.lcd.reset();
 					timer.lcd.fixDisplay(false, true);
-				} else if (timer.status() == -1 && timer.checkUseIns()) { // start inspection timer if was idle and inspection enabled in settings
+				} else if (timer.status() == -1 && timer.checkUseIns() && timerEvent.state == CONST.GAN_RESET) { // start inspection timer if was idle and inspection enabled in settings
 					timer.status(-3);
 					timer.startTime($.now());
 					timer.lcd.fixDisplay(false, true);
 				}
 				timer.lcd.renderUtil();
 				break;
-			case GanTimerState.RUNNING: // timer is started
+			case CONST.GET_SET:   // grace period expired and timer is ready to start
+				timer.lcd.color('g');
+				break;
+			case CONST.RUNNING: // timer is started
 				if (timer.status() == -3) { // if inspection timer was running, record elapsed inspection time
 					inspectionTime = $.now() - timer.startTime();
 					// 0 == Normal, 2000 == +2, -1 == DNF
 					inspectionTime = timer.checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				}
-				timer.startTime($.now());
+				timer.startTime($.now() - timerEvent.solveTime);
 				timer.lcd.reset();
 				timer.curTime([inspectionTime]);
 				timer.status(1);
 				timer.lcd.fixDisplay(false, true);
 				break;
-			case GanTimerState.STOPPED: // timer is stopped, recorded time returned from timer
-				timer.hardTime(timerEvent.recordedTime.asTimestamp);
+			case CONST.STOPPED: // timer is stopped, recorded time returned from timer
+				timer.hardTime(timerEvent.solveTime);
 				timer.curTime()[1] = timer.hardTime();
 				timer.status(-1);
 				timer.lcd.renderUtil();
 				timer.lcd.fixDisplay(false, true);
 				kernel.pushSignal('time', timer.curTime());
 				break;
-			case GanTimerState.DISCONNECT: // timer is switched off or something else
+			case CONST.DISCONNECT: // timer is switched off or something else
 				timer.hardTime(null);
 				timer.status(-1);
 				timer.lcd.renderUtil();
@@ -61,27 +63,26 @@ execMain(function(timer) {
 				reconnectTimer();
 				break;
 		}
-
 	}
 
 	function reconnectTimer() {
-		$.delayExec('ganTimerReconnect', function () {
-			DEBUG && console.log('[gantimer] attempting to reconnect timer device');
+		$.delayExec('bluetoothTimerReconnect', function () {
+			DEBUG && console.log('[qiyitimer] attempting to reconnect timer device');
 			connectTimer(true);
 		}, 2500);
 	}
 
 	function connectTimer(reconnect) {
-		GanTimerDriver.connect(reconnect).then(function () {
-			DEBUG && console.log('[gantimer] timer device successfully connected');
-			GanTimerDriver.setStateUpdateCallback(onGanTimerEvent);
+		BluetoothTimer.setCallback(onQiyiTimerEvent);
+		BluetoothTimer.init().then(function () {
+			DEBUG && console.log('[qiyitimer] timer device successfully connected');
 			timer.hardTime(0);
 			timer.status(-1);
 			timer.lcd.reset();
 			timer.lcd.renderUtil();
 			timer.lcd.fixDisplay(false, true);
 		}).catch(function (err) {
-			DEBUG && console.log('[gantimer] failed to connect to timer', err);
+			DEBUG && console.log('[qiyitimer] failed to connect to timer', err);
 			if (!reconnect) {
 				alert(err);
 			}
@@ -89,44 +90,37 @@ execMain(function(timer) {
 	}
 
 	function showConnectionDialog() {
-		var inspMsg = $('<div>').addClass('click')
-			.append('If you have enabled WCA inspection in settings,<br>use GAN logo button right on the timer to start/cancel inspection.');
 		var dialogMsg = $('<div>')
 			.append('<br><br>')
-			.append('<b>Press OK to connect to GAN Smart Timer</b>')
+			.append('<b>Press OK to connect to Bluetooth Timer</b>')
 			.append('<br><br>')
-			.append(inspMsg)
 			.append(timer.getBTDiv());
-		disconnectTimer().then(function () {
+		BluetoothTimer.stop().then(function () {
 			kernel.showDialog([dialogMsg, function () {
 				connectTimer();
-			}, 0, 0], 'share', 'GAN Smart Timer');
+			}, 0, 0], 'share', 'Bluetooth Timer');
 		});
 	}
 
-	function disconnectTimer() {
-		return GanTimerDriver.disconnect();
-	}
-
-	function setEnableImpl(input) {
-		enable = input == 'b';
+	function setEnable(input) {
+		enable = input == 'y';
 		if (enable) {
 			timer.hardTime(null);
 			showConnectionDialog();
 		} else {
-			disconnectTimer();
+			BluetoothTimer.stop();
 		}
 	}
 
-	function onKeyUpImpl(keyCode) {
-		if (keyCode == 32 && !GanTimerDriver.isConnected()) {
+	function onKeyUp(keyCode) {
+		if (keyCode == 32 && !BluetoothTimer.isConnected()) {
 			showConnectionDialog();
 		}
 	}
 
-	timer.gan = {
-		setEnable: setEnableImpl,
-		onkeyup: onKeyUpImpl,
+	timer.bttimer = {
+		setEnable: setEnable,
+		onkeyup: onKeyUp,
 		onkeydown: $.noop
 	};
 }, [timer]);

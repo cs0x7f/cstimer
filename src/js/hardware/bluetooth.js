@@ -38,7 +38,7 @@ function BtDeviceGroupFactory() {
 	function onHardwareEvent(info, event) {
 		var res = Promise.resolve();
 		if (info == 'disconnect') {
-			res = Promise.resolve(stop());
+			res = Promise.resolve(stop(true));
 		}
 		return res.then(function () {
 			return typeof evtCallback == 'function' && evtCallback(info, event);
@@ -107,11 +107,11 @@ function BtDeviceGroupFactory() {
 		});
 	}
 
-	function stop() {
+	function stop(isHardwareEvent) {
 		if (!_device) {
 			return Promise.resolve();
 		}
-		return Promise.resolve(cube && cube.clear()).then(function () {
+		return Promise.resolve(cube && cube.clear(isHardwareEvent)).then(function () {
 			_device.removeEventListener('gattserverdisconnected', onDisconnect);
 			_device.gatt.disconnect();
 			_device = null;
@@ -163,5 +163,6 @@ BluetoothTimer.CONST = (function() {
 	State.HANDS_ON = 6;    // Hands are placed on the timer
 	State.FINISHED = 7;    // Timer moves to this state immediately after STOPPED
 	State.INSPECTION = 8;
+	State.GAN_RESET = 9;
 	return State;
 })();

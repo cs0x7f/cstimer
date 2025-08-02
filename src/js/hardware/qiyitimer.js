@@ -179,13 +179,13 @@ execMain(function () {
 		});
 	};
 
-	function clear() {
+	function clear(isHardwareEvent) {
 		if (readChrct) {
 			giikerutil.log('[QiyiTimer] disconnecting from timer device');
 			readChrct.removeEventListener('characteristicvaluechanged', onReadEvent);
 			return readChrct.stopNotifications().catch($.noop).finally(function () {
 				readChrct = undefined;
-				BluetoothTimer.callback({ state: CONST.DISCONNECT });
+				isHardwareEvent && BluetoothTimer.callback({ state: CONST.DISCONNECT });
 			});
 		}
 		return Promise.resolve();
@@ -244,7 +244,6 @@ execMain(function () {
 		init: init,
 		opservs: [SERVICE_UUID],
 		cics: QIYI_CIC_LIST,
-		getBatteryLevel: function() { return Promise.resolve([100, deviceName || '*']); },
 		clear: clear
 	});
 });

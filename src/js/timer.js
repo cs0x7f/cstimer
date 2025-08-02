@@ -658,10 +658,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				timer.stackmat.onkeydown(keyCode, e);
 				break;
 			case 'b':
-				timer.gan.onkeydown(keyCode, e);
-				break;
-			case 'y':
-				timer.qiyi.onkeydown(keyCode, e);
+				timer.bttimer.onkeydown(keyCode, e);
 				break;
 			case 'i':
 				timer.input.onkeydown(keyCode, e);
@@ -702,10 +699,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				timer.stackmat.onkeyup(keyCode, e);
 				break;
 			case 'b':
-				timer.gan.onkeyup(keyCode, e);
-				break;
-			case 'y':
-				timer.qiyi.onkeyup(keyCode, e);
+				timer.bttimer.onkeyup(keyCode, e);
 				break;
 			case 'i':
 				timer.input.onkeyup(keyCode, e);
@@ -737,8 +731,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			if (value[0] == 'input') {
 				timer.stackmat.setEnable(value[1]);
 				timer.giiker.setEnable(value[1]);
-				timer.gan.setEnable(value[1]);
-				timer.qiyi.setEnable(value[1]);
+				timer.bttimer.setEnable(value[1]);
 				giikerutil.setEventCallback(giikerEvtCallback);
 			}
 			if (value[0] == 'showAvg') {
@@ -792,7 +785,7 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'showIns', 0, PROPERTY_SHOWINS, [true], 1);
 		regProp('timer', 'voiceIns', 1, PROPERTY_VOICEINS, ['1', ['n', '1', '2'], PROPERTY_VOICEINS_STR.split('|')], 1);
 		regProp('timer', 'voiceVol', 2, PROPERTY_VOICEVOL, [100, 1, 100], 1);
-		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q', 'b', 'l', 'y'], (PROPERTY_ENTERING_STR + '|Qiyi').split('|')], 1);
+		regProp('timer', 'input', 1, PROPERTY_ENTERING, ['t', ['t', 'i', 's', 'm', 'v', 'g', 'q', 'b', 'l'], PROPERTY_ENTERING_STR.split('|')], 1);
 		regProp('timer', 'intUN', 1, PROPERTY_INTUNIT, [20100, [1, 100, 1000, 10001, 10100, 11000, 20001, 20100, 21000], 'X|X.XX|X.XXX|X:XX|X:XX.XX|X:XX.XXX|X:XX:XX|X:XX:XX.XX|X:XX:XX.XXX'.split('|')], 1);
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
