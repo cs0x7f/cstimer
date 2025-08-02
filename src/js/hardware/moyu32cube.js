@@ -215,16 +215,12 @@ execMain(function() {
 			giikerutil.log('[Moyu32Cube] got primary service', SERVICE_UUID);
 			return _service.getCharacteristics();
 		}).then(function (chrcts) {
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i];
-				giikerutil.log('[Moyu32Cube] init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRT_UUID_READ)) {
-					_chrct_read = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRT_UUID_WRITE)) {
-					_chrct_write = chrct;
-				}
+			giikerutil.log('[Moyu32Cube] find chrcts', chrcts);
+			_chrct_read = GiikerCube.findUUID(chrcts, CHRT_UUID_READ);
+			_chrct_write = GiikerCube.findUUID(chrcts, CHRT_UUID_WRITE);
+			if (!_chrct_read) {
+				return Promise.reject('[Moyu32Cube] Cannot find required characteristics');
 			}
-		}).then(function () {
 			_chrct_read.addEventListener('characteristicvaluechanged', onStateChanged);
 			return _chrct_read.startNotifications();
 		}).then(function () {

@@ -114,13 +114,8 @@ execMain(function() {
 			giikerutil.log('[qiyicube] got primary service', SERVICE_UUID);
 			return _service.getCharacteristics();
 		}).then(function(chrcts) {
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i];
-				giikerutil.log('[qiyicube] init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_CUBE)) {
-					_chrct_cube = chrct;
-				}
-			}
+			giikerutil.log('[qiyicube] find chrcts', chrcts);
+			_chrct_cube = GiikerCube.findUUID(chrcts, CHRCT_UUID_CUBE);
 		}).then(function() {
 			_chrct_cube.addEventListener('characteristicvaluechanged', onCubeEvent);
 			return _chrct_cube.startNotifications();

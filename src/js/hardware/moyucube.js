@@ -23,19 +23,11 @@ execMain(function() {
 			_service = service;
 			return _service.getCharacteristics();
 		}).then(function(chrcts) {
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i]
-				giikerutil.log('[moyucube]', 'init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_WRITE)) {
-					_chrct_write = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_READ)) {
-					_chrct_read = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_TURN)) {
-					_chrct_turn = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_GYRO)) {
-					_chrct_gyro = chrct;
-				}
-			}
+			giikerutil.log('[moyucube] find chrcts', chrcts);
+			_chrct_write = GiikerCube.findUUID(chrcts, CHRCT_UUID_WRITE);
+			_chrct_read = GiikerCube.findUUID(chrcts, CHRCT_UUID_READ);
+			_chrct_turn = GiikerCube.findUUID(chrcts, CHRCT_UUID_TURN);
+			_chrct_gyro = GiikerCube.findUUID(chrcts, CHRCT_UUID_GYRO);
 		}).then(function() {
 			_chrct_read.addEventListener('characteristicvaluechanged', onReadEvent);
 			_chrct_turn.addEventListener('characteristicvaluechanged', onTurnEvent);

@@ -25,13 +25,36 @@ function BtDeviceGroupFactory() {
 		return uuid.toUpperCase();
 	}
 
-	function matchUUID(uuid1, uuid2) {
-		return toUuid128(uuid1) == toUuid128(uuid2);
+	function findUUID(elems, uuid) {
+		uuid = toUuid128(uuid);
+		for (var i = 0; i < elems.length; i++) {
+			var elem = elems[i]
+			if (toUuid128(elem.uuid) == uuid) {
+				return elem;
+			}
+		}
+		return null;
 	}
 
 	function waitForAdvs() {
-		return giikerutil.waitForAdvs(function() {
-			return _device;
+		if (!_device || !_device.watchAdvertisements) {
+			return Promise.reject(-1);
+		}
+		var abortController = new AbortController();
+		return new Promise(function(resolve, reject) {
+			var onAdvEvent = function(event) {
+				giikerutil.log('[bluetooth] receive adv event', event);
+				_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+				abortController.abort();
+				resolve(event.manufacturerData);
+			};
+			_device.addEventListener('advertisementreceived', onAdvEvent);
+			_device.watchAdvertisements({ signal: abortController.signal });
+			setTimeout(function() { // reject if no mac found
+				_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
+				abortController.abort();
+				reject(-2);
+			}, 10000);
 		});
 	}
 
@@ -139,7 +162,7 @@ function BtDeviceGroupFactory() {
 			});
 		},
 		regCubeModel: regCubeModel,
-		matchUUID: matchUUID,
+		findUUID: findUUID,
 		waitForAdvs: waitForAdvs,
 		onDisconnect: onDisconnect,
 		callback: function() {

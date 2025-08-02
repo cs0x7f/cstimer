@@ -4,13 +4,12 @@ execMain(function () {
 	var CONST = BluetoothTimer.CONST;
 	var SERVICE_UUID = '0000fd50-0000-1000-8000-00805f9b34fb';
 	var UUID_SUFFIX = '-0000-1001-8001-00805f9b07d0';
-	var QIYI_TIMER_CHRCT_WRITE = '00000001' + UUID_SUFFIX;
-	var QIYI_TIMER_CHRCT_READ = '00000002' + UUID_SUFFIX;
+	var CHRCT_WRITE = '00000001' + UUID_SUFFIX;
+	var CHRCT_READ = '00000002' + UUID_SUFFIX;
 	var QIYI_CIC_LIST = [0x0504];
 	var stateUpdateCallback;
 
 	var deviceName;
-	var service;
 	var readChrct;
 	var writeChrct;
 	var decoder;
@@ -215,17 +214,16 @@ execMain(function () {
 		}).then(function (gatt) {
 			giikerutil.log('[QiyiTimer] getting timer primary service');
 			return gatt.getPrimaryService(SERVICE_UUID);
-		}).then(function (_service) {
-			giikerutil.log('[QiyiTimer] getting timer write characteristic');
-			service = _service;
-			return service.getCharacteristic(QIYI_TIMER_CHRCT_WRITE);
-		}).then(function (characteristic) {
-			giikerutil.log('[QiyiTimer] getting timer read characteristic');
-			writeChrct = characteristic;
-			return service.getCharacteristic(QIYI_TIMER_CHRCT_READ);
-		}).then(function (characteristic) {
+		}).then(function (service) {
+			giikerutil.log('[QiyiTimer] getting timer characteristic');
+			return service.getCharacteristics();
+		}).then(function(chrcts) {
+			writeChrct = BluetoothTimer.findUUID(chrcts, CHRCT_WRITE);
+			readChrct = BluetoothTimer.findUUID(chrcts, CHRCT_READ);
+			if (!readChrct || !writeChrct) {
+				return Promise.reject('[QiyiTimer] Cannot find required characteristics');
+			}
 			giikerutil.log('[QiyiTimer] start listening to state characteristic value updates');
-			readChrct = characteristic;
 			readChrct.addEventListener('characteristicvaluechanged', onReadEvent);
 			return readChrct.startNotifications();
 		}).then(function () {

@@ -150,19 +150,11 @@ execMain(function() {
 		}).then(function() {
 			return _service_data.getCharacteristics();
 		}).then(function(chrcts) {
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i]
-				giikerutil.log('[gancube] v1init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_F2)) {
-					_chrct_f2 = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_F5)) {
-					_chrct_f5 = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_F6)) {
-					_chrct_f6 = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_F7)) {
-					_chrct_f7 = chrct;
-				}
-			}
+			giikerutil.log('[gancube] v1init find chrcts', chrcts);
+			_chrct_f2 = GiikerCube.findUUID(chrcts, CHRCT_UUID_F2);
+			_chrct_f5 = GiikerCube.findUUID(chrcts, CHRCT_UUID_F5);
+			_chrct_f6 = GiikerCube.findUUID(chrcts, CHRCT_UUID_F6);
+			_chrct_f7 = GiikerCube.findUUID(chrcts, CHRCT_UUID_F7);
 		}).then(loopRead);
 	}
 
@@ -232,15 +224,8 @@ execMain(function() {
 		v2initKey(true, false, ver);
 		return _service_v2data.getCharacteristics().then(function(chrcts) {
 			giikerutil.log('[gancube] v2init find chrcts', chrcts);
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i]
-				giikerutil.log('[gancube] v2init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_V2READ)) {
-					_chrct_v2read = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_V2WRITE)) {
-					_chrct_v2write = chrct;
-				}
-			}
+			_chrct_v2read = GiikerCube.findUUID(chrcts, CHRCT_UUID_V2READ);
+			_chrct_v2write = GiikerCube.findUUID(chrcts, CHRCT_UUID_V2WRITE);
 			if (!_chrct_v2read) {
 				giikerutil.log('[gancube] v2init cannot find v2read chrct');
 			}
@@ -294,15 +279,8 @@ execMain(function() {
 		v2initKey(true, false, 0);
 		return _service_v3data.getCharacteristics().then(function(chrcts) {
 			giikerutil.log('[gancube] v3init find chrcts', chrcts);
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i]
-				giikerutil.log('[gancube] v3init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_V3READ)) {
-					_chrct_v3read = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_V3WRITE)) {
-					_chrct_v3write = chrct;
-				}
-			}
+			_chrct_v3read = GiikerCube.findUUID(chrcts, CHRCT_UUID_V3READ);
+			_chrct_v3write = GiikerCube.findUUID(chrcts, CHRCT_UUID_V3WRITE);
 			if (!_chrct_v3read) {
 				giikerutil.log('[gancube] v3init cannot find v3read chrct');
 			}
@@ -360,15 +338,8 @@ execMain(function() {
 		v2initKey(true, false, 0);
 		return _service_v4data.getCharacteristics().then(function(chrcts) {
 			giikerutil.log('[gancube] v4init find chrcts', chrcts);
-			for (var i = 0; i < chrcts.length; i++) {
-				var chrct = chrcts[i]
-				giikerutil.log('[gancube] v4init find chrct', chrct.uuid);
-				if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_V4READ)) {
-					_chrct_v4read = chrct;
-				} else if (GiikerCube.matchUUID(chrct.uuid, CHRCT_UUID_V4WRITE)) {
-					_chrct_v4write = chrct;
-				}
-			}
+			_chrct_v4read = GiikerCube.findUUID(chrcts, CHRCT_UUID_V4READ);
+			_chrct_v4write = GiikerCube.findUUID(chrcts, CHRCT_UUID_V4WRITE);
 			if (!_chrct_v4read) {
 				giikerutil.log('[gancube] v4init cannot find v4read chrct');
 			}
@@ -412,28 +383,21 @@ execMain(function() {
 			_gatt = gatt;
 			return gatt.getPrimaryServices();
 		}).then(function(services) {
-			for (var i = 0; i < services.length; i++) {
-				var service = services[i];
-				giikerutil.log('[gancube] checkHardware find service', service.uuid);
-				if (GiikerCube.matchUUID(service.uuid, SERVICE_UUID_META)) {
-					_service_meta = service;
-				} else if (GiikerCube.matchUUID(service.uuid, SERVICE_UUID_DATA)) {
-					_service_data = service;
-				} else if (GiikerCube.matchUUID(service.uuid, SERVICE_UUID_V2DATA)) {
-					_service_v2data = service;
-				} else if (GiikerCube.matchUUID(service.uuid, SERVICE_UUID_V3DATA)) {
-					_service_v3data = service;
-				} else if (GiikerCube.matchUUID(service.uuid, SERVICE_UUID_V4DATA)) {
-					_service_v4data = service;
-				}
-			}
+			_service_v2data = GiikerCube.findUUID(services, SERVICE_UUID_V2DATA);
 			if (_service_v2data) {
 				return v2init((deviceName || '').startsWith('AiCube') ? 1 : 0);
-			} else if (_service_v3data) {
+			}
+			_service_v3data = GiikerCube.findUUID(services, SERVICE_UUID_V3DATA);
+			if (_service_v3data) {
 				return v3init();
-			} else if (_service_v4data) {
+			}
+			_service_v4data = GiikerCube.findUUID(services, SERVICE_UUID_V4DATA);
+			if (_service_v4data) {
 				return v4init();
-			} else if (_service_data && _service_meta) {
+			}
+			_service_meta = GiikerCube.findUUID(services, SERVICE_UUID_META);
+			_service_data = GiikerCube.findUUID(services, SERVICE_UUID_DATA);
+			if (_service_data && _service_meta) {
 				return v1init();
 			}
 			logohint.push(LGHINT_BTNOTSUP);
