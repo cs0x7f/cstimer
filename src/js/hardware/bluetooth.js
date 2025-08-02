@@ -47,8 +47,12 @@ function BtDeviceGroupFactory() {
 
 	var onDisconnect = onHardwareEvent.bind(null, 'disconnect');
 
-	function init() {
+	function init(reconnect) {
 		return giikerutil.chkAvail().then(function() {
+			if (_device && reconnect) {
+				giikerutil.log('[bluetooth]', 'reconnecting...', _device);
+				return waitUntilDeviceAvailable(_device);
+			}
 			var filters = Object.keys(cubeModels).map((prefix) => ({ namePrefix: prefix }));
 			var opservs = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.opservs || [])))];
 			var cics = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.cics || [])))];
@@ -73,6 +77,33 @@ function BtDeviceGroupFactory() {
 				return Promise.reject('Cannot detect device type');
 			}
 			return cube.init(device);
+		});
+	}
+
+	// Wait until target device start sending bluetooth advertisiment packets
+	function waitUntilDeviceAvailable(device) {
+		var abortController = new AbortController();
+		return new Promise(function (resolve, reject) {
+			if (!device.watchAdvertisements) {
+				reject("Bluetooth Advertisements API is not supported by this browser");
+			} else {
+				var onAdvEvent = function (event) {
+					DEBUG && console.log('[bluetooth] received advertisement packet from device', event);
+					delete device.stopWaiting;
+					device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+					resolve(device);
+				};
+				device.stopWaiting = function () {
+					DEBUG && console.log('[bluetooth] cancel waiting for device advertisements');
+					delete device.stopWaiting;
+					device.removeEventListener('advertisementreceived', onAdvEvent);
+					abortController.abort();
+				}
+				device.addEventListener('advertisementreceived', onAdvEvent);
+				device.watchAdvertisements({ signal: abortController.signal });
+				DEBUG && console.log('[bluetooth] start waiting for device advertisement packet');
+			}
 		});
 	}
 

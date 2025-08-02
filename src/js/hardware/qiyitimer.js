@@ -193,6 +193,7 @@ execMain(function () {
 
 	function init(device) {
 		deviceName = device.name.trim();
+		decoder = decoder || $.aes128(Array(16).fill(0x77));
 		return BluetoothTimer.waitForAdvs().then(function(mfData) {
 			var dataView = getManufacturerDataBytes(mfData);
 			if (dataView && dataView.byteLength >= 6) {
