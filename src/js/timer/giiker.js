@@ -285,16 +285,21 @@ execMain(function(timer) {
 		});
 	});
 
+	function startConnect() {
+		giikerutil.setCallback(giikerCallback);
+		kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(timer.getBTDiv()), function () {
+			giikerutil.init().catch(function(error) {
+				giikerutil.log('[giiker] init failed', error);
+				alert(error);
+			});
+		}, 0, 0], 'share', 'Bluetooth Connect');
+	}
+
 	timer.giiker = {
 		setEnable: function(input) { //s: stackmat, m: moyu
 			enable = input == 'g';
 			if (enable && !GiikerCube.isConnected()) {
-				giikerutil.setCallback(giikerCallback);
-				kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(timer.getBTDiv()), function () {
-					giikerutil.init().catch(function(error) {
-						DEBUG && console.log('[giiker] init failed', error);
-					});
-				}, 0, 0], 'share', 'Bluetooth Connect');
+				startConnect();
 			} else if (!enable) {
 				giikerutil.stop();
 			}
@@ -324,6 +329,11 @@ execMain(function(timer) {
 				}
 			} else if (keyCode == 32 && timer.status() == -1 && kernel.getProp('giiSK') && canStart(currentFacelet)) {
 				markScrambled($.now());
+			}
+		},
+		onkeyup: function(keyCode) {
+			if (enable && keyCode == 32 && !GiikerCube.isConnected()) {
+				startConnect();
 			}
 		},
 		setVRC: setVRC,

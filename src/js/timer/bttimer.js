@@ -113,7 +113,7 @@ execMain(function(timer) {
 	}
 
 	function onKeyUp(keyCode) {
-		if (keyCode == 32 && !BluetoothTimer.isConnected()) {
+		if (enable && keyCode == 32 && !BluetoothTimer.isConnected()) {
 			showConnectionDialog();
 		}
 	}

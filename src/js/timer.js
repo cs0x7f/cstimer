@@ -703,6 +703,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 				break;
 			case 'i':
 				timer.input.onkeyup(keyCode, e);
+			case 'g':
+				timer.giiker.onkeyup(keyCode, e);
 				break;
 		}
 	}
