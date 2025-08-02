@@ -434,9 +434,9 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 						return;
 					}
 				} else if (status == -2) {
-					var time = now;
-					var insTime = checkUseIns() ? (time - startTime) : 0;
-					startTime = time;
+					lastDown = now;
+					var insTime = checkUseIns() ? (now - startTime) : 0;
+					startTime = now;
 					curTime = [insTime > 17000 ? -1 : (insTime > 15000 ? 2000 : 0)];
 					setStatus(getProp('phases'));
 					if (isTrain && tools.getCurPuzzle() == '333') {
