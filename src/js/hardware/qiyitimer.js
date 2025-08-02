@@ -160,7 +160,7 @@ execMain(function () {
 				CONST.STOPPED,
 				CONST.DISCONNECT
 			][data[4]];
-			var timestamp = data[5] << 24 | data[6] << 16 | data[7] << 8 | data[8];
+			var solveTime = data[5] << 24 | data[6] << 16 | data[7] << 8 | data[8];
 			BluetoothTimer.callback({
 				state: state,
 				solveTime: solveTime
@@ -220,7 +220,7 @@ execMain(function () {
 			service = _service;
 			return service.getCharacteristic(QIYI_TIMER_CHRCT_WRITE);
 		}).then(function (characteristic) {
-			giikerutil.log('[QiyiTimer] getting timer write characteristic');
+			giikerutil.log('[QiyiTimer] getting timer read characteristic');
 			writeChrct = characteristic;
 			return service.getCharacteristic(QIYI_TIMER_CHRCT_READ);
 		}).then(function (characteristic) {
