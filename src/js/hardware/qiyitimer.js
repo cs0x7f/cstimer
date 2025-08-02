@@ -232,7 +232,7 @@ execMain(function () {
 			var defaultMac = null;
 			var m = /^QY-(?:Timer|Adapter).*-([0-9A-F]{4})$/.exec(deviceName)
 			if (m) {
-				defaultMac = 'CC:A1:00:00:' + m[1].slice(0, 2)  + ':' + m[1].slice(2, 4);
+				defaultMac = (deviceName.startsWith('QY-Adapter') ? 'CC:A8' : 'CC:A1') + ':00:00:' + m[1].slice(0, 2)  + ':' + m[1].slice(2, 4);
 			}
 			deviceMac = giikerutil.reqMacAddr(true, false, deviceMac, defaultMac);
 			return sendHello(deviceMac);
