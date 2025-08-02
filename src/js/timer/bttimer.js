@@ -103,7 +103,7 @@ execMain(function(timer) {
 	}
 
 	function setEnable(input) {
-		enable = input == 'y';
+		enable = input == 'b';
 		if (enable) {
 			timer.hardTime(null);
 			showConnectionDialog();
