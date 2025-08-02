@@ -1,6 +1,6 @@
 "use strict";
 
-var GiikerCube = execMain(function() {
+function BtDeviceGroupFactory() {
 
 	/* { prefix: cubeModel } */
 	var cubeModels = {};
@@ -47,7 +47,7 @@ var GiikerCube = execMain(function() {
 
 	var onDisconnect = onHardwareEvent.bind(null, 'disconnect');
 
-	function init(timer) {
+	function init() {
 		return giikerutil.chkAvail().then(function() {
 			var filters = Object.keys(cubeModels).map((prefix) => ({ namePrefix: prefix }));
 			var opservs = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.opservs || [])))];
@@ -115,4 +115,22 @@ var GiikerCube = execMain(function() {
 			return callback.apply(null, arguments);
 		}
 	};
-});
+}
+
+var GiikerCube = execMain(BtDeviceGroupFactory);
+
+var BluetoothTimer = execMain(BtDeviceGroupFactory);
+
+BluetoothTimer.CONST = (function() {
+	var State = {};
+	State.DISCONNECT = 0;  // Fired when timer is disconnected from bluetooth
+	State.GET_SET = 1;     // Grace delay is expired and timer is ready to start
+	State.HANDS_OFF = 2;   // Hands removed from the timer before grace delay expired
+	State.RUNNING = 3;     // Timer is running
+	State.STOPPED = 4;     // Timer is stopped, this event includes recorded time
+	State.IDLE = 5;        // Timer is reset and idle
+	State.HANDS_ON = 6;    // Hands are placed on the timer
+	State.FINISHED = 7;    // Timer moves to this state immediately after STOPPED
+	State.INSPECTION = 8;
+	return State;
+})();

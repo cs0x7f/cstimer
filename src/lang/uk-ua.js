@@ -3,12 +3,12 @@ var CANCEL_LANG = 'Відмінити';
 var RESET_LANG = 'Скинути';
 var ABOUT_LANG = 'Більше про це';
 var ZOOM_LANG = 'Масштабування';
-var COPY_LANG = 'Copy';
+var COPY_LANG = 'Скопіювати';
 var BUTTON_TIME_LIST = 'Список<br>РАЗІВ';
 var BUTTON_OPTIONS = 'ПАРАМЕТР';
 var BUTTON_EXPORT = 'ЕКСПОРТ';
 var BUTTON_DONATE = 'ПОЖЕРТВУВАТИ';
-var PROPERTY_SR = 'With session';
+var PROPERTY_SR = 'З сесією';
 var PROPERTY_USEINS = 'використовувати WCA інспекцію';
 var PROPERTY_USEINS_STR = 'Always (down)|Always (up)|Except BLD (down)|Except BLD (up)|Never';
 var PROPERTY_SHOWINS = 'Показувати іконку, коли інспекція увімкнена';
@@ -51,13 +51,13 @@ var EXPORT_NODATA = 'Немає даних для вашого обліково�
 var EXPORT_UPLOADED = 'Успішно завантажено';
 var EXPORT_CODEPROMPT = 'Save this code, or type saved code to import';
 var EXPORT_ONLYOPT = 'Export/Import only Options';
-var EXPORT_ACCOUNT = 'Export Accounts';
-var EXPORT_LOGINGGL = 'Login Using Google Account';
-var EXPORT_LOGINWCA = 'Login Using WCA Account';
-var EXPORT_LOGOUTCFM = 'Confirm to log out?';
+var EXPORT_ACCOUNT = 'Експортувати облікові записи';
+var EXPORT_LOGINGGL = 'Увійти за допомогою облікового запису Google';
+var EXPORT_LOGINWCA = 'Увійти за допомогою облікового запису WCA';
+var EXPORT_LOGOUTCFM = 'Підтвердити вихід?';
 var EXPORT_LOGINAUTHED = 'Authorized<br>Fetching Data...';
 var EXPORT_AEXPALERT = 'More than %d solves since last backup';
-var EXPORT_WHICH = 'You have %d file(s), which one should be imported?';
+var EXPORT_WHICH = 'Ви маєте %d файл(ів), який необхідно імпортувати?';
 var EXPORT_WHICH_ITEM = '%s solve(s), uploaded at %t';
 var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
 var BUTTON_SCRAMBLE = 'SCRA-<br>MBLE';
@@ -181,13 +181,13 @@ var scrdata = [
 		['3x3 fm', "333fm", 0],
 		['3x3 oh', "333oh", 0],
 		['годинник', "clkwca", 0],
-		['megaminx', "mgmp", -70],
-		['pyraminx', "pyrso", -10],
-		['skewb', "skbso", 0],
-		['sq1', "sqrs", 0],
+		['мегамінкс', "mgmp", -70],
+		['пірамінкс', "pyrso", -10],
+		['ск\'юб', "skbso", 0],
+		['скв1', "sqrs", 0],
 		['4x4 наосліп', "444bld", -40],
 		['5x5 наосліп', "555bld", -60],
-		['3x3 mbld', "r3ni", 5]
+		['3x3 мульти-блайнд', "r3ni", 5]
 	]],
 	['Ввід', [
 		['Extern', "input", 0],
@@ -282,21 +282,21 @@ var scrdata = [
 	['5x5x5', [
 		["WCA", "555wca", 60],
 		['SiGN', "555", 60],
-		['5x5x5 edges', "5edge", 8]
+		['кути 5x5x5', "5edge", 8]
 	]],
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
 		['prefix', "666p", 80],
 		['suffix', "666s", 80],
-		['6x6x6 edges', "6edge", 8]
+		['кути 6x6x6', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
 		['prefix', "777p", 100],
 		['suffix', "777s", 100],
-		['7x7x7 edges', "7edge", 8]
+		['кути 7x7x7', "7edge", 8]
 	]],
 	['Годинник', [
 		['WCA', "clkwca", 0],
@@ -307,7 +307,7 @@ var scrdata = [
 		['concise', "clkc", 0],
 		['efficient pin order', "clke", 0]
 	]],
-	['Megaminx', [
+	['Мегамінкс', [
 		["WCA", "mgmp", 70],
 		['Carrot', "mgmc", 70],
 		['old style', "mgmo", 70],
@@ -316,7 +316,7 @@ var scrdata = [
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],
-	['Pyraminx', [
+	['Пірамінкс', [
 		["random state (WCA)", "pyrso", 10],
 		['optimal', "pyro", 0],
 		['random move', "pyrm", 25],
@@ -324,13 +324,13 @@ var scrdata = [
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
-	['Skewb', [
+	['Ск\'юб', [
 		["random state (WCA)", "skbso", 0],
 		['optimal', "skbo", 0],
 		['random move', "skb", 25],
 		['No bar', "skbnb", 0]
 	]],
-	['Square-1', [
+	['Скваєр-1', [
 		["random state (WCA)", "sqrs", 0],
 		["CSP", "sqrcsp", 0],
 		["PLL", "sq1pll", 0],
@@ -376,7 +376,7 @@ var scrdata = [
 		['random state', "klmso", 0],
 		['Pochmann', "klmp", 30]
 	]],
-	['Gigaminx', [
+	['Гігамінкс', [
 		['Pochmann', "giga", 300]
 	]],
 	['Crazy Puzzle', [
@@ -473,7 +473,7 @@ var scrdata = [
 		['234567 relay (WCA)', "r234567w", 0],
 		['Mini Guildford', "rmngf", 0]
 	]],
-	['===JOKES===', [
+	['===ЖАРТИ===', [
 		['--', "blank", 0]
 	]],
 	['1x1x1', [
@@ -497,27 +497,27 @@ var SCRAMBLE_NOOBST = [
 	['turn the right face', 'turn the left face'],
 	['turn the front face', 'turn the back face']
 ];
-var SCRAMBLE_NOOBSS = ' clockwise by 90 degrees,| counterclockwise by 90 degrees,| by 180 degrees,';
+var SCRAMBLE_NOOBSS = ' за годинниковою стрілкою на 90 градусів,| проти годинникової стрілки на 90 градусів,| на 180 градусів,';
 var SCROPT_TITLE = 'Scramble Options';
 var SCROPT_BTNALL = 'Full';
 var SCROPT_BTNNONE = 'Clear';
 var SCROPT_EMPTYALT = 'Please select at least one case';
 var STATS_CFM_RESET = 'reset all times in this session?';
-var STATS_CFM_DELSS = 'delete session [%s]?';
+var STATS_CFM_DELSS = 'видалити сесію [%s]?';
 var STATS_CFM_DELMUL = 'The Number Of Deleted Values From Current Index?';
-var STATS_CFM_DELETE = 'delete this time?';
-var STATS_COMMENT = 'Comment';
+var STATS_CFM_DELETE = 'видалити цей час?';
+var STATS_COMMENT = 'Коментар';
 var STATS_REVIEW = 'Review';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Дата';
 var STATS_SSSTAT = '1-solve stat.';
 var STATS_SSRETRY = 'Retry';
-var STATS_CURROUND = 'Current Round Statistics';
-var STATS_CURSESSION = 'Current Session Statistics';
-var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
-var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
-var STATS_SSMGR_DETAIL = 'Session Details';
+var STATS_CURROUND = 'Поточна статистика раунду';
+var STATS_CURSESSION = 'Поточна статистика сесії';
+var STATS_CURSPLIT = 'Фаза %d поточної статистики сесії';
+var STATS_EXPORTCSV = 'Експортувати CSV';
+var STATS_SSMGR_TITLE = 'Менеджер сесій';
+var STATS_SSMGR_NAME = 'Назва';
+var STATS_SSMGR_DETAIL = 'Деталі сесії';
 var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort|Merge&Dedupe';
 var STATS_SSMGR_ORDER = 'Order by scramble';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
@@ -528,18 +528,18 @@ var STATS_ALERTSPL = 'Should split or leave 1 time at least';
 var STATS_AVG = 'mean';
 var STATS_SUM = 'sum';
 var STATS_SOLVE = 'solve';
-var STATS_TIME = 'time';
-var STATS_SESSION = 'Session';
-var STATS_SESSION_NAME = 'Edit session name';
-var STATS_SESSION_NAMEC = 'Name of the new session';
+var STATS_TIME = 'час';
+var STATS_SESSION = 'Сесія';
+var STATS_SESSION_NAME = 'Змінити назву сесії';
+var STATS_SESSION_NAMEC = 'Назва нової сесії';
 var STATS_STRING = 'best|current|worst|Generated By csTimer on %Y-%M-%D|solves/total: %d|single|mean of %mk|avg of %mk|Average: %v{ (σ = %sgm)}|Mean: %v|Time List:|solving from %s to %e|Totally spent: %d|target';
 var STATS_PREC = 'time distribution precision';
 var STATS_PREC_STR = 'auto|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Show absolute index in statistics report';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
-var STATS_XSESSION_NAME = 'any name';
+var STATS_XSESSION_DATE = 'будь-яка дата|за останні 24 години|за останні 7 днів|за останні 30 днів|за останні 365 днів';
+var STATS_XSESSION_NAME = 'будь-яка назва';
 var STATS_XSESSION_SCR = 'any scramble';
 var STATS_XSESSION_CALC = 'Calc';
 var STATS_RSFORSS = 'Show stat. when clicking solve number';
@@ -558,7 +558,7 @@ var PROPERTY_STATBPA = 'Show best possible average (BPA)';
 var PROPERTY_STATWPA = 'Show worst possible average (WPA)';
 var PROPERTY_STATAL = 'Statistical indicators';
 var PROPERTY_STATALU = 'Customized statistical indicator';
-var PROPERTY_HLPBS = 'Highlight PBs';
+var PROPERTY_HLPBS = 'Підсвічувати особисті рекорди';
 var PROPERTY_HLPBS_STR = 'Dark orange as WCA|As link color|Bolder|None';
 var PROPERTY_DELMUL = 'Enable Multiple Deletion';
 var PROPERTY_TOOLSFUNC = 'Selected Functions';
@@ -574,13 +574,13 @@ var PROPERTY_AUTOEXP = 'Auto Export (per 100 solves)';
 var PROPERTY_AUTOEXP_OPT = 'Never|To File|With csTimer ID|With WCA Account|With Google Account|Alert Only';
 var PROPERTY_SCRASIZE = 'Auto scramble size';
 var MODULE_NAMES = {
-	"kernel": 'global',
-	"ui": 'display',
-	"color": 'color',
-	"timer": 'timer',
+	"kernel": 'загальне',
+	"ui": 'дисплей',
+	"color": 'колір',
+	"timer": 'таймер',
 	"scramble": 'scramble',
-	"stats": 'statistics',
-	"tools": 'tools',
+	"stats": 'статистика',
+	"tools": 'інструменти',
 	"vrc": 'virtual&<br>bluetooth'
 };
 var BGIMAGE_URL = 'please input image\'s url';

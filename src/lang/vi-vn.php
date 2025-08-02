@@ -65,7 +65,7 @@
 <li><strong data="opt_showAvg">cho xem avg ở dưới timer</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">Phóng to</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">Kiểu chữ timer</strong>. Font of the main timer.</li>
-<li><strong data="opt_uidesign">UI design is</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
+<li><strong data="opt_uidesign">Thiết kế giao diện</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
 <li><strong data="opt_view">Kiểu giao diện người dùng</strong>. Switch between desktop and mobile views.</li>
 <li><strong data="opt_wndScr">Cách hiển thị thanh công thức tráo</strong>. Make scramble panel embedded into background.</li>
 <li><strong data="opt_wndStat">Cách hiển thị thanh thống kê thời gian</strong>. Make list times panel embedded into background.</li>
@@ -106,7 +106,7 @@
 <li><strong data="opt_statinv">Inverse time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
 <li><strong data="opt_statclr">Enable session emptying</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
 <li><strong data="opt_absidx">Hiển thị chỉ số tuyệt đối trong thống kê</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
+<li><strong data="opt_rsfor1s">Hiện thông tin khi nhấn vào STT của lượt giải</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
 <li><strong data="opt_statal">Statistical indicators</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">cho phép xóa thời gian cùng 1 lúc</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">time distribution precision</strong>. Time interval for the time distribution tool.</li>
@@ -114,10 +114,10 @@
 <li><strong data="opt_imgSize">kích cớ hình vẽ scramble</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">số công cụ</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">Sử dụng nút tắt</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">điều khiển bằng cử chỉ</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">Tốc độ ban đầu của rubik ảo (tốc độ xoay ban đầu)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">nhiều đợt</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
+<li><strong data="opt_giiMode">Chế độ cho các khối Bluetooth</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Hiển thị rubik bluetooth ảo</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Xem như đã tráo rubik nếu đứng yên trong</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Xem như đã tráo bằng cách nhấn phím cách</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

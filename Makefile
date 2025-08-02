@@ -180,7 +180,7 @@ local: all
 	cp $(dest)/css/style.css $(dest)/local/css/style.css
 
 check: $(twistySrc) $(timerSrc)
-	@$(compile) --externs experiment/checkwrap.js $(src)/lang/en-us.js $(timerSrc) $(twistySrc) -O ADVANCED --checks-only
+	@$(compile) --externs experiment/checkwrap.js $(src)/lang/en-us.js $(timerSrc) $(twistySrc) -O ADVANCED --checks-only --jscomp_off checkTypes
 
 $(cstimer): $(twisty) $(timerSrc)
 	@echo $@

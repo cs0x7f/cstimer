@@ -25,15 +25,15 @@
 </ul>
 <h2>Klávesové zkratky</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>Scramble type to input</td></tr>
-<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Ctrl/Alt + z</th><td>Remove the latest solve</td></tr>
-<tr><th>Alt + up/down</th><td>To next/last session</td></tr>
-<tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
+<tr><th>Key</th><td>Funkce</td></tr>
+<tr><th>Alt + 1</th><td>Nastavit typ míchání na Square-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>Nastavit typ míchání na 2x2x2-7x7x7</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>Nastavit typ míchání na pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + i</th><td>Nastavit druh míchání na vstup</td></tr>
+<tr><th>Alt + d</th><td>Odebrat všechny složení v aktuální relaci</td></tr>
+<tr><th>Ctrl/Alt + z</th><td>Odstranit nejnovější složení</td></tr>
+<tr><th>Alt + špika nahoru / šipka dolů</th><td>Přejít na další / předchozí relaci</td></tr>
+<tr><th>Alt + šipka vlevo / šipka vpravo</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
 <tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
@@ -91,7 +91,7 @@
 <li><strong data="opt_scrLim">Omezit výšku v oblasti scramblu</strong>. Je-li scramble moc dlouhý, objeví se scroll bar, aby se panel scramblu nemusel zvětšovat.</li>
 <li><strong data="opt_scrAlign">Zarovnání scramble oblasti</strong>. Zarovnání celé oblasti scramblu, včetně nastavení typu scramblu.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Tahy před scramblem. Použito pro virtuální kostku a vykreslený scramble.</li>
-<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrNeut">Barevně neutrální</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Použít rychlí scramble pro 4x4x4(neoficiální)</strong>. Oficiální scrambly pro 4x4x4 jsou náročné na vygenerování. Tato možnost změní scrambly pro 4x4x4 na random-move.</li>
 <li><strong data="opt_scrKeyM">Klíčovy krok pohybů v zamíchání</strong>. Cube</li>

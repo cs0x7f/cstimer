@@ -3,7 +3,7 @@ var CANCEL_LANG = 'Hủy';
 var RESET_LANG = 'Thiết lập lại';
 var ABOUT_LANG = 'Thông tin';
 var ZOOM_LANG = 'Phóng to';
-var COPY_LANG = 'Copy';
+var COPY_LANG = 'Sao chép';
 var BUTTON_TIME_LIST = 'THÀNH<br>TÍCH';
 var BUTTON_OPTIONS = 'Cài đặt';
 var BUTTON_EXPORT = 'Giải phóng';
@@ -27,7 +27,7 @@ var PROPERTY_SCRALIGN_STR = 'Giữa|Trái|Phải';
 var PROPERTY_SCRWRAP = 'Scramble Wrap';
 var PROPERTY_SCRWRAP_STR = 'Balanced|Normal';
 var PROPERTY_SCRNEUT = 'Color neutral';
-var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
+var PROPERTY_SCRNEUT_STR = 'không|1 mặt|2 mặt|6 mặt';
 var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
 var PROPERTY_SCREQPR_STR = 'Actual|Equal|Random order';
 var PROPERTY_SCRFAST = 'Dùng công thức tráo nhanh cho 4x4x4 (không chính thức)';
@@ -57,9 +57,9 @@ var EXPORT_LOGINWCA = 'Đăng Nhập Bằng Tài Khoản WCA';
 var EXPORT_LOGOUTCFM = 'Xác nhận đăng xuất?';
 var EXPORT_LOGINAUTHED = 'Đã Xác Thực<br>Đang Lấy Dữ Liệu...';
 var EXPORT_AEXPALERT = 'More than %d solves since last backup';
-var EXPORT_WHICH = 'You have %d file(s), which one should be imported?';
-var EXPORT_WHICH_ITEM = '%s solve(s), uploaded at %t';
-var IMPORT_FINAL_CONFIRM = 'This will override all local data! It will modify %d sessions, add %a and remove %r solves at least. Confirm to import data?';
+var EXPORT_WHICH = 'Hiện có %d tệp. Bạn muốn nhập (những) tệp nào?';
+var EXPORT_WHICH_ITEM = '%s lượt giải, tải lên lúc %t';
+var IMPORT_FINAL_CONFIRM = 'Hành động sẽ ghi đè lên toàn bộ dữ liệu tĩnh sẵn có. Sẽ chỉnh sửa ít nhất %d phiên, thêm %a và xóa %r lượt giải. Bạn có muốn tiếp tục không?';
 var BUTTON_SCRAMBLE = 'Xáo<br>trộn';
 var BUTTON_TOOLS = 'Công cụ';
 var IMAGE_UNAVAILABLE = 'Không khả dụng cho loại scramble này';
@@ -114,7 +114,7 @@ var OLCOMP_WCAACCOUNT = 'Tài Khoản WCA';
 var OLCOMP_ABORT = 'Abort competition and show results?';
 var OLCOMP_WITHANONYM = 'Với tên giả';
 var PROPERTY_IMGSIZE = 'kích cớ hình vẽ scramble';
-var PROPERTY_IMGREP = 'Show virtual cube animation when clicking scramble image';
+var PROPERTY_IMGREP = 'Hiện hoạt họa khối ảo khi nhấn vào ảnh tráo khối';
 var TIMER_INSPECT = 'Chuẩn bị';
 var TIMER_SOLVE = 'GIải';
 var PROPERTY_USEMOUSE = 'sử dụng chuột';
@@ -129,8 +129,8 @@ var PROPERTY_COLOR = 'Chọn màu nền';
 var PROPERTY_COLORS = 'màu chữ|Màu nền|Màu bảng|Màu nút|Màu link|Màu chữ logo|màu nền logo';
 var PROPERTY_VIEW = 'Kiểu giao diện người dùng';
 var PROPERTY_VIEW_STR = 'Tự động|Điện thoại|Máy tính';
-var PROPERTY_UIDESIGN = 'UI design is';
-var PROPERTY_UIDESIGN_STR = 'Normal|Material design|Normal w/o shadows|Material design w/o shadows';
+var PROPERTY_UIDESIGN = 'Thiết kế giao diện';
+var PROPERTY_UIDESIGN_STR = 'Thường|Material|Thường không đổ bóng|Material không đổ bóng';
 var COLOR_EXPORT = 'Vui lòng lưu lại chuỗi này để có thể nhập lại lần sau';
 var COLOR_IMPORT = 'Vui lòng gõ vào chuỗi bạn đã dùng để xuất dữ liệu';
 var COLOR_FAIL = 'Dữ liệu sai, không thể nhập được';
@@ -140,7 +140,7 @@ var PROPERTY_FONT = 'Kiểu chữ timer';
 var PROPERTY_FONT_STR = 'bất kì|bình thường|kí thuật số 1|kí thuật số 2|kí thuật số 3|kí thuật số 4|kí thuật số 5';
 var PROPERTY_FORMAT = 'Thể loại thời gian';
 var PROPERTY_USEKSC = 'Sử dụng nút tắt';
-var PROPERTY_USEGES = 'use gesture control';
+var PROPERTY_USEGES = 'điều khiển bằng cử chỉ';
 var PROPERTY_NTOOLS = 'số công cụ';
 var PROPERTY_AHIDE = 'ẩn tất cả khi giải';
 var SCRAMBLE_LAST = 'trước';
@@ -149,7 +149,7 @@ var SCRAMBLE_SCRAMBLE = ' tráo';
 var SCRAMBLE_SCRAMBLING = 'Tráo';
 var SCRAMBLE_LENGTH = 'độ dài';
 var SCRAMBLE_INPUT = 'Nhập scramble';
-var SCRAMBLE_INPUTTYPE = 'Scramble type';
+var SCRAMBLE_INPUTTYPE = 'Loại tráo';
 var PROPERTY_VRCSPEED = 'Tốc độ ban đầu của rubik ảo (tốc độ xoay ban đầu)';
 var PROPERTY_VRCORI = 'Virtual cube orientation';
 var PROPERTY_VRCMP = 'nhiều đợt';
@@ -163,7 +163,7 @@ var PROPERTY_GIISOK_MOVES = 'U4, R4,...|(U U\')2, (U\' U)2,...|Không bao giờ'
 var PROPERTY_GIISBEEP = 'Phát tiếng bíp khi tráo xong';
 var PROPERTY_GIIRST = 'Khởi động lại rubik bluetooth khi kết nối';
 var PROPERTY_GIIRSTS = 'Luôn luôn|Nhắc tôi|Không bao giờ';
-var PROPERTY_GIIMODE = 'Bluetooth Cube Mode';
+var PROPERTY_GIIMODE = 'Chế độ cho các khối Bluetooth';
 var PROPERTY_GIIMODES = 'Normal|Training|Continuous training';
 var PROPERTY_VRCAH = 'Useless pieces in huge cube';
 var PROPERTY_VRCAHS = 'Hide|Border|Color|Show';
@@ -287,15 +287,15 @@ var scrdata = [
 	['6x6x6', [
 		["WCA", "666wca", 80],
 		['SiGN', "666si", 80],
-		['prefix', "666p", 80],
-		['suffix', "666s", 80],
+		['tiền tố', "666p", 80],
+		['hậu tố', "666s", 80],
 		['6x6x6 cạnh', "6edge", 8]
 	]],
 	['7x7x7', [
 		["WCA", "777wca", 100],
 		['SiGN', "777si", 100],
-		['prefix', "777p", 100],
-		['suffix', "777s", 100],
+		['tiền tố', "777p", 100],
+		['hậu tố', "777s", 100],
 		['7x7x7 cạnh', "7edge", 8]
 	]],
 	['Rubik Clock', [
@@ -508,17 +508,17 @@ var STATS_CFM_DELMUL = 'Số lần giải cần xóa trong phiên hiện tại?'
 var STATS_CFM_DELETE = 'Xóa thời gian này?';
 var STATS_COMMENT = 'bình luận';
 var STATS_REVIEW = 'Xem xét lại';
-var STATS_DATE = 'Date';
+var STATS_DATE = 'Thời gian';
 var STATS_SSSTAT = '1-solve stat.';
-var STATS_SSRETRY = 'Retry';
+var STATS_SSRETRY = 'Thử lại';
 var STATS_CURROUND = 'thành tích vòng hiện tại';
 var STATS_CURSESSION = 'thành tích mục hiện tại';
 var STATS_CURSPLIT = 'Phase %d of Current Session Statistics';
-var STATS_EXPORTCSV = 'Export CSV';
+var STATS_EXPORTCSV = 'Xuất tệp CSV';
 var STATS_SSMGR_TITLE = 'Session Manager';
-var STATS_SSMGR_NAME = 'Name';
+var STATS_SSMGR_NAME = 'Tên';
 var STATS_SSMGR_DETAIL = 'Chi tiết phiên';
-var STATS_SSMGR_OPS = 'Rename|Create|Split|Merge|Delete|Sort|Merge&Dedupe';
+var STATS_SSMGR_OPS = 'Đổi tên|Tạo|Tách|Gộp|Xóa|Sắp xếp|Gộp & lọc trùng lặp';
 var STATS_SSMGR_ORDER = 'Số thứ tự bằng cách tráo';
 var STATS_SSMGR_ODCFM = 'Sort all sessions by scramble?';
 var STATS_SSMGR_SORTCFM = '%d lần giải sẽ được xắp xếp lại,đồng ý?';
@@ -538,11 +538,11 @@ var STATS_PREC_STR = 'tự động|0.1s|0.2s|0.5s|1s|2s|5s|10s|20s|50s|100s';
 var STATS_TYPELEN = 'list %d type|list %d length|average|mean';
 var STATS_STATCLR = 'Enable session emptying';
 var STATS_ABSIDX = 'Hiển thị chỉ số tuyệt đối trong thống kê';
-var STATS_XSESSION_DATE = 'any date|past 24 hours|past 7 days|past 30 days|past 365 days';
+var STATS_XSESSION_DATE = 'mọi lúc|24 giờ qua|7 ngày qua|30 ngày qua|1 năm qua';
 var STATS_XSESSION_NAME = 'Tên bất kì';
 var STATS_XSESSION_SCR = 'Tráo bất kì';
 var STATS_XSESSION_CALC = 'Tính';
-var STATS_RSFORSS = 'Show stat. when clicking solve number';
+var STATS_RSFORSS = 'Hiện thông tin khi nhấn vào STT của lượt giải';
 var PROPERTY_PRINTSCR = 'In scramble trong thành tích';
 var PROPERTY_PRINTCOMM = 'print comment(s) in statistics';
 var PROPERTY_PRINTDATE = 'in ngày giải trong thống kê';

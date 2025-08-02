@@ -5,9 +5,9 @@
 <ul>
 <li>Molti di algoritmi di miscuglio, inclusi <strong>tutti quelli degli eventi ufficiali della WCA</strong>, varietà di puzzle contorti, <strong>miscuglio di allenamento</strong> per sotto-step specifici (es. <strong>F2L, OLL, PLL, ZBLL</strong>, e può filtrare i casi), ecc</li>
 <li>Un sacco di funzioni di statistica, supporta <strong>tempi separati</strong>; <strong>Qualsiasi numero di sessioni</strong>, unione/separazione di sessioni, ecc.</li>
-<li>Varieties of solver, such as <strong>Cross, Xcross, 2x2x2 face, Skewb Face, SQ1 shape</strong>, for learning or training these sub steps.</li>
-<li>Other auxiliary tools, such as scramble image, 8-second inspection (voice) alert, metronome, batch-scramble generator, etc.</li>
-<li>Backup function, For avoiding data missing, you can backup your solves to local files, csTimer's server or Google storage.</li>
+<li>Varietà di risolutori, come <strong>Croce, Xcross, faccia 2x2x2, faccia Skewb, forma SQ1</strong>, per apprendere o allenarsi su questi sottopassi.</li>
+<li>Altri strumenti ausiliari, come immagine della scramble, avviso vocale per l’ispezione di 8 secondi, metronomo, generatore di scramble in batch, ecc.</li>
+<li>Funzione di backup: per evitare la perdita di dati, puoi eseguire il backup delle tue risoluzioni su file locali, sul server di csTimer o su Google Storage.</li>
 </ul>
 <p>csTimer supporta la maggior parte dei moderni browser desktop, su cellulari e tablet PC, puoi aggiungere csTimer alla tua schermata di home e funzionerà come un'APP nativa.</p>
 <p>csTimer utilizza la cache del browser, la quale consuma traffico internet solo quando lo apri per la prima volta, dopo questa, csTimer è in grado di funzionare senza una connessione a internet (eccetto per alcune funzioni come il backup).</p>
@@ -17,37 +17,37 @@
 <p>UI progettata da: <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>Funzioni base</h2>
 <ul>
-<li><strong>How to start timing</strong> - Hold the space bar (or both of left and right Ctrl keys, or touch the screen on mobile devices) and wait for the timer to turn green, the timer will start timing once the space bar is released, press any key to stop timing and the solving time will be record.</li>
-<li><strong>UI description</strong> - There are 6 buttons near the logo of csTimer: option, export, scramble, list times, donate, tools, click on the <strong>scramble</strong>, <strong>list times</strong>, <strong>tool</strong> to open the corresponding function panel.</li>
-<li><strong>Scramble panel</strong> - In the Scramble panel, you can select scramble type, set scramble length and case filter (if available), review previous scramble, generate next scramble.</li>
-<li><strong>List times panel</strong> - In the list times panel, you can open session manager by clicking "Session", select/add/delete sessions, empty session by the selector and the button next to, then you can view the current single/average, best single/average, and the full time list.</li>
-<li><strong>Tools panel</strong> - In the tool panel, you can select specific auxiliary functions, including scramble image, scramble generators, solvers, other kinds of statistics, etc.</li>
+<li><strong>Come avviare il timer</strong> – Tieni premuta la barra spaziatrice (oppure entrambi i tasti Ctrl sinistro e destro, o tocca lo schermo sui dispositivi mobili) e aspetta che il timer diventi verde; il timer inizierà a contare non appena rilasci la barra spaziatrice. Premi un qualsiasi tasto per fermare il timer e il tempo di risoluzione verrà registrato.</li>
+<li><strong>Descrizione dell'interfaccia</strong> – Ci sono 6 pulsanti vicino al logo di csTimer: opzioni, esporta, scramble, lista tempi, dona, strumenti. Clicca su <strong>scramble</strong>, <strong>lista tempi</strong>, <strong>strumenti</strong> per aprire il pannello della funzione corrispondente.</li>
+<li><strong>Pannello Scramble</strong> – Nel pannello Scramble puoi selezionare il tipo di scramble, impostare la lunghezza dello scramble e il filtro dei casi (se disponibile), rivedere lo scramble precedente, generare il prossimo scramble.</li>
+<li><strong>Pannello Lista Tempi</strong> – Nel pannello Lista Tempi puoi aprire il gestore delle sessioni cliccando su "Sessione", selezionare/aggiungere/eliminare sessioni, svuotare una sessione tramite il selettore e il pulsante accanto. Puoi quindi visualizzare il singolo/medio attuale, il miglior singolo/medio e l’elenco completo dei tempi.</li>
+<li><strong>Pannello Strumenti</strong> – Nel pannello Strumenti puoi selezionare funzioni ausiliarie specifiche, tra cui immagine della scramble, generatori di scramble, risolutori, altri tipi di statistiche, ecc.</li>
 </ul>
 <h2>Tasti di scelta rapida</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
+<tr><th>Tasto</th><td>Funzione</td></tr>
 <tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
 <tr><th>Alt + i</th><td>Scramble type to input</td></tr>
-<tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Ctrl/Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Alt + d</th><td>Rimuovi tutte le risoluzioni nella sessione corrente</td></tr>
+<tr><th>Ctrl/Alt + z</th><td>Rimuovi l'ultima risoluzione</td></tr>
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
-<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
+<tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Inserimento tempi con timer/digitazione/stackmat/cubo virtuale/bluetooth/qcube/timer bluetooth/ultimo strato</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
-<tr><th>Gesture</th><td>Function</td></tr>
-<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
-<tr><th>Up</th><td>The latest solve is +2</td></tr>
-<tr><th>Up right</th><td>The latest solve is OK</td></tr>
-<tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
-<tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
-<tr><th>Down</th><td>Remove the latest solve</td></tr>
-<tr><th>Down right</th><td>Check the latest solve</td></tr>
+<tr><th>Gesti</th><td>Funzione</td></tr>
+<tr><th>Alto a sinistra</th><td>L'ultima risoluzione è DNF</td></tr>
+<tr><th>Alto</th><td>L'ultima risoluzione è +2</td></tr>
+<tr><th>Alto a destra</th><td>L'ultima risoluzione è OK</td></tr>
+<tr><th>Sinistra</th><td>Ultimo scramble</td></tr>
+<tr><th>Destra</th><td>Prossimo scramble</td></tr>
+<tr><th>Basso a sinistra</th><td>Aggiungi commento all'ultima risoluzione</td></tr>
+<tr><th>Basso</th><td>Elimina l'ultima risoluzione</td></tr>
+<tr><th>Basso a destra</th><td>Verifica 'lultima risoluzione</td></tr>
 </table>
 
 <table class="table" id="vrckey" style="display: inline-block;">
@@ -57,19 +57,19 @@
 <h2>Dettagli Opzioni</h2>
 <ul>
 <li><strong data="opt_ahide">Nascondi tutti gli elementi quando mi cronometro</strong>. Nascondi il logo e tutti i pannelli durante il cronometro.</li>
-<li><strong data="opt_useMilli">Usa millisecondi</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
+<li><strong data="opt_useMilli">Usa millisecondi</strong>. Mostra la cifra dei millisecondi. Indipendentemente dal fatto che sia selezionata o meno, la precisione interna del timer di csTimer è di 1 millisecondo.</li>
 <li><strong data="opt_timeFormat">Formato tempo</strong>. Formato orario da visualizzare.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
-<li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Suggerimenti nel logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
-<li><strong data="opt_showAvg">Mostra svg sotto al cronometro</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
-<li><strong data="opt_zoom">Zoom</strong>. You can adjust sizes of all elements by this option.</li>
+<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. Se selezionato, csTimer esporterà automaticamente le risoluzioni ogni 100 risoluzioni nella destinazione specificata: file locale, server di csTimer o Google Storage.</li>
+<li><strong data="opt_expp">Importa dati precedenti</strong>. Se hai caricato più backup, puoi importarli da uno dei 10 backup caricati più di recente; se carichi accidentalmente un backup vuoto, questa opzione ti aiuterà a recuperare le tue risoluzioni.</li>
+<li><strong data="opt_useLogo">Suggerimenti nel logo</strong>. Il logo di csTimer fungerà da pannello informativo che mostra vari tipi di informazioni di tuo interesse, come il raggiungimento di un nuovo record personale (PB).</li>
+<li><strong data="opt_showAvg">Mostra svg sotto al cronometro</strong>. Sotto il timer principale vengono visualizzate due righe di etichette, che mostrano le due medie correnti, di default ao5 e ao12.</li>
+<li><strong data="opt_zoom">Zoom</strong>. Puoi regolare le dimensioni di tutti gli elementi tramite questa opzione.</li>
 <li><strong data="opt_font">Seleziona il carattere del cronometro</strong>. Carattere del cronometro principale.</li>
-<li><strong data="opt_uidesign">Il design dell&#x27;interfaccia è</strong>. You can switch ui design to material-like, or hide shadows by this option.</li>
+<li><strong data="opt_uidesign">Il design dell&#x27;interfaccia è</strong>. Puoi cambiare il design dell’interfaccia in stile Material oppure nascondere le ombre tramite questa opzione</li>
 <li><strong data="opt_view">Lo stile dell&#x27;interfaccia è</strong>. Passa dalla vista desktop a quella mobile.</li>
-<li><strong data="opt_wndScr">Stile visualizzazione scramble</strong>. Make scramble panel embedded into background.</li>
-<li><strong data="opt_wndStat">Stile visualizzazione statistiche</strong>. Make list times panel embedded into background.</li>
-<li><strong data="opt_wndTool">Stile visualizzazione strumenti</strong>. Make tool panel embedded into background.</li>
+<li><strong data="opt_wndScr">Stile visualizzazione scramble</strong>. Rendi il pannello scramble integrato nello sfondo</li>
+<li><strong data="opt_wndStat">Stile visualizzazione statistiche</strong>. Rendi il pannello lista tempi integrato nello sfondo.</li>
+<li><strong data="opt_wndTool">Stile visualizzazione strumenti</strong>. Rendi il pannello strumenti integrato nello sfondo.</li>
 <li><strong data="opt_bgImgO">Opacità immagine di sfondo</strong>. Opacity of the background image.</li>
 <li><strong data="opt_bgImgS">Immagine di sfondo</strong>. You can select your own image as the background image, however, only https urls are available due to security constraint of the browser.</li>
 <li><strong data="opt_timerSize">Dimensione cronometro</strong>. Set the size of main timer.</li>
@@ -86,16 +86,16 @@
 <li><strong data="opt_phases">Multi-fase</strong>. Number of phases, press any key to mark a split point when timing.</li>
 <li><strong data="opt_stkHead">Usa informationi sullo stato dello Stackmat</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">Lunghezza scramble</strong>. Size of the scramble text.</li>
-<li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
+<li><strong data="opt_scrASize">Dimensione auto scramble</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
 <li><strong data="opt_scrMono">Scramble con singolo spazio</strong>. Use monospaced font for scramble text.</li>
 <li><strong data="opt_scrLim">Limita l&#x27;altezza dell&#x27;area di scramble</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
 <li><strong data="opt_scrAlign">Allineamento area di scramble</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
 <li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
-<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
+<li><strong data="opt_scrEqPr">Probabilità degli stati per scramble di training</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Usa scramble veloce per il 4x4x4 (non ufficiale)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Etichetta le mosse principali nello scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
-<li><strong data="opt_scrClk">Action when clicking scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
+<li><strong data="opt_scrClk">Azione al click sullo scramble</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
 <li><strong data="opt_trim">Numero di soluzioni eliminate da ogni lato</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">mostra riepilogo prima della lista dei tempi</strong>. Show the statistics table before time list.</li>
 <li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
@@ -106,15 +106,15 @@
 <li><strong data="opt_statinv">Lista tempi invertita</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
 <li><strong data="opt_statclr">Abilita lo svuotamento della sessione</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
 <li><strong data="opt_absidx">Mostra indice assoluto nel report statistiche</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
-<li><strong data="opt_rsfor1s">Show stat. when clicking solve number</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
+<li><strong data="opt_rsfor1s">Mostra statistiche quando si seleziona il numero della risoluzione </strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
 <li><strong data="opt_statal">Indicatori statistici</strong>. Statistical indicator for the statistics table, when customizing, aoX and moX are available.</li>
 <li><strong data="opt_delmul">Abilita eliminazione multipla</strong>. Able to delete multiple solves starts from a solve, for avoid misunderstand, the selected solve will be the oldest solve to delete.</li>
 <li><strong data="opt_disPrec">Precisione distribuzione temporale</strong>. Time interval for the time distribution tool.</li>
-<li><strong data="opt_solSpl">Show solution progressively</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
+<li><strong data="opt_solSpl">Mostra la soluzione progressivamente</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
 <li><strong data="opt_imgSize">Dimensione della visualizzazione dello scramble</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">Numero di strumenti</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">Usa abbreviazioni da tastiea</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">usa controllo gestuale</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">Velocità VCR (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">multi-fase</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
 <li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
@@ -136,20 +136,20 @@
 <li><strong data="tool_trend">trend dei tempi</strong>. Shows a trend curve of all solves in current session.</li>
 <li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">Disegna scramble</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
-<li><strong data="tool_roux1">Solvers &gt; Risoluzione Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Solvers &gt; Risoluzione EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Solvers &gt; Risoluzione croce</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Solvers &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
-<li><strong data="tool_333cf">Solvers &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
-<li><strong data="tool_333roux">Solvers &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
-<li><strong data="tool_333petrus">Solvers &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
-<li><strong data="tool_333zz">Solvers &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
-<li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
-<li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
-<li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
+<li><strong data="tool_roux1">Risolutori &gt; Risoluzione Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
+<li><strong data="tool_eoline">Risolutori &gt; Risoluzione EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
+<li><strong data="tool_cross">Risolutori &gt; Risoluzione croce</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
+<li><strong data="tool_222face">Risolutori &gt; 2x2x2 face</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
+<li><strong data="tool_333cf">Risolutori &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
+<li><strong data="tool_333roux">Risolutori &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
+<li><strong data="tool_333petrus">Risolutori &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
+<li><strong data="tool_333zz">Risolutori &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
+<li><strong data="tool_sq1cs">Risolutori &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
+<li><strong data="tool_pyrv">Risolutori &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
+<li><strong data="tool_skbl1">Risolutori &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
 <li><strong data="tool_giikerutil">Cubo Giiker</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
 <li><strong data="tool_mtrnm">metronomo</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
-<li><strong data="tool_syncseed">Common Scramble</strong>. Using same scrambles with friends by setting a common seed.</li>
+<li><strong data="tool_syncseed">Scramble comune</strong>. Using same scrambles with friends by setting a common seed.</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
 <h2>Link</h2>

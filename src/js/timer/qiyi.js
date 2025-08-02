@@ -8,32 +8,33 @@ execMain(function(timer) {
 	function onQiyiTimerEvent(timerEvent) {
 		if (!enable)
 			return;
-		DEBUG && console.log('[qiyitimer] timer event received', QiyiTimerState[timerEvent.state], timerEvent);
+		DEBUG && console.log('[qiyitimer] timer event received', timerEvent);
+		var CONST = BluetoothTimer.CONST;
 		switch (timerEvent.state) {
-			case QiyiTimerState.GET_SET:   // grace period expired and timer is ready to start
+			case CONST.GET_SET:   // grace period expired and timer is ready to start
 				timer.lcd.color('g');
 				break;
-			case QiyiTimerState.RUNNING: // timer is started
+			case CONST.RUNNING: // timer is started
 				if (timer.status() == -3) { // if inspection timer was running, record elapsed inspection time
 					inspectionTime = $.now() - timer.startTime();
 					// 0 == Normal, 2000 == +2, -1 == DNF
 					inspectionTime = timer.checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				}
-				timer.startTime($.now() - timerEvent.recordedTime.asTimestamp);
+				timer.startTime($.now() - timerEvent.solveTime);
 				timer.lcd.reset();
 				timer.curTime([inspectionTime]);
 				timer.status(1);
 				timer.lcd.fixDisplay(false, true);
 				break;
-			case QiyiTimerState.STOPPED: // timer is stopped, recorded time returned from timer
-				timer.hardTime(timerEvent.recordedTime.asTimestamp);
+			case CONST.STOPPED: // timer is stopped, recorded time returned from timer
+				timer.hardTime(timerEvent.solveTime);
 				timer.curTime()[1] = timer.hardTime();
 				timer.status(-1);
 				timer.lcd.renderUtil();
 				timer.lcd.fixDisplay(false, true);
 				kernel.pushSignal('time', timer.curTime());
 				break;
-			case QiyiTimerState.DISCONNECT: // timer is switched off or something else
+			case CONST.DISCONNECT: // timer is switched off or something else
 				timer.hardTime(null);
 				timer.status(-1);
 				timer.lcd.renderUtil();
@@ -44,15 +45,15 @@ execMain(function(timer) {
 	}
 
 	function reconnectTimer() {
-		$.delayExec('qiyiTimerReconnect', function () {
+		$.delayExec('bluetoothTimerReconnect', function () {
 			DEBUG && console.log('[qiyitimer] attempting to reconnect timer device');
 			connectTimer(true);
 		}, 2500);
 	}
 
 	function connectTimer(reconnect) {
-		QiyiTimerDriver.setStateUpdateCallback(onQiyiTimerEvent);
-		QiyiTimerDriver.connect(reconnect).then(function () {
+		BluetoothTimer.setCallback(onQiyiTimerEvent);
+		BluetoothTimer.init().then(function () {
 			DEBUG && console.log('[qiyitimer] timer device successfully connected');
 			timer.hardTime(0);
 			timer.status(-1);
@@ -68,44 +69,37 @@ execMain(function(timer) {
 	}
 
 	function showConnectionDialog() {
-		var inspMsg = $('<div>').addClass('click')
-			.append('If you have enabled WCA inspection in settings,<br>use QIYI logo button right on the timer to start/cancel inspection.');
 		var dialogMsg = $('<div>')
 			.append('<br><br>')
-			.append('<b>Press OK to connect to QIYI Smart Timer</b>')
+			.append('<b>Press OK to connect to Bluetooth Timer</b>')
 			.append('<br><br>')
-			.append(inspMsg)
 			.append(timer.getBTDiv());
-		disconnectTimer().then(function () {
+		BluetoothTimer.stop().then(function () {
 			kernel.showDialog([dialogMsg, function () {
 				connectTimer();
-			}, 0, 0], 'share', 'QIYI Smart Timer');
+			}, 0, 0], 'share', 'Bluetooth Timer');
 		});
 	}
 
-	function disconnectTimer() {
-		return QiyiTimerDriver.disconnect();
-	}
-
-	function setEnableImpl(input) {
+	function setEnable(input) {
 		enable = input == 'y';
 		if (enable) {
 			timer.hardTime(null);
 			showConnectionDialog();
 		} else {
-			disconnectTimer();
+			BluetoothTimer.stop();
 		}
 	}
 
-	function onKeyUpImpl(keyCode) {
-		if (keyCode == 32 && !QiyiTimerDriver.isConnected()) {
+	function onKeyUp(keyCode) {
+		if (keyCode == 32 && !BluetoothTimer.isConnected()) {
 			showConnectionDialog();
 		}
 	}
 
 	timer.qiyi = {
-		setEnable: setEnableImpl,
-		onkeyup: onKeyUpImpl,
+		setEnable: setEnable,
+		onkeyup: onKeyUp,
 		onkeydown: $.noop
 	};
 }, [timer]);
