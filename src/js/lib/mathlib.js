@@ -1409,7 +1409,7 @@ var mathlib = (function() {
 		if (!m) {
 			return null;
 		}
-		var date = new Date(0);
+		var date = new Date(1970, 0, 1);
 		date.setFullYear(~~m[1]);
 		date.setMonth(~~m[2] - 1);
 		date.setDate(~~m[3]);
