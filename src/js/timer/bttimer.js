@@ -41,7 +41,7 @@ execMain(function(timer) {
 					// 0 == Normal, 2000 == +2, -1 == DNF
 					inspectionTime = timer.checkUseIns() ? inspectionTime > 17000 ? -1 : (inspectionTime > 15000 ? 2000 : 0) : 0;
 				}
-				timer.startTime($.now() - timerEvent.solveTime);
+				timer.startTime($.now() - ~~timerEvent.solveTime);
 				timer.lcd.reset();
 				timer.curTime([inspectionTime]);
 				timer.status(1);
