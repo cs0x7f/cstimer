@@ -15,7 +15,7 @@ execMain(function() {
 
 	function initMac(forcePrompt, isWrongKey) {
 		var defaultMac = null;
-		if (/^QY-QYSC-.-[0-9A-F]{4}$/.exec(_deviceName)) {
+		if (/^XMD-TornadoV4-i-.-[0-9A-F]{4}$/.exec(_deviceName)) {
 			defaultMac = 'CC:A3:00:00:' + _deviceName.slice(10, 12) + ':' + _deviceName.slice(12, 14);
 		}
 		deviceMac = giikerutil.reqMacAddr(forcePrompt, isWrongKey, deviceMac, defaultMac);
@@ -158,6 +158,9 @@ execMain(function() {
 
 	function parseCubeData(msg) {
 		var locTime = $.now();
+		if (msg[0] == 0xcc) {
+			return;
+		}
 		if (msg[0] != 0xfe) {
 			giikerutil.log('[qiyicube] error cube data', msg);
 		}
@@ -260,7 +263,7 @@ execMain(function() {
 	}
 
 	GiikerCube.regCubeModel({
-		prefix: 'QY-QYSC',
+		prefix: 'XMD-TornadoV4-i',
 		init: init,
 		opservs: [SERVICE_UUID],
 		cics: QIYI_CIC_LIST,
