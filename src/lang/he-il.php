@@ -25,9 +25,9 @@
 </ul>
 <h2>קיצורי מקלדת</h2>
 <table class="table" style="display: inline-block;">
-<tr><th>Key</th><td>Function</td></tr>
-<tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
-<tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
+<tr><th>מפתח</th><td>פונקציה</td></tr>
+<tr><th>Alt + 1</th><td>סור ערבוב לsquare-1</td></tr>
+<tr><th>Alt + 2 ~ 7</th><td>סוג ערבוב ל2x2x2 עד 7x7x7</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
 <tr><th>Alt + i</th><td>Scramble type to input</td></tr>
 <tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
@@ -91,7 +91,7 @@
 <li><strong data="opt_scrLim">הגבל את גובה אזור הבלגון</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
 <li><strong data="opt_scrAlign">יישור אזור הבלגון</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
-<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrNeut">ניטרלי לצבעים</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">משתמש בבלגון מהיר ל-4×4×4 (לא רשמי)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">סמן מהלך(י) מפתח בבלגון</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>

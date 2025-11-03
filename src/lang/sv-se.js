@@ -365,7 +365,8 @@ var scrdata = [
 		['9x9x9', "999", 120],
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120],
-		['NxNxN', "cubennn", 12]
+		['NxNxN', "cubennn", 12],
+		['Mirror Blocks', "mrbl", 0]
 	]],
 	['Gear Cube', [
 		['Slumpmässigt tillstånd', "gearso", 0],

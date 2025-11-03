@@ -11,7 +11,7 @@ var BUTTON_DONATE = 'תרום';
 var PROPERTY_SR = 'עם סשן';
 var PROPERTY_USEINS = 'השתמש בסקירת WCA';
 var PROPERTY_USEINS_STR = 'תמיד (למטה)|תמיד (למעלה)|חוץ מבעיניים עצומות(למטה)|חוץ מבעיניים עצומות(למעלה)|אף פעם';
-var PROPERTY_SHOWINS = 'Show an icon when inspection is enabled';
+var PROPERTY_SHOWINS = 'הראה סימן כאשר מפעילים אינספקשן';
 var PROPERTY_VOICEINS = 'התראה קולית של סקירת WCA';
 var PROPERTY_VOICEINS_STR = 'ללא|קול זכר|קול נקבה';
 var PROPERTY_VOICEVOL = 'עוצמת שמע';
@@ -26,7 +26,7 @@ var PROPERTY_SCRALIGN = 'יישור אזור הבלגון';
 var PROPERTY_SCRALIGN_STR = 'מרכז|שמאל|ימין';
 var PROPERTY_SCRWRAP = 'Scramble Wrap';
 var PROPERTY_SCRWRAP_STR = 'Balanced|Normal';
-var PROPERTY_SCRNEUT = 'Color neutral';
+var PROPERTY_SCRNEUT = 'ניטרלי לצבעים';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
 var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
 var PROPERTY_SCREQPR_STR = 'Actual|Equal|Random order';
@@ -365,7 +365,8 @@ var scrdata = [
 		['9x9x9', "999", 120],
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120],
-		['NxNxN', "cubennn", 12]
+		['NxNxN', "cubennn", 12],
+		['Mirror Blocks', "mrbl", 0]
 	]],
 	['קוביית גלגלי שיניים (גיר)', [
 		['random state', "gearso", 0],

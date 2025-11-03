@@ -209,7 +209,8 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 	var ssdiv = $('<div id="scrambleTxt"/>');
 	var alias = {
 		'333oh': '333',
-		'333ft': '333'
+		'333ft': '333',
+		'mrbl': '333'
 	};
 	var helpMsg = {
 		'easyc': EASY_SCRAMBLE_HINT,

@@ -26,7 +26,7 @@ var PROPERTY_SCRALIGN = 'Τοποθέτηση της περιοχής μπερδ
 var PROPERTY_SCRALIGN_STR = 'κεντρο|αριστερα|δεξια';
 var PROPERTY_SCRWRAP = 'Scramble Wrap';
 var PROPERTY_SCRWRAP_STR = 'Balanced|Normal';
-var PROPERTY_SCRNEUT = 'Color neutral';
+var PROPERTY_SCRNEUT = 'Ουδετερότητα Χρώματος';
 var PROPERTY_SCRNEUT_STR = 'None|Single face|Double faces|Six faces';
 var PROPERTY_SCREQPR = 'Probabilities for training-scramble states';
 var PROPERTY_SCREQPR_STR = 'Actual|Equal|Random order';
@@ -39,10 +39,10 @@ var PROPERTY_WNDSTAT = 'Στυλ εμφάνισης πίνακα στατιστ�
 var PROPERTY_WNDTOOL = 'Tools panel display style';
 var PROPERTY_WND_STR = 'Normal|Flat';
 var EXPORT_DATAEXPORT = 'Data Import/Export';
-var EXPORT_TOFILE = 'Export to file';
-var EXPORT_FROMFILE = 'Import from file';
-var EXPORT_TOSERV = 'Export to server';
-var EXPORT_FROMSERV = 'Import from server';
+var EXPORT_TOFILE = 'Εξαγωγή σε αρχείο';
+var EXPORT_FROMFILE = 'Εισαγωγή από αρχείο';
+var EXPORT_TOSERV = 'Εξαγωγή σε διακομιστή';
+var EXPORT_FROMSERV = 'Εισαγωγή από διακομιστή';
 var EXPORT_FROMOTHER = 'Εισαγωγή συνεδρίας(-ιών) από άλλους χρονομετρητές';
 var EXPORT_USERID = 'Παρακαλώ εισάγετε το λογαριασμό σας (μόνο αλφαριθμητικοί χαρακτήρες)';
 var EXPORT_INVID = 'Επιτρέπονται μόνο αλφαριθμητικοί χαρακτήρες';
@@ -68,19 +68,19 @@ var TOOLS_CROSS = 'Cross';
 var TOOLS_EOLINE = 'EOLine';
 var TOOLS_ROUX1 = 'Roux S1';
 var TOOLS_222FACE = '2x2x2 face';
-var TOOLS_GIIKER = 'Bluetooth Cube';
+var TOOLS_GIIKER = 'Κύβος Bluetooth';
 var TOOLS_IMAGE = 'draw scramble';
 var TOOLS_STATS = 'Statistics';
 var TOOLS_HUGESTATS = 'cross-session stats';
 var TOOLS_DISTRIBUTION = 'time distribution';
 var TOOLS_TREND = 'time trend';
-var TOOLS_METRONOME = 'metronome';
-var TOOLS_RECONS = 'Reconstruct';
+var TOOLS_METRONOME = 'Μετρονόμος';
+var TOOLS_RECONS = 'Ανακατασκευή';
 var TOOLS_RECONS_NODATA = 'No solution found.';
 var TOOLS_RECONS_TITLE = 'insp|exec|turn|tps';
 var TOOLS_TRAINSTAT = 'Training Stat.';
 var TOOLS_BLDHELPER = 'BLD Helper';
-var TOOLS_CFMTIME = 'Confirm time';
+var TOOLS_CFMTIME = 'Επιβεβαίωση χρόνου';
 var TOOLS_SOLVERS = 'Solvers';
 var TOOLS_DLYSTAT = 'Daily Statistics';
 var TOOLS_DLYSTAT1 = 'Period|Start of Day|Week';
@@ -365,7 +365,8 @@ var scrdata = [
 		['9x9x9', "999", 120],
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120],
-		['NxNxN', "cubennn", 12]
+		['NxNxN', "cubennn", 12],
+		['Mirror Blocks', "mrbl", 0]
 	]],
 	['Gear Cube', [
 		['random state', "gearso", 0],

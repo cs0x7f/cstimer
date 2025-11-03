@@ -451,6 +451,99 @@ var image = (function() {
 		}
 	})();
 
+	var mrblImage = (function() {
+		// image for mirror block
+		var width = 30;
+		var posit = [];
+		var colors = [];
+
+		function getBoundOffset(f, size, i, j) {
+			if (i != 0 && i != size - 1 && j != 0 && j != size - 1) {
+				return [-1, -1, -1, -1];
+			}
+			//   0
+			// 2   3
+			//   1
+			var D = 0, L = 4, B = 8, U = 12, R = 16, F = 20;
+			var neighbor = [
+				[F + 1, B + 1, L + 1, R + 1],
+				[U + 2, D + 2, B + 3, F + 2],
+				[U + 0, D + 1, R + 3, L + 2],
+				[B + 0, F + 0, L + 0, R + 0],
+				[U + 3, D + 3, F + 3, B + 2],
+				[U + 1, D + 0, L + 3, R + 2]
+			][f];
+			var isBound = [i == 0, i == size - 1, j == 0, j == size - 1];
+			var ret = [-1, -1, -1, -1];
+			for (var i1 = 0; i1 < 4; i1++) {
+				if (!isBound[i1]) {
+					continue;
+				}
+				var idx = [size - 1 - j, j, i, size - 1 - i][i1];
+				var rij = [[0, idx], [size - 1, size - 1 - idx], [size - 1 - idx, 0], [idx, size - 1]][neighbor[i1] & 0x3];
+				var fidx = neighbor[i1] >> 2;
+				if (fidx == 1 || fidx == 2) {
+					rij[1] = size - 1 - rij[1];
+				}
+				if (fidx == 0) {
+					rij[0] = size - 1 - rij[0];
+				}
+				ret[i1] = posit[fidx * size * size + rij[0] * size + rij[1]];
+			}
+			return ret;
+		}
+
+		function face(svg, f, size) {
+			var offx = (size + 1) / size,
+				offy = (size + 1) / size;
+			if (f == 0) { //D
+				offx *= size;
+				offy *= size * 2;
+			} else if (f == 1) { //L
+				offx *= 0;
+				offy *= size;
+			} else if (f == 2) { //B
+				offx *= size * 3;
+				offy *= size;
+			} else if (f == 3) { //U
+				offx *= size;
+				offy *= 0;
+			} else if (f == 4) { //R
+				offx *= size * 2;
+				offy *= size;
+			} else if (f == 5) { //F
+				offx *= size;
+				offy *= size;
+			}
+			var heights = [0.45, 0.15, 0.3, -0.45, -0.15, -0.3];
+			for (var i = 0; i < size; i++) {
+				var x = (f == 1 || f == 2) ? size - 1 - i : i;
+				for (var j = 0; j < size; j++) {
+					var y = (f == 0) ? size - 1 - j : j;
+					var off = getBoundOffset(f, size, j, i);
+					for (var i1 = 0; i1 < 4; i1++) {
+						off[i1] = off[i1] == -1 ? 0 : heights[off[i1]];
+					}
+					console.log(off);
+					drawPolygon(svg, colors[posit[(f * size + y) * size + x]], [
+						[i - off[2], i - off[2], i + 1 + off[3], i + 1 + off[3]],
+						[j - off[0], j + 1 + off[1], j + 1 + off[1], j - off[0]]
+					], [width, offx + 0.6, offy + 0.6]);
+				}
+			}
+		}
+
+		return function(svg, size, moveseq) {
+			posit = nnnImage.genPosit(size, moveseq);
+			svg.width = (4 * size + 4 + 0.2) * width;
+			svg.height = (3 * size + 3 + 0.2) * width;
+			colors = kernel.getProp('colcube').match(colre);
+			for (var i = 0; i < 6; i++) {
+				face(svg, i, size);
+			}
+		}
+	})();
+
 	var gearImage = (function() {
 
 		var moveMaps = [
@@ -880,6 +973,8 @@ var image = (function() {
 			clkImage(svg, scramble[1]);
 		} else if (type == "gear") {
 			gearImage(svg, scramble[1]);
+		} else if (type == "mrbl") {
+			mrblImage(svg, 3, scramble[1]);
 		} else if (type == "15b" || type == "15p") {
 			sldImage(svg, type[2], 4, scramble[1]);
 		} else if (type == "8b" || type == "8p") {

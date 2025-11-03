@@ -365,7 +365,8 @@ var scrdata = [
 		['9x9x9', "999", 120],
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120],
-		['NxNxN', "cubennn", 12]
+		['NxNxN', "cubennn", 12],
+		['Mirror Blocks', "mrbl", 0]
 	]],
 	['Шестеренчатый куб', [
 		['случайное состояние', "gearso", 0],
@@ -554,7 +555,7 @@ var PROPERTY_SS2PHASES = 'восстанавливать время мульти
 var PROPERTY_STATINV = 'обратный список времени';
 var PROPERTY_STATSSUM = 'Показать сумму в списке времени';
 var PROPERTY_STATTHRES = 'Показывать целевое время лучшей сборки сеанса';
-var PROPERTY_STATBPA = 'Show best possible average (BPA)';
+var PROPERTY_STATBPA = 'Показать лучшее возможное среднее время(BPA)';
 var PROPERTY_STATWPA = 'Show worst possible average (WPA)';
 var PROPERTY_STATAL = 'Статистические индикаторы';
 var PROPERTY_STATALU = 'Настраиваемый индикатор статистики';
@@ -612,7 +613,7 @@ var LGHINT_SUBMITED = 'Submitted';
 var LGHINT_SSBEST = 'Session best %s!';
 var LGHINT_SCRCOPY = 'Scramble copied';
 var LGHINT_LINKCOPY = 'Share link copied';
-var LGHINT_SOLVCOPY = 'Solve copied';
+var LGHINT_SOLVCOPY = 'Сборка скопирована';
 var LGHINT_SORT0 = 'Already sorted';
 var LGHINT_IMPORTED = 'Import %d session(s)';
 var LGHINT_IMPORT0 = 'No session imported';

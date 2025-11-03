@@ -365,7 +365,8 @@ var scrdata = [
 		['9x9x9', "999", 120],
 		['10x10x10', "101010", 120],
 		['11x11x11', "111111", 120],
-		['NxNxN', "cubennn", 12]
+		['NxNxN', "cubennn", 12],
+		['Mirror Blocks', "mrbl", 0]
 	]],
 	['Gear Cube', [
 		['état aléatoire', "gearso", 0],
@@ -602,7 +603,7 @@ var VRCREPLAY_SHARE = 'partager le lien';
 var GIIKER_CONNECT = 'Cliquer pour se connecter';
 var GIIKER_RESET = 'Réinitialiser (Marquer comme résolu)';
 var GIIKER_REQMACMSG = 'Please enter the MAC address of your smart hardware (xx:xx:xx:xx:xx:xx). You can find the MAC address through chrome://bluetooth-internals/#devices, or modify following options to let csTimer automatically obtain it:\nChrome: Turn on chrome://flags/#enable-experimental-web-platform-features\nBluefy: Turn on Enable BLE Advertisements';
-var GIIKER_NOBLEMSG = 'Bluetooth API is not available. Ensure https access, check bluetooth is enabled on your device, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled';
+var GIIKER_NOBLEMSG = 'L\'API Bluetooth n\'est pas disponible. Assurez-vous d\'accéder au site à l\'aide du protocole HTTPS, que le Bluetooth est activé sur votre appareil et essayez avec l\'option chrome://flags/#enable-experimental-web-platform-features d\'activée sur Chrome.';
 var PROPERTY_SHOWAD = 'Afficher les publicités (prend effet après rechargement)';
 var PROPERTY_GIIORI = 'Orientation du cube';
 var LGHINT_INVALID = 'Valeur invalide !';

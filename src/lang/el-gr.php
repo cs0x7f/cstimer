@@ -91,7 +91,7 @@
 <li><strong data="opt_scrLim">Περιόρισε το ύψος της περιοχής μπερδέματος</strong>. When the scramble area is too high, a scroll bar will occur to avoid the raising of the scramble panel.</li>
 <li><strong data="opt_scrAlign">Τοποθέτηση της περιοχής μπερδέματος</strong>. Alignment of the whole scramble area, include scramble type selector.</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Pre moves before scramble, which is used for virtual Rubik's cube and scramble image.</li>
-<li><strong data="opt_scrNeut">Color neutral</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
+<li><strong data="opt_scrNeut">Ουδετερότητα Χρώματος</strong>. If turned on, the position/first-layer color of some training scrambles will be random.</li>
 <li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
 <li><strong data="opt_scrFast">Χρησιμοποίησε γρήγορο μπέρδεμα για 4x4x4 (όχι επίσημο)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Label key move(s) in scramble</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
@@ -129,7 +129,7 @@
 <h2>Tools detail</h2>
 <ul>
 <li><strong data="tool_scrgen">ScrambleGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
-<li><strong data="tool_cfm">Confirm time</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
+<li><strong data="tool_cfm">Επιβεβαίωση χρόνου</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">cross-session stats</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">Statistics</strong>. Statistic table similar with the table in the list times panel.</li>
 <li><strong data="tool_distribution">time distribution</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
@@ -147,8 +147,8 @@
 <li><strong data="tool_sq1cs">Solvers &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
 <li><strong data="tool_pyrv">Solvers &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
 <li><strong data="tool_skbl1">Solvers &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
-<li><strong data="tool_giikerutil">Bluetooth Cube</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
-<li><strong data="tool_mtrnm">metronome</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
+<li><strong data="tool_giikerutil">Κύβος Bluetooth</strong>. Auxiliary tool for bluetooth cube, which is able to show current state, battery power, real-time reconstruction etc.</li>
+<li><strong data="tool_mtrnm">Μετρονόμος</strong>. Metronome, besides beeping at specific frequency, you make it beep at specific time after starting solve as well.</li>
 <li><strong data="tool_syncseed">Common Scramble</strong>. Using same scrambles with friends by setting a common seed.</li>
 <li><strong data="tool_stackmatutil">stackmat</strong>. Auxiliary tool for Stackmat, which is able to view the status, power and noise level of the signal, etc.</li>
 </ul>
