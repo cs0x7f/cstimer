@@ -262,7 +262,7 @@ var kernel = execMain(function() {
 			scrollToModule();
 
 			ui.showDialog([table, $.noop, undefined, $.noop, [RESET_LANG, function(){
-				if ($.confirm("Are you sure to reset all options?")) {
+				if (!$.confirm("Are you sure to reset all options?")) {
 					return false;
 				}
 				resetPropertyes();
