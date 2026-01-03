@@ -113,14 +113,51 @@ execMain(function(timer) {
 	}
 
 	function onKeyUp(keyCode) {
-		if (enable && keyCode == 32 && !BluetoothTimer.isConnected()) {
+		if (!enable) {
+			return;
+		}
+		if (keyCode == 32 && !BluetoothTimer.isConnected()) {
 			showConnectionDialog();
+			return;
+		}
+		var now = $.now();
+		// Start inspection when spacebar is released while in ready-to-inspect state
+		// Only allow if timer is reset (hardTime is 0 or null)
+		if (keyCode == 32 && timer.status() == -4 && timer.checkUseIns() && BluetoothTimer.isConnected() && (timer.hardTime() == 0 || timer.hardTime() == null)) {
+			timer.status(-3);
+			timer.lcd.reset();
+			timer.startTime(now);
+			timer.lcd.fixDisplay(false, true);
+		}
+		if (keyCode == 32) {
+			kernel.clrKey();
+		}
+	}
+
+	function onKeyDown(keyCode) {
+		if (!enable) {
+			return;
+		}
+		var now = $.now();
+		// Start inspection preparation when spacebar is pressed while idle
+		// Only allow if timer is reset (hardTime is 0 or null)
+		if (keyCode == 32 && timer.status() == -1 && timer.checkUseIns() && BluetoothTimer.isConnected() && (timer.hardTime() == 0 || timer.hardTime() == null)) {
+			timer.status(-4);
+			timer.startTime(now);
+			timer.lcd.fixDisplay(true, true);
+		} else if (keyCode == 27 && timer.status() <= -1) {
+			// Cancel inspection or reset when ESC is pressed
+			timer.status(-1);
+			timer.lcd.fixDisplay(true, false);
+		}
+		if (keyCode == 32) {
+			kernel.clrKey();
 		}
 	}
 
 	timer.bttimer = {
 		setEnable: setEnable,
 		onkeyup: onKeyUp,
-		onkeydown: $.noop
+		onkeydown: onKeyDown
 	};
 }, [timer]);
