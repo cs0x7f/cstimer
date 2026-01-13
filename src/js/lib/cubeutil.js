@@ -33,7 +33,9 @@ var cubeutil = (function() {
 	var roux1Mask = toEqus("---------------------F--F--D--D--D-----LLLLLL-----B--B");
 	var roux2Mask = toEqus("------------RRRRRR---F-FF-FD-DD-DD-D---LLLLLL---B-BB-B");
 	var roux3Mask = toEqus("U-U---U-Ur-rRRRRRRf-fF-FF-FD-DD-DD-Dl-lLLLLLLb-bB-BB-B");
-	var LLPattern = "012345678cdeRRRRRR9abFFFFFFDDDDDDDDDijkLLLLLLfghBBBBBB";
+	var apb223Mask = toEqus("---------------------FF-FF-DD-DD-DD----LLLLLL----BB-BB");
+	var apbBRPairMask = toEqus("--------------R--R---FF-FF-DD-DD-DDD---LLLLLL---BBBBBB");
+	var apbEOPairMask = "-*-*-*-*--*-*-R-*R-*-FF*FF-DD-DD*DDD-*-LLLLLL-*-BBBBBB";
 	var c2LLPattern = "0-1---2-36-7---R-R4-5---F-FD-D---D-Da-b---L-L8-9---B-B";
 	var c2LLMask = toEqus("---------------R-R------F-FD-D---D-D------L-L------B-B");
 	var solvedMask = toEqus(mathlib.SOLVED_FACELET);
@@ -119,6 +121,78 @@ var cubeutil = (function() {
 			}
 		}
 		return 0;
+	}
+
+	// Check if EO is solved for EOpair mask
+	// Returns 0 if EO is solved (all but 1 "*" comply), 1 otherwise
+	function solvedProgressEO(param, maskStr) {
+		// Handle CubieCube by converting to facelet string
+		if (param[0] instanceof mathlib.CubieCube) {
+			param = [param[0].toFaceCube(), param[1]];
+		}
+		
+		var cubeRot = cubeRots[param[1]];
+		var facelet = param[0];
+		
+		// Get all positions with "*" in the mask string
+		var starPositions = [];
+		for (var i = 0; i < maskStr.length; i++) {
+			if (maskStr[i] == '*') {
+				starPositions.push(i);
+			}
+		}
+		
+		// If no "*" positions, consider it solved (shouldn't happen, but handle edge case)
+		if (starPositions.length == 0) {
+			return 0;
+		}
+		
+		// Function to get which face a position belongs to (0-8: U, 9-17: R, 18-26: F, 27-35: D, 36-44: L, 45-53: B)
+		function getFaceForPosition(pos) {
+			if (pos < 9) return 0; // U
+			if (pos < 18) return 1; // R
+			if (pos < 27) return 2; // F
+			if (pos < 36) return 3; // D
+			if (pos < 45) return 4; // L
+			return 5; // B
+		}
+		
+		// Function to check if a color complies with EO requirements for a given face
+		// U, F, D: should be White or Yellow (U or D)
+		// R, L, B: should NOT be White or Yellow (not U or D)
+		// Exception: position 19 (2nd facelet on F face) should NOT be White or Yellow
+		function colorCompliesWithEO(color, face, physicalPos) {
+			var isWhiteOrYellow = (color == 'U' || color == 'D');
+			// Exception: position 19 (2nd facelet on F face) should NOT be white or yellow
+			if (physicalPos == 19) {
+				return !isWhiteOrYellow;
+			}
+			if (face == 0 || face == 2 || face == 3) { // U, F, D
+				return isWhiteOrYellow;
+			} else { // R, L, B
+				return !isWhiteOrYellow;
+			}
+		}
+		
+		// Check each "*" position
+		// pos in maskStr represents a physical position (0-53) in the current orientation
+		// cubeRot[pos] gives the original position of the facelet at pos after rotation
+		// facelet[cubeRot[pos]] gives the color at that physical position
+		var compliantCount = 0;
+		for (var i = 0; i < starPositions.length; i++) {
+			var physicalPos = starPositions[i]; // Physical position in current orientation
+			var face = getFaceForPosition(physicalPos); // Which physical face this position is on
+			var originalPos = cubeRot[physicalPos]; // Original position of the facelet at this physical position
+			var color = facelet[originalPos]; // Color at this physical position
+			
+			if (colorCompliesWithEO(color, face, physicalPos)) {
+				compliantCount++;
+			}
+		}
+		
+		// EO is solved when all but 1 (or fewer) of the "*"s comply
+		// Return 1 if NOT solved, 0 if solved
+		return (compliantCount >= starPositions.length - 1) ? 0 : 1;
 	}
 
 	//return 9: nothing, 8: cross solved, 4~7: nth f2l solved, 2~3 c/e oll solved, 1 cpll solved, 0: solved
@@ -209,6 +283,22 @@ var cubeutil = (function() {
 		} else if (solvedProgress(param, roux2Mask)) {
 			return 3;
 		} else if (solvedProgress(param, roux3Mask)) {
+			return 2;
+		} else if (solvedProgress(param)) {
+			return 1;
+		}
+		return 0;
+	}
+
+	// return 7: nothing, 6: First block, 5: 223, 4: BR pair, 3: EOpair, 2: LXS, 1: OCLL, 0: solved
+	function getAPBProgress(param) {
+		if (solvedProgress(param, apb223Mask)) {
+			return 5;
+		} else if (solvedProgress(param, apbBRPairMask)) {
+			return 4;
+		} else if (solvedProgressEO(param, apbEOPairMask)) {
+			return 3;
+		} else if (solvedProgress(param, eollMask)) {
 			return 2;
 		} else if (solvedProgress(param)) {
 			return 1;
@@ -473,6 +563,8 @@ var cubeutil = (function() {
 				return getProgressNAxis(facelet, getCF4O2P2Progress, 6);
 			case 'cf3zb':
 				return getProgressNAxis(facelet, getCF3ZBProgress, 6);
+			case 'apb':
+				return getProgressNAxis(facelet, getAPBProgress, 24);
 			case 'n':
 				return getProgressNAxis(facelet, solvedProgress, 1);
 		}
@@ -492,6 +584,8 @@ var cubeutil = (function() {
 				return ['pll', 'cpll', 'oll', 'eoll', 'f2l-4', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
 			case 'cf3zb':
 				return ['zbll', 'zbf2l', 'f2l-3', 'f2l-2', 'f2l-1', 'cross'];
+			case 'apb':
+				return ['zbll', 'lxs', 'eo', 'brpair', '223'];
 			case 'n':
 				return ['solve'];
 		}
