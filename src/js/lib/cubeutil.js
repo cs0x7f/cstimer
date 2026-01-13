@@ -36,6 +36,7 @@ var cubeutil = (function() {
 	var apb223Mask = toEqus("---------------------FF-FF-DD-DD-DD----LLLLLL----BB-BB");
 	var apbBRPairMask = toEqus("--------------R--R---FF-FF-DD-DD-DDD---LLLLLL---BBBBBB");
 	var apbEOPairMask = "-*-*-*-*--*-*-R-*R-*-FF*FF-DD-DD*DDD-*-LLLLLL-*-BBBBBB";
+	var LLPattern = "012345678cdeRRRRRR9abFFFFFFDDDDDDDDDijkLLLLLLfghBBBBBB";
 	var c2LLPattern = "0-1---2-36-7---R-R4-5---F-FD-D---D-Da-b---L-L8-9---B-B";
 	var c2LLMask = toEqus("---------------R-R------F-FD-D---D-D------L-L------B-B");
 	var solvedMask = toEqus(mathlib.SOLVED_FACELET);
@@ -124,6 +125,8 @@ var cubeutil = (function() {
 	}
 
 	// Check if EO is solved for EOpair mask
+	// SCUFFED detection of EO, but works for the purposes of APB
+
 	// Returns 0 if EO is solved (all but 1 "*" comply), 1 otherwise
 	function solvedProgressEO(param, maskStr) {
 		// Handle CubieCube by converting to facelet string
@@ -175,9 +178,6 @@ var cubeutil = (function() {
 		}
 		
 		// Check each "*" position
-		// pos in maskStr represents a physical position (0-53) in the current orientation
-		// cubeRot[pos] gives the original position of the facelet at pos after rotation
-		// facelet[cubeRot[pos]] gives the color at that physical position
 		var compliantCount = 0;
 		for (var i = 0; i < starPositions.length; i++) {
 			var physicalPos = starPositions[i]; // Physical position in current orientation
@@ -290,7 +290,7 @@ var cubeutil = (function() {
 		return 0;
 	}
 
-	// return 7: nothing, 6: First block, 5: 223, 4: BR pair, 3: EOpair, 2: LXS, 1: OCLL, 0: solved
+	// return 5: nothing, 4: 223, 3: BR pair, 2: EOpair, 1: LXS, 0: solved
 	function getAPBProgress(param) {
 		if (solvedProgress(param, apb223Mask)) {
 			return 5;
