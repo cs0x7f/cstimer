@@ -313,6 +313,7 @@ var scrdata = [
 		['starý styl', "mgmo", 70],
 		['2-generátor R,U', "minx2g", 30],
 		['poslední slot + poslední vrstva', "mlsll", 0],
+		['náhodný stav', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

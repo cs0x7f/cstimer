@@ -313,6 +313,7 @@ var scrdata = [
 		['eski stil', "mgmo", 70],
 		['2-tür hamle R,U', "minx2g", 30],
 		['son bölme + son katman', "mlsll", 0],
+		['Rastgele Durum', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

@@ -313,6 +313,7 @@ var scrdata = [
 		['régi stílus', "mgmo", 70],
 		['2-gen R,U', "minx2g", 30],
 		['utolsó pár + utolsó réteg', "mlsll", 0],
+		['véletlen állapot', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

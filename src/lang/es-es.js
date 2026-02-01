@@ -313,6 +313,7 @@ var scrdata = [
 		['Antiguo estilo', "mgmo", 70],
 		['Sólo movimientos R,U', "minx2g", 30],
 		['última capa + último hueco', "mlsll", 0],
+		['estado aleatorio', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

@@ -313,6 +313,7 @@ var scrdata = [
 		['gammal stil', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
 		['sista f2l paret + sista lagret', "mlsll", 0],
+		['Slumpmässigt tillstånd', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

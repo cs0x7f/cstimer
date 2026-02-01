@@ -313,6 +313,7 @@ var scrdata = [
 		['gammel stil', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
 		['sidste plads + sidste lag', "mlsll", 0],
+		['tilfældig tilstand', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

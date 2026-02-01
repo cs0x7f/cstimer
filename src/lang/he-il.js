@@ -313,6 +313,7 @@ var scrdata = [
 		['סגנון ישן', "mgmo", 70],
 		['2-ג\'ן R,U', "minx2g", 30],
 		['סלוט אחרון + שכבה אחרונה', "mlsll", 0],
+		['random state', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

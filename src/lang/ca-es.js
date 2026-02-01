@@ -313,6 +313,7 @@ var scrdata = [
 		['Estil antic', "mgmo", 70],
 		['2-gen R,U', "minx2g", 30],
 		['Últim espai + Última capa', "mlsll", 0],
+		['estat aleatori', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

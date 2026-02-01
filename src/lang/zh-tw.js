@@ -313,6 +313,7 @@ var scrdata = [
 		['舊版', "mgmo", 70],
 		['僅使用RU', "minx2g", 30],
 		['最後一個F2L+頂層', "mlsll", 0],
+		['隨機狀態', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

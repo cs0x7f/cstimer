@@ -313,6 +313,7 @@ var scrdata = [
 		['구 방식', "mgmo", 70],
 		['2원 생성자: R,U', "minx2g", 30],
 		['맨 위층+홈통 1개', "mlsll", 0],
+		['무작위 상태', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

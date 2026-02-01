@@ -313,6 +313,7 @@ var scrdata = [
 		['Ancien style', "mgmo", 70],
 		['Générateur R,U', "minx2g", 30],
 		['Dernier slot + dernier étage', "mlsll", 0],
+		['état aléatoire', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

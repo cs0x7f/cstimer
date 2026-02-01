@@ -313,6 +313,7 @@ var scrdata = [
 		['stary styl', "mgmo", 70],
 		['tylko ruchy R,U', "minx2g", 30],
 		['ostatni para + ostatnia warstwa', "mlsll", 0],
+		['stan losowy', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

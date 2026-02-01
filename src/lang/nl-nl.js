@@ -313,6 +313,7 @@ var scrdata = [
 		['Oude methode', "mgmo", 70],
 		['2-generator R,U', "minx2g", 30],
 		['Laatste slot + laatste laag', "mlsll", 0],
+		['willekeurige staat', "mgmso", 0],
 		['PLL', "mgmpll", 0],
 		['Last Layer', "mgmll", 0]
 	]],

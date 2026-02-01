@@ -34,7 +34,7 @@
   <script type="text/javascript" src="js/timer/virtual.js"></script>
   <script type="text/javascript" src="js/timer/giiker.js"></script>
   <script type="text/javascript" src="js/solver/ftocta.js"></script>
-  <script type="text/javascript" src="js/solver/kilominx.js"></script>
+  <script type="text/javascript" src="js/solver/megaminx.js"></script>
   <script type="text/javascript" src="js/scramble/scramble.js"></script>
   <script type="text/javascript" src="js/scramble/megascramble.js"></script>
   <script type="text/javascript" src="js/scramble/scramble_333_edit.js"></script>
@@ -49,7 +49,7 @@
   <script type="text/javascript" src="js/scramble/clock.js"></script>
   <script type="text/javascript" src="js/scramble/333lse.js"></script>
   <script type="text/javascript" src="js/scramble/mgmlsll.js"></script>
-  <script type="text/javascript" src="js/scramble/kilominx.js"></script>
+  <script type="text/javascript" src="js/scramble/megaminx.js"></script>
   <script type="text/javascript" src="js/scramble/scramble_fto.js"></script>
   <script type="text/javascript" src="js/scramble/redi.js"></script>
   <script type="text/javascript" src="js/scramble/slide.js"></script>

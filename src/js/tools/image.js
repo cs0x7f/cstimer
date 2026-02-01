@@ -524,7 +524,6 @@ var image = (function() {
 					for (var i1 = 0; i1 < 4; i1++) {
 						off[i1] = off[i1] == -1 ? 0 : heights[off[i1]];
 					}
-					console.log(off);
 					drawPolygon(svg, colors[posit[(f * size + y) * size + x]], [
 						[i - off[2], i - off[2], i + 1 + off[3], i + 1 + off[3]],
 						[j - off[0], j + 1 + off[1], j + 1 + off[1], j - off[0]]

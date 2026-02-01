@@ -35,7 +35,7 @@ timer/bttimer.js \
 timer/virtual.js \
 timer/giiker.js \
 solver/ftocta.js \
-solver/kilominx.js \
+solver/megaminx.js \
 scramble/scramble.js \
 scramble/megascramble.js \
 scramble/scramble_333_edit.js \
@@ -50,7 +50,7 @@ scramble/2x2x3.js \
 scramble/clock.js \
 scramble/333lse.js \
 scramble/mgmlsll.js \
-scramble/kilominx.js \
+scramble/megaminx.js \
 scramble/scramble_fto.js \
 scramble/redi.js \
 scramble/slide.js \
@@ -125,7 +125,7 @@ lib/pat3x3.js \
 lib/min2phase.js \
 lib/cubeutil.js \
 solver/ftocta.js \
-solver/kilominx.js \
+solver/megaminx.js \
 scramble/scramble.js \
 scramble/megascramble.js \
 scramble/scramble_333_edit.js \
@@ -140,7 +140,7 @@ scramble/2x2x3.js \
 scramble/clock.js \
 scramble/333lse.js \
 scramble/mgmlsll.js \
-scramble/kilominx.js \
+scramble/megaminx.js \
 scramble/scramble_fto.js \
 scramble/redi.js \
 scramble/slide.js \

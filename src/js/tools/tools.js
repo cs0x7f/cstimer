@@ -72,7 +72,7 @@ var tools = (function() {
 			return "sq1";
 		} else if (/^clk(wcab?|o|nf)$/.exec(scrambleType)) {
 			return "clk";
-		} else if (/^(mgmp|mgmo|mgmc|minx2g|mlsll|mgmpll|mgmll)$/.exec(scrambleType)) {
+		} else if (/^(mgmp|mgmo|mgmc|minx2g|mlsll|mgmpll|mgmll|mgmso)$/.exec(scrambleType)) {
 			return "mgm";
 		} else if (/^(klmso|klmp)$/.exec(scrambleType)) {
 			return "klm";
