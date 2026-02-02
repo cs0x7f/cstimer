@@ -597,7 +597,7 @@ var mgmsolver = (function() {
 				return null;
 			}
 			return idx1;
-		}, 12, 4, 9);
+		}, 12, 4, ckmv);
 	}
 
 	function initKlmPhase2() {
@@ -619,7 +619,7 @@ var mgmsolver = (function() {
 				return null;
 			}
 			return idx1;
-		}, 6, 4);
+		}, 6, 4, ckmv);
 	}
 
 	function initKlmPhase3() {
@@ -637,7 +637,7 @@ var mgmsolver = (function() {
 			return Math.max(mathlib.getPruning(KlmPhase3Prun, idx[0]), mathlib.getPruning(KlmPhase3Prun, idx[1]), mathlib.getPruning(KlmPhase3Prun, idx[2]));
 		}, function(idx, move) {
 			return [doKlmPhase3Move(idx[0], move), doKlmPhase3Move(idx[1], (move + 1) % 3), doKlmPhase3Move(idx[2], (move + 2) % 3)];
-		}, 3, 4);
+		}, 3, 4, ckmv);
 	}
 
 	function initKlm() {
@@ -823,7 +823,7 @@ var mgmsolver = (function() {
 				return null;
 			}
 			return idx1;
-		}, N_MOVE, 4, 100);
+		}, N_MOVE, 4, ckmv);
 		this.mgmECoord = mgmECoord;
 		this.mgmCCoord = mgmCCoord;
 		this.mgmOCoord = mgmOCoord;
@@ -950,7 +950,7 @@ var mgmsolver = (function() {
 				doMgmEMove(idx[0], move),
 				doMgmCMove(idx[1], move)
 			];
-		}, N_MOVE, 4, 100);
+		}, N_MOVE, 4, ckmv);
 		this.mgmECoord = { get: (cc) => mgmEPCoord.get(cc, N_EDGE) * N_EORI + mgmEOCoord.get(cc, N_EDGE) };
 		this.mgmCCoord = { get: (cc) => mgmCPCoord.get(cc, N_CORN) * N_CORI + mgmCOCoord.get(cc, N_CORN) };
 		this.N_EDGE = N_EDGE;
