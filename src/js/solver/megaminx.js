@@ -738,7 +738,7 @@ var mgmsolver = (function() {
 	var mgmSolv7 = null;
 	var mgmSolv8 = null;
 	var mgmSolv9 = null;
-	var mgmSolv10 = null;
+	var mgmSolvA = null;
 
 	/**
 	 * SOLE_EO: 0 = no ori, 1 = edge ori, 2 = corner ori
@@ -781,18 +781,23 @@ var mgmsolver = (function() {
 			return mgmCCoord.get(tmp2, N_CORN);
 		}, N_MOVE);
 
-		SOLV_ORI && mathlib.createMove(MgmOMove, N_ORI, function(idx, move) {
-			mgmOCoord.set(tmp1, idx, edges.length);
-			MgmCubie.MgmMult(tmp1, MgmCubie.moveCube[move * 4], tmp2);
-			return mgmOCoord.get(tmp2, edges.length);
-		}, N_MOVE);
-
 		var doMgmEMove = doCombMove4.bind(null, MgmEMove, N_EPERM, N_EORI, 16 / N_EORI);
 		var doMgmCMove = doCombMove4.bind(null, MgmCMove, N_CPERM, N_CORI, 81 / N_CORI);
 
 		mathlib.createPrun(MgmEPrun, 0, N_ECOMB * N_EPERM * N_EORI, 14, doMgmEMove, N_MOVE, 4);
 		mathlib.createPrun(MgmCPrun, 0, N_CCOMB * N_CPERM * N_CORI, 14, doMgmCMove, N_MOVE, 4);
-		SOLV_ORI && mathlib.createPrun(MgmOPrun, 0, N_ORI, 14, MgmOMove, N_MOVE, 4);
+		if (SOLV_ORI) {
+			mathlib.createMove(MgmOMove, N_ORI, function(idx, move) {
+				mgmOCoord.set(tmp1, idx, edges.length);
+				MgmCubie.MgmMult(tmp1, MgmCubie.moveCube[move * 4], tmp2);
+				return mgmOCoord.get(tmp2, edges.length);
+			}, N_MOVE);
+			mathlib.createPrun(MgmOPrun, 0, N_CCOMB * N_ORI, 14, function(idx, move) {
+				var slice = ~~(idx / N_ORI);
+				var twst = idx % N_ORI;
+				return MgmCMove[move][slice][0] * N_ORI + MgmOMove[move][twst];
+			}, N_MOVE, 4);
+		}
 
 		var MgmECPrun = [];
 		mathlib.createPrun(MgmECPrun, 0, N_ECOMB * N_CCOMB, 14, function(idx, move) {
@@ -805,7 +810,7 @@ var mgmsolver = (function() {
 			return Math.max(
 				mathlib.getPruning(MgmEPrun, idx[0]),
 				mathlib.getPruning(MgmCPrun, idx[1]),
-				SOLV_ORI ? mathlib.getPruning(MgmOPrun, idx[2]) : 0,
+				SOLV_ORI ? mathlib.getPruning(MgmOPrun, ~~(idx[1] / N_CPERM / N_CORI) * N_ORI + idx[2]) : 0,
 				mathlib.getPruning(MgmECPrun, ~~(idx[0] / N_EPERM / N_EORI) * N_CCOMB + ~~(idx[1] / N_CPERM / N_CORI))
 			);
 		}, function(idx, move) {
@@ -851,6 +856,38 @@ var mgmsolver = (function() {
 		}
 		DEBUG && console.log('[mgmsolver] block solved, tt=', $.now() - tt);
 		return sol;
+	}
+
+	BlockSolver.prototype.solveMulti = function(kcs, nsol) {
+		var tt = $.now();
+		var kc1 = new MgmCubie();
+		var idxs = [];
+		for (var i = 0; i < kcs.length; i++) {
+			idxs.push(this.getIdx(kcs[i]));
+		}
+		// DEBUG && console.log('[mgmsolver] idxs=', idxs);
+		var solSet = new Set();
+		var sols = [];
+		var kcsRet = [];
+		this.solv.solveMulti(idxs, 0, 30, function(sol, sidx) {
+			var kc0 = new MgmCubie();
+			kc0.copy(kcs[sidx]);
+			for (var i = 0; i < sol.length; i++) {
+				var move = sol[i];
+				MgmCubie.MgmMult(kc0, MgmCubie.moveCube[move[0] * 4 + move[1]], kc1);
+				kc0.copy(kc1);
+			}
+			var hashCode = kc0.hashCode();
+			if (solSet.has(hashCode)) {
+				return false;
+			}
+			solSet.add(hashCode);
+			sols.push([sol.slice(), sidx]);
+			kcsRet.push(kc0);
+			return sols.length >= nsol;
+		});
+		DEBUG && console.log('[mgmsolver] block solved multi, tt=', $.now() - tt);
+		return [kcsRet, sols];
 	}
 
 	function BlockRURpSolver(edges, corns, N_EDGE, N_CORN, N_MOVE) {
@@ -928,6 +965,7 @@ var mgmsolver = (function() {
 	};
 
 	BlockRURpSolver.prototype.solve = BlockSolver.prototype.solve;
+	BlockRURpSolver.prototype.solveMulti = BlockSolver.prototype.solveMulti;
 
 	function initMgm() {
 		initMgm = $.noop;
@@ -944,7 +982,7 @@ var mgmsolver = (function() {
 		mgmSolv7 = new BlockSolver(edgeOrder.slice(15), cornOrder.slice(8), 3, 2, 4);
 		mgmSolv8 = new BlockSolver(edgeOrder.slice(18), cornOrder.slice(10), 3, 2, 3, 1);
 		mgmSolv9 = new BlockSolver(edgeOrder.slice(21), cornOrder.slice(12), 3, 2, 2);
-		mgmSolv10 = new BlockRURpSolver(edgeOrder.slice(24), cornOrder.slice(14), 6, 6, 2);
+		mgmSolvA = new BlockRURpSolver(edgeOrder.slice(24), cornOrder.slice(14), 6, 6, 2);
 		DEBUG && console.log('[mgmsolver] mgm init finished, tt=', $.now() - tt);
 		return;
 	}
@@ -960,21 +998,33 @@ var mgmsolver = (function() {
 		var idx;
 		var tt = $.now();
 		var sols = [];
-		var solsym = 0;
-		var idxE, idxC;
+		var kcs0 = [kc0];
+		var [kcs1, sol1s] = mgmSolv1.solveMulti(kcs0, 100);
+		var [kcs2, sol2s] = mgmSolv2.solveMulti(kcs1, 100);
+		var [kcs3, sol3s] = mgmSolv3.solveMulti(kcs2, 100);
+		var [kcs4, sol4s] = mgmSolv4.solveMulti(kcs3, 10);
+		var [kcs5, sol5s] = mgmSolv5.solveMulti(kcs4, 100);
+		var [kcs6, sol6s] = mgmSolv6.solveMulti(kcs5, 100);
+		var [kcs7, sol7s] = mgmSolv7.solveMulti(kcs6, 100);
+		var [kcs8, sol8s] = mgmSolv8.solveMulti(kcs7, 5);
+		var [kcs9, sol9s] = mgmSolv9.solveMulti(kcs8, 20);
+		var [kcsA, solAs] = mgmSolvA.solveMulti(kcs9, 1);
+		var [solA, sidxA] = solAs[0];
+		var [sol9, sidx9] = sol9s[sidxA];
+		var [sol8, sidx8] = sol8s[sidx9];
+		var [sol7, sidx7] = sol7s[sidx8];
+		var [sol6, sidx6] = sol6s[sidx7];
+		var [sol5, sidx5] = sol5s[sidx6];
+		var [sol4, sidx4] = sol4s[sidx5];
+		var [sol3, sidx3] = sol3s[sidx4];
+		var [sol2, sidx2] = sol2s[sidx3];
+		var [sol1, sidx1] = sol1s[sidx2];
 
-		var sol1 = mgmSolv1.solve(kc0);
-		var sol2 = mgmSolv2.solve(kc0);
-		var sol3 = mgmSolv3.solve(kc0);
-		var sol4 = mgmSolv4.solve(kc0);
-		var sol5 = mgmSolv5.solve(kc0);
-		var sol6 = mgmSolv6.solve(kc0);
-		var sol7 = mgmSolv7.solve(kc0);
-		var sol8 = mgmSolv8.solve(kc0);
-		var sol9 = mgmSolv9.solve(kc0);
-		var sol10 = mgmSolv10.solve(kc0);
-		DEBUG && console.log(sol1, sol2, sol3, sol4, sol5, sol6, sol7, sol8, sol9, sol10);
-		return [move2str([].concat(sol1, sol2, sol3, sol4, sol5, sol6, sol7, sol8, sol9)), move2strRURp(sol10)].join(' ');
+		// DEBUG && console.log(sol1s, sol2s, sol3s, sol4s, sol5s, sol6s, sol7s, sol8s, sol9s, solAs);
+		var ret = [move2str([].concat(sol1, sol2, sol3, sol4, sol5, sol6, sol7, sol8, sol9)), move2strRURp(solA)].join(' ');
+
+		DEBUG && console.log('[mgmsolver] mgm solved, tt=', $.now() - tt, 'sol_len=', ret.split(/ +/).length);
+		return ret;
 	}
 
 	function checkSolver(isKlm) {
