@@ -44,6 +44,10 @@ execMain(function(timer) {
 					curVRCCubie.selfMoveStr(puzzleObj.move2str(preScramble[i]));
 				}
 				puzzleObj.applyMoves(preScramble); // process pre scramble (cube orientation)
+
+				// temporary hack
+				window.puzzleObj = puzzleObj;
+
 				var targetOri = kernel.getProp('giiOri');
 				targetOri = targetOri == 'auto' ? -1 : ~~targetOri;
 				setOri(targetOri);
