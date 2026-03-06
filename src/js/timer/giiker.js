@@ -228,7 +228,9 @@ execMain(function(timer) {
 				'oll': 'oll',
 				'eols': 'oll',
 				'wvls': 'oll',
-				'zbls': 'eoll'
+				'zbls': 'eoll',
+				'f2l': 'f2l',
+				'lsll2': 'f2l'
 			}[curScrType];
 			if (chkstep) {
 				return cubeutil.getStepProgress(chkstep, facelet) == 0;
