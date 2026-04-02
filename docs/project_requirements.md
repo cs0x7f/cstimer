@@ -33,6 +33,16 @@
 - **Out of scope for v1:** Convex implementation, multiplayer, smart cube requirement, standalone app rewrite
 - **Requests captured for later roadmap:** multi-puzzle training, daily challenge competition, X-cross optimization, virtual-cube practice, and live social features
 
+## MUS Priority Order
+
+1. FR-001: Trainer Entry and Goal Selection
+2. FR-002: Structured Training Plans
+3. FR-003: Adaptive Last-Layer Drill Queue
+4. FR-004: Cross Drill Workflows
+5. FR-005: Skill Stats and Session Review
+6. FR-006: Local-First Persistence and Export Compatibility
+7. FR-007: Source-Backed Case Catalog
+
 ## Success Criteria
 
 - A later implementation agent can produce a trainer v1 without making product decisions that are still unresolved.
