@@ -10,6 +10,7 @@ Turn `00_Notes/Idea.md` into a reviewable orchestration bundle that you can appr
 
 ## Session Outputs
 
+- vision brief
 - PRD
 - coding guidelines
 - feature blueprint
@@ -17,6 +18,11 @@ Turn `00_Notes/Idea.md` into a reviewable orchestration bundle that you can appr
 - design and mockup plan
 - source registry
 - delegable task packets with dependencies and review gates
+
+## Current Status Snapshot
+
+- Completed: `T00 Repo coordination brief`, `T01 Vision brief and MUS split`
+- Next up: `T02 PRD and FR issue set`
 
 ## Dependency Map
 
