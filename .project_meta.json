@@ -1,0 +1,10 @@
+{
+    "name": "cstimer-trainer",
+    "slug": "2026-04-02_cstimer-trainer",
+    "type": "Code",
+    "created": "2026-04-02",
+    "client": "None",
+    "template": "git_clone",
+    "repo_url": "https://github.com/JStaRFilms/cstimer-trainer",
+    "root": "C:\\CreativeOS\\01_Projects\\Code\\Personal_Stuff\\2026-04-02_cstimer-trainer"
+}
