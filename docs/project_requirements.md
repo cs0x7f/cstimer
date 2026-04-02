@@ -20,6 +20,10 @@
 | FR-008 | Standalone TypeScript Extraction Path | As a maintainer, I want the trainer domain documented independently of csTimer internals, so that it can later move into a modern TypeScript app. | Future |
 | FR-009 | Cloud Sync and Profiles | As a cuber, I want optional profile sync across devices, so that I can keep trainer progress beyond one browser. | Future |
 | FR-010 | Multiplayer and Live Coaching | As a cuber, I want shared live sessions and multiplayer coaching flows, so that training can become collaborative later. | Future |
+| FR-011 | Multi-Puzzle Step Training Library | As a cuber, I want structured training sessions for many steps across multiple puzzles, so that the trainer can grow beyond 3x3 last layer and cross over time. | Future |
+| FR-012 | Daily Challenge and Reward Loop | As a cuber, I want a daily scramble challenge with leaderboards, points, or rewards, so that I can compete with others around the same prompt. | Future |
+| FR-013 | X-Cross and Advanced Start-State Trainer | As a cuber, I want guided X-cross and other advanced start-state drills, so that I can practice more advanced opening efficiency intentionally. | Future |
+| FR-014 | Virtual Cube Practice Surface | As a cuber, I want a virtual cube that follows the scramble and case setup, so that I can practice niche cases even when I do not have a cube in hand. | Future |
 
 ## V1 Product Frame
 
@@ -27,6 +31,7 @@
 - **Primary puzzles:** 3x3 last layer and cross
 - **Hard constraints:** offline-first, fork-first, no v1 backend dependency, no csTimer core rewrite
 - **Out of scope for v1:** Convex implementation, multiplayer, smart cube requirement, standalone app rewrite
+- **Requests captured for later roadmap:** multi-puzzle training, daily challenge competition, X-cross optimization, virtual-cube practice, and live social features
 
 ## Success Criteria
 

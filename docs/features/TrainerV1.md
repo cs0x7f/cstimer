@@ -84,3 +84,14 @@ Excluded:
 - multiplayer
 - standalone app rewrite
 - smart-cube-required flows
+- all-cubes/every-step curriculum
+- X-cross optimization workflows
+- virtual-cube-first practice surfaces
+
+## Future Expansion Requests Already Captured
+
+- broader step-by-step training across more puzzles
+- daily shared scramble competition with scoring or rewards
+- X-cross and advanced opening trainers
+- virtual cube support for case practice without a physical cube
+- live social or call-based collaborative training

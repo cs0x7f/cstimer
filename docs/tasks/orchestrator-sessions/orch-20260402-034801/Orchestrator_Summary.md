@@ -9,7 +9,7 @@
 - PRD in `docs/project_requirements.md`
 - coding law in `docs/Coding_Guidelines.md`
 - feature blueprint in `docs/features/TrainerV1.md`
-- ten FR issue files in `docs/issues/`
+- fourteen FR issue files in `docs/issues/`
 - design and mockup planning docs in `docs/design/` and `docs/mockups/`
 - repo strategy and source registry for later coordination
 - pending task packets for later agent delegation
