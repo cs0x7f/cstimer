@@ -1,7 +1,7 @@
 # Orchestrator Summary
 
 **Session:** `orch-20260402-034801`  
-**Status:** Ready for user review  
+**Status:** Final orchestration bundle ready for user approval  
 **Mode:** Takomi orchestration only
 
 ## What This Session Produced
@@ -13,7 +13,9 @@
 - fourteen FR issue files in `docs/issues/`
 - design and mockup planning docs in `docs/design/` and `docs/mockups/`
 - repo strategy and source registry for later coordination
-- pending task packets for later agent delegation
+- UI implementation packets for later build agents
+- regression and evidence packet for later implementation reviews
+- final delegation plan and upstream-slice guidance
 
 ## Completed Tasks
 
@@ -27,12 +29,17 @@
 8. `07_case-taxonomy-and-provenance.task.md`
 9. `08_source-intake-packet.task.md`
 10. `09_planner-logic-spec.task.md`
+11. `10_ui-implementation-packets.task.md`
+12. `11_regression-review-packet.task.md`
+13. `12_final-orchestrator-synthesis.task.md`
 
-## Pending Task Packet Order
+## Final Delegation Assets
 
-1. `10_ui-implementation-packets.task.md`
-2. `11_regression-review-packet.task.md`
-3. `12_final-orchestrator-synthesis.task.md`
+- `Delegation_Plan.md`
+- `Upstream_Friendly_Slices.md`
+- `artifacts/regression-checklist.md`
+- `artifacts/fr-to-verification-mapping.md`
+- `artifacts/evidence-expectations.md`
 
 ## User Review Gates
 
@@ -41,6 +48,16 @@
 - approve design outputs before UI implementation packets
 - approve planner logic before build delegation
 - approve the final orchestration bundle before assigning separate agents
+
+## Suggested Next Delegation Wave
+
+1. infrastructure implementation: storage/export bridge, catalog bundle, planner
+2. shared trainer shell
+3. trainer entry and weakness summary in parallel
+4. plan setup
+5. active session
+6. session review
+7. regression review using the Task 11 packet
 
 ## Notes
 

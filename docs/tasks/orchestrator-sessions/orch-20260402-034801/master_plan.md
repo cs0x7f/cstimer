@@ -21,8 +21,8 @@ Turn `00_Notes/Idea.md` into a reviewable orchestration bundle that you can appr
 
 ## Current Status Snapshot
 
-- Completed: `T00 Repo coordination brief`, `T01 Vision brief and MUS split`, `T02 PRD and FR issue set`, `T03 Coding guidelines and builder prompt`, `T04 UI design system and mockup planning`, `T05 Architecture and domain boundaries`, `T06 Persistence and export plan`, `T07 Case taxonomy and provenance schema`, `T08 Source intake packet`, `T09 Planner logic specification`
-- Next up: `T10 UI implementation packets`
+- Completed: `T00 Repo coordination brief`, `T01 Vision brief and MUS split`, `T02 PRD and FR issue set`, `T03 Coding guidelines and builder prompt`, `T04 UI design system and mockup planning`, `T05 Architecture and domain boundaries`, `T06 Persistence and export plan`, `T07 Case taxonomy and provenance schema`, `T08 Source intake packet`, `T09 Planner logic specification`, `T10 UI implementation packets`, `T11 Regression review packet`, `T12 Final orchestration synthesis`
+- Bundle state: ready for user signoff and delegation
 
 ## Dependency Map
 
