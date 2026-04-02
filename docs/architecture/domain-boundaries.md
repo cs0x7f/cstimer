@@ -104,9 +104,14 @@ These types and functions are **trainer domain** — no csTimer imports, no brow
 | `caseId` | `string` | e.g. `"PLL-T"`, `"OLL-27"` |
 | `category` | `"PLL" \| "OLL" \| "cross"` | Case family |
 | `name` | `string` | Human-readable name |
+| `groupTags` | `string[]` | Recognition and taxonomy tags |
+| `twoLookPhase` | `"edges" \| "corners" \| "dot-resolve" \| null` | Returning-cuber OLL phase when relevant |
 | `algorithms` | `AlgorithmEntry[]` | Primary and alternate algorithms |
 | `provenance` | `ProvenanceRecord[]` | Source attribution per algorithm |
 | `difficultyTier` | `number` (1-5) | Relative difficulty estimate |
+| `notes` | `string` | Catalog notes and maintainer comments |
+| `fingersTrickNotes` | `string` | Optional execution guidance |
+| `updatedAt` | `ISODateString` | Last catalog update timestamp |
 
 **Role:** The content layer. Pure catalog data with provenance. No behavioral logic — the planner and stats modules read from this, but the catalog does not depend on them.
 
@@ -114,8 +119,8 @@ These types and functions are **trainer domain** — no csTimer imports, no brow
 
 | Type | Shape | Notes |
 |------|-------|-------|
-| `AlgorithmEntry` | `{ algorithmId, notation, variantLabel, handedness, recommended }` | Supports primary plus alternates |
-| `ProvenanceRecord` | `{ sourceRef, sourceUrl, confidence, lastUpdatedAt, notes }` | Matches FR-007 provenance expectations |
+| `AlgorithmEntry` | `{ algorithmId, notation, variantLabel, handedness, recommended, moveCount, sourceRefs }` | Supports primary plus alternates with attribution links |
+| `ProvenanceRecord` | `{ sourceRef, sourceName, sourceUrl, sourceType, confidence, contributedAt, lastVerifiedAt?, notes, coversAlgorithms }` | Matches FR-007 provenance expectations |
 
 ### `SkillStats`
 

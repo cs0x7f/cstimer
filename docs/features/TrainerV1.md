@@ -65,15 +65,18 @@ The trainer domain is defined by portable data types and pure functions that hav
 
 ### Planner Logic
 
-`generateQueue(trainingPlan, skillStats, caseCatalog)` — pure function, no side effects, no csTimer imports. Returns ordered `DrillQueue` based on plan structure and weakness scores.
+`generateQueue(trainingPlan, skillStats, caseCatalog)` - pure function, no side effects, no csTimer imports. Returns ordered `DrillQueue` based on plan structure and weakness scores.
 
 ### Persistence Expectations
 
-- local-first storage
-- separate `trainer:*` keys from raw session solve chunks
-- export/import format is domain-owned, not derived from csTimer internals
-- `StorageAdapter` implements the bridge — domain code does not reference storage APIs
-- the exact browser storage mechanism is chosen by the persistence task, not hard-coded in this boundary doc
+- **Storage mechanism:** csTimer's `storage.js` abstraction via `storage.setKey()` / `storage.getKey()`. In the current repo that means IndexedDB when available, with `localStorage` fallback. Trainer uses `trainer:` prefixed keys and does not bypass the host storage layer.
+- **Key layout:** `trainer:profile`, `trainer:plans`, `trainer:activePlanId`, `trainer:stats`, `trainer:sessions`, `trainer:catalogVersion`. All registered in `kernel.js` valid-key allowlist so fallback cleanup does not purge them.
+- **Coexistence:** Trainer keys are separate from `session_XX_YY` solve chunks. Trainer never mutates csTimer solve records. Trainer linkage stores its own attempt metadata with optional native solve ID reference.
+- **Export format:** Trainer block at `$.trainer` in the exported JSON, parallel to `$.properties` and `$.session*`. Export is additive. A missing trainer block on import does not break solve import and does not clear existing trainer data.
+- **Round-trip invariant:** export -> clear -> import -> export produces identical trainer data.
+- **Offline-first:** All data in browser-local persistence through `storage.js`. No API calls. Degrades to in-memory if storage is unavailable.
+- Full details: `docs/architecture/persistence-plan.md`
+- Compatibility checklist: `docs/architecture/export-import-compatibility.md`
 
 ## UI Surfaces Requiring Design
 
@@ -126,10 +129,10 @@ The domain layer is designed so that future extraction into a standalone TypeScr
 
 1. Domain code never imports csTimer globals, `localStorage`, or DOM APIs.
 2. Adapter interfaces are declared by the domain, implemented by csTimer glue.
-3. Domain types are plain objects, not classes — serialization is trivial.
+3. Domain types are plain objects, not classes. Serialization is trivial.
 4. No v1 code references Convex, Next.js, or React.
 5. Export format is defined in the domain layer, not derived from csTimer's internal format.
-6. Trainer session linkage references native solves externally; it does not require mutating raw solve-history records.
+6. Trainer session linkage references native solves externally. It does not require mutating raw solve-history records.
 
 Full boundary definitions: `docs/architecture/domain-boundaries.md`
 
