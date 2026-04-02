@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V1 - Mission Briefing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #14181f;
+            --surface-accent: #1c232d;
+            --accent: #facc15;
+            --text-dim: #64748b;
+            --text-bright: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body { background-color: var(--bg); color: var(--text-bright); font-family: 'Rajdhani', sans-serif; }
+        .heading { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.16em; }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        .tactical-border { position: relative; border: 1px solid rgba(250, 204, 21, 0.1); }
+        .tactical-border::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+        }
+        
+        .glow-hover:hover { box-shadow: 0 0 20px rgba(250, 204, 21, 0.15); transition: all 0.3s; }
+    </style>
+</head>
+<body class="p-12 min-h-screen flex flex-col max-w-7xl mx-auto">
+    <!-- Mission Header -->
+    <header class="flex items-end justify-between border-b border-white/5 pb-8 mb-12">
+        <div class="flex items-center space-x-6">
+            <h1 class="heading text-5xl font-black italic">MISSION <span class="text-accent underline decoration-accent/20 underline-offset-8">BRIEFING</span></h1>
+            <div class="w-px h-12 bg-white/10"></div>
+            <div class="flex flex-col">
+                <span class="mono text-[9px] text-accent uppercase tracking-[0.4em]">Active Protocol Selection</span>
+                <span class="text-xl font-bold text-white/50 tracking-tight">PLL / OLL MASTER DRILLS</span>
+            </div>
+        </div>
+        <button class="bg-accent text-bg heading text-lg font-black px-12 py-4 tactical-border glow-hover hover:scale-[1.02] active:scale-95 transition-all">
+            Execute Session
+        </button>
+    </header>
+
+    <main class="grid grid-cols-12 gap-12 flex-1">
+        <!-- Sidebar: Performance Summary -->
+        <aside class="col-span-12 lg:col-span-4 space-y-12">
+            <section class="bg-surface p-8 tactical-border rotate-[-1deg]">
+                <h3 class="heading text-xs text-accent mb-6 flex items-center">
+                    <span class="w-1.5 h-1.5 bg-accent mr-3"></span> Baseline Diagnostics
+                </h3>
+                <div class="space-y-6">
+                    <div class="flex justify-between items-end">
+                        <div class="flex flex-col">
+                            <span class="mono text-[9px] text-dim uppercase">Overall_Avg (LL)</span>
+                            <span class="heading text-2xl font-black tracking-tighter">4.89s</span>
+                        </div>
+                        <div class="text-xs text-success font-bold font-mono">-12% IMPROVED</div>
+                    </div>
+                    <div class="h-1 w-full bg-white/5 relative">
+                        <div class="h-full bg-accent" style="width: 72%"></div>
+                        <div class="absolute h-full w-[2px] bg-white opacity-20 left-[72%]"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-bg p-4 border border-white/5 flex flex-col items-center">
+                            <span class="mono text-[8px] text-dim">PLL_AVG</span>
+                            <span class="heading text-sm text-white">1.82s</span>
+                        </div>
+                        <div class="bg-bg p-4 border border-white/5 flex flex-col items-center">
+                            <span class="mono text-[8px] text-dim">OLL_AVG</span>
+                            <span class="heading text-sm text-white">3.05s</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="space-y-6">
+                <h3 class="heading text-xs text-error mb-4 flex items-center">
+                    <span class="w-1.5 h-1.5 bg-error mr-3 animate-pulse"></span> Critical Anomalies
+                </h3>
+                <div class="space-y-3">
+                    <div class="bg-surface p-4 tactical-border flex items-center space-x-4 group cursor-pointer hover:bg-error/5 transition-all border-l-2 border-error">
+                        <div class="w-12 h-12 bg-bg border border-white/5 flex items-center justify-center font-mono text-xs opacity-60">E</div>
+                        <div class="flex-1">
+                            <h4 class="heading text-sm text-white opacity-80 group-hover:text-error">PLL_E_PERM</h4>
+                            <p class="mono text-[8px] text-error">Latency: +0.68s over avg</p>
+                        </div>
+                    </div>
+                    <div class="bg-surface p-4 tactical-border flex items-center space-x-4 group cursor-pointer hover:bg-error/5 transition-all border-l-2 border-error">
+                        <div class="w-12 h-12 bg-bg border border-white/5 flex items-center justify-center font-mono text-xs opacity-60">N</div>
+                        <div class="flex-1">
+                            <h4 class="heading text-sm text-white opacity-80 group-hover:text-error">PLL_NA_PERM</h4>
+                            <p class="mono text-[8px] text-error">Latency: +1.02s over avg</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Main Form: Protocol Calibration -->
+        <section class="col-span-12 lg:col-span-8 space-y-12">
+            <!-- 01. Parameters -->
+            <div class="space-y-8">
+                <h2 class="heading text-xl text-white font-black flex items-center italic">
+                    <span class="text-accent italic font-black mr-4">01 //</span> Protocol Configuration
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-8 bg-surface tactical-border space-y-6">
+                        <h3 class="mono text-[10px] text-accent uppercase tracking-widest leading-none">Target Dataset Subsystems</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center p-4 bg-bg border border-white/5 rounded cursor-pointer group hover:border-accent/40 transition-all">
+                                <input type="checkbox" checked class="w-4 h-4 accent-accent bg-surface border-white/10 text-bg">
+                                <span class="ml-4 heading text-sm text-white skew-x-[-10deg]"><span class="skew-x-[10deg] block">PLL: FULL SYSTEM DATASET</span></span>
+                            </label>
+                            <label class="flex items-center p-4 bg-bg border border-white/5 rounded cursor-pointer group hover:border-accent/40 transition-all opacity-40 grayscale">
+                                <input type="checkbox" class="w-4 h-4 accent-accent bg-surface border-white/10 text-bg">
+                                <span class="ml-4 heading text-sm text-white">OLL: FULL SYSTEM DATASET</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-surface tactical-border space-y-6">
+                        <h3 class="mono text-[10px] text-accent uppercase tracking-widest leading-none">Weighting Intensity Calibration</h3>
+                        <div class="space-y-6 py-4">
+                            <input type="range" class="w-full accent-accent h-1 bg-white/5 appearance-none cursor-pointer">
+                            <div class="flex justify-between mono text-[8px] text-dim font-bold tracking-tighter">
+                                <span>UNIFORM_RANDOM</span>
+                                <span class="text-accent underline underline-offset-4">ADAPTIVE_BIAS (HIGH)</span>
+                                <span>CRITICAL_ONLY</span>
+                            </div>
+                        </div>
+                        <p class="mono text-[9px] text-white/30 italic text-center leading-relaxed">System will prioritize Weak_Link cases with 3.2x increased frequency.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02. Session Drive -->
+            <div class="space-y-8">
+                <h2 class="heading text-xl text-white font-black flex items-center italic">
+                    <span class="text-accent italic font-black mr-4">02 //</span> Intensity Calibration
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="bg-surface p-8 tactical-border group cursor-pointer hover:bg-accent/5 transition-all text-center">
+                        <div class="mono text-[8px] text-accent mb-2 opacity-0 group-hover:opacity-100 transition-opacity">LOW_LATENCY</div>
+                        <h4 class="heading text-2xl mb-1 group-hover:text-accent font-black tracking-tighter italic">SPRINT</h4>
+                        <p class="mono text-[9px] text-dim">10 ITERATIONS</p>
+                    </div>
+                    <div class="bg-accent/10 p-8 border-2 border-accent group transition-all text-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-accent/5 animate-pulse"></div>
+                        <div class="mono text-[8px] text-accent mb-2 font-black italic relative z-10">RECOMMENDED</div>
+                        <h4 class="heading text-2xl mb-1 text-white font-black tracking-tighter italic relative z-10">TACTICAL</h4>
+                        <p class="mono text-[9px] text-accent/60 font-black relative z-10">25 ITERATIONS</p>
+                    </div>
+                    <div class="bg-surface p-8 tactical-border group cursor-pointer hover:bg-accent/5 transition-all text-center">
+                        <div class="mono text-[8px] text-accent mb-2 opacity-0 group-hover:opacity-100 transition-opacity">HIGH_STAMINA</div>
+                        <h4 class="heading text-2xl mb-1 group-hover:text-accent font-black tracking-tighter italic">MARATHON</h4>
+                        <p class="mono text-[9px] text-dim">50 ITERATIONS</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-12 py-6 border-t border-white/5 flex justify-between items-center opacity-40">
+        <button class="mono text-[10px] uppercase font-bold hover:text-accent transition-colors flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Abort Protocol / Change Mission
+        </button>
+        <div class="flex items-center space-x-6 mono text-[9px] tracking-widest font-black italic uppercase">
+            <span>TRAINER_V1 // MISSION_READY</span>
+            <div class="w-3 h-3 bg-success rounded-full animate-ping"></div>
+        </div>
+    </footer>
+</body>
+</html>

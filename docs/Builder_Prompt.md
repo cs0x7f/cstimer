@@ -47,14 +47,18 @@ Do not skip this by treating a complex feature as a "small patch."
 
 ## Mandatory Mockup-Driven Implementation
 
-The `docs/mockups/` folder is the source of truth for UI layout intent.
+The `docs/mockups/` folder is the **UNQUESTIONABLE source of truth** for all front-end UI/UX. You must NOT deviate from the layout, color palette, typography, or component structure defined in the mockups.
 
-Required first-pass mockups:
-- `trainer-entry.html`
-- `training-plan-setup.html`
-- `active-session-queue.html`
-- `session-review.html`
-- `weakness-summary.html`
+Before implementing any page, open the corresponding mockup file and replicate it exactly.
+
+**Required v1 mockups (STABLE):**
+- `docs/mockups/trainer-entry.html`
+- `docs/mockups/training-plan-setup.html`
+- `docs/mockups/active-session-queue.html`
+- `docs/mockups/session-review.html`
+- `docs/mockups/weakness-summary.html`
+
+These stable files reflect the approved **V2** design direction. Versioned alternates such as `v1_*` and `v2_*` are reference material only unless the unprefixed stable files are updated again through an approved design task.
 
 If a UI task has no mockup yet:
 1. **Stop** immediately

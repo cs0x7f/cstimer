@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Plan Setup — csTimer Trainer V2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1816; --bg-warm: #1f1c19; --surface: #272320; --surface-raised: #302b27; --surface-hover: #3a342f;
+            --saffron: #e8a620; --saffron-dim: #c48a18; --saffron-glow: rgba(232,166,32,0.12); --saffron-wash: rgba(232,166,32,0.06);
+            --good: #6bba62; --good-dim: rgba(107,186,98,0.15); --weak: #d4564e; --weak-dim: rgba(212,86,78,0.15);
+            --text-primary: #ede8e1; --text-secondary: #9b9388; --text-tertiary: #6b635a; --text-inverse: #1a1816;
+            --border: rgba(237,232,225,0.08); --border-accent: rgba(232,166,32,0.25);
+            --radius-sm: 3px; --radius-md: 6px; --radius-lg: 10px;
+            --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        .display { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+        .display em { font-style: italic; }
+        .label { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+        .data { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-variant-numeric: tabular-nums; }
+        .container { max-width: 900px; margin: 0 auto; padding: var(--space-8) var(--space-6); }
+
+        .precision-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); position: relative; overflow: hidden; transition: border-color 0.3s ease, background 0.3s ease; }
+        .precision-card:hover { border-color: var(--border-accent); background: var(--surface-raised); }
+        .precision-card::before, .precision-card::after { content: ''; position: absolute; width: 8px; height: 8px; }
+        .precision-card::before { top: -1px; left: -1px; border-top: 1.5px solid var(--saffron); border-left: 1.5px solid var(--saffron); border-radius: var(--radius-md) 0 0 0; }
+        .precision-card::after { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--saffron); border-right: 1.5px solid var(--saffron); border-radius: 0 0 var(--radius-md) 0; }
+
+        .btn { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 10px 22px; border-radius: var(--radius-sm); transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--saffron); color: var(--text-inverse); }
+        .btn-primary:hover { background: var(--saffron-dim); box-shadow: 0 0 20px var(--saffron-glow); }
+        .btn-outline { background: transparent; color: var(--saffron); border: 1px solid var(--border-accent); }
+        .btn-outline:hover { background: var(--saffron-wash); }
+        .btn-ghost { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--surface-raised); color: var(--text-primary); }
+
+        .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 5px; }
+        .tag-weak { background: var(--weak-dim); color: var(--weak); }
+        .tag-good { background: var(--good-dim); color: var(--good); }
+        .tag-saffron { background: var(--saffron-glow); color: var(--saffron); }
+        .tag-neutral { background: rgba(237,232,225,0.06); color: var(--text-secondary); }
+
+        .divider { height: 1px; background: var(--border); margin: var(--space-7) 0; }
+
+        .input { font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--text-primary); outline: none; transition: border-color 0.2s; width: 100%; }
+        .input:focus { border-color: var(--saffron); box-shadow: 0 0 0 3px var(--saffron-glow); }
+        .input::placeholder { color: var(--text-tertiary); }
+
+        .toggle-track { width: 36px; height: 20px; background: var(--surface-raised); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+        .toggle-track.on { background: var(--saffron); border-color: var(--saffron); }
+        .toggle-knob { width: 14px; height: 14px; background: var(--text-primary); border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.2s ease; }
+        .toggle-track.on .toggle-knob { transform: translateX(16px); background: var(--text-inverse); }
+
+        .progress-track { width: 100%; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 2px; }
+
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .status-dot.good { background: var(--good); box-shadow: 0 0 6px var(--good); }
+        .status-dot.weak { background: var(--weak); box-shadow: 0 0 6px var(--weak); }
+        .status-dot.warn { background: var(--saffron); box-shadow: 0 0 6px var(--saffron); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
+
+        /* --- Page-specific --- */
+        .page-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: var(--space-5); border-bottom: 1px solid var(--border); margin-bottom: var(--space-7); }
+        .back-link { display: flex; align-items: center; gap: var(--space-2); font-size: 13px; color: var(--text-tertiary); cursor: pointer; transition: color 0.2s; text-decoration: none; }
+        .back-link:hover { color: var(--saffron); }
+        .back-link svg { width: 16px; height: 16px; }
+
+        .page-title-group { margin-bottom: var(--space-7); }
+        .page-title { font-size: 36px; margin-bottom: var(--space-2); }
+        .page-subtitle { color: var(--text-secondary); font-size: 15px; }
+
+        .section-label { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+        .section-label::before { content: ''; width: 16px; height: 1px; background: var(--saffron); }
+        .section-label h3 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+
+        .template-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-bottom: var(--space-7); }
+        .template-card { padding: var(--space-5); cursor: pointer; }
+        .template-card.selected { border-color: var(--saffron); background: var(--saffron-wash); }
+        .template-name { font-family: 'Instrument Serif', serif; font-size: 18px; margin-bottom: var(--space-2); }
+        .template-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: var(--space-3); }
+        .template-meta { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-bottom: var(--space-7); }
+        .config-group { display: flex; flex-direction: column; gap: var(--space-2); }
+        .config-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+        .range-wrapper { position: relative; }
+        .range-display { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
+        .range-track { width: 100%; height: 4px; background: var(--border); border-radius: 2px; position: relative; }
+        .range-fill { height: 100%; background: var(--saffron); border-radius: 2px; }
+        .range-thumb { width: 14px; height: 14px; background: var(--saffron); border: 2px solid var(--bg); border-radius: 50%; position: absolute; top: -5px; transform: translateX(-50%); cursor: pointer; box-shadow: 0 0 8px var(--saffron-glow); }
+
+        .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) 0; border-bottom: 1px solid var(--border); }
+        .toggle-row:last-child { border-bottom: none; }
+        .toggle-info { display: flex; flex-direction: column; gap: 2px; }
+        .toggle-label { font-size: 14px; color: var(--text-primary); }
+        .toggle-desc { font-size: 12px; color: var(--text-tertiary); }
+
+        .case-preview { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-7); }
+        .case-chip { padding: 6px 12px; background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .case-chip:hover { border-color: var(--border-accent); }
+        .case-chip.weak { border-color: rgba(212,86,78,0.3); }
+        .case-chip.good { border-color: rgba(107,186,98,0.3); opacity: 0.6; }
+
+        .summary-card { padding: var(--space-6); margin-bottom: var(--space-6); }
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-bottom: var(--space-5); }
+        .summary-stat { display: flex; flex-direction: column; gap: 2px; }
+        .summary-stat-value { font-family: 'Instrument Serif', serif; font-size: 28px; line-height: 1; }
+        .summary-stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+        .actions { display: flex; gap: var(--space-4); justify-content: flex-end; }
+
+        @media (max-width: 768px) {
+            .container { padding: var(--space-6) var(--space-4); }
+            .template-grid { grid-template-columns: 1fr; }
+            .config-grid { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .page-title { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header animate-in">
+            <a class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+                Back to Trainer
+            </a>
+            <span class="tag tag-saffron">Last Layer</span>
+        </div>
+
+        <!-- Title -->
+        <div class="page-title-group animate-in delay-1">
+            <div class="display page-title">Configure your <em>session</em></div>
+            <p class="page-subtitle">Pick a template or customize your own drill plan. Settings are saved between sessions.</p>
+        </div>
+
+        <!-- Templates -->
+        <div class="animate-in delay-2">
+            <div class="section-label"><h3>Templates</h3></div>
+            <div class="template-grid">
+                <div class="precision-card template-card">
+                    <div class="template-name">Quick Review</div>
+                    <div class="template-desc">Top 10 weakest cases from PLL and OLL. Fast, focused session.</div>
+                    <div class="template-meta">
+                        <span class="tag tag-neutral">~8 min</span>
+                        <span class="tag tag-neutral">10 cases</span>
+                    </div>
+                </div>
+
+                <div class="precision-card template-card selected">
+                    <div class="template-name"><em>Full Rotation</em></div>
+                    <div class="template-desc">All 21 PLL cases with weak-case weighting. Comprehensive coverage.</div>
+                    <div class="template-meta">
+                        <span class="tag tag-saffron">~15 min</span>
+                        <span class="tag tag-saffron">21 cases</span>
+                    </div>
+                </div>
+
+                <div class="precision-card template-card">
+                    <div class="template-name">Weakness Blitz</div>
+                    <div class="template-desc">Only cases below 60% confidence. High reps on your worst performers.</div>
+                    <div class="template-meta">
+                        <span class="tag tag-neutral">~12 min</span>
+                        <span class="tag tag-weak"><span class="status-dot weak"></span>Weak Only</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration -->
+        <div class="animate-in delay-3">
+            <div class="section-label"><h3>Session Settings</h3></div>
+            <div class="precision-card" style="padding: var(--space-6); margin-bottom: var(--space-7);">
+                <div class="config-grid">
+                    <div class="config-group">
+                        <div class="config-label">Session Name</div>
+                        <input type="text" class="input" value="PLL Full Rotation — Evening" />
+                    </div>
+                    <div class="config-group">
+                        <div class="config-label">Case Set</div>
+                        <div style="display: flex; gap: var(--space-2);">
+                            <button class="btn btn-primary" style="padding: 8px 16px; font-size: 12px;">PLL</button>
+                            <button class="btn btn-ghost" style="padding: 8px 16px; font-size: 12px;">OLL</button>
+                            <button class="btn btn-ghost" style="padding: 8px 16px; font-size: 12px;">Both</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: var(--space-5);">
+                    <div class="range-display">
+                        <span class="config-label">Session Length</span>
+                        <span class="data" style="font-size: 13px; color: var(--saffron);">21 cases</span>
+                    </div>
+                    <div class="range-track">
+                        <div class="range-fill" style="width: 100%;"></div>
+                        <div class="range-thumb" style="left: 100%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: var(--space-2);">
+                        <span class="label">5 cases</span>
+                        <span class="label">All 21</span>
+                    </div>
+                </div>
+
+                <div class="divider" style="margin: var(--space-5) 0;"></div>
+
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <span class="toggle-label">Adaptive Weighting</span>
+                        <span class="toggle-desc">Weak cases appear more frequently in the queue</span>
+                    </div>
+                    <div class="toggle-track on"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <span class="toggle-label">Show Algorithm Hints</span>
+                        <span class="toggle-desc">Display algorithm notation during drills</span>
+                    </div>
+                    <div class="toggle-track on"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <span class="toggle-label">Repeat Failed Cases</span>
+                        <span class="toggle-desc">Re-queue cases where recognition time exceeds 3s</span>
+                    </div>
+                    <div class="toggle-track"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <span class="toggle-label">Randomize Order</span>
+                        <span class="toggle-desc">Shuffle case order instead of priority-based sorting</span>
+                    </div>
+                    <div class="toggle-track"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Preview -->
+        <div class="animate-in delay-4">
+            <div class="section-label"><h3>Drill Queue Preview</h3></div>
+            <div class="case-preview">
+                <div class="case-chip weak"><span class="status-dot weak"></span>E-perm</div>
+                <div class="case-chip weak"><span class="status-dot weak"></span>N-perm (a)</div>
+                <div class="case-chip weak"><span class="status-dot weak"></span>V-perm</div>
+                <div class="case-chip"><span class="status-dot warn"></span>G-perm (c)</div>
+                <div class="case-chip"><span class="status-dot warn"></span>R-perm (a)</div>
+                <div class="case-chip"><span class="status-dot warn"></span>F-perm</div>
+                <div class="case-chip"><span class="status-dot warn"></span>J-perm (b)</div>
+                <div class="case-chip"><span class="status-dot" style="background: var(--text-tertiary);"></span>A-perm (a)</div>
+                <div class="case-chip"><span class="status-dot" style="background: var(--text-tertiary);"></span>A-perm (b)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>T-perm</div>
+                <div class="case-chip good"><span class="status-dot good"></span>U-perm (a)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>U-perm (b)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>Z-perm</div>
+                <div class="case-chip good"><span class="status-dot good"></span>H-perm</div>
+                <div class="case-chip good"><span class="status-dot good"></span>Y-perm</div>
+                <div class="case-chip good"><span class="status-dot good"></span>G-perm (a)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>G-perm (b)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>G-perm (d)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>J-perm (a)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>R-perm (b)</div>
+                <div class="case-chip good"><span class="status-dot good"></span>N-perm (b)</div>
+            </div>
+        </div>
+
+        <!-- Session Summary -->
+        <div class="precision-card summary-card animate-in delay-4">
+            <div class="section-label" style="margin-bottom: var(--space-5);"><h3>Session Plan Summary</h3></div>
+            <div class="summary-grid">
+                <div class="summary-stat">
+                    <span class="summary-stat-value">21</span>
+                    <span class="summary-stat-label">Total Cases</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="summary-stat-value" style="color: var(--weak);">3</span>
+                    <span class="summary-stat-label">Weak Cases</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="summary-stat-value">~15</span>
+                    <span class="summary-stat-label">Est. Minutes</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="summary-stat-value" style="color: var(--saffron);">2.1×</span>
+                    <span class="summary-stat-label">Weak Weighting</span>
+                </div>
+            </div>
+            <div class="progress-track" style="margin-bottom: var(--space-5);">
+                <div class="progress-fill" style="width: 14%; background: var(--weak);"></div>
+            </div>
+            <div style="display: flex; gap: var(--space-4);">
+                <span class="label" style="display: flex; align-items: center; gap: 4px;"><span class="status-dot weak"></span> 3 Weak</span>
+                <span class="label" style="display: flex; align-items: center; gap: 4px;"><span class="status-dot warn"></span> 4 Learning</span>
+                <span class="label" style="display: flex; align-items: center; gap: 4px;"><span class="status-dot good"></span> 12 Confident</span>
+                <span class="label" style="display: flex; align-items: center; gap: 4px;"><span class="status-dot" style="background: var(--text-tertiary);"></span> 2 Untrained</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions animate-in delay-4">
+            <button class="btn btn-ghost">Save as Template</button>
+            <button class="btn btn-primary" style="padding: 12px 32px; font-size: 14px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Start Session
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="divider"></div>
+        <footer style="display: flex; justify-content: space-between; padding: var(--space-4) 0;">
+            <span class="label">csTimer Trainer v2 Mockup</span>
+            <span class="label">Training Plan Setup</span>
+        </footer>
+    </div>
+</body>
+</html>

@@ -21,18 +21,18 @@
 2. `01_vision-brief.task.md`
 3. `02_prd-and-issues.task.md`
 4. `03_coding-guidelines-and-builder-prompt.task.md`
+5. `04_ui-design-system-and-mockups.task.md`
 
 ## Pending Task Packet Order
 
-1. `04_ui-design-system-and-mockups.task.md`
-2. `05_architecture-and-domain-boundaries.task.md`
-3. `06_persistence-and-export-plan.task.md`
-4. `07_case-taxonomy-and-provenance.task.md`
-5. `08_source-intake-packet.task.md`
-6. `09_planner-logic-spec.task.md`
-7. `10_ui-implementation-packets.task.md`
-8. `11_regression-review-packet.task.md`
-9. `12_final-orchestrator-synthesis.task.md`
+1. `05_architecture-and-domain-boundaries.task.md`
+2. `06_persistence-and-export-plan.task.md`
+3. `07_case-taxonomy-and-provenance.task.md`
+4. `08_source-intake-packet.task.md`
+5. `09_planner-logic-spec.task.md`
+6. `10_ui-implementation-packets.task.md`
+7. `11_regression-review-packet.task.md`
+8. `12_final-orchestrator-synthesis.task.md`
 
 ## User Review Gates
 

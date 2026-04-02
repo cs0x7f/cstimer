@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V1 - Global Diagnostic Heatmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #14181f;
+            --surface-accent: #1c232d;
+            --accent: #facc15;
+            --text-dim: #64748b;
+            --text-bright: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body { background-color: var(--bg); color: var(--text-bright); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
+        .heading { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.16em; }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        .tactical-border { position: relative; border: 1px solid rgba(250, 204, 21, 0.1); }
+        .tactical-border::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+        }
+
+        .heat-critical { background: rgba(239, 68, 68, 0.4); border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 20px rgba(239, 68, 68, 0.1); }
+        .heat-average { background: rgba(250, 204, 21, 0.2); border-color: rgba(250, 204, 21, 0.4); }
+        .heat-stable { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.4); }
+        .heat-untracked { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); opacity: 0.3; }
+
+        .grid-cell { transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .grid-cell:hover { transform: scale(1.1) rotate(2deg); z-index: 50; border-color: var(--accent); }
+    </style>
+</head>
+<body class="p-12 min-h-screen flex flex-col max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="flex items-end justify-between border-b border-white/5 pb-8 mb-12">
+        <div class="flex items-center space-x-6">
+            <h1 class="heading text-4xl font-black italic">GLOBAL <span class="text-accent underline decoration-accent/20 underline-offset-8">DIAGNOSTICS</span></h1>
+            <div class="w-px h-10 bg-white/10"></div>
+            <div class="flex flex-col">
+                <span class="mono text-[9px] text-accent uppercase tracking-[0.4em]">Integrated Performance Map</span>
+                <span class="text-lg font-bold text-white/50 tracking-tight">RANK_S-TIER_CFOP</span>
+            </div>
+        </div>
+        <div class="flex space-x-4">
+            <button class="bg-surface border border-white/10 heading text-[10px] font-black italic px-6 py-2 hover:bg-accent hover:text-bg transition-all active:scale-95">RAW_DATA_EXPORT</button>
+            <button class="bg-accent text-bg heading text-[10px] font-black italic px-8 py-2 tactical-border hover:brightness-110 active:scale-95 transition-all">RE_SYNC_LOC</button>
+        </div>
+    </header>
+
+    <main class="grid grid-cols-12 gap-12 flex-1">
+        <!-- Sidebar Filters/Insights -->
+        <aside class="col-span-12 lg:col-span-3 space-y-12">
+            <div class="space-y-6">
+                <h3 class="heading text-xs text-accent mb-4 italic">SUBSYSTEM_ANALYSIS</h3>
+                <div class="space-y-2">
+                    <button class="w-full text-left p-4 tactical-border bg-accent/10 border-2 border-accent group transition-all">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="heading text-sm text-white italic group-hover:text-accent">FULL_PLL</span>
+                            <span class="mono text-[10px] bg-accent text-bg px-2 py-0.5 rounded-sm">21/21</span>
+                        </div>
+                        <div class="mono text-[8px] text-accent/60 italic font-black">94% CALIBRATED</div>
+                    </button>
+                    <button class="w-full text-left p-4 tactical-border bg-surface border border-white/5 group transition-all opacity-40 hover:opacity-100">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="heading text-sm text-white/60 italic tracking-tighter uppercase font-bold">FULL_OLL</span>
+                            <span class="mono text-[10px] text-dim">0 / 57</span>
+                        </div>
+                    </button>
+                    <button class="w-full text-left p-4 tactical-border bg-surface border border-white/5 group transition-all opacity-30 hover:opacity-100">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="heading text-sm text-white/60 italic tracking-tighter uppercase font-bold">CROSS_V1</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-surface p-8 tactical-border shadow-2xl relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
+                <div class="absolute top-0 right-0 p-2"><div class="w-4 h-[1px] bg-accent/20"></div></div>
+                <h4 class="heading text-[10px] text-accent mb-4 italic font-black uppercase tracking-[0.4em]">Direct_Tactical_Launch</h4>
+                <p class="text-sm font-bold text-white/60 italic leading-snug mb-8 group-hover:text-white transition-colors">Improvement protocol suggests immediate attention to Case:E_PERM to fix global average skew.</p>
+                <button class="w-full bg-accent text-bg heading text-[10px] font-black italic py-4 tactical-border hover:brightness-110 glow-hover transition-all skew-x-[-15deg]">
+                    <span class="skew-x-[15deg] block uppercase font-bold">INIT_CRITICAL_SPRINT</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Heatmap Diagnostic Workspace -->
+        <section class="col-span-12 lg:col-span-9 bg-surface border border-white/5 p-12 tactical-border shadow-2xl relative overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between mb-12">
+                <h2 class="heading text-xl font-black italic tracking-[0.2em] text-white">HEATMAP: PLL_CALIBRATION</h2>
+                <div class="flex items-center space-x-4 mono text-[10px] text-dim font-black uppercase italic italic-opacity-6">
+                    <span class="flex items-center"><span class="w-2 h-2 bg-success/40 border border-success/60 mr-2"></span>STABLE</span>
+                    <span class="flex items-center"><span class="w-2 h-2 bg-accent/40 border border-accent/60 mr-2"></span>WARN</span>
+                    <span class="flex items-center"><span class="w-2 h-2 bg-error/40 border border-error/60 mr-2 animate-pulse"></span>CRITICAL</span>
+                </div>
+            </div>
+
+            <!-- HEATMAP GRID (PLL 21) -->
+            <div class="grid grid-cols-7 gap-4 mb-16">
+                <!-- Row 1 -->
+                <div class="aspect-square grid-cell heat-stable flex flex-col items-center justify-center tactical-border cursor-pointer">
+                    <span class="heading text-2xl font-black italic text-white/90 brightness-110">Aa</span>
+                    <span class="mono text-[10px] text-success/60 italic font-bold">1.25s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-stable flex flex-col items-center justify-center tactical-border cursor-pointer">
+                    <span class="heading text-2xl font-black italic text-white/80 transition-colors">Ab</span>
+                    <span class="mono text-[10px] text-success/60 opacity-40">1.34s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-critical flex flex-col items-center justify-center border-2 tactical-border cursor-pointer group shadow-2xl shadow-error/10 overflow-hidden">
+                    <span class="heading text-2xl font-black italic text-white relative z-10 group-hover:scale-110 transition-transform">E</span>
+                    <span class="mono text-[10px] text-error font-black relative z-10">2.50s</span>
+                    <div class="absolute inset-0 bg-error/10 animate-pulse"></div>
+                </div>
+                <div class="aspect-square grid-cell heat-average flex flex-col items-center justify-center border-2 tactical-border cursor-pointer group shadow-2xl shadow-accent/10">
+                    <span class="heading text-2xl font-black italic text-white/90 group-hover:text-accent transition-colors">Ga</span>
+                    <span class="mono text-[10px] text-accent/60 font-black">1.88s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-average flex flex-col items-center justify-center border border-white/5 cursor-pointer opacity-60">
+                    <span class="heading text-2xl font-black italic text-white/60">Gb</span>
+                    <span class="mono text-[10px] opacity-20">1.92s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-stable flex flex-col items-center justify-center border border-white/5 cursor-pointer opacity-80">
+                    <span class="heading text-2xl font-black italic text-white/80">Gc</span>
+                    <span class="mono text-[10px] text-success/40">1.44s</span>
+                </div>
+                <!-- Extra items for visual weight -->
+                <div class="aspect-square grid-cell heat-untracked flex flex-col items-center justify-center border border-white/5 cursor-not-allowed">
+                    <span class="heading text-2xl font-black italic text-white/10">V</span>
+                    <span class="mono text-[10px] opacity-0">N/A</span>
+                </div>
+                <!-- Row 2 -->
+                <div class="aspect-square grid-cell heat-average flex flex-col items-center justify-center tactical-border cursor-pointer opacity-90">
+                    <span class="heading text-2xl font-black italic text-white/90">Ja</span>
+                    <span class="mono text-[10px] text-accent/40 font-bold">1.45s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-stable flex flex-col items-center justify-center tactical-border cursor-pointer">
+                    <span class="heading text-2xl font-black italic text-white/90">Jb</span>
+                    <span class="mono text-[10px] text-success/60 italic font-bold">1.15s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-average flex flex-col items-center justify-center tactical-border cursor-pointer">
+                    <span class="heading text-2xl font-black italic text-white/90">Nb</span>
+                    <span class="mono text-[10px] text-accent/40 font-bold">2.12s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-critical flex flex-col items-center justify-center border-2 tactical-border cursor-pointer group opacity-90">
+                    <div class="absolute inset-x-0 bottom-0 h-1 bg-error"></div>
+                    <span class="heading text-2xl font-black italic text-white">Na</span>
+                    <span class="mono text-[10px] text-error font-black">2.88s</span>
+                </div>
+                <div class="aspect-square grid-cell heat-stable flex flex-col items-center justify-center tactical-border cursor-pointer">
+                    <span class="heading text-2xl font-black italic text-white">T</span>
+                    <span class="mono text-[10px] text-success/60 font-black">1.10s</span>
+                </div>
+            </div>
+
+            <!-- Metric Breakdown List -->
+            <div class="flex-1 overflow-hidden flex flex-col">
+                <div class="mono text-[10px] font-black text-accent uppercase tracking-[0.4em] mb-4 italic flex items-center">
+                    <span class="w-1.5 h-1.5 bg-accent mr-3"></span> System_Ranking_Data // Sorted: Stability_Ascending
+                </div>
+                <div class="overflow-y-auto pr-4 space-y-2 no-scrollbar">
+                    <div class="bg-bg border border-white/5 p-4 flex justify-between items-center group cursor-pointer hover:border-error transition-all">
+                        <div class="flex items-center space-x-6">
+                            <span class="heading text-sm text-dim group-hover:text-white transition-colors">#01</span>
+                            <div class="flex flex-col">
+                                <span class="heading text-lg font-black text-white italic tracking-tighter uppercase group-hover:text-error transition-colors">PLL_E_PERM</span>
+                                <span class="mono text-[9px] text-dim uppercase italic font-bold">Critical Anomalies Found in Solves: 42</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="mono text-xl font-black text-error italic brightness-110">2.50s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-12 py-6 border-t border-white/5 flex justify-between items-center opacity-40">
+        <div class="flex items-center space-x-8 mono text-[9px] tracking-widest font-black italic italic-opacity-6 uppercase">
+            <span>LAST_SYNC: 2026-04-02 17:30 // KERNEL: SEC_LAYER_DEPLOYED</span>
+            <div class="flex space-x-2">
+                <span class="text-accent underline underline-offset-4">DB_HEALTH: NOMINAL</span>
+            </div>
+        </div>
+        <div class="text-white/40 italic font-bold">"Design with intention. Practice with precision."</div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weakness Summary — csTimer Trainer V2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1816; --bg-warm: #1f1c19; --surface: #272320; --surface-raised: #302b27; --surface-hover: #3a342f;
+            --saffron: #e8a620; --saffron-dim: #c48a18; --saffron-glow: rgba(232,166,32,0.12); --saffron-wash: rgba(232,166,32,0.06);
+            --good: #6bba62; --good-dim: rgba(107,186,98,0.15); --weak: #d4564e; --weak-dim: rgba(212,86,78,0.15);
+            --text-primary: #ede8e1; --text-secondary: #9b9388; --text-tertiary: #6b635a; --text-inverse: #1a1816;
+            --border: rgba(237,232,225,0.08); --border-accent: rgba(232,166,32,0.25);
+            --radius-sm: 3px; --radius-md: 6px; --radius-lg: 10px;
+            --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        .display { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+        .display em { font-style: italic; }
+        .label { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+        .data { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-variant-numeric: tabular-nums; }
+        .container { max-width: 1000px; margin: 0 auto; padding: var(--space-8) var(--space-6); }
+
+        .precision-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); position: relative; overflow: hidden; transition: border-color 0.3s ease, background 0.3s ease; }
+        .precision-card:hover { border-color: var(--border-accent); background: var(--surface-raised); }
+        .precision-card::before, .precision-card::after { content: ''; position: absolute; width: 8px; height: 8px; }
+        .precision-card::before { top: -1px; left: -1px; border-top: 1.5px solid var(--saffron); border-left: 1.5px solid var(--saffron); border-radius: var(--radius-md) 0 0 0; }
+        .precision-card::after { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--saffron); border-right: 1.5px solid var(--saffron); border-radius: 0 0 var(--radius-md) 0; }
+
+        .btn { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 10px 22px; border-radius: var(--radius-sm); transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--saffron); color: var(--text-inverse); }
+        .btn-primary:hover { background: var(--saffron-dim); box-shadow: 0 0 20px var(--saffron-glow); }
+        .btn-outline { background: transparent; color: var(--saffron); border: 1px solid var(--border-accent); }
+        .btn-outline:hover { background: var(--saffron-wash); }
+        .btn-ghost { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--surface-raised); color: var(--text-primary); }
+
+        .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 5px; }
+        .tag-weak { background: var(--weak-dim); color: var(--weak); }
+        .tag-good { background: var(--good-dim); color: var(--good); }
+        .tag-saffron { background: var(--saffron-glow); color: var(--saffron); }
+        .tag-neutral { background: rgba(237,232,225,0.06); color: var(--text-secondary); }
+
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .status-dot.good { background: var(--good); box-shadow: 0 0 6px var(--good); }
+        .status-dot.weak { background: var(--weak); box-shadow: 0 0 6px var(--weak); }
+        .status-dot.warn { background: var(--saffron); box-shadow: 0 0 6px var(--saffron); }
+
+        .progress-track { width: 100%; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 2px; }
+        .divider { height: 1px; background: var(--border); margin: var(--space-7) 0; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; } .delay-5 { animation-delay: 0.5s; }
+
+        /* --- Page-specific --- */
+        .page-header { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: var(--space-5); border-bottom: 1px solid var(--border); margin-bottom: var(--space-7); }
+        .page-header-left { }
+        .page-title { font-size: 36px; margin-bottom: var(--space-2); }
+        .page-subtitle { color: var(--text-secondary); font-size: 14px; }
+
+        .nav-tabs { display: flex; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+        .nav-tab { font-size: 12px; color: var(--text-tertiary); padding: 8px 16px; cursor: pointer; transition: all 0.2s; border-right: 1px solid var(--border); }
+        .nav-tab:last-child { border-right: none; }
+        .nav-tab:hover { color: var(--text-secondary); background: var(--surface-raised); }
+        .nav-tab.active { color: var(--saffron); background: var(--saffron-wash); }
+
+        .section-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
+        .section-title { display: flex; align-items: center; gap: var(--space-3); }
+        .section-title::before { content: ''; width: 16px; height: 1px; background: var(--saffron); }
+        .section-title h3 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+
+        /* Confidence Overview */
+        .confidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-bottom: var(--space-7); }
+        .confidence-panel { padding: var(--space-6); }
+        .confidence-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
+        .confidence-title { font-family: 'Instrument Serif', serif; font-size: 24px; }
+        .confidence-score { font-family: 'Instrument Serif', serif; font-size: 48px; line-height: 1; }
+        .confidence-breakdown { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-5); }
+        .confidence-row { display: flex; align-items: center; gap: var(--space-3); }
+        .confidence-row-label { font-size: 12px; color: var(--text-secondary); width: 80px; flex-shrink: 0; }
+        .confidence-row-bar { flex: 1; }
+        .confidence-row-value { font-family: 'IBM Plex Mono', monospace; font-size: 11px; width: 36px; text-align: right; }
+
+        /* Case Ranking Table */
+        .ranking-table { width: 100%; border-collapse: collapse; }
+        .ranking-table th { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--surface); }
+        .ranking-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+        .ranking-table tr:hover td { background: var(--surface-raised); }
+        .rank-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-tertiary); width: 30px; }
+        .case-name-cell { font-family: 'Instrument Serif', serif; font-size: 16px; white-space: nowrap; }
+        .time-cell { font-family: 'IBM Plex Mono', monospace; font-size: 13px; white-space: nowrap; }
+        .trend-cell { display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+        .trend-up { color: var(--good); }
+        .trend-down { color: var(--weak); }
+        .trend-flat { color: var(--text-tertiary); }
+        .bar-cell { width: 100px; }
+        .conf-bar { height: 4px; border-radius: 2px; background: var(--border); }
+        .conf-bar-fill { height: 100%; border-radius: 2px; }
+        .action-cell { text-align: right; }
+        .drill-btn { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--saffron); background: none; border: 1px solid var(--border-accent); padding: 4px 10px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; }
+        .drill-btn:hover { background: var(--saffron-wash); }
+
+        /* Trend Sparkline (simplified CSS bars) */
+        .sparkline { display: flex; align-items: flex-end; gap: 2px; height: 24px; }
+        .spark-bar { width: 4px; border-radius: 1px; transition: height 0.3s; }
+
+        /* Stats Row */
+        .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-4); margin-bottom: var(--space-7); }
+        .stat-cell { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
+        .stat-value { font-family: 'Instrument Serif', serif; font-size: 28px; line-height: 1; }
+        .stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+        @media (max-width: 768px) {
+            .container { padding: var(--space-6) var(--space-4); }
+            .confidence-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(3, 1fr); }
+            .page-header { flex-direction: column; gap: var(--space-4); align-items: flex-start; }
+            .page-title { font-size: 28px; }
+            .bar-cell, .action-cell { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header animate-in">
+            <div class="page-header-left">
+                <div class="display page-title">Weakness <em>Summary</em></div>
+                <p class="page-subtitle">Persistent training insights across all sessions · Updated after each drill</p>
+            </div>
+            <div class="nav-tabs">
+                <span class="nav-tab active">PLL</span>
+                <span class="nav-tab">OLL</span>
+                <span class="nav-tab">Cross</span>
+                <span class="nav-tab">All</span>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-row animate-in delay-1">
+            <div class="stat-cell">
+                <span class="stat-label">Total Sessions</span>
+                <span class="stat-value">14</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-label">Cases Trained</span>
+                <span class="stat-value">18<span style="font-size: 16px; color: var(--text-tertiary);"> / 21</span></span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-label">Avg Recognition</span>
+                <span class="stat-value" style="color: var(--saffron);">1.95s</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-label">Confidence</span>
+                <span class="stat-value" style="color: var(--good);">82%</span>
+            </div>
+            <div class="stat-cell">
+                <span class="stat-label">Weak Cases</span>
+                <span class="stat-value" style="color: var(--weak);">3</span>
+            </div>
+        </div>
+
+        <!-- Confidence Panels -->
+        <div class="confidence-grid animate-in delay-2">
+            <div class="precision-card confidence-panel">
+                <div class="confidence-header">
+                    <div class="confidence-title">PLL</div>
+                    <span class="tag tag-good"><span class="status-dot good"></span>Strong</span>
+                </div>
+                <div class="confidence-score" style="color: var(--good);">82%</div>
+                <div class="confidence-breakdown">
+                    <div class="confidence-row">
+                        <span class="confidence-row-label" style="color: var(--good);">Mastered</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 57%; background: var(--good);"></div></div>
+                        </div>
+                        <span class="confidence-row-value" style="color: var(--good);">12</span>
+                    </div>
+                    <div class="confidence-row">
+                        <span class="confidence-row-label" style="color: var(--saffron);">Learning</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 24%; background: var(--saffron);"></div></div>
+                        </div>
+                        <span class="confidence-row-value" style="color: var(--saffron);">5</span>
+                    </div>
+                    <div class="confidence-row">
+                        <span class="confidence-row-label" style="color: var(--weak);">Weak</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 14%; background: var(--weak);"></div></div>
+                        </div>
+                        <span class="confidence-row-value" style="color: var(--weak);">3</span>
+                    </div>
+                    <div class="confidence-row">
+                        <span class="confidence-row-label">Untrained</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 5%; background: var(--text-tertiary);"></div></div>
+                        </div>
+                        <span class="confidence-row-value">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="precision-card confidence-panel">
+                <div class="confidence-header">
+                    <div class="confidence-title">OLL</div>
+                    <span class="tag tag-weak"><span class="status-dot weak"></span>Needs Work</span>
+                </div>
+                <div class="confidence-score" style="color: var(--weak);">38%</div>
+                <div class="confidence-breakdown">
+                    <div class="confidence-row">
+                        <span class="confidence-row-label" style="color: var(--good);">Mastered</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 18%; background: var(--good);"></div></div>
+                        </div>
+                        <span class="confidence-row-value" style="color: var(--good);">10</span>
+                    </div>
+                    <div class="confidence-row">
+                        <span class="confidence-row-label" style="color: var(--saffron);">Learning</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 21%; background: var(--saffron);"></div></div>
+                        </div>
+                        <span class="confidence-row-value" style="color: var(--saffron);">12</span>
+                    </div>
+                    <div class="confidence-row">
+                        <span class="confidence-row-label" style="color: var(--weak);">Weak</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 25%; background: var(--weak);"></div></div>
+                        </div>
+                        <span class="confidence-row-value" style="color: var(--weak);">14</span>
+                    </div>
+                    <div class="confidence-row">
+                        <span class="confidence-row-label">Untrained</span>
+                        <div class="confidence-row-bar">
+                            <div class="progress-track" style="height: 6px;"><div class="progress-fill" style="width: 37%; background: var(--text-tertiary);"></div></div>
+                        </div>
+                        <span class="confidence-row-value">21</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Case Rankings -->
+        <div class="animate-in delay-3">
+            <div class="section-label">
+                <div class="section-title"><h3>Case Rankings — PLL</h3></div>
+                <div style="display: flex; gap: var(--space-3);">
+                    <button class="btn btn-ghost" style="padding: 6px 12px; font-size: 11px;">Sort: Slowest First</button>
+                    <button class="btn btn-primary" style="padding: 6px 14px; font-size: 11px;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Drill Weak Cases
+                    </button>
+                </div>
+            </div>
+
+            <div class="precision-card" style="padding: 0; overflow-x: auto;">
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Case</th>
+                            <th>Avg Time</th>
+                            <th>Best</th>
+                            <th>Trend</th>
+                            <th>Confidence</th>
+                            <th class="bar-cell">Distribution</th>
+                            <th>Drills</th>
+                            <th class="action-cell">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rank-num">1</td>
+                            <td class="case-name-cell" style="color: var(--weak);"><em>N-perm (a)</em></td>
+                            <td class="time-cell" style="color: var(--weak);">3.45s</td>
+                            <td class="time-cell">2.80s</td>
+                            <td><span class="trend-cell trend-down">↑ +0.37s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14m0 0l-7-7m7 7l7-7"/></svg></span></td>
+                            <td><span class="tag tag-weak"><span class="status-dot weak"></span>22%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 22%; background: var(--weak);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">8</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">2</td>
+                            <td class="case-name-cell" style="color: var(--weak);">V-perm</td>
+                            <td class="time-cell" style="color: var(--weak);">2.75s</td>
+                            <td class="time-cell">2.10s</td>
+                            <td><span class="trend-cell trend-flat">— 0.00s</span></td>
+                            <td><span class="tag tag-weak"><span class="status-dot weak"></span>35%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 35%; background: var(--weak);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">6</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">3</td>
+                            <td class="case-name-cell" style="color: var(--weak);">E-perm</td>
+                            <td class="time-cell" style="color: var(--saffron);">2.91s</td>
+                            <td class="time-cell">2.15s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.19s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-saffron">45%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 45%; background: var(--saffron);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">12</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">4</td>
+                            <td class="case-name-cell">G-perm (c)</td>
+                            <td class="time-cell">2.31s</td>
+                            <td class="time-cell">1.85s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.24s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-saffron">58%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 58%; background: var(--saffron);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">10</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">5</td>
+                            <td class="case-name-cell">R-perm (a)</td>
+                            <td class="time-cell">2.15s</td>
+                            <td class="time-cell">1.70s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.10s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-saffron">62%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 62%; background: var(--saffron);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">9</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">6</td>
+                            <td class="case-name-cell">F-perm</td>
+                            <td class="time-cell">1.88s</td>
+                            <td class="time-cell">1.52s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.15s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-saffron">70%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 70%; background: var(--saffron);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">11</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">7</td>
+                            <td class="case-name-cell">J-perm (b)</td>
+                            <td class="time-cell">1.72s</td>
+                            <td class="time-cell">1.35s</td>
+                            <td><span class="trend-cell trend-flat">— 0.00s</span></td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>75%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 75%; background: var(--good);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">14</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">8</td>
+                            <td class="case-name-cell">T-perm</td>
+                            <td class="time-cell" style="color: var(--good);">1.42s</td>
+                            <td class="time-cell" style="color: var(--good);">1.10s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.12s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>88%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 88%; background: var(--good);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">18</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">9</td>
+                            <td class="case-name-cell">U-perm (a)</td>
+                            <td class="time-cell" style="color: var(--good);">1.18s</td>
+                            <td class="time-cell" style="color: var(--good);">0.92s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.08s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>94%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 94%; background: var(--good);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">20</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                        <tr>
+                            <td class="rank-num">10</td>
+                            <td class="case-name-cell">H-perm</td>
+                            <td class="time-cell" style="color: var(--good);">1.05s</td>
+                            <td class="time-cell" style="color: var(--good);">0.82s</td>
+                            <td><span class="trend-cell trend-up">↓ -0.05s <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg></span></td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>96%</span></td>
+                            <td class="bar-cell"><div class="conf-bar"><div class="conf-bar-fill" style="width: 96%; background: var(--good);"></div></div></td>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">22</td>
+                            <td class="action-cell"><button class="drill-btn">Drill</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: center; padding: var(--space-4);">
+                    <span class="label" style="cursor: pointer; color: var(--text-secondary);">Show all 21 PLL cases ↓</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Trends Section -->
+        <div class="animate-in delay-4">
+            <div class="section-label">
+                <div class="section-title"><h3>30-Day Trend</h3></div>
+            </div>
+            <div class="precision-card" style="padding: var(--space-6);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-7);">
+                    <div>
+                        <div class="label" style="margin-bottom: var(--space-3);">Avg Recognition Time</div>
+                        <div style="display: flex; align-items: baseline; gap: var(--space-3);">
+                            <span class="display" style="font-size: 32px;">1.95s</span>
+                            <span class="data" style="font-size: 12px; color: var(--good);">↓ 0.35s</span>
+                        </div>
+                        <div class="sparkline" style="margin-top: var(--space-4);">
+                            <div class="spark-bar" style="height: 100%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 92%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 85%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 88%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 80%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 75%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 72%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 68%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 65%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 60%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 62%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 58%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 55%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 52%; background: var(--good);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="label" style="margin-bottom: var(--space-3);">Confidence Score</div>
+                        <div style="display: flex; align-items: baseline; gap: var(--space-3);">
+                            <span class="display" style="font-size: 32px; color: var(--good);">82%</span>
+                            <span class="data" style="font-size: 12px; color: var(--good);">↑ 18%</span>
+                        </div>
+                        <div class="sparkline" style="margin-top: var(--space-4);">
+                            <div class="spark-bar" style="height: 35%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 38%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 42%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 45%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 50%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 55%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 60%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 65%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 70%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 72%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 75%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 78%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 80%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 82%; background: var(--good);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="label" style="margin-bottom: var(--space-3);">Weak Case Count</div>
+                        <div style="display: flex; align-items: baseline; gap: var(--space-3);">
+                            <span class="display" style="font-size: 32px; color: var(--weak);">3</span>
+                            <span class="data" style="font-size: 12px; color: var(--good);">↓ from 7</span>
+                        </div>
+                        <div class="sparkline" style="margin-top: var(--space-4);">
+                            <div class="spark-bar" style="height: 100%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 100%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 86%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 86%; background: var(--weak);"></div>
+                            <div class="spark-bar" style="height: 71%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 71%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 57%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 57%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 43%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 43%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 43%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 43%; background: var(--saffron);"></div>
+                            <div class="spark-bar" style="height: 43%; background: var(--good);"></div>
+                            <div class="spark-bar" style="height: 43%; background: var(--good);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="divider"></div>
+        <footer style="display: flex; justify-content: space-between; padding: var(--space-4) 0;">
+            <span class="label">csTimer Trainer v2 Mockup</span>
+            <span class="label">Weakness Summary</span>
+        </footer>
+    </div>
+</body>
+</html>

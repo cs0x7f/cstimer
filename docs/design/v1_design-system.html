@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V1 - Tactical Design System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #14181f;
+            --surface-accent: #1c232d;
+            --accent: #facc15; /* Electric Yellow */
+            --accent-glow: rgba(250, 204, 21, 0.2);
+            --text-dim: #64748b;
+            --text-bright: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-bright);
+            font-family: 'Rajdhani', sans-serif;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .heading { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        .tactical-border {
+            position: relative;
+            border: 1px solid rgba(250, 204, 21, 0.1);
+        }
+        .tactical-border::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+        }
+        .tactical-border::after {
+            content: ''; position: absolute; bottom: -1px; right: -1px; width: 10px; height: 10px;
+            border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent);
+        }
+
+        .scan-line {
+            width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--accent), transparent);
+            opacity: 0.1; position: absolute; animation: scan 4s linear infinite;
+        }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
+        .glow-text { text-shadow: 0 0 10px var(--accent-glow); }
+        
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; opacity: 0.05; z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3col%3e%3cfilter id='noiseFilter'%3e%3cfeturbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3e%3c/svg%3e");
+        }
+    </style>
+</head>
+<body class="p-12">
+    <div class="noise"></div>
+    
+    <div class="max-w-6xl mx-auto space-y-24">
+        <!-- System ID -->
+        <header class="flex justify-between items-end border-b border-white/10 pb-8">
+            <div class="space-y-2">
+                <div class="flex items-center space-x-3 text-accent transition-all hover:scale-105">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.36.18-.57.18s-.41-.09-.57-.18l-7.9-4.44A.991.991 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.36-.18.57-.18s.41.09.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5L12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm14 0v-6.7l-6 3.37v6.71l6-3.38z"/></svg>
+                    <span class="heading text-3xl font-black italic">csTimer <span class="text-white">Trainer</span></span>
+                </div>
+                <p class="mono text-xs text-dim uppercase tracking-[0.4em]">Integrated Drill Subsystem // V1.0.0</p>
+            </div>
+            <div class="text-right mono text-[10px] text-dim">
+                SEC_LEVEL: ALPHA<br>STATUS: DEPLOYED
+            </div>
+        </header>
+
+        <!-- Colors -->
+        <section>
+            <h2 class="heading text-xl mb-12 flex items-center">
+                <span class="w-8 h-[1px] bg-accent mr-4"></span> Spectrum Analysis
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+                <div class="space-y-3">
+                    <div class="h-32 w-full bg-[#faac15] rounded-sm tactical-border"></div>
+                    <div class="mono text-[10px] uppercase">Accent_Main // #FACC15</div>
+                </div>
+                <div class="space-y-3">
+                    <div class="h-32 w-full bg-[#0a0c10] rounded-sm tactical-border"></div>
+                    <div class="mono text-[10px] uppercase">Void_Primary // #0A0C10</div>
+                </div>
+                <div class="space-y-3">
+                    <div class="h-32 w-full bg-[#14181f] rounded-sm tactical-border"></div>
+                    <div class="mono text-[10px] uppercase">Surface_Elev // #14181F</div>
+                </div>
+                <div class="space-y-3">
+                    <div class="h-32 w-full bg-[#22c55e] rounded-sm tactical-border"></div>
+                    <div class="mono text-[10px] uppercase">System_Success // #22C55E</div>
+                </div>
+                <div class="space-y-3">
+                    <div class="h-32 w-full bg-[#ef4444] rounded-sm tactical-border"></div>
+                    <div class="mono text-[10px] uppercase">System_Alert // #EF4444</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section>
+            <h2 class="heading text-xl mb-12 flex items-center">
+                <span class="w-8 h-[1px] bg-accent mr-4"></span> Glyph Geometry
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 p-12 bg-surface tactical-border overflow-hidden">
+                <div class="scan-line"></div>
+                <div class="space-y-8">
+                    <div>
+                        <span class="mono text-[9px] text-accent uppercase mb-2 block tracking-widest">Display_Font: Orbitron</span>
+                        <h1 class="heading text-5xl font-black italic">TACTICAL PERFORMANCE</h1>
+                    </div>
+                    <div>
+                        <span class="mono text-[9px] text-accent uppercase mb-2 block tracking-widest">Sans_Interface: Rajdhani</span>
+                        <p class="text-2xl font-light leading-relaxed">The deliberate practice engine for competitive cubers. Precision timing, adaptive drills, and tactical case analysis.</p>
+                    </div>
+                </div>
+                <div class="space-y-8 border-l border-white/5 pl-12">
+                    <div>
+                        <span class="mono text-[9px] text-accent uppercase mb-2 block tracking-widest">Data_Mono: Fira Code</span>
+                        <p class="mono text-lg text-accent uppercase tracking-wider">R2 D L' B F2 U' L D2 B R2 U L2 F2</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-bg p-4 tactical-border text-center">
+                            <div class="mono text-xs text-dim">AVG_100</div>
+                            <div class="heading text-xl">12.45</div>
+                        </div>
+                        <div class="bg-bg p-4 tactical-border text-center">
+                            <div class="mono text-xs text-dim">TPS_MAX</div>
+                            <div class="heading text-xl">8.92</div>
+                        </div>
+                        <div class="bg-bg p-4 tactical-border text-center">
+                            <div class="mono text-xs text-accent">RANK</div>
+                            <div class="heading text-xl">S-TIER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components -->
+        <section>
+            <h2 class="heading text-xl mb-12 flex items-center">
+                <span class="w-8 h-[1px] bg-accent mr-4"></span> Module Library
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Tactical Buttons -->
+                <div class="space-y-6">
+                    <h3 class="mono text-xs text-dim uppercase">Input_Action</h3>
+                    <div class="flex flex-col space-y-4">
+                        <button class="bg-accent text-bg heading font-black py-4 px-6 tactical-border hover:brightness-110 active:scale-95 transition-all skew-x-[-12deg]">
+                            <span class="skew-x-[12deg] block">Initialize Session</span>
+                        </button>
+                        <button class="border border-accent text-accent heading font-bold py-3 px-6 hover:bg-accent/10 transition-all">
+                            Configuration_Mode
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Card -->
+                <div class="space-y-6">
+                    <h3 class="mono text-xs text-dim uppercase">Case_Identity</h3>
+                    <div class="bg-surface p-6 tactical-border relative group cursor-pointer transition-all hover:bg-surface-accent">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="heading text-2xl group-hover:text-accent transition-colors">PLL_E</div>
+                            <div class="mono text-[10px] text-error px-2 py-1 bg-error/10 border border-error/20">WEAK_LINK</div>
+                        </div>
+                        <div class="w-full aspect-square bg-bg rounded p-4 mb-4 flex items-center justify-center">
+                            <!-- Visual placeholder -->
+                            <div class="w-16 h-16 border-2 border-accent/20 rotate-45 flex items-center justify-center relative">
+                                <div class="absolute inset-0 border border-accent/40 animate-ping"></div>
+                                <div class="w-4 h-4 bg-accent"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mono text-[10px] text-dim">
+                            <span>LAST_REC: 2.15s</span>
+                            <span>FREQ: 12%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Meter -->
+                <div class="space-y-6">
+                    <h3 class="mono text-xs text-dim uppercase">Metric_Visualization</h3>
+                    <div class="space-y-8">
+                        <div class="space-y-2">
+                            <div class="flex justify-between mono text-[10px]">
+                                <span>SESSION_LOAD</span>
+                                <span>82%</span>
+                            </div>
+                            <div class="h-1 bg-white/5 w-full relative">
+                                <div class="h-full bg-accent shadow-[0_0_10px_var(--accent-glow)] transition-all duration-1000" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <div class="w-4 h-4 bg-accent opacity-100"></div>
+                            <div class="w-4 h-4 bg-accent opacity-80"></div>
+                            <div class="w-4 h-4 bg-accent opacity-60"></div>
+                            <div class="w-4 h-4 bg-accent opacity-40"></div>
+                            <div class="w-4 h-4 bg-accent opacity-20"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

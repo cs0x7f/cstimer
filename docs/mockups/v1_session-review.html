@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V1 - Protocol Analysis Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #14181f;
+            --surface-accent: #1c232d;
+            --accent: #facc15;
+            --text-dim: #64748b;
+            --text-bright: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body { background-color: var(--bg); color: var(--text-bright); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
+        .heading { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.16em; }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        .tactical-border { position: relative; border: 1px solid rgba(250, 204, 21, 0.1); }
+        .tactical-border::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+        }
+        
+        .glow-hover:hover { box-shadow: 0 0 30px rgba(250, 204, 21, 0.1); transition: all 0.3s; }
+        .glitch-text { animation: glitch 4s infinite linear alternate-reverse; }
+        @keyframes glitch { 0% { text-shadow: 2px 0 #ef4444, -2px 0 #61afef; } 50% { text-shadow: -2px 0 #ef4444, 2px 0 #61afef; } 100% { text-shadow: 2px 0 #ef4444, -2px 0 #61afef; } }
+    </style>
+</head>
+<body class="p-12 flex flex-col items-center min-h-screen bg-[radial-gradient(circle_at_top,_var(--surface),_var(--bg))]">
+    <div class="max-w-5xl w-full">
+        <!-- Header -->
+        <header class="mb-16 text-center space-y-4">
+            <div class="inline-block px-12 py-3 bg-surface border border-white/5 rounded-sm tactical-border group">
+                <span class="mono text-[10px] font-black italic uppercase tracking-[0.6em] text-accent group-hover:text-white transition-colors">PROTOCOL ANALYSIS REPORT v1.0.0</span>
+            </div>
+            <h1 class="heading text-6xl font-black text-white italic tracking-tighter mb-2 uppercase">SOLVE_STREAM_SUMMARY</h1>
+            <p class="mono text-xs text-dim italic font-black uppercase tracking-[0.4em]">25 DRIVES COMPLETED // DURATION_REPS: 12m 45s</p>
+        </header>
+
+        <!-- Main Stats Visualization -->
+        <div class="grid grid-cols-12 gap-8 mb-12 items-stretch">
+            <!-- Left: Hero Performance Stats -->
+            <div class="col-span-12 lg:col-span-5 bg-surface border border-accent/20 p-10 tactical-border relative overflow-hidden group shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-40"></div>
+                <div class="relative z-10 flex flex-col justify-between h-full">
+                    <div>
+                        <span class="mono text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-4 block">PROTOCOL_AVERAGE</span>
+                        <h2 class="heading text-7xl font-black text-white italic transition-all duration-300 drop-shadow-lg glitch-text">1.78s</h2>
+                        <div class="flex items-center mt-3 text-xs text-success font-black font-mono space-x-2 italic">
+                            <svg class="w-4 h-4 bg-success/20 p-0.5 rounded-full" fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+                            <span>-0.12s DELTA IMPROVED</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-8">
+                        <div class="bg-bg p-5 border border-white/5 tactical-border group-hover:border-accent/40 transition-colors">
+                            <span class="mono text-[9px] text-dim block font-black mb-1">TOTAL_REPS</span>
+                            <span class="heading text-2xl font-black text-white italic">25</span>
+                        </div>
+                        <div class="bg-bg p-5 border border-white/5 tactical-border group-hover:border-accent/40 transition-colors">
+                            <span class="mono text-[9px] text-accent block font-black mb-1">ELITE_REPS (sub_1.5s)</span>
+                            <span class="heading text-2xl font-black text-accent italic">08</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Rail Visualizer -->
+                    <div class="mt-12 space-y-3">
+                        <span class="mono text-[9px] font-black uppercase tracking-[0.4em] text-dim">SESSION_PROGRESSION_MAP</span>
+                        <div class="h-32 w-full bg-bg border border-white/5 tactical-border flex items-end p-4 space-x-1.5 overflow-hidden">
+                            <!-- Visual Bars -->
+                            <div class="bg-success h-3/5 w-2 flex-1 rounded-[1px] opacity-20"></div>
+                            <div class="bg-success h-4/5 w-2 flex-1 rounded-[1px] opacity-20 hover:opacity-100 transition-opacity cursor-help"></div>
+                            <div class="bg-error h-full w-2 flex-1 rounded-[1px] opacity-60"></div>
+                            <div class="bg-success h-1/2 w-2 flex-1 rounded-[1px]"></div>
+                            <div class="bg-success h-2/3 w-2 flex-1 rounded-[1px]"></div>
+                            <div class="bg-error h-[90%] w-2 flex-1 rounded-[1px] opacity-40"></div>
+                            <div class="bg-accent h-1/4 w-2 flex-1 rounded-[1px] animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Critical Case Analysis -->
+            <div class="col-span-12 lg:col-span-7 bg-surface border border-white/5 p-10 tactical-border shadow-2xl flex flex-col justify-between">
+                <div class="space-y-8">
+                    <h3 class="heading text-xs font-black uppercase tracking-[0.3em] text-accent flex items-center">
+                        <span class="w-1.5 h-1.5 bg-accent mr-3"></span> Critical Anomalies Found
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-bg p-6 border-l-4 border-error tactical-border flex items-center justify-between group cursor-help transition-all hover:bg-error/5">
+                            <div class="flex items-center space-x-6">
+                                <div class="w-12 h-12 bg-surface tactical-border flex items-center justify-center font-black heading text-xl text-white italic group-hover:text-error transition-colors">E</div>
+                                <div>
+                                    <h4 class="heading text-lg font-black text-white italic tracking-tighter uppercase group-hover:glitch-text">PLL_E_PERM</h4>
+                                    <div class="mono text-[10px] text-error font-black uppercase flex items-center space-x-2">
+                                        <span class="w-1 h-1 bg-error rounded-full animate-ping"></span>
+                                        <span>SYSTEM_STALL // 2.5s AVG_LATENCY</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="mono text-[9px] text-dim font-black uppercase block italic">Latency Delta</span>
+                                <span class="heading text-lg text-error font-black italic">+0.68s</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-bg p-6 border-l-4 border-error/50 tactical-border flex items-center justify-between opacity-80 group cursor-help transition-all hover:bg-error/5">
+                            <div class="flex items-center space-x-6">
+                                <div class="w-12 h-12 bg-surface border border-white/10 flex items-center justify-center font-black heading text-lg text-white/50 italic font-medium">Na</div>
+                                <div>
+                                    <h4 class="heading text-md font-black text-white/60 italic tracking-tighter uppercase">PLL_NA_PERM</h4>
+                                    <div class="mono text-[9px] text-error opacity-60 font-black uppercase italic">INCONSISTENT // 2.88s (1_DNF)</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="mono text-[9px] text-dim font-black uppercase block italic">Latency Delta</span>
+                                <span class="heading text-md text-error/60 font-black italic">+1.02s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-8 bg-accent/5 border-2 border-dashed border-accent/20 rounded-sm relative group overflow-hidden">
+                    <div class="absolute inset-0 bg-accent/5 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute top-0 right-0 p-2"><div class="w-1 h-4 bg-accent/20 animate-pulse"></div></div>
+                    <h5 class="mono text-[10px] font-black text-accent uppercase tracking-[0.4em] mb-4 italic flex items-center">
+                        <span class="w-4 h-[1px] bg-accent mr-3"></span> Tactical_Rec_Alpha
+                    </h5>
+                    <p class="text-xl text-white/80 leading-relaxed font-bold italic italic-opacity-9 relative z-10 group-hover:text-white transition-colors">
+                        Protocol indicates <span class="text-accent underline decoration-accent/40 underline-offset-8">Case:PLL_E_PERM</span> reached instability. Recommend 5-min isolated drill cycle for consistency re-indexing.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <footer class="w-full flex space-x-6">
+            <button class="flex-1 bg-accent py-6 heading text-xl font-black italic tracking-tighter text-bg uppercase tactical-border hover:brightness-110 active:scale-[0.98] transition-all glow-hover">
+                Restart_Optimized_Loop (Critical_Priority)
+            </button>
+            <button class="flex-1 border-2 border-white/10 text-white/50 py-6 heading text-sm font-black italic uppercase tracking-widest hover:border-white transition-all outline-none bg-surface/50">
+                Save Diagnostics & Deploy Upstream
+            </button>
+        </footer>
+    </div>
+</body>
+</html>

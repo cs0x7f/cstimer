@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V1 - Active Tactical Surface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #14181f;
+            --accent: #facc15;
+            --text-dim: #64748b;
+            --text-bright: #f8fafc;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        body { background-color: var(--bg); color: var(--text-bright); font-family: 'Rajdhani', sans-serif; overflow: hidden; }
+        .heading { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.16em; }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        .tactical-border { position: relative; border: 1px solid rgba(250, 204, 21, 0.1); }
+        .tactical-border::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+        }
+
+        .timer-glow { text-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 0 60px rgba(250, 204, 21, 0.1); }
+        
+        @keyframes scan-v { 0% { top: 0; } 100% { top: 100%; } }
+        .scan-line-v {
+            position: absolute; width: 100%; height: 1px; background: var(--accent);
+            opacity: 0.1; animation: scan-v 4s linear infinite; pointer-events: none;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen relative">
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-50">
+        <div class="scan-line-v"></div>
+    </div>
+
+    <!-- Active Telemetry Nav -->
+    <header class="bg-surface border-b border-white/5 p-4 flex justify-between items-center z-10 px-8">
+        <div class="flex items-center space-x-8">
+            <div class="flex flex-col">
+                <span class="mono text-[8px] text-accent uppercase tracking-[0.4em] mb-1 font-bold">DRIVE_STATUS</span>
+                <span class="heading text-lg font-black italic">SOLVE_STREAM <span class="text-accent underline decoration-accent/30 underline-offset-4">04 / 25</span></span>
+            </div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div class="flex flex-col border-l border-accent/20 pl-4">
+                <span class="mono text-[8px] text-dim uppercase tracking-[0.4em] mb-1">DATASET</span>
+                <span class="text-sm font-bold text-white/50 tracking-tighter uppercase">PLL_SYSTEM_ALPHA</span>
+            </div>
+        </div>
+
+        <!-- LIVE TELEMETRY -->
+        <div class="flex items-center space-x-12">
+            <div class="flex flex-col text-right">
+                <span class="mono text-[8px] text-dim uppercase tracking-[0.4em] mb-1">SESSION_AVG_LIVE</span>
+                <span class="heading text-xl font-black text-accent tracking-tighter">1.78s</span>
+            </div>
+            <button class="bg-error/10 border border-error/20 px-6 py-2 heading text-[10px] font-bold text-error italic hover:bg-error hover:text-bg transition-all">
+                Abort
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 relative flex flex-col items-center justify-center p-12 overflow-hidden bg-[radial-gradient(circle_at_center,_var(--surface),_var(--bg))]">
+        
+        <!-- Scramble Block (High Focus) -->
+        <div class="absolute top-12 max-w-2xl transform transition-transform duration-500 hover:scale-105 z-10">
+            <div class="bg-surface/40 backdrop-blur-3xl p-10 tactical-border shadow-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-2"><div class="w-1.5 h-1.5 bg-accent rounded-full animate-ping"></div></div>
+                <div class="mono text-[10px] text-accent mb-4 uppercase tracking-[0.6em] font-black italic opacity-60">Calibration_String_Active</div>
+                <div class="mono text-2xl text-white font-light tracking-[0.1em] leading-relaxed italic brightness-110">
+                    U' L' U R U' L U R'
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTRAL TIMER -->
+        <div class="text-[18rem] heading font-black italic timer-glow transition-all duration-300 select-none group">
+            00:00.<span class="opacity-50">00</span>
+        </div>
+
+        <!-- CASE DIAGNOSTICS (FLOATING TAB) -->
+        <div class="absolute top-12 right-12 w-72 space-y-4 animate-in slide-in-from-right-8 duration-700">
+            <div class="bg-surface/80 backdrop-blur-2xl border border-white/5 p-8 tactical-border shadow-2xl relative group overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-error animate-pulse"></div>
+                <div class="flex flex-col items-center">
+                    <div class="mono text-[9px] text-error mb-2 uppercase tracking-[0.6em] font-black italic">Weak_Link_Target</div>
+                    <h3 class="heading text-4xl font-black italic mb-6 tracking-tighter text-white brightness-125">PLL_E</h3>
+                    
+                    <!-- 2D Cube Diagram (Modern Tactical Style) -->
+                    <div class="w-40 aspect-square bg-bg border border-white/5 flex items-center justify-center relative p-2 transform group-hover:rotate-12 transition-transform">
+                        <div class="grid grid-cols-3 grid-rows-3 gap-0.5 w-full h-full opacity-40 mix-blend-screen">
+                            <div class="bg-accent/40 rounded-[1px]"></div> <div class="bg-accent/40 rounded-[1px]"></div> <div class="bg-accent/40 rounded-[1px]"></div>
+                            <div class="bg-accent/40 rounded-[1px]"></div> <div class="bg-white/10 rounded-[1px]"></div> <div class="bg-accent/40 rounded-[1px]"></div>
+                            <div class="bg-accent/40 rounded-[1px]"></div> <div class="bg-accent/40 rounded-[1px]"></div> <div class="bg-accent/40 rounded-[1px]"></div>
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="heading text-[6rem] text-accent opacity-20 font-black italic">E</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-between w-full mono text-[9px] font-black tracking-widest text-dim italic">
+                        <div class="space-y-1">
+                            <div>BEST: 1.55s</div>
+                            <div class="text-error">MEDIAN: 2.45s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="w-full py-4 bg-bg border border-accent/20 heading text-[10px] font-bold text-accent italic uppercase tracking-widest hover:bg-accent hover:text-bg transition-all active:scale-95 glow-hover">
+                Request suggested_algo_v1
+            </button>
+        </div>
+    </main>
+
+    <!-- SESSION_QUEUE_RAIL -->
+    <footer class="h-40 bg-surface border-t border-white/5 p-4 flex flex-col justify-between px-8 z-10 shadow-2xl">
+        <div class="flex justify-between items-center mb-4">
+            <span class="heading text-[10px] font-black italic tracking-widest text-accent underline decoration-accent/30 underline-offset-4">PROTOCOL_QUEUE_04/25</span>
+            <div class="flex items-center space-x-4">
+                <span class="mono text-[8px] text-dim uppercase italic font-bold">Bias_Engine: Weakness_Priority_Active</span>
+            </div>
+        </div>
+        <div class="flex-1 flex space-x-4 overflow-x-auto pb-4 no-scrollbar">
+            <!-- Queued Iterations -->
+            <div class="flex-shrink-0 w-28 h-full bg-bg/50 border border-white/5 flex flex-col items-center justify-center p-2 opacity-20 transition-all hover:opacity-100 cursor-pointer group hover:border-accent/40">
+                <div class="heading text-xs italic mb-1 group-hover:text-accent font-black tracking-tighter">JB_PERM</div>
+                <div class="w-10 h-10 border border-white/10 opacity-30 flex items-center justify-center text-[8px] font-mono">FIG_03</div>
+            </div>
+            <div class="flex-shrink-0 w-28 h-full bg-accent/5 border border-accent/60 flex flex-col items-center justify-center p-2 relative shadow-2xl skew-x-[-5deg]">
+                <div class="absolute top-0 right-0 p-1"><div class="w-1.5 h-1.5 bg-error rounded-full animate-ping"></div></div>
+                <div class="heading text-xs italic text-accent font-black mb-1 skew-x-[5deg]">E_PERM</div>
+                <div class="w-10 h-10 border-2 border-accent/40 opacity-80 flex items-center justify-center text-[10px] font-black text-white italic skew-x-[5deg]">W_04</div>
+            </div>
+            <div class="flex-shrink-0 w-28 h-full bg-bg/50 border border-white/5 flex flex-col items-center justify-center p-2 opacity-10">
+                <div class="heading text-xs italic mb-1 font-black tracking-tighter">T_PERM</div>
+                <div class="w-10 h-10 border border-white/10 opacity-30 flex items-center justify-center text-[8px] font-mono">FIG_05</div>
+            </div>
+            <div class="flex-shrink-0 w-28 h-full bg-bg/50 border border-white/5 flex flex-col items-center justify-center p-2 opacity-10">
+                <div class="heading text-xs italic mb-1 font-black tracking-tighter">AA_PERM</div>
+                <div class="w-10 h-10 border border-white/10 opacity-30 flex items-center justify-center text-[8px] font-mono">FIG_06</div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

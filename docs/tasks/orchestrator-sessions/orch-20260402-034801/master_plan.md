@@ -21,8 +21,8 @@ Turn `00_Notes/Idea.md` into a reviewable orchestration bundle that you can appr
 
 ## Current Status Snapshot
 
-- Completed: `T00 Repo coordination brief`, `T01 Vision brief and MUS split`, `T02 PRD and FR issue set`, `T03 Coding guidelines and builder prompt`
-- Next up: `T04 UI design system and mockup planning`
+- Completed: `T00 Repo coordination brief`, `T01 Vision brief and MUS split`, `T02 PRD and FR issue set`, `T03 Coding guidelines and builder prompt`, `T04 UI design system and mockup planning`
+- Next up: `T05 Architecture and domain boundaries`
 
 ## Dependency Map
 

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Review — csTimer Trainer V2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1816; --bg-warm: #1f1c19; --surface: #272320; --surface-raised: #302b27; --surface-hover: #3a342f;
+            --saffron: #e8a620; --saffron-dim: #c48a18; --saffron-glow: rgba(232,166,32,0.12); --saffron-wash: rgba(232,166,32,0.06);
+            --good: #6bba62; --good-dim: rgba(107,186,98,0.15); --weak: #d4564e; --weak-dim: rgba(212,86,78,0.15);
+            --text-primary: #ede8e1; --text-secondary: #9b9388; --text-tertiary: #6b635a; --text-inverse: #1a1816;
+            --border: rgba(237,232,225,0.08); --border-accent: rgba(232,166,32,0.25);
+            --radius-sm: 3px; --radius-md: 6px; --radius-lg: 10px;
+            --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        .display { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+        .display em { font-style: italic; }
+        .label { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+        .data { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-variant-numeric: tabular-nums; }
+        .container { max-width: 900px; margin: 0 auto; padding: var(--space-8) var(--space-6); }
+
+        .precision-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); position: relative; overflow: hidden; transition: border-color 0.3s ease, background 0.3s ease; }
+        .precision-card:hover { border-color: var(--border-accent); background: var(--surface-raised); }
+        .precision-card::before, .precision-card::after { content: ''; position: absolute; width: 8px; height: 8px; }
+        .precision-card::before { top: -1px; left: -1px; border-top: 1.5px solid var(--saffron); border-left: 1.5px solid var(--saffron); border-radius: var(--radius-md) 0 0 0; }
+        .precision-card::after { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--saffron); border-right: 1.5px solid var(--saffron); border-radius: 0 0 var(--radius-md) 0; }
+
+        .btn { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 10px 22px; border-radius: var(--radius-sm); transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--saffron); color: var(--text-inverse); }
+        .btn-primary:hover { background: var(--saffron-dim); box-shadow: 0 0 20px var(--saffron-glow); }
+        .btn-outline { background: transparent; color: var(--saffron); border: 1px solid var(--border-accent); }
+        .btn-outline:hover { background: var(--saffron-wash); }
+        .btn-ghost { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--surface-raised); color: var(--text-primary); }
+
+        .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 5px; }
+        .tag-weak { background: var(--weak-dim); color: var(--weak); }
+        .tag-good { background: var(--good-dim); color: var(--good); }
+        .tag-saffron { background: var(--saffron-glow); color: var(--saffron); }
+
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .status-dot.good { background: var(--good); box-shadow: 0 0 6px var(--good); }
+        .status-dot.weak { background: var(--weak); box-shadow: 0 0 6px var(--weak); }
+
+        .progress-track { width: 100%; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 2px; }
+        .divider { height: 1px; background: var(--border); margin: var(--space-7) 0; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; } .delay-5 { animation-delay: 0.5s; }
+
+        /* --- Page-specific --- */
+        .review-header { text-align: center; padding: var(--space-7) 0; margin-bottom: var(--space-7); border-bottom: 1px solid var(--border); }
+        .review-badge { display: inline-flex; align-items: center; gap: var(--space-2); background: var(--good-dim); color: var(--good); padding: 6px 14px; border-radius: var(--radius-md); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-4); }
+        .review-title { font-size: 40px; margin-bottom: var(--space-2); }
+        .review-subtitle { color: var(--text-secondary); font-size: 15px; }
+
+        .summary-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-4); margin-bottom: var(--space-7); }
+        .summary-cell { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); text-align: center; }
+        .summary-value { font-family: 'Instrument Serif', serif; font-size: 28px; line-height: 1; }
+        .summary-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+        .section-label { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+        .section-label::before { content: ''; width: 16px; height: 1px; background: var(--saffron); }
+        .section-label h3 { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+
+        .hardest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); margin-bottom: var(--space-7); }
+        .hardest-card { padding: var(--space-5); text-align: center; }
+        .hardest-rank { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--weak); margin-bottom: var(--space-3); letter-spacing: 0.1em; }
+        .hardest-name { font-family: 'Instrument Serif', serif; font-size: 24px; margin-bottom: var(--space-2); }
+        .hardest-time { font-family: 'IBM Plex Mono', monospace; font-size: 20px; color: var(--weak); margin-bottom: var(--space-3); }
+        .hardest-detail { font-size: 12px; color: var(--text-tertiary); }
+
+        .results-table { width: 100%; border-collapse: collapse; margin-bottom: var(--space-7); }
+        .results-table th { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); }
+        .results-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); font-size: 13px; }
+        .results-table tr:hover td { background: var(--surface); }
+        .results-table .case-name-cell { font-family: 'Instrument Serif', serif; font-size: 16px; }
+        .results-table .time-cell { font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+        .results-table .bar-cell { width: 120px; }
+        .time-bar { height: 4px; border-radius: 2px; background: var(--border); }
+        .time-bar-fill { height: 100%; border-radius: 2px; }
+
+        .recommendation { padding: var(--space-6); margin-bottom: var(--space-6); }
+        .rec-header { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+        .rec-icon { width: 36px; height: 36px; background: var(--saffron-glow); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+        .rec-title { font-family: 'Instrument Serif', serif; font-size: 22px; }
+        .rec-body { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: var(--space-5); }
+        .rec-cases { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-5); }
+        .rec-chip { padding: 6px 12px; background: var(--weak-dim); border: 1px solid rgba(212,86,78,0.2); border-radius: var(--radius-sm); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--weak); display: flex; align-items: center; gap: 6px; }
+
+        .actions { display: flex; gap: var(--space-4); justify-content: center; }
+
+        @media (max-width: 768px) {
+            .container { padding: var(--space-6) var(--space-4); }
+            .summary-row { grid-template-columns: repeat(3, 1fr); }
+            .hardest-grid { grid-template-columns: 1fr; }
+            .review-title { font-size: 28px; }
+            .results-table .bar-cell { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Review Header -->
+        <div class="review-header animate-in">
+            <div class="review-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/></svg>
+                Session Complete
+            </div>
+            <div class="display review-title"><em>PLL Full Rotation</em></div>
+            <p class="review-subtitle">21 cases drilled · 14 minutes 38 seconds · April 2, 2026</p>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="summary-row animate-in delay-1">
+            <div class="summary-cell">
+                <span class="summary-value">21</span>
+                <span class="summary-label">Cases</span>
+            </div>
+            <div class="summary-cell">
+                <span class="summary-value" style="color: var(--saffron);">1.95s</span>
+                <span class="summary-label">Avg Time</span>
+            </div>
+            <div class="summary-cell">
+                <span class="summary-value" style="color: var(--good);">1.18s</span>
+                <span class="summary-label">Best</span>
+            </div>
+            <div class="summary-cell">
+                <span class="summary-value" style="color: var(--weak);">3.82s</span>
+                <span class="summary-label">Worst</span>
+            </div>
+            <div class="summary-cell">
+                <span class="summary-value">86%</span>
+                <span class="summary-label">Sub-2s Rate</span>
+            </div>
+        </div>
+
+        <!-- Hardest Cases -->
+        <div class="animate-in delay-2">
+            <div class="section-label"><h3>Hardest Cases This Session</h3></div>
+            <div class="hardest-grid">
+                <div class="precision-card hardest-card">
+                    <div class="hardest-rank">#1 Slowest</div>
+                    <div class="hardest-name"><em>N-perm (a)</em></div>
+                    <div class="hardest-time">3.82s</div>
+                    <div class="hardest-detail">Previous avg: 3.45s · Still struggling</div>
+                    <div class="tag tag-weak" style="margin-top: var(--space-3);"><span class="status-dot weak"></span>Needs Work</div>
+                </div>
+                <div class="precision-card hardest-card">
+                    <div class="hardest-rank">#2 Slowest</div>
+                    <div class="hardest-name">E-perm</div>
+                    <div class="hardest-time">2.91s</div>
+                    <div class="hardest-detail">Previous avg: 3.10s · Improving ↑</div>
+                    <div class="tag tag-saffron" style="margin-top: var(--space-3);">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
+                        Getting Better
+                    </div>
+                </div>
+                <div class="precision-card hardest-card">
+                    <div class="hardest-rank">#3 Slowest</div>
+                    <div class="hardest-name">G-perm (c)</div>
+                    <div class="hardest-time">2.31s</div>
+                    <div class="hardest-detail">Previous avg: 2.55s · Improving ↑</div>
+                    <div class="tag tag-saffron" style="margin-top: var(--space-3);">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
+                        Getting Better
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Results Table -->
+        <div class="animate-in delay-3">
+            <div class="section-label"><h3>All Results</h3></div>
+            <div class="precision-card" style="padding: var(--space-4); overflow-x: auto;">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Case</th>
+                            <th>Time</th>
+                            <th>vs. Avg</th>
+                            <th>Status</th>
+                            <th class="bar-cell">Distribution</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">1</td>
+                            <td class="case-name-cell">T-perm</td>
+                            <td class="time-cell">1.42s</td>
+                            <td class="data" style="font-size: 12px; color: var(--good);">-0.12s</td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>Good</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 37%; background: var(--good);"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">2</td>
+                            <td class="case-name-cell"><em>U-perm (a)</em></td>
+                            <td class="time-cell" style="color: var(--good);">1.18s</td>
+                            <td class="data" style="font-size: 12px; color: var(--good);">-0.25s</td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>Best</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 31%; background: var(--good);"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">3</td>
+                            <td class="case-name-cell">A-perm (a)</td>
+                            <td class="time-cell">1.55s</td>
+                            <td class="data" style="font-size: 12px; color: var(--text-tertiary);">+0.02s</td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>Ok</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 41%; background: var(--good);"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">4</td>
+                            <td class="case-name-cell">G-perm (c)</td>
+                            <td class="time-cell">2.31s</td>
+                            <td class="data" style="font-size: 12px; color: var(--good);">-0.24s</td>
+                            <td><span class="tag tag-saffron">Learning</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 60%; background: var(--saffron);"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">5</td>
+                            <td class="case-name-cell">Z-perm</td>
+                            <td class="time-cell">1.22s</td>
+                            <td class="data" style="font-size: 12px; color: var(--good);">-0.08s</td>
+                            <td><span class="tag tag-good"><span class="status-dot good"></span>Good</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 32%; background: var(--good);"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">6</td>
+                            <td class="case-name-cell" style="color: var(--weak);"><em>N-perm (a)</em></td>
+                            <td class="time-cell" style="color: var(--weak);">3.82s</td>
+                            <td class="data" style="font-size: 12px; color: var(--weak);">+0.37s</td>
+                            <td><span class="tag tag-weak"><span class="status-dot weak"></span>Weak</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 100%; background: var(--weak);"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="data" style="font-size: 11px; color: var(--text-tertiary);">7</td>
+                            <td class="case-name-cell">E-perm</td>
+                            <td class="time-cell">2.91s</td>
+                            <td class="data" style="font-size: 12px; color: var(--good);">-0.19s</td>
+                            <td><span class="tag tag-saffron">Learning</span></td>
+                            <td class="bar-cell"><div class="time-bar"><div class="time-bar-fill" style="width: 76%; background: var(--saffron);"></div></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: center; padding: var(--space-3);">
+                    <span class="label" style="cursor: pointer; color: var(--text-secondary);">Show all 21 results ↓</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Recommendation -->
+        <div class="precision-card recommendation animate-in delay-4">
+            <div class="rec-header">
+                <div class="rec-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--saffron)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                </div>
+                <div class="rec-title"><em>Recommended Next Session</em></div>
+            </div>
+            <p class="rec-body">
+                Your N-perm(a) is still above 3.5s average — that's 2× slower than your overall PLL pace. A targeted "Weakness Blitz" session on your 3 weakest cases would have the highest impact on your overall PLL confidence score.
+            </p>
+            <div class="rec-cases">
+                <div class="rec-chip"><span class="status-dot weak"></span>N-perm (a) · 3.82s</div>
+                <div class="rec-chip"><span class="status-dot weak"></span>E-perm · 2.91s</div>
+                <div class="rec-chip"><span class="status-dot weak"></span>V-perm · 2.75s</div>
+            </div>
+            <button class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Start Weakness Blitz
+            </button>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions animate-in delay-5">
+            <button class="btn btn-outline">Repeat This Session</button>
+            <button class="btn btn-ghost">Back to Trainer</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="divider"></div>
+        <footer style="display: flex; justify-content: space-between; padding: var(--space-4) 0;">
+            <span class="label">csTimer Trainer v2 Mockup</span>
+            <span class="label">Session Review</span>
+        </footer>
+    </div>
+</body>
+</html>

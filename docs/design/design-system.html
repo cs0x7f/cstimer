@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V2 — Design System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================================
+           csTimer Trainer V2 — "Analog Precision"
+           
+           Aesthetic: Swiss watchmaking meets Japanese tool culture.
+           Warm darks, saffron accent, meticulous spacing, no gimmicks.
+           Every element earns its place.
+           ========================================================= */
+
+        :root {
+            /* — Canvas — */
+            --bg:              #1a1816;
+            --bg-warm:         #1f1c19;
+            --surface:         #272320;
+            --surface-raised:  #302b27;
+            --surface-hover:   #3a342f;
+
+            /* — Accent — */
+            --saffron:         #e8a620;
+            --saffron-dim:     #c48a18;
+            --saffron-glow:    rgba(232, 166, 32, 0.12);
+            --saffron-wash:    rgba(232, 166, 32, 0.06);
+
+            /* — Semantic — */
+            --good:            #6bba62;
+            --good-dim:        rgba(107, 186, 98, 0.15);
+            --warn:            #e8a620;
+            --weak:            #d4564e;
+            --weak-dim:        rgba(212, 86, 78, 0.15);
+
+            /* — Text — */
+            --text-primary:    #ede8e1;
+            --text-secondary:  #9b9388;
+            --text-tertiary:   #6b635a;
+            --text-inverse:    #1a1816;
+
+            /* — Borders — */
+            --border:          rgba(237, 232, 225, 0.08);
+            --border-accent:   rgba(232, 166, 32, 0.25);
+
+            /* — Radii — */
+            --radius-sm:       3px;
+            --radius-md:       6px;
+            --radius-lg:       10px;
+
+            /* — Spacing scale — */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 24px;
+            --space-6: 32px;
+            --space-7: 48px;
+            --space-8: 64px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Subtle warm grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: var(--space-8) var(--space-6);
+        }
+
+        /* ---- TYPOGRAPHY CLASSES ---- */
+        .display {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+        .display em, .display i {
+            font-style: italic;
+        }
+
+        .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 400;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        .data {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 400;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---- SECTION HEADERS ---- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin-bottom: var(--space-7);
+        }
+        .section-header::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--saffron);
+        }
+        .section-header h2 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        .section-header span {
+            color: var(--saffron);
+            margin-right: 6px;
+        }
+
+        /* ---- PRECISION CARD ---- */
+        .precision-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .precision-card:hover {
+            border-color: var(--border-accent);
+            background: var(--surface-raised);
+        }
+
+        /* Corner accents — top-left and bottom-right only */
+        .precision-card::before,
+        .precision-card::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+        }
+        .precision-card::before {
+            top: -1px;
+            left: -1px;
+            border-top: 1.5px solid var(--saffron);
+            border-left: 1.5px solid var(--saffron);
+            border-radius: var(--radius-md) 0 0 0;
+        }
+        .precision-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-bottom: 1.5px solid var(--saffron);
+            border-right: 1.5px solid var(--saffron);
+            border-radius: 0 0 var(--radius-md) 0;
+        }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.03em;
+            border: none;
+            cursor: pointer;
+            padding: 10px 22px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: white;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .btn:active::after {
+            opacity: 0.1;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--saffron);
+            color: var(--text-inverse);
+        }
+        .btn-primary:hover {
+            background: var(--saffron-dim);
+            box-shadow: 0 0 20px var(--saffron-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--saffron);
+            border: 1px solid var(--border-accent);
+        }
+        .btn-outline:hover {
+            background: var(--saffron-wash);
+        }
+
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            background: var(--surface-raised);
+            color: var(--text-primary);
+            border-color: rgba(237, 232, 225, 0.15);
+        }
+
+        /* ---- PROGRESS BAR ---- */
+        .progress-track {
+            width: 100%;
+            height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--saffron);
+            border-radius: 2px;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ---- STATUS INDICATOR ---- */
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .status-dot.good { background: var(--good); box-shadow: 0 0 6px var(--good); }
+        .status-dot.warn { background: var(--warn); box-shadow: 0 0 6px var(--warn); }
+        .status-dot.weak { background: var(--weak); box-shadow: 0 0 6px var(--weak); }
+
+        /* ---- TAG / BADGE ---- */
+        .tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .tag-weak {
+            background: var(--weak-dim);
+            color: var(--weak);
+        }
+        .tag-good {
+            background: var(--good-dim);
+            color: var(--good);
+        }
+        .tag-neutral {
+            background: rgba(237, 232, 225, 0.06);
+            color: var(--text-secondary);
+        }
+
+        /* ---- DIVIDER ---- */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: var(--space-7) 0;
+        }
+
+        /* ---- GRID UTILITIES ---- */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-5); }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--space-5); }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-5); }
+
+        /* ---- ANIMATIONS ---- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .animate-in {
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* =========================================================
+           PAGE LAYOUT
+           ========================================================= */
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: var(--space-6);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: var(--space-8);
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-3);
+        }
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--saffron);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            top: 2px;
+        }
+        .logo-mark svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-inverse);
+        }
+        .logo-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 26px;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+        .logo-text em {
+            color: var(--saffron);
+            font-style: italic;
+        }
+
+        .system-meta {
+            text-align: right;
+        }
+
+        /* ---- COLOR SWATCH ---- */
+        .swatch {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        .swatch-block {
+            height: 100px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease;
+        }
+        .swatch-block:hover {
+            transform: scale(1.03);
+        }
+        .swatch-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .swatch-name {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .swatch-hex {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
+        /* ---- CASE CARD COMPONENT ---- */
+        .case-card {
+            padding: var(--space-5);
+            cursor: pointer;
+        }
+        .case-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-4);
+        }
+        .case-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 22px;
+            color: var(--text-primary);
+            transition: color 0.2s;
+        }
+        .precision-card:hover .case-name {
+            color: var(--saffron);
+        }
+        .case-visual {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--bg-warm);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-4);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Crosshair in case visual */
+        .case-visual::before,
+        .case-visual::after {
+            content: '';
+            position: absolute;
+            background: rgba(232, 166, 32, 0.08);
+        }
+        .case-visual::before {
+            width: 1px; height: 100%;
+        }
+        .case-visual::after {
+            width: 100%; height: 1px;
+        }
+        .case-meta {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* ---- STAT CELL ---- */
+        .stat-cell {
+            background: var(--bg-warm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-4) var(--space-5);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+        .stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 32px;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        /* ---- QUEUE ITEM ---- */
+        .queue-item {
+            flex-shrink: 0;
+            width: 92px;
+            height: 92px;
+            background: var(--bg-warm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .queue-item:hover {
+            border-color: var(--border-accent);
+            background: var(--surface);
+        }
+        .queue-item.active {
+            border-color: var(--saffron);
+            background: var(--surface);
+        }
+        .queue-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: var(--saffron);
+            border-radius: 1px;
+        }
+
+        /* ---- INPUT ---- */
+        .input {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            background: var(--bg-warm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+        .input:focus {
+            border-color: var(--saffron);
+            box-shadow: 0 0 0 3px var(--saffron-glow);
+        }
+        .input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* ---- TOGGLE ---- */
+        .toggle-track {
+            width: 36px;
+            height: 20px;
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .toggle-track.on {
+            background: var(--saffron);
+            border-color: var(--saffron);
+        }
+        .toggle-knob {
+            width: 14px;
+            height: 14px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s ease;
+        }
+        .toggle-track.on .toggle-knob {
+            transform: translateX(16px);
+            background: var(--text-inverse);
+        }
+
+        /* ---- SECTIONS SPACING ---- */
+        section {
+            margin-bottom: var(--space-8);
+        }
+        section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            .container { padding: var(--space-6) var(--space-4); }
+            .grid-5 { grid-template-columns: repeat(3, 1fr); }
+            .grid-4 { grid-template-columns: 1fr 1fr; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+            header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+            .system-meta { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ============================================
+             HEADER / BRANDING
+             ============================================ -->
+        <header class="animate-in">
+            <div>
+                <div class="logo-group">
+                    <div class="logo-mark">
+                        <svg viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.36.18-.57.18s-.41-.09-.57-.18l-7.9-4.44A.991.991 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.36-.18.57-.18s.41.09.57.18l7.9 4.44c.32.17.53.5.53.88v9z"/></svg>
+                    </div>
+                    <div class="logo-text">csTimer <em>Trainer</em></div>
+                </div>
+                <p class="label" style="margin-top: 8px;">Structured practice for deliberate improvement</p>
+            </div>
+            <div class="system-meta">
+                <div class="label">Design System</div>
+                <div class="data" style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">v2.0 — Analog Precision</div>
+            </div>
+        </header>
+
+        <!-- ============================================
+             01 — COLOR PALETTE
+             ============================================ -->
+        <section class="animate-in delay-1">
+            <div class="section-header">
+                <h2><span>01</span> Color Palette</h2>
+            </div>
+
+            <div style="margin-bottom: var(--space-6);">
+                <div class="label" style="margin-bottom: var(--space-4);">Canvas Tones</div>
+                <div class="grid-5">
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--bg);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Background</span>
+                            <span class="swatch-hex">#1A1816</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--bg-warm);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Warm BG</span>
+                            <span class="swatch-hex">#1F1C19</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--surface);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Surface</span>
+                            <span class="swatch-hex">#272320</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--surface-raised);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Raised</span>
+                            <span class="swatch-hex">#302B27</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--surface-hover);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Hover</span>
+                            <span class="swatch-hex">#3A342F</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: var(--space-6);">
+                <div class="label" style="margin-bottom: var(--space-4);">Accent & Signal</div>
+                <div class="grid-4">
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--saffron);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Saffron</span>
+                            <span class="swatch-hex">#E8A620</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--good);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Good</span>
+                            <span class="swatch-hex">#6BBA62</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--weak);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Weak</span>
+                            <span class="swatch-hex">#D4564E</span>
+                        </div>
+                    </div>
+                    <div class="swatch">
+                        <div class="swatch-block" style="background: var(--text-primary);"></div>
+                        <div class="swatch-info">
+                            <span class="swatch-name">Text</span>
+                            <span class="swatch-hex">#EDE8E1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ============================================
+             02 — TYPOGRAPHY
+             ============================================ -->
+        <section class="animate-in delay-2">
+            <div class="section-header">
+                <h2><span>02</span> Typography</h2>
+            </div>
+
+            <div class="precision-card" style="padding: var(--space-7);">
+                <div style="display: grid; grid-template-columns: 1fr 1px 1fr; gap: var(--space-7);">
+                    <!-- Left column -->
+                    <div style="display: flex; flex-direction: column; gap: var(--space-7);">
+                        <div>
+                            <div class="label" style="margin-bottom: var(--space-3);">Display — Instrument Serif</div>
+                            <div class="display" style="font-size: 42px;">
+                                Deliberate<br><em>Practice</em>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="label" style="margin-bottom: var(--space-3);">Body — DM Sans</div>
+                            <p style="color: var(--text-secondary); font-size: 15px; max-width: 380px;">
+                                The adaptive drill engine identifies your weakest cases and schedules focused repetitions. Precision timing, not random solving.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Divider line -->
+                    <div style="background: var(--border);"></div>
+
+                    <!-- Right column -->
+                    <div style="display: flex; flex-direction: column; gap: var(--space-7);">
+                        <div>
+                            <div class="label" style="margin-bottom: var(--space-3);">Data — IBM Plex Mono</div>
+                            <div class="data" style="font-size: 16px; color: var(--saffron); letter-spacing: 0.05em;">
+                                R2 D L' B F2 U' L D2 B R2 U
+                            </div>
+                        </div>
+                        <div>
+                            <div class="label" style="margin-bottom: var(--space-3);">Type Scale in Context</div>
+                            <div class="grid-3" style="gap: var(--space-3);">
+                                <div class="stat-cell">
+                                    <span class="label">Ao100</span>
+                                    <span class="stat-value">12.45</span>
+                                </div>
+                                <div class="stat-cell">
+                                    <span class="label">Best</span>
+                                    <span class="stat-value" style="color: var(--good);">8.92</span>
+                                </div>
+                                <div class="stat-cell">
+                                    <span class="label">Cases</span>
+                                    <span class="stat-value">78</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="label" style="margin-bottom: var(--space-3);">Section Labels</div>
+                            <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                                <span class="label" style="font-size: 11px; color: var(--text-secondary);">This is a section label</span>
+                                <span class="label" style="font-size: 10px;">This is a metadata label</span>
+                                <span class="label" style="font-size: 9px; letter-spacing: 0.18em;">This is a micro label</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ============================================
+             03 — COMPONENTS
+             ============================================ -->
+        <section class="animate-in delay-3">
+            <div class="section-header">
+                <h2><span>03</span> Components</h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: var(--space-7);">
+                <!-- Row 1: Buttons & Tags -->
+                <div class="grid-3">
+                    <div>
+                        <div class="label" style="margin-bottom: var(--space-4);">Buttons</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                            <button class="btn btn-primary">Begin Session</button>
+                            <button class="btn btn-outline">Configure Plan</button>
+                            <button class="btn btn-ghost">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="label" style="margin-bottom: var(--space-4);">Status Tags</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start;">
+                            <span class="tag tag-weak">
+                                <span class="status-dot weak"></span>
+                                Weak Case
+                            </span>
+                            <span class="tag tag-good">
+                                <span class="status-dot good"></span>
+                                Mastered
+                            </span>
+                            <span class="tag tag-neutral">
+                                <span class="status-dot" style="background: var(--text-tertiary);"></span>
+                                Untrained
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="label" style="margin-bottom: var(--space-4);">Form Controls</div>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                            <input type="text" class="input" placeholder="Session name..." value="PLL Focus — Evening">
+                            <div style="display: flex; align-items: center; gap: var(--space-3);">
+                                <div class="toggle-track on">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                                <span style="font-size: 13px; color: var(--text-secondary);">Adaptive weighting</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: var(--space-3);">
+                                <div class="toggle-track">
+                                    <div class="toggle-knob"></div>
+                                </div>
+                                <span style="font-size: 13px; color: var(--text-secondary);">Color neutral</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Progress -->
+                <div>
+                    <div class="label" style="margin-bottom: var(--space-4);">Progress</div>
+                    <div class="precision-card" style="padding: var(--space-5);">
+                        <div style="display: flex; flex-direction: column; gap: var(--space-5);">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                                    <span class="label">Session Progress</span>
+                                    <span class="data" style="font-size: 12px; color: var(--text-secondary);">14 / 21 cases</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 67%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                                    <span class="label">PLL Confidence</span>
+                                    <span class="data" style="font-size: 12px; color: var(--good);">82%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 82%; background: var(--good);"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                                    <span class="label">OLL Confidence</span>
+                                    <span class="data" style="font-size: 12px; color: var(--weak);">38%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill" style="width: 38%; background: var(--weak);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Case Card -->
+                <div>
+                    <div class="label" style="margin-bottom: var(--space-4);">Case Card</div>
+                    <div class="grid-3">
+                        <div class="precision-card case-card">
+                            <div class="case-card-header">
+                                <div class="case-name">PLL E</div>
+                                <span class="tag tag-weak">
+                                    <span class="status-dot weak"></span>
+                                    Weak
+                                </span>
+                            </div>
+                            <div class="case-visual">
+                                <div style="width: 48px; height: 48px; border: 2px solid var(--saffron); opacity: 0.3; transform: rotate(45deg);"></div>
+                            </div>
+                            <div class="case-meta">
+                                <span class="label">Last: 2.15s</span>
+                                <span class="label">Freq: 12%</span>
+                            </div>
+                        </div>
+
+                        <div class="precision-card case-card">
+                            <div class="case-card-header">
+                                <div class="case-name">PLL Aa</div>
+                                <span class="tag tag-good">
+                                    <span class="status-dot good"></span>
+                                    Ok
+                                </span>
+                            </div>
+                            <div class="case-visual">
+                                <div style="width: 48px; height: 48px; border: 2px solid var(--good); opacity: 0.3; transform: rotate(45deg);"></div>
+                            </div>
+                            <div class="case-meta">
+                                <span class="label">Last: 1.42s</span>
+                                <span class="label">Freq: 8%</span>
+                            </div>
+                        </div>
+
+                        <div class="precision-card case-card">
+                            <div class="case-card-header">
+                                <div class="case-name">OLL 33</div>
+                                <span class="tag tag-neutral">
+                                    <span class="status-dot" style="background: var(--text-tertiary);"></span>
+                                    New
+                                </span>
+                            </div>
+                            <div class="case-visual">
+                                <div style="width: 48px; height: 48px; border: 2px solid var(--text-tertiary); opacity: 0.2; transform: rotate(45deg);"></div>
+                            </div>
+                            <div class="case-meta">
+                                <span class="label">Last: —</span>
+                                <span class="label">Freq: 0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 4: Queue Rail -->
+                <div>
+                    <div class="label" style="margin-bottom: var(--space-4);">Drill Queue</div>
+                    <div class="precision-card" style="padding: var(--space-4); overflow-x: auto;">
+                        <div style="display: flex; gap: var(--space-3);">
+                            <div class="queue-item active">
+                                <span class="data" style="font-size: 11px; color: var(--saffron);">PLL E</span>
+                                <span class="status-dot weak"></span>
+                            </div>
+                            <div class="queue-item">
+                                <span class="data" style="font-size: 11px;">PLL T</span>
+                                <span class="status-dot warn"></span>
+                            </div>
+                            <div class="queue-item" style="opacity: 0.7;">
+                                <span class="data" style="font-size: 11px;">PLL Aa</span>
+                                <span class="status-dot good"></span>
+                            </div>
+                            <div class="queue-item" style="opacity: 0.5;">
+                                <span class="data" style="font-size: 11px;">PLL F</span>
+                                <span class="status-dot" style="background: var(--text-tertiary);"></span>
+                            </div>
+                            <div class="queue-item" style="opacity: 0.35;">
+                                <span class="data" style="font-size: 11px;">PLL Gc</span>
+                                <span class="status-dot" style="background: var(--text-tertiary);"></span>
+                            </div>
+                            <div class="queue-item" style="opacity: 0.25;">
+                                <span class="data" style="font-size: 11px;">PLL V</span>
+                                <span class="status-dot" style="background: var(--text-tertiary);"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 5: Goal Selection Cards -->
+                <div>
+                    <div class="label" style="margin-bottom: var(--space-4);">Goal Selection</div>
+                    <div class="grid-3">
+                        <div class="precision-card" style="padding: var(--space-5); cursor: pointer; border-color: var(--border-accent); background: var(--saffron-wash);">
+                            <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+                                <div style="width: 32px; height: 32px; background: var(--saffron-glow); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--saffron);"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                                <div class="display" style="font-size: 18px;"><em>Return to Speed</em></div>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                                For cubers coming back after a break. Broad review of all case families.
+                            </p>
+                        </div>
+
+                        <div class="precision-card" style="padding: var(--space-5); cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+                                <div style="width: 32px; height: 32px; background: rgba(237, 232, 225, 0.04); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary);"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+                                </div>
+                                <div class="display" style="font-size: 18px;">Last Layer</div>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                                Focused PLL and OLL drills weighted toward your weakest cases.
+                            </p>
+                        </div>
+
+                        <div class="precision-card" style="padding: var(--space-5); cursor: pointer;">
+                            <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+                                <div style="width: 32px; height: 32px; background: rgba(237, 232, 225, 0.04); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary);"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                                </div>
+                                <div class="display" style="font-size: 18px;">Cross</div>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+                                Dedicated cross planning and execution drills with color-neutral options.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ============================================
+             04 — SPACING & LAYOUT PRINCIPLES
+             ============================================ -->
+        <section class="animate-in delay-4">
+            <div class="section-header">
+                <h2><span>04</span> Spacing & Layout</h2>
+            </div>
+
+            <div class="precision-card" style="padding: var(--space-6);">
+                <div class="label" style="margin-bottom: var(--space-5);">Spacing Scale (4px base)</div>
+                <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-1</div>
+                        <div style="width: 4px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">4px — Micro gaps, icon padding</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-2</div>
+                        <div style="width: 8px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">8px — Tight internal padding</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-3</div>
+                        <div style="width: 12px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">12px — Default element gap</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-4</div>
+                        <div style="width: 16px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">16px — Card padding, group spacing</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-5</div>
+                        <div style="width: 24px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">24px — Section internal spacing</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-6</div>
+                        <div style="width: 32px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">32px — Region separation</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-7</div>
+                        <div style="width: 48px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">48px — Section header to content</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                        <div class="data" style="font-size: 11px; width: 60px; color: var(--text-tertiary);">--sp-8</div>
+                        <div style="width: 64px; height: 12px; background: var(--saffron); border-radius: 1px;"></div>
+                        <span class="label">64px — Page-level sections</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ============================================
+             05 — DESIGN PRINCIPLES
+             ============================================ -->
+        <section class="animate-in delay-5">
+            <div class="section-header">
+                <h2><span>05</span> Design Principles</h2>
+            </div>
+
+            <div class="grid-2" style="gap: var(--space-6);">
+                <div class="precision-card" style="padding: var(--space-5);">
+                    <div class="display" style="font-size: 20px; margin-bottom: var(--space-3);"><em>Earn Every Pixel</em></div>
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                        No decorative elements without function. Borders carry status information. Colors encode meaning. Spacing creates hierarchy. If something doesn't help the cuber make better decisions, remove it.
+                    </p>
+                </div>
+                <div class="precision-card" style="padding: var(--space-5);">
+                    <div class="display" style="font-size: 20px; margin-bottom: var(--space-3);"><em>Warm, Not Cold</em></div>
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                        This is a practice tool, not a surveillance dashboard. Warm neutrals over blue-greys. Saffron over electric cyan. The interface should feel like a well-worn practice notebook, not a command center.
+                    </p>
+                </div>
+                <div class="precision-card" style="padding: var(--space-5);">
+                    <div class="display" style="font-size: 20px; margin-bottom: var(--space-3);"><em>Data at a Glance</em></div>
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                        Stat cells use large serif numerals for instant readability. Labels are small monospace above or below. Status dots provide quick scan without reading. The hierarchy is: number → status → detail.
+                    </p>
+                </div>
+                <div class="precision-card" style="padding: var(--space-5);">
+                    <div class="display" style="font-size: 20px; margin-bottom: var(--space-3);"><em>Quiet Confidence</em></div>
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                        Animations are smooth and purposeful. Hover states reveal, not distract. The interface is confident enough to use restraint. Premium is found in the details: the 1.5px corner accents, the tabular numerals, the grain overlay.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div class="divider"></div>
+        <footer style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-5) 0;">
+            <span class="label">csTimer Trainer — Design System v2.0</span>
+            <span class="label">Analog Precision — 2026</span>
+        </footer>
+
+    </div>
+</body>
+</html>

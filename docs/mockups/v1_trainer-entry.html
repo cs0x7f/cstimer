@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>csTimer Trainer V1 - Tactical Entry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #14181f;
+            --surface-accent: #1c232d;
+            --accent: #facc15;
+            --info: #61afef;
+            --text-dim: #64748b;
+            --text-bright: #f8fafc;
+        }
+
+        body { background-color: var(--bg); color: var(--text-bright); font-family: 'Rajdhani', sans-serif; overflow: hidden; }
+        .heading { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 0.1em; }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        .tactical-border { position: relative; border: 1px solid rgba(250, 204, 21, 0.1); }
+        .tactical-border::before {
+            content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--accent); border-left: 2px solid var(--accent);
+        }
+        .animate-scan { animation: scan 6s linear infinite; }
+        @keyframes scan { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 0.2; } 100% { transform: translateY(100vh); opacity: 0; } }
+    </style>
+</head>
+<body class="flex flex-col h-screen relative">
+    <div class="fixed inset-0 pointer-events-none z-50">
+        <div class="animate-scan w-full h-[20vh] bg-gradient-to-b from-transparent via-accent/5 to-transparent"></div>
+    </div>
+    
+    <!-- Top System Nav -->
+    <header class="bg-surface border-b border-white/5 p-4 flex justify-between items-center z-10">
+        <div class="flex items-center space-x-6">
+            <div class="heading text-xl font-black italic text-white flex items-center">
+                <svg class="w-6 h-6 mr-3 text-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16.5l-9 5l-9-5l9-5zM12 2l9 5l-9 5l-9-5z"/></svg>
+                <span>CSTIMER</span>
+            </div>
+            <div class="mono text-[10px] text-dim flex space-x-4">
+                <span class="hover:text-accent transition-colors cursor-pointer">OPTIONS</span>
+                <span class="hover:text-accent transition-colors cursor-pointer">EXPORT</span>
+                <span class="hover:text-accent transition-colors cursor-pointer">SCRAMBLE</span>
+            </div>
+        </div>
+
+        <!-- NEW TRAINER BUTTON -->
+        <button class="bg-accent/10 border border-accent/20 px-6 py-2 heading text-xs font-bold text-accent italic hover:bg-accent hover:text-bg transition-all hover:shadow-[0_0_20px_rgba(250,204,21,0.2)] skew-x-[-15deg] group">
+            <span class="skew-x-[15deg] flex items-center">
+                <span class="w-2 h-2 bg-accent rounded-full mr-3 animate-ping"></span>
+                TRAINER_SUBSYSTEM
+            </span>
+        </button>
+
+        <div class="mono text-[10px] text-dim">
+            3x3x3 :: CFOP :: 12.45 (AVG_12)
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        <!-- Sidebar Ghost -->
+        <aside class="w-64 border-r border-white/5 p-6 opacity-30 pointer-events-none hidden md:block">
+            <div class="mono text-[10px] space-y-2 mb-8">
+                <div>01. 12.55</div>
+                <div>02. 14.12</div>
+                <div class="text-error">03. DNF</div>
+                <div>04. 11.23</div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <section class="flex-1 flex flex-col items-center justify-center p-12 relative">
+            <!-- Central Timer -->
+            <div class="heading text-[12rem] font-black text-white italic transition-all duration-300 drop-shadow-2xl">
+                00:00.00
+            </div>
+            
+            <!-- Scramble Block -->
+            <div class="max-w-2xl bg-surface/50 backdrop-blur-xl p-8 tactical-border rotate-[-1deg]">
+                <div class="mono text-[10px] text-accent mb-3 uppercase tracking-[0.4em]">Active Scramble Generator</div>
+                <div class="mono text-lg text-white font-light tracking-wider leading-relaxed">
+                    B2 L' U R B2 U' R2 L' F2 U L2 F' D R2 U' L D'
+                </div>
+            </div>
+
+            <!-- TACTICAL OVERLAY / ENTRY INTERFACE -->
+            <div class="absolute inset-x-12 bottom-12 z-20 transition-all duration-700 animate-in fade-in slide-in-from-bottom-8">
+                <div class="bg-surface/80 backdrop-blur-3xl border border-white/10 p-1 rounded-sm shadow-2xl flex">
+                    <div class="w-2 bg-accent"></div>
+                    <div class="flex-1 p-8 grid grid-cols-12 gap-8 items-center">
+                        <div class="col-span-12 lg:col-span-4">
+                            <h2 class="heading text-4xl font-black italic mb-2">PRACTICE_MODE</h2>
+                            <p class="text-lg font-light text-white/50 mb-6 italic italic-opacity-6 sm:max-w-xs">Initialize deliberate training protocols for CFOP mastery.</p>
+                            <div class="mono text-[9px] text-accent uppercase tracking-widest flex items-center">
+                                <span class="w-4 h-px bg-accent mr-3"></span> SUBSYSTEM_V1_STABLE
+                            </div>
+                        </div>
+
+                        <!-- Goal Cards -->
+                        <div class="col-span-12 lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <!-- Card 1 -->
+                            <div class="bg-bg/60 p-6 tactical-border group cursor-pointer hover:bg-accent/5 transition-all">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div class="w-10 h-10 border border-white/10 flex items-center justify-center transition-all group-hover:scale-110">
+                                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    </div>
+                                    <div class="mono text-[8px] text-accent opacity-0 group-hover:opacity-100 transition-opacity">01_INIT</div>
+                                </div>
+                                <h3 class="heading text-xl italic group-hover:text-accent transition-colors">LAST_LAYER</h3>
+                                <p class="text-xs text-white/40 mt-2 font-medium">PLL + OLL Weakness Analysis</p>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="bg-bg/60 p-6 tactical-border group cursor-pointer hover:bg-accent/5 transition-all">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div class="w-10 h-10 border border-white/10 flex items-center justify-center transition-all group-hover:scale-110">
+                                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 9m0 8V9"></path></svg>
+                                    </div>
+                                    <div class="mono text-[8px] text-accent opacity-0 group-hover:opacity-100 transition-opacity">02_INIT</div>
+                                </div>
+                                <h3 class="heading text-xl italic group-hover:text-accent transition-colors">CROSS_DRIVE</h3>
+                                <p class="text-xs text-white/40 mt-2 font-medium">Color Neutrality & Efficiency</p>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="bg-bg/60 p-6 tactical-border group cursor-pointer hover:bg-accent/5 transition-all">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div class="w-10 h-10 border border-white/10 flex items-center justify-center transition-all group-hover:scale-110">
+                                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    </div>
+                                    <div class="mono text-[8px] text-accent opacity-0 group-hover:opacity-100 transition-opacity">03_INIT</div>
+                                </div>
+                                <h3 class="heading text-xl italic group-hover:text-accent transition-colors">RE_ENTRY</h3>
+                                <p class="text-xs text-white/40 mt-2 font-medium">Fundamental Calibration</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-surface border-t border-white/5 p-2 flex justify-between px-6">
+        <div class="mono text-[9px] text-dim">KERNEL_LOAD: STABLE // STORAGE: BROWSER_LOCAL_8.2MB</div>
+        <div class="mono text-[9px] text-accent font-bold animate-pulse italic uppercase tracking-[0.2em]">Ready for input...</div>
+    </footer>
+</body>
+</html>

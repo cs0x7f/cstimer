@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Session — csTimer Trainer V2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1816; --bg-warm: #1f1c19; --surface: #272320; --surface-raised: #302b27; --surface-hover: #3a342f;
+            --saffron: #e8a620; --saffron-dim: #c48a18; --saffron-glow: rgba(232,166,32,0.12); --saffron-wash: rgba(232,166,32,0.06);
+            --good: #6bba62; --good-dim: rgba(107,186,98,0.15); --weak: #d4564e; --weak-dim: rgba(212,86,78,0.15);
+            --text-primary: #ede8e1; --text-secondary: #9b9388; --text-tertiary: #6b635a; --text-inverse: #1a1816;
+            --border: rgba(237,232,225,0.08); --border-accent: rgba(232,166,32,0.25);
+            --radius-sm: 3px; --radius-md: 6px; --radius-lg: 10px;
+            --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+        body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+        .display { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
+        .display em { font-style: italic; }
+        .label { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary); }
+        .data { font-family: 'IBM Plex Mono', monospace; font-weight: 400; font-variant-numeric: tabular-nums; }
+        .container { max-width: 1000px; margin: 0 auto; padding: var(--space-6); }
+
+        .precision-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); position: relative; overflow: hidden; transition: border-color 0.3s ease, background 0.3s ease; }
+        .precision-card::before, .precision-card::after { content: ''; position: absolute; width: 8px; height: 8px; }
+        .precision-card::before { top: -1px; left: -1px; border-top: 1.5px solid var(--saffron); border-left: 1.5px solid var(--saffron); border-radius: var(--radius-md) 0 0 0; }
+        .precision-card::after { bottom: -1px; right: -1px; border-bottom: 1.5px solid var(--saffron); border-right: 1.5px solid var(--saffron); border-radius: 0 0 var(--radius-md) 0; }
+
+        .btn { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 10px 22px; border-radius: var(--radius-sm); transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: var(--saffron); color: var(--text-inverse); }
+        .btn-primary:hover { background: var(--saffron-dim); box-shadow: 0 0 20px var(--saffron-glow); }
+        .btn-ghost { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--surface-raised); color: var(--text-primary); }
+
+        .tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 5px; }
+        .tag-weak { background: var(--weak-dim); color: var(--weak); }
+        .tag-good { background: var(--good-dim); color: var(--good); }
+        .tag-saffron { background: var(--saffron-glow); color: var(--saffron); }
+
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .status-dot.good { background: var(--good); box-shadow: 0 0 6px var(--good); }
+        .status-dot.weak { background: var(--weak); box-shadow: 0 0 6px var(--weak); }
+        .status-dot.warn { background: var(--saffron); box-shadow: 0 0 6px var(--saffron); }
+
+        .progress-track { width: 100%; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 2px; }
+
+        .divider { height: 1px; background: var(--border); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 var(--saffron-glow); } 50% { box-shadow: 0 0 20px 4px var(--saffron-glow); } }
+        .animate-in { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; }
+
+        /* --- Page Layout --- */
+        .session-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) 0; margin-bottom: var(--space-4); }
+        .session-info { display: flex; align-items: center; gap: var(--space-4); }
+        .session-name { font-family: 'Instrument Serif', serif; font-size: 20px; }
+        .session-controls { display: flex; align-items: center; gap: var(--space-3); }
+
+        .progress-bar-container { margin-bottom: var(--space-6); }
+        .progress-meta { display: flex; justify-content: space-between; margin-bottom: var(--space-2); }
+
+        .main-layout { display: grid; grid-template-columns: 1fr 320px; gap: var(--space-5); min-height: 500px; }
+
+        /* Left column — Active Drill */
+        .drill-area { display: flex; flex-direction: column; }
+
+        .scramble-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-5); }
+        .scramble-label { margin-bottom: var(--space-2); }
+        .scramble-text { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: var(--saffron); letter-spacing: 0.04em; word-spacing: 4px; }
+
+        .active-case-card { flex: 1; display: flex; flex-direction: column; padding: var(--space-7); text-align: center; align-items: center; }
+        .active-case-name { font-family: 'Instrument Serif', serif; font-size: 52px; margin-bottom: var(--space-2); }
+        .active-case-fullname { color: var(--text-secondary); font-size: 14px; margin-bottom: var(--space-5); }
+        .active-case-visual { width: 180px; height: 180px; background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-6); position: relative; }
+        .active-case-visual::before, .active-case-visual::after { content: ''; position: absolute; background: rgba(232,166,32,0.06); }
+        .active-case-visual::before { width: 1px; height: 100%; }
+        .active-case-visual::after { width: 100%; height: 1px; }
+
+        .timer-display { font-family: 'IBM Plex Mono', monospace; font-size: 72px; font-weight: 300; color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: var(--space-5); line-height: 1; animation: pulse-glow 2s ease-in-out infinite; border-radius: var(--radius-md); padding: var(--space-3) var(--space-5); }
+
+        .algo-hint { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-5); }
+        .algo-text { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-secondary); letter-spacing: 0.03em; }
+
+        .drill-actions { display: flex; gap: var(--space-3); justify-content: center; margin-top: auto; }
+
+        /* Right column — Queue + Stats */
+        .sidebar { display: flex; flex-direction: column; gap: var(--space-5); }
+
+        .queue-panel { padding: var(--space-5); flex: 1; }
+        .queue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
+        .queue-list { display: flex; flex-direction: column; gap: var(--space-2); }
+        .queue-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: all 0.2s; cursor: pointer; }
+        .queue-item:hover { border-color: var(--border-accent); }
+        .queue-item.current { border-color: var(--saffron); background: var(--saffron-wash); }
+        .queue-item.completed { opacity: 0.4; }
+        .queue-item-name { font-family: 'IBM Plex Mono', monospace; font-size: 12px; flex: 1; }
+        .queue-item-time { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-tertiary); }
+        .queue-item-check { color: var(--good); font-size: 12px; }
+
+        .session-stats { padding: var(--space-5); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+        .mini-stat { background: var(--bg-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+        .mini-stat-value { font-family: 'Instrument Serif', serif; font-size: 22px; line-height: 1; }
+        .mini-stat-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary); }
+
+        @media (max-width: 768px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .timer-display { font-size: 52px; }
+            .active-case-name { font-size: 36px; }
+            .active-case-visual { width: 140px; height: 140px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Session Header -->
+        <div class="session-header animate-in">
+            <div class="session-info">
+                <div class="session-name"><em>PLL Full Rotation</em></div>
+                <span class="tag tag-saffron">Last Layer</span>
+            </div>
+            <div class="session-controls">
+                <button class="btn btn-ghost" style="padding: 8px 14px; font-size: 12px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                    Pause
+                </button>
+                <button class="btn btn-ghost" style="padding: 8px 14px; font-size: 12px; color: var(--weak);">End Session</button>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-bar-container animate-in delay-1">
+            <div class="progress-meta">
+                <span class="label">Case 7 of 21</span>
+                <span class="data" style="font-size: 11px; color: var(--text-secondary);">33% complete · ~10 min remaining</span>
+            </div>
+            <div class="progress-track" style="height: 4px;">
+                <div class="progress-fill" style="width: 33%; background: var(--saffron);"></div>
+            </div>
+        </div>
+
+        <!-- Main Two-Column Layout -->
+        <div class="main-layout">
+
+            <!-- LEFT: Active Drill Zone -->
+            <div class="drill-area">
+                <!-- Scramble -->
+                <div class="scramble-bar animate-in delay-1">
+                    <div class="label scramble-label">Scramble</div>
+                    <div class="scramble-text">R2 D L' B F2 U' L D2 B R2 U L2 F2 U2</div>
+                </div>
+
+                <!-- Active Case Display -->
+                <div class="precision-card active-case-card animate-in delay-2">
+                    <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+                        <span class="tag tag-weak"><span class="status-dot weak"></span>Weak Case</span>
+                    </div>
+                    <div class="active-case-name">E-perm</div>
+                    <div class="active-case-fullname">PLL — Edge permutation (adjacent swap)</div>
+
+                    <div class="active-case-visual">
+                        <div style="width: 64px; height: 64px; border: 2px solid var(--saffron); opacity: 0.25; transform: rotate(45deg);"></div>
+                    </div>
+
+                    <!-- Timer -->
+                    <div class="timer-display">0:02.15</div>
+
+                    <!-- Algorithm Hint -->
+                    <div class="algo-hint">
+                        <div class="label" style="margin-bottom: 4px;">Algorithm</div>
+                        <div class="algo-text">x' R U' R' D R U R' D' R U R' D R U' R' D' x</div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="drill-actions">
+                        <button class="btn btn-ghost" style="padding: 8px 16px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>
+                            Re-scramble
+                        </button>
+                        <button class="btn btn-ghost" style="padding: 8px 16px;">Skip</button>
+                        <button class="btn btn-primary" style="padding: 10px 28px;">
+                            Next Case →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Sidebar -->
+            <div class="sidebar">
+                <!-- Queue -->
+                <div class="precision-card queue-panel animate-in delay-2">
+                    <div class="queue-header">
+                        <span class="label" style="font-size: 11px; color: var(--text-secondary);">Queue</span>
+                        <span class="label">7 / 21</span>
+                    </div>
+                    <div class="queue-list">
+                        <div class="queue-item completed">
+                            <span class="status-dot good"></span>
+                            <span class="queue-item-name" style="text-decoration: line-through; opacity: 0.6;">T-perm</span>
+                            <span class="queue-item-time">1.42s</span>
+                            <span class="queue-item-check">✓</span>
+                        </div>
+                        <div class="queue-item completed">
+                            <span class="status-dot good"></span>
+                            <span class="queue-item-name" style="text-decoration: line-through; opacity: 0.6;">U-perm (a)</span>
+                            <span class="queue-item-time">1.18s</span>
+                            <span class="queue-item-check">✓</span>
+                        </div>
+                        <div class="queue-item completed">
+                            <span class="status-dot good"></span>
+                            <span class="queue-item-name" style="text-decoration: line-through; opacity: 0.6;">A-perm (a)</span>
+                            <span class="queue-item-time">1.55s</span>
+                            <span class="queue-item-check">✓</span>
+                        </div>
+                        <div class="queue-item completed">
+                            <span class="status-dot" style="background: var(--saffron); box-shadow: 0 0 6px var(--saffron);"></span>
+                            <span class="queue-item-name" style="text-decoration: line-through; opacity: 0.6;">G-perm (c)</span>
+                            <span class="queue-item-time">2.31s</span>
+                            <span class="queue-item-check">✓</span>
+                        </div>
+                        <div class="queue-item completed">
+                            <span class="status-dot good"></span>
+                            <span class="queue-item-name" style="text-decoration: line-through; opacity: 0.6;">Z-perm</span>
+                            <span class="queue-item-time">1.22s</span>
+                            <span class="queue-item-check">✓</span>
+                        </div>
+                        <div class="queue-item completed">
+                            <span class="status-dot weak"></span>
+                            <span class="queue-item-name" style="text-decoration: line-through; opacity: 0.6;">N-perm (a)</span>
+                            <span class="queue-item-time" style="color: var(--weak);">3.82s</span>
+                            <span class="queue-item-check">✓</span>
+                        </div>
+
+                        <!-- CURRENT -->
+                        <div class="queue-item current">
+                            <span class="status-dot weak"></span>
+                            <span class="queue-item-name" style="color: var(--saffron); font-weight: 500;">E-perm</span>
+                            <span class="queue-item-time" style="color: var(--saffron);">now</span>
+                        </div>
+
+                        <!-- UPCOMING -->
+                        <div class="queue-item" style="opacity: 0.7;">
+                            <span class="status-dot warn"></span>
+                            <span class="queue-item-name">R-perm (a)</span>
+                            <span class="queue-item-time">—</span>
+                        </div>
+                        <div class="queue-item" style="opacity: 0.55;">
+                            <span class="status-dot warn"></span>
+                            <span class="queue-item-name">F-perm</span>
+                            <span class="queue-item-time">—</span>
+                        </div>
+                        <div class="queue-item" style="opacity: 0.4;">
+                            <span class="status-dot" style="background: var(--text-tertiary);"></span>
+                            <span class="queue-item-name">A-perm (b)</span>
+                            <span class="queue-item-time">—</span>
+                        </div>
+                        <div class="queue-item" style="opacity: 0.3;">
+                            <span class="status-dot weak"></span>
+                            <span class="queue-item-name">V-perm</span>
+                            <span class="queue-item-time">—</span>
+                        </div>
+                        <div class="queue-item" style="opacity: 0.2;">
+                            <span class="status-dot good"></span>
+                            <span class="queue-item-name">H-perm</span>
+                            <span class="queue-item-time">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session Stats -->
+                <div class="precision-card session-stats animate-in delay-3">
+                    <span class="label" style="font-size: 11px; color: var(--text-secondary); display: block; margin-bottom: var(--space-4);">Live Stats</span>
+                    <div class="stats-grid">
+                        <div class="mini-stat">
+                            <span class="mini-stat-value">1.95s</span>
+                            <span class="mini-stat-label">Avg Time</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-value" style="color: var(--good);">1.18s</span>
+                            <span class="mini-stat-label">Best</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-value" style="color: var(--weak);">3.82s</span>
+                            <span class="mini-stat-label">Worst</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-stat-value">83%</span>
+                            <span class="mini-stat-label">Sub-2s Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="divider" style="margin-top: var(--space-6);"></div>
+        <footer style="display: flex; justify-content: space-between; padding: var(--space-4) 0;">
+            <span class="label">csTimer Trainer v2 Mockup</span>
+            <span class="label">Active Session Queue</span>
+        </footer>
+    </div>
+</body>
+</html>
