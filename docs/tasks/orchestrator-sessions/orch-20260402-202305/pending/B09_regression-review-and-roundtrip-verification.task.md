@@ -13,7 +13,7 @@
 
 ## Objective
 
-Review implemented trainer work for bugs, regressions, docs drift, and cleanup needs, then fix what is necessary.
+Run the full regression review, code cleanup, and export/import round-trip verification pass, then fix what is necessary.
 
 ## Scope
 
@@ -21,6 +21,7 @@ Review implemented trainer work for bugs, regressions, docs drift, and cleanup n
 - scramble behavior
 - solve-history compatibility
 - trainer persistence safety
+- export/import round-trip behavior
 - UI mismatch with mockups
 - docs drift
 
@@ -39,7 +40,8 @@ Review implemented trainer work for bugs, regressions, docs drift, and cleanup n
 
 - `docs/issues/FR-001.md` through `docs/issues/FR-007.md`
 - `docs/Coding_Guidelines.md`
+- `docs/architecture/export-import-compatibility.md`
 
 ## Review Checkpoint
 
-User gets a clear pass/fail summary before the next major build wave.
+User gets a clear pass/fail summary with round-trip evidence before the build wave is called stable.

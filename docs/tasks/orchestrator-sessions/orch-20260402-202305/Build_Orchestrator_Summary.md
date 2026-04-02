@@ -12,19 +12,21 @@ Turn the approved trainer planning bundle into real implementation work, with or
 
 ### Wave 1
 
-- trainer domain and storage foundation
-- trainer entry and plan setup
-- adaptive PLL/OLL drill queue
+- StorageAdapter and export bridge foundation
+- CaseCatalog and provenance foundation
+- planner core and `generateQueue()`
 
 ### Wave 2
 
-- cross drill workflows
-- session review and persistent weakness summary
-- export/import round-trip support
+- shared trainer shell
+- trainer entry home
+- weakness summary
 
 ### Wave 3
 
-- source-backed case normalization
+- training plan setup
+- active session flow
+- session review and cross drill workflows
 - hardening, regression, cleanup, docs sync
 
 ## What This Session Assumes Is Already Good Enough

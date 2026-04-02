@@ -13,26 +13,27 @@
 
 ## Objective
 
-Implement the trainer domain foundation and local-first storage scaffolding inside the current csTimer fork.
+Implement the `StorageAdapter` foundation and the base trainer export bridge inside the current csTimer fork.
 
 ## Scope
 
-- add trainer data structures and storage access points
-- integrate with the existing storage abstraction, not a parallel custom layer
-- keep trainer keys separate from raw solve records
-- prepare stable interfaces for later queue, cross, and review work
+- integrate trainer state with the existing storage abstraction, not a parallel custom layer
+- keep trainer keys under `trainer:*`
+- keep trainer data separate from raw solve records
+- add the export bridge foundation required by the persistence plan
+- prepare the storage-facing interfaces needed by later planner and UI work
 
 ## Definition of Done
 
-- trainer domain and local persistence foundation exists
+- trainer storage foundation exists and uses the host storage layer correctly
+- base export bridge hooks exist without breaking current csTimer export behavior
 - no normal solve-history behavior is broken
-- later feature tasks can build on stable contracts instead of inventing storage on the fly
 
 ## Expected Artifacts
 
-- domain implementation
-- trainer storage integration
-- docs updates if structure changed from the blueprint
+- `StorageAdapter` implementation or equivalent trainer storage integration
+- base export bridge integration
+- docs updates if implementation forced storage-plan changes
 
 ## References
 
@@ -44,4 +45,4 @@ Implement the trainer domain foundation and local-first storage scaffolding insi
 
 ## Review Checkpoint
 
-Review for data model clarity, storage safety, and compatibility before UI or queue work is approved.
+Review for storage safety, trainer key isolation, offline behavior, and compatibility before UI or queue work is approved.
