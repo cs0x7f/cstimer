@@ -129,6 +129,7 @@ These types and functions are **trainer domain** — no csTimer imports, no brow
 | `caseId` | `string` | Reference to catalog case |
 | `attemptCount` | `number` | Total attempts recorded |
 | `avgSolveTime` | `number` | Mean solve time in ms |
+| `avgRecognitionTime` | `number` | Mean recognition time in ms when captured |
 | `bestSolveTime` | `number` | Best solve time in ms |
 | `worstSolveTime` | `number` | Worst solve time in ms |
 | `dnfRate` | `number` | 0-1 fraction of DNF attempts |
@@ -268,7 +269,7 @@ These rules protect the domain layer's portability for future FR-008 extraction:
 
 3. **Domain types use plain objects, not classes.** This keeps serialization trivial and avoids framework assumptions.
 
-4. **Planner logic is a pure function.** `generateQueue(trainingPlan, skillStats, caseCatalog)` returns a `DrillQueue` without side effects. No storage reads, no timer access.
+4. **Planner logic is a pure function.** `generateQueue(trainingPlan, skillStats, caseCatalog, plannerContext)` returns a `DrillQueue` without side effects. No storage reads, no timer access.
 
 5. **Export format is domain-owned.** The JSON schema for trainer export/import is defined in the domain layer, not derived from csTimer's internal format. The `ExportBridge` translates between the two.
 
@@ -310,6 +311,7 @@ These shapes are intentionally lightweight so downstream tasks can implement ada
 | `ImportResult` | `{ imported, skipped, warnings }` | Returned by storage/import flows |
 | `ValidationResult` | `{ valid, errors }` | Export/import validation summary |
 | `CrossScrambleOptions` | `{ colorSet, difficultyTier }` | Bounded v1 cross generation hint |
+| `PlannerContext` | `{ evaluationTime, queueSeed }` | Deterministic timing and shuffle context for pure planner functions |
 
 ---
 
@@ -319,7 +321,7 @@ For agents working on persistence (T06), planner logic (T09), or UI packets (T10
 
 - **T06 persistence:** Implement the `StorageAdapter` interface. Define the concrete browser storage strategy. The domain types above are your schema — store them as-is.
 - **T07 case catalog:** Populate the `CaseCatalog` with PLL 21 and OLL 57 cases. Define `ProvenanceRecord` sources. The catalog is pure data.
-- **T09 planner:** Implement `generateQueue()` as a pure function. Input: plan + stats + catalog. Output: ordered drill queue. No side effects.
+- **T09 planner:** Implement `generateQueue()` as a pure function. Input: plan + stats + catalog + planner context. Output: ordered drill queue. No side effects.
 - **T10 UI:** Mount trainer surfaces at the defined UI mount points. Read domain types for display. Write results back through the `StorageAdapter`.
 
 ---

@@ -40,6 +40,12 @@
 
 User saves completed packets to `docs/architecture/user-source-intake-round-01.md` using the provided template with fields: Name, URL, Type, Tags, Trust Note, Algorithms Found table, Recognition Tips, Fingertrick Notes, Difficulty Info, Other Notes.
 
+### Coverage Boundary
+
+- This packet is explicitly **round 01** and is meant to bootstrap trusted PLL coverage plus the returning-cuber 2-look OLL path.
+- It does **not** claim to complete the entire 57-case OLL source pull in one round.
+- The next normalization pass is expected to identify remaining OLL gaps and drive a round-02 intake packet before final full-v1 catalog population.
+
 ### Normalization Path
 
 Return packets feed into `source-packet-mapping.md` (from T07), which defines the 9-step normalization process: sourceRef generation, confidence assignment, case matching, algorithm extraction, difficulty tier, group tags, merge rules, and validation.
@@ -57,6 +63,13 @@ Return packets feed into `source-packet-mapping.md` (from T07), which defines th
 ## Dependencies Satisfied
 
 - T07 (Case Taxonomy + Provenance): Source-packet-mapping.md defines exactly how packets convert to catalog records. Provenance-schema.md defines the target shapes.
+
+---
+
+## Review Fixes Applied
+
+- Clarified that Task 08 is the first intake round, not the final full-v1 catalog fetch.
+- Added an explicit round-02 follow-up expectation so later agents do not mistake this packet for complete 57-case OLL coverage.
 
 ---
 

@@ -1,4 +1,4 @@
-# Source Intake Packet — v1
+# Source Intake Packet - v1
 
 **Date:** 2026-04-02
 **Session:** orch-20260402-034801
@@ -9,13 +9,15 @@
 
 ## Purpose
 
-Give you a single document that tells you exactly which pages to visit, what to look for, and how to hand it back — so a normalization agent can turn your fetches into catalog records without guessing.
+Give you a single document that tells you exactly which pages to visit, what to look for, and how to hand it back so a normalization agent can turn your fetches into catalog records without guessing.
+
+This is **round 01**, intended to bootstrap high-confidence PLL coverage plus the returning-cuber 2-look OLL path. It is not the final full-v1 OLL source sweep.
 
 ---
 
 ## Prioritized Fetch List
 
-### Tier 1 — Fetch First (High Confidence, Core Content)
+### Tier 1 - Fetch First (High Confidence, Core Content)
 
 These sources are the algorithm backbone. Fetch them before anything else.
 
@@ -24,7 +26,7 @@ These sources are the algorithm backbone. Fetch them before anything else.
 | 1 | **J Perm PLL** | https://jperm.net/algs/pll | Community-standard PLL reference. Approachable framing, recognition tips per case. | All 21 PLL cases |
 | 2 | **CubeSkills PLL Intro** | https://www.cubeskills.com/tutorials/pll-algorithms/introduction | High-trust last-layer framing from Feliks Zemdegs' platform. Strong terminology. | All 21 PLL cases |
 
-### Tier 2 — Fetch Second (Structured Progression, Recognition Groups)
+### Tier 2 - Fetch Second (Structured Progression, Recognition Groups)
 
 These sources add 2-look OLL structure and recognition-group coverage.
 
@@ -32,7 +34,7 @@ These sources add 2-look OLL structure and recognition-group coverage.
 |---|---|---|---|---|
 | 3 | **CubeSkills 2-Look LL** | https://www.cubeskills.com/tutorials/2-look-last-layer | Defines the returning-cuber progression path. Covers 2-look OLL phases. | OLL 1-4, 21-27, 57 + PLL subset |
 
-### Tier 3 — Fetch Third (Variants, Execution Notes)
+### Tier 3 - Fetch Third (Variants, Execution Notes)
 
 These add algorithm variants and fingertrick detail. Fetch after tier 1-2 are normalized.
 
@@ -40,6 +42,14 @@ These add algorithm variants and fingertrick detail. Fetch after tier 1-2 are no
 |---|---|---|---|---|
 | 4 | **SpeedCubeDB 3x3** | https://www.v6.speedcubedb.com/a/3x3 | Broad variant comparison. Many algorithms per case. Good for alternate picks. | PLL + OLL variants |
 | 5 | **Cube Academy Finger Tricks** | https://www.cube.academy/finger-tricks | Execution-focused notes. Fingertrick annotations per algorithm. | Selected PLL/OLL cases |
+
+---
+
+## Coverage Note
+
+- **Round 01 goal:** establish trusted PLL defaults, 2-look OLL progression, and a first batch of alternates and execution notes.
+- **Not yet complete for full v1 catalog:** the 57-case OLL catalog still needs a dedicated follow-up fetch round after this packet is normalized and gaps are identified.
+- **Why this is still valid:** Task 08 asked for the first user-facing intake packet, not the final completed catalog pull. This packet is the bootstrap round for later normalization and gap analysis.
 
 ---
 
@@ -74,7 +84,7 @@ For each source you fetch, produce a **source packet** with these fields. Fill i
 
 | What To Look For | How To Capture It |
 |---|---|
-| **Algorithms** | Copy the Singmaster notation exactly (e.g. `R U R' U' R' F R2 U' R' U' R U R' F'`) |
+| **Algorithms** | Copy the Singmaster notation exactly (for example `R U R' U' R' F R2 U' R' U' R U R' F'`) |
 | **Case-to-algorithm mapping** | Note which algorithm goes with which case name/number |
 | **Recognition tips** | Any text about how to visually identify the case |
 | **Fingertrick notes** | Any execution advice, grip notes, or regrip warnings |
@@ -84,10 +94,10 @@ For each source you fetch, produce a **source packet** with these fields. Fill i
 ### Notes Field
 
 Use the `Notes` section to capture:
-- Anything unusual about the page layout or data structure
-- Cases where the source uses non-standard naming
-- Missing cases (e.g., source covers 19 of 21 PLLs)
-- Video timestamps if the source is a video
+- anything unusual about the page layout or data structure
+- cases where the source uses non-standard naming
+- missing cases (for example source covers 19 of 21 PLLs)
+- video timestamps if the source is a video
 
 ---
 
@@ -135,7 +145,7 @@ Copy this template for each source you fetch. Fill in the sections.
 
 - **Do not reformat algorithms.** Copy notation exactly as shown on the source page. The normalization agent handles cleaning.
 - **Do not skip cases.** If the source covers 15 of 21 PLLs, list the 15 and note which 6 are missing.
-- **Do not assign confidence yourself.** State what you observe (e.g., "site is run by well-known cuber") and let the normalization agent assign the level.
+- **Do not assign confidence yourself.** State what you observe (for example "site is run by well-known cuber") and let the normalization agent assign the level.
 - **Do not capture setup moves or scramble states.** Only the solving algorithm notation.
 - **Do not fetch multiple pages from the same site in one packet.** One packet per URL.
 
@@ -145,7 +155,7 @@ Copy this template for each source you fetch. Fill in the sections.
 
 Hand back your completed source packets as a single file:
 
-```
+```text
 docs/architecture/user-source-intake-round-01.md
 ```
 
@@ -155,6 +165,7 @@ A normalization agent will then:
 3. Extract algorithms into `AlgorithmEntry` records
 4. Merge into `CaseCatalog` following the multi-source merge order (high-confidence first)
 5. Flag edge cases per the mapping guide
+6. Produce the gap list for a round-02 OLL-completion packet before claiming full v1 catalog coverage
 
 ---
 

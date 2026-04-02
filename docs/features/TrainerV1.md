@@ -49,7 +49,7 @@ The trainer domain is defined by portable data types and pure functions that hav
 | `TrainingPlan` | Complete session specification | `planId`, `templateId`, `goal`, `drillBlocks`, `focusSettings` |
 | `DrillDefinition` | What the user does in a drill block | `drillId`, `type`, `caseSet`, `targetCount`, `scramblePolicy`, `captureFields` |
 | `CaseCatalog` | Normalized case content with provenance | `caseId`, `category`, `name`, `algorithms`, `provenance`, `difficultyTier` |
-| `SkillStats` | Per-case performance over time | `caseId`, `avgSolveTime`, `dnfRate`, `trend`, `attemptCount` |
+| `SkillStats` | Per-case performance over time | `caseId`, `avgSolveTime`, `avgRecognitionTime`, `dnfRate`, `skipCount`, `trend`, `attemptCount` |
 | `WeaknessScore` | Computed priority for adaptive scheduling | `caseId`, `score`, `reason` |
 | `TrainingSessionResult` | Post-session review artifact | `sessionId`, `planId`, `drillResults`, `weakCases`, `strongCases`, `nextRecommendation` |
 | `SyncEvent` (future) | Placeholder for post-v1 sync | Not yet defined |
@@ -65,7 +65,7 @@ The trainer domain is defined by portable data types and pure functions that hav
 
 ### Planner Logic
 
-`generateQueue(trainingPlan, skillStats, caseCatalog)` - pure function, no side effects, no csTimer imports. Returns ordered `DrillQueue` based on plan structure and weakness scores.
+`generateQueue(trainingPlan, skillStats, caseCatalog, plannerContext)` - pure function, no side effects, no csTimer imports. Returns ordered `DrillQueue` based on plan structure and weakness scores.
 
 ### Persistence Expectations
 

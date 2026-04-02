@@ -25,14 +25,14 @@
 6. `05_architecture-and-domain-boundaries.task.md`
 7. `06_persistence-and-export-plan.task.md`
 8. `07_case-taxonomy-and-provenance.task.md`
+9. `08_source-intake-packet.task.md`
+10. `09_planner-logic-spec.task.md`
 
 ## Pending Task Packet Order
 
-1. `08_source-intake-packet.task.md`
-2. `09_planner-logic-spec.task.md`
-3. `10_ui-implementation-packets.task.md`
-4. `11_regression-review-packet.task.md`
-5. `12_final-orchestrator-synthesis.task.md`
+1. `10_ui-implementation-packets.task.md`
+2. `11_regression-review-packet.task.md`
+3. `12_final-orchestrator-synthesis.task.md`
 
 ## User Review Gates
 

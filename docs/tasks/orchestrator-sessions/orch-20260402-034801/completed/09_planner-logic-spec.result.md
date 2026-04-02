@@ -18,7 +18,7 @@
 
 ### Weakness Scoring
 
-- Four-factor weighted formula: normality (0.40), recency (0.25), failure/DNF rate (0.20), trend penalty (0.15)
+- Six-factor weighted formula: solve time (0.30), recognition time (0.15), recency (0.20), failure/DNF rate (0.15), skip behavior (0.10), trend (0.10)
 - Cold-start handling: unpracticed cases get median difficulty tier weight
 - Output normalized to `[0, 1]`
 
@@ -26,7 +26,7 @@
 
 - `weakCaseBias` knob controls how much weakness influences queue order (0.0 = uniform, 1.0 = full weakness)
 - `coverageFloor` guarantees minimum 20% of queue from non-top-weakness cases
-- `sessionMode` adjusts factor weights: standard, speed, accuracy
+- `sessionMode` adjusts factor weights with exact per-mode coefficient tables: standard, speed, accuracy
 
 ### Anti-Starvation Behavior
 
@@ -37,7 +37,7 @@
 
 ### Session Structure
 
-Four-block split: warmup (~15%, low-difficulty rhythm), focus (~55%, adaptive weakness-driven), integration (~20%, random variation), review (~10%, no solves, artifact generation)
+Four-block split: warmup (~15%, low-difficulty rhythm), focus (~55%, adaptive weakness-driven), integration (~20%, seeded variation), review (~10%, no solves, artifact generation)
 
 Goal-specific adjustments: returning cuber gets longer warmup and moderate bias; cross skips warmup and adjusts block proportions.
 
@@ -46,7 +46,8 @@ Goal-specific adjustments: returning cuber gets longer warmup and moderate bias;
 - Weak cases: session solve time >150% of historical average, or DNF
 - Strong cases: session solve time <85% of historical average, no DNF
 - Next recommendation: short actionable string derived from session patterns
-- Stats update path: session result → StorageAdapter → SkillStats → next generateQueue()
+- Stats update path: session result -> StorageAdapter -> SkillStats -> next generateQueue()
+- Deterministic planner context: integration supplies evaluation time and queue seed instead of planner code reading the system clock
 
 ---
 
@@ -54,14 +55,22 @@ Goal-specific adjustments: returning cuber gets longer warmup and moderate bias;
 
 - **In scope:** v1 weakness formula, weighting knobs, anti-starvation rules, session block sequencing, review output definition, goal-specific behavior
 - **Out of scope:** ML/predictive models, spaced repetition (SM-2), user-adjustable coefficients, cross-case correlation, multi-session planning
-- **Feature creep check:** No ML, no SM-2, no curriculum paths — kept to simple linear recency decay and straightforward weighted formula per avoid-feature-creep guidance
+- **Feature creep check:** No ML, no SM-2, no curriculum paths. Kept to straightforward weighted logic per avoid-feature-creep guidance.
 
 ---
 
 ## Dependencies Satisfied
 
-- T05 (Architecture): `WeaknessScore`, `SkillStats`, `FocusSettings`, `generateQueue()` types all referenced and aligned
+- T05 (Architecture): `WeaknessScore`, `SkillStats`, `FocusSettings`, `PlannerContext`, `generateQueue()` types all referenced and aligned
 - T07 (Taxonomy): Recognition sub-groups used for review recommendations; difficulty tiers used for warmup selection and cold-start defaults
+
+---
+
+## Review Fixes Applied
+
+- Added the missing recognition-time and skip-behavior inputs so FR-003 metrics are fully represented in the weighting spec.
+- Replaced the ambiguous session-mode weight note with exact per-mode coefficient tables.
+- Removed the determinism contradiction by requiring integration-supplied `PlannerContext` (`evaluationTime`, `queueSeed`) instead of planner reads from the system clock.
 
 ---
 
@@ -79,7 +88,7 @@ Goal-specific adjustments: returning cuber gets longer warmup and moderate bias;
 **User approval required** on training philosophy and weighting logic before implementation briefs are created.
 
 Key decisions:
-1. Weight coefficients (w1=0.40, w2=0.25, w3=0.20, w4=0.15)
+1. Weight coefficients for the six-factor weakness formula
 2. Anti-starvation rules (coverage floor 20%, max 3 consecutive, 30% per-session cap)
 3. Four-block session structure
 4. Cold-start defaults (median difficulty tier weight)
