@@ -33,6 +33,12 @@ var trainerEntryHome = execMain(function() {
 		return months[d.getMonth()] + " " + d.getDate() + " · " + d.getHours().toString().padStart(2, "0") + ":" + d.getMinutes().toString().padStart(2, "0");
 	}
 
+	function _caseIdStartsWith(caseId, prefix) {
+		var normalizedCaseId = String(caseId || "").toUpperCase();
+		var normalizedPrefix = String(prefix || "").toUpperCase();
+		return normalizedCaseId.indexOf(normalizedPrefix) === 0;
+	}
+
 	function _buildStyles() {
 		return [
 			".trainer-entry { max-width: 900px; margin: 0 auto; padding: 48px 32px; }",
@@ -218,13 +224,13 @@ var trainerEntryHome = execMain(function() {
 		var ollCount = 0;
 		for (var i = 0; i < stats.length; i++) {
 			totalCases += stats[i].attemptCount || 0;
-			if (stats[i].caseId && stats[i].caseId.indexOf("pll") === 0) {
+			if (_caseIdStartsWith(stats[i].caseId, "PLL-")) {
 				pllCount++;
 				if (stats[i].attemptCount > 0) {
 					pllConfidence += Math.min(100, Math.round((stats[i].attemptCount / 20) * 100));
 				}
 			}
-			if (stats[i].caseId && stats[i].caseId.indexOf("oll") === 0) {
+			if (_caseIdStartsWith(stats[i].caseId, "OLL-")) {
 				ollCount++;
 				if (stats[i].attemptCount > 0) {
 					ollConfidence += Math.min(100, Math.round((stats[i].attemptCount / 20) * 100));
@@ -297,7 +303,9 @@ var trainerEntryHome = execMain(function() {
 	function _bindCta(container, shell) {
 		container.on("click", ".te-cta-btn", function() {
 			var selectedGoal = container.find(".te-goal-card.selected").attr("data-goal");
-			if (typeof trainerIntegration !== "undefined") {
+			if (typeof trainerInit !== "undefined") {
+				trainerInit.showSurface("setup", { selectedGoal: selectedGoal });
+			} else if (typeof trainerIntegration !== "undefined") {
 				trainerIntegration.navigateToSurface("setup", { selectedGoal: selectedGoal });
 			}
 		});
@@ -306,8 +314,24 @@ var trainerEntryHome = execMain(function() {
 	function _bindNavTabs(container) {
 		container.on("click", ".te-nav-tab", function() {
 			var tab = $(this).text();
-			if (tab === "Stats" && typeof trainerIntegration !== "undefined") {
-				trainerIntegration.navigateToSurface("review");
+			if (tab === "Train") {
+				container.find(".te-nav-tab").removeClass("active");
+				$(this).addClass("active");
+				return;
+			}
+			if (tab === "Stats") {
+				if (typeof trainerInit !== "undefined") {
+					trainerInit.showWeaknessSummary();
+				} else if (typeof trainerIntegration !== "undefined") {
+					trainerIntegration.navigateToSurface("review");
+				}
+			}
+			if (tab === "Timer") {
+				if (typeof trainerInit !== "undefined") {
+					trainerInit.hide();
+				} else if (typeof trainerIntegration !== "undefined") {
+					trainerIntegration.navigateToSurface("idle");
+				}
 			}
 		});
 	}
@@ -336,6 +360,11 @@ var trainerEntryHome = execMain(function() {
 
 		var goalGrid = $('<div class="te-goal-grid">');
 		var goals = _getGoalCards();
+		if (data && data.selectedGoal) {
+			for (var g = 0; g < goals.length; g++) {
+				goals[g].selected = goals[g].id === data.selectedGoal;
+			}
+		}
 		for (var i = 0; i < goals.length; i++) {
 			goalGrid.append(_buildGoalCard(goals[i]));
 		}

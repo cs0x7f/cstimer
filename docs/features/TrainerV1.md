@@ -83,6 +83,13 @@ Current v1 planner guarantees:
 - integration helpers expose shell init/navigation plus storage-backed session lifecycle helpers
 - persisted `SkillStats.lastPracticedAt` stays in epoch milliseconds so planner recency scoring remains valid
 
+### Current Shell-Backed Surfaces
+
+- `trainer-entry-home.js` renders the first trainer landing surface from the stable mockup direction and is reachable through the explicit launcher created by `trainer-init.js`
+- `weakness-summary.js` renders the persistent weakness/stats surface and derives its values from persisted trainer sessions, stats, and catalog metadata
+- `trainer-init.js` keeps B05 additive by opening the trainer in its own overlay shell; choosing `Timer` exits back to normal csTimer
+- `setup` currently uses a deliberate placeholder surface so B05 does not strand users on a blank page before B06 lands
+
 ### Current Catalog Foundation
 
 - **Implementation files:** `src/js/trainer/case-catalog-data.js` and `src/js/trainer/case-catalog.js`

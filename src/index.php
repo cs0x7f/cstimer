@@ -63,6 +63,9 @@
   <script type="text/javascript" src="js/trainer/planner-core.js"></script>
   <script type="text/javascript" src="js/trainer/trainer-shell.js"></script>
   <script type="text/javascript" src="js/trainer/trainer-integration.js"></script>
+  <script type="text/javascript" src="js/trainer/trainer-entry-home.js"></script>
+  <script type="text/javascript" src="js/trainer/weakness-summary.js"></script>
+  <script type="text/javascript" src="js/trainer/trainer-init.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
   <script type="text/javascript" src="js/stats/stats.js"></script>
   <script type="text/javascript" src="js/stats/stattool.js"></script>
