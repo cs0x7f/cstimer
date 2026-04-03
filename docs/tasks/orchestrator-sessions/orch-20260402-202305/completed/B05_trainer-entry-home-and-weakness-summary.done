@@ -1,0 +1,57 @@
+# Task Completion Summary
+
+**Task:** B05_trainer-entry-home-and-weakness-summary
+**Completed At:** 2026-04-03
+**Mode:** Code
+
+## Results
+
+Implemented both user-visible trainer surfaces mounted through the shared trainer shell:
+
+1. **Trainer Entry Home** (`src/js/trainer/trainer-entry-home.js`)
+   - Navigation bar with csTimer Trainer branding and tab navigation (Train/Stats/Timer)
+   - Hero section with "What do you want to practice today?" prompt
+   - Three goal selection cards: Return to Speed, Last Layer, Cross
+   - CTA button to begin training session (navigates to setup surface)
+   - Quick stats section showing sessions, cases drilled, PLL/OLL confidence
+   - Recent sessions grid with progress bars
+   - Loads real data from trainerIntegration (sessions, stats)
+   - Falls back gracefully when no data exists
+
+2. **Weakness Summary** (`src/js/trainer/weakness-summary.js`)
+   - Page header with category tabs (PLL/OLL/Cross/All)
+   - Stats overview row (total sessions, cases trained, avg recognition, confidence, weak cases)
+   - Confidence panels for PLL and OLL with Mastered/Learning/Weak/Untrained breakdowns
+   - Case rankings table sorted by slowest first with confidence bars, trend indicators, and per-case Drill buttons
+   - 30-day trend sparklines for recognition time, confidence score, and weak case count
+   - Tab switching refreshes ranking table for selected category
+   - Loads real data from trainerIntegration (sessions, stats, catalog)
+
+3. **Trainer Init** (`src/js/trainer/trainer-init.js`)
+   - Wires both surfaces into the trainer shell via registerMount
+   - Exposes showEntry() and showWeaknessSummary() convenience functions
+   - showSurface() dispatcher for named surface navigation
+
+## Files Created/Modified
+
+- `src/js/trainer/trainer-entry-home.js` - New trainer entry home surface
+- `src/js/trainer/weakness-summary.js` - New weakness summary surface
+- `src/js/trainer/trainer-init.js` - New surface wiring module
+- `Makefile` - Added three new trainer files to build pipeline
+- `docs/issues/FR-001.md` - Marked acceptance criteria complete
+- `docs/issues/FR-005.md` - Marked acceptance criteria complete
+
+## Verification Status
+
+- [x] Closure Compiler check: PASS (0 errors, 2 pre-existing warnings)
+- [x] Mockup fidelity: Both surfaces match approved HTML mockups
+- [x] Real trainer state: Both surfaces load from trainerIntegration (sessions, stats, catalog)
+- [x] Shared trainer shell: Both surfaces mounted through trainer-shell.js
+
+## Notes
+
+- Both surfaces use inline CSS injection (no external stylesheet changes) to maintain csTimer compatibility
+- All data loading is async with graceful fallback for empty state
+- Goal card selection state is tracked but plan-setup flow is not yet wired (per task scope)
+- The "Stats" tab on entry home navigates to the weakness summary surface
+- Category tab switching on weakness summary re-renders the ranking table dynamically

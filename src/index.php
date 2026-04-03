@@ -1,13 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html class="p100">
- <head>
+
+<head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=500, user-scalable=no">
   <link rel="manifest" href="cstimer.webmanifest">
-<?php include('lang/langDet.php');?>
+  <?php include('lang/langDet.php'); ?>
   <link rel='stylesheet' type='text/css' href='css/style.css'>
   <script type="text/javascript" src="js/lib/jquery-1.8.0.js"></script>
   <script type="text/javascript" src="js/lib/utillib.js"></script>
@@ -59,6 +60,9 @@
   <script type="text/javascript" src="js/trainer/export-bridge.js"></script>
   <script type="text/javascript" src="js/trainer/case-catalog-data.js"></script>
   <script type="text/javascript" src="js/trainer/case-catalog.js"></script>
+  <script type="text/javascript" src="js/trainer/planner-core.js"></script>
+  <script type="text/javascript" src="js/trainer/trainer-shell.js"></script>
+  <script type="text/javascript" src="js/trainer/trainer-integration.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
   <script type="text/javascript" src="js/stats/stats.js"></script>
   <script type="text/javascript" src="js/stats/stattool.js"></script>
@@ -110,28 +114,53 @@
   <script type="text/javascript" src="js/twisty/qcubeminx.js"></script>
   <script type="text/javascript" src="js/twisty/qcubeclk.js"></script>
 </head>
+
 <body>
-<div id="leftbar">
-  <div class="mybutton c1"><div><span></span><span class="icon">&#59796;</span></div></div>
-  <div class="mybutton c2"><div><span></span><span class="icon">&#59846;</span></div></div>
-  <div class="mybutton c3"><div><span></span><span class="icon">&#59648;</span></div></div>
-  <div id="logo" class="mybutton"><div><span>csTimer</span></div></div>
-  <div class="mybutton c4"><div><span></span><span class="icon">&#59835;</span></div></div>
-  <div class="mybutton c5"><div><span></span><span class="icon">&#59710;</span></div></div>
-  <div class="mybutton c6"><div><span></span><span class="icon">&#59795;</span></div></div>
-</div>
-<div id="gray"></div>
-<div><img id="bgImage"></div>
-<div id="about" style="display:none;">
-<?php include('lang/'.$lang.'.php') ?>
-</div>
-<table id="timer" border="0"><tbody>
-<tr><td id="container">
-<div id="lcd"></div>
-<div id="avgstr"></div>
-</td></tr>
-</tbody></table>
-<table id="rtimer" border="0" style="position:absolute; right:0%; height:100%;"><tbody>
-<tr><td id="multiphase"></td></tr>
-</tbody></table>
-</body></html>
+  <div id="leftbar">
+    <div class="mybutton c1">
+      <div><span></span><span class="icon">&#59796;</span></div>
+    </div>
+    <div class="mybutton c2">
+      <div><span></span><span class="icon">&#59846;</span></div>
+    </div>
+    <div class="mybutton c3">
+      <div><span></span><span class="icon">&#59648;</span></div>
+    </div>
+    <div id="logo" class="mybutton">
+      <div><span>csTimer</span></div>
+    </div>
+    <div class="mybutton c4">
+      <div><span></span><span class="icon">&#59835;</span></div>
+    </div>
+    <div class="mybutton c5">
+      <div><span></span><span class="icon">&#59710;</span></div>
+    </div>
+    <div class="mybutton c6">
+      <div><span></span><span class="icon">&#59795;</span></div>
+    </div>
+  </div>
+  <div id="gray"></div>
+  <div><img id="bgImage"></div>
+  <div id="about" style="display:none;">
+    <?php include('lang/' . $lang . '.php') ?>
+  </div>
+  <table id="timer" border="0">
+    <tbody>
+      <tr>
+        <td id="container">
+          <div id="lcd"></div>
+          <div id="avgstr"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table id="rtimer" border="0" style="position:absolute; right:0%; height:100%;">
+    <tbody>
+      <tr>
+        <td id="multiphase"></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

@@ -60,6 +60,12 @@ trainer/storage-adapter.js \
 trainer/export-bridge.js \
 trainer/case-catalog-data.js \
 trainer/case-catalog.js \
+trainer/planner-core.js \
+trainer/trainer-shell.js \
+trainer/trainer-integration.js \
+trainer/trainer-entry-home.js \
+trainer/weakness-summary.js \
+trainer/trainer-init.js \
 stats/timestat.js \
 stats/stats.js \
 stats/stattool.js \

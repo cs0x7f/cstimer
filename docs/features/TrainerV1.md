@@ -62,10 +62,26 @@ The trainer domain is defined by portable data types and pure functions that hav
 | `ScrambleAdapter` | csTimer scramble engine | Case-specific and full-solve scrambles |
 | `TimerBridge` | csTimer timer UI | Normalized attempt capture linked back to native solves without rewriting raw solve history |
 | `ExportBridge` | csTimer export/import format | Trainer data as separate JSON block |
+| `TrainerShell` | Shared trainer mount container | Stable entry/setup/active/review surface slots |
+| `TrainerIntegration` | StorageAdapter + CaseCatalog + Planner + TrainerShell | Session lifecycle, shell navigation helpers, and review shaping |
 
 ### Planner Logic
 
 `generateQueue(trainingPlan, skillStats, caseCatalog, plannerContext)` - pure function, no side effects, no csTimer imports. Returns ordered `DrillQueue` based on plan structure and weakness scores.
+
+Current v1 planner guarantees:
+- requested attempt count is preserved in the returned queue
+- standard sessions use warmup/focus/integration splits with review handled as post-session analysis, not queue items
+- cross sessions use `full-solve` prompts and `planTime` targeting
+- focus ordering applies weak-case bias, coverage floor, max-3 consecutive repeat protection, and per-session cap where feasible
+- review helpers derive weak cases, strong cases, and next recommendation strings from finished session data
+
+### Shared Shell Contract
+
+- later trainer UI work mounts only through the shared shell, not direct one-off DOM insertion
+- the shell owns stable surface slots for `entry`, `setup`, `active`, and `review`
+- integration helpers expose shell init/navigation plus storage-backed session lifecycle helpers
+- persisted `SkillStats.lastPracticedAt` stays in epoch milliseconds so planner recency scoring remains valid
 
 ### Current Catalog Foundation
 
