@@ -24,8 +24,8 @@ Implement the `CaseCatalog` and provenance-backed content foundation for trainer
 
 ## Definition of Done
 
-- the trainer has a structured catalog foundation for PLL, OLL, and cross content
-- the catalog shape matches the planning docs closely enough that planner work can begin without schema guesswork
+- [x] the trainer has a structured catalog foundation for PLL, OLL, and cross content
+- [x] the catalog shape matches the planning docs closely enough that planner work can begin without schema guesswork
 
 ## Expected Artifacts
 

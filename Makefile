@@ -56,6 +56,10 @@ scramble/redi.js \
 scramble/slide.js \
 scramble/utilscramble.js \
 lib/storage.js \
+trainer/storage-adapter.js \
+trainer/export-bridge.js \
+trainer/case-catalog-data.js \
+trainer/case-catalog.js \
 stats/timestat.js \
 stats/stats.js \
 stats/stattool.js \

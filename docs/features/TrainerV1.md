@@ -67,6 +67,12 @@ The trainer domain is defined by portable data types and pure functions that hav
 
 `generateQueue(trainingPlan, skillStats, caseCatalog, plannerContext)` - pure function, no side effects, no csTimer imports. Returns ordered `DrillQueue` based on plan structure and weakness scores.
 
+### Current Catalog Foundation
+
+- **Implementation files:** `src/js/trainer/case-catalog-data.js` and `src/js/trainer/case-catalog.js`
+- **Source-backed defaults:** PLL and OLL starter algorithms currently come from SpeedCubeDB PDF algorithm sheets, with provenance attached per case.
+- **Cross representation:** cross entries are stored as scramble-generated drill descriptors with internal taxonomy provenance rather than borrowed solve algorithms.
+
 ### Persistence Expectations
 
 - **Storage mechanism:** csTimer's `storage.js` abstraction via `storage.setKey()` / `storage.getKey()`. In the current repo that means IndexedDB when available, with `localStorage` fallback. Trainer uses `trainer:` prefixed keys and does not bypass the host storage layer.

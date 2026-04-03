@@ -1228,7 +1228,9 @@ var kernel = execMain(function() {
 	});
 
 	function cleanLocalStorage() {
-		var validKeys = ['properties', 'cachedScr', 'devData', 'wcaData', 'gglData', 'locData'];
+		var validKeys = ['properties', 'cachedScr', 'devData', 'wcaData', 'gglData', 'locData',
+			'trainer:profile', 'trainer:plans', 'trainer:activePlanId',
+			'trainer:stats', 'trainer:sessions', 'trainer:catalogVersion'];
 
 		for (var i = 0; i < validKeys.length; i++) {
 			try {

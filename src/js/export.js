@@ -45,8 +45,40 @@ var exportFunc = execMain(function() {
 	function updateExpString() {
 		return storage.exportAll().then(function(exportObj) {
 			exportObj['properties'] = mathlib.str2obj(localStorage['properties']);
+			return (typeof trainerExport !== 'undefined') ? trainerExport.mergeExportObj(exportObj) : exportObj;
+		}).then(function(exportObj) {
 			expString = JSON.stringify(exportObj);
 		});
+	}
+
+	function backupTrainerData() {
+		if (typeof trainerStorage === 'undefined') {
+			return Promise.resolve({});
+		}
+		var jobs = [];
+		for (var i = 0; i < trainerStorage.TRAINER_KEYS.length; i++) {
+			jobs.push(storage.getKey(trainerStorage.TRAINER_KEYS[i]));
+		}
+		return Promise.all(jobs).then(function(values) {
+			var backup = {};
+			for (var i = 0; i < trainerStorage.TRAINER_KEYS.length; i++) {
+				if (values[i] !== undefined && values[i] !== null && values[i] !== '') {
+					backup[trainerStorage.TRAINER_KEYS[i]] = values[i];
+				}
+			}
+			return backup;
+		});
+	}
+
+	function restoreTrainerData(backup) {
+		if (typeof trainerStorage === 'undefined') {
+			return Promise.resolve();
+		}
+		var jobs = [];
+		for (var key in backup) {
+			jobs.push(storage.setKey(key, backup[key]));
+		}
+		return Promise.all(jobs);
 	}
 
 	function importData() {
@@ -84,21 +116,30 @@ var exportFunc = execMain(function() {
 				return Promise.reject();
 			}
 		}).then(function() {
-			if ('properties' in data) {
-				var devData = localStorage['devData'] || '{}';
-				var wcaData = localStorage['wcaData'] || '{}';
-				var gglData = localStorage['gglData'] || '{}';
-				var locData = localStorage['locData'] || '{}';
-				localStorage.clear();
-				localStorage['devData'] = devData;
-				localStorage['wcaData'] = wcaData;
-				localStorage['gglData'] = gglData;
-				localStorage['locData'] = locData;
-				localStorage['properties'] = mathlib.obj2str(data['properties']);
-				kernel.loadProp();
-			}
-			storage.importAll(data).then(function() {
-				location.reload();
+			return backupTrainerData().then(function(trainerBackup) {
+				if ('properties' in data) {
+					var devData = localStorage['devData'] || '{}';
+					var wcaData = localStorage['wcaData'] || '{}';
+					var gglData = localStorage['gglData'] || '{}';
+					var locData = localStorage['locData'] || '{}';
+					localStorage.clear();
+					localStorage['devData'] = devData;
+					localStorage['wcaData'] = wcaData;
+					localStorage['gglData'] = gglData;
+					localStorage['locData'] = locData;
+					localStorage['properties'] = mathlib.obj2str(data['properties']);
+					kernel.loadProp();
+				}
+				return storage.importAll(data).then(function() {
+					if (typeof trainerExport !== 'undefined' && 'trainer' in data) {
+						return trainerExport.processImportData(data).then(function() {
+							location.reload();
+						});
+					}
+					return restoreTrainerData(trainerBackup).then(function() {
+						location.reload();
+					});
+				});
 			});
 		}, $.noop);
 	}

@@ -55,6 +55,10 @@
   <script type="text/javascript" src="js/scramble/slide.js"></script>
   <script type="text/javascript" src="js/scramble/utilscramble.js"></script>
   <script type="text/javascript" src="js/lib/storage.js"></script>
+  <script type="text/javascript" src="js/trainer/storage-adapter.js"></script>
+  <script type="text/javascript" src="js/trainer/export-bridge.js"></script>
+  <script type="text/javascript" src="js/trainer/case-catalog-data.js"></script>
+  <script type="text/javascript" src="js/trainer/case-catalog.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
   <script type="text/javascript" src="js/stats/stats.js"></script>
   <script type="text/javascript" src="js/stats/stattool.js"></script>
