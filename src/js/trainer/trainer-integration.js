@@ -438,6 +438,8 @@ var trainerIntegration = execMain(function() {
 		var sessionResult = {
 			sessionId: _activeSession.sessionId,
 			planId: _activeSession.planId,
+			planName: _activeSession.plan && _activeSession.plan.name ? _activeSession.plan.name : "Training Session",
+			goal: _activeSession.plan && _activeSession.plan.goal ? _activeSession.plan.goal : "last-layer",
 			startedAt: _activeSession.startedAt,
 			completedAt: _nowISO(),
 			drillResults: _clone(_sessionResults),
@@ -522,6 +524,8 @@ var trainerIntegration = execMain(function() {
 		return {
 			sessionId: sessionResult.sessionId,
 			planId: sessionResult.planId,
+			planName: sessionResult.planName || "Training Session",
+			goal: sessionResult.goal || "last-layer",
 			startedAt: sessionResult.startedAt,
 			completedAt: sessionResult.completedAt,
 			totalCases: sessionResult.drillResults.length,

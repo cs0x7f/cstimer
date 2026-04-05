@@ -86,9 +86,11 @@ Current v1 planner guarantees:
 ### Current Shell-Backed Surfaces
 
 - `trainer-entry-home.js` renders the first trainer landing surface from the stable mockup direction and is reachable through the explicit launcher created by `trainer-init.js`
+- `trainer-setup.js` renders the training plan setup flow (B06) with template selection, session configuration, bounded case preview, and session summary. It adapts the same shell-backed flow for last-layer, returning, and cross entry goals, then persists a `TrainingPlan` before handing off to the active session surface.
+- `trainer-active-session.js` renders the active drill queue surface (B07) for PLL, OLL, and cross practice. It consumes planner output from `trainer-integration.js`, uses the native csTimer scrambler registry with csTimer-aligned PLL/OLL case indexing for real case-correct scrambles, supports spacebar-driven start/finish timing through a document-level active-session key handler, keeps the current queue row scrolled into view as the session advances, and advances the queue into stored session results without mutating raw solve-history keys.
+- `session-review.js` renders the post-session review surface (B08) from the approved mockup direction. It shows plan metadata, summary metrics, hardest cases, a full results table, and a next-step recommendation card. Review handoff preserves the originating goal so `Drill Weak Cases` routes back into the correct setup flow for both last-layer and cross sessions.
 - `weakness-summary.js` renders the persistent weakness/stats surface and derives its values from persisted trainer sessions, stats, and catalog metadata
-- `trainer-init.js` keeps B05 additive by opening the trainer in its own overlay shell; choosing `Timer` exits back to normal csTimer
-- `setup` currently uses a deliberate placeholder surface so B05 does not strand users on a blank page before B06 lands
+- `trainer-init.js` keeps B05 additive by opening the trainer in its own overlay shell; choosing `Timer` exits back to normal csTimer. Routes the `setup` surface to `trainer-setup.js` with fallback to placeholder if unavailable
 
 ### Current Catalog Foundation
 

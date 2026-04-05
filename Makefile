@@ -64,6 +64,9 @@ trainer/planner-core.js \
 trainer/trainer-shell.js \
 trainer/trainer-integration.js \
 trainer/trainer-entry-home.js \
+trainer/trainer-setup.js \
+trainer/trainer-active-session.js \
+trainer/session-review.js \
 trainer/weakness-summary.js \
 trainer/trainer-init.js \
 stats/timestat.js \

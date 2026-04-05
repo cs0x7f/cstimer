@@ -60,6 +60,39 @@ var trainerInit = execMain(function() {
 		};
 	}
 
+	function _renderSessionReview(el, data) {
+		if (typeof sessionReview === "undefined") {
+			el.text("Session review not available.");
+			return null;
+		}
+		sessionReview.render(el, data || null);
+		return function() {
+			sessionReview.destroy();
+		};
+	}
+
+	function _renderSetup(el, data) {
+		if (typeof trainerSetup === "undefined") {
+			_renderSetupPlaceholder(el, data);
+			return null;
+		}
+		trainerSetup.render(el, data || null);
+		return function() {
+			trainerSetup.destroy();
+		};
+	}
+
+	function _renderActiveSession(el, data) {
+		if (typeof trainerActiveSession === "undefined") {
+			el.text("Active session module not available.");
+			return null;
+		}
+		trainerActiveSession.render(el, data || null);
+		return function() {
+			trainerActiveSession.destroy();
+		};
+	}
+
 	function _renderSetupPlaceholder(el, data) {
 		var selectedGoal = data && data.selectedGoal ? data.selectedGoal : "last-layer";
 		var focusCaseId = data && data.focusCaseId ? data.focusCaseId : null;
@@ -149,12 +182,24 @@ var trainerInit = execMain(function() {
 			showEntry(data);
 			return;
 		}
-		if (name === "review" || name === "weakness") {
+		if (name === "weakness") {
 			showWeaknessSummary(data);
 			return;
 		}
+		if (name === "review") {
+			if (data && data.sessionResult) {
+				integration.showSurface("review", _renderSessionReview, data);
+			} else {
+				showWeaknessSummary(data);
+			}
+			return;
+		}
 		if (name === "setup") {
-			integration.showSurface("setup", _renderSetupPlaceholder, data || null);
+			integration.showSurface("setup", _renderSetup, data || null);
+			return;
+		}
+		if (name === "active") {
+			integration.showSurface("active", _renderActiveSession, data || null);
 			return;
 		}
 		integration.showSurface(name, null, data || null);

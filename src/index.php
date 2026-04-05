@@ -64,6 +64,9 @@
   <script type="text/javascript" src="js/trainer/trainer-shell.js"></script>
   <script type="text/javascript" src="js/trainer/trainer-integration.js"></script>
   <script type="text/javascript" src="js/trainer/trainer-entry-home.js"></script>
+  <script type="text/javascript" src="js/trainer/trainer-setup.js"></script>
+  <script type="text/javascript" src="js/trainer/trainer-active-session.js"></script>
+  <script type="text/javascript" src="js/trainer/session-review.js"></script>
   <script type="text/javascript" src="js/trainer/weakness-summary.js"></script>
   <script type="text/javascript" src="js/trainer/trainer-init.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
