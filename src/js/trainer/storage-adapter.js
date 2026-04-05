@@ -147,6 +147,19 @@ var trainerStorage = execMain(function() {
 		});
 	}
 
+	function clearTrainerData() {
+		return Promise.all([
+			storage.setKey('trainer:profile', ''),
+			storage.setKey('trainer:plans', '{}'),
+			saveActivePlanId(''),
+			saveStats([]),
+			storage.setKey('trainer:sessions', '[]'),
+			saveCatalogVersion('')
+		]).then(function() {
+			return true;
+		});
+	}
+
 	function importTrainerData(payload) {
 		var imported = 0;
 		var skipped = 0;
@@ -157,38 +170,56 @@ var trainerStorage = execMain(function() {
 		if (payload.profile != null) {
 			jobs.push(saveProfile(payload.profile).then(function() { imported++; }));
 		} else {
-			skipped++;
-		}
-
-		if (payload.plans != null && typeof payload.plans === 'object') {
-			var str = _safeStringify(payload.plans);
-			if (str !== null) {
-				jobs.push(storage.setKey('trainer:plans', str).then(function() { imported++; }));
-			} else {
-				warnings.push('plans serialization failed');
-				skipped++;
+			if (!('profile' in payload)) {
+				warnings.push('profile missing; reset to default');
 			}
+			jobs.push(storage.setKey('trainer:profile', '').then(function() { imported++; }));
+		}
+
+		var plansPayload = {};
+		if (payload.plans != null && typeof payload.plans === 'object' && !Array.isArray(payload.plans)) {
+			plansPayload = payload.plans;
+		} else if ('plans' in payload) {
+			warnings.push('plans invalid; reset to default');
 		} else {
+			warnings.push('plans missing; reset to default');
+		}
+		var plansStr = _safeStringify(plansPayload);
+		if (plansStr !== null) {
+			jobs.push(storage.setKey('trainer:plans', plansStr).then(function() { imported++; }));
+		} else {
+			warnings.push('plans serialization failed');
 			skipped++;
 		}
 
+		var statsPayload = [];
 		if (payload.stats != null && Array.isArray(payload.stats)) {
-			jobs.push(saveStats(payload.stats).then(function() { imported++; }));
+			statsPayload = payload.stats;
+		} else if ('stats' in payload) {
+			warnings.push('stats invalid; reset to default');
 		} else {
+			warnings.push('stats missing; reset to default');
+		}
+		jobs.push(saveStats(statsPayload).then(function() { imported++; }));
+
+		var sessionsPayload = [];
+		if (payload.sessions != null && Array.isArray(payload.sessions)) {
+			sessionsPayload = payload.sessions;
+		} else if ('sessions' in payload) {
+			warnings.push('sessions invalid; reset to default');
+		} else {
+			warnings.push('sessions missing; reset to default');
+		}
+		var sessionsStr = _safeStringify(sessionsPayload);
+		if (sessionsStr !== null) {
+			jobs.push(storage.setKey('trainer:sessions', sessionsStr).then(function() { imported++; }));
+		} else {
+			warnings.push('sessions serialization failed');
 			skipped++;
 		}
 
-		if (payload.sessions != null && Array.isArray(payload.sessions)) {
-			var str = _safeStringify(payload.sessions);
-			if (str !== null) {
-				jobs.push(storage.setKey('trainer:sessions', str).then(function() { imported++; }));
-			} else {
-				warnings.push('sessions serialization failed');
-				skipped++;
-			}
-		} else {
-			skipped++;
-		}
+		jobs.push(saveActivePlanId(''));
+		jobs.push(saveCatalogVersion(''));
 
 		return Promise.all(jobs).then(function() {
 			return { imported: imported, skipped: skipped, warnings: warnings };
@@ -218,6 +249,7 @@ var trainerStorage = execMain(function() {
 		loadCatalogVersion: loadCatalogVersion,
 		saveCatalogVersion: saveCatalogVersion,
 		exportTrainerData: exportTrainerData,
+		clearTrainerData: clearTrainerData,
 		importTrainerData: importTrainerData,
 		hasTrainerData: hasTrainerData
 	};

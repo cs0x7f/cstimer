@@ -38,6 +38,10 @@ var trainerExport = execMain(function() {
 		return block;
 	}
 
+	function isEmptyTrainerExportBlock(payload) {
+		return payload != null && typeof payload === 'object' && Object.keys(payload).length === 0;
+	}
+
 	function validateTrainerExportBlock(payload) {
 		var errors = [];
 
@@ -99,6 +103,16 @@ var trainerExport = execMain(function() {
 			return Promise.resolve(null);
 		}
 
+		if (isEmptyTrainerExportBlock(block)) {
+			return trainerStorage.clearTrainerData().then(function() {
+				return {
+					imported: 0,
+					skipped: 0,
+					warnings: ['empty trainer block imported; trainer data reset to defaults']
+				};
+			});
+		}
+
 		var validation = validateTrainerExportBlock(block);
 		if (!validation.valid) {
 			console.warn('[trainer] import validation failed:', validation.errors.join('; '));
@@ -112,6 +126,7 @@ var trainerExport = execMain(function() {
 		TRAINER_EXPORT_VERSION: TRAINER_EXPORT_VERSION,
 		buildTrainerExportBlock: buildTrainerExportBlock,
 		readTrainerExportBlock: readTrainerExportBlock,
+		isEmptyTrainerExportBlock: isEmptyTrainerExportBlock,
 		validateTrainerExportBlock: validateTrainerExportBlock,
 		mergeExportObj: mergeExportObj,
 		processImportData: processImportData

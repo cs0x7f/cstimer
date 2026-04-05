@@ -92,6 +92,12 @@ Current v1 planner guarantees:
 - `weakness-summary.js` renders the persistent weakness/stats surface and derives its values from persisted trainer sessions, stats, and catalog metadata
 - `trainer-init.js` keeps B05 additive by opening the trainer in its own overlay shell; choosing `Timer` exits back to normal csTimer. Routes the `setup` surface to `trainer-setup.js` with fallback to placeholder if unavailable
 
+### Native Integration Follow-Up
+
+- The current overlay mount is now considered transitional, not the desired end state
+- Native integration work is documented in `docs/features/TrainerNativeIntegration.md`
+- Future trainer UI passes should target the native csTimer-mounted shell rather than further investing in the floating overlay frame
+
 ### Current Catalog Foundation
 
 - **Implementation files:** `src/js/trainer/case-catalog-data.js` and `src/js/trainer/case-catalog.js`
@@ -103,19 +109,30 @@ Current v1 planner guarantees:
 - **Storage mechanism:** csTimer's `storage.js` abstraction via `storage.setKey()` / `storage.getKey()`. In the current repo that means IndexedDB when available, with `localStorage` fallback. Trainer uses `trainer:` prefixed keys and does not bypass the host storage layer.
 - **Key layout:** `trainer:profile`, `trainer:plans`, `trainer:activePlanId`, `trainer:stats`, `trainer:sessions`, `trainer:catalogVersion`. All registered in `kernel.js` valid-key allowlist so fallback cleanup does not purge them.
 - **Coexistence:** Trainer keys are separate from `session_XX_YY` solve chunks. Trainer never mutates csTimer solve records. Trainer linkage stores its own attempt metadata with optional native solve ID reference.
-- **Export format:** Trainer block at `$.trainer` in the exported JSON, parallel to `$.properties` and `$.session*`. Export is additive. A missing trainer block on import does not break solve import and does not clear existing trainer data.
+- **Export format:** Trainer block at `$.trainer` in the exported JSON, parallel to `$.properties` and `$.session*`. Export is additive across file export, csTimer/WCA-backed server upload-download, and Google Drive backup. A missing trainer block on import does not break solve import and does not clear existing trainer data.
+- **Import confirmation:** the normal csTimer import confirmation now summarizes trainer impact too, including unchanged/no-trainer imports, default resets from an empty trainer block, ignored invalid trainer blocks, and overwrite counts for valid trainer imports.
 - **Round-trip invariant:** export -> clear -> import -> export produces identical trainer data.
 - **Offline-first:** All data in browser-local persistence through `storage.js`. No API calls. Degrades to in-memory if storage is unavailable.
 - Full details: `docs/architecture/persistence-plan.md`
 - Compatibility checklist: `docs/architecture/export-import-compatibility.md`
 
-## UI Surfaces Requiring Design
+## UI Surfaces Status
 
-- trainer entry point
-- goal/plan setup
-- active session queue
-- end-of-session review
-- weakness/stats summary
+All five v1 surfaces are implemented and shipped behind the overlay shell:
+
+| Surface | Module | Status |
+|---------|--------|--------|
+| Trainer entry / goal selection | `trainer-entry-home.js` | Implemented (B05) |
+| Training plan setup | `trainer-setup.js` | Implemented (B06) |
+| Active session / drill queue | `trainer-active-session.js` | Implemented (B07) |
+| Post-session review | `session-review.js` | Implemented (B08) |
+| Weakness / stats summary | `weakness-summary.js` | Implemented (B05) |
+
+### Surfaces Still Requiring Design Passes
+
+- native csTimer-mounted shell (see `TrainerNativeIntegration.md`)
+- mobile polish beyond functional responsive layout
+- visual polish of case diagram placeholders in active session
 
 ## Regression Risks
 
