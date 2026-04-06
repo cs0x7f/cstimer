@@ -7,10 +7,8 @@ var weaknessSummary = execMain(function() {
 	var _sessions = [];
 	var _stats = [];
 	var _catalog = [];
-	var _statsSection = null;
-	var _confidenceSection = null;
-	var _rankingSection = null;
-	var _trendsSection = null;
+	var _mainContent = null;
+	var _sidebar = null;
 
 	function _formatTime(ms) {
 		if (!ms || ms <= 0) {
@@ -194,25 +192,22 @@ var weaknessSummary = execMain(function() {
 
 		return [
 			{
-				label: "Avg Recognition Time",
+				label: "Recognition",
 				value: recognitionNow > 0 ? _formatTime(recognitionNow) : "--",
-				delta: recognitionNow > 0 && recognitionStart > 0 ? (recognitionNow <= recognitionStart ? "down " : "up ") + _formatTime(Math.abs(recognitionNow - recognitionStart)) : "no history",
 				deltaColor: recognitionNow <= recognitionStart ? "var(--good, #6bba62)" : "var(--weak, #d4564e)",
 				bars: series.recognition,
 				inverted: true
 			},
 			{
-				label: "Session Confidence",
+				label: "Confidence",
 				value: confidenceNow + "%",
-				delta: (confidenceNow >= confidenceStart ? "up " : "down ") + Math.abs(confidenceNow - confidenceStart) + "%",
 				deltaColor: confidenceNow >= confidenceStart ? "var(--good, #6bba62)" : "var(--weak, #d4564e)",
 				bars: series.confidence,
 				inverted: false
 			},
 			{
-				label: "Weak Case Count",
+				label: "Weak Cases",
 				value: String(weakNow),
-				delta: weakNow <= weakStart ? "down from " + weakStart : "up from " + weakStart,
 				deltaColor: weakNow <= weakStart ? "var(--good, #6bba62)" : "var(--weak, #d4564e)",
 				bars: series.weakCount,
 				inverted: true
@@ -243,7 +238,8 @@ var weaknessSummary = execMain(function() {
 		container.append(sparkline);
 	}
 
-	function _renderStatsOverview() {
+	function _renderStatsOverview(container) {
+		container.empty();
 		var categoryStats = _getCategoryStats(_activeCategory);
 		var categoryCatalog = _getCatalogCases(_activeCategory);
 		var categoryClassification = _classifyCases(categoryCatalog, categoryStats);
@@ -264,23 +260,24 @@ var weaknessSummary = execMain(function() {
 			{ label: "Total Sessions", value: _countRelevantSessions(_activeCategory) },
 			{ label: "Cases Trained", value: _normalizeCategory(_activeCategory) === "ALL" ? String(trainedCount) : trainedCount + " / " + categoryCatalog.length },
 			{ label: "Avg Recognition", value: recognitionCount ? _formatTime(totalRecognition / recognitionCount) : "--", color: "var(--saffron, #e8a620)" },
-			{ label: "Confidence", value: _computeConfidenceScore(categoryStats) + "%", color: _computeConfidenceScore(categoryStats) >= 60 ? "var(--good, #6bba62)" : "var(--weak, #d4564e)" },
-			{ label: "Weak Cases", value: categoryClassification.weak, color: categoryClassification.weak > 0 ? "var(--weak, #d4564e)" : "" }
+			{ label: "Confidence Score", value: _computeConfidenceScore(categoryStats) + "%", color: _computeConfidenceScore(categoryStats) >= 60 ? "var(--good, #6bba62)" : "var(--weak, #d4564e)" },
+			{ label: "Active Weak Spots", value: categoryClassification.weak, color: categoryClassification.weak > 0 ? "var(--weak, #d4564e)" : "" }
 		];
 
-		_statsSection.empty();
-		var row = $('<div class="ws-stats-row"></div>');
+		container.append($('<div class="ws-section-label">').append($('<h3>').text("Global Outlook")));
+		var grid = $('<div class="ws-stats-vertical"></div>');
 		for (var j = 0; j < statCells.length; j++) {
-			var cell = $('<div class="ws-stat-cell"></div>');
-			cell.append($('<span class="ws-stat-label"></span>').text(statCells[j].label));
-			cell.append($('<span class="ws-stat-value"></span>').css("color", statCells[j].color || "").text(statCells[j].value));
-			row.append(cell);
+			var cell = $('<div class="ws-stat-cell-compact"></div>');
+			cell.append($('<span class="ws-stat-label-tiny"></span>').text(statCells[j].label));
+			cell.append($('<span class="ws-stat-value-mid"></span>').css("color", statCells[j].color || "").text(statCells[j].value));
+			grid.append(cell);
 		}
-		_statsSection.append(row);
+		container.append(grid);
 	}
 
-	function _renderConfidencePanels() {
-		_confidenceSection.empty();
+	function _renderConfidencePanels(container) {
+		container.empty();
+		container.append($('<div class="ws-section-label">').append($('<h3>').text("Mastery Calibration")));
 		var grid = $('<div class="ws-confidence-grid"></div>');
 		var categories = ["PLL", "OLL"];
 		for (var i = 0; i < categories.length; i++) {
@@ -305,8 +302,7 @@ var weaknessSummary = execMain(function() {
 			var rows = [
 				{ label: "Mastered", count: classification.mastered, color: "var(--good, #6bba62)" },
 				{ label: "Learning", count: classification.learning, color: "var(--saffron, #e8a620)" },
-				{ label: "Weak", count: classification.weak, color: "var(--weak, #d4564e)" },
-				{ label: "Untrained", count: classification.untrained, color: "var(--text-tertiary, #6b635a)" }
+				{ label: "Weak", count: classification.weak, color: "var(--weak, #d4564e)" }
 			];
 			for (var r = 0; r < rows.length; r++) {
 				var pct = categoryCatalog.length ? Math.round((rows[r].count / categoryCatalog.length) * 100) : 0;
@@ -322,41 +318,31 @@ var weaknessSummary = execMain(function() {
 			panel.append(breakdown);
 			grid.append(panel);
 		}
-		_confidenceSection.append(grid);
+		container.append(grid);
 	}
 
 	function _buildRankingRow(caseRecord, stat, index) {
 		var attempts = stat ? stat.attemptCount || 0 : 0;
 		var confidence = attempts ? Math.min(100, Math.round((attempts / 20) * 100)) : 0;
 		var confColor = confidence >= 70 ? "var(--good, #6bba62)" : confidence >= 40 ? "var(--saffron, #e8a620)" : "var(--weak, #d4564e)";
+		var trendIcons = { "stable": "···", "declining": "↓", "improving": "↑" };
 		var trend = stat && stat.trend ? stat.trend : "stable";
-		var trendText = "--";
-		var trendClass = "ws-trend-flat";
-		if (trend === "declining") {
-			trendText = "↓ declining";
-			trendClass = "ws-trend-down";
-		} else if (trend === "improving") {
-			trendText = "↑ improving";
-			trendClass = "ws-trend-up";
-		}
+		var trendText = trendIcons[trend] || "···";
+		var trendClass = "ws-trend-" + (trend === "improving" ? "up" : trend === "declining" ? "down" : "flat");
 
 		var row = $("<tr></tr>");
 		row.append($('<td class="ws-rank-num"></td>').text(index + 1));
-		row.append($('<td class="ws-case-name"></td>').html(confidence < 40 ? "<em>" + caseRecord.name + "</em>" : caseRecord.name));
-		row.append($('<td class="ws-time-cell"></td>').css("color", stat && stat.avgSolveTime > 15000 ? "var(--weak, #d4564e)" : "").text(stat && stat.avgSolveTime ? _formatTime(stat.avgSolveTime) : "--"));
-		row.append($('<td class="ws-time-cell"></td>').text(stat && stat.bestSolveTime ? _formatTime(stat.bestSolveTime) : "--"));
-		row.append($('<td></td>').html('<span class="ws-trend-cell ' + trendClass + '">' + trendText + '</span>'));
-		row.append($('<td></td>').html('<span class="ws-tag ' + (confidence >= 70 ? "ws-tag-good" : confidence >= 40 ? "ws-tag-saffron" : "ws-tag-weak") + '">' + confidence + '%</span>'));
-		row.append($('<td></td>').append($('<div class="ws-conf-bar"></div>').append($('<div class="ws-conf-bar-fill"></div>').css({
-			width: confidence + "%",
-			background: confColor
-		}))));
-		row.append($('<td class="ws-data"></td>').css({ fontSize: "11px", color: "var(--text-tertiary, #6b635a)" }).text(attempts));
-		row.append($('<td style="text-align:right"></td>').append($('<button class="ws-drill-btn"></button>').attr("data-case-id", caseRecord.caseId).attr("data-category", caseRecord.category).text("Drill")));
+		row.append($('<td class="ws-case-name"></td>').html(caseRecord.name));
+		row.append($('<td class="ws-time-cell"></td>').css("color", stat && stat.avgSolveTime > 4000 ? "var(--weak, #d4564e)" : "var(--text-primary)").text(stat && stat.avgSolveTime ? _formatTime(stat.avgSolveTime) : "--"));
+		row.append($('<td class="ws-time-cell ws-data-dim"></td>').text(stat && stat.bestSolveTime ? _formatTime(stat.bestSolveTime) : "--"));
+		row.append($('<td></td>').html('<span class="ws-trend-indicator ' + trendClass + '">' + trendText + '</span>'));
+		row.append($('<td></td>').html('<div class="ws-conf-pill ' + (confidence >= 70 ? "good" : confidence >= 40 ? "warn" : "weak") + '">' + confidence + '%</div>'));
+		row.append($('<td class="ws-rank-actions"></td>').append($('<button class="ws-mini-drill-btn"></button>').attr("data-case-id", caseRecord.caseId).attr("data-category", caseRecord.category).text("DRILL")));
 		return row;
 	}
 
-	function _renderRankingTable() {
+	function _renderRankingTable(container) {
+		container.empty();
 		var category = _activeCategory;
 		var categoryStats = _getCategoryStats(category);
 		var categoryCatalog = _getCatalogCases(category);
@@ -377,80 +363,77 @@ var weaknessSummary = execMain(function() {
 			return a.caseRecord.caseId < b.caseRecord.caseId ? -1 : (a.caseRecord.caseId > b.caseRecord.caseId ? 1 : 0);
 		});
 
-		_rankingSection.empty();
 		var header = $('<div class="ws-section-label"></div>');
-		header.append($('<div class="ws-section-title"></div>').append($("<h3></h3>").text("Case Rankings - " + category)));
+		header.append($('<div class="ws-section-title"></div>').append($('<h3>').text("Targeted Case Rankings")));
 		var actions = $('<div style="display:flex;gap:12px;"></div>');
-		actions.append($('<button class="ws-btn ws-btn-ghost"></button>').css({ padding: "6px 12px", fontSize: "11px" }).text("Sort: Slowest First"));
-		actions.append($('<button class="ws-btn ws-btn-primary ws-drill-weak-btn"></button>').attr("data-category", category).css({ padding: "6px 14px", fontSize: "11px" }).html('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Drill Weak Cases'));
+		actions.append($('<button class="ws-btn-ghost-tiny ws-drill-weak-btn"></button>').attr("data-category", category).html('<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polygon points="5 3 19 12 5 21 5 3"/></svg> Drill Weakest'));
 		header.append(actions);
-		_rankingSection.append(header);
+		container.append(header);
 
-		var card = $('<div class="ws-precision-card"></div>').css({ padding: 0, "overflow-x": "auto" });
+		var card = $('<div class="ws-precision-card" style="padding: 0;"></div>');
 		var table = $('<table class="ws-ranking-table"></table>');
-		table.append($('<thead></thead>').html('<tr><th>#</th><th>Case</th><th>Avg Time</th><th>Best</th><th>Trend</th><th>Confidence</th><th>Distribution</th><th>Drills</th><th style="text-align:right">Action</th></tr>'));
+		table.append($('<thead></thead>').html('<tr><th>#</th><th>Case</th><th>Avg Time</th><th>Best</th><th>Trend</th><th>Conf.</th><th style="text-align:right"></th></tr>'));
 		var tbody = $('<tbody></tbody>');
-		for (var j = 0; j < ordered.length; j++) {
+		var limit = category === "ALL" ? 20 : ordered.length;
+		for (var j = 0; j < Math.min(ordered.length, limit); j++) {
 			tbody.append(_buildRankingRow(ordered[j].caseRecord, ordered[j].stat, j));
 		}
 		table.append(tbody);
 		card.append(table);
-		_rankingSection.append(card);
+		container.append(card);
 	}
 
-	function _renderTrends() {
-		_trendsSection.empty();
-		var sectionLabel = $('<div class="ws-section-label"></div>');
-		sectionLabel.append($('<div class="ws-section-title"></div>').append($('<h3></h3>').text("30-Day Trend")));
-		_trendsSection.append(sectionLabel);
+	function _renderTrends(container) {
+		container.empty();
+		container.append($('<div class="ws-section-label" style="margin-top:32px;">').append($('<h3>').text("Performance Trends")));
 
-		var card = $('<div class="ws-precision-card ws-trend-card"></div>');
-		var grid = $('<div class="ws-trend-grid"></div>');
+		var grid = $('<div class="ws-trend-grid-sidebar"></div>');
 		var cards = _getTrendCardData(_activeCategory);
 		for (var i = 0; i < cards.length; i++) {
-			var col = $('<div></div>');
-			col.append($('<div class="ws-label" style="margin-bottom:12px;"></div>').text(cards[i].label));
-			var valueRow = $('<div style="display:flex;align-items:baseline;gap:12px;"></div>');
-			valueRow.append($('<span style="font-family:var(--font-display, Georgia, serif);font-size:32px;"></span>').text(cards[i].value));
-			valueRow.append($('<span class="ws-data" style="font-size:12px;"></span>').css("color", cards[i].deltaColor).text(cards[i].delta));
-			col.append(valueRow);
-			_renderSparkline(col, cards[i].bars, cards[i].inverted);
-			grid.append(col);
+			var block = $('<div class="ws-trend-block"></div>');
+			var header = $('<div class="ws-trend-header-sidebar"></div>');
+			header.append($('<span class="ws-stat-label-tiny"></span>').text(cards[i].label));
+			header.append($('<span class="ws-stat-value-tiny"></span>').text(cards[i].value));
+			block.append(header);
+			_renderSparkline(block, cards[i].bars, cards[i].inverted);
+			grid.append(block);
 		}
-		card.append(grid);
-		_trendsSection.append(card);
+		container.append(grid);
 	}
 
 	function _refresh() {
-		if (!_container) {
-			return;
-		}
-		_renderStatsOverview();
-		_renderConfidencePanels();
-		_renderRankingTable();
-		_renderTrends();
+		if (!_container) return;
+		_renderStatsOverview(_sidebar.find(".ws-stats-container"));
+		_renderTrends(_sidebar.find(".ws-trends-container"));
+		_renderConfidencePanels(_mainContent.find(".ws-confidence-container"));
+		_renderRankingTable(_mainContent.find(".ws-ranking-container"));
 	}
 
 	function _goalForCategory(category) {
 		var normalizedCategory = _normalizeCategory(category);
-		if (normalizedCategory === "CROSS") {
-			return "cross";
-		}
-		if (normalizedCategory === "RETURNING") {
-			return "return-to-speed";
-		}
+		if (normalizedCategory === "CROSS") return "cross";
+		if (normalizedCategory === "RETURNING") return "return-to-speed";
 		return "last-layer";
 	}
 
 	function _bindEvents() {
-		_container.on("click", ".ws-nav-tab", function() {
-			_container.find(".ws-nav-tab").removeClass("active");
+		_container.on("click", ".te-nav-tab", function() {
+			var tab = $(this).text();
+			if (tab === "Train") {
+				if (typeof trainerInit !== "undefined") trainerInit.showEntry();
+			} else if (tab === "Timer") {
+				if (typeof trainerInit !== "undefined") trainerInit.hide();
+			}
+		});
+
+		_container.on("click", ".ws-sub-nav-tab", function() {
+			_container.find(".ws-sub-nav-tab").removeClass("active");
 			$(this).addClass("active");
 			_activeCategory = $(this).attr("data-category");
 			_refresh();
 		});
 
-		_container.on("click", ".ws-drill-btn", function() {
+		_container.on("click", ".ws-mini-drill-btn", function() {
 			if (typeof trainerInit !== "undefined") {
 				trainerInit.showSurface("setup", {
 					selectedGoal: _goalForCategory($(this).attr("data-category")),
@@ -479,11 +462,7 @@ var weaknessSummary = execMain(function() {
 			trainerIntegration.getAllStats(),
 			Promise.resolve(trainerIntegration.getCatalog())
 		]).then(function(results) {
-			return {
-				sessions: results[0] || [],
-				stats: results[1] || [],
-				catalog: results[2] || []
-			};
+			return { sessions: results[0] || [], stats: results[1] || [], catalog: results[2] || [] };
 		}).catch(function() {
 			return { sessions: [], stats: [], catalog: [] };
 		});
@@ -491,72 +470,99 @@ var weaknessSummary = execMain(function() {
 
 	function _buildStyles() {
 		return [
-			".weakness-summary { max-width: 1000px; margin: 0 auto; padding: 48px 32px; }",
-			".weakness-summary .ws-page-header { display:flex; align-items:flex-end; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--border, rgba(237,232,225,0.08)); margin-bottom:48px; }",
-			".weakness-summary .ws-page-title { font-family: var(--font-display, Georgia, serif); font-size:36px; margin-bottom:8px; }",
-			".weakness-summary .ws-page-title em { font-style:italic; color:var(--saffron, #e8a620); }",
-			".weakness-summary .ws-page-subtitle { color:var(--text-secondary, #9b9388); font-size:14px; }",
-			".weakness-summary .ws-nav-tabs { display:flex; gap:0; background:var(--surface, #272320); border:1px solid var(--border, rgba(237,232,225,0.08)); border-radius:3px; overflow:hidden; }",
-			".weakness-summary .ws-nav-tab { font-size:12px; color:var(--text-tertiary, #6b635a); padding:8px 16px; cursor:pointer; border-right:1px solid var(--border, rgba(237,232,225,0.08)); }",
-			".weakness-summary .ws-nav-tab:last-child { border-right:none; }",
-			".weakness-summary .ws-nav-tab.active { color:var(--saffron, #e8a620); background:var(--saffron-wash, rgba(232,166,32,0.06)); }",
-			".weakness-summary .ws-section-label { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }",
-			".weakness-summary .ws-section-title { display:flex; align-items:center; gap:12px; }",
-			".weakness-summary .ws-section-title::before { content:''; width:16px; height:1px; background:var(--saffron, #e8a620); }",
-			".weakness-summary .ws-section-title h3, .weakness-summary .ws-label, .weakness-summary .ws-data, .weakness-summary .ws-stat-label, .weakness-summary .ws-ranking-table th { font-family: var(--font-mono, 'Courier New', monospace); }",
-			".weakness-summary .ws-stats-row { display:grid; grid-template-columns:repeat(5, 1fr); gap:16px; margin-bottom:48px; }",
-			".weakness-summary .ws-stat-cell { background:var(--bg-warm, #1f1c19); border:1px solid var(--border, rgba(237,232,225,0.08)); border-radius:6px; padding:16px 24px; display:flex; flex-direction:column; gap:4px; }",
-			".weakness-summary .ws-stat-value { font-family: var(--font-display, Georgia, serif); font-size:28px; line-height:1; }",
-			".weakness-summary .ws-stat-label { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-tertiary, #6b635a); }",
-			".weakness-summary .ws-confidence-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:48px; }",
-			".weakness-summary .ws-precision-card { background:var(--surface, #272320); border:1px solid var(--border, rgba(237,232,225,0.08)); border-radius:6px; position:relative; overflow:hidden; }",
-			".weakness-summary .ws-precision-card::before { content:''; position:absolute; top:-1px; left:-1px; width:8px; height:8px; border-top:1.5px solid var(--saffron, #e8a620); border-left:1.5px solid var(--saffron, #e8a620); border-radius:6px 0 0 0; }",
-			".weakness-summary .ws-precision-card::after { content:''; position:absolute; right:-1px; bottom:-1px; width:8px; height:8px; border-right:1.5px solid var(--saffron, #e8a620); border-bottom:1.5px solid var(--saffron, #e8a620); border-radius:0 0 6px 0; }",
-			".weakness-summary .ws-confidence-panel, .weakness-summary .ws-trend-card { padding:24px; }",
-			".weakness-summary .ws-confidence-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }",
-			".weakness-summary .ws-confidence-title { font-family: var(--font-display, Georgia, serif); font-size:24px; }",
-			".weakness-summary .ws-confidence-score { font-family: var(--font-display, Georgia, serif); font-size:48px; line-height:1; }",
-			".weakness-summary .ws-confidence-breakdown { display:flex; flex-direction:column; gap:12px; margin-top:16px; }",
-			".weakness-summary .ws-confidence-row { display:flex; align-items:center; gap:12px; }",
-			".weakness-summary .ws-confidence-row-label { width:80px; flex-shrink:0; font-size:12px; }",
-			".weakness-summary .ws-confidence-row-bar { flex:1; }",
-			".weakness-summary .ws-confidence-row-value { width:36px; text-align:right; font-size:11px; }",
-			".weakness-summary .ws-progress-track, .weakness-summary .ws-conf-bar { width:100%; background:var(--border, rgba(237,232,225,0.08)); border-radius:2px; overflow:hidden; }",
-			".weakness-summary .ws-progress-track { height:6px; }",
-			".weakness-summary .ws-conf-bar { height:4px; }",
-			".weakness-summary .ws-progress-fill, .weakness-summary .ws-conf-bar-fill { height:100%; border-radius:2px; }",
-			".weakness-summary .ws-tag { font-size:10px; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:3px; display:inline-flex; align-items:center; gap:5px; }",
-			".weakness-summary .ws-tag-good { background:rgba(107,186,98,0.15); color:var(--good, #6bba62); }",
-			".weakness-summary .ws-tag-saffron { background:rgba(232,166,32,0.12); color:var(--saffron, #e8a620); }",
-			".weakness-summary .ws-tag-weak { background:rgba(212,86,78,0.15); color:var(--weak, #d4564e); }",
-			".weakness-summary .ws-status-dot { width:6px; height:6px; border-radius:50%; display:inline-block; }",
-			".weakness-summary .ws-status-dot.good { background:var(--good, #6bba62); }",
-			".weakness-summary .ws-status-dot.warn { background:var(--saffron, #e8a620); }",
-			".weakness-summary .ws-status-dot.weak { background:var(--weak, #d4564e); }",
-			".weakness-summary .ws-ranking-table { width:100%; border-collapse:collapse; }",
-			".weakness-summary .ws-ranking-table th, .weakness-summary .ws-ranking-table td { padding:12px 16px; border-bottom:1px solid var(--border, rgba(237,232,225,0.08)); font-size:13px; text-align:left; }",
-			".weakness-summary .ws-ranking-table th { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-tertiary, #6b635a); }",
-			".weakness-summary .ws-rank-num { width:30px; color:var(--text-tertiary, #6b635a); }",
-			".weakness-summary .ws-case-name { font-family: var(--font-display, Georgia, serif); font-size:16px; white-space:nowrap; }",
-			".weakness-summary .ws-time-cell, .weakness-summary .ws-trend-cell { white-space:nowrap; }",
-			".weakness-summary .ws-trend-up { color:var(--good, #6bba62); }",
-			".weakness-summary .ws-trend-down { color:var(--weak, #d4564e); }",
-			".weakness-summary .ws-trend-flat { color:var(--text-tertiary, #6b635a); }",
-			".weakness-summary .ws-btn, .weakness-summary .ws-drill-btn { font-size:11px; letter-spacing:0.03em; border-radius:3px; cursor:pointer; }",
-			".weakness-summary .ws-btn { border:none; padding:10px 22px; display:inline-flex; align-items:center; gap:8px; }",
-			".weakness-summary .ws-btn-primary { background:var(--saffron, #e8a620); color:var(--text-inverse, #1a1816); }",
-			".weakness-summary .ws-btn-ghost { background:var(--surface, #272320); color:var(--text-secondary, #9b9388); border:1px solid var(--border, rgba(237,232,225,0.08)); }",
-			".weakness-summary .ws-drill-btn { background:none; color:var(--saffron, #e8a620); border:1px solid rgba(232,166,32,0.25); padding:4px 10px; text-transform:uppercase; }",
-			".weakness-summary .ws-divider { height:1px; background:var(--border, rgba(237,232,225,0.08)); margin:48px 0; }",
-			".weakness-summary .ws-trend-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:32px; }",
-			".weakness-summary .ws-sparkline { display:flex; align-items:flex-end; gap:2px; height:24px; margin-top:16px; }",
-			".weakness-summary .ws-spark-bar { width:4px; border-radius:1px; }",
-			".weakness-summary .ws-footer { display:flex; justify-content:space-between; padding:16px 0; }",
-			"@media (max-width: 768px) {",
-			"  .weakness-summary { padding:24px 16px !important; }",
-			"  .weakness-summary .ws-page-header { flex-direction:column; gap:16px; align-items:flex-start !important; }",
-			"  .weakness-summary .ws-confidence-grid, .weakness-summary .ws-trend-grid { grid-template-columns:1fr !important; }",
-			"  .weakness-summary .ws-stats-row { grid-template-columns:repeat(2, 1fr) !important; }",
+			".weakness-summary { max-width: 1200px; margin: 0 auto; padding: 0 32px 64px; color: var(--text-primary, #ede8e1); font-family: var(--font-sans, 'Inter', sans-serif); }",
+			".weakness-summary .te-nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; border-bottom: 1px solid var(--border, rgba(237,232,225,0.08)); margin-bottom: 48px; position: sticky; top: 0; background: var(--bg-dark, #1a1816); z-index: 10; }",
+			".weakness-summary .te-logo-group { display: flex; align-items: baseline; gap: 12px; }",
+			".weakness-summary .te-logo-mark { width: 28px; height: 28px; background: var(--saffron, #e8a620); border-radius: 3px; display: flex; align-items: center; justify-content: center; }",
+			".weakness-summary .te-logo-text { font-family: var(--font-display, 'Instrument Serif', Georgia, serif); font-size: 26px; color: var(--text-primary, #ede8e1); letter-spacing: -0.02em; }",
+			".weakness-summary .te-logo-text em { color: var(--saffron, #e8a620); font-style: italic; }",
+			".weakness-summary .te-nav-tabs { display: flex; gap: 24px; }",
+			".weakness-summary .te-nav-tab { font-size: 13px; color: var(--text-tertiary, #6b635a); text-decoration: none; padding: 8px 0; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; }",
+			".weakness-summary .te-nav-tab.active { color: var(--saffron, #e8a620); border-bottom-color: var(--saffron, #e8a620); }",
+			
+			".ws-layout { display: flex; gap: 48px; align-items: flex-start; }",
+			".ws-main { flex: 1; min-width: 0; }",
+			".ws-sidebar { width: 300px; flex-shrink: 0; position: sticky; top: 100px; }",
+
+			".ws-page-header-minimal { margin-bottom: 32px; }",
+			".ws-page-title { font-family: var(--font-display, 'Instrument Serif', Georgia, serif); font-size: 48px; line-height: 1.1; margin-bottom: 8px; }",
+			".ws-page-title em { font-style: italic; color: var(--saffron, #e8a620); }",
+			".ws-page-subtitle { color: var(--text-secondary, #9b9388); font-size: 16px; font-family: var(--font-sans, sans-serif); }",
+
+			".ws-sub-nav { display: flex; gap: 16px; margin-bottom: 32px; padding: 4px; background: rgba(237,232,225,0.03); border-radius: 6px; width: fit-content; }",
+			".ws-sub-nav-tab { font-size: 11px; font-family: var(--font-mono, monospace); text-transform: uppercase; letter-spacing: 0.1em; padding: 6px 14px; cursor: pointer; border-radius: 4px; color: var(--text-tertiary, #6b635a); transition: all 0.2s; }",
+			".ws-sub-nav-tab:hover { color: var(--text-secondary, #9b9388); }",
+			".ws-sub-nav-tab.active { background: var(--surface-raised, #302b27); color: var(--saffron, #e8a620); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }",
+
+			".ws-section-label { display: flex; align-items: center; justify-content: space-between; margin: 32px 0 16px; }",
+			".ws-section-label h3 { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".ws-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border, rgba(237,232,225,0.08)); margin-left:12px; }",
+
+			".ws-precision-card { background: var(--surface, #272320); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 8px; position: relative; overflow: hidden; padding: 24px; }",
+			".ws-precision-card::before { content: ''; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 2px solid var(--saffron, #e8a620); border-left: 2px solid var(--saffron, #e8a620); border-radius: 8px 0 0 0; opacity: 0.6; }",
+
+			".ws-confidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }",
+			".ws-confidence-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }",
+			".ws-confidence-title { font-family: var(--font-display, Georgia, serif); font-size: 20px; }",
+			".ws-confidence-score { font-family: var(--font-display, Georgia, serif); font-size: 36px; margin-bottom: 16px; }",
+			".ws-confidence-breakdown { display: flex; flex-direction: column; gap: 8px; }",
+			".ws-confidence-row { display: flex; align-items: center; gap: 10px; font-size: 11px; }",
+			".ws-confidence-row-label { width: 64px; color: var(--text-tertiary, #6b635a); font-family: var(--font-mono, monospace); text-transform: uppercase; font-size: 9px; }",
+			".ws-confidence-row-bar { flex: 1; height: 4px; background: rgba(237,232,225,0.05); border-radius: 2px; overflow: hidden; }",
+			".ws-progress-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }",
+			".ws-confidence-row-value { width: 24px; text-align: right; font-family: var(--font-mono, monospace); }",
+
+			".ws-stats-vertical { display: flex; flex-direction: column; gap: 10px; }",
+			".ws-stat-cell-compact { background: var(--bg-warm, #1f1c19); border: 1px solid var(--border, rgba(237,232,225,0.05)); border-radius: 6px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: baseline; }",
+			".ws-stat-label-tiny { font-family: var(--font-mono, monospace); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".ws-stat-value-mid { font-family: var(--font-display, Georgia, serif); font-size: 22px; color: var(--text-primary, #ede8e1); }",
+			".ws-stat-value-tiny { font-family: var(--font-mono, monospace); font-size: 14px; font-weight: 500; }",
+
+			".ws-trend-grid-sidebar { display: flex; flex-direction: column; gap: 16px; }",
+			".ws-trend-block { background: rgba(237,232,225,0.02); padding: 12px; border-radius: 6px; border: 1px solid rgba(237,232,225,0.04); }",
+			".ws-trend-header-sidebar { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }",
+			".ws-sparkline { display: flex; align-items: flex-end; gap: 2px; height: 20px; }",
+			".ws-spark-bar { width: 3px; border-radius: 0.5px; min-height: 2px; }",
+
+			".ws-ranking-table { width: 100%; border-collapse: collapse; }",
+			".ws-ranking-table th { text-align: left; padding: 12px 16px; font-family: var(--font-mono, monospace); font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-tertiary, #6b635a); border-bottom: 1px solid var(--border, rgba(237,232,225,0.06)); }",
+			".ws-ranking-table td { padding: 10px 16px; border-bottom: 1px solid rgba(237,232,225,0.03); font-size: 13px; vertical-align: middle; }",
+			".ws-ranking-table tr:hover td { background: rgba(237,232,225,0.02); }",
+			".ws-rank-num { width: 30px; font-family: var(--font-mono, monospace); color: var(--text-tertiary, #6b635a); font-size: 11px; }",
+			".ws-case-name { font-family: var(--font-display, Georgia, serif); font-size: 16px; color: var(--text-primary); }",
+			".ws-time-cell { font-family: var(--font-mono, monospace); font-size: 13px; font-weight: 500; }",
+			".ws-data-dim { color: var(--text-tertiary, #6b635a); }",
+			".ws-trend-indicator { font-family: var(--font-mono, monospace); font-weight: bold; }",
+			".ws-trend-up { color: var(--good, #6bba62); }",
+			".ws-trend-down { color: var(--weak, #d4564e); }",
+			".ws-trend-flat { color: var(--text-tertiary, #6b635a); }",
+			".ws-conf-pill { display: inline-block; padding: 2px 6px; border-radius: 3px; font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 600; }",
+			".ws-conf-pill.good { background: rgba(107,186,98,0.12); color: var(--good, #6bba62); }",
+			".ws-conf-pill.warn { background: rgba(232,166,32,0.12); color: var(--saffron, #e8a620); }",
+			".ws-conf-pill.weak { background: rgba(212,86,78,0.12); color: var(--weak, #d4564e); }",
+
+			".ws-tag { font-family: var(--font-mono, monospace); font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 3px; display: inline-flex; align-items: center; gap: 6px; }",
+			".ws-tag-good { background: rgba(107,186,98,0.1); color: var(--good, #6bba62); }",
+			".ws-tag-saffron { background: rgba(232,166,32,0.1); color: var(--saffron, #e8a620); }",
+			".ws-tag-weak { background: rgba(212,86,78,0.1); color: var(--weak, #d4564e); }",
+			".ws-status-dot { width: 5px; height: 5px; border-radius: 50%; }",
+			".ws-status-dot.good { background: var(--good, #6bba62); }",
+			".ws-status-dot.warn { background: var(--saffron, #e8a620); }",
+			".ws-status-dot.weak { background: var(--weak, #d4564e); }",
+
+			".ws-mini-drill-btn { background: none; border: 1px solid var(--border-accent, rgba(232,166,32,0.25)); color: var(--saffron, #e8a620); font-family: var(--font-mono, monospace); font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 3px; cursor: pointer; transition: all 0.2s; visibility: hidden; }",
+			".ws-ranking-table tr:hover .ws-mini-drill-btn { visibility: visible; }",
+			".ws-mini-drill-btn:hover { background: var(--saffron-wash, rgba(232,166,32,0.08)); border-color: var(--saffron, #e8a620); }",
+			".ws-btn-ghost-tiny { background: none; border: 1px solid var(--border, rgba(237,232,225,0.08)); color: var(--text-tertiary, #6b635a); font-family: var(--font-mono, monospace); font-size: 9px; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }",
+			".ws-btn-ghost-tiny:hover { border-color: var(--text-secondary, #9b9388); color: var(--text-primary); }",
+
+			".ws-footer { margin-top: 64px; padding: 24px 0; border-top: 1px solid var(--border, rgba(237,232,225,0.08)); display: flex; justify-content: space-between; }",
+			".ws-footer-label { font-family: var(--font-mono, monospace); font-size: 10px; color: var(--text-tertiary, #6b635a); text-transform: uppercase; letter-spacing: 0.1em; }",
+
+			"@media (max-width: 1024px) {",
+			"  .ws-layout { flex-direction: column; }",
+			"  .ws-sidebar { width: 100%; position: static; }",
+			"  .ws-confidence-grid { grid-template-columns: 1fr; }",
 			"}"
 		].join("");
 	}
@@ -573,35 +579,52 @@ var weaknessSummary = execMain(function() {
 		_activeCategory = data && data.activeCategory ? _normalizeCategory(data.activeCategory) : "PLL";
 		_container.empty().addClass("weakness-summary");
 
-		var header = $('<div class="ws-page-header"></div>');
-		var headerLeft = $('<div></div>');
-		headerLeft.append($('<div class="ws-page-title"></div>').html('Weakness <em>Summary</em>'));
-		headerLeft.append($('<p class="ws-page-subtitle"></p>').text("Persistent training insights across all sessions - updated after each drill"));
-		header.append(headerLeft);
+		// SHARED NAVIGATION
+		var navBar = $('<nav class="te-nav">');
+		var logoGroup = $('<div class="te-logo-group">');
+		logoGroup.append($('<div class="te-logo-mark">').html('<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:var(--text-inverse,#1a1816)"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.36.18-.57.18s-.41-.09-.57-.18l-7.9-4.44A.991.991 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.36-.18.57-.18s.41.09.57.18l7.9 4.44c.32.17.53.5.53.88v9z"/></svg>'));
+		logoGroup.append($('<div class="te-logo-text">').html('csTimer <em>Trainer</em>'));
+		navBar.append(logoGroup);
+		var navTabs = $('<div class="te-nav-tabs">');
+		navTabs.append($('<span class="te-nav-tab">').text("Train"));
+		navTabs.append($('<span class="te-nav-tab active">').text("Stats"));
+		navTabs.append($('<span class="te-nav-tab">').text("Timer"));
+		navBar.append(navTabs);
+		_container.append(navBar);
 
-		var tabs = $('<div class="ws-nav-tabs"></div>');
+		// WORKBENCH LAYOUT
+		var layout = $('<div class="ws-layout">');
+		_mainContent = $('<div class="ws-main">');
+		_sidebar = $('<div class="ws-sidebar">');
+		layout.append(_mainContent).append(_sidebar);
+		_container.append(layout);
+
+		// MAIN CONTENT: Header
+		var headerGroup = $('<div class="ws-page-header-minimal">');
+		headerGroup.append($('<div class="ws-page-title">').html('Weakness <em>Summary</em>'));
+		headerGroup.append($('<p class="ws-page-subtitle">').text("Global mastery analytics and prioritized targeted drills."));
+		_mainContent.append(headerGroup);
+
+		// MAIN CONTENT: Sub Navigation (Category Tabs)
+		var subNav = $('<div class="ws-sub-nav">');
 		var categories = ["PLL", "OLL", "Cross", "All"];
 		for (var i = 0; i < categories.length; i++) {
 			var normalized = _normalizeCategory(categories[i]);
-			tabs.append($('<span class="ws-nav-tab"></span>').attr("data-category", normalized).toggleClass("active", normalized === _activeCategory).text(categories[i]));
+			subNav.append($('<span class="ws-sub-nav-tab">').attr("data-category", normalized).toggleClass("active", normalized === _activeCategory).text(categories[i]));
 		}
-		header.append(tabs);
-		_container.append(header);
+		_mainContent.append(subNav);
 
-		_statsSection = $('<div></div>');
-		_confidenceSection = $('<div></div>');
-		_rankingSection = $('<div></div>');
-		_trendsSection = $('<div></div>');
+		// Containers for refresh logic
+		_mainContent.append($('<div class="ws-confidence-container">'));
+		_mainContent.append($('<div class="ws-ranking-container">'));
 
-		_container.append(_statsSection);
-		_container.append(_confidenceSection);
-		_container.append(_rankingSection);
-		_container.append($('<div class="ws-divider"></div>'));
-		_container.append(_trendsSection);
+		_sidebar.append($('<div class="ws-stats-container">'));
+		_sidebar.append($('<div class="ws-trends-container">'));
 
-		var footer = $('<div class="ws-footer"></div>');
-		footer.append($('<span class="ws-label"></span>').text("csTimer Trainer v2"));
-		footer.append($('<span class="ws-label"></span>').text("Weakness Summary"));
+		// FOOTER
+		var footer = $('<div class="ws-footer">');
+		footer.append($('<span class="ws-footer-label">').text("csTimer Trainer v2.1"));
+		footer.append($('<span class="ws-footer-label">').text("Deep Analytics Engine"));
 		_container.append(footer);
 
 		_bindEvents();
@@ -620,8 +643,9 @@ var weaknessSummary = execMain(function() {
 
 	function destroy() {
 		if (_container) {
-			_container.off("click", ".ws-nav-tab");
-			_container.off("click", ".ws-drill-btn");
+			_container.off("click", ".te-nav-tab");
+			_container.off("click", ".ws-sub-nav-tab");
+			_container.off("click", ".ws-mini-drill-btn");
 			_container.off("click", ".ws-drill-weak-btn");
 			_container.empty().removeClass("weakness-summary");
 			_container = null;
@@ -629,10 +653,6 @@ var weaknessSummary = execMain(function() {
 		_sessions = [];
 		_stats = [];
 		_catalog = [];
-		_statsSection = null;
-		_confidenceSection = null;
-		_rankingSection = null;
-		_trendsSection = null;
 	}
 
 	return {

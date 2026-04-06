@@ -41,8 +41,8 @@ var trainerEntryHome = execMain(function() {
 
 	function _buildStyles() {
 		return [
-			".trainer-entry { max-width: 900px; margin: 0 auto; padding: 48px 32px; }",
-			".trainer-entry .te-nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; border-bottom: 1px solid var(--border, rgba(237,232,225,0.08)); margin-bottom: 48px; }",
+			".trainer-entry { max-width: 1200px; margin: 0 auto; padding: 0 32px 48px; }",
+			".trainer-entry .te-nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; border-bottom: 1px solid var(--border, rgba(237,232,225,0.08)); margin-bottom: 32px; position: sticky; top: 0; background: var(--bg-dark, #1a1816); z-index: 10; }",
 			".trainer-entry .te-logo-group { display: flex; align-items: baseline; gap: 12px; }",
 			".trainer-entry .te-logo-mark { width: 28px; height: 28px; background: var(--saffron, #e8a620); border-radius: 3px; display: flex; align-items: center; justify-content: center; position: relative; top: 2px; }",
 			".trainer-entry .te-logo-text { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 26px; color: var(--text-primary, #ede8e1); letter-spacing: -0.02em; }",
@@ -51,58 +51,83 @@ var trainerEntryHome = execMain(function() {
 			".trainer-entry .te-nav-tab { font-size: 13px; color: var(--text-tertiary, #6b635a); text-decoration: none; padding: 8px 0; border-bottom: 2px solid transparent; cursor: pointer; }",
 			".trainer-entry .te-nav-tab:hover { color: var(--text-secondary, #9b9388); }",
 			".trainer-entry .te-nav-tab.active { color: var(--saffron, #e8a620); border-bottom-color: var(--saffron, #e8a620); }",
-			".trainer-entry .te-hero { text-align: center; padding: 48px 0 32px; }",
-			".trainer-entry .te-hero-title { font-family: var(--font-display, 'Instrument Serif', serif); font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; font-size: 48px; margin-bottom: 16px; }",
-			".trainer-entry .te-hero-title em { font-style: italic; color: var(--saffron, #e8a620); }",
-			".trainer-entry .te-hero-sub { color: var(--text-secondary, #9b9388); font-size: 16px; max-width: 500px; margin: 0 auto 24px; }",
-			".trainer-entry .te-goal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }",
-			".trainer-entry .te-precision-card { background: var(--surface, #272320); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 6px; position: relative; overflow: hidden; transition: border-color 0.3s ease, background 0.3s ease; }",
-			".trainer-entry .te-precision-card:hover { border-color: var(--border-accent, rgba(232,166,32,0.25)); background: var(--surface-raised, #302b27); }",
-			".trainer-entry .te-precision-card::before { content: ''; position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; border-top: 1.5px solid var(--saffron, #e8a620); border-left: 1.5px solid var(--saffron, #e8a620); border-radius: 6px 0 0 0; }",
-			".trainer-entry .te-precision-card::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; border-bottom: 1.5px solid var(--saffron, #e8a620); border-right: 1.5px solid var(--saffron, #e8a620); border-radius: 0 0 6px 0; }",
-			".trainer-entry .te-goal-card { padding: 32px; cursor: pointer; text-align: left; }",
-			".trainer-entry .te-goal-card.selected { border-color: var(--saffron, #e8a620); background: var(--saffron-wash, rgba(232,166,32,0.06)); }",
-			".trainer-entry .te-goal-icon { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }",
-			".trainer-entry .te-goal-card-title { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 22px; margin-bottom: 8px; }",
-			".trainer-entry .te-goal-card p { font-size: 13px; color: var(--text-secondary, #9b9388); line-height: 1.5; margin-bottom: 16px; }",
-			".trainer-entry .te-goal-detail { display: flex; flex-direction: column; gap: 8px; }",
-			".trainer-entry .te-goal-detail-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-tertiary, #6b635a); }",
-			".trainer-entry .te-cta { text-align: center; margin-bottom: 48px; }",
-			".trainer-entry .te-btn { font-weight: 600; font-size: 13px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 10px 22px; border-radius: 3px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }",
+
+			".te-layout { display: flex; gap: 48px; align-items: flex-start; }",
+			".te-main { flex: 1; min-width: 0; }",
+			".te-sidebar { width: 320px; flex-shrink: 0; position: sticky; top: 100px; }",
+
+			".trainer-entry .te-hero { text-align: left; padding: 0 0 40px; }",
+			".trainer-entry .te-hero-title { font-family: var(--font-display, 'Instrument Serif', serif); font-weight: 400; letter-spacing: -0.01em; line-height: 1.05; font-size: 56px; margin-bottom: 20px; color: var(--text-primary, #ede8e1); }",
+			".trainer-entry .te-hero-title em { font-style: italic; color: var(--saffron, #e8a620); opacity: 0.9; }",
+			".trainer-entry .te-hero-sub { color: var(--text-secondary, #9b9388); font-size: 17px; max-width: 540px; line-height: 1.5; margin-bottom: 0; }",
+			
+			".trainer-entry .te-goal-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 32px; }",
+			".trainer-entry .te-precision-card { background: var(--surface, #272320); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 8px; position: relative; overflow: hidden; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }",
+			".trainer-entry .te-precision-card:hover { border-color: var(--border-accent, rgba(232,166,32,0.35)); background: var(--surface-raised, #302b27); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.2); }",
+			".trainer-entry .te-precision-card::before { content: ''; position: absolute; top: -1px; left: -1px; width: 12px; height: 12px; border-top: 2px solid var(--saffron, #e8a620); border-left: 2px solid var(--saffron, #e8a620); border-radius: 8px 0 0 0; opacity: 0.5; }",
+			
+			".trainer-entry .te-goal-card { padding: 24px; cursor: pointer; text-align: left; display: flex; gap: 24px; align-items: center; }",
+			".trainer-entry .te-goal-card.selected { border-color: var(--saffron, #e8a620); background: var(--saffron-wash, rgba(232,166,32,0.04)); }",
+			".trainer-entry .te-goal-card.selected::before { opacity: 1; }",
+			".trainer-entry .te-goal-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }",
+			".trainer-entry .te-goal-content { flex: 1; }",
+			".trainer-entry .te-goal-card-title { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 24px; margin-bottom: 4px; color: var(--text-primary, #ede8e1); }",
+			".trainer-entry .te-goal-card p { font-size: 14px; color: var(--text-secondary, #9b9388); line-height: 1.4; margin-bottom: 12px; }",
+			".trainer-entry .te-goal-detail { display: flex; flex-wrap: wrap; gap: 12px; }",
+			".trainer-entry .te-goal-detail-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-tertiary, #6b635a); font-family: var(--font-mono, 'IBM Plex Mono', monospace); text-transform: uppercase; letter-spacing: 0.05em; }",
+			
+			".trainer-entry .te-cta { text-align: left; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border, rgba(237,232,225,0.08)); }",
+			".trainer-entry .te-btn { font-weight: 600; font-size: 13px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 10px 22px; border-radius: 4px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }",
 			".trainer-entry .te-btn-primary { background: var(--saffron, #e8a620); color: var(--text-inverse, #1a1816); }",
-			".trainer-entry .te-btn-primary:hover { background: var(--saffron-dim, #c48a18); box-shadow: 0 0 20px var(--saffron-glow, rgba(232,166,32,0.12)); }",
-			".trainer-entry .te-btn-ghost { background: var(--surface, #272320); color: var(--text-secondary, #9b9388); border: 1px solid var(--border, rgba(237,232,225,0.08)); }",
-			".trainer-entry .te-btn-ghost:hover { background: var(--surface-raised, #302b27); color: var(--text-primary, #ede8e1); }",
-			".trainer-entry .te-btn-large { padding: 14px 40px; font-size: 15px; }",
-			".trainer-entry .te-divider { height: 1px; background: var(--border, rgba(237,232,225,0.08)); margin: 48px 0; }",
-			".trainer-entry .te-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }",
-			".trainer-entry .te-section-title { display: flex; align-items: center; gap: 12px; }",
-			".trainer-entry .te-section-title::before { content: ''; width: 20px; height: 1px; background: var(--saffron, #e8a620); }",
-			".trainer-entry .te-section-title h2 { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary, #9b9388); }",
-			".trainer-entry .te-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-weight: 400; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
-			".trainer-entry .te-quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }",
-			".trainer-entry .te-stat-cell { background: var(--bg-warm, #1f1c19); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 6px; padding: 16px 24px; display: flex; flex-direction: column; gap: 4px; }",
-			".trainer-entry .te-stat-value { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 32px; color: var(--text-primary, #ede8e1); line-height: 1; }",
-			".trainer-entry .te-recent-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }",
-			".trainer-entry .te-recent-card { padding: 24px; }",
-			".trainer-entry .te-recent-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }",
-			".trainer-entry .te-recent-name { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 18px; }",
-			".trainer-entry .te-recent-date { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; color: var(--text-tertiary, #6b635a); }",
-			".trainer-entry .te-recent-stats { display: flex; gap: 24px; margin-bottom: 12px; }",
-			".trainer-entry .te-recent-stat { display: flex; flex-direction: column; gap: 2px; }",
-			".trainer-entry .te-recent-stat-value { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 20px; }",
-			".trainer-entry .te-recent-stat-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
-			".trainer-entry .te-progress-track { width: 100%; height: 3px; background: var(--border, rgba(237,232,225,0.08)); border-radius: 2px; overflow: hidden; }",
-			".trainer-entry .te-progress-fill { height: 100%; border-radius: 2px; background: var(--saffron, #e8a620); }",
-			".trainer-entry .te-data { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-weight: 400; font-variant-numeric: tabular-nums; }",
-			".trainer-entry .te-footer { display: flex; justify-content: space-between; padding: 16px 0; }",
+			".trainer-entry .te-btn-primary:hover { background: var(--saffron-dim, #c48a18); transform: translateY(-1px); box-shadow: 0 4px 20px var(--saffron-glow, rgba(232,166,32,0.2)); }",
+			".trainer-entry .te-btn-ghost { background: transparent; color: var(--text-tertiary, #6b635a); border: 1px solid var(--border, rgba(237,232,225,0.08)); }",
+			".trainer-entry .te-btn-ghost:hover { background: var(--surface-raised, #302b27); color: var(--text-primary, #ede8e1); border-color: var(--text-tertiary, #6b635a); }",
+			".trainer-entry .te-btn-large { padding: 14px 32px; font-size: 15px; border-radius: 6px; }",
+			
+			".trainer-entry .te-section-title { display: flex; align-items: center; gap: 10px; margin: 32px 0 16px; }",
+			".trainer-entry .te-section-title:first-child { margin-top: 0; }",
+			".trainer-entry .te-section-title h2 { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".trainer-entry .te-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border, rgba(237,232,225,0.08)); }",
+
+			".trainer-entry .te-quick-stats { display: flex; flex-direction: column; gap: 8px; margin-bottom: 0; }",
+			".trainer-entry .te-stat-cell { background: var(--bg-warm, #1f1c19); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: baseline; transition: border-color 0.2s ease; }",
+			".trainer-entry .te-stat-cell:hover { border-color: rgba(237,232,225,0.15); }",
+			".trainer-entry .te-stat-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".trainer-entry .te-stat-value { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 20px; color: var(--text-primary, #ede8e1); }",
+			".trainer-entry .te-stat-value.te-data { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 15px; font-weight: 500; }",
+			
+			".trainer-entry .te-weak-list { display: flex; flex-direction: column; gap: 8px; }",
+			".trainer-entry .te-weak-item { background: rgba(212,86,78,0.03); border: 1px solid rgba(212,86,78,0.1); border-radius: 6px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }",
+			".trainer-entry .te-weak-info { display: flex; flex-direction: column; }",
+			".trainer-entry .te-weak-name { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 16px; color: var(--text-primary, #ede8e1); }",
+			".trainer-entry .te-weak-meta { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 9px; color: var(--text-tertiary, #6b635a); text-transform: uppercase; }",
+			".trainer-entry .te-weak-time { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 13px; color: var(--weak, #d4564e); font-weight: 500; }",
+
+			".trainer-entry .te-recent-grid { display: flex; flex-direction: column; gap: 10px; }",
+			".trainer-entry .te-recent-card { padding: 14px; border-color: rgba(237,232,225,0.06); }",
+			".trainer-entry .te-recent-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }",
+			".trainer-entry .te-recent-name { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 15px; color: var(--text-secondary, #9b9388); }",
+			".trainer-entry .te-recent-date { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 9px; color: var(--text-tertiary, #6b635a); }",
+			".trainer-entry .te-recent-stats { display: flex; gap: 12px; margin-bottom: 10px; }",
+			".trainer-entry .te-recent-stat { display: flex; flex-direction: column; }",
+			".trainer-entry .te-recent-stat-value { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 13px; color: var(--text-primary, #ede8e1); font-weight: 500; }",
+			".trainer-entry .te-recent-stat-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".trainer-entry .te-progress-track { width: 100%; height: 2px; background: var(--border, rgba(237,232,225,0.08)); border-radius: 1px; }",
+			".trainer-entry .te-progress-fill { height: 100%; background: var(--saffron, #e8a620); border-radius: 1px; }",
+
+			".trainer-entry .te-data { font-family: var(--font-mono, 'IBM Plex Mono', monospace); }",
+			".trainer-entry .te-footer { margin-top: 64px; padding: 24px 0; border-top: 1px solid var(--border, rgba(237,232,225,0.08)); display: flex; justify-content: space-between; }",
+			".trainer-entry .te-footer-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; color: var(--text-tertiary, #6b635a); text-transform: uppercase; letter-spacing: 0.1em; }",
+			
+			"@media (max-width: 1024px) {",
+			"  .te-layout { flex-direction: column; }",
+			"  .te-sidebar { width: 100%; position: static; }",
+			"  .trainer-entry .te-hero-title { font-size: 42px; }",
+			"}",
 			"@media (max-width: 768px) {",
-			"  .trainer-entry { padding: 24px 16px !important; }",
-			"  .trainer-entry .te-goal-grid { grid-template-columns: 1fr !important; }",
-			"  .trainer-entry .te-recent-grid { grid-template-columns: 1fr !important; }",
-			"  .trainer-entry .te-quick-stats { grid-template-columns: repeat(2, 1fr) !important; }",
-			"  .trainer-entry .te-hero-title { font-size: 36px !important; }",
-			"  .trainer-entry .te-nav { flex-direction: column; gap: 12px; align-items: flex-start !important; }",
+			"  .trainer-entry { padding: 0 16px 24px !important; }",
+			"  .trainer-entry .te-goal-card { flex-direction: column; align-items: flex-start; gap: 16px; }",
+			"  .trainer-entry .te-nav { flex-direction: column; gap: 16px; align-items: flex-start !important; }",
 			"}"
 		].join("");
 	}
@@ -148,13 +173,15 @@ var trainerEntryHome = execMain(function() {
 	function _buildGoalCard(goal) {
 		var card = $('<div class="te-precision-card te-goal-card' + (goal.selected ? " selected" : "") + '" data-goal="' + goal.id + '">');
 		var iconDiv = $('<div class="te-goal-icon">').css("background", goal.iconBg).html(goal.icon);
+		var contentDiv = $('<div class="te-goal-content">');
 		var titleDiv = $('<div class="te-goal-card-title">').html(goal.title);
 		var desc = $("<p>").text(goal.description);
 		var detailDiv = $('<div class="te-goal-detail">');
 		for (var i = 0; i < goal.details.length; i++) {
-			detailDiv.append($('<div class="te-goal-detail-item">').html('<svg viewBox="0 0 24 24" fill="none" stroke-width="2" style="width:12px;height:12px;stroke:var(--saffron,#e8a620);flex-shrink:0"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>' + goal.details[i]));
+			detailDiv.append($('<div class="te-goal-detail-item">').html('<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="width:10px;height:10px;stroke:var(--saffron,#e8a620);flex-shrink:0"><path d="M5 13l4 4L19 7"/></svg>' + goal.details[i]));
 		}
-		card.append(iconDiv).append(titleDiv).append(desc).append(detailDiv);
+		contentDiv.append(titleDiv).append(desc).append(detailDiv);
+		card.append(iconDiv).append(contentDiv);
 		return card;
 	}
 
@@ -177,22 +204,57 @@ var trainerEntryHome = execMain(function() {
 	}
 
 	function _renderQuickStats(container, stats) {
+		var section = $('<div class="te-stats-section">');
+		section.append($('<div class="te-section-title">').append($("<h2>").text("Global Outlook")));
 		var grid = $('<div class="te-quick-stats">');
 		for (var i = 0; i < stats.length; i++) {
 			var cell = $('<div class="te-stat-cell">');
-			cell.append($('<span class="te-label">').text(stats[i].label));
-			cell.append($('<span class="te-stat-value">').css("color", stats[i].color || "").text(stats[i].value));
+			cell.append($('<span class="te-stat-label">').text(stats[i].label));
+			var valClass = typeof stats[i].value === "number" ? " te-data" : "";
+			cell.append($('<span class="te-stat-value' + valClass + '">').css("color", stats[i].color || "").text(stats[i].value));
 			grid.append(cell);
 		}
-		container.append(grid);
+		section.append(grid);
+		container.append(section);
+	}
+
+	function _renderWeakSpots(container, stats) {
+		var weakCases = _getTopWeakCases(stats);
+		if (weakCases.length === 0) return;
+
+		var section = $('<div class="te-weak-section">');
+		section.append($('<div class="te-section-title">').append($("<h2>").text("Critical Weaknesses")));
+		var list = $('<div class="te-weak-list">');
+		for (var i = 0; i < weakCases.length; i++) {
+			var item = $('<div class="te-weak-item">');
+			var info = $('<div class="te-weak-info">');
+			info.append($('<span class="te-weak-name">').text(weakCases[i].name));
+			info.append($('<span class="te-weak-meta">').text(weakCases[i].category));
+			item.append(info).append($('<span class="te-weak-time">').text(_formatTime(weakCases[i].time)));
+			list.append(item);
+		}
+		section.append(list);
+		container.append(section);
+	}
+
+	function _getTopWeakCases(stats) {
+		var list = [];
+		for (var i = 0; i < stats.length; i++) {
+			if ((stats[i].avgSolveTime || 0) > 0) {
+				list.push({
+					name: stats[i].caseId.replace(/^[^-]+-/, ""),
+					category: stats[i].caseId.split("-")[0],
+					time: stats[i].avgSolveTime
+				});
+			}
+		}
+		list.sort(function(a, b) { return b.time - a.time; });
+		return list.slice(0, 3);
 	}
 
 	function _renderRecentSessions(container, sessions) {
 		var section = $('<div class="te-recent-section">');
-		var header = $('<div class="te-section-header">');
-		header.append($('<div class="te-section-title">').append($("<h2>").text("Recent Sessions")));
-		header.append($('<button class="te-btn te-btn-ghost">').css({ padding: "6px 14px", fontSize: "12px" }).text("View All"));
-		section.append(header);
+		section.append($('<div class="te-section-title">').append($("<h2>").text("Performance History")));
 		var grid = $('<div class="te-recent-grid">');
 		for (var i = 0; i < sessions.length; i++) {
 			grid.append(_buildRecentSessionCard(sessions[i]));
@@ -249,7 +311,7 @@ var trainerEntryHome = execMain(function() {
 
 	function _buildRecentSessionList(sessions) {
 		var result = [];
-		var maxSessions = Math.min(sessions.length, 4);
+		var maxSessions = Math.min(sessions.length, 3);
 		for (var i = sessions.length - 1; i >= sessions.length - maxSessions && i >= 0; i--) {
 			var s = sessions[i];
 			var drillResults = s.drillResults || [];
@@ -265,12 +327,19 @@ var trainerEntryHome = execMain(function() {
 			if (totalSolves > 0) avgTime = avgTime / totalSolves;
 			var progress = totalSolves > 0 ? Math.min(100, Math.round((totalSolves / Math.max(drillResults.length, 1)) * 100)) : 0;
 			var progressColor = progress >= 70 ? "var(--good, #6bba62)" : progress >= 40 ? "var(--saffron, #e8a620)" : "var(--weak, #d4564e)";
+			
+			var displayName = "Training Session";
+			if (s.planId) {
+				displayName = s.planId.replace(/-/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+				if (displayName.length > 20) displayName = displayName.substring(0, 18) + "...";
+			}
+
 			result.push({
-				name: (s.planId || "Training Session").replace(/-/g, " ").replace(/\b\w/g, function(c) { return c.toUpperCase(); }),
+				name: displayName,
 				date: _formatSessionDate(s.completedAt || s.startedAt),
 				stats: [
 					{ value: drillResults.length, label: "Cases" },
-					{ value: avgTime > 0 ? _formatTime(avgTime) : "--", label: "Avg Time", color: avgTime > 0 && avgTime < 15000 ? "var(--good, #6bba62)" : "" },
+					{ value: avgTime > 0 ? _formatTime(avgTime) : "--", label: "Avg" },
 					{ value: weakCount, label: "Weak" }
 				],
 				progress: progress,
@@ -283,7 +352,7 @@ var trainerEntryHome = execMain(function() {
 				date: "No sessions yet",
 				stats: [
 					{ value: "0", label: "Cases" },
-					{ value: "--", label: "Avg Time" },
+					{ value: "--", label: "Avg" },
 					{ value: "0", label: "Weak" }
 				],
 				progress: 0,
@@ -341,6 +410,7 @@ var trainerEntryHome = execMain(function() {
 		_container = $(el);
 		_container.empty().addClass("trainer-entry");
 
+		// Top Navigation
 		var navBar = $('<nav class="te-nav">');
 		var logoGroup = $('<div class="te-logo-group">');
 		logoGroup.append($('<div class="te-logo-mark">').html('<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:var(--text-inverse,#1a1816)"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.36.18-.57.18s-.41-.09-.57-.18l-7.9-4.44A.991.991 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.36-.18.57-.18s.41.09.57.18l7.9 4.44c.32.17.53.5.53.88v9z"/></svg>'));
@@ -353,10 +423,18 @@ var trainerEntryHome = execMain(function() {
 		navBar.append(navTabs);
 		_container.append(navBar);
 
+		// Layout Wrapper
+		var layout = $('<div class="te-layout">');
+		var main = $('<div class="te-main">');
+		var sidebar = $('<div class="te-sidebar">');
+		layout.append(main).append(sidebar);
+		_container.append(layout);
+
+		// MAIN CONTENT
 		var hero = $('<div class="te-hero">');
-		hero.append($('<div class="te-hero-title">').html('What do you want to<br><em>practice today?</em>'));
-		hero.append($('<p class="te-hero-sub">').text("Choose a training goal below. The trainer will build a focused session plan based on your recent performance and weakest cases."));
-		_container.append(hero);
+		hero.append($('<h1 class="te-hero-title">').html('What do you want to<br><em>practice today?</em>'));
+		hero.append($('<p class="te-hero-sub">').text("The trainer helps you master cases through deliberate, data-driven practice. Choose a focus area below to begin."));
+		main.append(hero);
 
 		var goalGrid = $('<div class="te-goal-grid">');
 		var goals = _getGoalCards();
@@ -368,54 +446,40 @@ var trainerEntryHome = execMain(function() {
 		for (var i = 0; i < goals.length; i++) {
 			goalGrid.append(_buildGoalCard(goals[i]));
 		}
-		_container.append(goalGrid);
+		main.append(goalGrid);
 
 		var cta = $('<div class="te-cta">');
 		cta.append($('<button class="te-btn te-btn-primary te-btn-large te-cta-btn">').html('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Begin Training Session'));
-		cta.append($('<p>').css({ fontSize: "12px", color: "var(--text-tertiary, #6b635a)", marginTop: "12px" }).html('Or press <span class="te-data" style="font-size:11px;color:var(--text-secondary,#9b9388)">T</span> to start with your last configuration'));
-		_container.append(cta);
+		main.append(cta);
 
-		_container.append($('<div class="te-divider">'));
-
-		var statsSection = $('<div>');
-		var statsHeader = $('<div class="te-section-header">');
-		statsHeader.append($('<div class="te-section-title">').append($("<h2>").text("Your Progress")));
-		statsHeader.append($('<span class="te-label">').text("Last 30 days"));
-		statsSection.append(statsHeader);
-		_container.append(statsSection);
-
-		var recentSection = $('<div>');
-		_container.append(recentSection);
-
+		// FOOTER
 		var footer = $('<div class="te-footer">');
-		footer.append($('<span class="te-label">').text("csTimer Trainer v2"));
-		footer.append($('<span class="te-label">').text("Trainer Entry"));
+		footer.append($('<span class="te-footer-label">').text("csTimer Trainer v2.1"));
+		footer.append($('<span class="te-footer-label">').text("Precision Drill Engine"));
 		_container.append(footer);
 
+		// SIDEBAR CONTENT
 		_loadStatsFromStorage().then(function(storageData) {
 			var quickStats = _computeQuickStats(storageData.sessions, storageData.stats);
-			_statsSection = statsSection;
-			_renderQuickStats(statsSection, quickStats);
+			_renderQuickStats(sidebar, quickStats);
+			_renderWeakSpots(sidebar, storageData.stats);
 			var recentSessions = _buildRecentSessionList(storageData.sessions);
-			_renderRecentSessions(recentSection, recentSessions);
+			_renderRecentSessions(sidebar, recentSessions);
 		}).catch(function() {
-			_renderQuickStats(statsSection, [
+			_renderQuickStats(sidebar, [
 				{ label: "Sessions", value: "0" },
 				{ label: "Cases Drilled", value: "0" },
-				{ label: "PLL Confidence", value: "--" },
-				{ label: "OLL Confidence", value: "--" }
+				{ label: "Confidence", value: "--" }
 			]);
-			_renderRecentSessions(recentSection, [
+			_renderRecentSessions(sidebar, [
 				{
 					name: "<em>First Session</em>",
-					date: "No sessions yet",
+					date: "No history",
 					stats: [
 						{ value: "0", label: "Cases" },
-						{ value: "--", label: "Avg Time" },
-						{ value: "0", label: "Weak" }
+						{ value: "--", label: "Avg" }
 					],
-					progress: 0,
-					progressColor: "var(--saffron, #e8a620)"
+					progress: 0
 				}
 			]);
 		});

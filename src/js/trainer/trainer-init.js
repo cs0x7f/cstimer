@@ -21,7 +21,9 @@ var trainerInit = execMain(function() {
 			return;
 		}
 		$("<style id='trainer-native-styles'>" + [
-			"#trainer-root-native { position:absolute; top:1rem; left:calc(13.5rem + 1.5rem); right:1rem; bottom:1rem; z-index:25; display:none; overflow:auto; border:1px solid rgba(237,232,225,0.08); border-radius:14px; background:#1a1816; box-shadow:0 28px 80px rgba(0,0,0,0.35); }",
+			"@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');",
+			"#trainer-root-native { position:absolute; top:1rem; left:calc(13.5rem + 1.5rem); right:1rem; bottom:1rem; z-index:25; display:none; overflow:auto; border:1px solid rgba(237,232,225,0.08); border-radius:14px; background:#1a1816; box-shadow:0 28px 80px rgba(0,0,0,0.35); ms-overflow-style:none; scrollbar-width:none; }",
+			"#trainer-root-native::-webkit-scrollbar { display:none; }",
 			"body.trainer-mode #trainer-root-native { display:block; }",
 			"body.trainer-mode #timer, body.trainer-mode #rtimer, body.trainer-mode #wndctn { display:none !important; }",
 			"body.trainer-mode #bgImage { opacity:0.12; }",

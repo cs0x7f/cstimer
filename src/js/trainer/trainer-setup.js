@@ -176,62 +176,69 @@ var trainerSetup = execMain(function() {
 
 	function _buildStyles() {
 		return [
-			".trainer-setup { max-width: 900px; margin: 0 auto; padding: 48px 32px; }",
+			".trainer-setup { max-width: 1400px; margin: 0 auto; padding: 64px 48px; position: relative; -webkit-font-smoothing: antialiased; }",
+			".trainer-setup::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% -20%, rgba(232,166,32,0.05) 0%, transparent 70%); pointer-events: none; z-index: -1; }",
+			".trainer-setup .ts-layout { display: flex; gap: 48px; align-items: flex-start; }",
+			".trainer-setup .ts-main { flex: 1; min-width: 0; }",
+			".trainer-setup .ts-sidebar { width: 340px; flex-shrink: 0; position: sticky; top: 32px; }",
 			".trainer-setup .ts-page-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 24px; border-bottom: 1px solid var(--border, rgba(237,232,225,0.08)); margin-bottom: 48px; }",
-			".trainer-setup .ts-back-link { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-tertiary, #6b635a); cursor: pointer; transition: color 0.2s; text-decoration: none; background: none; border: none; padding: 0; }",
-			".trainer-setup .ts-back-link:hover { color: var(--saffron, #e8a620); }",
-			".trainer-setup .ts-back-link svg { width: 16px; height: 16px; }",
+			".trainer-setup .ts-back-link { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-tertiary, #8a8177); cursor: pointer; transition: all 0.2s; text-decoration: none; background: none; border: none; padding: 0; font-family: var(--font-mono, 'IBM Plex Mono', monospace); text-transform: uppercase; letter-spacing: 0.05em; }",
+			".trainer-setup .ts-back-link:hover { color: var(--saffron, #e8a620); transform: translateX(-4px); }",
+			".trainer-setup .ts-back-link svg { width: 14px; height: 14px; }",
 			".trainer-setup .ts-page-title-group { margin-bottom: 48px; }",
-			".trainer-setup .ts-page-title { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 36px; margin-bottom: 8px; letter-spacing: -0.01em; line-height: 1.1; }",
-			".trainer-setup .ts-page-title em { font-style: italic; }",
-			".trainer-setup .ts-page-subtitle { color: var(--text-secondary, #9b9388); font-size: 15px; }",
+			".trainer-setup .ts-page-title { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 42px; margin-bottom: 12px; letter-spacing: -0.015em; line-height: 1.1; color: var(--text-primary, #ede8e1); }",
+			".trainer-setup .ts-page-title em { font-style: italic; color: var(--saffron, #e8a620); }",
+			".trainer-setup .ts-page-subtitle { color: var(--text-secondary, #9b9388); font-size: 16px; max-width: 600px; line-height: 1.5; }",
 			".trainer-setup .ts-section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }",
 			".trainer-setup .ts-section-label::before { content: ''; width: 16px; height: 1px; background: var(--saffron, #e8a620); }",
-			".trainer-setup .ts-section-label h3 { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary, #9b9388); }",
+			".trainer-setup .ts-section-label h3 { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary, #b5aea5); }",
 			".trainer-setup .ts-template-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }",
 			".trainer-setup .ts-precision-card { background: var(--surface, #272320); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 6px; position: relative; overflow: hidden; transition: border-color 0.3s ease, background 0.3s ease; cursor: pointer; padding: 24px; }",
 			".trainer-setup .ts-precision-card:hover { border-color: var(--border-accent, rgba(232,166,32,0.25)); background: var(--surface-raised, #302b27); }",
 			".trainer-setup .ts-precision-card::before { content: ''; position: absolute; top: -1px; left: -1px; width: 8px; height: 8px; border-top: 1.5px solid var(--saffron, #e8a620); border-left: 1.5px solid var(--saffron, #e8a620); border-radius: 6px 0 0 0; }",
 			".trainer-setup .ts-precision-card::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; border-bottom: 1.5px solid var(--saffron, #e8a620); border-right: 1.5px solid var(--saffron, #e8a620); border-radius: 0 0 6px 0; }",
 			".trainer-setup .ts-precision-card.ts-selected { border-color: var(--saffron, #e8a620); background: var(--saffron-wash, rgba(232,166,32,0.06)); }",
-			".trainer-setup .ts-template-name { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 18px; margin-bottom: 8px; }",
-			".trainer-setup .ts-template-desc { font-size: 13px; color: var(--text-secondary, #9b9388); line-height: 1.5; margin-bottom: 12px; }",
+			".trainer-setup .ts-template-name { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 20px; margin-bottom: 10px; color: var(--text-primary, #ede8e1); }",
+			".trainer-setup .ts-template-desc { font-size: 14px; color: var(--text-secondary, #9b9388); line-height: 1.5; margin-bottom: 16px; }",
 			".trainer-setup .ts-template-meta { display: flex; gap: 12px; flex-wrap: wrap; }",
 			".trainer-setup .ts-tag { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; display: inline-flex; align-items: center; gap: 5px; }",
 			".trainer-setup .ts-tag-neutral { background: rgba(237,232,225,0.06); color: var(--text-secondary, #9b9388); }",
 			".trainer-setup .ts-tag-saffron { background: var(--saffron-glow, rgba(232,166,32,0.12)); color: var(--saffron, #e8a620); }",
 			".trainer-setup .ts-tag-weak { background: var(--weak-dim, rgba(212,86,78,0.15)); color: var(--weak, #d4564e); }",
-			".trainer-setup .ts-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }",
+			".trainer-setup .ts-config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }",
 			".trainer-setup .ts-config-group { display: flex; flex-direction: column; gap: 8px; }",
-			".trainer-setup .ts-config-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".trainer-setup .ts-config-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary, #8a8177); }",
 			".trainer-setup .ts-input { font-family: 'DM Sans', sans-serif; font-size: 14px; background: var(--bg-warm, #1f1c19); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 3px; padding: 10px 14px; color: var(--text-primary, #ede8e1); outline: none; transition: border-color 0.2s; width: 100%; }",
 			".trainer-setup .ts-input:focus { border-color: var(--saffron, #e8a620); box-shadow: 0 0 0 3px var(--saffron-glow, rgba(232,166,32,0.12)); }",
 			".trainer-setup .ts-input::placeholder { color: var(--text-tertiary, #6b635a); }",
 			".trainer-setup .ts-btn-group { display: flex; gap: 8px; }",
 			".trainer-setup .ts-btn { font-weight: 600; font-size: 12px; letter-spacing: 0.03em; border: none; cursor: pointer; padding: 8px 16px; border-radius: 3px; transition: all 0.2s ease; }",
-			".trainer-setup .ts-btn-primary { background: var(--saffron, #e8a620); color: var(--text-inverse, #1a1816); }",
+			".trainer-setup .ts-btn-primary { background: var(--saffron, #e8a620); color: var(--text-inverse, #1a1816); width: 100%; }",
 			".trainer-setup .ts-btn-primary:hover { background: var(--saffron-dim, #c48a18); box-shadow: 0 0 20px var(--saffron-glow, rgba(232,166,32,0.12)); }",
 			".trainer-setup .ts-btn-ghost { background: var(--surface, #272320); color: var(--text-secondary, #9b9388); border: 1px solid var(--border, rgba(237,232,225,0.08)); }",
 			".trainer-setup .ts-btn-ghost:hover { background: var(--surface-raised, #302b27); color: var(--text-primary, #ede8e1); }",
-			".trainer-setup .ts-btn-outline { background: transparent; color: var(--saffron, #e8a620); border: 1px solid var(--border-accent, rgba(232,166,32,0.25)); }",
+			".trainer-setup .ts-btn-outline { background: transparent; color: var(--saffron, #e8a620); border: 1px solid var(--border-accent, rgba(232,166,32,0.25)); width: 100%; }",
 			".trainer-setup .ts-btn-outline:hover { background: var(--saffron-wash, rgba(232,166,32,0.06)); }",
 			".trainer-setup .ts-btn-large { padding: 12px 32px; font-size: 14px; }",
 			".trainer-setup .ts-range-wrapper { margin-bottom: 20px; }",
 			".trainer-setup .ts-range-display { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }",
-			".trainer-setup .ts-range-track { width: 100%; height: 4px; background: var(--border, rgba(237,232,225,0.08)); border-radius: 2px; position: relative; cursor: pointer; }",
-			".trainer-setup .ts-range-fill { height: 100%; background: var(--saffron, #e8a620); border-radius: 2px; }",
-			".trainer-setup .ts-range-thumb { width: 14px; height: 14px; background: var(--saffron, #e8a620); border: 2px solid var(--bg, #1a1816); border-radius: 50%; position: absolute; top: -5px; transform: translateX(-50%); cursor: pointer; box-shadow: 0 0 8px var(--saffron-glow, rgba(232,166,32,0.12)); }",
-			".trainer-setup .ts-range-labels { display: flex; justify-content: space-between; margin-top: 8px; }",
+			".trainer-setup .ts-range-track { width: 100%; height: 4px; background: var(--border, rgba(237,232,225,0.08)); border-radius: 2px; position: relative; cursor: pointer; transition: background 0.2s; }",
+			".trainer-setup .ts-range-track::before { content: ''; position: absolute; top: -12px; bottom: -12px; left: 0; right: 0; z-index: 1; }",
+			".trainer-setup .ts-range-track:hover { background: rgba(237,232,225,0.15); }",
+			".trainer-setup .ts-range-fill { height: 100%; background: var(--saffron, #e8a620); border-radius: 2px; position: relative; z-index: 2; }",
+			".trainer-setup .ts-range-thumb { width: 16px; height: 16px; background: var(--saffron, #e8a620); border: 3px solid var(--bg-warm, #1f1c19); border-radius: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); cursor: grab; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 3; transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.15s; }",
+			".trainer-setup .ts-range-thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 0 12px var(--saffron-glow, rgba(232,166,32,0.2)); }",
+			".trainer-setup .ts-range-labels { display: flex; justify-content: space-between; margin-top: 12px; }",
 			".trainer-setup .ts-divider { height: 1px; background: var(--border, rgba(237,232,225,0.08)); margin: 20px 0; }",
 			".trainer-setup .ts-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--border, rgba(237,232,225,0.08)); }",
 			".trainer-setup .ts-toggle-row:last-child { border-bottom: none; }",
 			".trainer-setup .ts-toggle-info { display: flex; flex-direction: column; gap: 2px; }",
-			".trainer-setup .ts-toggle-label { font-size: 14px; color: var(--text-primary, #ede8e1); }",
-			".trainer-setup .ts-toggle-desc { font-size: 12px; color: var(--text-tertiary, #6b635a); }",
+			".trainer-setup .ts-toggle-label { font-size: 15px; font-weight: 500; color: var(--text-primary, #ede8e1); }",
+			".trainer-setup .ts-toggle-desc { font-size: 13px; color: var(--text-tertiary, #8a8177); }",
 			".trainer-setup .ts-toggle-track { width: 36px; height: 20px; background: var(--surface-raised, #302b27); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 10px; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }",
 			".trainer-setup .ts-toggle-track.ts-on { background: var(--saffron, #e8a620); border-color: var(--saffron, #e8a620); }",
 			".trainer-setup .ts-toggle-knob { width: 14px; height: 14px; background: var(--text-primary, #ede8e1); border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.2s ease; }",
-			".trainer-setup .ts-toggle-track.ts-on .ts-toggle-knob { transform: translateX(16px); background: var(--text-inverse, #1a1816); }",
+			".trainer-setup .ts-toggle-track.ts-on .ts-toggle-knob { transform: translateX(16px); background: #ffffff; }",
 			".trainer-setup .ts-case-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }",
 			".trainer-setup .ts-case-chip { padding: 6px 12px; background: var(--bg-warm, #1f1c19); border: 1px solid var(--border, rgba(237,232,225,0.08)); border-radius: 3px; font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 11px; color: var(--text-secondary, #9b9388); display: flex; align-items: center; gap: 6px; transition: all 0.2s; }",
 			".trainer-setup .ts-case-chip:hover { border-color: var(--border-accent, rgba(232,166,32,0.25)); }",
@@ -241,22 +248,34 @@ var trainerSetup = execMain(function() {
 			".trainer-setup .ts-status-dot.ts-good { background: var(--good, #6bba62); box-shadow: 0 0 6px var(--good, #6bba62); }",
 			".trainer-setup .ts-status-dot.ts-weak { background: var(--weak, #d4564e); box-shadow: 0 0 6px var(--weak, #d4564e); }",
 			".trainer-setup .ts-status-dot.ts-warn { background: var(--saffron, #e8a620); box-shadow: 0 0 6px var(--saffron, #e8a620); }",
-			".trainer-setup .ts-summary-card { padding: 32px; margin-bottom: 24px; }",
-			".trainer-setup .ts-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }",
-			".trainer-setup .ts-summary-stat { display: flex; flex-direction: column; gap: 2px; }",
-			".trainer-setup .ts-summary-stat-value { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 28px; line-height: 1; }",
-			".trainer-setup .ts-summary-stat-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
-			".trainer-setup .ts-progress-track { width: 100%; height: 3px; background: var(--border, rgba(237,232,225,0.08)); border-radius: 2px; overflow: hidden; margin-bottom: 20px; }",
-			".trainer-setup .ts-progress-fill { height: 100%; border-radius: 2px; }",
-			".trainer-setup .ts-actions { display: flex; gap: 16px; justify-content: flex-end; }",
+			".trainer-setup .ts-summary-card { padding: 24px; margin-bottom: 24px; background: linear-gradient(145deg, var(--surface, #272320), var(--bg-warm, #1f1c19)); }",
+			".trainer-setup .ts-summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 24px; }",
+			".trainer-setup .ts-summary-stat { display: flex; flex-direction: column; gap: 4px; }",
+			".trainer-setup .ts-summary-stat-value { font-family: var(--font-display, 'Instrument Serif', serif); font-size: 32px; line-height: 1; color: var(--text-primary, #ede8e1); }",
+			".trainer-setup .ts-summary-stat-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 9px; opacity: 0.8; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-tertiary, #6b635a); }",
+			".trainer-setup .ts-progress-track { width: 100%; height: 4px; background: var(--border, rgba(237,232,225,0.06)); border-radius: 2px; overflow: hidden; margin-bottom: 24px; position: relative; }",
+			".trainer-setup .ts-progress-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }",
+			".trainer-setup .ts-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; margin-bottom: 32px; }",
+			".trainer-setup .ts-label { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary, #9b9388); }",
 			".trainer-setup .ts-data { font-family: var(--font-mono, 'IBM Plex Mono', monospace); font-weight: 400; font-variant-numeric: tabular-nums; }",
-			".trainer-setup .ts-footer { display: flex; justify-content: space-between; padding: 16px 0; }",
-			"@media (max-width: 768px) {",
+			".trainer-setup .ts-footer { display: flex; justify-content: space-between; padding: 48px 0 16px; border-top: 1px solid var(--border, rgba(237,232,225,0.06)); margin-top: 32px; }",
+			".trainer-setup .ts-footer .ts-label { font-size: 11px; color: var(--text-tertiary, #8a8177); letter-spacing: 0.15em; opacity: 0.6; }",
+			"@media (max-width: 1200px) {",
+			"  .trainer-setup .ts-template-grid { grid-template-columns: repeat(2, 1fr); }",
+			"  .trainer-setup .ts-config-grid { grid-template-columns: 1fr; }",
+			"}",
+			"@media (max-width: 1024px) {",
+			"  .trainer-setup .ts-layout { flex-direction: column; align-items: stretch; gap: 32px; }",
+			"  .trainer-setup .ts-sidebar { width: 100%; position: static; }",
+			"}",
+			"@media (max-width: 640px) {",
 			"  .trainer-setup { padding: 24px 16px !important; }",
-			"  .trainer-setup .ts-template-grid { grid-template-columns: 1fr !important; }",
-			"  .trainer-setup .ts-config-grid { grid-template-columns: 1fr !important; }",
-			"  .trainer-setup .ts-summary-grid { grid-template-columns: repeat(2, 1fr) !important; }",
-			"  .trainer-setup .ts-page-title { font-size: 28px !important; }",
+			"  .trainer-setup .ts-template-grid { grid-template-columns: 1fr; }",
+			"  .trainer-setup .ts-summary-grid { grid-template-columns: repeat(2, 1fr); }",
+			"  .trainer-setup .ts-page-title { font-size: 32px; }",
+			"}",
+			"@media (hover: hover) {",
+			"  .ts-dragging, .ts-dragging * { user-select: none !important; -webkit-user-select: none !important; cursor: grabbing !important; }",
 			"}"
 		].join("");
 	}
@@ -504,11 +523,11 @@ var trainerSetup = execMain(function() {
 		progress.append($('<div class="ts-progress-fill" style="width: ' + weakPercent + '%; background: var(--weak, #d4564e);">'));
 		card.append(progress);
 
-		var legend = $('<div style="display: flex; gap: 16px;">');
-		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 4px;">').append($('<span class="ts-status-dot ts-weak">')).text(" " + weakCount + " Weak"));
-		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 4px;">').append($('<span class="ts-status-dot ts-warn">')).text(" " + warnCount + " Learning"));
-		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 4px;">').append($('<span class="ts-status-dot ts-good">')).text(" " + goodCount + " Confident"));
-		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 4px;">').append($('<span class="ts-status-dot" style="background: var(--text-tertiary, #6b635a);">')).text(" " + untrainedCount + " Untrained"));
+		var legend = $('<div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">');
+		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 6px; color: var(--weak, #d4564e);">').append($('<span class="ts-status-dot ts-weak" style="width: 5px; height: 5px;">')).text(" " + weakCount + " Weak"));
+		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 6px; color: var(--saffron, #e8a620);">').append($('<span class="ts-status-dot ts-warn" style="width: 5px; height: 5px;">')).text(" " + warnCount + " Learning"));
+		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 6px; color: var(--good, #6bba62);">').append($('<span class="ts-status-dot ts-good" style="width: 5px; height: 5px;">')).text(" " + goodCount + " Confident"));
+		legend.append($('<span class="ts-label" style="display: flex; align-items: center; gap: 6px; color: var(--text-tertiary, #8a8177);">').append($('<span class="ts-status-dot" style="background: var(--text-tertiary, #6b635a); width: 5px; height: 5px;">')).text(" " + untrainedCount + " Untrained"));
 		card.append(legend);
 
 		container.find(".ts-summary-card").remove();
@@ -554,13 +573,58 @@ var trainerSetup = execMain(function() {
 	}
 
 	function _bindRangeSlider(container) {
-		container.on("click", ".ts-range-track", function(e) {
-			var rect = this.getBoundingClientRect();
-			var percent = (e.clientX - rect.left) / rect.width;
+		var isDragging = false;
+		var _dragDebounce = null;
+
+		function updateFromEvent(e, track) {
+			var rect = track.getBoundingClientRect();
+			var x = e.clientX || (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0] && e.originalEvent.touches[0].clientX);
+			if (x === undefined && e.touches && e.touches[0]) x = e.touches[0].clientX;
+			if (x === undefined) return;
+			
+			var percent = (x - rect.left) / rect.width;
 			percent = Math.max(0, Math.min(1, percent));
 			var maxCases = _getCaseSetConfig(_caseSet).maxCases;
-			_sessionLength = Math.max(5, Math.round(5 + percent * (maxCases - 5)));
-			_refreshPreview(container);
+			var newVal = Math.max(5, Math.round(5 + percent * (maxCases - 5)));
+			
+			if (newVal !== _sessionLength) {
+				_sessionLength = newVal;
+				// Immediate visual update for the slider components only to avoid heavy re-render during drag
+				var $track = $(track);
+				var displayPct = ((_sessionLength - 5) / (maxCases - 5)) * 100;
+				$track.find(".ts-range-fill").css("width", displayPct + "%");
+				$track.find(".ts-range-thumb").css("left", displayPct + "%");
+				container.find(".ts-range-display .ts-data").text(_sessionLength + " cases");
+				
+				// Debounce the full refresh which re-renders case preview and summary cards
+				if (_dragDebounce) clearTimeout(_dragDebounce);
+				_dragDebounce = setTimeout(function() {
+					_refreshPreview(container);
+				}, 16); // ~60fps target
+			}
+		}
+
+		container.on("mousedown touchstart", ".ts-range-track", function(e) {
+			isDragging = true;
+			$("body").addClass("ts-dragging");
+			updateFromEvent(e, this);
+			// Prevent text selection and scrolling
+			e.preventDefault();
+		});
+
+		$(window).on("mousemove.tsRange touchmove.tsRange", function(e) {
+			if (!isDragging) return;
+			var track = container.find(".ts-range-track")[0];
+			if (track) updateFromEvent(e, track);
+			if (e.type === "touchmove") e.preventDefault();
+		});
+
+		$(window).on("mouseup.tsRange touchend.tsRange", function() {
+			if (isDragging) {
+				isDragging = false;
+				$("body").removeClass("ts-dragging");
+				_refreshPreview(container);
+			}
 		});
 	}
 
@@ -716,37 +780,43 @@ var trainerSetup = execMain(function() {
 			_sessionLength = 10;
 		}
 
+		var layout = $('<div class="ts-layout">');
+		var main = $('<div class="ts-main">');
+		var sidebar = $('<div class="ts-sidebar">');
+		layout.append(main).append(sidebar);
+		_container.append(layout);
+
 		var header = $('<div class="ts-page-header">');
 		header.append($('<button class="ts-back-link">').html('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg> Back to Trainer'));
 		header.append($('<span class="ts-tag ' + _getGoalTagClass() + '">').text(_getGoalLabel()));
-		_container.append(header);
+		main.append(header);
 
 		var titleGroup = $('<div class="ts-page-title-group">');
 		titleGroup.append($('<div class="ts-page-title">').html('Configure your <em>session</em>'));
 		titleGroup.append($('<p class="ts-page-subtitle">').text("Pick a template or customize your own drill plan. Settings are saved between sessions."));
-		_container.append(titleGroup);
+		main.append(titleGroup);
 
 		var templateSection = $('<div>');
 		templateSection.append($('<div class="ts-section-label">').append($('<h3>').text("Templates")));
 		_renderTemplateGrid(templateSection);
-		_container.append(templateSection);
+		main.append(templateSection);
 
 		var configSection = $('<div class="ts-config-section">');
 		configSection.append($('<div class="ts-section-label">').append($('<h3>').text("Session Settings")));
 		_renderConfigSection(configSection);
-		_container.append(configSection);
+		main.append(configSection);
+
+		var summarySection = $('<div class="ts-summary-section">');
+		sidebar.append(summarySection);
 
 		var previewSection = $('<div class="ts-case-preview-section">');
 		previewSection.append($('<div class="ts-section-label">').append($('<h3>').text("Drill Queue Preview")));
-		_container.append(previewSection);
-
-		var summarySection = $('<div class="ts-summary-section">');
-		_container.append(summarySection);
+		sidebar.append(previewSection);
 
 		var actions = $('<div class="ts-actions">');
-		actions.append($('<button class="ts-btn ts-btn-outline ts-save-btn">').text("Save as Template"));
 		actions.append($('<button class="ts-btn ts-btn-primary ts-btn-large ts-start-btn">').html('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Start Session'));
-		_container.append(actions);
+		actions.append($('<button class="ts-btn ts-btn-outline ts-save-btn">').text("Save as Template"));
+		sidebar.append(actions);
 
 		var footer = $('<div class="ts-footer">');
 		footer.append($('<span class="ts-label">').text("csTimer Trainer v2"));
@@ -782,7 +852,7 @@ var trainerSetup = execMain(function() {
 			_container.off("click", ".ts-start-btn");
 			_container.off("click", ".ts-save-btn");
 			_container.off("input", ".ts-input");
-			_container.off("click", ".ts-range-track");
+			$(window).off(".tsRange");
 			_container.empty().removeClass("trainer-setup");
 			_container = null;
 		}
