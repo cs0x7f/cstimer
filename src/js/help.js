@@ -265,13 +265,15 @@ var help = execMain(function(regProp, setProp, getProp) {
 		regProp('vrc', 'vrcKBL', ~5, 'VRC Keyboard Layout', ['qwerty']);
 		var layout = getProp('vrcKBL');
 		genKeymapTable(layout);
-		$('.donate').appendTo(donateDiv);
-		donateDiv.find('a').each(function(idx, elem) {
-			$(elem).attr('target', '_blank');
-		});
-		kernel.addButton('donate', BUTTON_DONATE, function() {
-			kernel.showDialog([donateDiv, 0, undefined, 0], 'donate', BUTTON_DONATE.replace(/-?<br>-?/g, ''));
-		}, 5);
+		if (typeof trainerInit === 'undefined') {
+			$('.donate').appendTo(donateDiv);
+			donateDiv.find('a').each(function(idx, elem) {
+				$(elem).attr('target', '_blank');
+			});
+			kernel.addButton('donate', BUTTON_DONATE, function() {
+				kernel.showDialog([donateDiv, 0, undefined, 0], 'donate', BUTTON_DONATE.replace(/-?<br>-?/g, ''));
+			}, 5);
+		}
 	});
 
 	return {

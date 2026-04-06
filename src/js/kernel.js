@@ -1137,12 +1137,18 @@ var kernel = execMain(function() {
 		$(document).keydown(function(e) {
 			$.waitUser.call();
 			keyback = true;
+			if (typeof trainerInit !== "undefined" && trainerInit.isActive && trainerInit.isActive()) {
+				return keyback;
+			}
 			pushSignal('keydown', e);
 			timer.onkeydown(e);
 			return keyback;
 		});
 		$(document).keyup(function(e) {
 			keyback = true;
+			if (typeof trainerInit !== "undefined" && trainerInit.isActive && trainerInit.isActive()) {
+				return keyback;
+			}
 			pushSignal('keyup', e);
 			timer.onkeyup(e);
 			return keyback;

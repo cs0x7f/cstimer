@@ -187,3 +187,15 @@ Recommended next build packet:
 - full-surface trainer mount
 - timer/trainer mode switching
 
+## Implementation Status
+
+Completed in the first native integration packet:
+- floating bottom-right trainer launcher removed
+- native trainer entry moved into a real left-bar grid slot instead of an external floating square
+- trainer now mounts into a full app surface instead of a centered overlay panel
+- timer keyboard handlers are suppressed while trainer mode is active so active-drill spacebar flow does not fight the hidden timer
+
+Still expected in follow-up UI passes:
+- refine the trainer button icon and placement
+- improve native shell styling on mobile and narrow widths
+- polish each trainer surface inside the new mount

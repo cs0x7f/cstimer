@@ -4,8 +4,9 @@ var trainerInit = execMain(function() {
 
 	var _initialized = false;
 	var _bootstrapped = false;
-	var _overlay = null;
+	var _modeActive = false;
 	var _mount = null;
+	var _nativeButton = null;
 
 	function _getShell() {
 		return typeof trainerShell !== "undefined" ? trainerShell : null;
@@ -16,17 +17,19 @@ var trainerInit = execMain(function() {
 	}
 
 	function _ensureStyles() {
-		if ($("#trainer-launcher-styles").length) {
+		if ($("#trainer-native-styles").length) {
 			return;
 		}
-		$("<style id='trainer-launcher-styles'>" + [
-			".trainer-launcher-btn { position:fixed; right:16px; bottom:16px; z-index:10002; background:#e8a620; color:#1a1816; border:none; border-radius:999px; padding:10px 16px; font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; box-shadow:0 10px 24px rgba(0,0,0,0.25); }",
-			".trainer-overlay { position:fixed; inset:0; z-index:10001; display:none; }",
-			".trainer-overlay.is-open { display:block; }",
-			".trainer-overlay-backdrop { position:absolute; inset:0; background:rgba(12,10,8,0.72); }",
-			".trainer-overlay-panel { position:relative; width:min(1100px, calc(100vw - 32px)); height:min(860px, calc(100vh - 32px)); margin:16px auto; background:#1a1816; border:1px solid rgba(237,232,225,0.08); border-radius:14px; overflow:auto; box-shadow:0 28px 80px rgba(0,0,0,0.45); }",
-			".trainer-overlay-close { position:absolute; top:14px; right:14px; z-index:2; background:rgba(237,232,225,0.08); color:#ede8e1; border:1px solid rgba(237,232,225,0.12); border-radius:999px; width:36px; height:36px; cursor:pointer; }",
-			".trainer-shell-body { padding-top:24px; }",
+		$("<style id='trainer-native-styles'>" + [
+			"#trainer-root-native { position:absolute; top:1rem; left:calc(13.5rem + 1.5rem); right:1rem; bottom:1rem; z-index:25; display:none; overflow:auto; border:1px solid rgba(237,232,225,0.08); border-radius:14px; background:#1a1816; box-shadow:0 28px 80px rgba(0,0,0,0.35); }",
+			"body.trainer-mode #trainer-root-native { display:block; }",
+			"body.trainer-mode #timer, body.trainer-mode #rtimer, body.trainer-mode #wndctn { display:none !important; }",
+			"body.trainer-mode #bgImage { opacity:0.12; }",
+			"#leftbar > div.c5.trainer-slot .icon { font-family:Arial, sans-serif; font-size:1.05em; font-weight:700; letter-spacing:0.08em; }",
+			"#leftbar > div.c5.trainer-slot > div > span:first-child { font-family:Arial, sans-serif; font-size:0.9em; font-weight:700; letter-spacing:0.04em; }",
+			".trainer-shell { min-height:100%; }",
+			".trainer-shell-header { position:sticky; top:0; z-index:2; background:linear-gradient(180deg, rgba(26,24,22,0.98), rgba(26,24,22,0.88)); backdrop-filter:blur(8px); }",
+			".trainer-shell-body { min-height:100%; padding-top:24px; }",
 			".trainer-setup-placeholder { max-width:760px; margin:64px auto; padding:32px; background:#272320; border:1px solid rgba(237,232,225,0.08); border-radius:10px; color:#ede8e1; }",
 			".trainer-setup-placeholder h2 { margin:0 0 12px; font-size:32px; font-family:Georgia, serif; }",
 			".trainer-setup-placeholder p { color:#9b9388; margin:0 0 12px; }",
@@ -34,8 +37,18 @@ var trainerInit = execMain(function() {
 			".trainer-setup-placeholder .trainer-setup-actions { display:flex; gap:12px; margin-top:20px; }",
 			".trainer-setup-placeholder button { border:none; border-radius:4px; padding:10px 16px; cursor:pointer; }",
 			".trainer-setup-primary { background:#e8a620; color:#1a1816; }",
-			".trainer-setup-ghost { background:#302b27; color:#ede8e1; }"
+			".trainer-setup-ghost { background:#302b27; color:#ede8e1; }",
+			"html.m #trainer-root-native { left:0.5rem; right:0.5rem; top:0.5rem; bottom:calc(11.8vw + 1rem); border-radius:12px; }",
+			"html.m #leftbar > div.c5.trainer-slot .icon { font-size:0.95em; }"
 		].join("") + "</style>").appendTo("head");
+	}
+
+	function _setModeActive(isActive) {
+		_modeActive = !!isActive;
+		$("body").toggleClass("trainer-mode", _modeActive);
+		if (_nativeButton) {
+			_nativeButton.toggleClass("enable", _modeActive);
+		}
 	}
 
 	function _renderEntry(el, data) {
@@ -138,20 +151,12 @@ var trainerInit = execMain(function() {
 		_initialized = true;
 	}
 
-	function _openOverlay() {
-		if (_overlay) {
-			_overlay.addClass("is-open");
-		}
-	}
-
 	function hide() {
 		var shell = _getShell();
 		if (shell) {
 			shell.hideAllSurfaces();
 		}
-		if (_overlay) {
-			_overlay.removeClass("is-open");
-		}
+		_setModeActive(false);
 	}
 
 	function showEntry(data) {
@@ -159,7 +164,7 @@ var trainerInit = execMain(function() {
 		if (!integration) {
 			return;
 		}
-		_openOverlay();
+		_setModeActive(true);
 		integration.showSurface("entry", _renderEntry, data || null);
 	}
 
@@ -168,7 +173,7 @@ var trainerInit = execMain(function() {
 		if (!integration) {
 			return;
 		}
-		_openOverlay();
+		_setModeActive(true);
 		integration.showSurface("review", _renderWeaknessSummary, data || null);
 	}
 
@@ -177,7 +182,7 @@ var trainerInit = execMain(function() {
 		if (!integration) {
 			return;
 		}
-		_openOverlay();
+		_setModeActive(true);
 		if (name === "entry") {
 			showEntry(data);
 			return;
@@ -205,6 +210,33 @@ var trainerInit = execMain(function() {
 		integration.showSurface(name, null, data || null);
 	}
 
+	function _ensureNativeMount() {
+		if (!_mount) {
+			_mount = $('<div id="trainer-root-native"></div>');
+			$("body").append(_mount);
+		}
+		init(_mount);
+	}
+
+	function _ensureNativeButton() {
+		var leftbar = $("#leftbar");
+		if (!leftbar.length) {
+			return;
+		}
+		leftbar.children(".c5").addClass("trainer-slot");
+		leftbar.children(".c5").find(".icon").text("TR");
+		if (typeof kernel !== "undefined" && kernel.addButton) {
+			kernel.addButton("trainer", "Trainer", function() {
+				showEntry();
+			}, 5);
+		} else {
+			leftbar.children(".c5").off("click").on("click", function() {
+				showEntry();
+			});
+		}
+		_nativeButton = leftbar.children(".c5");
+	}
+
 	function bootstrap() {
 		if (_bootstrapped || typeof $ === "undefined") {
 			return;
@@ -213,29 +245,8 @@ var trainerInit = execMain(function() {
 		_ensureStyles();
 
 		$(function() {
-			if (_overlay) {
-				return;
-			}
-
-			_overlay = $('<div class="trainer-overlay"></div>');
-			var backdrop = $('<div class="trainer-overlay-backdrop"></div>');
-			var panel = $('<div class="trainer-overlay-panel"></div>');
-			var closeBtn = $('<button class="trainer-overlay-close" aria-label="Close trainer">×</button>');
-			_mount = $('<div id="trainer-root-overlay"></div>');
-			panel.append(closeBtn).append(_mount);
-			_overlay.append(backdrop).append(panel);
-			$("body").append(_overlay);
-
-			var launcher = $('<button class="trainer-launcher-btn">Trainer</button>');
-			$("body").append(launcher);
-
-			init(_mount);
-
-			launcher.on("click", function() {
-				showEntry();
-			});
-			backdrop.on("click", hide);
-			closeBtn.on("click", hide);
+			_ensureNativeMount();
+			_ensureNativeButton();
 		});
 	}
 
@@ -247,6 +258,9 @@ var trainerInit = execMain(function() {
 		showWeaknessSummary: showWeaknessSummary,
 		showSurface: showSurface,
 		hide: hide,
-		bootstrap: bootstrap
+		bootstrap: bootstrap,
+		isActive: function() {
+			return _modeActive;
+		}
 	};
 });
