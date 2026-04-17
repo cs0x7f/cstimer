@@ -172,12 +172,18 @@ var exportFunc = execMain(function() {
 				}
 				ids.push(key);
 			}
-			return $.ppost('https://cstimer.net/userdata2.php', {
-				'id': id,
-				'exists': ids.join(',')
-			}, 'json').then(function(val) {
+			var prepass;
+			if (ids.length == 0) {
+				prepass = Promise.resolve({'retcode': 0, 'datas': []});
+			} else {
+				prepass = $.ppost('https://cstimer.net/userdata2.php', {
+					'id': id,
+					'exists': ids.join(',')
+				}, 'json');
+			}
+			return prepass.then(function(val) {
 				if (val['retcode'] != 0) {
-					Promise.reject();
+					return Promise.reject();
 				}
 				var exists = val['datas'];
 				var ids = [];
