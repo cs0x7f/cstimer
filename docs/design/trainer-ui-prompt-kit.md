@@ -38,11 +38,11 @@ Hard constraints:
 - Prefer one clear scroll surface over small internal scrolling panes.
 - Active session should ideally avoid visible internal scrollbars entirely.
 
-What “good” looks like:
+What ï¿½goodï¿½ looks like:
 - seamless with csTimer
 - intentional use of layout regions
 - coherent typography and spacing
-- less “overlay app”, more “native training mode”
+- less ï¿½overlay appï¿½, more ï¿½native training modeï¿½
 - clear focus during active drills
 
 When making changes:
@@ -137,7 +137,7 @@ What I dislike:
 
 What I want instead:
 - cleaner scrolling behavior
-- stronger use of csTimer’s existing layout logic
+- stronger use of csTimerï¿½s existing layout logic
 - better use of the left-side area during training
 - a more seamless bridge between csTimer chrome and trainer content
 

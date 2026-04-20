@@ -191,3 +191,11 @@ Full boundary definitions: `docs/architecture/domain-boundaries.md`
 - X-cross and advanced opening trainers
 - virtual cube support for case practice without a physical cube
 - live social or call-based collaborative training
+- orientation-aware start-state modeling so the same named case can be tracked by angle, AUF, slot, and other human-meaningful start-state differences
+
+### Future Modeling Reminder
+
+When future work adds richer case families such as F2L or more advanced start-state trainers, the trainer should avoid collapsing meaningful start-state variants into one case-level average when those variants materially change recognition or execution.
+
+Reference blueprint:
+- `docs/features/OrientationAwareStartStateModel.md`

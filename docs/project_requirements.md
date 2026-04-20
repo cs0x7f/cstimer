@@ -24,6 +24,7 @@
 | FR-012 | Daily Challenge and Reward Loop | As a cuber, I want a daily scramble challenge with leaderboards, points, or rewards, so that I can compete with others around the same prompt. | Future |
 | FR-013 | X-Cross and Advanced Start-State Trainer | As a cuber, I want guided X-cross and other advanced start-state drills, so that I can practice more advanced opening efficiency intentionally. | Future |
 | FR-014 | Virtual Cube Practice Surface | As a cuber, I want a virtual cube that follows the scramble and case setup, so that I can practice niche cases even when I do not have a cube in hand. | Future |
+| FR-015 | Orientation-Aware Start-State Modeling | As a cuber, I want the trainer to distinguish the same case by start orientation, slot, and angle, so that recognition, execution, and algorithm guidance reflect the real difficulty I feel in solves. | Future |
 
 ## V1 Product Frame
 
@@ -32,6 +33,7 @@
 - **Hard constraints:** offline-first, fork-first, no v1 backend dependency, no csTimer core rewrite
 - **Out of scope for v1:** Convex implementation, multiplayer, smart cube requirement, standalone app rewrite
 - **Requests captured for later roadmap:** multi-puzzle training, daily challenge competition, X-cross optimization, virtual-cube practice, and live social features
+- **Additional future modeling requirement:** when a case family supports meaningful start-state variants, the trainer should model those variants explicitly rather than collapsing them into one case-level average. Examples include PLL angle/U pre-turn context and F2L pair plus slot orientation.
 
 ## MUS Priority Order
 
