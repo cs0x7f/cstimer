@@ -454,7 +454,7 @@ var recons = execMain(function() {
 		for (var i = 0; i < ranges.length; i++) {
 			rangeSelect.append('<option value="' + ranges[i] + '">' + ranges[i] + '</option>');
 		}
-		var methods = [['cf4op', 'cfop'], ['roux', 'roux'], ['cf3zb', 'cfzb']];
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux'], ['cf3zb', 'cfzb'], ['apb', 'apb']];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
 			methodSelect.append('<option value="' + methods[i][0] + '%">' + methods[i][1] + '%</option>');
@@ -469,6 +469,7 @@ var recons = execMain(function() {
 		stats.regExtraInfo('recons_cf4op', (times) => calcRecons(times, 'cf4op'));
 		stats.regExtraInfo('recons_roux', (times) => calcRecons(times, 'roux'));
 		stats.regExtraInfo('recons_cf3zb', (times) => calcRecons(times, 'cf3zb'));
+		stats.regExtraInfo('recons_apb', (times) => calcRecons(times, 'apb'));
 		stats.regExtraInfo('recons_cfop_ct',
 			substepMetric.bind(null, 'cf4op', [6, 0], [6, 2]),
 			['cross ' + STATS_TIME, kernel.pretty]);
@@ -902,7 +903,7 @@ var scatter = execMain(function() {
 		}
 		stats.regUtil('scatter', updateScatter);
 		kernel.regListener('scatter', 'reqrec', reqRecons);
-		var methods = [['cf4op', 'cfop'], ['roux', 'roux'], ['cf3zb', 'cfzb']];
+		var methods = [['cf4op', 'cfop'], ['roux', 'roux'], ['cf3zb', 'cfzb'], ['apb', 'apb']];
 		for (var i = 0; i < methods.length; i++) {
 			methodSelect.append('<option value="' + methods[i][0] + '">' + methods[i][1] + '</option>');
 		}
