@@ -2502,8 +2502,51 @@ var scramble_444 = (function(Cnk, circle) {
 		return getPartialScramble(0x00ffff, 0xffffff, 0xff, neut);
 	}
 
+	// targetFace: which face the U-color (face 0) should end up on
+	//   0=U, 1=R, 2=F, 3=D, 4=L, 5=B
+	function appendRotationFix(scramble, targetFace) {
+		var testCube = new FullCube_3;
+		var moves = scramble.trim().split(/\s+/);
+		for (var mi = 0; mi < moves.length; mi++) {
+			var mv = moves[mi];
+			while (mv.length < 3) mv += ' ';
+			var mvIdx = move2str_1.indexOf(mv);
+			if (mvIdx >= 0) {
+				$move_6(testCube, mvIdx);
+			}
+		}
+		var f = toFacelet(testCube);
+		var faceCenters = [5, 21, 37, 53, 69, 85]; // U,R,F,D,L,B
+		var uColorAt = -1;
+		for (var fi = 0; fi < 6; fi++) {
+			if (f[faceCenters[fi]] == 0) {
+				uColorAt = fi;
+				break;
+			}
+		}
+		// Rotations to bring U-color from position uColorAt to face targetFace.
+		// rotTable[from][to] gives the rotation string needed.
+		var rotTable = [
+			// to:  U      R      F      D      L      B
+			/*U*/ ['',    "z",  "x'",   'z2',  "z'",   "x" ],
+			/*R*/ ["z'",   '',    "y",  "z",  'z2',  "y'"  ],
+			/*F*/ ["x",  "y'",   '',    "x'",   "y",  'x2' ],
+			/*D*/ ['z2',  "z'",   "x",  '',    "z",  "x'"  ],
+			/*L*/ ["z",  'z2',  "y'",   "z'",   '',    "y" ],
+			/*B*/ ["x'",   "y",  'x2',  "x",  "y'",   ''   ]
+		];
+		targetFace = targetFace || 0;
+		var rot = rotTable[uColorAt][targetFace];
+		if (rot) {
+			scramble = scramble + ' ' + rot;
+		}
+		return scramble.replace(/\s+/g, ' ').trim();
+	}
+
 	function getLast8DedgeScramble(type, length, cases, neut) {
-		return getPartialScramble(0x000000, 0xff0ff0, 0xff, neut);
+		// D-cross edges (4-7, 16-19) solved, U + equator edges scrambled, all corners scrambled
+		var scramble = getPartialScramble(0x000000, 0xf0ff0f, 0xff, neut);
+		return appendRotationFix(scramble, 0);
 	}
 
 	function getELLScramble(type, length, cases, neut) {
@@ -2998,51 +3041,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 		var scramble = genFacelet(facelet.join("")).replace(/^\s+/, '');
 
-		// The 4x4 solver uses symmetry reduction, so the output scramble may
-		// leave the cube in a rotated frame. Apply the scramble to a solved
-		// FullCube to detect the orientation and append a rotation fix.
-		var testCube = new FullCube_3;
-		var moves = scramble.trim().split(/\s+/);
-		for (var mi = 0; mi < moves.length; mi++) {
-			var mv = moves[mi];
-			while (mv.length < 3) mv += ' ';
-			var mvIdx = move2str_1.indexOf(mv);
-			if (mvIdx >= 0) {
-				$move_6(testCube, mvIdx);
-			}
-		}
-		// Check which face color is at the U center after scramble.
-		// In the target state, U centers should be face 0 (U color).
-		// If a different face color is on top, we need a rotation to fix it.
-		var f = toFacelet(testCube);
-		// 4x4 facelet layout: face * 16 + position. U-face center = facelet 5.
-		var topFace = f[5];
-		// topFace tells us which face's color is currently on top.
-		// We need to rotate so that face 0 (U) ends up on top.
-		// Find where face-0 color currently is by checking each face center:
-		//   U center = f[5], R center = f[21], F center = f[37]
-		//   D center = f[53], L center = f[69], B center = f[85]
-		var uColorAt = -1;
-		var faceCenters = [5, 21, 37, 53, 69, 85]; // U,R,F,D,L,B center facelets
-		for (var fi = 0; fi < 6; fi++) {
-			if (f[faceCenters[fi]] == 0) { // face-0 = U color
-				uColorAt = fi;
-				break;
-			}
-		}
-		// uColorAt: 0=U(no fix), 1=R, 2=F, 3=D, 4=L, 5=B
-		// Rotation to bring U-color from that position back to U:
-		//   from R -> z'  (z': R->U)
-		//   from F -> x (x: F->U)
-		//   from D -> z2 (z2: D->U)
-		//   from L -> z (z: L->U)
-		//   from B -> x' (x': B->U)
-		var rotFix = ['', "z'", "x", 'z2', "z", "x'"];
-		if (uColorAt > 0) {
-			scramble = scramble + ' ' + rotFix[uColorAt];
-		}
-
-		return scramble.replace(/\s+/g, ' ').trim();
+		return appendRotationFix(scramble);
 	}
 
 	// 4x4 Plan-view image layout (32-char string):
