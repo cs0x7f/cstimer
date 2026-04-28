@@ -2573,41 +2573,6 @@ var scramble_444 = (function(Cnk, circle) {
 		return colmap;
 	}
 
-	function appendRotationFix(scramble, targetFace) {
-		var testCube = new FullCube_3;
-		var moves = scramble.trim().split(/\s+/);
-		for (var mi = 0; mi < moves.length; mi++) {
-			var mv = moves[mi];
-			while (mv.length < 3) mv += ' ';
-			var mvIdx = move2str_1.indexOf(mv);
-			if (mvIdx >= 0) {
-				$move_6(testCube, mvIdx);
-			}
-		}
-		var f = toFacelet(testCube);
-		var faceCenters = [5, 21, 37, 53, 69, 85];
-		var uColorAt = -1;
-		for (var fi = 0; fi < 6; fi++) {
-			if (f[faceCenters[fi]] == 0) {
-				uColorAt = fi;
-				break;
-			}
-		}
-		var rotTable = [
-			['',    "z",  "x'",   'z2',  "z'",   "x" ],
-			["z'",   '',    "y",  "z",  'z2',  "y'"  ],
-			["x",  "y'",   '',    "x'",   "y",  'x2' ],
-			['z2',  "z'",   "x",  '',    "z",  "x'"  ],
-			["z",  'z2',  "y'",   "z'",   '',    "y" ],
-			["x'",   "y",  'x2',  "x",  "y'",   ''   ]
-		];
-		targetFace = targetFace || 0;
-		var rot = rotTable[uColorAt][targetFace];
-		if (rot) {
-			scramble = scramble + ' ' + rot;
-		}
-		return scramble.replace(/\s+/g, ' ').trim();
-	}
 
 	var llU = [3, 0, 1, 2];
 	var llUPow = [[0,1,2,3], llU];
