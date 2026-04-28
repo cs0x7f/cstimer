@@ -2510,74 +2510,265 @@ var scramble_444 = (function(Cnk, circle) {
 		return getPartialScramble(0x000000, 0x0f00f0, 0x00, neut);
 	}
 
+	function applyColorNeutrality(neut) {
+		var colmap = [0, 1, 2, 3, 4, 5];
+		if (neut) {
+			var ori = mathlib.rn([1, 4, 8, 1, 1, 1, 24][neut]);
+			if (ori >= 8) {
+				mathlib.acycle(colmap, [0, 1, 2], ori >> 3);
+				mathlib.acycle(colmap, [3, 4, 5], ori >> 3);
+				ori &= 0x7;
+			}
+			if (ori >= 4) {
+				mathlib.acycle(colmap, [0, 1, 3, 4], 2);
+				ori &= 0x3;
+			}
+			if (ori >= 1) {
+				mathlib.acycle(colmap, [1, 2, 4, 5], ori);
+			}
+		}
+		return colmap;
+	}
 
-	var ppll_map = [
-		// EPLL: corners solved, edges permuted with parity
-		[0x3012, 0x3210, 2, 'EPLL-Opp'],
-		[0x2310, 0x3210, 4, 'EPLL-Adj'],
-		[0x2103, 0x3210, 1, 'EPLL-O-'],
-		[0x0321, 0x3210, 1, 'EPLL-O+'],
-		[0x0132, 0x3210, 4, 'EPLL-W'],
-		// CPLL: edges solved, corners permuted with parity
-		[0x3210, 0x3012, 2, 'CPLL-pN'],
-		[0x3210, 0x0213, 4, 'CPLL-pJ'],
-		[0x1032, 0x0213, 4, 'CPLL-M'],
-		// Diag: diagonal corner swap with parity
-		[0x3021, 0x3012, 4, 'Diag-Sa'],
-		[0x2013, 0x1230, 4, 'Diag-Sb'],
-		[0x1230, 0x0123, 1, 'Diag-Q'],
-		[0x3012, 0x0123, 1, 'Diag-X'],
-		// Adj: adjacent corner swap with parity
-		[0x2301, 0x3120, 4, 'Adj-Ka'],
-		[0x0123, 0x3120, 4, 'Adj-Kb'],
-		[0x2013, 0x0213, 4, 'Adj-Pa'],
-		[0x0312, 0x0213, 4, 'Adj-Pb'],
-		[0x2310, 0x1320, 4, 'Adj-Ba'],
-		[0x3120, 0x2013, 4, 'Adj-Bb'],
-		[0x2130, 0x3201, 4, 'Adj-Ca'],
-		[0x1320, 0x3201, 4, 'Adj-Cb'],
-		[0x3102, 0x2310, 4, 'Adj-Da'],
-		[0x0312, 0x2310, 4, 'Adj-Db'],
-		// Standard PLL (no parity) — epHex in FullCube_3 convention
-		[0x1032, 0x3210, 1, 'PLL-H'],
-		[0x1203, 0x3210, 4, 'PLL-Ua'],
-		[0x0231, 0x3210, 4, 'PLL-Ub'],
-		[0x0123, 0x3210, 2, 'PLL-Z'],
-		[0x3210, 0x3021, 4, 'PLL-Aa'],
-		[0x3210, 0x3102, 4, 'PLL-Ab'],
-		[0x3210, 0x2301, 2, 'PLL-E'],
-		[0x1230, 0x3201, 4, 'PLL-F'],
-		[0x3102, 0x3021, 4, 'PLL-Ga'],
-		[0x3021, 0x3102, 4, 'PLL-Gb'],
-		[0x0231, 0x3102, 4, 'PLL-Gc'],
-		[0x1203, 0x3021, 4, 'PLL-Gd'],
-		[0x0213, 0x3201, 4, 'PLL-Ja'],
-		[0x3201, 0x3201, 4, 'PLL-Jb'],
-		[0x3012, 0x3012, 1, 'PLL-Na'],
-		[0x1230, 0x3012, 1, 'PLL-Nb'],
-		[0x2310, 0x3201, 4, 'PLL-Ra'],
-		[0x3120, 0x3201, 4, 'PLL-Rb'],
-		[0x3012, 0x3201, 4, 'PLL-T'],
-		[0x3201, 0x3012, 4, 'PLL-V'],
-		[0x0213, 0x3012, 4, 'PLL-Y']
-	];
+	function appendRotationFix(scramble, targetFace) {
+		var testCube = new FullCube_3;
+		var moves = scramble.trim().split(/\s+/);
+		for (var mi = 0; mi < moves.length; mi++) {
+			var mv = moves[mi];
+			while (mv.length < 3) mv += ' ';
+			var mvIdx = move2str_1.indexOf(mv);
+			if (mvIdx >= 0) {
+				$move_6(testCube, mvIdx);
+			}
+		}
+		var f = toFacelet(testCube);
+		var faceCenters = [5, 21, 37, 53, 69, 85];
+		var uColorAt = -1;
+		for (var fi = 0; fi < 6; fi++) {
+			if (f[faceCenters[fi]] == 0) {
+				uColorAt = fi;
+				break;
+			}
+		}
+		var rotTable = [
+			['',    "z",  "x'",   'z2',  "z'",   "x" ],
+			["z'",   '',    "y",  "z",  'z2',  "y'"  ],
+			["x",  "y'",   '',    "x'",   "y",  'x2' ],
+			['z2',  "z'",   "x",  '',    "z",  "x'"  ],
+			["z",  'z2',  "y'",   "z'",   '',    "y" ],
+			["x'",   "y",  'x2',  "x",  "y'",   ''   ]
+		];
+		targetFace = targetFace || 0;
+		var rot = rotTable[uColorAt][targetFace];
+		if (rot) {
+			scramble = scramble + ' ' + rot;
+		}
+		return scramble.replace(/\s+/g, ' ').trim();
+	}
 
+	var llU = [3, 0, 1, 2];
+	var llUPow = [[0,1,2,3], llU];
+	llUPow[2] = llUPow[1].map(function(_, i) { return llU[llUPow[1][i]]; });
+	llUPow[3] = llUPow[2].map(function(_, i) { return llU[llUPow[2][i]]; });
 
-	var ppllFilter = mathlib.idxArray(ppll_map, 3);
-	var ppllProbs = mathlib.idxArray(ppll_map, 2);
-
-	var ppllU = [3, 0, 1, 2];
-	var ppllUPow = [[0,1,2,3], ppllU];
-	ppllUPow[2] = ppllUPow[1].map(function(_, i) { return ppllU[ppllUPow[1][i]]; });
-	ppllUPow[3] = ppllUPow[2].map(function(_, i) { return ppllU[ppllUPow[2][i]]; });
-
-	function ppllConjugate(perm, k) {
+	function llConjugate(perm, k) {
 		if (k == 0) return perm.slice();
-		var uk = ppllUPow[k];
-		var uinv = ppllUPow[(4 - k) % 4];
+		var uk = llUPow[k];
+		var uinv = llUPow[(4 - k) % 4];
 		return perm.map(function(_, i) { return uk[perm[uinv[i]]]; });
 	}
 
+	function permuteByU(arr, k) {
+		if (k == 0) return arr.slice();
+		var u = llUPow[k];
+		var result = [];
+		for (var i = 0; i < 4; i++) {
+			result[u[i]] = arr[i];
+		}
+		return result;
+	}
+
+	function fillRandomPerm(arr, n) {
+		var free = [], used = {};
+		for (var i = 0; i < n; i++) {
+			if (arr[i] != -1) used[arr[i]] = true;
+		}
+		for (var i = 0; i < n; i++) {
+			if (!used[i]) free.push(i);
+		}
+		for (var i = free.length - 1; i > 0; i--) {
+			var j = mathlib.rn(i + 1);
+			var tmp = free[i]; free[i] = free[j]; free[j] = tmp;
+		}
+		for (var i = 0, fi = 0; i < n; i++) {
+			if (arr[i] == -1) arr[i] = free[fi++];
+		}
+	}
+
+	function fillRandomOri(arr, n, base) {
+		var sum = 0;
+		var last = -1;
+		for (var i = 0; i < n; i++) {
+			if (arr[i] == -1) {
+				last = i;
+			} else {
+				sum += arr[i];
+			}
+		}
+		for (var i = 0; i < n; i++) {
+			if (arr[i] == -1 && i != last) {
+				arr[i] = mathlib.rn(base);
+				sum += arr[i];
+			}
+		}
+		if (last != -1) {
+			arr[last] = (base - sum % base) % base;
+		}
+	}
+
+	// 4x4 last-layer scramble generator.
+	// Treats the cube as reduced with D layer solved.
+	// Parameters:
+	//   _ep: U-layer dedge permutation [4], -1 = random
+	//   _eo: U-layer dedge flip [4] (0 = paired, 1 = wings swapped), -1 = random
+	//   _cp: U-layer corner permutation [4], -1 = random
+	//   _co: U-layer corner orientation [4] (0/1/2), -1 = random (sum constrained to 0 mod 3)
+	//   neut: color neutrality level
+	//   _rndpre: array of U-power values [0,1,2,3] for pre-AUF (random element chosen)
+	//   _rndapp: array of U-power values [0,1,2,3] for post-AUF (random element chosen)
+	//   rotFix: target face for rotation fix (0=U, 3=D, etc.), or false/undefined to skip
+	function get444LLScramble(_ep, _eo, _cp, _co, neut, _rndpre, _rndapp, rotFix) {
+		var ep = _ep.slice();
+		var eo = _eo.slice();
+		var cp = _cp.slice();
+		var co = _co.slice();
+
+		fillRandomPerm(ep, 4);
+		fillRandomPerm(cp, 4);
+		for (var i = 0; i < 4; i++) {
+			if (eo[i] == -1) eo[i] = mathlib.rn(2);
+		}
+		fillRandomOri(co, 4, 3);
+
+		// Apply pre-AUF by conjugating arrays
+		if (_rndpre && _rndpre.length > 0) {
+			var k = _rndpre[mathlib.rn(_rndpre.length)];
+			if (k > 0) {
+				ep = llConjugate(ep, k);
+				cp = llConjugate(cp, k);
+				eo = permuteByU(eo, k);
+				co = permuteByU(co, k);
+			}
+		}
+
+		// Apply post-AUF by permuting slot contents
+		if (_rndapp && _rndapp.length > 0) {
+			var k = _rndapp[mathlib.rn(_rndapp.length)];
+			if (k > 0) {
+				var u = llUPow[k];
+				var newEp = [], newEo = [], newCp = [], newCo = [];
+				for (var i = 0; i < 4; i++) {
+					newEp[u[i]] = ep[i];
+					newEo[u[i]] = eo[i];
+					newCp[u[i]] = cp[i];
+					newCo[u[i]] = co[i];
+				}
+				ep = newEp; eo = newEo; cp = newCp; co = newCo;
+			}
+		}
+
+		// Build FullCube_3
+		var cc = new FullCube_3;
+		for (var i = 0; i < 4; i++) {
+			cc.corner.cp[i] = cp[i];
+			cc.corner.co[i] = co[i];
+		}
+		for (var i = 0; i < 4; i++) {
+			var src = ep[i];
+			if (eo[i]) {
+				cc.edge.ep[i] = src + 12;
+				cc.edge.ep[i + 12] = src;
+			} else {
+				cc.edge.ep[i] = src;
+				cc.edge.ep[i + 12] = src + 12;
+			}
+		}
+
+		// Solve
+		var colmap = applyColorNeutrality(neut);
+		var facelet = toFacelet(cc);
+		for (var i = 0; i < 96; i++) {
+			facelet[i] = "URFDLB".charAt(colmap[facelet[i]]);
+		}
+		var scramble = genFacelet(facelet.join("")).replace(/^\s+/, '');
+
+		if (rotFix !== undefined && rotFix !== false) {
+			scramble = appendRotationFix(scramble, rotFix);
+		}
+
+		return scramble;
+	}
+
+	var ppll_map = [
+		// EPLL: corners solved, edges permuted with parity
+		[[2,1,0,3], [0,1,2,3], 2, 'EPLL-Opp'],
+		[[0,1,3,2], [0,1,2,3], 4, 'EPLL-Adj'],
+		[[3,0,1,2], [0,1,2,3], 1, 'EPLL-O-'],
+		[[1,2,3,0], [0,1,2,3], 1, 'EPLL-O+'],
+		[[2,3,1,0], [0,1,2,3], 4, 'EPLL-W'],
+		// CPLL: edges solved, corners permuted with parity
+		[[0,1,2,3], [2,1,0,3], 2, 'CPLL-pN'],
+		[[0,1,2,3], [3,1,2,0], 4, 'CPLL-pJ'],
+		[[2,3,0,1], [3,1,2,0], 4, 'CPLL-M'],
+		// Diag: diagonal corner swap with parity
+		[[1,2,0,3], [2,1,0,3], 4, 'Diag-Sa'],
+		[[3,1,0,2], [0,3,2,1], 4, 'Diag-Sb'],
+		[[0,3,2,1], [3,2,1,0], 1, 'Diag-Q'],
+		[[2,1,0,3], [3,2,1,0], 1, 'Diag-X'],
+		// Adj: adjacent corner swap with parity
+		[[1,0,3,2], [0,2,1,3], 4, 'Adj-Ka'],
+		[[3,2,1,0], [0,2,1,3], 4, 'Adj-Kb'],
+		[[3,1,0,2], [3,1,2,0], 4, 'Adj-Pa'],
+		[[2,1,3,0], [3,1,2,0], 4, 'Adj-Pb'],
+		[[0,1,3,2], [0,2,3,1], 4, 'Adj-Ba'],
+		[[0,2,1,3], [3,1,0,2], 4, 'Adj-Bb'],
+		[[0,3,1,2], [1,0,2,3], 4, 'Adj-Ca'],
+		[[0,2,3,1], [1,0,2,3], 4, 'Adj-Cb'],
+		[[2,0,1,3], [0,1,3,2], 4, 'Adj-Da'],
+		[[2,1,3,0], [0,1,3,2], 4, 'Adj-Db'],
+		// Standard PLL (no parity)
+		[[2,3,0,1], [0,1,2,3], 1, 'PLL-H'],
+		[[3,0,2,1], [0,1,2,3], 4, 'PLL-Ua'],
+		[[1,3,2,0], [0,1,2,3], 4, 'PLL-Ub'],
+		[[3,2,1,0], [0,1,2,3], 2, 'PLL-Z'],
+		[[0,1,2,3], [1,2,0,3], 4, 'PLL-Aa'],
+		[[0,1,2,3], [2,0,1,3], 4, 'PLL-Ab'],
+		[[0,1,2,3], [1,0,3,2], 2, 'PLL-E'],
+		[[0,3,2,1], [1,0,2,3], 4, 'PLL-F'],
+		[[2,0,1,3], [1,2,0,3], 4, 'PLL-Ga'],
+		[[1,2,0,3], [2,0,1,3], 4, 'PLL-Gb'],
+		[[1,3,2,0], [2,0,1,3], 4, 'PLL-Gc'],
+		[[3,0,2,1], [1,2,0,3], 4, 'PLL-Gd'],
+		[[3,1,2,0], [1,0,2,3], 4, 'PLL-Ja'],
+		[[1,0,2,3], [1,0,2,3], 4, 'PLL-Jb'],
+		[[2,1,0,3], [2,1,0,3], 1, 'PLL-Na'],
+		[[0,3,2,1], [2,1,0,3], 1, 'PLL-Nb'],
+		[[0,1,3,2], [1,0,2,3], 4, 'PLL-Ra'],
+		[[0,2,1,3], [1,0,2,3], 4, 'PLL-Rb'],
+		[[2,1,0,3], [1,0,2,3], 4, 'PLL-T'],
+		[[1,0,2,3], [2,1,0,3], 4, 'PLL-V'],
+		[[3,1,2,0], [2,1,0,3], 4, 'PLL-Y']
+	];
+
+
+	var ppllprobs = mathlib.idxArray(ppll_map, 2);
+	var ppllfilter = mathlib.idxArray(ppll_map, 3);
+
+	function getPPLLScramble(type, length, cases, neut) {
+		var c = ppll_map[scrMgr.fixCase(cases, ppllprobs)];
+		return get444LLScramble(c[0], [0,0,0,0], c[1], [0,0,0,0], neut, [0,1,2,3], [0,1,2,3], 0);
+	}
+	
 	// Sticker pattern + optional arrows for the LL plan-view image of each ppll_map case.
 	// 12-char string = side stickers adjacent to U face, read as 4 strips of 3:
 	//
@@ -2674,375 +2865,109 @@ var scramble_444 = (function(Cnk, circle) {
 
 		var llParam = [uFace + side4, arrows4];
 		if (!canvas) {
-			return llParam.concat([ppllFilter[cases]]);
+			return llParam.concat([ppllfilter[cases]]);
 		}
-		image.llImage.drawImage4(llParam[0], llParam[1], canvas);
+		image.llImage.drawImage(llParam[0], llParam[1], canvas);
 	}
 
-	function ppllHexToArr(h) {
-		var a = [];
-		for (var i = 0; i < 4; i++) {
-			a[i] = h & 0xf;
-			h = (h - a[i]) / 16;
-		}
-		return a;
-	}
 
-	function getPPLLScramble(type, length, cases, neut) {
-		var caseIdx = scrMgr.fixCase(cases, ppllProbs);
-		var ppllCase = ppll_map[caseIdx];
-		var dedgePerm = ppllHexToArr(ppllCase[0]);
-		var cnPerm = ppllHexToArr(ppllCase[1]);
-
-		var auf = mathlib.rn(4);
-		cnPerm = ppllConjugate(cnPerm, auf);
-		dedgePerm = ppllConjugate(dedgePerm, auf);
-
-		var postAuf = mathlib.rn(4);
-		if (postAuf > 0) {
-			var u = ppllUPow[postAuf];
-			cnPerm = [cnPerm[u[0]], cnPerm[u[1]], cnPerm[u[2]], cnPerm[u[3]]];
-			dedgePerm = [dedgePerm[u[0]], dedgePerm[u[1]], dedgePerm[u[2]], dedgePerm[u[3]]];
-		}
-
-		var colmap = [0, 1, 2, 3, 4, 5];
-		if (neut) {
-			var ori = mathlib.rn([1, 4, 8, 1, 1, 1, 24][neut]);
-			if (ori >= 8) {
-				mathlib.acycle(colmap, [0, 1, 2], ori >> 3);
-				mathlib.acycle(colmap, [3, 4, 5], ori >> 3);
-				ori &= 0x7;
-			}
-			if (ori >= 4) {
-				mathlib.acycle(colmap, [0, 1, 3, 4], 2);
-				ori &= 0x3;
-			}
-			if (ori >= 1) {
-				mathlib.acycle(colmap, [1, 2, 4, 5], ori);
-			}
-		}
-
-		var cc = new FullCube_3;
-
-		for (var i = 0; i < 4; i++) {
-			cc.corner.cp[i] = cnPerm[i];
-			cc.corner.co[i] = 0;
-		}
-
-		var slotA = [0, 1, 2, 3];
-		var slotB = [12, 13, 14, 15];
-		for (var i = 0; i < 4; i++) {
-			var src = dedgePerm[i];
-			cc.edge.ep[slotA[i]] = slotA[src];
-			cc.edge.ep[slotB[i]] = slotB[src];
-		}
-
-		var facelet = toFacelet(cc);
-		for (var i = 0; i < 96; i++) {
-			facelet[i] = "URFDLB".charAt(colmap[facelet[i]]);
-		}
-
-		return genFacelet(facelet.join("")).replace(/^\s+/, '');
-	}
 
 	// POLL case trainer map
-	// [coHex, flipIdx, nOriEdge, aufCount, 'name']
-	// coHex: corner orientation 0xUBR_ULB_UFL_URF (0=oriented, 1=CW twist, 2=CCW twist)
-	// flipIdx: edge slot index (0=UB, 1=UL, 2=UF, 3=UR)
+	// [co, flipIdx, nOriEdge, aufCount, 'name']
+	// co: corner orientation array [URF, UFL, ULB, UBR] (0=oriented, 1=CW twist, 2=CCW twist)
+	// flipIdx: edge slot index (0=UF, 1=UL, 2=UB, 3=UR)
 	//   for nOriEdge=3: flipIdx is the bad (flipped) edge
 	//   for nOriEdge=1: flipIdx is the good (oriented) edge
 	// nOriEdge: 3 = three edges oriented (1 bad), 1 = one edge oriented (3 bad)
 	// aufCount: probability weight (4 for all cases)
-	// Flip index to face letter: 0=F, 1=L, 2=B, 3=R
 	var poll_map = [
-		// === 3 edges oriented (bad edge cases) ===
-		// S (0x2202) - F,R,B,L
-		[0x2202, 0, 3, 4, '3E-S-F'],
-		[0x2202, 3, 3, 4, '3E-S-R'],
-		[0x2202, 2, 3, 4, '3E-S-B'],
-		[0x2202, 1, 3, 4, '3E-S-L'],
-		// A (0x1110) - F,R,B,L
-		[0x1110, 0, 3, 4, '3E-A-F'],
-		[0x1110, 3, 3, 4, '3E-A-R'],
-		[0x1110, 2, 3, 4, '3E-A-B'],
-		[0x1110, 1, 3, 4, '3E-A-L'],
-		// T (0x2100) - F,R,B,L
-		[0x2100, 0, 3, 4, '3E-T-F'],
-		[0x2100, 3, 3, 4, '3E-T-R'],
-		[0x2100, 2, 3, 4, '3E-T-B'],
-		[0x2100, 1, 3, 4, '3E-T-L'],
-		// L (0x2010) - F,R,B,L
-		[0x2010, 0, 3, 4, '3E-L-F'],
-		[0x2010, 3, 3, 4, '3E-L-R'],
-		[0x2010, 2, 3, 4, '3E-L-B'],
-		[0x2010, 1, 3, 4, '3E-L-L'],
-		// U (0x1200) - F,R,B,L
-		[0x1200, 0, 3, 4, '3E-U-F'],
-		[0x1200, 3, 3, 4, '3E-U-R'],
-		[0x1200, 2, 3, 4, '3E-U-B'],
-		[0x1200, 1, 3, 4, '3E-U-L'],
-		// Pi (0x1122) - F,R,B,L
-		[0x1122, 0, 3, 4, '3E-Pi-F'],
-		[0x1122, 3, 3, 4, '3E-Pi-R'],
-		[0x1122, 2, 3, 4, '3E-Pi-B'],
-		[0x1122, 1, 3, 4, '3E-Pi-L'],
-		// H (0x1212) - F,R only (U2-symmetric)
-		[0x1212, 0, 3, 4, '3E-H-F'],
-		[0x1212, 3, 3, 4, '3E-H-R'],
-		// O (0x0000) - F only (U-symmetric)
-		[0x0000, 0, 3, 4, '3E-O-F'],
-		// === 1 edge oriented (good edge cases) ===
-		// S (0x2202) - F,R,B,L
-		[0x2202, 0, 1, 4, '1E-S-F'],
-		[0x2202, 3, 1, 4, '1E-S-R'],
-		[0x2202, 2, 1, 4, '1E-S-B'],
-		[0x2202, 1, 1, 4, '1E-S-L'],
-		// A (0x1110) - F,R,B,L
-		[0x1110, 0, 1, 4, '1E-A-F'],
-		[0x1110, 3, 1, 4, '1E-A-R'],
-		[0x1110, 2, 1, 4, '1E-A-B'],
-		[0x1110, 1, 1, 4, '1E-A-L'],
-		// T (0x2100) - F,R,B,L
-		[0x2100, 0, 1, 4, '1E-T-F'],
-		[0x2100, 3, 1, 4, '1E-T-R'],
-		[0x2100, 2, 1, 4, '1E-T-B'],
-		[0x2100, 1, 1, 4, '1E-T-L'],
-		// L (0x2010) - F,R,B,L
-		[0x2010, 0, 1, 4, '1E-L-F'],
-		[0x2010, 3, 1, 4, '1E-L-R'],
-		[0x2010, 2, 1, 4, '1E-L-B'],
-		[0x2010, 1, 1, 4, '1E-L-L'],
-		// U (0x1200) - F,R,B,L
-		[0x1200, 0, 1, 4, '1E-U-F'],
-		[0x1200, 3, 1, 4, '1E-U-R'],
-		[0x1200, 2, 1, 4, '1E-U-B'],
-		[0x1200, 1, 1, 4, '1E-U-L'],
-		// Pi (0x1122) - F,R,B,L
-		[0x1122, 0, 1, 4, '1E-Pi-F'],
-		[0x1122, 3, 1, 4, '1E-Pi-R'],
-		[0x1122, 2, 1, 4, '1E-Pi-B'],
-		[0x1122, 1, 1, 4, '1E-Pi-L'],
-		// H (0x1212) - F,R only (U2-symmetric)
-		[0x1212, 0, 1, 4, '1E-H-F'],
-		[0x1212, 3, 1, 4, '1E-H-R'],
-		// O (0x0000) - F only (U-symmetric)
-		[0x0000, 0, 1, 4, '1E-O-F']
+		// === 3 edges oriented ===
+		// S
+		[[2,0,2,2], 0, 3, 4, '3E-S-F'],
+		[[2,0,2,2], 3, 3, 4, '3E-S-R'],
+		[[2,0,2,2], 2, 3, 4, '3E-S-B'],
+		[[2,0,2,2], 1, 3, 4, '3E-S-L'],
+		// A
+		[[0,1,1,1], 0, 3, 4, '3E-A-F'],
+		[[0,1,1,1], 3, 3, 4, '3E-A-R'],
+		[[0,1,1,1], 2, 3, 4, '3E-A-B'],
+		[[0,1,1,1], 1, 3, 4, '3E-A-L'],
+		// T
+		[[0,0,1,2], 0, 3, 4, '3E-T-F'],
+		[[0,0,1,2], 3, 3, 4, '3E-T-R'],
+		[[0,0,1,2], 2, 3, 4, '3E-T-B'],
+		[[0,0,1,2], 1, 3, 4, '3E-T-L'],
+		// L
+		[[0,1,0,2], 0, 3, 4, '3E-L-F'],
+		[[0,1,0,2], 3, 3, 4, '3E-L-R'],
+		[[0,1,0,2], 2, 3, 4, '3E-L-B'],
+		[[0,1,0,2], 1, 3, 4, '3E-L-L'],
+		// U
+		[[0,0,2,1], 0, 3, 4, '3E-U-F'],
+		[[0,0,2,1], 3, 3, 4, '3E-U-R'],
+		[[0,0,2,1], 2, 3, 4, '3E-U-B'],
+		[[0,0,2,1], 1, 3, 4, '3E-U-L'],
+		// Pi
+		[[2,2,1,1], 0, 3, 4, '3E-Pi-F'],
+		[[2,2,1,1], 3, 3, 4, '3E-Pi-R'],
+		[[2,2,1,1], 2, 3, 4, '3E-Pi-B'],
+		[[2,2,1,1], 1, 3, 4, '3E-Pi-L'],
+		// H (U2-symmetric)
+		[[2,1,2,1], 0, 3, 4, '3E-H-F'],
+		[[2,1,2,1], 3, 3, 4, '3E-H-R'],
+		// O (U-symmetric)
+		[[0,0,0,0], 0, 3, 4, '3E-O-F'],
+		// === 1 edge oriented ===
+		// S
+		[[2,0,2,2], 0, 1, 4, '1E-S-F'],
+		[[2,0,2,2], 3, 1, 4, '1E-S-R'],
+		[[2,0,2,2], 2, 1, 4, '1E-S-B'],
+		[[2,0,2,2], 1, 1, 4, '1E-S-L'],
+		// A
+		[[0,1,1,1], 0, 1, 4, '1E-A-F'],
+		[[0,1,1,1], 3, 1, 4, '1E-A-R'],
+		[[0,1,1,1], 2, 1, 4, '1E-A-B'],
+		[[0,1,1,1], 1, 1, 4, '1E-A-L'],
+		// T
+		[[0,0,1,2], 0, 1, 4, '1E-T-F'],
+		[[0,0,1,2], 3, 1, 4, '1E-T-R'],
+		[[0,0,1,2], 2, 1, 4, '1E-T-B'],
+		[[0,0,1,2], 1, 1, 4, '1E-T-L'],
+		// L
+		[[0,1,0,2], 0, 1, 4, '1E-L-F'],
+		[[0,1,0,2], 3, 1, 4, '1E-L-R'],
+		[[0,1,0,2], 2, 1, 4, '1E-L-B'],
+		[[0,1,0,2], 1, 1, 4, '1E-L-L'],
+		// U
+		[[0,0,2,1], 0, 1, 4, '1E-U-F'],
+		[[0,0,2,1], 3, 1, 4, '1E-U-R'],
+		[[0,0,2,1], 2, 1, 4, '1E-U-B'],
+		[[0,0,2,1], 1, 1, 4, '1E-U-L'],
+		// Pi
+		[[2,2,1,1], 0, 1, 4, '1E-Pi-F'],
+		[[2,2,1,1], 3, 1, 4, '1E-Pi-R'],
+		[[2,2,1,1], 2, 1, 4, '1E-Pi-B'],
+		[[2,2,1,1], 1, 1, 4, '1E-Pi-L'],
+		// H (U2-symmetric)
+		[[2,1,2,1], 0, 1, 4, '1E-H-F'],
+		[[2,1,2,1], 3, 1, 4, '1E-H-R'],
+		// O (U-symmetric)
+		[[0,0,0,0], 0, 1, 4, '1E-O-F']
 	];
 
-	var pollCaseFilter = mathlib.idxArray(poll_map, 4);
-	var pollCaseProbs = mathlib.idxArray(poll_map, 3);
-
-	// U rotation tables for CO and edge flip conjugation
-	// U move cycles corners: URF->UBR->ULB->UFL->URF, i.e. 0->3->2->1->0
-	// U move cycles edges: UF->UR->UB->UL->UF, i.e. 0->3->2->1->0
-	var pollUCo = [3, 0, 1, 2]; // co position mapping under U: new[pollUCo[i]] = old[i]
-	var pollUEdge = [3, 0, 1, 2]; // edge slot mapping under U
-
-	function pollConjugateCo(coHex, k) {
-		if (k == 0) return coHex;
-		var co = [];
-		for (var i = 0; i < 4; i++) {
-			co[i] = (coHex >> (i * 4)) & 0xf;
-		}
-		for (var r = 0; r < k; r++) {
-			var tmp = [co[0], co[1], co[2], co[3]];
-			for (var i = 0; i < 4; i++) {
-				co[pollUCo[i]] = tmp[i];
-			}
-		}
-		var result = 0;
-		for (var i = 0; i < 4; i++) {
-			result |= co[i] << (i * 4);
-		}
-		return result;
-	}
-
-	function pollConjugateEdge(flipIdx, k) {
-		var idx = flipIdx;
-		for (var r = 0; r < k; r++) {
-			idx = pollUEdge[idx];
-		}
-		return idx;
-	}
+	var pollprobs = mathlib.idxArray(poll_map, 3);
+	var pollfilter = mathlib.idxArray(poll_map, 4);
 
 	function getPOLLScramble(type, length, cases, neut) {
-		var caseIdx = scrMgr.fixCase(cases, pollCaseProbs);
-		var pollCase = poll_map[caseIdx];
-		var coHex = pollCase[0];
-		var flipIdx = pollCase[1];
-		var nOriEdge = pollCase[2];
-
-		// Apply random pre-AUF to rotate the case
-		var auf = mathlib.rn(4);
-		coHex = pollConjugateCo(coHex, auf);
-		flipIdx = pollConjugateEdge(flipIdx, auf);
-
-		// Extract CO values
-		var co = [];
+		var c = poll_map[scrMgr.fixCase(cases, pollprobs)];
+		var co = c[0];
+		var flipIdx = c[1];
+		var nOriEdge = c[2];
+		var eo = [];
 		for (var i = 0; i < 4; i++) {
-			co[i] = (coHex >> (i * 4)) & 0xf;
+			eo[i] = (nOriEdge == 3) ? (i == flipIdx ? 1 : 0) : (i == flipIdx ? 0 : 1);
 		}
-
-		// Random corner permutation
-		var cnPerm = mathlib.rndPerm(4);
-
-		// Random dedge permutation
-		var dedgePerm = mathlib.rndPerm(4);
-
-		// Ensure PLL parity matches: corner parity XOR edge parity must be odd (parity case)
-		var cnParityIsOdd = false;
-		var tmp = cnPerm.slice();
-		for (var i = 0; i < 4; i++) {
-			while (tmp[i] != i) {
-				var j = tmp[i];
-				tmp[i] = tmp[j];
-				tmp[j] = j;
-				cnParityIsOdd = !cnParityIsOdd;
-			}
-		}
-		var dedgeParityIsOdd = false;
-		tmp = dedgePerm.slice();
-		for (var i = 0; i < 4; i++) {
-			while (tmp[i] != i) {
-				var j = tmp[i];
-				tmp[i] = tmp[j];
-				tmp[j] = j;
-				dedgeParityIsOdd = !dedgeParityIsOdd;
-			}
-		}
-		// OLL parity requires odd number of flipped edges, which means
-		// the total edge permutation (including wing swaps) has odd parity.
-		// PLL parity = corner perm parity XOR dedge perm parity must account for this.
-		// For now, randomize PLL parity (both parities are valid with OLL parity).
-
-		// Build dedge flips: nOriEdge=3 means 1 flipped, nOriEdge=1 means 3 flipped
-		var dedgeFlips = [];
-		for (var i = 0; i < 4; i++) {
-			if (nOriEdge == 3) {
-				dedgeFlips[i] = (i == flipIdx) ? 1 : 0;
-			} else {
-				dedgeFlips[i] = (i == flipIdx) ? 0 : 1;
-			}
-		}
-
-		// Apply random post-AUF
-		var postAuf = mathlib.rn(4);
-		if (postAuf > 0) {
-			var newCo = [];
-			var newCnPerm = [];
-			var newDedgePerm = [];
-			var newDedgeFlips = [];
-			for (var i = 0; i < 4; i++) {
-				var src = pollUEdge[i];
-				for (var r = 1; r < postAuf; r++) {
-					src = pollUEdge[src];
-				}
-				// after U^postAuf, slot i gets content from slot src
-				newCo[i] = co[src];
-				newCnPerm[i] = cnPerm[src];
-				newDedgePerm[i] = dedgePerm[src];
-				newDedgeFlips[i] = dedgeFlips[src];
-			}
-			// fix cnPerm and dedgePerm targets: they also need conjugation
-			for (var i = 0; i < 4; i++) {
-				cnPerm[i] = pollConjugateEdge(newCnPerm[i], postAuf);
-				dedgePerm[i] = pollConjugateEdge(newDedgePerm[i], postAuf);
-			}
-			co = newCo;
-			dedgeFlips = newDedgeFlips;
-		}
-
-		var colmap = [0, 1, 2, 3, 4, 5];
-		if (neut) {
-			var ori = mathlib.rn([1, 4, 8, 1, 1, 1, 24][neut]);
-			if (ori >= 8) {
-				mathlib.acycle(colmap, [0, 1, 2], ori >> 3);
-				mathlib.acycle(colmap, [3, 4, 5], ori >> 3);
-				ori &= 0x7;
-			}
-			if (ori >= 4) {
-				mathlib.acycle(colmap, [0, 1, 3, 4], 2);
-				ori &= 0x3;
-			}
-			if (ori >= 1) {
-				mathlib.acycle(colmap, [1, 2, 4, 5], ori);
-			}
-		}
-
-		var cc = new FullCube_3;
-
-		// Set corners
-		for (var i = 0; i < 4; i++) {
-			cc.corner.cp[i] = cnPerm[i];
-			cc.corner.co[i] = co[i];
-		}
-
-		// Set edges
-		var slotA = [0, 1, 2, 3];
-		var slotB = [12, 13, 14, 15];
-		for (var i = 0; i < 4; i++) {
-			var src = dedgePerm[i];
-			if (dedgeFlips[i]) {
-				cc.edge.ep[slotA[i]] = slotB[src];
-				cc.edge.ep[slotB[i]] = slotA[src];
-			} else {
-				cc.edge.ep[slotA[i]] = slotA[src];
-				cc.edge.ep[slotB[i]] = slotB[src];
-			}
-		}
-
-		var facelet = toFacelet(cc);
-		for (var i = 0; i < 96; i++) {
-			facelet[i] = "URFDLB".charAt(colmap[facelet[i]]);
-		}
-
-		var scramble = genFacelet(facelet.join("")).replace(/^\s+/, '');
-
-		// The 4x4 solver uses symmetry reduction, so the output scramble may
-		// leave the cube in a rotated frame. Apply the scramble to a solved
-		// FullCube to detect the orientation and append a rotation fix.
-		var testCube = new FullCube_3;
-		var moves = scramble.trim().split(/\s+/);
-		for (var mi = 0; mi < moves.length; mi++) {
-			var mv = moves[mi];
-			while (mv.length < 3) mv += ' ';
-			var mvIdx = move2str_1.indexOf(mv);
-			if (mvIdx >= 0) {
-				$move_6(testCube, mvIdx);
-			}
-		}
-		// Check which face color is at the U center after scramble.
-		// In the target state, U centers should be face 0 (U color).
-		// If a different face color is on top, we need a rotation to fix it.
-		var f = toFacelet(testCube);
-		// 4x4 facelet layout: face * 16 + position. U-face center = facelet 5.
-		var topFace = f[5];
-		// topFace tells us which face's color is currently on top.
-		// We need to rotate so that face 0 (U) ends up on top.
-		// Find where face-0 color currently is by checking each face center:
-		//   U center = f[5], R center = f[21], F center = f[37]
-		//   D center = f[53], L center = f[69], B center = f[85]
-		var uColorAt = -1;
-		var faceCenters = [5, 21, 37, 53, 69, 85]; // U,R,F,D,L,B center facelets
-		for (var fi = 0; fi < 6; fi++) {
-			if (f[faceCenters[fi]] == 0) { // face-0 = U color
-				uColorAt = fi;
-				break;
-			}
-		}
-		// uColorAt: 0=U(no fix), 1=R, 2=F, 3=D, 4=L, 5=B
-		// Rotation to bring U-color from that position back to U:
-		//   from R -> z'  (z': R->U)
-		//   from F -> x (x: F->U)
-		//   from D -> z2 (z2: D->U)
-		//   from L -> z (z: L->U)
-		//   from B -> x' (x': B->U)
-		var rotFix = ['', "z'", "x", 'z2', "z", "x'"];
-		if (uColorAt > 0) {
-			scramble = scramble + ' ' + rotFix[uColorAt];
-		}
-
-		return scramble.replace(/\s+/g, ' ').trim();
+		return get444LLScramble([-1,-1,-1,-1], eo, [-1,-1,-1,-1], co, neut, [0,1,2,3], [0,1,2,3], 0);
 	}
 
 	// 4x4 Plan-view image layout (32-char string):
@@ -3071,18 +2996,18 @@ var scramble_444 = (function(Cnk, circle) {
 	//   UB(slot 2): U=[1,2],   side=[26,25]
 	//   UR(slot 3): U=[7,11],  side=[21,22]
 
-	var pollCornerPos4 = [
-		[15, 20, 19],  // URF: U-face=15, CW=R[20], CCW=F[19]
-		[12, 16, 31],  // UFL: U-face=12, CW=F[16], CCW=L[31]
-		[0, 28, 27],   // ULB: U-face=0,  CW=L[28], CCW=B[27]
-		[3, 24, 23]    // UBR: U-face=3,  CW=B[24], CCW=R[23]
-	];
-	var pollEdgeUPos4 = [[13, 14], [4, 8], [1, 2], [7, 11]];       // U-face wing pairs
-	var pollEdgeSidePos4 = [[17, 18], [30, 29], [26, 25], [21, 22]]; // side wing pairs
-
 	function getPOLLCaseImage(cases, canvas) {
+		var pollCornerPos4 = [
+			[15, 20, 19],  // URF: U-face=15, CW=R[20], CCW=F[19]
+			[12, 16, 31],  // UFL: U-face=12, CW=F[16], CCW=L[31]
+			[0, 28, 27],   // ULB: U-face=0,  CW=L[28], CCW=B[27]
+			[3, 24, 23]    // UBR: U-face=3,  CW=B[24], CCW=R[23]
+		];
+		var pollEdgeUPos4 = [[13, 14], [4, 8], [1, 2], [7, 11]];
+		var pollEdgeSidePos4 = [[17, 18], [30, 29], [26, 25], [21, 22]];
+
 		var pollCase = poll_map[cases];
-		var coHex = pollCase[0];
+		var co = pollCase[0];
 		var flipIdx = pollCase[1];
 		var nOriEdge = pollCase[2];
 
@@ -3098,8 +3023,7 @@ var scramble_444 = (function(Cnk, circle) {
 
 		// Set corner stickers based on CO
 		for (var c = 0; c < 4; c++) {
-			var co = (coHex >> (c * 4)) & 0xf;
-			face[pollCornerPos4[c][co]] = 'D';
+			face[pollCornerPos4[c][co[c]]] = 'D';
 		}
 
 		// Set edge stickers based on flip (both wings of each dedge)
@@ -3123,9 +3047,9 @@ var scramble_444 = (function(Cnk, circle) {
 
 		var llParam = [face.join(''), null];
 		if (!canvas) {
-			return llParam.concat([pollCaseFilter[cases]]);
+			return llParam.concat([pollfilter[cases]]);
 		}
-		image.llImage.drawImage4(llParam[0], llParam[1], canvas);
+		image.llImage.drawImage(llParam[0], llParam[1], canvas);
 	}
 
 	scrMgr.reg('444wca', getRandomScramble)
@@ -3140,8 +3064,8 @@ var scramble_444 = (function(Cnk, circle) {
 		('444ud3c', getYauUD3CScramble)
 		('444rlda', getHoyaRLDAScramble)
 		('444rlca', getHoyaRLCAScramble)
-		('444ppll', getPPLLScramble, [ppllFilter, ppllProbs, getPPLLImage])
-		('444poll', getPOLLScramble, [pollCaseFilter, pollCaseProbs, getPOLLCaseImage])
+		('444ppll', getPPLLScramble, [ppllfilter, ppllprobs, getPPLLImage])
+		('444poll', getPOLLScramble, [pollfilter, pollprobs, getPOLLCaseImage])
 	;
 
 	return {
