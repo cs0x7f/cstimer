@@ -3004,7 +3004,7 @@ var scramble_444 = (function(Cnk, circle) {
 	//   UB(slot 2): U=[1,2],   side=[26,25]
 	//   UR(slot 3): U=[7,11],  side=[21,22]
 
-	function getPOLLCaseImage(cases, canvas) {
+	function getPOLLImage(cases, canvas) {
 		var pollCornerPos4 = [
 			[15, 20, 19],  // URF: U-face=15, CW=R[20], CCW=F[19]
 			[12, 16, 31],  // UFL: U-face=12, CW=F[16], CCW=L[31]
@@ -3073,7 +3073,7 @@ var scramble_444 = (function(Cnk, circle) {
 		('444rlda', getHoyaRLDAScramble)
 		('444rlca', getHoyaRLCAScramble)
 		('444ppll', getPPLLScramble, [ppllfilter, ppllprobs, getPPLLImage])
-		('444poll', getPOLLScramble, [pollfilter, pollprobs, getPOLLCaseImage])
+		('444poll', getPOLLScramble, [pollfilter, pollprobs, getPOLLImage])
 	;
 
 	return {
