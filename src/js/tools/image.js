@@ -639,6 +639,8 @@ var image = (function() {
 			var dim = 3;
 			if (pieces.length == 12) {
 				dim = 2;
+			} else if (pieces.length == 32) {
+				dim = 4;
 			}
 			var width = 50;
 			svg.width = (dim + 1.2) * width;
@@ -662,10 +664,21 @@ var image = (function() {
 			arrows = arrows || [];
 			for (var i = 0; i < arrows.length; i++) {
 				var arrow = arrows[i];
-				var x1 = arrow[0] % dim + 1.1;
-				var y1 = ~~(arrow[0] / dim) + 1.1;
-				var x2 = arrow[1] % dim + 1.1;
-				var y2 = ~~(arrow[1] / dim) + 1.1;
+				var x1, y1, x2, y2;
+				if (typeof arrow[0] === 'number') {
+					x1 = arrow[0] % dim + 1.1;
+					y1 = ~~(arrow[0] / dim) + 1.1;
+				} else {
+					x1 = arrow[0][0] + 1.1;
+					y1 = arrow[0][1] + 1.1;
+				}
+				if (typeof arrow[1] === 'number') {
+					x2 = arrow[1] % dim + 1.1;
+					y2 = ~~(arrow[1] / dim) + 1.1;
+				} else {
+					x2 = arrow[1][0] + 1.1;
+					y2 = arrow[1][1] + 1.1;
+				}
 				var length = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 				drawPolygon(svg, '#000', Rotate([
 					[0.2, length - 0.4, length - 0.4, length - 0.1, length - 0.4, length - 0.4, 0.2],
