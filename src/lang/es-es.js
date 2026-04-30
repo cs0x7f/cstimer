@@ -277,7 +277,9 @@ var scrdata = [
 		['Last 8 dedges', "444l8e", 0],
 		['RL center solved', "444ctrl", 0],
 		['RLDX center solved', "444rlda", 0],
-		['RLDX cross solved', "444rlca", 0]
+		['RLDX cross solved', "444rlca", 0],
+		['POLL', "444poll", 0],
+		['PPLL', "444ppll", 0]
 	]],
 	['Cubo de 555', [
 		["WCA", "555wca", 60],
