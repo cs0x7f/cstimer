@@ -328,7 +328,7 @@ var scramble_222 = (function(rn) {
 		} else if (type == '222tc') {
 			var tcllIdx = scrMgr.fixCase(cases, tcllprobs)
 			llcase = tcll_map[tcllIdx].slice();
-			ori = [0, 0, 0, 0, tcllIdx < 7 ? 1 : 2, 0, 0];
+			ori = [0, 0, 0, 0, tcllIdx < 8 ? 1 : 2, 0, 0];
 			perm = perm.concat(egperms[0]);
 			var perm4 = mathlib.rndPerm(4);
 			llcase[0] = 0;

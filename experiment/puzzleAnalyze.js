@@ -3,6 +3,22 @@ var puzzleAnalyzer = (function() {
 
 	var EPS = 1e-6;
 
+	function permMult(permA, permB) { // different from cube mult
+		var ret = [];
+		for (var i = 0; i < permA.length; i++) {
+			ret[i] = permB[permA[i]];
+		}
+		return ret;
+	}
+
+	function permInv(perm) {
+		var ret = [];
+		for (var i = 0; i < perm.length; i++) {
+			ret[perm[i]] = i;
+		}
+		return ret;
+	}
+
 	function getPuzzle(puzzle) {
 		if (typeof(puzzle) == 'string') {
 			var chk = poly3d.getFamousPuzzle(puzzle);
@@ -333,12 +349,12 @@ var puzzleAnalyzer = (function() {
 
 	grouplib.SchreierSims.prototype.centralizer = function(perm, thres) {
 		var obits = Array.prototype.concat.apply([], getOrbits([perm]));
-		var pp2 = this.permMult(obits, this.permMult(perm, this.permInv(obits)));
+		var pp2 = permMult(obits, permMult(perm, permInv(obits)));
 		var sgs2 = new grouplib.SchreierSims([this.e]);
 		var size = this.size();
 		do {
 			var g = this.rndElem();
-			g = this.permMult(obits, this.permMult(g, this.permInv(obits)));
+			g = permMult(obits, permMult(g, permInv(obits)));
 			g = sgs2.sift(g);
 			if (g != null) {
 				sgs2.addTk(this.e.length - 1, g);
@@ -360,13 +376,13 @@ var puzzleAnalyzer = (function() {
 		var obits = getOrbits([perm1]);
 		obits.sort(function(a, b) { return a.length - b.length; });
 		var obits = Array.prototype.concat.apply([], obits);
-		var pp1 = this.permMult(obits, this.permMult(perm1, this.permInv(obits)));
-		var pp2 = this.permMult(obits, this.permMult(perm2, this.permInv(obits)));
+		var pp1 = permMult(obits, permMult(perm1, permInv(obits)));
+		var pp2 = permMult(obits, permMult(perm2, permInv(obits)));
 		var sgs2 = new grouplib.SchreierSims([this.e]);
 		var size = this.size();
 		do {
 			var g = this.rndElem();
-			g = this.permMult(obits, this.permMult(g, this.permInv(obits)));
+			g = permMult(obits, permMult(g, permInv(obits)));
 			g = sgs2.sift(g);
 			if (g != null) {
 				sgs2.addTk(this.e.length - 1, g);
@@ -405,7 +421,7 @@ var puzzleAnalyzer = (function() {
 		for (var jj = 0; jj < this.i2t[depth].length; jj++) {
 			var j = this.i2t[depth][jj];
 			var ret = this.enumDFS(depth - 1,
-				this.permMult(this.sgs[depth][j], perm), callback, checkFunc);
+				permMult(this.sgs[depth][j], perm), callback, checkFunc);
 			if (ret) {
 				return ret;
 			}
@@ -562,7 +578,7 @@ var puzzleAnalyzer = (function() {
 		for (var i = 0; i < gen.length; i++) {
 			var g = gen[i];
 			if (shuffle) {
-				g = this.permMult(this.permMult(this.permInv(shuffle), g), shuffle);
+				g = permMult(permMult(permInv(shuffle), g), shuffle);
 			}
 			g = this.sift(g);
 			if (g == null) {
@@ -592,7 +608,7 @@ var puzzleAnalyzer = (function() {
 				if (!this.sgs[i][j]) {
 					return p;
 				}
-				p = this.permMult(p, this.sgsi[i][j]);
+				p = permMult(p, this.sgsi[i][j]);
 			}
 		}
 		return null;
@@ -604,7 +620,7 @@ var puzzleAnalyzer = (function() {
 			return -1;
 		}
 		this.sgs[k][j] = p;
-		this.sgsi[k][j] = this.permInv(p);
+		this.sgsi[k][j] = permInv(p);
 		this.t2i[k][j] = this.i2t[k].length;
 		this.i2t[k].push(j);
 		if (this.i2t[k].length == 2) {
@@ -625,7 +641,7 @@ var puzzleAnalyzer = (function() {
 		for (var i = 0; i < this.i2t[k].length; i++) { // continue bfs for schreier tree
 			var i1 = this.i2t[k][i];
 			for (var j = 0; j < this.Tk[k].length; j++) {
-				this.addSGS(k, this.permMult(this.sgs[k][i1], this.Tk[k][j]));
+				this.addSGS(k, permMult(this.sgs[k][i1], this.Tk[k][j]));
 			}
 		}
 	}

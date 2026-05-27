@@ -339,7 +339,7 @@ var tools = (function() {
 	}) : {};
 
 	var lastTrain = null;
-	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|333drud|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|eocross|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|222(eg[012]?|tc[np]|lsall)|444(p[op]ll|l8e))$/;
+	var trainScrambleRe = /^((z[zb]|[coep]|c[om]|2g|ls|tt)?ll|lse(mu)?|2genl?|3gen_[LF]|333drud|f2l|lsll2|(zb|w?v|eo)ls|roux|eoline|eocross|sbrx|mt(3qb|eole|tdr|6cp|l5ep|cdrll)|222(eg[012]?|tc[np]?|lsall)|444(p[op]ll|l8e))$/;
 
 	function isCurTrainScramble(scramble) {
 		return !!trainScrambleRe.exec((scramble || curScramble || [])[0]);
