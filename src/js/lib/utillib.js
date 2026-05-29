@@ -93,7 +93,7 @@ ISCSTIMER && execMain(function() {
 		window.localStorage = {};
 	}
 
-	if (!('properties' in localStorage) && location.protocol != 'https:' && location.hostname != 'localhost') {
+	if (!('properties' in localStorage) && location.protocol != 'https:' && location.hostname != 'localhost' && location.protocol != 'file:') {
 		location.href = 'https:' + location.href.substring(location.protocol.length);
 	}
 
