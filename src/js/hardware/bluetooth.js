@@ -79,6 +79,9 @@ function BtDeviceGroupFactory() {
 			var filters = Object.keys(cubeModels).map((prefix) => ({ namePrefix: prefix }));
 			var opservs = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.opservs || [])))];
 			var cics = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.cics || [])))];
+			// also match by advertised service, for devices that can't present a model name (e.g. phone timers)
+			var servFilters = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.servFilters || [])))];
+			filters = filters.concat(servFilters.map((service) => ({ services: [service] })));
 			giikerutil.log('[bluetooth]', 'scanning...', Object.keys(cubeModels));
 			return window.navigator.bluetooth.requestDevice({
 				filters: filters,
@@ -91,15 +94,22 @@ function BtDeviceGroupFactory() {
 			device.addEventListener('gattserverdisconnected', onDisconnect);
 			cube = null;
 			for (var prefix in cubeModels) {
-				if (device.name.startsWith(prefix)) {
+				if (device.name && device.name.startsWith(prefix)) {
 					cube = cubeModels[prefix];
 					break;
 				}
 			}
-			if (!cube) {
-				return Promise.reject('Cannot detect device type');
+			if (cube) {
+				return cube.init(device);
 			}
-			return cube.init(device);
+			return device.gatt.connect().then((gatt) => gatt.getPrimaryServices()).then(function(servs) {
+				var uuids = servs.map((service) => toUuid128(service.uuid));
+				cube = Object.values(cubeModels).find((model) => (model.servFilters || []).some((s) => uuids.indexOf(toUuid128(s)) >= 0));
+				if (!cube) {
+					return Promise.reject('Cannot detect device type');
+				}
+				return cube.init(device);
+			});
 		});
 	}
 

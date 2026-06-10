@@ -116,6 +116,7 @@ var GanTimerDriver = execMain(function () {
 		prefix: ['GAN', 'Gan', 'gan'],
 		init: init,
 		opservs: [SERVICE_UUID],
+		servFilters: [SERVICE_UUID],
 		clear: clear
 	});
 });
