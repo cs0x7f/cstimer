@@ -268,9 +268,9 @@ execMain(function() {
 			var devName = '';
 			for (var i = 0; i < 8; i++)
 				devName += String.fromCharCode(parseInt(value.slice(8 + i * 8, 16 + i * 8), 2));
-			var hardwareVersion = parseInt(value.slice(88, 96), 2) + "." + parseInt(value.slice(96, 104), 2);
-			var softwareVersion = parseInt(value.slice(72, 80), 2) + "." + parseInt(value.slice(80, 88), 2);
-			giikerutil.log('[Moyu32Cube] Hardware Version (?)', hardwareVersion);
+			var hardwareVersion = parseInt(value.slice(72, 80), 2) + "." + parseInt(value.slice(80, 88), 2);
+			var softwareVersion = parseInt(value.slice(88, 96), 2) + "." + parseInt(value.slice(96, 104), 2);
+			giikerutil.log('[Moyu32Cube] Hardware Version', hardwareVersion);
 			giikerutil.log('[Moyu32Cube] Software Version', softwareVersion);
 			giikerutil.log('[Moyu32Cube] Device Name', devName);
 		} else if (msgType == 163) { // state (facelets)
