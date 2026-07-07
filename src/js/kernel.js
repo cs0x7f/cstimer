@@ -268,7 +268,10 @@ var kernel = execMain(function() {
 				resetPropertyes();
 				generateDiv();
 				return false;
-			}], [BUTTON_EXPORT.replace(/-?<br>-?/g, ''), exportFunc.exportProperties]], 'option', BUTTON_OPTIONS.replace(/-?<br>-?/g, ''), function() {
+			}], [BUTTON_EXPORT.replace(/-?<br>-?/g, ''), exportFunc.exportProperties], [FONTMGR_BUTTON, function() {
+				customFont.show();
+				return false;
+			}]], 'option', BUTTON_OPTIONS.replace(/-?<br>-?/g, ''), function() {
 				right.find('select[name="lang"]').focus().blur();
 				scrollToModule();
 			});
@@ -308,6 +311,28 @@ var kernel = execMain(function() {
 			defaultProps[key] = values[0];
 			defaultProps['sr_' + key] = (sessionRelated & 2) == 2;
 			pushSignal('property', [key, getProp(key), 'set']);
+		}
+
+		var extLen = {}; //module.key -> number of entries appended by the last extendProp call
+
+		// appends extraVals/extraStrs to an already-registered select prop's option list (e.g. to
+		// offer user-added items alongside the built-in ones), replacing whatever this function
+		// appended for that key last time it was called.
+		function extendProp(module, key, extraVals, extraStrs) {
+			var proSet = proSets[module] && proSets[module][key];
+			if (!proSet) {
+				return;
+			}
+			var mapKey = module + '.' + key;
+			var n = extLen[mapKey] || 0;
+			if (n) {
+				proSet[3][1].splice(proSet[3][1].length - n, n);
+				proSet[3][2].splice(proSet[3][2].length - n, n);
+			}
+			proSet[3][1] = proSet[3][1].concat(extraVals);
+			proSet[3][2] = proSet[3][2].concat(extraStrs);
+			extLen[mapKey] = extraVals.length;
+			isDivOut = true;
 		}
 
 		function getSProps() {
@@ -355,6 +380,7 @@ var kernel = execMain(function() {
 			get : getProp,
 			set : setProp,
 			reg : regProp,
+			extend: extendProp,
 			getSProps: getSProps,
 			setSProps: setSProps,
 			load : load,
@@ -755,6 +781,13 @@ var kernel = execMain(function() {
 						$('#container, #multiphase').css('font-family', value[1]);
 					}
 					break;
+				case 'uifont':
+					if (value[1] == 'd') {
+						document.documentElement.style.removeProperty('--font-ui');
+					} else {
+						document.documentElement.style.setProperty('--font-ui', value[1]);
+					}
+					break;
 				case 'col-font':
 				case 'col-back':
 				case 'col-board':
@@ -811,9 +844,10 @@ var kernel = execMain(function() {
 
 		$(function() {
 			gray = $('#gray');
-			regListener('ui', 'property', procSignal, /^(?:color|font|col-.+|zoom|view|uidesign|wnd(?:Scr|Stat|Tool))/);
+			regListener('ui', 'property', procSignal, /^(?:color|font|uifont|col-.+|zoom|view|uidesign|wnd(?:Scr|Stat|Tool))/);
 			regProp('ui', 'zoom', 1, ZOOM_LANG, ['1', ['0.7', '0.8', '0.9', '1', '1.1', '1.25', '1.5'], ['70%', '80%', '90%', '100%', '110%', '125%', '150%']], 1);
 			regProp('ui', 'font', 1, PROPERTY_FONT, ['lcd', ['r', 'Arial', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5', 'Roboto'], PROPERTY_FONT_STR.split('|').concat('Roboto')]);
+			regProp('ui', 'uifont', 1, PROPERTY_UIFONT, ['d', ['d', 'Arial', 'Roboto', 'lcd', 'lcd2', 'lcd3', 'lcd4', 'lcd5'], PROPERTY_UIFONT_STR.split('|')]);
 			regProp('kernel', 'ahide', 0, PROPERTY_AHIDE, [true], 1);
 			regProp('ui', 'uidesign', 1, PROPERTY_UIDESIGN, ['n', ['n', 'mt', 'ns', 'mtns', 'cspt'], PROPERTY_UIDESIGN_STR.split('|').concat('csTimer+')]);
 			regProp('ui', 'view', 1, PROPERTY_VIEW, ['a', ['a', 'm', 'd'], PROPERTY_VIEW_STR.split('|')]);
@@ -1090,6 +1124,157 @@ var kernel = execMain(function() {
 		});
 	})();
 
+	// lets users upload their own font files (a "font package") and pick them from the
+	// existing timer-font (ui/font) and interface-font (ui/uifont) option lists.
+	var customFont = (function() {
+		var fonts = []; //[{id, name, url}]
+		var fontTag = $('<style>').appendTo('head');
+		var uploadFontFile = $('<input type="file" id="fontfile" accept=".woff,.woff2,.ttf,.otf"/>');
+		var mgrList = $('<div class="fontmgrlist">');
+		var fontFileRe = /\.(woff2?|ttf|otf)$/i;
+
+		function familyOf(id) {
+			return 'ctfont-' + id;
+		}
+
+		function escapeHtml(str) {
+			return ('' + str).replace(/[&<>"']/g, function(c) {
+				return {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c];
+			});
+		}
+
+		function rebuildFontFace() {
+			var css = '';
+			for (var i = 0; i < fonts.length; i++) {
+				if (fonts[i].url) {
+					css += '@font-face{font-family:"' + familyOf(fonts[i].id) + '";src:url(' + fonts[i].url + ');}';
+				}
+			}
+			if (fontTag[0].styleSheet) {
+				fontTag[0].styleSheet.cssText = css;
+			} else {
+				fontTag[0].innerHTML = css;
+			}
+		}
+
+		function syncOptions() {
+			var vals = [];
+			var strs = [];
+			for (var i = 0; i < fonts.length; i++) {
+				vals.push(familyOf(fonts[i].id));
+				strs.push(escapeHtml(fonts[i].name));
+			}
+			property.extend('ui', 'font', vals, strs);
+			property.extend('ui', 'uifont', vals, strs);
+			property.reload();
+		}
+
+		function saveManifest() {
+			var manifest = fonts.map(function(f) {
+				return {id: f.id, name: f.name};
+			});
+			setProp('customFonts', JSON.stringify(manifest));
+		}
+
+		function renderMgrList() {
+			mgrList.empty();
+			if (!fonts.length) {
+				mgrList.append($('<div class="fontmgrempty">').text(FONTMGR_EMPTY));
+				return;
+			}
+			for (var i = 0; i < fonts.length; i++) {
+				mgrList.append(
+					$('<div class="fontmgrrow">').append(
+						$('<span style="font-family:' + familyOf(fonts[i].id) + '">').text(fonts[i].name),
+						$('<span class="click fontmgrdel">').html('&#10006;').click(removeFont.bind(undefined, fonts[i].id))
+					)
+				);
+			}
+		}
+
+		function addFont(file) {
+			if (!fontFileRe.test(file.name)) {
+				$.alert(FONTMGR_INVALID);
+				return;
+			}
+			var name = prompt(FONTMGR_PROMPT_NAME, file.name.replace(/\.[^.]+$/, ''));
+			if (!name) {
+				return;
+			}
+			var id = '' + Date.now() + ~~(Math.random() * 1000);
+			storage.setKey('fontFile_' + id, file);
+			fonts.push({id: id, name: name, url: URL.createObjectURL(file)});
+			saveManifest();
+			rebuildFontFace();
+			syncOptions();
+			renderMgrList();
+		}
+
+		function removeFont(id) {
+			if (!$.confirm(FONTMGR_REMOVE_CFM)) {
+				return;
+			}
+			for (var i = 0; i < fonts.length; i++) {
+				if (fonts[i].id == id) {
+					fonts.splice(i, 1);
+					break;
+				}
+			}
+			storage.setKey('fontFile_' + id, null);
+			saveManifest();
+			rebuildFontFace();
+			syncOptions();
+			renderMgrList();
+		}
+
+		function loadManifest() {
+			var manifest;
+			try {
+				manifest = JSON.parse(getProp('customFonts'));
+			} catch (e) {
+				manifest = [];
+			}
+			if (!manifest.length) {
+				return;
+			}
+			var pending = manifest.length;
+			manifest.forEach(function(m) {
+				storage.getKey('fontFile_' + m.id).then(function(file) {
+					if (file) {
+						fonts.push({id: m.id, name: m.name, url: URL.createObjectURL(file)});
+					}
+					if (--pending == 0) {
+						rebuildFontFace();
+						syncOptions();
+					}
+				});
+			});
+		}
+
+		function showMgr() {
+			renderMgrList();
+			ui.showDialog([mgrList, 0, undefined, 0, [FONTMGR_ADD, function() {
+				uploadFontFile.unbind('change').change(function() {
+					if (uploadFontFile[0].files.length) {
+						addFont(uploadFontFile[0].files[0]);
+					}
+					uploadFontFile.val('');
+				});
+				uploadFontFile.click();
+				return false;
+			}]], 'fontmgr', FONTMGR_TITLE);
+		}
+
+		$(function() {
+			regProp('ui', 'customFonts', ~5, '', ['[]']);
+			loadManifest();
+		});
+
+		return {
+			show: showMgr
+		};
+	})();
+
 	function pretty(time, small) {
 		// console.log(time);
 		if (time < 0) {return 'DNF';}
@@ -1273,6 +1458,7 @@ var kernel = execMain(function() {
 		getProp: getProp,
 		setProp: setProp,
 		regProp: regProp,
+		extendProp: property.extend,
 		getSProps: property.getSProps,
 		setSProps: property.setSProps,
 		regListener: regListener,

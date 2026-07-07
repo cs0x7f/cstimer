@@ -69,7 +69,7 @@
 html, body {
 	width: 100%;
 	height: 100%;
-	font-family: Arial;
+	font-family: var(--font-ui, Arial);
 	overflow: hidden;
 }
 
@@ -154,7 +154,7 @@ textarea {
 }
 
 #avgstr {
-	font-family: Arial;
+	font-family: var(--font-ui, Arial);
 	position: relative;
 }
 
@@ -167,7 +167,7 @@ textarea {
 	display: none;
 	width: 0;
 	height: 0;
-	font-family: Arial;
+	font-family: var(--font-ui, Arial);
 	z-index: 120;
 	font-size: 4vmin;
 }
@@ -607,7 +607,7 @@ a {
 
 #timer .difflabel {
 	display: inline-block;
-	font-family: Arial;
+	font-family: var(--font-ui, Arial);
 	font-size: 0.15em;
 }
 
@@ -619,7 +619,7 @@ a {
 
 #rtimer .difflabel {
 	margin-top: -0.4em;
-	font-family: Arial;
+	font-family: var(--font-ui, Arial);
 	font-size: 0.25em;
 }
 
@@ -862,11 +862,42 @@ div.helptable ul {
 	bottom: 30%;
 }
 
-.dialoginput, .dialogstats, .dialogexport, .dialogscropt, .dialogdonate {
+.dialoginput, .dialogstats, .dialogexport, .dialogscropt, .dialogdonate, .dialogfontmgr {
 	left: 20%;
 	right: 20%;
 	top: 20%;
 	bottom: 20%;
+}
+
+.fontmgrlist {
+	text-align: left;
+	overflow-y: auto;
+	height: 100%;
+}
+
+.fontmgrrow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.4em 0.2em;
+	border-bottom: 1px solid;
+	border-bottom: 0.1rem solid;
+}
+
+.fontmgrrow > span:first-child {
+	font-size: 1.3em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.fontmgrdel {
+	padding: 0 0.5em;
+}
+
+.fontmgrempty {
+	padding: 0.5em 0.2em;
+	opacity: 0.7;
 }
 
 .dialogcasestats {
@@ -928,6 +959,7 @@ select, input[type='button'], input[type='text'] {
 	padding: 0.1rem;
 	vertical-align: middle;
 	font-size: 1em;
+	font-family: var(--font-ui, Arial);
 	-webkit-appearance: none;
 	-moz-appearance:    none;
 	appearance:         none;
