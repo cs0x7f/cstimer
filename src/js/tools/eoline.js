@@ -83,6 +83,6 @@ execMain(function(createMove, edgeMove, createPrun, getPruning) {
 
 	$(function() {
 		tools.regTool('eoline', TOOLS_SOLVERS + '>' + TOOLS_EOLINE, execFunc.bind(null, 'eoline'));
-		tools.regTool('eocross', TOOLS_SOLVERS + '>' + 'EOCross', execFunc.bind(null, 'eocross'));
+		tools.regTool('eocross', TOOLS_SOLVERS + '>' + 'EO Cross', execFunc.bind(null, 'eocross'));
 	});
 }, [mathlib.createMove, mathlib.edgeMove, mathlib.createPrun, mathlib.getPruning]);
