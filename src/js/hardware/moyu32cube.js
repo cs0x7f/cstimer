@@ -26,10 +26,14 @@ execMain(function() {
 		'NoRg7ANAzArNAc1IigFgqgTB9MCcE8cAbBCJpKgeaSAAxTSPxgC6QA'
 	];
 
+	var keySucCnt = 0;
+	var keyFailCnt = 0;
+	var keyResolve = null;
+	var keyReject = null;
+
 	/**
 	 * Uses the same encryption scheme as GAN Gen2/3
 	 */
-
 	function getKeyAndIv(value) {
 		var key = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[0]));
 		var iv = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[1]));
@@ -113,15 +117,15 @@ execMain(function() {
 	}
 
 	function requestCubeInfo() {
-		return sendSimpleRequest(161);
+		return sendSimpleRequest(0xa1);
 	}
 
 	function requestCubeStatus() {
-		return sendSimpleRequest(163);
+		return sendSimpleRequest(0xa3);
 	}
 
 	function requestCubePower() {
-		return sendSimpleRequest(164);
+		return sendSimpleRequest(0xa4);
 	}
 
 	function getManufacturerDataBytes(mfData) {
@@ -225,11 +229,23 @@ execMain(function() {
 			return _chrct_read.startNotifications();
 		}).then(function () {
 			initMac(true);
+			keySucCnt = 0;
+			keyFailCnt = 0;
+			return new Promise(function (resolve, reject) {
+				keyResolve = resolve;
+				keyReject = reject;
+			});
+		}).then(function() {
 			return requestCubeInfo();
 		}).then(function () {
 			return requestCubeStatus();
 		}).then(function () {
 			return requestCubePower();
+		}).catch(function (err) {
+			if (err == 'keyError') {
+				giikerutil.log('[Moyu32Cube] mac address might be incorrect');
+				alert('mac address might be incorrect, please reconnect');
+			}
 		});
 	}
 
@@ -263,7 +279,7 @@ execMain(function() {
 		}
 		value = value.join('');
 		var msgType = parseInt(value.slice(0, 8), 2);
-		if (msgType == 161) { // info
+		if (msgType == 0xa1) { // info
 			giikerutil.log('[Moyu32Cube] received hardware info event', value);
 			var devName = '';
 			for (var i = 0; i < 8; i++)
@@ -273,16 +289,16 @@ execMain(function() {
 			giikerutil.log('[Moyu32Cube] Hardware Version', hardwareVersion);
 			giikerutil.log('[Moyu32Cube] Software Version', softwareVersion);
 			giikerutil.log('[Moyu32Cube] Device Name', devName);
-		} else if (msgType == 163) { // state (facelets)
+		} else if (msgType == 0xa3) { // state (facelets)
 			if (prevMoveCnt == -1) { // we only care about the initial cube state, ignore any other state messages
 				moveCnt = parseInt(value.slice(152, 160), 2);
 				latestFacelet = parseFacelet(value.slice(8, 152));
 				initCubeState();
 			}
-		} else if (msgType == 164) { // battery level
+		} else if (msgType == 0xa4) { // battery level
 			batteryLevel = parseInt(value.slice(8, 16), 2);
 			giikerutil.updateBattery([batteryLevel, deviceName]);
-		} else if (msgType == 165) { // move
+		} else if (msgType == 0xa5) { // move
 			moveCnt = parseInt(value.slice(88, 96), 2);
 			if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
 				return;
@@ -302,7 +318,16 @@ execMain(function() {
 			if (!invalidMove) {
 				updateMoveTimes(locTime);
 			}
-		// } else if (msgType == 171) { // gyro
+		} // else if (msgType == 0xab) {} // grro
+		if ((msgType & 0xf0) == 0xa0) {
+			keyFailCnt++;
+		} else {
+			keySucCnt++;
+		}
+		if (keyFailCnt * 10 < keySucCnt - 2 && keyResolve) {
+			keyResolve();
+		} else if (keySucCnt < keyFailCnt - 5 && keyReject) {
+			keyReject();
 		}
 	}
 
