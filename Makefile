@@ -87,6 +87,8 @@ tools/stackmatutil.js \
 hardware/bluetooth.js \
 hardware/giikercube.js \
 hardware/gocube.js \
+hardware/gan2x2uilib.js \
+hardware/gan251cube.js \
 hardware/gancube.js \
 hardware/moyucube.js \
 hardware/moyu32cube.js \

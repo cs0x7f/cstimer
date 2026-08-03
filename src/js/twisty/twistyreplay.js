@@ -229,7 +229,11 @@ var replay = execMain(function() {
 
 	function parseRecons(recons) {
 		rawRecons = recons;
-		algSpan.attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent((recons || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) + '&setup=' + encodeURIComponent(curScramble || ''));
+		algSpan.attr('href', cubeutil.getAlgCubingUrl(
+			(recons || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;'),
+			curScramble || '',
+			puzzle
+		));
 		var movets = recons.split(' ');
 		var moves = [];
 		var tstamp = [];
@@ -268,7 +272,11 @@ var replay = execMain(function() {
 	}
 
 	function popupReplay(scramble, recons, _puzzle) {
-		puzzle = _puzzle || tools.puzzleType(tools.getCurScramble()[0]);
+		puzzle = _puzzle || tools.puzzleType(tools.getCurScramble()[0]) || '333';
+		// Accept scramble types (222so) or puzzle ids (222)
+		if (tools.puzzleType(puzzle)) {
+			puzzle = tools.puzzleType(puzzle);
+		}
 		var size = ['222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'].indexOf(puzzle);
 		curScramble = scramble;
 		shareURL = new URL('?vrcreplay=' + LZString.compressToEncodedURIComponent(JSON.stringify([scramble, recons, puzzle])), location).toString();

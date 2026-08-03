@@ -24,6 +24,12 @@ var scrHinter = execMain(function(CubieCube) {
 			}
 			scrState.selfMoveStr('URFDLB'.charAt(scr[i][0]) + " 2'".charAt(scr[i][2] - 1));
 		}
+		// 2x2 BT: corners only — keep edges solved for equality checks
+		if (tools.getCurPuzzle() == '222') {
+			for (var e = 0; e < 12; e++) {
+				scrState.ea[e] = e << 1;
+			}
+		}
 	}
 
 	function checkInSeq(state, gen, seq) {
@@ -123,6 +129,14 @@ var scrHinter = execMain(function(CubieCube) {
 	function checkScramble(curCubie) {
 		if (rawScrTxt == "") {
 			return false;
+		}
+		if (tools.getCurPuzzle() == '222') {
+			for (var i = 0; i < 8; i++) {
+				if (scrState.ca[i] != curCubie.ca[i]) {
+					return false;
+				}
+			}
+			return true;
 		}
 		return scrState.isEqual(curCubie);
 	}
@@ -277,6 +291,10 @@ var giikerutil = execMain(function(CubieCube) {
 			clearTimeout(detectTid);
 			detectTid = 0;
 		}
+		// 2x2 BT uses corner-only state — skip AED (looks invalid as 3x3)
+		if (tools.getCurPuzzle() == '222') {
+			return;
+		}
 		if (kernel.getProp('giiAED')) {
 			detectTid = setTimeout(function() {
 				if (checkMoves(moveTsList.slice(moveTsStart)) == 99) {
@@ -351,8 +369,9 @@ var giikerutil = execMain(function(CubieCube) {
 		return false;
 	}
 
-	function markSolved() {
-		//mark current state as solved
+	function markSolvedSoft() {
+		// Set display zero from current raw facelets (no hardware RESET)
+		hackedSolvedCubieInv = null;
 		solvedStateInv.invFrom(curRawCubie);
 		curState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', curRawState);
@@ -360,6 +379,16 @@ var giikerutil = execMain(function(CubieCube) {
 		scrambleLength = 0;
 		drawState();
 		callback(curState, [], [null, $.now()]);
+	}
+
+	function markSolved() {
+		var cube = GiikerCube.getCube && GiikerCube.getCube();
+		// Cubes with hardware RESET (e.g. GAN 251 UI): RESET then soft-sync
+		if (cube && typeof cube.markHardwareSolved == 'function') {
+			cube.markHardwareSolved();
+			return;
+		}
+		markSolvedSoft();
 	}
 
 	var moveTsList = []; //[[move, deviceTime, locTime], ...], locTime might be null
@@ -505,10 +534,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateAlgClick(click, text, setup, alg) {
 		if (setup || alg) {
-			click.attr('href',
-				'https://alg.cubing.net/?alg=' + encodeURIComponent(alg) +
-				'&setup=' + encodeURIComponent(setup)
-			);
+			click.attr('href', cubeutil.getAlgCubingUrl(alg, setup, tools.getCurPuzzle()));
 		} else {
 			click.removeAttr('href');
 		}
@@ -591,7 +617,8 @@ var giikerutil = execMain(function(CubieCube) {
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			var scrType = value[0];
 			curScramble = value[1];
-			if (tools.puzzleType(scrType) != '333') {
+			var puz = tools.puzzleType(scrType);
+			if (puz != '333' && puz != '222') {
 				curScramble = "";
 			}
 			scrHinter.setScramble(curScramble);
@@ -791,6 +818,7 @@ var giikerutil = execMain(function(CubieCube) {
 			evtCallback = func;
 		},
 		markSolved: markSolved,
+		markSolvedSoft: markSolvedSoft,
 		checkScramble: checkScramble,
 		markScrambled: markScrambled,
 		init: init,

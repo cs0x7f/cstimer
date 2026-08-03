@@ -15,13 +15,16 @@ execMain(function(timer) {
 		var tmpCubie1 = new mathlib.CubieCube();
 		var puzzleObj;
 		var curOri = -1;
+		var vrcPuzzle = '333';
 
-		function resetVRC(temp, force) {
+		function resetVRC(temp, force, puzzleHint) {
 			if ((isReseted && !force) || !enableVRC) {
 				return;
 			}
+			vrcPuzzle = puzzleHint || tools.getCurPuzzle() || '333';
+			var size = ['', '', '222', '333', '444', '555', '666', '777', '888', '999', '101010', '111111'].indexOf(vrcPuzzle);
 			var options = {
-				puzzle: "cube3",
+				puzzle: size >= 2 ? ('cube' + size) : 'cube3',
 				style: kernel.getProp('giiVRC')
 			};
 			puzzleFactory.init(options, $.noop, div, function(ret, isInit) {
@@ -44,6 +47,9 @@ execMain(function(timer) {
 					curVRCCubie.selfMoveStr(puzzleObj.move2str(preScramble[i]));
 				}
 				puzzleObj.applyMoves(preScramble); // process pre scramble (cube orientation)
+				if (vrcPuzzle == '222') {
+					fix222Edges(curVRCCubie);
+				}
 				var targetOri = kernel.getProp('giiOri');
 				targetOri = targetOri == 'auto' ? -1 : ~~targetOri;
 				setOri(targetOri);
@@ -56,17 +62,88 @@ execMain(function(timer) {
 			puzzleObj && puzzleObj.resize();
 		}
 
+		function fix222Edges(cc) {
+			for (var i = 0; i < 12; i++) {
+				cc.ea[i] = i << 1;
+			}
+		}
+
+		function cornersEqual(a, b) {
+			for (var i = 0; i < 8; i++) {
+				if (a.ca[i] != b.ca[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		// Reconstruct URFDLB alg for 2x2 corner state (BFS). Avoid scramble_333 —
+		// corner-only facelets are illegal 3x3 → Error → cube2 mesh explodes.
+		function gen222Facelet(facelet) {
+			var goal = new mathlib.CubieCube();
+			goal.fromFacelet(facelet);
+			var gkey = goal.ca.join(',');
+			var start = new mathlib.CubieCube();
+			if (start.ca.join(',') == gkey) {
+				return '';
+			}
+			var moveList = [];
+			for (var ax = 0; ax < 6; ax++) {
+				for (var pow = 0; pow < 3; pow++) {
+					moveList.push(['URFDLB'.charAt(ax) + " 2'".charAt(pow), ax * 3 + pow, ax]);
+				}
+			}
+			var q = [{ ca: start.ca.slice(), path: '', last: -1 }];
+			var vis = {};
+			vis[start.ca.join(',')] = 1;
+			for (var qi = 0; qi < q.length; qi++) {
+				var node = q[qi];
+				if (node.path.split(/\s+/).filter(Boolean).length >= 14) {
+					continue;
+				}
+				var cur = new mathlib.CubieCube();
+				cur.ca = node.ca;
+				for (var mi = 0; mi < moveList.length; mi++) {
+					var mv = moveList[mi];
+					if (mv[2] == node.last) {
+						continue;
+					}
+					var next = new mathlib.CubieCube();
+					mathlib.CubieCube.CornMult(cur, mathlib.CubieCube.moveCube[mv[1]], next);
+					var k = next.ca.join(',');
+					if (vis[k]) {
+						continue;
+					}
+					vis[k] = 1;
+					var path = node.path ? node.path + ' ' + mv[0] : mv[0];
+					if (k == gkey) {
+						return path;
+					}
+					q.push({ ca: next.ca.slice(), path: path, last: mv[2] });
+				}
+			}
+			return '';
+		}
+
 		function setState(state, prevMoves, isFast) {
 			if (puzzleObj == undefined || !enableVRC) {
 				return;
 			}
+			var is222 = vrcPuzzle == '222';
 			tmpCubie1.fromFacelet(state);
+			if (is222) {
+				fix222Edges(tmpCubie1);
+			}
 			var todoMoves = [];
 			var shouldReset = true;
 			for (var i = 0; i < prevMoves.length; i++) {
 				todoMoves.push(prevMoves[i]);
 				tmpCubie1.selfMoveStr(prevMoves[i], true);
-				if (tmpCubie1.isEqual(curVRCCubie)) {
+				if (is222) {
+					fix222Edges(tmpCubie1);
+				}
+				// 251 UI / 2x2: edges always forced solved → full isEqual always fails
+				if (is222 ? cornersEqual(tmpCubie1, curVRCCubie) : tmpCubie1.isEqual(curVRCCubie)) {
 					shouldReset = false;
 					break;
 				}
@@ -74,7 +151,12 @@ execMain(function(timer) {
 			if (shouldReset) { //cannot get current state according to prevMoves
 				resetVRC(false);
 				curVRCCubie.fromFacelet(mathlib.SOLVED_FACELET);
-				todoMoves = scramble_333.genFacelet(state);
+				if (is222) {
+					fix222Edges(curVRCCubie);
+					todoMoves = gen222Facelet(state);
+				} else {
+					todoMoves = scramble_333.genFacelet(state);
+				}
 			} else {
 				todoMoves = todoMoves.reverse().join(' ');
 			}
@@ -91,6 +173,9 @@ execMain(function(timer) {
 			}
 			isReseted = false;
 			curVRCCubie.fromFacelet(state);
+			if (is222) {
+				fix222Edges(curVRCCubie);
+			}
 		}
 
 		function setOri(ori) {
@@ -207,7 +292,7 @@ execMain(function(timer) {
 					}
 					DEBUG && console.log('time fit, new=', timer.curTime());
 					sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
-					kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [sol, '333']]);
+					kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [sol, tools.getCurPuzzle() || '333']]);
 				} else if (kernel.getProp('giiMode') != 'n') {
 					kernel.pushSignal('ctrl', ['scramble', 'next']);
 				}
@@ -244,8 +329,10 @@ execMain(function(timer) {
 		if (timer.status() == -1) {
 			if (kernel.getProp('giiMode') == 'n') {
 				if (!giikerutil.checkScramble()) {
-					var gen = scramble_333.genFacelet(currentFacelet);
-					kernel.pushSignal('scramble', ['333', cubeutil.getConjMoves(gen, true), 0]);
+					if (tools.getCurPuzzle() == '333') {
+						var gen = scramble_333.genFacelet(currentFacelet);
+						kernel.pushSignal('scramble', ['333', cubeutil.getConjMoves(gen, true), 0]);
+					}
 				}
 				giikerutil.markScrambled();
 			} else {
@@ -265,7 +352,32 @@ execMain(function(timer) {
 		enableVRC = enable;
 		enable ? div.show() : div.hide();
 		if (enable) {
-			giikerVRC.resetVRC(true, true);
+			lastVrcPuzzle = tools.getCurPuzzle();
+			giikerVRC.resetVRC(true, true, lastVrcPuzzle);
+		}
+	}
+
+	var lastVrcPuzzle = null;
+
+	function onVrcScramble(signal, value) {
+		if (!enableVRC) {
+			return;
+		}
+		// Use signal value directly — getCurPuzzle() may still be the previous type
+		var puz = tools.puzzleType(value[0]) || '333';
+		if (puz != lastVrcPuzzle) {
+			lastVrcPuzzle = puz;
+			if (!GiikerCube.isConnected()) {
+				currentFacelet = mathlib.SOLVED_FACELET;
+			}
+			giikerVRC.resetVRC(true, true, puz);
+			giikerVRC.setState(currentFacelet, [], false);
+		}
+		if (timer.status() == -1 && kernel.getProp('giiMode') == 'at' && GiikerCube.isConnected()) {
+			clearReadyTid();
+			waitReadyTid = setTimeout(function() {
+				markScrambled($.now());
+			}, 500);
 		}
 	}
 
@@ -273,18 +385,13 @@ execMain(function(timer) {
 		div.appendTo("#container");
 		kernel.regListener('giikerVRC', 'property', function(signal, value) {
 			if (enableVRC) {
-				giikerVRC.resetVRC(true, true);
-				giikerVRC.setState(currentFacelet, ['U2', 'U2'], false);
+				lastVrcPuzzle = tools.getCurPuzzle();
+				giikerVRC.resetVRC(true, true, lastVrcPuzzle);
+				giikerVRC.setState(currentFacelet, [], false);
 			}
-		}, /^(?:preScrT?|isTrainScr|giiOri)$/);
-		kernel.regListener('giikerVRC', 'scramble', function(signal, value) {
-			if (enableVRC && timer.status() == -1 && kernel.getProp('giiMode') == 'at' && GiikerCube.isConnected()) {
-				clearReadyTid();
-				waitReadyTid = setTimeout(function() {
-					markScrambled($.now());
-				}, 500);
-			}
-		});
+		}, /^(?:preScrT?|isTrainScr|giiOri|giiVRC)$/);
+		kernel.regListener('giikerVRC', 'scramble', onVrcScramble);
+		kernel.regListener('giikerVRC', 'scrambleX', onVrcScramble);
 	});
 
 	function startConnect() {
@@ -327,7 +434,7 @@ execMain(function(timer) {
 					}
 					DEBUG && console.log('time fit, new=', timer.curTime());
 					sol = cubeutil.getConjMoves(cubeutil.moveSeq2str(sol), true);
-					kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [sol, '333']]);
+					kernel.pushSignal('time', ["", 0, timer.curTime(), 0, [sol, tools.getCurPuzzle() || '333']]);
 				}
 			} else if (keyCode == 32 && timer.status() == -1 && kernel.getProp('giiSK') && canStart(currentFacelet)) {
 				markScrambled($.now());
