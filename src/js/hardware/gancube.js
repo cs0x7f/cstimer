@@ -45,6 +45,7 @@ execMain(function() {
 	var decoder = null;
 	var deviceName = null;
 	var deviceMac = null;
+	var is251 = false; // GAN 251 UI (2x2) — Gen4 with corner-only state + hardware RESET
 
 	var KEYS = [
 		"NoRgnAHANATADDWJYwMxQOxiiEcfYgSK6Hpr4TYCs0IG1OEAbDszALpA",
@@ -332,8 +333,52 @@ execMain(function() {
 		return v4sendRequest(req);
 	}
 
+	function v4requestReset() {
+		// Gen4 hardware RESET — declares current physical orientation as solved (251 UI)
+		var req = mathlib.valuedArray(20, 0);
+		req[0] = 0xD2;
+		req[1] = 0x0D;
+		req[2] = 0x05;
+		req[3] = 0x39;
+		req[4] = 0x77;
+		req[7] = 0x01;
+		req[8] = 0x23;
+		req[9] = 0x45;
+		req[10] = 0x67;
+		req[11] = 0x89;
+		req[12] = 0xAB;
+		return v4sendRequest(req);
+	}
+
+	function forceSolvedState() {
+		// Do not call initCubeState — its giiRST path calls markSolved → recursion
+		latestFacelet = mathlib.SOLVED_FACELET;
+		prevCubie = new mathlib.CubieCube();
+		curCubie = new mathlib.CubieCube();
+		prevMoves = [];
+		moveBuffer = [];
+		moveCnt = 0;
+		prevMoveCnt = 0;
+		prevMoveLocTime = null;
+		GiikerCube.callback(latestFacelet, [], [null, $.now()], deviceName + '*');
+		if (typeof giikerutil.markSolvedSoft == 'function') {
+			giikerutil.markSolvedSoft();
+		}
+	}
+
+	function markHardwareSolved() {
+		if (!is251) {
+			giikerutil.markSolvedSoft();
+			return Promise.resolve();
+		}
+		giikerutil.log('[gancube] 251 hardware RESET');
+		return Promise.resolve(v4requestReset()).then(function() {
+			forceSolvedState();
+		});
+	}
+
 	function v4init() {
-		giikerutil.log('[gancube] v4init start');
+		giikerutil.log('[gancube] v4init start', is251 ? '(251 UI)' : '');
 		keyCheck = 0;
 		v2initKey(true, false, 0);
 		return _service_v4data.getCharacteristics().then(function(chrcts) {
@@ -352,6 +397,10 @@ execMain(function() {
 		}).then(function() {
 			return v4requestHardwareInfo();
 		}).then(function() {
+			if (is251) {
+				// 251 UI: facelets edges are fake — RESET then treat as solved
+				return Promise.resolve(v4requestReset()).then(forceSolvedState);
+			}
 			return v4requestFacelets();
 		}).then(function() {
 			return v4requestBattery();
@@ -361,7 +410,8 @@ execMain(function() {
 	function init(device) {
 		clear();
 		deviceName = device.name;
-		giikerutil.log('[gancube] init gan cube start');
+		is251 = /^(GAN251Ui|GAN251UI|gan251ui|GANic251|ganic251)/i.test(deviceName || '');
+		giikerutil.log('[gancube] init gan cube start', is251 ? '251 UI' : '');
 		return GiikerCube.waitForAdvs().then(function(mfData) {
 			var dataView = getManufacturerDataBytes(mfData);
 			if (dataView && dataView.byteLength >= 6) {
@@ -884,11 +934,12 @@ execMain(function() {
 			var ts = parseInt(value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32) + value.slice(16, 24), 2);
 			var pow = parseInt(value.slice(64, 66), 2);
 			var axis = [2, 32, 8, 1, 16, 4].indexOf(parseInt(value.slice(66, 72), 2));
-			if (axis == -1) {
-				giikerutil.log('[gancube]', 'v4 move event invalid axis');
+			if (axis == -1 || pow > 2) {
+				giikerutil.log('[gancube]', 'v4 move event invalid axis/pow', axis, pow);
 				return;
 			}
-			var move = "URFDLB".charAt(axis) + " '".charAt(pow);
+			// pow: 0=CW, 1=CCW, 2=180 (251 UI may send doubles)
+			var move = "URFDLB".charAt(axis) + (pow == 2 ? "2" : " '".charAt(pow));
 			moveBuffer.push([moveCnt, move, ts, locTime]);
 			giikerutil.log('[gancube]', 'v4 move placed to fifo buffer', moveCnt, move, ts, locTime);
 			evictMoveBuffer(true);
@@ -922,6 +973,16 @@ execMain(function() {
 				cc.ca[i] = ori << 3 | perm;
 			}
 			cc.ca[7] = (cchk & 0xff8) % 24 | cchk & 0x7;
+			if (is251) {
+				// 2x2: edges not sensed — force solved so facelets stay legal for CubieCube/VRC
+				for (var i = 0; i < 12; i++) {
+					cc.ea[i] = i << 1;
+				}
+				latestFacelet = cc.toFaceCube();
+				giikerutil.log('[gancube]', 'v4 251 facelets (corners only)', latestFacelet);
+				initCubeState();
+				return;
+			}
 			for (var i = 0; i < 11; i++) {
 				var perm = parseInt(value.slice(69 + i * 4, 73 + i * 4), 2);
 				var ori = parseInt(value.slice(113 + i, 114 + i), 2);
@@ -1016,6 +1077,7 @@ execMain(function() {
 		_gatt = null;
 		deviceName = null;
 		deviceMac = null;
+		is251 = false;
 		prevMoves = [];
 		timeOffs = [];
 		moveBuffer = [];
@@ -1038,6 +1100,7 @@ execMain(function() {
 		opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META, SERVICE_UUID_V2DATA, SERVICE_UUID_V3DATA, SERVICE_UUID_V4DATA],
 		cics: GAN_CIC_LIST,
 		getBatteryLevel: getBatteryLevel,
-		clear: clear
+		clear: clear,
+		markHardwareSolved: markHardwareSolved
 	});
 });

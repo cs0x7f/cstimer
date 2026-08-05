@@ -86,8 +86,6 @@
   <script type="text/javascript" src="js/hardware/bluetooth.js"></script>
   <script type="text/javascript" src="js/hardware/giikercube.js"></script>
   <script type="text/javascript" src="js/hardware/gocube.js"></script>
-  <script type="text/javascript" src="js/hardware/gan2x2uilib.js"></script>
-  <script type="text/javascript" src="js/hardware/gan251cube.js"></script>
   <script type="text/javascript" src="js/hardware/gancube.js"></script>
   <script type="text/javascript" src="js/hardware/moyucube.js"></script>
   <script type="text/javascript" src="js/hardware/moyu32cube.js"></script>
