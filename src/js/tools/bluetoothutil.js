@@ -32,6 +32,19 @@ var scrHinter = execMain(function(CubieCube) {
 		}
 	}
 
+	function cornersEqual(a, b) {
+		for (var i = 0; i < 8; i++) {
+			if (a.ca[i] != b.ca[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function cubiesMatch(a, b) {
+		return tools.getCurPuzzle() == '222' ? cornersEqual(a, b) : a.isEqual(b);
+	}
+
 	function checkInSeq(state, gen, seq) {
 		var c = new CubieCube();
 		var d = new CubieCube();
@@ -39,7 +52,7 @@ var scrHinter = execMain(function(CubieCube) {
 			c.init(gen.ca, gen.ea);
 		}
 		var next = 99;
-		if (c.isEqual(state)) {
+		if (cubiesMatch(c, state)) {
 			next = 0;
 		}
 		var pow;
@@ -47,7 +60,7 @@ var scrHinter = execMain(function(CubieCube) {
 			var a = seq[i][0] * 3;
 			for (pow = 0; pow < 3; pow++) {
 				CubieCube.CubeMult(c, CubieCube.moveCube[a + pow], d);
-				if (d.isEqual(state)) {
+				if (cubiesMatch(d, state)) {
 					next = (pow == seq[i][2] - 1) ? i + 1 : i;
 					break;
 				}
@@ -78,8 +91,9 @@ var scrHinter = execMain(function(CubieCube) {
 	}
 
 	function checkState(state) {
+		var puz = tools.getCurPuzzle();
 		if (!rawScrTxt || !GiikerCube.isConnected()
-				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0 || timer.status() > 0) {
+				|| (puz != '333' && puz != '222') || timer.getCurTime() != 0 || timer.status() > 0) {
 			return;
 		}
 		var toMoveFix = null;
@@ -93,6 +107,10 @@ var scrHinter = execMain(function(CubieCube) {
 			toMoveFix = null;
 		}
 		if (toMoveRaw == null && toMoveFix == null) {
+			// 2x2: scramble_333.genFacelet blows up on corner-only states
+			if (puz == '222') {
+				return;
+			}
 			genState = new CubieCube();
 			genState.init(state.ca, state.ea);
 			var stateInv = new CubieCube();
@@ -131,12 +149,7 @@ var scrHinter = execMain(function(CubieCube) {
 			return false;
 		}
 		if (tools.getCurPuzzle() == '222') {
-			for (var i = 0; i < 8; i++) {
-				if (scrState.ca[i] != curCubie.ca[i]) {
-					return false;
-				}
-			}
-			return true;
+			return cornersEqual(scrState, curCubie);
 		}
 		return scrState.isEqual(curCubie);
 	}
@@ -403,7 +416,17 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		curRawState = facelet;
 		curRawCubie.fromFacelet(curRawState);
+		if (tools.getCurPuzzle() == '222') {
+			for (var e = 0; e < 12; e++) {
+				curRawCubie.ea[e] = e << 1;
+			}
+		}
 		CubieCube.CubeMult(solvedStateInv, curRawCubie, curCubie);
+		if (tools.getCurPuzzle() == '222') {
+			for (var e = 0; e < 12; e++) {
+				curCubie.ea[e] = e << 1;
+			}
+		}
 		curState = curCubie.toFaceCube();
 
 		if (prevMoves.length > 0) {

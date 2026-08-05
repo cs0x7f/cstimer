@@ -765,19 +765,54 @@ execMain(function() {
 		return chrct.writeValue(new Uint8Array(encodedReq).buffer).catch($.noop);
 	}
 
+	function applyV4Move(moveStr) {
+		var m = "URFDLB".indexOf(moveStr[0]) * 3 + " 2'".indexOf(moveStr[1]);
+		if (is251) {
+			// 2x2: corners only — CubeMult would scramble phantom edges and break SOLVED_FACELET / scramble match
+			mathlib.CubieCube.CornMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+			for (var e = 0; e < 12; e++) {
+				curCubie.ea[e] = e << 1;
+			}
+		} else {
+			mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+		}
+	}
+
+	function decodeV4Move(pow, faceHot) {
+		var axis = [2, 32, 8, 1, 16, 4].indexOf(faceHot);
+		if (axis == -1 && is251) {
+			// 251 UI: sometimes one-hot bits are reversed
+			var rev = 0;
+			for (var b = 0; b < 6; b++) {
+				if (faceHot & (1 << b)) {
+					rev |= 1 << (5 - b);
+				}
+			}
+			axis = [2, 32, 8, 1, 16, 4].indexOf(rev);
+		}
+		if (axis == -1 || pow > 2) {
+			return null;
+		}
+		return "URFDLB".charAt(axis) + (pow == 2 ? "2" : " '".charAt(pow));
+	}
+
 	function evictMoveBuffer(reqLostMoves) {
 		while (moveBuffer.length > 0) {
 			var diff = (moveBuffer[0][0] - prevMoveCnt) & 0xFF;
 			if (diff > 1) {
 				giikerutil.log('[gancube]', 'lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
+				if (is251) {
+					// History inject uses 3x3 axis map — skip gaps on 251 instead of corrupting state
+					prevMoveCnt = (moveBuffer[0][0] - 1) & 0xFF;
+					continue;
+				}
 				if (reqLostMoves) {
 					requestMoveHistory(moveBuffer[0][0], diff);
 				}
 				break;
 			} else {
 				var move = moveBuffer.shift();
-				var m = "URFDLB".indexOf(move[1][0]) * 3 + " 2'".indexOf(move[1][1]);
-				mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
+				applyV4Move(move[1]);
 				prevMoves.unshift(move[1]);
 				if (prevMoves.length > 8)
 					prevMoves = prevMoves.slice(0, 8);
@@ -785,6 +820,11 @@ execMain(function() {
 				var tmp = curCubie;
 				curCubie = prevCubie;
 				prevCubie = tmp;
+				if (is251) {
+					for (var e = 0; e < 12; e++) {
+						prevCubie.ea[e] = e << 1;
+					}
+				}
 				prevMoveCnt = move[0];
 				giikerutil.log('[gancube]', 'move evicted from fifo buffer', move[0], move[1], move[2], move[3]);
 			}
@@ -940,13 +980,16 @@ execMain(function() {
 			}
 			var ts = parseInt(value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32) + value.slice(16, 24), 2);
 			var pow = parseInt(value.slice(64, 66), 2);
-			var axis = [2, 32, 8, 1, 16, 4].indexOf(parseInt(value.slice(66, 72), 2));
-			if (axis == -1 || pow > 2) {
-				giikerutil.log('[gancube]', 'v4 move event invalid axis/pow', axis, pow);
+			var faceHot = parseInt(value.slice(66, 72), 2);
+			var move = decodeV4Move(pow, faceHot);
+			if (!move && is251) {
+				// packing B: face@64:6 + dir@70:2
+				move = decodeV4Move(parseInt(value.slice(70, 72), 2), parseInt(value.slice(64, 70), 2));
+			}
+			if (!move) {
+				giikerutil.log('[gancube]', 'v4 move event invalid axis/pow', faceHot, pow);
 				return;
 			}
-			// pow: 0=CW, 1=CCW, 2=180 (251 UI may send doubles)
-			var move = "URFDLB".charAt(axis) + (pow == 2 ? "2" : " '".charAt(pow));
 			moveBuffer.push([moveCnt, move, ts, locTime]);
 			giikerutil.log('[gancube]', 'v4 move placed to fifo buffer', moveCnt, move, ts, locTime);
 			evictMoveBuffer(true);

@@ -321,6 +321,16 @@ execMain(function(timer) {
 				return cubeutil.getStepProgress(chkstep, facelet) == 0;
 			}
 		}
+		if (tools.getCurPuzzle() == '222') {
+			var cc = new mathlib.CubieCube();
+			cc.fromFacelet(facelet);
+			for (var i = 0; i < 8; i++) {
+				if (cc.ca[i] != i) {
+					return false;
+				}
+			}
+			return true;
+		}
 		return facelet == mathlib.SOLVED_FACELET;
 	}
 
