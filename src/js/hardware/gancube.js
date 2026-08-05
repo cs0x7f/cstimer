@@ -70,8 +70,15 @@ execMain(function() {
 
 	function getKeyV2(value, ver) {
 		ver = ver || 0;
-		var key = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[2 + ver * 2]));
-		var iv = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[3 + ver * 2]));
+		var key, iv;
+		if (is251) {
+			// GAN 251 UI (ProtocolV3-2) — different root key/iv than Gen2/3/4 3x3
+			key = [0x58, 0x98, 0x61, 0xfc, 0x1f, 0xec, 0xd7, 0x60, 0x9f, 0x85, 0xd3, 0x62, 0xbe, 0x37, 0x17, 0x2c];
+			iv = [0x7f, 0x61, 0xd0, 0x52, 0x75, 0xc1, 0x39, 0x52, 0x08, 0x2e, 0x54, 0x1d, 0x8a, 0x78, 0x63, 0x4d];
+		} else {
+			key = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[2 + ver * 2]));
+			iv = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[3 + ver * 2]));
+		}
 		for (var i = 0; i < 6; i++) {
 			key[i] = (key[i] + value[5 - i]) % 255;
 			iv[i] = (iv[i] + value[5 - i]) % 255;
