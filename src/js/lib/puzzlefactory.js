@@ -110,11 +110,7 @@ var puzzleFactory = execMain(function() {
 			options["type"] = "cube";
 			options["faceColors"] = $.col2std(kernel.getProp("colcube"), [3, 4, 5, 0, 1, 2]); // U L F D L B
 			options["dimension"] = ~~puzzle.slice(4) || 3;
-			// 2x2: default stickerWidth 1.7 leaves thick black crosses between the 4 stickers
-			options["stickerWidth"] = options["dimension"] <= 2 ? 1.95 : 1.7;
-			if (options["dimension"] <= 2) {
-				options["stickerBorder"] = false;
-			}
+			options["stickerWidth"] = 1.7;
 		} else if (puzzle == "skb") {
 			options["type"] = "skewb";
 			options["faceColors"] = $.col2std(kernel.getProp("colskb"), [0, 5, 4, 2, 1, 3]);

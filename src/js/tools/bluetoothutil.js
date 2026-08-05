@@ -91,9 +91,8 @@ var scrHinter = execMain(function(CubieCube) {
 	}
 
 	function checkState(state) {
-		var puz = tools.getCurPuzzle();
 		if (!rawScrTxt || !GiikerCube.isConnected()
-				|| (puz != '333' && puz != '222') || timer.getCurTime() != 0 || timer.status() > 0) {
+				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0 || timer.status() > 0) {
 			return;
 		}
 		var toMoveFix = null;
@@ -107,10 +106,6 @@ var scrHinter = execMain(function(CubieCube) {
 			toMoveFix = null;
 		}
 		if (toMoveRaw == null && toMoveFix == null) {
-			// 2x2: scramble_333.genFacelet blows up on corner-only states
-			if (puz == '222') {
-				return;
-			}
 			genState = new CubieCube();
 			genState.init(state.ca, state.ea);
 			var stateInv = new CubieCube();
