@@ -124,8 +124,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 	}
 
 	function getReviewUrl(time) {
-		return 'https://alg.cubing.net/?alg=' + encodeURIComponent((time[4][0] || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;')) +
-			'&setup=' + encodeURIComponent(time[1] || '')
+		var puzzle = time[4] && typeof time[4][1] == 'string' && time[4][1] || tools.getCurPuzzle() || '333';
+		return cubeutil.getAlgCubingUrl(
+			(time[4][0] || '').replace(/@(\d+)/g, '/*$1*/').replace(/-/g, '&#45;'),
+			time[1] || '',
+			puzzle
+		);
 	}
 
 	var table_ctrl = (function() {

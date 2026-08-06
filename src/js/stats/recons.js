@@ -243,7 +243,7 @@ var recons = execMain(function() {
 		table.unbind('click').click(procClick);
 		requestBack.text('No.' + tidx);
 		if (scramble || solve) {
-			reconsClick.children('a').attr('href', 'https://alg.cubing.net/?alg=' + encodeURIComponent(solve) + '&setup=' + encodeURIComponent(scramble)).text(Math.round(totMov * 10) / 10);
+			reconsClick.children('a').attr('href', cubeutil.getAlgCubingUrl(solve, scramble, tools.getCurPuzzle())).text(Math.round(totMov * 10) / 10);
 		}
 	}
 
