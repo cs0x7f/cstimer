@@ -24,35 +24,17 @@ var scrHinter = execMain(function(CubieCube) {
 			}
 			scrState.selfMoveStr('URFDLB'.charAt(scr[i][0]) + " 2'".charAt(scr[i][2] - 1));
 		}
-		// 2x2 BT: corners only — keep edges solved for equality checks
-		if (tools.getCurPuzzle() == '222') {
-			for (var e = 0; e < 12; e++) {
-				scrState.ea[e] = e << 1;
-			}
-		}
 	}
 
-	function cornersEqual(a, b) {
-		for (var i = 0; i < 8; i++) {
-			if (a.ca[i] != b.ca[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	function cubiesMatch(a, b) {
-		return tools.getCurPuzzle() == '222' ? cornersEqual(a, b) : a.isEqual(b);
-	}
-
-	function checkInSeq(state, gen, seq) {
+	function checkInSeq(state, gen, seq, puzzle) {
 		var c = new CubieCube();
 		var d = new CubieCube();
 		if (gen) {
 			c.init(gen.ca, gen.ea);
 		}
+		var is222 = puzzle == '222';
 		var next = 99;
-		if (cubiesMatch(c, state)) {
+		if (cubeutil.cubiesMatch(c, state, is222)) {
 			next = 0;
 		}
 		var pow;
@@ -60,7 +42,7 @@ var scrHinter = execMain(function(CubieCube) {
 			var a = seq[i][0] * 3;
 			for (pow = 0; pow < 3; pow++) {
 				CubieCube.CubeMult(c, CubieCube.moveCube[a + pow], d);
-				if (cubiesMatch(d, state)) {
+				if (cubeutil.cubiesMatch(d, state, is222)) {
 					next = (pow == seq[i][2] - 1) ? i + 1 : i;
 					break;
 				}
@@ -90,18 +72,18 @@ var scrHinter = execMain(function(CubieCube) {
 		return ret;
 	}
 
-	function checkState(state) {
+	function checkState(state, puzzle) {
 		if (!rawScrTxt || !GiikerCube.isConnected()
-				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0 || timer.status() > 0) {
+				|| tools.getCurPuzzle() != puzzle || timer.getCurTime() != 0 || timer.status() > 0) {
 			return;
 		}
 		var toMoveFix = null;
 		var toMoveRaw = null;
 		if (genState) {
-			toMoveFix = checkInSeq(state, genState, genScr);
+			toMoveFix = checkInSeq(state, genState, genScr, puzzle);
 		}
 		if (toMoveFix == null || toMoveFix.indexOf(':') == -1) {
-			toMoveRaw = checkInSeq(state, null, rawScr);
+			toMoveRaw = checkInSeq(state, null, rawScr, puzzle);
 			genState = null;
 			toMoveFix = null;
 		}
@@ -114,7 +96,7 @@ var scrHinter = execMain(function(CubieCube) {
 			CubieCube.CubeMult(stateInv, scrState, toSolve);
 			genScr = scramble_333.genFacelet(toSolve.toFaceCube());
 			genScr = cubeutil.parseScramble(genScr, "URFDLB");
-			toMoveFix = checkInSeq(state, genState, genScr);
+			toMoveFix = checkInSeq(state, genState, genScr, puzzle);
 		}
 		var toMove = toMoveFix ? scrambleToHtml(toMoveFix) : scrambleToHtml(toMoveRaw);
 		kernel.pushSignal('scrfix', toMove);
@@ -139,14 +121,11 @@ var scrHinter = execMain(function(CubieCube) {
 		return scrHtml;
 	}
 
-	function checkScramble(curCubie) {
+	function checkScramble(curCubie, curPuzzle) {
 		if (rawScrTxt == "") {
 			return false;
 		}
-		if (tools.getCurPuzzle() == '222') {
-			return cornersEqual(scrState, curCubie);
-		}
-		return scrState.isEqual(curCubie);
+		return cubeutil.cubiesMatch(scrState, curCubie, curPuzzle == '222');
 	}
 
 	function getScrCubie() {
@@ -291,6 +270,7 @@ var giikerutil = execMain(function(CubieCube) {
 	var curCubie = new CubieCube();
 	var curState = curRawState;
 	var solvedStateInv = new CubieCube();
+	var curPuzzle = '333';
 
 	var detectTid = 0;
 
@@ -299,11 +279,7 @@ var giikerutil = execMain(function(CubieCube) {
 			clearTimeout(detectTid);
 			detectTid = 0;
 		}
-		// 2x2 BT uses corner-only state — skip AED (looks invalid as 3x3)
-		if (tools.getCurPuzzle() == '222') {
-			return;
-		}
-		if (kernel.getProp('giiAED')) {
+		if (curPuzzle == '333' && kernel.getProp('giiAED')) {
 			detectTid = setTimeout(function() {
 				if (checkMoves(moveTsList.slice(moveTsStart)) == 99) {
 					return;
@@ -377,33 +353,22 @@ var giikerutil = execMain(function(CubieCube) {
 		return false;
 	}
 
-	function markSolvedSoft() {
-		// Set display zero from current raw facelets (no hardware RESET)
-		hackedSolvedCubieInv = null;
+	function markSolved() {
 		solvedStateInv.invFrom(curRawCubie);
 		curState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', curRawState);
 		moveTsStart = moveTsList.length;
 		scrambleLength = 0;
 		drawState();
-		callback(curState, [], [null, $.now()]);
-	}
-
-	function markSolved() {
-		var cube = GiikerCube.getCube && GiikerCube.getCube();
-		// Cubes with hardware RESET (e.g. GAN 251 UI): RESET then soft-sync
-		if (cube && typeof cube.markHardwareSolved == 'function') {
-			cube.markHardwareSolved();
-			return;
-		}
-		markSolvedSoft();
+		callback(curState, [], [null, $.now()], curPuzzle);
 	}
 
 	var moveTsList = []; //[[move, deviceTime, locTime], ...], locTime might be null
 	var moveTsStart = 0;
 
-	function giikerCallback(facelet, prevMoves, lastTs, hardware) {
+	function giikerCallback(facelet, prevMoves, lastTs, hardware, puzzle) {
 		var locTime = $.now();
+		curPuzzle = puzzle || '333';
 		lastTs = lastTs || [locTime, locTime];
 		if (deviceName != hardware) {
 			deviceName = hardware;
@@ -411,17 +376,7 @@ var giikerutil = execMain(function(CubieCube) {
 		}
 		curRawState = facelet;
 		curRawCubie.fromFacelet(curRawState);
-		if (tools.getCurPuzzle() == '222') {
-			for (var e = 0; e < 12; e++) {
-				curRawCubie.ea[e] = e << 1;
-			}
-		}
 		CubieCube.CubeMult(solvedStateInv, curRawCubie, curCubie);
-		if (tools.getCurPuzzle() == '222') {
-			for (var e = 0; e < 12; e++) {
-				curCubie.ea[e] = e << 1;
-			}
-		}
 		curState = curCubie.toFaceCube();
 
 		if (prevMoves.length > 0) {
@@ -447,8 +402,8 @@ var giikerutil = execMain(function(CubieCube) {
 			CubieCube.CubeMult(hackedSolvedCubieInv, curCubie, hackedCubie);
 			retState = hackedCubie.toFaceCube();
 		}
-		callback(retState, prevMoves, lastTs);
-		scrHinter.checkState(curCubie);
+		callback(retState, prevMoves, lastTs, curPuzzle);
+		scrHinter.checkState(curCubie, curPuzzle);
 	}
 
 	function tsLinearFit(moveTsList, inv) {
@@ -552,7 +507,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateAlgClick(click, text, setup, alg) {
 		if (setup || alg) {
-			click.attr('href', cubeutil.getAlgCubingUrl(alg, setup, tools.getCurPuzzle()));
+			click.attr('href', cubeutil.getAlgCubingUrl(alg, setup, curPuzzle));
 		} else {
 			click.removeAttr('href');
 		}
@@ -624,7 +579,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function checkScramble() {
-		return scrHinter.checkScramble(curCubie);
+		return scrHinter.checkScramble(curCubie, curPuzzle);
 	}
 
 	var curScramble;
@@ -635,18 +590,17 @@ var giikerutil = execMain(function(CubieCube) {
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			var scrType = value[0];
 			curScramble = value[1];
-			var puz = tools.puzzleType(scrType);
-			if (puz != '333' && puz != '222') {
+			if (!/^(222|333)$/.exec(tools.puzzleType(scrType))) {
 				curScramble = "";
 			}
 			scrHinter.setScramble(curScramble);
-			scrHinter.checkState(curCubie);
+			scrHinter.checkState(curCubie, curPuzzle);
 		} else if (signal == 'property') {
 			if (['giiVRC', 'imgSize'].indexOf(value[0]) >= 0) {
 				renderStatus();
 			} else if (/^(preScrT?|isTrainScr)$/.exec(value[0])) {
 				scrHinter.setScramble(curScramble);
-				scrHinter.checkState(curCubie);
+				scrHinter.checkState(curCubie, curPuzzle);
 			}
 		} else if (signal == 'timestd' && !value[4]) {
 			toReconsSolve = [timer.getStartTime(), value[0][1], value[1]];
@@ -716,7 +670,7 @@ var giikerutil = execMain(function(CubieCube) {
 			hackedCubie.invFrom(curCubie);
 			CubieCube.CubeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			moveTsStart = moveTsList.length;
-			callback(targetCubie.toFaceCube(), [], [null, $.now()]);
+			callback(targetCubie.toFaceCube(), [], [null, $.now()], curPuzzle);
 		}
 		scrambleLength = moveTsList.length - moveTsStart;
 		updateRawMovesClick();
@@ -735,7 +689,7 @@ var giikerutil = execMain(function(CubieCube) {
 			return;
 		}
 		hackedSolvedCubieInv = null;
-		callback(curState, [], [null, $.now()]);
+		callback(curState, [], [null, $.now()], curPuzzle);
 	}
 
 	var debugInfo = (function() {
@@ -836,7 +790,6 @@ var giikerutil = execMain(function(CubieCube) {
 			evtCallback = func;
 		},
 		markSolved: markSolved,
-		markSolvedSoft: markSolvedSoft,
 		checkScramble: checkScramble,
 		markScrambled: markScrambled,
 		init: init,
