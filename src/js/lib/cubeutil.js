@@ -596,6 +596,31 @@ var cubeutil = (function() {
 		return url;
 	}
 
+	function cornersEqual(a, b) {
+		for (var i = 0; i < 8; i++) {
+			if (a.ca[i] != b.ca[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function cubiesMatch(a, b, cornerOnly) {
+		return cornerOnly ? cornersEqual(a, b) : a.isEqual(b);
+	}
+
+	function isFaceletSolved(facelet, cornerOnly) {
+		if (!cornerOnly) {
+			return facelet == mathlib.SOLVED_FACELET;
+		}
+		for (var i = 0; i < 54; i++) {
+			if (i % 9 % 2 == 0 && facelet[i] != mathlib.SOLVED_FACELET[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	return {
 		getProgress: getProgress,
 		getStepNames: getStepNames,
@@ -610,6 +635,8 @@ var cubeutil = (function() {
 		parseScramble: parseScramble,
 		getConjMoves: getConjMoves,
 		getPreConj: getPreConj,
-		getAlgCubingUrl: getAlgCubingUrl
+		getAlgCubingUrl: getAlgCubingUrl,
+		cubiesMatch: cubiesMatch,
+		isFaceletSolved: isFaceletSolved
 	}
 })();
