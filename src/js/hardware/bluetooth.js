@@ -40,6 +40,18 @@ function BtDeviceGroupFactory() {
 		if (!_device || !_device.watchAdvertisements) {
 			return Promise.reject(-1);
 		}
+		// watchAdvertisements() EXISTS on Linux/ChromeOS but never fires
+		// 'advertisementreceived' there, so feature-detecting the method isn't enough.
+		// Web Bluetooth scanning has known implementation issues on those platforms as
+		// of 2026-08; see
+		// https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md
+		// If support lands there later, this platform skip can simply be removed. Until
+		// then, reject early with the existing -1 code so callers fall back to manual
+		// MAC entry without waiting out the 10s timeout.
+		var uaPlatform = navigator.userAgentData && navigator.userAgentData.platform;
+		if (uaPlatform == 'Linux' || uaPlatform == 'Chrome OS') {
+			return Promise.reject(-1);
+		}
 		var abortController = new AbortController();
 		return new Promise(function(resolve, reject) {
 			var onAdvEvent = function(event) {
