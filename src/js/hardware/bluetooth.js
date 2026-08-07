@@ -44,6 +44,15 @@ function BtDeviceGroupFactory() {
 		return new Promise(function(resolve, reject) {
 			var onAdvEvent = function(event) {
 				giikerutil.log('[bluetooth] receive adv event', event);
+				// Manufacturer data rides in only some advertising packets (e.g. ADV_IND
+				// vs SCAN_RSP), and some platforms (Windows/WinRT) deliver them as
+				// separate events - so the first event is frequently empty. Ignore
+				// packets without manufacturer data and keep listening until one carries
+				// it, or until the timeout fires.
+				if (!event.manufacturerData || event.manufacturerData.size == 0) {
+					giikerutil.log('[bluetooth] adv has no manufacturer data, waiting for next');
+					return;
+				}
 				_device && _device.removeEventListener('advertisementreceived', onAdvEvent);
 				abortController.abort();
 				resolve(event.manufacturerData);
