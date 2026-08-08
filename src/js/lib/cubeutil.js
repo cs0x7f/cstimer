@@ -573,6 +573,54 @@ var cubeutil = (function() {
 		return cc.ori || 0;
 	}
 
+	function getAlgCubingUrl(alg, setup, puzzle) {
+		var dim = {
+			'222': '2x2x2',
+			'333': '3x3x3',
+			'444': '4x4x4',
+			'555': '5x5x5',
+			'666': '6x6x6',
+			'777': '7x7x7'
+		};
+		if (puzzle && !dim[puzzle] && typeof tools != 'undefined' && tools.puzzleType) {
+			puzzle = tools.puzzleType(puzzle) || puzzle;
+		}
+		if (!puzzle || !dim[puzzle]) {
+			puzzle = (typeof tools != 'undefined' && tools.getCurPuzzle && tools.getCurPuzzle()) || '333';
+		}
+		var url = 'https://alg.cubing.net/?alg=' + encodeURIComponent(alg || '') +
+			'&setup=' + encodeURIComponent(setup || '');
+		if (dim[puzzle]) {
+			url += '&puzzle=' + dim[puzzle];
+		}
+		return url;
+	}
+
+	function cornersEqual(a, b) {
+		for (var i = 0; i < 8; i++) {
+			if (a.ca[i] != b.ca[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function cubiesMatch(a, b, cornerOnly) {
+		return cornerOnly ? cornersEqual(a, b) : a.isEqual(b);
+	}
+
+	function isFaceletSolved(facelet, cornerOnly) {
+		if (!cornerOnly) {
+			return facelet == mathlib.SOLVED_FACELET;
+		}
+		for (var i = 0; i < 54; i++) {
+			if (i % 9 % 2 == 0 && facelet[i] != mathlib.SOLVED_FACELET[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	return {
 		getProgress: getProgress,
 		getStepNames: getStepNames,
@@ -586,6 +634,9 @@ var cubeutil = (function() {
 		getIdentData: getIdentData,
 		parseScramble: parseScramble,
 		getConjMoves: getConjMoves,
-		getPreConj: getPreConj
+		getPreConj: getPreConj,
+		getAlgCubingUrl: getAlgCubingUrl,
+		cubiesMatch: cubiesMatch,
+		isFaceletSolved: isFaceletSolved
 	}
 })();

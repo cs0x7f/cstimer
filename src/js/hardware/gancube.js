@@ -45,6 +45,7 @@ execMain(function() {
 	var decoder = null;
 	var deviceName = null;
 	var deviceMac = null;
+	var is251 = false; // GAN 251 UI (2x2) — Gen4 with corner-only state + hardware RESET
 
 	var KEYS = [
 		"NoRgnAHANATADDWJYwMxQOxiiEcfYgSK6Hpr4TYCs0IG1OEAbDszALpA",
@@ -52,7 +53,9 @@ execMain(function() {
 		"NoRgNATGBs1gLABgQTjCeBWSUDsYBmKbCeMADjNnXxHIoIF0g",
 		"NoRg7ANAzBCsAMEAsioxBEIAc0Cc0ATJkgSIYhXIjhMQGxgC6QA",
 		"NoVgNAjAHGBMYDYCcdJgCwTFBkYVgAY9JpJYUsYBmAXSA",
-		"NoRgNAbAHGAsAMkwgMyzClH0LFcArHnAJzIqIBMGWEAukA"
+		"NoRgNAbAHGAsAMkwgMyzClH0LFcArHnAJzIqIBMGWEAukA",
+		"NoDhBoEYFYCZwJwHZyzuAzJVGBsqZF8YEoMMDsEJIEAGcaaHcAFlYF0g",
+		"NoRgTA7ANAnNYAYAcUliiE0QwMxQFZo1UoAWANlTKjBg1xXAVnoggF0g"
 	];
 
 	function getKey(version, value) {
@@ -65,17 +68,6 @@ execMain(function() {
 			key[i] = (key[i] + value.getUint8(5 - i)) & 0xff;
 		}
 		return key;
-	}
-
-	function getKeyV2(value, ver) {
-		ver = ver || 0;
-		var key = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[2 + ver * 2]));
-		var iv = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[3 + ver * 2]));
-		for (var i = 0; i < 6; i++) {
-			key[i] = (key[i] + value[5 - i]) % 255;
-			iv[i] = (iv[i] + value[5 - i]) % 255;
-		}
-		return [key, iv];
 	}
 
 	function decode(value) {
@@ -181,13 +173,19 @@ execMain(function() {
 	}
 
 	function v2initDecoder(mac, ver) {
+		ver = ver || 0;
 		var value = [];
 		for (var i = 0; i < 6; i++) {
 			value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 		}
-		var keyiv = getKeyV2(value, ver);
-		decoder = $.aes128(keyiv[0]);
-		decoder.iv = keyiv[1];
+		var key = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[2 + ver * 2]));
+		var iv = JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[3 + ver * 2]));
+		for (var i = 0; i < 6; i++) {
+			key[i] = (key[i] + value[5 - i]) % 255;
+			iv[i] = (iv[i] + value[5 - i]) % 255;
+		}
+		decoder = $.aes128(key);
+		decoder.iv = iv;
 	}
 
 	function v2sendRequest(req) {
@@ -333,9 +331,9 @@ execMain(function() {
 	}
 
 	function v4init() {
-		giikerutil.log('[gancube] v4init start');
+		giikerutil.log('[gancube] v4init start', is251 ? '(251 UI)' : '');
 		keyCheck = 0;
-		v2initKey(true, false, 0);
+		v2initKey(true, false, is251 ? 2 : 0);
 		return _service_v4data.getCharacteristics().then(function(chrcts) {
 			giikerutil.log('[gancube] v4init find chrcts', chrcts);
 			_chrct_v4read = GiikerCube.findUUID(chrcts, CHRCT_UUID_V4READ);
@@ -361,7 +359,8 @@ execMain(function() {
 	function init(device) {
 		clear();
 		deviceName = device.name;
-		giikerutil.log('[gancube] init gan cube start');
+		is251 = /^(GAN251Ui|GAN251UI|gan251ui|GANic251|ganic251)/i.test(deviceName || '');
+		giikerutil.log('[gancube] init gan cube start', is251 ? '251 UI' : '');
 		return GiikerCube.waitForAdvs().then(function(mfData) {
 			var dataView = getManufacturerDataBytes(mfData);
 			if (dataView && dataView.byteLength >= 6) {
@@ -421,7 +420,7 @@ execMain(function() {
 	function initCubeState() {
 		var locTime = $.now();
 		giikerutil.log('[gancube]', 'init cube state');
-		GiikerCube.callback(latestFacelet, [], [null, locTime], deviceName);
+		GiikerCube.callback(latestFacelet, [], [null, locTime], deviceName, is251 ? '222' : '333');
 		prevCubie.fromFacelet(latestFacelet);
 		prevMoveCnt = moveCnt;
 		if (latestFacelet != kernel.getProp('giiSolved', mathlib.SOLVED_FACELET)) {
@@ -479,7 +478,7 @@ execMain(function() {
 			var m = "URFDLB".indexOf(prevMoves[i][0]) * 3 + " 2'".indexOf(prevMoves[i][1]);
 			mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);
 			deviceTime += timeOffs[i];
-			GiikerCube.callback(curCubie.toFaceCube(), prevMoves.slice(i), [deviceTime, i == 0 ? locTime : null], deviceName + (isV2 ? '*' : ''));
+			GiikerCube.callback(curCubie.toFaceCube(), prevMoves.slice(i), [deviceTime, i == 0 ? locTime : null], deviceName + (isV2 ? '*' : ''), is251 ? '222' : '333');
 			var tmp = curCubie;
 			curCubie = prevCubie;
 			prevCubie = tmp;
@@ -708,11 +707,34 @@ execMain(function() {
 		return chrct.writeValue(new Uint8Array(encodedReq).buffer).catch($.noop);
 	}
 
+	function decodeV4Move(pow, faceHot) {
+		var axis = [2, 32, 8, 1, 16, 4].indexOf(faceHot);
+		if (axis == -1 && is251) {
+			// 251 UI: sometimes one-hot bits are reversed
+			var rev = 0;
+			for (var b = 0; b < 6; b++) {
+				if (faceHot & (1 << b)) {
+					rev |= 1 << (5 - b);
+				}
+			}
+			axis = [2, 32, 8, 1, 16, 4].indexOf(rev);
+		}
+		if (axis == -1 || pow > 2) {
+			return null;
+		}
+		return "URFDLB".charAt(axis) + (pow == 2 ? "2" : " '".charAt(pow));
+	}
+
 	function evictMoveBuffer(reqLostMoves) {
 		while (moveBuffer.length > 0) {
 			var diff = (moveBuffer[0][0] - prevMoveCnt) & 0xFF;
 			if (diff > 1) {
 				giikerutil.log('[gancube]', 'lost move detected', prevMoveCnt, moveBuffer[0][0], diff);
+				if (is251) {
+					// History inject uses 3x3 axis map — skip gaps on 251 instead of corrupting state
+					prevMoveCnt = (moveBuffer[0][0] - 1) & 0xFF;
+					continue;
+				}
 				if (reqLostMoves) {
 					requestMoveHistory(moveBuffer[0][0], diff);
 				}
@@ -724,7 +746,7 @@ execMain(function() {
 				prevMoves.unshift(move[1]);
 				if (prevMoves.length > 8)
 					prevMoves = prevMoves.slice(0, 8);
-				GiikerCube.callback(curCubie.toFaceCube(), prevMoves, [move[2], move[3]], deviceName + '*');
+				GiikerCube.callback(curCubie.toFaceCube(), prevMoves, [move[2], move[3]], deviceName + '*', is251 ? '222' : '333');
 				var tmp = curCubie;
 				curCubie = prevCubie;
 				prevCubie = tmp;
@@ -883,12 +905,16 @@ execMain(function() {
 			}
 			var ts = parseInt(value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32) + value.slice(16, 24), 2);
 			var pow = parseInt(value.slice(64, 66), 2);
-			var axis = [2, 32, 8, 1, 16, 4].indexOf(parseInt(value.slice(66, 72), 2));
-			if (axis == -1) {
-				giikerutil.log('[gancube]', 'v4 move event invalid axis');
+			var faceHot = parseInt(value.slice(66, 72), 2);
+			var move = decodeV4Move(pow, faceHot);
+			if (!move && is251) {
+				// packing B: face@64:6 + dir@70:2
+				move = decodeV4Move(parseInt(value.slice(70, 72), 2), parseInt(value.slice(64, 70), 2));
+			}
+			if (!move) {
+				giikerutil.log('[gancube]', 'v4 move event invalid axis/pow', faceHot, pow);
 				return;
 			}
-			var move = "URFDLB".charAt(axis) + " '".charAt(pow);
 			moveBuffer.push([moveCnt, move, ts, locTime]);
 			giikerutil.log('[gancube]', 'v4 move placed to fifo buffer', moveCnt, move, ts, locTime);
 			evictMoveBuffer(true);
@@ -1016,6 +1042,7 @@ execMain(function() {
 		_gatt = null;
 		deviceName = null;
 		deviceMac = null;
+		is251 = false;
 		prevMoves = [];
 		timeOffs = [];
 		moveBuffer = [];

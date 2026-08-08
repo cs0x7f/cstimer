@@ -26,14 +26,15 @@ var scrHinter = execMain(function(CubieCube) {
 		}
 	}
 
-	function checkInSeq(state, gen, seq) {
+	function checkInSeq(state, gen, seq, puzzle) {
 		var c = new CubieCube();
 		var d = new CubieCube();
 		if (gen) {
 			c.init(gen.ca, gen.ea);
 		}
+		var is222 = puzzle == '222';
 		var next = 99;
-		if (c.isEqual(state)) {
+		if (cubeutil.cubiesMatch(c, state, is222)) {
 			next = 0;
 		}
 		var pow;
@@ -41,7 +42,7 @@ var scrHinter = execMain(function(CubieCube) {
 			var a = seq[i][0] * 3;
 			for (pow = 0; pow < 3; pow++) {
 				CubieCube.CubeMult(c, CubieCube.moveCube[a + pow], d);
-				if (d.isEqual(state)) {
+				if (cubeutil.cubiesMatch(d, state, is222)) {
 					next = (pow == seq[i][2] - 1) ? i + 1 : i;
 					break;
 				}
@@ -71,18 +72,18 @@ var scrHinter = execMain(function(CubieCube) {
 		return ret;
 	}
 
-	function checkState(state) {
+	function checkState(state, puzzle) {
 		if (!rawScrTxt || !GiikerCube.isConnected()
-				|| tools.getCurPuzzle() != '333' || timer.getCurTime() != 0 || timer.status() > 0) {
+				|| tools.getCurPuzzle() != puzzle || timer.getCurTime() != 0 || timer.status() > 0) {
 			return;
 		}
 		var toMoveFix = null;
 		var toMoveRaw = null;
 		if (genState) {
-			toMoveFix = checkInSeq(state, genState, genScr);
+			toMoveFix = checkInSeq(state, genState, genScr, puzzle);
 		}
 		if (toMoveFix == null || toMoveFix.indexOf(':') == -1) {
-			toMoveRaw = checkInSeq(state, null, rawScr);
+			toMoveRaw = checkInSeq(state, null, rawScr, puzzle);
 			genState = null;
 			toMoveFix = null;
 		}
@@ -95,7 +96,7 @@ var scrHinter = execMain(function(CubieCube) {
 			CubieCube.CubeMult(stateInv, scrState, toSolve);
 			genScr = scramble_333.genFacelet(toSolve.toFaceCube());
 			genScr = cubeutil.parseScramble(genScr, "URFDLB");
-			toMoveFix = checkInSeq(state, genState, genScr);
+			toMoveFix = checkInSeq(state, genState, genScr, puzzle);
 		}
 		var toMove = toMoveFix ? scrambleToHtml(toMoveFix) : scrambleToHtml(toMoveRaw);
 		kernel.pushSignal('scrfix', toMove);
@@ -120,11 +121,11 @@ var scrHinter = execMain(function(CubieCube) {
 		return scrHtml;
 	}
 
-	function checkScramble(curCubie) {
+	function checkScramble(curCubie, curPuzzle) {
 		if (rawScrTxt == "") {
 			return false;
 		}
-		return scrState.isEqual(curCubie);
+		return cubeutil.cubiesMatch(scrState, curCubie, curPuzzle == '222');
 	}
 
 	function getScrCubie() {
@@ -269,6 +270,7 @@ var giikerutil = execMain(function(CubieCube) {
 	var curCubie = new CubieCube();
 	var curState = curRawState;
 	var solvedStateInv = new CubieCube();
+	var curPuzzle = '333';
 
 	var detectTid = 0;
 
@@ -277,7 +279,7 @@ var giikerutil = execMain(function(CubieCube) {
 			clearTimeout(detectTid);
 			detectTid = 0;
 		}
-		if (kernel.getProp('giiAED')) {
+		if (curPuzzle == '333' && kernel.getProp('giiAED')) {
 			detectTid = setTimeout(function() {
 				if (checkMoves(moveTsList.slice(moveTsStart)) == 99) {
 					return;
@@ -352,21 +354,21 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function markSolved() {
-		//mark current state as solved
 		solvedStateInv.invFrom(curRawCubie);
 		curState = mathlib.SOLVED_FACELET;
 		kernel.setProp('giiSolved', curRawState);
 		moveTsStart = moveTsList.length;
 		scrambleLength = 0;
 		drawState();
-		callback(curState, [], [null, $.now()]);
+		callback(curState, [], [null, $.now()], curPuzzle);
 	}
 
 	var moveTsList = []; //[[move, deviceTime, locTime], ...], locTime might be null
 	var moveTsStart = 0;
 
-	function giikerCallback(facelet, prevMoves, lastTs, hardware) {
+	function giikerCallback(facelet, prevMoves, lastTs, hardware, puzzle) {
 		var locTime = $.now();
+		curPuzzle = puzzle || '333';
 		lastTs = lastTs || [locTime, locTime];
 		if (deviceName != hardware) {
 			deviceName = hardware;
@@ -400,8 +402,8 @@ var giikerutil = execMain(function(CubieCube) {
 			CubieCube.CubeMult(hackedSolvedCubieInv, curCubie, hackedCubie);
 			retState = hackedCubie.toFaceCube();
 		}
-		callback(retState, prevMoves, lastTs);
-		scrHinter.checkState(curCubie);
+		callback(retState, prevMoves, lastTs, curPuzzle);
+		scrHinter.checkState(curCubie, curPuzzle);
 	}
 
 	function tsLinearFit(moveTsList, inv) {
@@ -505,10 +507,7 @@ var giikerutil = execMain(function(CubieCube) {
 
 	function updateAlgClick(click, text, setup, alg) {
 		if (setup || alg) {
-			click.attr('href',
-				'https://alg.cubing.net/?alg=' + encodeURIComponent(alg) +
-				'&setup=' + encodeURIComponent(setup)
-			);
+			click.attr('href', cubeutil.getAlgCubingUrl(alg, setup, curPuzzle));
 		} else {
 			click.removeAttr('href');
 		}
@@ -580,7 +579,7 @@ var giikerutil = execMain(function(CubieCube) {
 	}
 
 	function checkScramble() {
-		return scrHinter.checkScramble(curCubie);
+		return scrHinter.checkScramble(curCubie, curPuzzle);
 	}
 
 	var curScramble;
@@ -591,17 +590,17 @@ var giikerutil = execMain(function(CubieCube) {
 		} else if (signal == 'scramble' || signal == 'scrambleX') {
 			var scrType = value[0];
 			curScramble = value[1];
-			if (tools.puzzleType(scrType) != '333') {
+			if (!/^(222|333)$/.exec(tools.puzzleType(scrType))) {
 				curScramble = "";
 			}
 			scrHinter.setScramble(curScramble);
-			scrHinter.checkState(curCubie);
+			scrHinter.checkState(curCubie, curPuzzle);
 		} else if (signal == 'property') {
 			if (['giiVRC', 'imgSize'].indexOf(value[0]) >= 0) {
 				renderStatus();
 			} else if (/^(preScrT?|isTrainScr)$/.exec(value[0])) {
 				scrHinter.setScramble(curScramble);
-				scrHinter.checkState(curCubie);
+				scrHinter.checkState(curCubie, curPuzzle);
 			}
 		} else if (signal == 'timestd' && !value[4]) {
 			toReconsSolve = [timer.getStartTime(), value[0][1], value[1]];
@@ -671,7 +670,7 @@ var giikerutil = execMain(function(CubieCube) {
 			hackedCubie.invFrom(curCubie);
 			CubieCube.CubeMult(targetCubie, hackedCubie, hackedSolvedCubieInv);
 			moveTsStart = moveTsList.length;
-			callback(targetCubie.toFaceCube(), [], [null, $.now()]);
+			callback(targetCubie.toFaceCube(), [], [null, $.now()], curPuzzle);
 		}
 		scrambleLength = moveTsList.length - moveTsStart;
 		updateRawMovesClick();
@@ -690,7 +689,7 @@ var giikerutil = execMain(function(CubieCube) {
 			return;
 		}
 		hackedSolvedCubieInv = null;
-		callback(curState, [], [null, $.now()]);
+		callback(curState, [], [null, $.now()], curPuzzle);
 	}
 
 	var debugInfo = (function() {
