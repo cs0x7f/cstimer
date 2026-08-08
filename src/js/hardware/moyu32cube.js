@@ -138,40 +138,57 @@ execMain(function() {
 	}
 
 	/**
-	 * Automatic MAC address discovery only works when the cube is "bound" and has an account ID above 65535 (0xFFFF)
-	 * 
-	 * Explanation:
+	 * The MoYu MAC is recovered from the advertisement's manufacturer-specific data,
+	 * but Web Bluetooth only delivers manufacturer data for company ids (CICs) declared
+	 * up front (see cics / optionalManufacturerData), so we enumerate every CIC a cube
+	 * might use.
 	 *
-	 * When the cube is "bound" in the WCU Cube app, the CIC is equal to the high bytes of the account ID (32-bit int).
-	 * The CIC is interpreted as little-endian (i.e. an account ID of 0xaabbccdd being bound to the cube results in a CIC of 0xbbaa).
-	 * 
-	 * Unfortunately, Chromium has an issue when receiving advertisements with CIC 0x0000
-	 * seemingly related to its use of WTF::HashMap which disallows 0 as a key in this case (IntHashTraits: empty_value = 0).
-	 * 
-	 * ERROR:map_traits_wtf_hash_map.h(52)] The key value is disallowed by WTF::HashMap
-	 * ERROR:validation_errors.cc(117)] Invalid message: VALIDATION_ERROR_DESERIALIZATION_FAILED
-	 * ERROR:interface_endpoint_client.cc(722)] Message 0 rejected by interface blink.mojom.WebBluetoothAdvertisementClient
-	 * 
-	 * This issue then also causes device.gatt.connect() to fail, seemingly causing the promise to get abandoned and cube initialisation to fail:
-	 * 
-	 * FATAL:script_promise_resolver.cc(72)] Check failed: false. ScriptPromiseResolverBase was not properly detached; created at
-	 *  base::debug::CollectStackTrace [0x00007FF9401EEFD7+39]
-	 *  base::debug::StackTrace::StackTrace [0x00007FF9401A5E76+118]
-	 *  blink::ScriptPromiseResolverBase::ScriptPromiseResolverBase [0x00007FF8F733040D+877]
-	 *  blink::ScriptPromiseResolver<blink::BluetoothRemoteGATTServer>::ScriptPromiseResolver [0x00007FF8DBA0B93D+45]
-	 *  cppgc::MakeGarbageCollectedTrait<blink::ScriptPromiseResolver<blink::BluetoothRemoteGATTServer> >::Call<blink::ScriptState *&,const blink::ExceptionContext &> [0x00007FF8DBA0B8D4+116]
-	 *  blink::MakeGarbageCollected<blink::ScriptPromiseResolver<blink::BluetoothRemoteGATTServer>,blink::ScriptState *&,const blink::ExceptionContext &> [0x00007FF8DBA0449B+107]
-	 *  blink::BluetoothRemoteGATTServer::connect [0x00007FF8DBA03EF5+133]
-	 *  blink::`anonymous namespace'::v8_bluetooth_remote_gatt_server::ConnectOperationCallback [0x00007FF8DA8C69A4+1076]
-	 * 
-	 * Therefore, unbound cubes (bound account ID 0x00) and cubes with bound account IDs between 1 (0x01) and 65535 (0xFF) will not have automatic MAC address detection (even in Bluefy,
-	 * as including 0x0000 in the CIC list will completely break Chrome support for this cube).
-	 * Furthermore, the possible range of CICs is 0x0000 - 0xFFFF (65536 values). For now, we can just include CICs between 0x0100 and 0xFF00, as it is not likely that the account IDs
-	 * will reach 16777216 (0x01000000) anytime soon.
+	 * When the cube is "bound" in the WCU Cube app, the CIC equals the high bytes of the
+	 * account ID (32-bit int), little-endian (account ID 0xaabbccdd -> CIC 0xbbaa). An
+	 * *unbound* cube uses CIC 0x0000.
+	 *
+	 * CIC 0x0000 used to be unusable in Chromium: its manufacturer-data map rejected 0 as
+	 * a key (WTF::HashMap IntHashTraits empty_value = 0), so a 0x0000 advertisement failed
+	 * deserialization and took gatt.connect() down with it:
+	 *
+	 *   ERROR:map_traits_wtf_hash_map.h(52)] The key value is disallowed by WTF::HashMap
+	 *   ERROR:validation_errors.cc(117)] Invalid message: VALIDATION_ERROR_DESERIALIZATION_FAILED
+	 *   ERROR:interface_endpoint_client.cc(722)] Message 0 rejected by interface blink.mojom.WebBluetoothAdvertisementClient
+	 *   FATAL:script_promise_resolver.cc(72)] ScriptPromiseResolverBase was not properly detached
+	 *     ... blink::BluetoothRemoteGATTServer::connect ...
+	 *
+	 * This was Chromium-only and is fixed as of Chrome 130 (stable), which switched the
+	 * manufacturer-data map key to WebBluetoothCompanyPtr:
+	 *   - crbug.com/356891475
+	 *   - https://chromiumdash.appspot.com/commit/0d5a45bd61cbe3e5fd5356ff23e357ce64d444d5
+	 *
+	 * So we include 0x0000 by default and only omit it on a build we can positively identify
+	 * as pre-130 Chromium (see moyu32SkipCic0000) - unbound cubes then auto-detect on modern
+	 * Chrome and on non-Chromium clients such as Bluefy.
+	 *
+	 * CICs range 0x0000-0xFFFF; we only enumerate up to 0xFF00, as account IDs aren't expected
+	 * to reach 0x01000000 (16777216) anytime soon.
 	 */
+	function moyu32SkipCic0000() {
+		// Skip 0x0000 ONLY on a build positively identified as pre-130 Chromium (the crash
+		// was Chromium-only, fixed in Chrome 130 - see comment above). Allow it everywhere
+		// else: modern Chromium, and non-Chromium clients (e.g. Bluefy) that never had the bug.
+		var brands = navigator.userAgentData && navigator.userAgentData.brands;
+		if (!brands) return false; // non-Chromium / no UA-CH -> never buggy
+		for (var b of brands) {
+			if ((b.brand == 'Google Chrome' || b.brand == 'Chromium')
+					&& parseInt(b.version, 10) < 130) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-	// CICs 0x(01..=FF)00
+	// CICs 0x0000..0xFF00 (0x0000 omitted on pre-130 Chromium; see moyu32SkipCic0000)
 	var MOYU32_CIC_LIST = mathlib.valuedArray(255, function (i) { return (i + 1) << 8 });
+	if (!moyu32SkipCic0000()) {
+		MOYU32_CIC_LIST.unshift(0x0000);
+	}
 
 	function initMac(forcePrompt, isWrongKey) {
 		var defaultMac = null;
