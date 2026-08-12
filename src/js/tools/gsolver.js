@@ -1249,7 +1249,7 @@
 			tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
 			tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));
 			tools.regTool('333udf', TOOLS_SOLVERS + '>3x3x3 General', execFunc.bind(null, '333udf'));
-			tools.regTool('333koc', TOOLS_SOLVERS + '>3x3x3 TwoPhase', execFunc.bind(null, '333koc'));
+			tools.regTool('333koc', TOOLS_SOLVERS + '>3x3x3 Two Phase', execFunc.bind(null, '333koc'));
 		});
 	});
 })();

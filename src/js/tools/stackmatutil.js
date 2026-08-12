@@ -115,7 +115,7 @@ var stackmatutil = execMain(function(CubieCube) {
 	}
 
 	$(function() {
-		tools.regTool('stackmatutil', 'stackmat', execFunc);
+		tools.regTool('stackmatutil', 'Stackmat', execFunc);
 		kernel.regProp('timer', 'stkHead', 0, PROPERTY_STKHEAD, [true]);
 		updateDevices();
 	});
