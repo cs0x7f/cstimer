@@ -107,7 +107,7 @@
 <li><strong data="opt_statclr">启用分组清空</strong>. 当禁用时，一个‘+’按钮（用于创建分组）会代替分组选择项边上的‘X’按钮，即当你点击这个按钮时会创建一个空的分组而不是删除整个分组。</li>
 <li><strong data="opt_absidx">在统计报告中显示绝对索引</strong>. 在轮次统计中显示成绩的绝对位置而不是1~还原个数（如对于mo3就是1/2/3）。</li>
 <li><strong data="opt_rsfor1s">点击还原序号时显示统计</strong>. 当点击成绩列表的第一列时，显示该单次还原的轮次统计信息。</li>
-<li><strong data="opt_statal">统计指标</strong>. 统计表中的统计指标，如果需要自定义，目前支持aoX和boX。</li>
+<li><strong data="opt_statal">统计指标</strong>. 统计表中的统计指标，如果需要自定义，目前支持aoX和moX。</li>
 <li><strong data="opt_delmul">启用批量删除</strong>. 能够从某个成绩开始删除多个成绩，为了避免误解，这个选择的成绩会是所有删除成绩中最早的那个。</li>
 <li><strong data="opt_disPrec">时间分布显示精度</strong>. 成绩分布工具的时间间隔。</li>
 <li><strong data="opt_solSpl">逐步显示解法</strong>. 如果勾选，求解器会只显示解法长度，接着你可以一步一步查看解法，不勾选的话求解器则会直接显示完整的解法。</li>
