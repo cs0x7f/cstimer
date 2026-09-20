@@ -77,8 +77,8 @@ var stackmat = execMain(function() {
 			return navigator.mediaDevices.getUserMedia({
 				"audio": selectObj
 			}).then(function(stream) {
-				if (audio_context.state == 'suspended' && !force) {
-					return Promise.reject();
+				if (audio_context.state == 'suspended') {
+					audio_context.resume();
 				}
 				success(stream);
 			}, console.log);
