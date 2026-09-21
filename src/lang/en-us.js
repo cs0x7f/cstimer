@@ -609,6 +609,7 @@ var GIIKER_CONNECT = 'Click to connect';
 var GIIKER_RESET = 'Reset (Mark Solved)';
 var GIIKER_REQMACMSG = 'Please enter the MAC address of your smart hardware (xx:xx:xx:xx:xx:xx). You can find the MAC address through chrome://bluetooth-internals/#devices, or modify following options to let csTimer automatically obtain it:\nChrome: Turn on chrome://flags/#enable-experimental-web-platform-features\nBluefy: Turn on Enable BLE Advertisements';
 var GIIKER_NOBLEMSG = 'Bluetooth API is not available. Ensure https access, check bluetooth is enabled on your device, and try chrome with chrome://flags/#enable-experimental-web-platform-features enabled';
+var BTTIMER_TIMER_NOT_IDLE = 'Timer is not in idle state, please reset the timer before starting a solve';
 var PROPERTY_SHOWAD = 'Show advertisements (take effect after reload)';
 var PROPERTY_GIIORI = 'Cube orientation';
 var LGHINT_INVALID = 'Invalid Value!';
