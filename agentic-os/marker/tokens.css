@@ -1,0 +1,93 @@
+/* Marker — tokens.css. GENERATED from tokens.json in this folder; edit tokens.json, then regenerate.
+   Owned by Agentic OS (agentic-os-template). Do not edit in the project; override per project after this file. */
+
+:root, [data-theme="dark"] {
+  --bg: #0f0e0d;
+  --bg2: #171514;
+  --bg3: #201d1b;
+  --border: #2a2725;
+  --border2: #3d3a39;
+  --text: #eeeeee;
+  --text2: #b8b3b0;
+  --muted: #8a8380;
+  --primary: #eeeeee;
+  --primary-ink: #0f0e0d;
+  --primary-hover: #ffffff;
+  --accent: #ee6018;
+  --accent2: #f47a3a;
+  --accent-bg: #311e14;
+  --sel-bg: var(--bg3);
+  --row-hover: var(--bg2);
+  --focus: #eeeeee4d;
+  --green: #a0ca92;
+  --amber: #d9b36a;
+  --red: #eb5757;
+  --green-bg: #272b23;
+  --amber-bg: #2e281e;
+  --red-bg: #301d1c;
+  --shadow-card: inset 0 0 0 1px #2a2725;
+  --shadow: 0 8px 32px rgba(0,0,0,.45), 0 1px 4px rgba(0,0,0,.3);
+}
+[data-theme="light"] {
+  --bg: #faf9f7;
+  --bg2: #f3f1ee;
+  --bg3: #eae7e3;
+  --border: #dedad5;
+  --border2: #c9c4be;
+  --text: #1a1816;
+  --text2: #5e5955;
+  --muted: #8a8380;
+  --primary: #1a1816;
+  --primary-ink: #ffffff;
+  --primary-hover: #2e2a27;
+  --accent: #ee6018;
+  --accent2: #c94f12;
+  --accent-bg: #efe1d8;
+  --sel-bg: var(--bg3);
+  --row-hover: var(--bg2);
+  --focus: #1a18164d;
+  --green: #2f6b30;
+  --amber: #7a5a0e;
+  --red: #b3311f;
+  --green-bg: #dfe4db;
+  --amber-bg: #e7e2d8;
+  --red-bg: #edded9;
+  --shadow-card: inset 0 0 0 1px #dedad5;
+  --shadow: 0 8px 32px rgba(0,0,0,.12), 0 1px 4px rgba(0,0,0,.06);
+}
+:root {
+  --space-0: 2px;
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 16px;
+  --space-7: 20px;
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 12px;
+  --radius-round: 50%;
+  --control-sm: 26px;
+  --control-md: 30px;
+  --control-lg: 32px;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Base: the two lines MARKER.md asks every app to have. */
+html { font-family: var(--font-sans); font-size: 13px; color: var(--text); background: var(--bg); font-feature-settings: "cv01", "ss03", "zero"; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+/* Type styles */
+.display { font-family: var(--font-sans); font-size: 26px; line-height: 1.15; font-weight: 500; letter-spacing: -.02em; }
+.title { font-family: var(--font-sans); font-size: 18px; line-height: 1.3; font-weight: 500; letter-spacing: -.02em; }
+.card-title { font-family: var(--font-sans); font-size: 13px; line-height: 1.4; font-weight: 500; letter-spacing: -.01em; }
+.body { font-family: var(--font-sans); font-size: 13px; line-height: 1.5; font-weight: 400; }
+.body-sm { font-family: var(--font-sans); font-size: 12px; line-height: 1.4; font-weight: 400; }
+.label { font-family: var(--font-sans); font-size: 11px; line-height: 1.4; font-weight: 500; }
+.button { font-family: var(--font-sans); font-size: 12px; line-height: 1; font-weight: 500; }
+.num { font-family: var(--font-mono); font-size: 11.5px; line-height: 1.4; font-weight: 400; font-feature-settings: "tnum" 1; }
+.num-lg { font-family: var(--font-mono); font-size: 14px; line-height: 1.3; font-weight: 500; font-feature-settings: "tnum" 1; }
+.micro { font-family: var(--font-mono); font-size: 10px; line-height: 1.4; font-weight: 500; letter-spacing: .06em; font-feature-settings: "tnum" 1; }
+.meta { font-family: var(--font-mono); font-size: 11px; line-height: 1.4; font-weight: 400; font-feature-settings: "tnum" 1; }

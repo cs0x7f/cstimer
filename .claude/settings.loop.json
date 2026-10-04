@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(make test*)",
+      "Bash(make lint*)"
+    ],
+    "deny": [
+      "Bash(git push*)",
+      "Bash(git commit*)",
+      "Bash(git reset*)",
+      "Bash(git checkout*)",
+      "Bash(git rebase*)",
+      "Bash(rm *)",
+      "Bash(docker *)",
+      "Bash(ssh *)",
+      "Bash(curl *)",
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./source/Secrets.mc)",
+      "Edit(./.claude/**)",
+      "Write(./.claude/**)",
+      "Edit(./agentic-os/**)",
+      "Write(./agentic-os/**)"
+    ]
+  }
+}

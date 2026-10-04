@@ -1,0 +1,12 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v0.2.0
+_src_path: https://github.com/axlchris/agentic-os-template
+deploy: container
+description: Self-hosted container build of csTimer, the speedcubing timer (fork of
+    cs0x7f/cstimer)
+expose_publicly: false
+github_owner: axlchris
+language: other
+memory_limit: 512m
+port: 8080
+project_name: cstimer_container

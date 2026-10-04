@@ -1,0 +1,24 @@
+# Server compose (UMDS): pulls the image CI pushed to GHCR. No build here.
+# Owned by the project (generated once by agentic-os-template).
+name: cstimer-container
+services:
+  cstimer-container:
+    image: ghcr.io/axlchris/cstimer-container:latest
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ${DATA_HOST_PATH:-./data}:/data
+    environment:
+      DATA_DIR: /data
+      PORT: 8080
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      TZ: Europe/Oslo
+    # Blast radius, not a tuning knob: the host has little RAM headroom and an
+    # unbounded container takes the whole box down rather than just itself.
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: unless-stopped

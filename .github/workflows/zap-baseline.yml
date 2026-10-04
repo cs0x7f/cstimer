@@ -1,0 +1,29 @@
+# Owned by Agentic OS. Security checklist 6.4: OWASP ZAP baseline scan against
+# a running instance. Manual trigger only, because it needs a reachable URL.
+# Run it before first public exposure and after every auth change, then
+# triage the findings in plans/SECURITY.md.
+#
+# Behind Traefik's OAuth chain the scan from GitHub only sees the login wall,
+# which still checks TLS, headers and cookie flags on that wall. To scan the
+# app itself, run ZAP from a machine inside the LAN against the LAN address:
+#   docker run --rm -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://<host>:<port>
+name: ZAP baseline
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: URL to scan
+        required: true
+        default: "https://cstimer-container.famaohub.com"
+
+jobs:
+  zap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baseline scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: ${{ github.event.inputs.target }}
+          allow_issue_writing: false
+          fail_action: false

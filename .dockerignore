@@ -1,0 +1,9 @@
+.git
+.github
+.claude
+agentic-os
+plans
+data
+.env
+.env.*
+*.md

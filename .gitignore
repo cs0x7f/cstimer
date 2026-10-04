@@ -1,3 +1,23 @@
+# Owned by Agentic OS. Project additions go at the bottom under "Project".
+coverage/
+.env
+.env.local
+*.log
+.DS_Store
+
+# Claude Code: machine-local settings and worktrees
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/worktrees/
+
+# Runtime data mounted into the container
+/data/*
+!/data/.gitkeep
+
+# Design handoff bundles (Claude Design zips) are kept locally, too big for history
+plans/*.zip
+
+# Project
 /dist
 /.idea
 cstimer.iml

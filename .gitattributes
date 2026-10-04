@@ -1,0 +1,7 @@
+# Owned by Agentic OS. LF everywhere: scripts run in Linux containers and Git Bash.
+* text=auto eol=lf
+*.sh text eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
+*.ico binary

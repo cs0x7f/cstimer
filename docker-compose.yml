@@ -1,0 +1,16 @@
+# Dev compose: builds the image locally. The server uses compose.server.yml.
+# Owned by the project (generated once by agentic-os-template).
+name: cstimer-container
+services:
+  cstimer-container:
+    build: .
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ${DATA_HOST_PATH:-./data}:/data
+    environment:
+      DATA_DIR: /data
+      PORT: 8080
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      TZ: Europe/Oslo
+    restart: unless-stopped
