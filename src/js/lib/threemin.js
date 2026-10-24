@@ -2353,10 +2353,10 @@ THREE.Projector = function() {
 	}
 };
 THREE.CanvasRenderer = function(parameters) {
+	parameters = parameters || {};
 	var _this = this,
 		_renderList = null,
 		_projector = new THREE.Projector,
-		parameters = parameters || {},
 		_canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElement("canvas"),
 		_canvasWidth, _canvasHeight, _canvasWidthHalf, _canvasHeightHalf, _context = _canvas.getContext("2d"),
 		_clearColor = new THREE.Color(0),

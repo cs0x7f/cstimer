@@ -750,6 +750,93 @@ var image = (function() {
 		return drawImage;
 	})();
 
+	var ftollImage = (function() {
+		var puzzle, polys;
+		var faceMap = [0, 6, 7, 1, 4, 3, 2, 5];
+		var cellMap = [
+			[0, 3, 8, 1, 6, 4, 2, 7, 5],
+			[0, 1, 4, 2, 5, 7, 3, 6, 8],
+			[0, 3, 8, 2, 7, 5, 1, 6, 4],
+			[0, 2, 7, 1, 5, 4, 3, 6, 8],
+			[4, 6, 8, 7, 5, 2, 3, 1, 0],
+			[8, 6, 4, 3, 1, 0, 5, 7, 2],
+			[4, 6, 8, 1, 3, 0, 7, 5, 2],
+			[8, 3, 0, 6, 1, 4, 5, 7, 2]
+		];
+		var side = {1: [0, 2, 3, 7, 8], 2: [0, 1, 2, 4, 5], 7: [4, 5, 6, 7, 8]};
+
+		function init() {
+			if (puzzle) {
+				return;
+			}
+			var params = poly3d.getFamousPuzzle('fto');
+			puzzle = poly3d.makePuzzle.apply(poly3d, params.polyParam);
+			polys = [];
+			puzzle.enumFacesPolys(function(face, p, poly) {
+				polys.push([face, p, poly]);
+			});
+		}
+
+		function drawFace(face, img) {
+			init();
+			var colors = kernel.getProp('colfto').match(colre);
+			var draw = [];
+			var cx = 0, cy = 0, n = 0, u0;
+			for (var i = 0; i < polys.length; i++) {
+				var f = polys[i][0], p = polys[i][1], poly = polys[i][2];
+				if (poly.norm.y <= 0 || (f && side[f].indexOf(cellMap[f][p]) < 0)) {
+					continue;
+				}
+				var xs = [], ys = [];
+				for (var j = 0; j < poly.paths.length; j++) {
+					xs.push(poly.paths[j].p1.x);
+					ys.push(-poly.paths[j].p1.z);
+				}
+				var px = poly.center.x, py = -poly.center.z;
+				if (f == 0) {
+					cx += px;
+					cy += py;
+					n++;
+					if (cellMap[0][p] == 0) {
+						u0 = [px, py];
+					}
+				}
+				draw.push([xs, ys, face[faceMap[f] * 9 + cellMap[f][p]]]);
+			}
+			cx /= n;
+			cy /= n;
+			var a = Math.PI / 2 - Math.atan2(u0[1] - cy, u0[0] - cx);
+			var ca = Math.cos(a), sa = Math.sin(a);
+			var minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
+			for (var i = 0; i < draw.length; i++) {
+				var xs = draw[i][0], ys = draw[i][1];
+				for (var j = 0; j < xs.length; j++) {
+					var dx = xs[j] - cx, dy = ys[j] - cy;
+					xs[j] = cx + dx * ca - dy * sa;
+					ys[j] = cy + dx * sa + dy * ca;
+					minx = Math.min(minx, xs[j]);
+					maxx = Math.max(maxx, xs[j]);
+					miny = Math.min(miny, ys[j]);
+					maxy = Math.max(maxy, ys[j]);
+				}
+			}
+			var svg = new $.svg();
+			var scale = 180 / (maxx - minx);
+			svg.width = 180;
+			svg.height = Math.round((maxy - miny) * scale);
+			for (var i = 0; i < draw.length; i++) {
+				drawPolygon(svg, colors[draw[i][2]], [draw[i][0], draw[i][1]], [scale, -minx, -miny]);
+			}
+			if (img) {
+				img.attr('src', 'data:image/svg+xml;base64,' + btoa(svg.render()));
+			}
+			return svg;
+		}
+		return {
+			drawFace: drawFace
+		};
+	})();
+
 	/**
 	 *  F1 R1 L1 F2 F3 F4 R L F5..
 	 */
@@ -1079,6 +1166,7 @@ var image = (function() {
 		llImage: llImage,
 		pyrllImage: pyrllImage,
 		face3Image: face3Image,
+		ftollImage: ftollImage,
 		sqllImage: sq1Image.llImage
 	}
 })();

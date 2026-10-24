@@ -295,7 +295,7 @@
 		}
 
 		this.moveInv = function(move) {
-			var move = move.slice();
+			move = move.slice();
 			move[3] = -move[3];
 			return move;
 		}
