@@ -132,6 +132,57 @@ var battle = execMain(function() {
 		heartBeatTid = setTimeout(resetHeartBeat.bind(null, true), 15000);
 	}
 
+	var battleInfo = {};
+
+	function getBattleInfo(type) {
+		if (battleInfo.hasOwnProperty(type)) {
+			return battleInfo[type];
+		}
+		var wcaData = scrdata[0][1];
+		for (var i = 0; i < wcaData.length; i++) {
+			var item = wcaData[i];
+			if (item[1] == type) {
+				battleInfo[type] = [item[1], Math.abs(item[2])];
+				return battleInfo[type];
+			}
+		}
+		battleInfo[type] = null;
+		return null;
+	}
+
+	function genBattleScramble(type) {
+		var info = getBattleInfo(type);
+		if (!info || !scrMgr.scramblers[type]) {
+			type = '333';
+			info = getBattleInfo(type);
+		}
+		var txt = scrMgr.scramblers[type](type, info[1], scrMgr.rndState(undefined, scrMgr.getExtra(type, 1)), 0);
+		if (!txt) {
+			type = '333';
+			txt = scramble_333.getRandomScramble();
+		}
+		txt = scrMgr.toTxt(txt || '').trim();
+		if (!txt) {
+			return null;
+		}
+		return type == '333' ? txt : '$T' + type + '$' + txt;
+	}
+
+	function getRoomScrText(scr) {
+		return scramble.scrStd('', scr)[1];
+	}
+
+	function getNewRoomScr() {
+		var scr = roomInfo['cur'][1];
+		if (!scr) {
+			return null;
+		}
+		if (!/^\$T/.test(scr)) {
+			scr = '$T333$' + scr;
+		}
+		return getRoomScrText(scr) != localLastSolve[1] ? scr : null;
+	}
+
 	function joinRoom(rstRoomId) {
 		if (rstRoomId || !roomId) {
 			var val = prompt(TOOLS_BATTLE_JOINALERT + ' [a-zA-Z0-9]', roomId || (100 + ~~(Math.random() * 900)));
@@ -152,7 +203,7 @@ var battle = execMain(function() {
 			'action': 'joinRoom',
 			'roomId': roomId,
 			'accountId': compId,
-			'scramble': scramble_333.getRandomScramble().trim()
+			'scramble': genBattleScramble(kernel.getProp('scrType'))
 		}).then(function(ret) {
 			DEBUG && console.log('[battle] joinRoom ret=', JSON.stringify(ret));
 			resetHeartBeat();
@@ -207,21 +258,31 @@ var battle = execMain(function() {
 			return;
 		}
 		var solvScr = time[1];
-		if (solvScr != roomInfo['cur'][1] && solvScr != roomInfo['last'][1]) {
+		var curScr = getRoomScrText(roomInfo['cur'][1]);
+		var lastScr = getRoomScrText(roomInfo['last'][1]);
+		if (solvScr != curScr && solvScr != lastScr) {
 			return;
 		}
 		if (localLastSolve && localLastSolve[1] == time[1] && (!isLast || time[0][1] != localLastSolve[0][1])) {
 			return;
 		}
+		var solveId = solvScr == curScr ? roomInfo['cur'][0] : roomInfo['last'][0];
+		var nextScr = null;
+		if (solveId == roomInfo['cur'][0]) {
+			var m = /^\$T([a-zA-Z0-9]+)/.exec(roomInfo['cur'][1] || '');
+			nextScr = genBattleScramble(m ? m[1] : '333');
+			if (!nextScr) {
+				return;
+			}
+		}
 		localLastSolve = time;
-		var solveId = solvScr == roomInfo['cur'][1] ? roomInfo['cur'][0] : roomInfo['last'][0];
 		conn.remoteCall({
 			'action': 'uploadSolve',
 			'roomId': roomId,
 			'accountId': compId,
 			'solveId': solveId,
 			'time': time,
-			'scramble': scramble_333.getRandomScramble().trim()
+			'scramble': nextScr
 		}).then(function(ret) {
 			DEBUG && console.log('[battle] upload solve ret=', ret);
 			resetHeartBeat();
@@ -255,8 +316,9 @@ var battle = execMain(function() {
 		if (!roomInfo) {
 			return;
 		}
-		if (roomInfo['cur'][1] && roomInfo['cur'][1] != localLastSolve[1]) {
-			scrResolve && scrResolve(['$T333$' + roomInfo['cur'][1]]);
+		var scr = getNewRoomScr();
+		if (scr) {
+			scrResolve && scrResolve([scr]);
 			scrResolve = null;
 			if (kernel.getProp('scrType') != 'remoteBattle') {
 				kernel.setProp('scrType', 'remoteBattle');
@@ -424,8 +486,9 @@ var battle = execMain(function() {
 		if (!roomInfo) {
 			return Promise.reject();
 		}
-		if (roomInfo['cur'][1] && roomInfo['cur'][1] != localLastSolve[1]) {
-			return Promise.resolve(['$T333$' + roomInfo['cur'][1]]);
+		var scr = getNewRoomScr();
+		if (scr) {
+			return Promise.resolve([scr]);
 		}
 		return new Promise(function(resolve, reject) {
 			scrResolve = resolve;
