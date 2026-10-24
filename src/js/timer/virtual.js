@@ -5,56 +5,7 @@ execMain(function(timer) {
 	var moveCnt = 0;
 	var totPhases = 1;
 	var rawMoves = [];
-	var codeToKeyCode = {
-		Backquote: 192,
-		Digit1: 49,
-		Digit2: 50,
-		Digit3: 51,
-		Digit4: 52,
-		Digit5: 53,
-		Digit6: 54,
-		Digit7: 55,
-		Digit8: 56,
-		Digit9: 57,
-		Digit0: 48,
-		Minus: 189,
-		Equal: 187,
-		KeyQ: 81,
-		KeyW: 87,
-		KeyE: 69,
-		KeyR: 82,
-		KeyT: 84,
-		KeyY: 89,
-		KeyU: 85,
-		KeyI: 73,
-		KeyO: 79,
-		KeyP: 80,
-		BracketLeft: 219,
-		BracketRight: 221,
-		Backslash: 220,
-		KeyA: 65,
-		KeyS: 83,
-		KeyD: 68,
-		KeyF: 70,
-		KeyG: 71,
-		KeyH: 72,
-		KeyJ: 74,
-		KeyK: 75,
-		KeyL: 76,
-		Semicolon: 186,
-		Quote: 222,
-		KeyZ: 90,
-		KeyX: 88,
-		KeyC: 67,
-		KeyV: 86,
-		KeyB: 66,
-		KeyN: 78,
-		KeyM: 77,
-		Comma: 188,
-		Period: 190,
-		Slash: 191,
-		Space: 32
-	};
+	var puncCode = {Semicolon: 186, Comma: 188, Period: 190, Slash: 191};
 
 	//mstep: 0 move start, 1 move doing, 2 move finish
 	function moveListener(move, mstep, ts) {
@@ -218,20 +169,11 @@ execMain(function(timer) {
 				}
 			} else {
 				var origEvent = e && (e.originalEvent || e);
-				var mappedCode = origEvent && origEvent.code && codeToKeyCode[origEvent.code];
-				if (!mappedCode) {
-					mappedCode = help.getMappedCode(keyCode);
-				}
-				var a = {
-					"keyCode": mappedCode,
-					"which": mappedCode,
-					"code": origEvent && origEvent.code,
-					"altKey": !!(origEvent && origEvent.altKey),
-					"ctrlKey": !!(origEvent && origEvent.ctrlKey),
-					"shiftKey": !!(origEvent && origEvent.shiftKey),
-					"metaKey": !!(origEvent && origEvent.metaKey)
-				};
-				puzzleObj.keydown(a);
+				var code = origEvent && origEvent.code;
+				var m = /^(?:Key([A-Z])|Digit(\d))$/.exec(code || '');
+				var useCode = kernel.getProp('vrcKBL') == 'qwerty';
+				var mappedCode = useCode ? (m ? (m[1] || m[2]).charCodeAt(0) : puncCode[code]) : null;
+				puzzleObj.keydown({"keyCode": mappedCode || help.getMappedCode(keyCode)});
 			}
 		}
 		if (keyCode == 27 || keyCode == 32) {
