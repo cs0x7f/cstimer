@@ -174,6 +174,8 @@ var battle = execMain(function() {
 			'accountId': compId
 		}).then(conn.close, conn.close);
 		roomInfo = null;
+		observedSolves = {};
+		observedRoomId = null;
 		renderRoom();
 		resetHeartBeat();
 	}
@@ -231,6 +233,8 @@ var battle = execMain(function() {
 	var roomId;
 	var compId;
 	var roomInfo;
+	var observedSolves = {};
+	var observedRoomId = null;
 	var toStart = false;
 	var localLastSolve = [[-1, 1], null];
 
@@ -242,6 +246,8 @@ var battle = execMain(function() {
 			}
 		} else {
 			roomInfo = null;
+			observedSolves = {};
+			observedRoomId = null;
 			if (kernel.getProp('scrType') == 'remoteBattle') {
 				kernel.pushSignal('ctrl', ['scramble', 'next']);
 			}
@@ -254,6 +260,17 @@ var battle = execMain(function() {
 	function onRoomInfo() {
 		if (!roomInfo) {
 			return;
+		}
+		if (observedRoomId != roomInfo['roomId']) {
+			observedSolves = {};
+			observedRoomId = roomInfo['roomId'];
+		}
+		var roomSolves = roomInfo['solves'] || [];
+		for (var i = 0; i < roomSolves.length; i++) {
+			var solveObj = roomSolves[i];
+			var accountId = solveObj['accountId'];
+			observedSolves[accountId] = observedSolves[accountId] || {};
+			observedSolves[accountId][solveObj['solveId']] = [solveObj['time'], solveObj['soltime']];
 		}
 		if (roomInfo['cur'][1] && roomInfo['cur'][1] != localLastSolve[1]) {
 			scrResolve && scrResolve(['$T333$' + roomInfo['cur'][1]]);
@@ -276,13 +293,14 @@ var battle = execMain(function() {
 		roomTable.empty();
 		var titles = TOOLS_BATTLE_TITLE.split('|').slice(0, 3);
 		titles.splice(1, 0, 'ELO');
+		titles.push(STATS_AVG);
 
-		roomTable.append($('<tr>').append($('<td colspan=5>').append(headStr[0] + ': ', joinRoomSpan, '&nbsp;', leaveRoomSpan)));
+		roomTable.append($('<tr>').append($('<td colspan=6>').append(headStr[0] + ': ', joinRoomSpan, '&nbsp;', leaveRoomSpan)));
 		roomTable.append('<tr><td colspan=2>' + titles.join('</td><td>') + '</td></tr>');
 		joinRoomSpan.unbind('click');
 		leaveRoomSpan.unbind('click');
 		if (!roomInfo) {
-			roomTable.append('<tr><td colspan=5 style="width:0;">' + TOOLS_BATTLE_INFO + '</td></tr>');
+			roomTable.append('<tr><td colspan=6 style="width:0;">' + TOOLS_BATTLE_INFO + '</td></tr>');
 			joinRoomSpan.addClass('click').html(headStr[1]).click(joinRoom.bind(null, true));
 			leaveRoomSpan.hide();
 		} else {
@@ -314,7 +332,22 @@ var battle = execMain(function() {
 				} else if (account.length > 10) {
 					account = account.slice(0, 4) + '...' + account.slice(account.length - 3);
 				}
-				var curTime = (solveDict[player['accountId']] || {})[curSolveId];
+				var playerSolves = solveDict[player['accountId']] || {};
+				var playerObservedSolves = observedSolves[player['accountId']] || {};
+				var curTime = playerSolves[curSolveId];
+				var meanSum = 0;
+				var meanCount = 0;
+				var solveCount = 0;
+				for (var solveId in playerObservedSolves) {
+					solveCount++;
+					var solveTime = playerObservedSolves[solveId][0];
+					if (solveTime[0] == -1) {
+						continue;
+					}
+					meanSum += solveTime[0] + solveTime[1];
+					meanCount++;
+				}
+				var meanTime = (meanCount ? stats.pretty([0, meanSum / meanCount], false) : 'N/A') + ' (' + solveCount + ')';
 				var isSolved = player['status'] == 'SOLVED';
 				var lastTime = (solveDict[player['accountId']] || {})[curSolveId - 1];
 				lastTime = isSolved ? curTime : lastTime;
@@ -325,7 +358,8 @@ var battle = execMain(function() {
 				roomTable.append('<tr><td>' + (i + 1) + '</td><td>' + account +
 					'</td><td>' + player['elo'] +
 					'</td><td>' + statusMap[['READY', 'INSPECT', 'SOLVING', 'SOLVED', 'LOSS'].indexOf(player['status']) + 1] +
-					'</td><td>' + lastTime + '</td></tr>');
+					'</td><td>' + lastTime +
+					'</td><td>' + meanTime + '</td></tr>');
 			}
 		}
 	}
