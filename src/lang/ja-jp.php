@@ -114,7 +114,7 @@
 <li><strong data="opt_imgSize">スクランブルのイメージサイズ</strong>. スクランブル描画のサイズを指定します。</li>
 <li><strong data="opt_NTools">ツール表示数</strong>. csTimerは最大4つのツールを同時に表示できます。</li>
 <li><strong data="opt_useKSC">キーボードショートカットを有効にする</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">Use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRCの基本速度(tps)</strong>. 仮想キューブの表示速度を指定します。回転が累積されてくると、速度は上がります。</li>
 <li><strong data="opt_vrcMP">マルチフェイズ</strong>. 仮想キューブやスマートキューブ使用時に、フェーズごとのスプリットタイム測定を自動で行います。</li>
 <li><strong data="opt_giiMode">Bluetoothキューブモード</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">統計情報</strong>. タイム一覧に表示されるものと同様の統計情報を表示します。</li>
 <li><strong data="tool_distribution">タイム分布</strong>. タイム分布と安定性分析を表示します。&lt;X Y/Zという表示は、X秒未満のソルブがY個存在し、直近Z個のソルブがすべてX秒未満であるということを意味します。</li>
 <li><strong data="tool_trend">タイムトレンド</strong>. 現在のセッションのトレンド曲線を表示します。</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. 日/週/月/年ごとのソルブ回数を表示します。</li>
+<li><strong data="tool_dlystat">日別の統計</strong>. 日/週/月/年ごとのソルブ回数を表示します。</li>
 <li><strong data="tool_image">スクランブルの描画</strong>. スクランブルが正しいか確認するためのスクランブル描画を表示します。全WCA種目に対応しています。</li>
 <li><strong data="tool_roux1">ソルバー &gt; Roux S1 ソルブ</strong>. RouxのFirst Blockソルバーです。1x2x3ブロックを作ります。</li>
 <li><strong data="tool_eoline">ソルバー &gt; EOLineソルブ</strong>. EOLineソルバーです。エッジ12個全てのEOが正しく、DFエッジとDBエッジの位置が正しい状態を作ります。</li>
@@ -181,7 +181,7 @@
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
 <h2>Donate directly</h2>
-<p>csTimerをサポートいただきありがとうございます！ あなたの寄付は、開発・保守に必要なコストの補填に活用されます。</p>
+<p>csTimerをサポートいただきありがとうございます！あなたの寄付は、開発・保守に必要なコストの補填に活用されます。</p>
 <p>PayPal経由で寄付していただくには、下記のボタンをクリックするか、<a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>を経由してください。</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -194,7 +194,7 @@
 </div>
 <div class="instruction">
 <p><strong>接続ができない場合、お使いのシステムでBluetoothが有効になっていることを確認してください！</strong></p>
-<p>お使いのブラウザがWeb Bluetooth APIをサポートしている必要があります。 下記のような互換性のあるブラウザを使用してください。</p>
+<p>お使いのブラウザがWeb Bluetooth APIをサポートしている必要があります。下記のような互換性のあるブラウザを使用してください。</p>
 <ul>
 <li>Chrome (macOS, Linux, Android, Windowsの場合)</li>
 <li>Bluefy (iOSの場合)</li>

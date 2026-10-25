@@ -17,34 +17,34 @@
 <p>ממשק עוצב על ידי <a href="mailto:liebe7@126.com">Yue Zhang (liebe7@126.com)</a></p>
 <h2>פונקציות בסיסיות</h2>
 <ul>
-<li></strong>איך להתחיל למדוד זמן** - לחץ על מקש הרווח (או על שני מקשי הCtrl, הימני והשמאלי, או לחץ על המסך במכשירי מובייל) וחכה שהטיימר יהפוך לירוק, הטיימר יתחיל למדוד זמן ברגע שמקש הרווח ישוחרר. לחץ על כל מקש כדי להפסיק את הטיימר וזמן הפתירה ישמר.</li></li>
+<li><strong>איך להתחיל למדוד זמן</strong> - לחץ על מקש הרווח (או על שני מקשי הCtrl, הימני והשמאלי, או לחץ על המסך במכשירי מובייל) וחכה שהטיימר יהפוך לירוק, הטיימר יתחיל למדוד זמן ברגע שמקש הרווח ישוחרר. לחץ על כל מקש כדי להפסיק את הטיימר וזמן הפתירה ישמר.</li>
 <li><strong>תיאור ממשק</strong> - ישנם 6 כפתורים ליד הלוגו של csTimer: הגדרות, יצוא, ערבוב, רשימת זמנים, תרומות, כלים, תלחץ על ה<strong>ערבוב</strong>, <strong>רשימת זמנים</strong>, <strong>כלים</strong> כדי לפתוח את הפאנל המתאים.</li>
 <li><strong>פאנל ערבובים</strong> - בפאנל הערבובים, אתה יכול לבחור סוג ערבוב, לשנות את אורך הערבוב ולבחור מקרים ספציפיים (אם זמין), לראות ערבובים קודמים, וליצור את הערבוב הבא.</li>
 <li><strong>פאנל רשימת זמנים</strong> - בפאנל רשימת הזמנים, אתה יכול לפתוח את מנהל הסשנים עם לחיצה על "סשן", בחר\הוסף\מחק סשנים, רוקן סשן עם הבוחר והכפתור ליד, ואז אתה יכול לראות את הסינגל\ממוצע הנוכחי, הסינגל\ממוצע הכי טובים, ואת רשימת הזמנים המלאה.</li>
-<li><strong>פאנל כלים</strong> - בפאנל הכלים, אתה יכול לבחור פונקציות ספציפיות, הכוללות תמונת ערבוב, מייצר ערבובים, פותרים, סוגי סטטיסטיקות שונים, וכו'.</ul></li>
+<li><strong>פאנל כלים</strong> - בפאנל הכלים, אתה יכול לבחור פונקציות ספציפיות, הכוללות תמונת ערבוב, מייצר ערבובים, פותרים, סוגי סטטיסטיקות שונים, וכו'.</li>
 </ul>
 <h2>קיצורי מקלדת</h2>
 <table class="table" style="display: inline-block;">
 <tr><th>מפתח</th><td>פונקציה</td></tr>
 <tr><th>Alt + 1</th><td>סור ערבוב לsquare-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>סוג ערבוב ל2x2x2 עד 7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + p/m/c/s</th><td>סוג ערבוב לפירא/מגהמינקס/קלוק/סקיוב</td></tr>
 <tr><th>Alt + i</th><td>Scramble type to input</td></tr>
 <tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
-<tr><th>Ctrl/Alt + z</th><td>Remove the latest solve</td></tr>
+<tr><th>Ctrl/Alt + z</th><td>הסר פתירה אחרונה</td></tr>
 <tr><th>Alt + up/down</th><td>To next/last session</td></tr>
 <tr><th>Alt + left/right</th><td>Display last/next scramble</td></tr>
-<tr><th>Ctrl + 1/2/3</th><td>The latest solve is OK/+2/DNF</td></tr>
+<tr><th>Ctrl + 1/2/3</th><td>הפתירה האחרונה היא בסדר/+2/פסילה</td></tr>
 <tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Entering in times with timer/typing/stackmat/virtual/bluetooth cube/qcube/bluetooth timer/last layer</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
 <tr><th>Gesture</th><td>Function</td></tr>
-<tr><th>Up left</th><td>The latest solve is DNF</td></tr>
-<tr><th>Up</th><td>The latest solve is +2</td></tr>
-<tr><th>Up right</th><td>The latest solve is OK</td></tr>
+<tr><th>Up left</th><td>הפתירה האחרונה היא פסילה</td></tr>
+<tr><th>Up</th><td>הפתירה האחרונה היא +2</td></tr>
+<tr><th>Up right</th><td>הפתירה האחרונה היא בסדר</td></tr>
 <tr><th>Left</th><td>Last scramble</td></tr>
-<tr><th>Right</th><td>Next scramble</td></tr>
+<tr><th>Right</th><td>ערבוב הבא</td></tr>
 <tr><th>Down left</th><td>Add comment to the latest solve</td></tr>
 <tr><th>Down</th><td>Remove the latest solve</td></tr>
 <tr><th>Down right</th><td>Check the latest solve</td></tr>
@@ -61,7 +61,7 @@
 <li><strong data="opt_timeFormat">פורמט זמן</strong>. פורמט הזמן להציג</li>
 <li><strong data="opt_atexpa">יצוא אוטומטי (כל 100 פתירות)</strong>. אם יסומן, csTimer ייצא את הפתירות אוטומטית כל 100 פתירות למיקום ספציפי, קובץ מקומי, שרת csTimer, או אחסון גוגל.</li>
 <li><strong data="opt_expp">יבא מידע לא עדכני</strong>. אם הוספתם כמה גיבויים, אפשר להעלות  אחד מעשרה גיבויים הכי מחודשים. אם בטעות מעלים גיבוי ריק, האופציה הזות תעזור להחזיר את הזמנים.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. הלוגו של csTimer ישמש כפאנל תצוגת מידע שמבקש מידע מגוונים שעשוי להתעניין בו, כגון שבירת PB.</li>
+<li><strong data="opt_useLogo">hint messages in logo</strong>. הלוגו של csTimer ישמש כפאנל תצוגת מידע שמבקש מידע מגוונים שעשוי להתעניין בו, כגון שבירת PB.</li>
 <li><strong data="opt_showAvg">הראה ממוצע מתחת לטיימר</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">שנה מרחק מתצוגה</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">תבחר גופן לטיימר</strong>. Font of the main timer.</li>
@@ -84,7 +84,7 @@
 <li><strong data="opt_timeU">עדכון הטיימר הוא</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">זמן השארת מקש הרווח לחוץ(שנייה(ות))</strong>. How long the space bar should be held before the timer turns green.</li>
 <li><strong data="opt_phases">רב-שלבי</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
+<li><strong data="opt_stkHead">Use Stackmat status information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">גודל בלגון</strong>. גודל כתב הבלגון.</li>
 <li><strong data="opt_scrASize">גודל ערבוב אוטומטי</strong>. הגודל של כתב הבלגון יותאם באופן אוטומטי לפי אורך הבלגון, עובד גם עם האפשרות הקודמת.</li>
 <li><strong data="opt_scrMono">רווח יחיד בבלגון</strong>. Use monospaced font for scramble text.</li>
@@ -114,12 +114,12 @@
 <li><strong data="opt_imgSize">גודל תמונת בלגון</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">מספר כלים</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">השתמש בקיצורי מקלדת</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">Use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC base speed (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">רב-שלבי</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
+<li><strong data="opt_giiMode">Bluetooth cube mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">הראה קובייה דיגיטלית</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
-<li><strong data="opt_giiSD">Mark scrambled if stay</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
+<li><strong data="opt_giiSD">Mark scrambled after staying</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">סמן מבולגן עם רווח</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
 <li><strong data="opt_giiSM">Mark scrambled by doing</strong>. Use specific move sequences on the bluetooth cube to mark scrambled.</li>
 <li><strong data="opt_giiBS">צפצף כאשר מסומן שמבולגן</strong>. Beep when some of scramble-finish signal is triggered.</li>

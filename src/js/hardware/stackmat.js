@@ -20,7 +20,7 @@ var stackmat = execMain(function() {
 			for (var i = 0; i < deviceInfos.length; i++) {
 				var deviceInfo = deviceInfos[i];
 				if (deviceInfo.kind === 'audioinput') {
-					devices.push([deviceInfo.deviceId, deviceInfo.label || 'microphone ' + (devices.length + 1)]);
+					devices.push([deviceInfo.deviceId, deviceInfo.label || STACKMAT_MIC + ' ' + (devices.length + 1)]);
 				}
 			}
 			return retobj;
@@ -45,11 +45,12 @@ var stackmat = execMain(function() {
 				});
 			}
 		}
-
-		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
-
-		audio_context = new AudioContext();
-
+		try {
+			var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
+			audio_context = new AudioContext();
+		} catch (e) {
+			return Promise.reject(new Error('AudioContext is not supported'));
+		}
 		if (curTimer == 'm') {
 			sample_rate = audio_context["sampleRate"] / 8000;
 			bitAnalyzer = appendBitMoyu;
@@ -344,6 +345,9 @@ var stackmat = execMain(function() {
 	var sampleData = {};
 
 	function getSample(duration, callback) {
+		if (!audio_context) {
+			return;
+		}
 		sampleCallback = callback;
 		sampleRemain = Math.ceil(duration * (audio_context["sampleRate"] || 44100));
 		sampleData = {

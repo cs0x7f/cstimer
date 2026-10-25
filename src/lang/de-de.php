@@ -114,7 +114,7 @@
 <li><strong data="opt_imgSize">Scramble-Bild Größe</strong>. Setzt die Größe der Scramble-Abbildung.</li>
 <li><strong data="opt_NTools">Anzahl der Werkzeuge</strong>. csTimer ist in der Lage, bis zu 4 Werkzeuge gleichzeitig zu zeigen.</li>
 <li><strong data="opt_useKSC">Tastenkombinationen benutzen</strong>. Tastenkombinationen verwenden, um den Scramble-Typ zu wechseln, das nächste Sramble zu generieren und zwischen verschiedenen Sessions zu wechseln. Für weitere Details auf das csTimer-Logo klicken.</li>
-<li><strong data="opt_useGES">Gestensteuerug benutzen</strong>. Gesten (Wischen in verschiedene Richtungen) zum Auswählen von OK/+2/DNF, dem Hinzufügen von Kommentaren, dem Generieren des nächsten Scrambles und weiterem verwenden. Auch auf Geräten ohne Touchscreen, wenn der Maus-Timer aktiviert ist. Für weitere Details auf das csTimer-Logo klicken.</li>
+<li><strong data="opt_useGES">Gestensteuerug benutzen</strong>. Gesten (Wischen in verschiedene Richtungen) zum Auswählen von OK/+2/DNF, dem Hinzufügen von Kommentaren, dem Generieren des nächsten Scrambles und weiterem verwenden. Auch auf Geräten ohne Touchscreen, wenn der Maus-Timer aktiviert ist. ​</li>
 <li><strong data="opt_vrcSpeed">VRC Grundgeschwindigkeit (TPS)</strong>. Basisgeschwindigkeit des virtuellen Cubes; die Geschwindigkeit wird bei mehreren nachzuholenden Zügen erhöht</li>
 <li><strong data="opt_vrcMP">Multi-Phase</strong>. Automatische Mehrphasen-Aufteilung für virtuelle und Bluetooth-Cubes.</li>
 <li><strong data="opt_giiMode">Bluetooth Würfel-Modus</strong>. Verwendung eines Smart Cubes: Im normalen Modus muss der Cube manuell nach dem vorgegebenen Scramble gescrambelt werden; im Trainingsmodus wird der Cube nach Drücken der Leertaste (oder dem Berühren des Bildschirms bei Touchscreens) direkt in den gescrambelten Zustand versetzt. Der virtuelle Cube muss im Gegensatz zu physischen Cubes teilweise gelöst sein (abhängig vom Scramble, z. B. wird PLL während OLL-Trainings nicht überprüft). Im fortlaufenden Trainingsmodus, als Erweiterung des normalen Trainingsmodus, wird nach dem Lösen des virtuellen Cubes direkt der nächste Solve begonnen. Sie können auch ESC drücken (oder auf einem Touchscreen den Bildschirm für zwei Sekunden berühren), um den Solve zu beenden.</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">Statistiken</strong>. Statistik-Tabelle, ähnlich zu der Tabelle in der Zeitenliste.</li>
 <li><strong data="tool_distribution">Zeitverteilung</strong>. Zeitverteilungs- und Kontinuitätsanalyse, &lt;X Y/Z bedeutet, dass es insgesamt Z Solves unter X Sekunden gibt, und alle der letzten Y Solves in der Session unter X Sekunden sind.</li>
 <li><strong data="tool_trend">Zeit-Trend</strong>. Zeigt eine Trendkurve aller Solves in der aktuellen Sitzung an.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Zählt die Anzahl der Solves pro Tag/Woche/Monat/Jahr.</li>
+<li><strong data="tool_dlystat">Tägliche Statistik</strong>. Zählt die Anzahl der Solves pro Tag/Woche/Monat/Jahr.</li>
 <li><strong data="tool_image">Scramble zeichnen</strong>. Scramble-Abbildung zur Überprüfung des korrekten Scrambles, alle WCA-Puzzles werden unterstützt</li>
 <li><strong data="tool_roux1">Löser &gt; Roux ersten Block lösen</strong>. Roux-1. Schritt-Löser, der einen 1x2x3 Block löst.</li>
 <li><strong data="tool_eoline">Löser &gt; EOLine Lösen</strong>. EO-Line-Löser, der die Ausrichtung aller 12 Kanten und die Positionen der DF- und DB-Kanten löst.</li>
@@ -199,8 +199,8 @@
 <li>Chrome in macOS, Linux, Android oder Windows</li>
 <li>Bluefy in iOS</li>
 </ul>
-<p><a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">Hier können sie eine vollständige Liste aller unterstützter Browser abrufen.</a></p>
-<p>Für einige Bluetooth-Cubes muss zudem die MAC-Adresse angegeben werden, um die Daten zu entschlüsseln. <strong>csTimer kann diese bei richtigen Browser-Einstellungen automatisch auslesen.</strong></p>
+<p>Hier können sie eine vollständige Liste aller <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">unterstützter Browser</a> abrufen.</p>
+<p>Für einige Bluetooth-Cubes muss zudem die MAC-Adresse angegeben werden, um die Daten zu entschlüsseln. <strong>csTimer kann diese bei richtigen Browser-Einstellungen automatisch auslesen.</strong> <strong>csTimer kann diese bei richtigen Browser-Einstellungen automatisch auslesen.</strong></p>
 <ul>
 <li>Chrome: aktiviere chrome://flags/#enable-experimental-web-platform-features in den Browsereinstellungen</li>
 <li>Bluefy: aktiviere die "Enable BLE Advertisements"-Option in den Browsereinstellungen</li>

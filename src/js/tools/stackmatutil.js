@@ -2,7 +2,7 @@
 
 var stackmatutil = execMain(function(CubieCube) {
 
-	var statusSpan = $('<span>').html('status:  unknown');
+	var statusSpan = $('<span>').html(STACKMAT_DBG_FIELDS.split('|')[0] + ':  ' + STACKMAT_DBG.split('|')[3]);
 	var deviceSelect = $('<select style="font-size: 1rem;">');
 	var debugClick = $('<span class="click" style="font-family:iconfont;padding-left:0.5em;">\ue69d</span>');
 	var isShown = false;
@@ -67,25 +67,27 @@ var stackmatutil = execMain(function(CubieCube) {
 			debugDiv = $('<div>');
 			debugCanvas = $('<canvas style="display:block; width:95%; margin:auto;">');
 			debugText = $('<span style="word-break:break-all;">');
-			debugSampleClick = $('<span class="click">Sample!</span>');
+			debugSampleClick = $('<span class="click">' + STACKMAT_DBG.split('|')[1] + '</span>');
 			debugDiv.append(debugSampleClick, debugCanvas, debugText);
 		}
 		debugIsShow = true;
 		debugSampleClick.reclk(showDebugDialog);
-		kernel.showDialog([debugDiv, clearDebug, clearDebug, clearDebug], 'share', 'Stackmat Debug', doDebugSample);
+		kernel.showDialog([debugDiv, clearDebug, clearDebug, clearDebug], 'share', STACKMAT_DBG.split('|')[0], doDebugSample);
 	}
 
 	function updateStatus(value) {
 		if (!isShown) {
 			return;
 		}
+		var fields = STACKMAT_DBG_FIELDS.split('|');
+		var vals = STACKMAT_DBG_VALS.split('|');
 		var status = '';
-		status += 'status:  ' + (value.on ? 'on' : 'off') + '<br>';
-		status += 'noise:   ' + ~~(value.noise * 100) + '%<br>';
-		status += 'power:   ' + (~~(Math.log10(value.power) * 100) / 10) + 'dB<br>';
-		status += 'header:  ' + (value.signalHeader) + '<br>';
-		status += 'pad:     ' + (value.leftHand ? 'L' : ' ') + (value.rightHand ? 'R' : ' ') + '<br>';
-		status += 'running: ' + (value.running ? 'yes' : 'no');
+		status += fields[0] + ': ' + (value.on ? vals[0] : vals[1]) + '<br>';
+		status += fields[1] + ': ' + ~~(value.noise * 100) + '%<br>';
+		status += fields[2] + ': ' + (~~(Math.log10(value.power) * 100) / 10) + 'dB<br>';
+		status += fields[3] + ': ' + (value.signalHeader) + '<br>';
+		status += fields[4] + ': ' + (value.leftHand ? 'L' : ' ') + (value.rightHand ? 'R' : ' ') + '<br>';
+		status += fields[5] + ': ' + (value.running ? vals[2] : vals[3]);
 		statusSpan.html(status.replace(/ /g, '&nbsp;'));
 	}
 
@@ -95,7 +97,7 @@ var stackmatutil = execMain(function(CubieCube) {
 			return;
 		}
 		isShown = true;
-		fdiv.empty().append(statusSpan, '<br>', 'Device:&nbsp;&nbsp;', deviceSelect, debugClick);
+		fdiv.empty().append(statusSpan, '<br>', STACKMAT_DBG.split('|')[2] + ':&nbsp;&nbsp;', deviceSelect, debugClick);
 		debugClick.reclk(showDebugDialog);
 	}
 

@@ -3,9 +3,9 @@
 <h2>Introdução</h2>
 <p>csTimer é um cronometro profissional feito para montadores de cubo mágico, ele possui:</p>
 <ul>
-<li>Diversos algoritmos de embaralhamento, incluindo <strong>todos os eventos oficiais da WCA</strong>, uma variedade de "twisty puzzles", <strong> embaralhamentos de treino</strong> para passos específicos (ex. <strong> F2L, OLL, PLL, ZBLL </strong>, e pode filtrar casos), etc.</li>
+<li>Diversos algoritmos de embaralhamento, incluindo <strong>todos os eventos oficiais da WCA</strong>, uma variedade de "twisty puzzles", <strong>embaralhamentos de treino</strong> para passos específicos (ex. <strong>F2L, OLL, PLL, ZBLL</strong>, e pode filtrar casos), etc.</li>
 <li>Variadas estatísticas, ele suporta <strong>time-split timing</strong>; <strong>Qualquer quantidade de sessões</strong>, separação/junção de sessões, etc.</li>
-<li>Diversos revolvedores, como &lt;Cruz, Xcross, Face de 2x2x2, Face de Skewb, Cube Shape de SQ1</strong>, para se aprender e treinar tais passos.</li>
+<li>Diversos revolvedores, como <strong>Cruz, Xcross, Face de 2x2x2, Face de Skewb, Cube Shape de SQ1</strong>, para se aprender e treinar tais passos.</li>
 <li>Outras ferramentas auxiliares, como imagem do embaralhamento, alerta de 8 segundos de inspeção (em voz), metrônomo, gerador de embaralhamento em quantidade, etc.</li>
 <li>Função de backup, para evitar perda de dados. Você pode salvar suas solves para arquivos locais, o server do csTimer, ou servidores do Google</li>
 </ul>
@@ -84,7 +84,7 @@
 <li><strong data="opt_timeU">atualização do cronômetro</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">tempo mantendo a barra de espaços pressionada (segundo(s))</strong>. How long the space bar should be held before the timer turns green.</li>
 <li><strong data="opt_phases">fases de cronometragem</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
+<li><strong data="opt_stkHead">Use Stackmat status information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">tamanho do embaralhamento</strong>. Size of the scramble text.</li>
 <li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
 <li><strong data="opt_scrMono">embaralhamento com espaços</strong>. Use monospaced font for scramble text.</li>
@@ -114,10 +114,10 @@
 <li><strong data="opt_imgSize">Tamanho da imagem do embaralhamento</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">número de ferramentas</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">usar atalhos do teclado</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">Use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">velocidade base do VRC (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">múltiplas fases</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
+<li><strong data="opt_giiMode">Bluetooth cube mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Mostrar cubo Giiker virtual</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Indicar o final do embaralhamento esperando</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">indicar o final do embaralhamento com a barra de espaço</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>

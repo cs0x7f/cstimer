@@ -3,9 +3,9 @@
 <h2>Úvod</h2>
 <p>csTimer je profesionální časovač pro speedcubery, tento program poskytuje:</p>
 <ul>
-<li>Několik různých míchacích algoritmů pro <strong>všechny oficiální WCA eventy</strong>, různé hlavolamy, <strong> tréninkové míchání </strong> pro konkrétní dílčí kroky (např. <strong> F2L, OLL, PLL, ZBLL, umí filtrovat případy </strong>), atd.</li>
-<li>Mnoho statistických funkcí, podporuje <strong> dělené časování</strong>; <strong>Jakýkoli počet relací</strong>, rozdělení / sloučení relací atd.</li>
-<li>Různé druhy řešitelů, jako je <strong> Kříž, Xcross, první strana 2x2x2 první strana Skewbu, tvar SQ1</strong>, pro výuku a trénování těchto dílčích kroků.</li>
+<li>Několik různých míchacích algoritmů pro <strong>všechny oficiální WCA eventy</strong>, různé hlavolamy, <strong>tréninkové míchání</strong> pro konkrétní dílčí kroky (např. <strong>F2L, OLL, PLL, ZBLL</strong>, umí filtrovat případy), atd.</li>
+<li>Mnoho statistických funkcí, podporuje <strong>dělené časování</strong>; <strong>Jakýkoli počet relací</strong>, rozdělení / sloučení relací atd.</li>
+<li>Různé druhy řešitelů, jako je <strong>Kříž, Xcross, první strana 2x2x2 první strana Skewbu, tvar SQ1</strong>, pro výuku a trénování těchto dílčích kroků.</li>
 <li>Další pomocné nástroje, jako je zobrazení zamíchání, (hlasové) upozornění pro inspekci, metronom, generátor sad zamíchání, atd.</li>
 <li>Funkce zálohování. Chcete-li se vyhnout ztrátě dat, můžete zálohovat řešení do vašich místních souborů, serveru csTimer nebo do úložiště Google.</li>
 </ul>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">Statistiky</strong>. Tabulka statistik.</li>
 <li><strong data="tool_distribution">distribuce času</strong>. Analýza distribuce časů a stability. &lt;X Y/Z znamená, že je celkem Y solvů pod X a posledních Z solvů v relaci je pod X.</li>
 <li><strong data="tool_trend">trend času</strong>. Ukazuje trend všech solvů v aktuální relaci.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Počítá solvy za každý den/týden/měsíc/rok.</li>
+<li><strong data="tool_dlystat">Denní statistiky</strong>. Počítá solvy za každý den/týden/měsíc/rok.</li>
 <li><strong data="tool_image">nakreslit scramble</strong>. Vykreslený scramble pro potvrzení správnosti scramblu. Všechny WCA kostky jsou podporovány.</li>
 <li><strong data="tool_roux1">Solvery &gt; složit Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
 <li><strong data="tool_eoline">Solvery &gt; složit EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>

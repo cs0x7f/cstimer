@@ -114,7 +114,7 @@
 <li><strong data="opt_imgSize">Размер изображения скрамбла</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">количество инструментов</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">использовать сокращение на клавиатуре</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">Use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">Стандартная скорость вращение виртуального куба(вращений в секунду)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">мульти-фаза</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
 <li><strong data="opt_giiMode">Режим Bluetooth Cube</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">Статистика</strong>. Таблица со статистикой, похожая на таблицу в панели времени списка.</li>
 <li><strong data="tool_distribution">распределение времени</strong>. Анализ стабильности и распределения времени, &lt;X Y/Z означает, что есть в сумме Z сборок менее X секунд, и последние Y сборок в сессии также меньше X секунд.</li>
 <li><strong data="tool_trend">тенденция времени</strong>. Показывает кривую тренда всех сборок в текущей сессии.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Количество решений за каждый день/неделю/месяц/год.</li>
+<li><strong data="tool_dlystat">Ежедневная статистика</strong>. Количество решений за каждый день/неделю/месяц/год.</li>
 <li><strong data="tool_image">нарисовать скрамбл</strong>. Изображение скрамбла для проверки правильности, поддерживаются все WCA головоломки.</li>
 <li><strong data="tool_roux1">Cборщики &gt; собрать Roux S1</strong>. Сборщик первого шага Roux, который решает блок 1x2x3.</li>
 <li><strong data="tool_eoline">Cборщики &gt; собрать EOLine</strong>. Сборщик линии EO, расставляющий ориентацию всех 12 ребер, а также позиции ребер DF и DB.</li>

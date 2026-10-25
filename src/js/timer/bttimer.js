@@ -92,13 +92,13 @@ execMain(function(timer) {
 	function showConnectionDialog() {
 		var dialogMsg = $('<div>')
 			.append('<br><br>')
-			.append('<b>Press OK to connect to Bluetooth Timer</b>')
+			.append('<b>' + BT_CONNECT_MSG.split('|')[1] + '</b>')
 			.append('<br><br>')
 			.append(timer.getBTDiv());
 		BluetoothTimer.stop().then(function () {
 			kernel.showDialog([dialogMsg, function () {
 				connectTimer();
-			}, 0, 0], 'share', 'Bluetooth Timer');
+			}, 0, 0], 'share', BT_CONNECT_TITLE.split('|')[1]);
 		});
 	}
 

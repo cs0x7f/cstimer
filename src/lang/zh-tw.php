@@ -12,7 +12,7 @@
 <p>csTimer支援大多數的桌面、手機與平板瀏覽器。你可以把csTimer加到手機的主畫面中，運作起來就像APP一樣。</p>
 <p>csTimer使用了瀏覽器的快取，代表只有第一次上線的時候會佔流量。在那之後，即使要離線使用也沒關係。(備份等功能除外)</p>
 <h3>版權</h3>
-<p>csTimer是使用GPLv3的開放源始碼軟體。 如果對csTimer有任何的建議或問題，可以到<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">這裡</a>提交</p>
+<p>csTimer是使用GPLv3的開放源始碼軟體。如果對csTimer有任何的建議或問題，可以到<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">這裡</a>提交</p>
 <p>作者：<a href="mailto:cs0x7f@gmail.com">陳霜(陈霜)(cs0x7f@gmail.com)</a></p>
 <p>使用者介面設計：<a href="mailto:liebe7@126.com">張悅(张悦)(liebe7@126.com)</a></p>
 <h2>基本功能</h2>
@@ -74,7 +74,7 @@
 <li><strong data="opt_bgImgS">背景圖片</strong>. 你可以自訂背景圖片，但由於瀏覽器安全性的關係，只能嵌入https的圖片連結。</li>
 <li><strong data="opt_timerSize">計時器大小</strong>. 計時器的字體大小。</li>
 <li><strong data="opt_smallADP">小數點後使用小型字體</strong>. 小數點後的字體縮小顯示。</li>
-<li><strong data="opt_color">選擇色彩樣式</strong>. 選擇csTimer的顏色主題。 點選csTimer的標誌可以看到更多顏色主題。</li>
+<li><strong data="opt_color">選擇色彩樣式</strong>. 選擇csTimer的顏色主題。點選csTimer的標誌可以看到更多顏色主題。</li>
 <li><strong data="opt_useMouse">使用滑鼠計時</strong>. 用滑鼠控制計時器，開啟這個選項後依然可以使用鍵盤。</li>
 <li><strong data="opt_useIns">使用WCA觀察</strong>. 使用WCA的15秒觀察，如果超過15秒的話會自動+2/DNF。</li>
 <li><strong data="opt_voiceIns">WCA觀察人聲提醒</strong>. 為了符合WCA的裁判規定，在觀察8秒/12秒時提醒。</li>
@@ -98,7 +98,7 @@
 <li><strong data="opt_scrClk">點擊打亂時的動作</strong>. 點擊打亂公式後會發生的事情：複製本次打亂或生成下一組打亂。</li>
 <li><strong data="opt_trim">刪減數據中的資料數</strong>. 計算平均時要去掉的頭尾數據量。</li>
 <li><strong data="opt_statsum">在時間清單前顯示摘要</strong>. 在時間列表前顯示統計資料。</li>
-<li><strong data="opt_statthres">顯示階段最快的目標時間</strong>. 在資料欄中，下一次還原能更新個人紀錄所需要的時間是被顥示的 ‘N/A’ 表示無論下一次解開多快都不會更新個人紀錄, ‘&#8734;’ 代表未完成之外的所有時間都會更新個人紀錄.</li>
+<li><strong data="opt_statthres">顯示階段最快的目標時間</strong>. 在資料欄中，下一次還原能更新個人紀錄所需要的時間是被顥示的 ‘N/A’ 表示無論下一次解開多快都不會更新個人紀錄, ‘&#8734;’ 代表未完成之外的所有時間都會更新個人紀錄. ​</li>
 <li><strong data="opt_printScr">在統計列表中顯示打亂</strong>. 在數據欄中顯示打亂。</li>
 <li><strong data="opt_printDate">在統計列表中顯示日期</strong>. 在數據欄中顯示日期。</li>
 <li><strong data="opt_imrename">創建後立即重新命名階段</strong>. 在創建階段後立即重新命名。</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">統計</strong>. 類似左側時間列表的小面板。</li>
 <li><strong data="tool_distribution">分階段計時</strong>. 時間分佈跟穩定度分析，&lt;X Y/Z代表少於X秒的總共有Y轉，而且最近有Z轉小於X秒。</li>
 <li><strong data="tool_trend">時間趨勢</strong>. 顯示現階段的時間分佈曲線。</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. 計算每年/每週/每月/每年的復原次數。</li>
+<li><strong data="tool_dlystat">每日數據</strong>. 計算每年/每週/每月/每年的復原次數。</li>
 <li><strong data="tool_image">畫出打亂圖形</strong>. 顯示本次打亂後的樣子，支援所有的WCA方塊。</li>
 <li><strong data="tool_roux1">速解小幫手 &gt; 解好橋式左橋</strong>. 解好橋式的第一步，也就是左下方的1x2x3。</li>
 <li><strong data="tool_eoline">速解小幫手 &gt; 解好EOLine</strong>. 解好EO line，也就是會轉正所有的邊，並且解好底面的直線。</li>
@@ -181,7 +181,7 @@
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
 <h2>直接斗內</h2>
-<p>csTimer感謝你的資助！ 你的捐款會用作開發經費跟維護成本。</p>
+<p>csTimer感謝你的資助！你的捐款會用作開發經費跟維護成本。</p>
 <p>如果想要使用PayPal捐款的話，可以按下面的按鈕或是<a class="click" href="https://www.paypal.me/cs0x7f" title="">這個連結</a>。</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">

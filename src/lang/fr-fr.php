@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">Statistiques</strong>. Tableau statistique similaire à celui du panneau des temps.</li>
 <li><strong data="tool_distribution">Répartition des temps</strong>. Analyse de la distribution des temps et de la stabilité, &lt;X Y/Z signifient que Y résolutions sont en-dessous de X secondes, et que les Z dernières résolutions de la session sont en-dessous de X secondes.</li>
 <li><strong data="tool_trend">Tendance des temps</strong>. Affiche une courbe de tendance pour les résolutions de la session en cours.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Nombre de résolutions par jour /semaine /mois /année.</li>
+<li><strong data="tool_dlystat">Stats quotidiennes</strong>. Nombre de résolutions par jour /semaine /mois /année.</li>
 <li><strong data="tool_image">aperçu du mélange</strong>. Aperçu permettant de vérifier un mélange. Disponible pour tous les puzzles WCA.</li>
 <li><strong data="tool_roux1">Solveurs &gt; Résoudre 1er bloc Roux</strong>. Solveur Roux 1ère étape ; résout un bloc 1x2x3.</li>
 <li><strong data="tool_eoline">Solveurs &gt; Résoudre l&#x27;EOLine</strong>. Solveur EO line : résout l'orientation des 12 arêtes, et la position des arêtes DF et DB.</li>
@@ -181,7 +181,7 @@
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
 <h2>Faire un don</h2>
-<p>Merci de votre précieux soutien à csTimer !  Votre don nous aidera à couvrir nos coûts de développement et de maintenance.</p>
+<p>Merci de votre précieux soutien à csTimer ! Votre don nous aidera à couvrir nos coûts de développement et de maintenance.</p>
 <p>Si vous souhaitez nous faire un don via PayPal, veuillez cliquer sur le bouton ci-dessous ou passer par <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -200,7 +200,7 @@
 <li>Bluefy sur iOS</li>
 </ul>
 <p>Vous pouvez également consulter cette liste complète des <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">navigateurs pris en charge</a>.</p>
-<p>Avec certains cubes Bluetooth, nous avons besoin de l'adresse MAC de votre cube pour déchiffrer les données. <strong>csTimer est capable de lire automatiquement l'adresse MAC du cube si vous configurez correctement votre navigateur :</strong></p>
+<p>Avec certains cubes Bluetooth, nous avons besoin de l'adresse MAC de votre cube pour déchiffrer les données. <strong>csTimer est capable de lire automatiquement l'adresse MAC du cube si vous configurez correctement votre navigateur :</strong> <strong>csTimer est capable de lire automatiquement l'adresse MAC du cube si vous configurez correctement votre navigateur :</strong></p>
 <ul>
 <li>Chrome : activez le flag chrome://flags/#enable-experimental-web-platform-features dans les paramètres du navigateur.</li>
 <li>Bluefy: activez l'option Enable BLE Advertisements dans les paramètres du navigateur.</li>

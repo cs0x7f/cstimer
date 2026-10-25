@@ -59,7 +59,7 @@
 <li><strong data="opt_ahide">Zaman tutulurken her şeyi gizle</strong>. Hide logo and all panels when timing.</li>
 <li><strong data="opt_useMilli">milisaniye kullan</strong>. Display the millisecond digit, no matter whether it is checked, the internal timing accuracy of csTimer is 1 millisecond.</li>
 <li><strong data="opt_timeFormat">zaman biçimi</strong>. Time format to display.</li>
-<li><strong data="opt_atexpa">Auto Export (per 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
+<li><strong data="opt_atexpa">Auto export (every 100 solves)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Import non-latest data</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
 <li><strong data="opt_useLogo">Logodaki ipucu mesajları</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">ortalama göstergesini göster</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">İstatistikler</strong>. Statistic table similar with the table in the list times panel.</li>
 <li><strong data="tool_distribution">Süre dağılımı</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
 <li><strong data="tool_trend">Süre grafiği</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
+<li><strong data="tool_dlystat">Günlük İstatistikler</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">karıştırmayı göster</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
 <li><strong data="tool_roux1">Çözücüler &gt; Roux S1 çözümü</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
 <li><strong data="tool_eoline">Çözücüler &gt; EO Line çözümü</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>

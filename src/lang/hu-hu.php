@@ -4,7 +4,7 @@
 <p>A csTimer egy profi időmérő program gyorskockások számára. A program tartalmaz:</p>
 <ul>
 <li>Több keverési algoritmust, ide értve <strong>minden hivatalos WCA eseményt</strong>, különböző forgatós kirakókat, <strong>gyakorló keveréseket</strong> különböző lépésekhez (pl. <strong>F2L, OLL, PLL, ZBLL</strong>, és szűri is az eseteket), stb.</li>
-<li>Számos statisztikai funkciót, melyek támogatják a <strong>több lépéses mérést</strong>, végtelen számú időszakot</strong>, időszakok szétválasztását/egyesítését, stb.</li>
+<li>Számos statisztikai funkciót, melyek támogatják a <strong>több lépéses mérést</strong>, <strong>végtelen számú időszakot</strong>, időszakok szétválasztását/egyesítését, stb.</li>
 <li>Több különböző kirakót, pédául a <strong>Cross, Xcross, 2x2x2 oldal, Skewb oldal, SQ1 alak</strong> megoldókat ezen lépések tanulásához és gyakorlásához.</li>
 <li>Egyéb segédprogramokat, például keverési képet, 8 másodperces memorizációs (hang) figyelmeztést, metronómot, csoportos keverés generálást, stb.</li>
 <li>Az adatvesztés elkerülése érdekében mentési funkciót, elmentheted kirakásaid helyi file-ként, a csTimer szerverre vagy a Google tárhelyedre.</li>
@@ -114,10 +114,10 @@
 <li><strong data="opt_imgSize">Keverési kép mérete</strong>. Set the size of scramble image.</li>
 <li><strong data="opt_NTools">eszközök száma</strong>. csTimer is able to show up to 4 tools simultaneously.</li>
 <li><strong data="opt_useKSC">billentyűparancsok használata</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">Use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC alap sebessége (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
 <li><strong data="opt_vrcMP">többfázisú</strong>. Automatic multi-phase split for virtual Rubik's cube and bluetooth cube.</li>
-<li><strong data="opt_giiMode">Bluetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
+<li><strong data="opt_giiMode">Bluetooth cube mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
 <li><strong data="opt_giiVRC">Virtuális Giiker kocka mutatása</strong>. Show a virtual Rubik's cube in the main timer when connecting to a bluetooth cube.</li>
 <li><strong data="opt_giiSD">Megjelőlés kevertként ekkor:</strong>. For a bluetooth cube, csTimer cannot know whether a move is from for scrambling or solving.</li>
 <li><strong data="opt_giiSK">Megjelőlés kevertként szóközzel</strong>. When the space bar is pressed, the bluetooth cube is marked scrambled, any turns after that will treated as the start of timing.</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">Statisztikák</strong>. Statistic table similar with the table in the list times panel.</li>
 <li><strong data="tool_distribution">idő megoszlása</strong>. Time distribution and stability analysis, &lt;X Y/Z means there are totally Z solves less than X seconds, and all of the latest Y solves are less than X seconds in the session.</li>
 <li><strong data="tool_trend">idő trend</strong>. Shows a trend curve of all solves in current session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Count number of solves each day/week/month/year.</li>
+<li><strong data="tool_dlystat">Napi statisztikák</strong>. Count number of solves each day/week/month/year.</li>
 <li><strong data="tool_image">Keverés mutatása</strong>. Scramble image to verify a correct scramble, all WCA puzzles are supported.</li>
 <li><strong data="tool_roux1">Kirakók &gt; Roux S1 megoldása</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
 <li><strong data="tool_eoline">Kirakók &gt; EOLine megoldása</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
@@ -181,7 +181,7 @@
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
 <h2>Donate directly</h2>
-<p>Köszönjük a csTimer részére nyújtott nagylelkű támogatásodat.  Az adományodat a csTimer fejlesztésére és fenntartására fordítjuk.</p>
+<p>Köszönjük a csTimer részére nyújtott nagylelkű támogatásodat. Az adományodat a csTimer fejlesztésére és fenntartására fordítjuk.</p>
 <p>Ha PayPal-on keresztül szeretnéd adományodat eljuttatni hozzánk, kérlek kattints a lenti gombra vagy a <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a> linkre.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">

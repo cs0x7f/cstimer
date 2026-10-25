@@ -91,9 +91,9 @@ execMain(function(timer) {
 			if (enable) {
 				stackmatutil.setCallBack(stackmatCallback);
 				stackmatutil.init(input, false).then($.noop, function() {
-					kernel.showDialog([$('<div>Press OK To Connect To Stackmat</div>'), function() {
+					kernel.showDialog([$('<div>' + STACKMAT_CONNECT.split('|')[1] + '</div>'), function() {
 						stackmatutil.init(input, true).then($.noop, console.log);
-					}, 0, 0], 'share', 'Stackmat Connect');
+					}, 0, 0], 'share', STACKMAT_CONNECT.split('|')[0]);
 				});
 			} else {
 				stackmatutil.stop();

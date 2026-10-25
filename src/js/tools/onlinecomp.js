@@ -127,7 +127,7 @@ var onlinecomp = execMain(function() {
 	}
 
 	function setCompId() {
-		var compid = prompt(OLCOMP_SUBMITAS, exportFunc.getDataId('locData', 'compid'));
+		var compid = prompt(OLCOMP_SUBMITAS + ': ', exportFunc.getDataId('locData', 'compid'));
 		if (compid == null) {
 			return false;
 		} else if (!exportFunc.isValidId(compid)) {

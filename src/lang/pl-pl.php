@@ -18,10 +18,10 @@
 <h2>Podstawowe funkcje</h2>
 <ul>
 <li><strong>Jak rozpocząć odliczanie</strong> - Przytrzymaj spację (lub klawisze Ctrl z lewej i prawej, lub dotknij ekranu na urządzeniach mobilnych) i poczekaj, aż zegar zmieni kolor na zielony, zegar rozpocznie liczenie po zwolnieniu spacji, naciśnij dowolny klawisz, aby zatrzymać czas, który zostanie zapisany.</li>
-<li><strong>Opis interfejsu użytkownika</strong> - Istnieje 6 przycisków w pobliżu logo csTimer: opcje, eksportuj, scramble, lista czasów, darowizna, narzędzia, kliknij <strong>scramble</strong>, <strong>lista czasów/0&gt;, </strong>opcje** , aby otworzyć odpowiedni panel funkcji.</li></li>
+<li><strong>Opis interfejsu użytkownika</strong> - Istnieje 6 przycisków w pobliżu logo csTimer: opcje, eksportuj, scramble, lista czasów, darowizna, narzędzia, kliknij <strong>scramble</strong>, <strong>lista czasów</strong>, <strong>opcje</strong>, aby otworzyć odpowiedni panel funkcji.</li>
 <li><strong>Scramble Panel</strong> - W panelu Scramble możesz wybrać typ scramble'a, ustaw zwijaną długość i filtr liter (jeśli dostępny), sprawdź poprzedni scramble, wygeneruj następny scramblel.</li>
 <li><strong>Panel listy czasów</strong> - W panelu listy czasów możesz otworzyć menedżer sesji klikając "Sesja", wybierz/dodaj/usuń sesje, wyczyść sesje klikając przycisk "x" obok listy sesji, następnie możesz wyświetlić bieżącą pojedynczą/średnią, najlepszą pojedynczą/średnią i pełną listę czasu.</li>
-<li><strong>Panel narzędzi</strong> - W panelu narzędzi możesz wybrać określone funkcje pomocnicze, w tym widok scrambla, generatory scrambli, ilość ułożeń i inne rodzaje danych statystycznych.</ul></li>
+<li><strong>Panel narzędzi</strong> - W panelu narzędzi możesz wybrać określone funkcje pomocnicze, w tym widok scrambla, generatory scrambli, ilość ułożeń i inne rodzaje danych statystycznych.</li>
 </ul>
 <h2>Skróty klawiszowe</h2>
 <table class="table" style="display: inline-block;">
@@ -29,25 +29,25 @@
 <tr><th>Alt + 1</th><td>Typ mieszania do Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Typ mieszania do 2x2-7x7</td></tr>
 <tr><th>Alt + p/m/c/s</th><td>Typ mieszania do pyra/mega/clock/skewb</td></tr>
-<tr><th>Alt + i</th><td>Wprowadź scrambla</td></tr>
+<tr><th>Alt + i</th><td>Wprowadź rozmieszanie</td></tr>
 <tr><th>Alt + d</th><td>Usuń wszystkie ułożenia w sesji</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Usuń najnowszy czas</td></tr>
 <tr><th>Alt + strzałka w góre/dół</th><td>Następna/poprzednia sesja</td></tr>
-<tr><th>Alt + strzałka w lewo/prawo</th><td>Pokaż poprzedni/następny scramble</td></tr>
+<tr><th>Alt + strzałka w lewo/prawo</th><td>Pokaż poprzednie/następne rozmieszanie</td></tr>
 <tr><th>Ctrl + 1/2/3</th><td>Ustaw najnowszy czas na OK/+2/DNF</td></tr>
 <tr><th>Ctrl + Alt + t/i/s/v/g/q/b/l</th><td>Wprowadź czasy przez timer/pisanie/stackmat/kostka wirtualna/kostka bluetooth/qcube/timer bluetooth/ostatnia warstwa</td></tr>
 </table>
 
 <table class="table" style="display: inline-block;">
 <tr><th>Gest</th><td>Funkcja</td></tr>
-<tr><th>Up left</th><td>Ostatni czas to DNF</td></tr>
-<tr><th>Up</th><td>Ostatni czas to +2</td></tr>
-<tr><th>Up right</th><td>Ostatni czas jest OK</td></tr>
-<tr><th>Left</th><td>Ostatni scramble</td></tr>
-<tr><th>Right</th><td>Poprzedni scramble</td></tr>
-<tr><th>Down left</th><td>Dodaj komentarz do poprzedniego ułożenia</td></tr>
-<tr><th>Down</th><td>Usuń ostatnie ułożenie</td></tr>
-<tr><th>Down right</th><td>Sprawdź ostatnie ułożenie</td></tr>
+<tr><th>Góra lewo</th><td>Ostatni czas to DNF</td></tr>
+<tr><th>Góra</th><td>Ostatni czas to +2</td></tr>
+<tr><th>Góra prawo</th><td>Ostatni czas jest OK</td></tr>
+<tr><th>Lewo</th><td>Ostatni scramble</td></tr>
+<tr><th>Prawo</th><td>Poprzedni scramble</td></tr>
+<tr><th>Dół lewo</th><td>Dodaj komentarz do poprzedniego ułożenia</td></tr>
+<tr><th>Dół</th><td>Usuń ostatnie ułożenie</td></tr>
+<tr><th>Dół prawo</th><td>Sprawdź ostatnie ułożenie</td></tr>
 </table>
 
 <table class="table" id="vrckey" style="display: inline-block;">
@@ -74,7 +74,7 @@
 <li><strong data="opt_bgImgS">tło</strong>. Możesz wybrać własny obraz jako obraz tła, jednak tylko adresy https są dopuszczane ze względu na ograniczenia bezpieczeństwa przeglądarki.</li>
 <li><strong data="opt_timerSize">rozmiar timera</strong>. Ustaw rozmiar głównego zegara.</li>
 <li><strong data="opt_smallADP">używaj małej czcionki dla części dziesiętnych</strong>. Użyj mniejszego rozmiaru czcionki dla cyfr po przecinku w głównym liczniku.</li>
-<li><strong data="opt_color">wybierz kolor motywu</strong>. Ustaw kolory csTimer'a Kliknij w logo csTimer'a aby pokazać więcej opcji kolorystycznych</li>
+<li><strong data="opt_color">wybierz kolor motywu</strong>. Ustaw kolory csTimer'a Kliknij w logo csTimer'a aby pokazać więcej opcji kolorystycznych ​</li>
 <li><strong data="opt_useMouse">Używaj minutnika myszką i klawiaturą</strong>. Użyj myszki, aby uruchomić timer. Wyzwalanie przy użyciu klawiatury będzie również dostępne.</li>
 <li><strong data="opt_useIns">użyj inspekcji WCA</strong>. Włącz preinspekcje WCA, która jest 15-sekundowym odliczaniem, automatyczna kara +2/DNF będzie zastosowana, jeżeli przekroczysz czas.</li>
 <li><strong data="opt_voiceIns">ostrzeżenie głosowe inspekcji WCA</strong>. Ostrzeżenie przy 8/12 sekundach preinspekcji w celu symulacji ostrzeżenia ze strony sędziego na zawodach WCA.</li>
@@ -92,13 +92,13 @@
 <li><strong data="opt_scrAlign">Wyrównanie tekstu w polu mieszania</strong>. Wyrównanie tekstu scrambla</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. Ruchy uwzględniane przed scramblem podczas tworzenia podglądu scrambla i wirtualnej kostki</li>
 <li><strong data="opt_scrNeut">Kolor neutralny</strong>. Jeżeli włączone na pozycji/pierwszej warstwie kolory niektórych scrambli treningowych będą losowe</li>
-<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. For training scrambles, the probability of each case can be set to: follow the probability of the actual solving process; or let all cases appear with equal probability; or let all cases appear randomly in sequence (that is, to ensure that all N cases appear at least once in the next 2 N scrambles).</li>
+<li><strong data="opt_scrEqPr">Probabilities for training-scramble states</strong>. Dla rozmieszań treningowych, prawdopodobieństwo każdego przypadku może być ustawione na: prawdopodobieństwo w zwykłych ułożeniach, wszystkie z takim samym prawdopodobieństwem, albo wszystkie przypadki losowo po kolei (to znaczy wszystkie N prawdopodobieństw pojawi się przynajmniej raz w następnych 2 N rozmiszaniach).</li>
 <li><strong data="opt_scrFast">Używanie szybkiego algorytmu mieszającego dla 4x4x4 (nieoficjalny)</strong>. Oficjalny scramble 4x4x4 WCA wymaga ogromnych zasobów obliczeniowych, wybierz tę opcję, aby scramble używał losowych ruchów</li>
-<li><strong data="opt_scrKeyM">Oznacz kluczowe ruchy w scramble&#x27;u</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
+<li><strong data="opt_scrKeyM">Oznacz kluczowe ruchy w scramble&#x27;u</strong>. Zaznacza kluczowy ruch w rozmieszaniu, na przykład ruch, który odchodzi od kształtu kwadratowego w SQ1.</li>
 <li><strong data="opt_scrClk">Akcja po kliknięciu na scramble</strong>. Zachowanie po kliknięciu na scramble'a, skopiuj scramble lub wygeneruj następne scramble.</li>
 <li><strong data="opt_trim">Liczba ułożeń niebranych pod uwagę</strong>. Liczba ułożeń z każdej strony (najlepszych i najgorszych), które nie są uwzględniane podczas obliczania średniej z ułożeń.</li>
 <li><strong data="opt_statsum">pokaż podsumowanie przed listą czasu</strong>. Pokaż tabelę statystyk przed listą czasów.</li>
-<li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
+<li><strong data="opt_statthres">Show target time for session best</strong>. W tabeli statystyk, czas potrzebny do przebicia rekordu osobistego jest pokazany. "N/A" oznacza, że następne ułożenie nie przebije rekordu osobistego, nieważne jak szybkie będzie, "&#8734;" oznacza dowolny czas oprócz DNF przebije rekord osobisty.</li>
 <li><strong data="opt_printScr">Dołącz algorytmy mieszania do statystyk </strong>. Pokaż scrambla w oknie statystyk ułożenia.</li>
 <li><strong data="opt_printDate">Dołącz datę ułożenia do statystyk</strong>. Pokaż datę rozwiązania w oknie statystyk rundy.</li>
 <li><strong data="opt_imrename">zmień nazwę sesji po utworzeniu</strong>. Natychmiast zmień nazwę sesji po jej utworzeniu.</li>
@@ -110,14 +110,14 @@
 <li><strong data="opt_statal">Wskaźniki statystyczne</strong>. Wskaźniki statystyczne dla tabeli, pokazywane, jeżeli jest możliwość wyliczenia.</li>
 <li><strong data="opt_delmul">Włącz usuwanie wielu wierszy</strong>. Pozwól na usunięcie wielu wyników. Dla uniknięcia przypadkowego usunięcia.</li>
 <li><strong data="opt_disPrec">dokładność rozkładu czasowego</strong>. Przedział czasu dla narzędzia rozkładu czasu.</li>
-<li><strong data="opt_solSpl">Pokaż stopniowo rozwiązanie</strong>. If selected, only the length of a solution from a solver is displayed, and you can view the solution one move by one move, otherwise, the whole solution is displayed.</li>
+<li><strong data="opt_solSpl">Pokaż stopniowo rozwiązanie</strong>. Jeśli zaznaczone, tylko długość rozwiązania od układającego jest pokazana i można zobaczyć rozwiązanie krok po kroku, inaczej całe rozwiązanie jest pokazane.</li>
 <li><strong data="opt_imgSize">Rozmiar grafiki algorytmu mieszającego</strong>. Ustaw rozmiar obrazu scramble'a.</li>
 <li><strong data="opt_NTools">liczba narzędzi</strong>. csTimer jest w stanie pokazać jednocześnie maksymalnie 4 narzędzia.</li>
-<li><strong data="opt_useKSC">użyj skrótu klawiszowego</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">Użyj sterowania gestami</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
-<li><strong data="opt_vrcSpeed">Prędkość bazowa VRC (tps)</strong>. Base turn speed of the virtual Rubik's cube, the turn will be speed up if there are multiple moves to turn.</li>
+<li><strong data="opt_useKSC">użyj skrótu klawiszowego</strong>. Użyj skrótów klawiszowych, aby przełączać typ rozmieszania, wygenerować nowe rozmieszanie, przełączać sesje. Wciśnij logo csTimer, aby zobaczyć szczegóły. Wciśnij logo csTimer, aby zobaczyć szczegóły.</li>
+<li><strong data="opt_useGES">Użyj sterowania gestami</strong>. Użyj gestów (przesuwania w różnych kierunkach), żeby przełączać OK/+2/DNF, dodawać komentarze, wygenerować nowe rozmieszanie itp. Również dostępne na ekranach niedotykowych kiedy opcja timera myszy jest włączona. ​</li>
+<li><strong data="opt_vrcSpeed">Prędkość bazowa VRC (tps)</strong>. Podstawowa prędkość obrotu wirtualej kostki Rubika, prędkość obrotu zwiększy się jeśli będzie wiele ruchów do wykonania.</li>
 <li><strong data="opt_vrcMP">wielofazowe</strong>. Automatyczny wielofazowy podział dla wirtualnej kostki Rubika i kostki bluetooth.</li>
-<li><strong data="opt_giiMode">Tryb kostki bluetooth</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
+<li><strong data="opt_giiMode">Tryb kostki bluetooth</strong>. Tryby użycia kostek bluetooth: w zwyczajnym trybie, musisz ręcznie rozmieszać kostkę, żeby się zgadzała z tym co na ekranie, w trybie treningowym, po wciśnięciu spacji (albo dotknięciu ekranu na ekranie dotykowym), wirtualna kostka od razu zmieni się na stan rozmieszany. Musisz ułożyć wirtualną kostkę częściowo (zależy od rozmieszania, na przykład permutacja ostatniej ścianki nie jest sprawdzana w treningu OLL) w przeciwieństwie do fizycznej kostki; w trybie ciągłego treningu, w dodatku do trybu treningowego, kiedy kostka wirtualna jest ułożona, od razu wejdziesz w kolejne ułożenie nie wciskając spacji. Możesz również wcisnąć ESC (na ekranie dotykowym wciśnij palcem na dwie sekundy) aby opuścić układanie.</li>
 <li><strong data="opt_giiVRC">Pokaż wirtualną kostkę bluetooth</strong>. Pokaż wirtualną kostkę Rubika w głównym timerze podczas łączenia się z kostką bluetooth.</li>
 <li><strong data="opt_giiSD">Oznacz jako pomieszany po bezruchu</strong>. Dla kostek bluetooth csTimer nie może wiedzieć, czy ruch jest w celu scrambingu czy rozwiązania.</li>
 <li><strong data="opt_giiSK">Oznacz jako pomieszane po wciśnięciu spacji</strong>. Po naciśnięciu spacji kostka bluetooth jest pomieszana, obrót będzie traktowany jako rozpoczęcie liczenia czasu.</li>
@@ -134,19 +134,19 @@
 <li><strong data="tool_stats">Statystyki</strong>. Tabela statystyczna podobna z tabelą w panelu listy czasów.</li>
 <li><strong data="tool_distribution">Rozkład czasu</strong>. Rozkład czasu i analiza stabilności, &lt;X Y/Z oznacza, że całkowicie Y rozwiązuje mniej niż X sekund, i wszystkie ostatnie rozwiązania Z są mniejsze niż X sekund w sesji.</li>
 <li><strong data="tool_trend">trend czasowy</strong>. Pokazuje krzywą trendu dla wszystkich rozwiązań w bieżącej sesji.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Policz liczbę ułożeń każdego dnia/tygodnia/miesiąca/roku.</li>
+<li><strong data="tool_dlystat">Statystyki Dnia</strong>. Policz liczbę ułożeń każdego dnia/tygodnia/miesiąca/roku.</li>
 <li><strong data="tool_image">Narysuj algorytm mieszający</strong>. Wyświetl podgląd scrambla, aby zweryfikować poprawność mieszania, wszystkie układanki WCA są wspierane.</li>
-<li><strong data="tool_roux1">Rozwiązujący &gt; Roux S1</strong>. Roux 1st step solver, which solves a 1x2x3 block.</li>
-<li><strong data="tool_eoline">Rozwiązujący &gt; EOLine</strong>. EO line solver, which solves orientations of all 12 edges, and positions of DF and DB edges.</li>
-<li><strong data="tool_cross">Rozwiązujący &gt; krzyżyk</strong>. Cross solver, which solve DF, DL, DR, DB edges.</li>
-<li><strong data="tool_222face">Rozwiązujący &gt; 2x2x2 bok</strong>. 2x2x2 face solver, which solves a face of 2x2x2 cube.</li>
-<li><strong data="tool_333cf">Rozwiązujący &gt; Cross + F2L</strong>. Cross and F2L solver, which solves Cross and 4 F2Ls with computer search, so the solution might be far from human solutions.</li>
-<li><strong data="tool_333roux">Rozwiązujący &gt; Roux S1 + S2</strong>. Roux 1st and 2nd step solver, which firstly solves a 1x2x3 block on the left face and then expend another 1x2x3 block on the right face with R, M, r, U.</li>
-<li><strong data="tool_333petrus">Rozwiązujący &gt; 2x2x2 + 2x2x3</strong>. Petrus 1st and 2nd step solver, which firstly solves an 2x2x2 block on the left and then expend it to a 2x2x3 on the left.</li>
-<li><strong data="tool_333zz">Rozwiązujący &gt; EOLine + ZZF2L</strong>. Eoline and ZZF2L solver, which firstly solves the EOLine and then solve one of left 1x2x3 or right 1x2x3 and the solve the other 2x2x3.</li>
-<li><strong data="tool_sq1cs">Rozwiązujący &gt; SQ1 S1 + S2</strong>. SQ1 1st and 2nd step solver, which firstly solves the shape of SQ1 and then split U pieces and D pieces.</li>
-<li><strong data="tool_pyrv">Rozwiązujący &gt; Pyraminx V</strong>. Pyraminx V solver, which solves three corners and two edges to shape into a 'V' pattern for pyraminx.</li>
-<li><strong data="tool_skbl1">Rozwiązujący &gt; Skewb Face</strong>. Skewb face solver, which solves a layer of skewb, more specifically, 1 center and 4 neighbor corners.</li>
+<li><strong data="tool_roux1">Rozwiązujący &gt; Roux S1</strong>. Rozwiązywacz pierwszego etapu ROUX, który układa blok 1x2x3.</li>
+<li><strong data="tool_eoline">Rozwiązujący &gt; EOLine</strong>. Rozwiązywacz linii EO, która rozwiązuje orientację wszystkich dwunastu boków i pozycje boków DF i DB.</li>
+<li><strong data="tool_cross">Rozwiązujący &gt; krzyżyk</strong>. Rozwiązywacz krzyża, który rozwiązuje boki DF, DL, DR, DB.</li>
+<li><strong data="tool_222face">Rozwiązujący &gt; 2x2x2 bok</strong>. Rozwiązywacz ścianki kostki 2x2x2.</li>
+<li><strong data="tool_333cf">Rozwiązujący &gt; Cross + F2L</strong>. Rozwiązywacz krzyża i F2L, który rozwiązuje to za pomocą algorytmu komputerowego, więc może być dalekie od ludzkich rozwiązań.</li>
+<li><strong data="tool_333roux">Rozwiązujący &gt; Roux S1 + S2</strong>. Rozwiązywacz pierwszego i drugiego etapu metody ROUX, który pierw układa blok 1x2x3 na lewej ściance a potem kolejny na prawej używając R, M, r, U.</li>
+<li><strong data="tool_333petrus">Rozwiązujący &gt; 2x2x2 + 2x2x3</strong>. Rozwiązywacz pierwszego i drugiego kroku metody Petrus, który pierw układa blok 2x2x2 na lewo i następnie powiększa go do 2x2x3 na lewo.</li>
+<li><strong data="tool_333zz">Rozwiązujący &gt; EOLine + ZZF2L</strong>. Rozwiązywacz linii EO i ZZF2L, który pierw układa linię EO a następnie jedno z lewych 1x2x3 albo prawych 1x2x3, a potem drugie 2x2x3.</li>
+<li><strong data="tool_sq1cs">Rozwiązujący &gt; SQ1 S1 + S2</strong>. Rozwiązywacz pierwszego i drugiego etapu kostki SQ1, który pierw układa kształt SQ1 a następnie rozdziela górne i dolne kawałki.</li>
+<li><strong data="tool_pyrv">Rozwiązujący &gt; Pyraminx V</strong>. Rozwiązywacz V na pyraminxie, układa trzy rogi i dwa boki w kształcie litery 'V'.</li>
+<li><strong data="tool_skbl1">Rozwiązujący &gt; Skewb Face</strong>. Rozwiązywacz jednego koloru na kostce Skewb, konkretnie środek i cztery sąsiadujące rogi.</li>
 <li><strong data="tool_giikerutil">Kostka Bluetooth</strong>. Pomocnicze narzędzie dla kostki Bluetooth, które może pokazywać aktualny stan urządzenia, poziom naładowania baterii, widok w czasie rzeczywistym itp.</li>
 <li><strong data="tool_mtrnm">Metronom</strong>. Metronom, oprócz dzwaniania z określoną częstotliwością, wywołuje dźwięk w określonym czasie po rozpoczęciu rozwiązywania.</li>
 <li><strong data="tool_syncseed">Pospolity Scramble</strong>. Używaj tych samych scrambli z przyjaciółmi, ustawiając ten sam seed.</li>
@@ -167,20 +167,20 @@
 <h2>Schematy kolorów</h2>
 <?php include('color.php') ?>
 <div class="donate helptable" style="line-height:1.5em;">
-<h2>Hardware compatible with csTimer</h2>
-<p>In addition to timing by keyboard, csTimer also supports Bluetooth Smart Cubes and Smart Timers.</p>
-<p>If you use a smart cube, csTimer will record the detailed solution of each of your solves and provide more statistics and practice functions (e.g. CFOP automatic segmentation, etc.)</p>
+<h2>Sprzęt kompatybilny z csTimer</h2>
+<p>Oprócz mierzenia czasu za pomocą klawiatury, csTimer obsługuje również smart kostki bluetooth i smart timery.</p>
+<p>Jeśli używasz smart kostki, csTimer zapisze dokładne rozwiązanie każdego z twoich ułożeń i pokaże więcej statystyk i metod do ćwiczenia (na przykład autoamtyczna segmentacja CFOP).</p>
 <ul>
 <li><a class="click" href="https://www.amazon.com/dp/B0CGDHVJBL?tag=cstimer-20#" title="">Gan 12 ui FreePlay</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B083TW9WFT?tag=cstimer-20#" title="">Gan Halo Bluetooth Timer</a></li>
 </ul>
-<h2>Recommended products</h2>
-<p>Here are some professional cubes or hardwares.</p>
+<h2>Polecane produkty</h2>
+<p>Oto kilka profesjonalnych kostek lub urządzeń.</p>
 <ul>
 <li><a class="click" href="https://www.amazon.com/dp/B0182KR2LO?tag=cstimer-20#" title="">G5 Stackmat</a></li>
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
-<h2>Donate directly</h2>
+<h2>Wspomóż bezpośrednio</h2>
 <p>Dziękujemy za chęć wsparcia csTimer! Twoja darowizna zostanie wykorzystana do pokrycia kosztów rozwoju i utrzymania.</p>
 <p>Jeśli chcesz zaoferować darowiznę za pośrednictwem PayPal, kliknij poniższy przycisk lub kliknij <a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a>.</p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -193,17 +193,17 @@
 <p>Dziękujemy za wsparcie!</p>
 </div>
 <div class="instruction">
-<p><strong>In case of failure check that Bluetooth is enabled on your system!</strong></p>
-<p>Browser you are using must support Web Bluetooth API. Consider using compatible browser, the best choice is:</p>
+<p><strong>W przypadku problemów upewnij się, że Bluetooth jest włączony w ustawieniach systemowych!</strong></p>
+<p>Przeglądarka, której używasz, musi obsługiwać Web Bluetooth API. Rozważ użycie kompatybilnej przeglądarki, oto najlepsze opcje:</p>
 <ul>
-<li>Chrome on macOS, Linux, Android or Windows</li>
-<li>Bluefy on iOS</li>
+<li>Chrome na macOS, Linux, Android bądź Windows</li>
+<li>Bluefy na iOS</li>
 </ul>
-<p>Also you can check complete list of <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">supported browsers</a>.</p>
-<p>For some bluetooth cubes, we need you to provide the MAC address of your cube to decrypt the data. <strong>csTimer is able to automatically read MAC address of the cube if you properly setup your browser:</strong></p>
+<p>Pełną listę <a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">obsługiwanych przeglądarek</a> można sprawdzić tu.</p>
+<p>Do niektórych kostek bluetooth, potrzebujemy adres MAC kostki aby rozszyfrować dane. <strong>csTimer potrafi automatycznie odczytać adres MAC kostki jeśli poprawnie skonfigurowano przeglądarkę.</strong> <strong>csTimer potrafi automatycznie odczytać adres MAC kostki jeśli poprawnie skonfigurowano przeglądarkę.</strong></p>
 <ul>
-<li>Chrome: enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.</li>
-<li>Bluefy: turn on Enable BLE Advertisements option in browser settings.</li>
+<li>Chrome: włącz flagę chrome://flags/#enable-experimental-web-platform-features w ustawieniach przeglądarki.</li>
+<li>Bluefy: włącz opcję Enable BLE Advertisements w ustawieniach przeglądarki.</li>
 </ul>
-<p>If you have difficulties with cube MAC address, you may read <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC address FAQ</a>.</p>
+<p>Jeśli masz problemy z adresami MAC kostki, możesz przeczytać <a class="click" href="https://gist.github.com/afedotov/52057533a8b27a0277598160c384ae71" title="">GAN Smart Cubes MAC adress FAQ</a>.</p>
 </div>

@@ -114,7 +114,7 @@
 <li><strong data="opt_imgSize">Blandings billed størrelse</strong>. Størrelsen af blandingsbillede.</li>
 <li><strong data="opt_NTools">nummer af værktøj</strong>. csTimer er i stand til at vise op til 4 værktøjer samtidigt.</li>
 <li><strong data="opt_useKSC">brug tastatur genvej</strong>. Use keyboard shortcut to switch scramble type, generate next scramble, switch between sessions. Click csTimer's logo to show details.</li>
-<li><strong data="opt_useGES">use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
+<li><strong data="opt_useGES">Use gesture control</strong>. Use gestures (swiping in different directions) to switch OK/+2/DNF, add comments, generate next scramble, etc. Also available on non-touch screen devices when mouse timer is enabled. Click csTimer's logo to show details.</li>
 <li><strong data="opt_vrcSpeed">VRC base hastighed (TPS)</strong>. Basis rotationshastighed på den virutelle professorterning. Hastigheden vil stige, hvis der er flere træk.</li>
 <li><strong data="opt_vrcMP">flerfaset</strong>. Automatisk flerfase deling for virtuel professorterning og bluetooth terning.</li>
 <li><strong data="opt_giiMode">Blueetooth Cube Mode</strong>. Usage mode of smart cube: In normal mode, you need to manually scramble the cube until it is consistent with the scrambled state; in training mode, after pressing the space (or touching the screen on the touch screen), the virtual cube will directly change to the scrambled state. You need to solve virtual cube partially (depends on scramble, e.g. permutation of last layer is not checked in oll training) instead of physical cube; In continuous training mode, in addition to training mode, once the virtual cube is solved, you will directly enter the next solve without pressing space. You can also press ESC (on a touch screen, hold the screen for 2 seconds) to exit the solve.</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">Statistiker</strong>. Statistisktabel i stil med tabellen i tidslistepanelet.</li>
 <li><strong data="tool_distribution">Tidsfordeling</strong>. Tidsfordeling og stabilitetsanalyse, &lt;X Y/Z betyder, at der i alt Y løsninger mindre end X sekunder, og alle de nyeste Z løsninger er mindre end X sekunder i nuværende session.</li>
 <li><strong data="tool_trend">Tidsudvikling</strong>. Viser en trendkurve for alle løsninger i den aktuelle session.</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. Tæl antallet af løsninger pr. dag/uge/måned/år.</li>
+<li><strong data="tool_dlystat">Daglig statistik</strong>. Tæl antallet af løsninger pr. dag/uge/måned/år.</li>
 <li><strong data="tool_image">vis blanding</strong>. Blandingsbillede for at bekræfte en korrekt blanding, alle WCA terninger understøttes.</li>
 <li><strong data="tool_roux1">Løsere &gt; løs Roux S1</strong>. Roux 1 trings løser, som løser en 1x2x3 blok.</li>
 <li><strong data="tool_eoline">Løsere &gt; løs EOLine</strong>. EO linje løser, som løser orienteringer af alle 12 kanter, og positioner af DF og DB kanter.</li>

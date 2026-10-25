@@ -244,21 +244,21 @@ var exportFunc = execMain(function() {
 		}
 		var target = $(e.target);
 		var rawText = target.html();
-		target.html('Check File List...');
+		target.html(EXPORT_BTN.split('|')[0]);
 
 		var cntCallback = function(val) {
 			var cnt = ~~val['data'];
 			if (cnt == 0) {
-				return Promise.reject('No Data Found');
+				return Promise.reject(EXPORT_NODATA);
 			}
 			var idx = 1;
 			if (kernel.getProp('expp')) {
 				idx = promptWhichFile(val['files'] || mathlib.valuedArray(cnt, {}));
 				if (idx <= 0 || idx > cnt) {
-					return Promise.reject('Invalid input');
+					return Promise.reject(LGHINT_INVALID);
 				}
 			}
-			target.html('Import Data...');
+			target.html(EXPORT_BTN.split('|')[1]);
 			return $.ppost('https://cstimer.net/userdata2.php', {
 				'id': id,
 				'offset': idx - 1
@@ -350,7 +350,7 @@ var exportFunc = execMain(function() {
 		if (!gglToken) {
 			return;
 		}
-		inServGGL.html('Check File List...');
+		inServGGL.html(EXPORT_BTN.split('|')[0]);
 		$.ajax('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&orderBy=modifiedTime desc&q=name%3D%27cstimer.txt%27&fields=files%28id%2Csize%2CmodifiedTime%29', {
 			'type': 'GET',
 			'beforeSend': function(xhr) {
@@ -359,7 +359,7 @@ var exportFunc = execMain(function() {
 		}).success(function(data, status, xhr) {
 			var files = data['files'];
 			if (files.length == 0) {
-				$.alert('No Data Found');
+				$.alert(EXPORT_NODATA);
 				return updateUserInfoFromGGL();
 			}
 			var idx = 1;
@@ -369,7 +369,7 @@ var exportFunc = execMain(function() {
 					return updateUserInfoFromGGL();
 				}
 			}
-			inServGGL.html('Import Data...');
+			inServGGL.html(EXPORT_BTN.split('|')[1]);
 			var fileId = files[idx - 1]['id'];
 			$.ajax('https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media', {
 				'type': 'GET',
@@ -380,13 +380,13 @@ var exportFunc = execMain(function() {
 				try {
 					data = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
 				} catch (e) {
-					$.alert('No Valid Data Found');
+					$.alert(EXPORT_ERROR);
 					return updateUserInfoFromGGL();
 				}
 				updateUserInfoFromGGL();
 				loadData(data);
 			}).error(function() {
-				$.alert(EXPORT_ERROR + '\nPlease Re-login');
+				$.alert(EXPORT_ERROR + '\n' + EXPORT_RELOGIN);
 				logoutFromGGL();
 			});
 
@@ -400,7 +400,7 @@ var exportFunc = execMain(function() {
 				});
 			}
 		}).error(function() {
-			$.alert(EXPORT_ERROR + '\nPlease Re-login');
+			$.alert(EXPORT_ERROR + '\n' + EXPORT_RELOGIN);
 			logoutFromGGL();
 		});
 	}
@@ -410,7 +410,7 @@ var exportFunc = execMain(function() {
 		if (!gglToken) {
 			return Promise.reject('Invalid Account');
 		}
-		outServGGL.html('Create File...');
+		outServGGL.html(EXPORT_BTN.split('|')[2]);
 		return new Promise(function(resolve, reject) {
 			$.ajax('https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable', {
 				'type': 'POST',
@@ -424,7 +424,7 @@ var exportFunc = execMain(function() {
 				}
 			}).success(function(data, status, xhr) {
 				var uploadUrl = xhr.getResponseHeader('location');
-				outServGGL.html('Uploading Data...');
+				outServGGL.html(EXPORT_BTN.split('|')[3]);
 				$.ajax(uploadUrl, {
 					'type': 'PUT',
 					'contentType': 'text/plain',
@@ -439,7 +439,7 @@ var exportFunc = execMain(function() {
 			}).error(function(data, status, xhr) {
 				logoutFromGGL();
 				if (data.status == 401) {
-					reject('Timeout, Please Re-login');
+					reject(EXPORT_TIMEOUT + ', ' + EXPORT_RELOGIN);
 				} else {
 					reject(EXPORT_ERROR);
 				}
@@ -530,7 +530,7 @@ var exportFunc = execMain(function() {
 			}).addClass('click');
 		} else {
 			var me = wcaData['wca_me'];
-			wcaDataTd.html('WCAID: ' + me['wca_id'] + '<br>' + 'Name: ' + me['name']);
+			wcaDataTd.html('WCAID: ' + me['wca_id'] + '<br>' + EXPORT_INFO.split('|')[0] + ': ' + me['name']);
 			wcaDataTr.click(logoutFromWCA.bind(undefined, true)).addClass('click');
 			inServWCA.addClass('click').click(downloadData);
 			outServWCA.addClass('click').click(uploadDataClk);
@@ -549,7 +549,7 @@ var exportFunc = execMain(function() {
 			}).addClass('click');
 		} else {
 			var me = gglData['ggl_me'];
-			gglDataTd.html('Name: ' + me['displayName'] + '<br>' + 'Email: ' + me['emailAddress']);
+			gglDataTd.html(EXPORT_INFO.split('|')[0] + ': ' + me['displayName'] + '<br>' + EXPORT_INFO.split('|')[1] + ': ' + me['emailAddress']);
 			gglDataTr.click(logoutFromGGL.bind(undefined, true)).addClass('click');
 			inServGGL.addClass('click').click(downloadDataGGL);
 			outServGGL.addClass('click').click(function() {
@@ -596,13 +596,13 @@ var exportFunc = execMain(function() {
 				}
 			} else if (value[1] == 'wca') {
 				if (!isValidId(getDataId('wcaData', 'cstimer_token'))) {
-					$.alert('Please Login with WCA Account in Export Panel First');
+					$.alert(EXPORT_LOGINFIRST.split('|')[0]);
 					kernel.setProp('atexpa', 'a');
 					return;
 				}
 			} else if (value[1] == 'ggl') {
 				if (!getDataId('gglData', 'access_token')) {
-					$.alert('Please Login with Google Account in Export Panel First');
+					$.alert(EXPORT_LOGINFIRST.split('|')[1]);
 					kernel.setProp('atexpa', 'a');
 					return;
 				}
@@ -728,7 +728,7 @@ var exportFunc = execMain(function() {
 		}
 
 		if ($.urlParam('code')) { //WCA oauth
-			wcaDataTd.html(EXPORT_LOGINAUTHED);
+			wcaDataTd.html(EXPORT_LOGINAUTHED.split('|')[0] + '<br>' + EXPORT_LOGINAUTHED.split('|')[1]);
 			$.post('oauthwca.php', {
 				'code': $.urlParam('code')
 			}, function(val) {
@@ -753,7 +753,7 @@ var exportFunc = execMain(function() {
 
 		if ($.hashParam('access_token')) { //Google oauth
 			var access_token = $.hashParam('access_token');
-			gglDataTd.html(EXPORT_LOGINAUTHED);
+			gglDataTd.html(EXPORT_LOGINAUTHED.split('|')[0] + '<br>' + EXPORT_LOGINAUTHED.split('|')[1]);
 			$.get('https://www.googleapis.com/drive/v3/about', {
 				'fields': 'user',
 				'access_token': access_token
@@ -770,7 +770,7 @@ var exportFunc = execMain(function() {
 				}
 			}, 'json').error(function(data, status, xhr) {
 				if (data.status == 401) {
-					$.alert('Timeout, Please Re-login');
+					$.alert(EXPORT_TIMEOUT + ', ' + EXPORT_RELOGIN);
 				} else {
 					$.alert(EXPORT_ERROR);
 				}

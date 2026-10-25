@@ -61,7 +61,7 @@
 <li><strong data="opt_timeFormat">Thể loại thời gian</strong>. Time format to display.</li>
 <li><strong data="opt_atexpa">Tự Động Xuất (mỗi 100 lượt giải)</strong>. If checked, csTimer will export the solves automatically per 100 solves to the specified place, local file, csTimer server, or Google Storage.</li>
 <li><strong data="opt_expp">Thêm vào dữ liệu cũ</strong>. If you've uploaded multiple backups, you can import from one of the up to 10 most recently uploaded backups, if you accidentally upload an empty backup, this option will help you retrieve your solves.</li>
-<li><strong data="opt_useLogo">Hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
+<li><strong data="opt_useLogo">hint messages in logo</strong>. csTimer's Logo will serve as an information display panel that prompts for a variety of information you may be interested in, such as breaking PB.</li>
 <li><strong data="opt_showAvg">cho xem avg ở dưới timer</strong>. Two lines of labels are displayed below the the main timer, the current two averages, ao5 and ao12 by default.</li>
 <li><strong data="opt_zoom">Phóng to</strong>. You can adjust sizes of all elements by this option.</li>
 <li><strong data="opt_font">Kiểu chữ timer</strong>. Font of the main timer.</li>
@@ -84,7 +84,7 @@
 <li><strong data="opt_timeU">cập nhập thời gian</strong>. How timer is updated when timing.</li>
 <li><strong data="opt_preTime">Thời gian giữ (Giây(s))</strong>. How long the space bar should be held before the timer turns green.</li>
 <li><strong data="opt_phases">nhiều đợt</strong>. Number of phases, press any key to mark a split point when timing.</li>
-<li><strong data="opt_stkHead">Use Stackmat Status Information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
+<li><strong data="opt_stkHead">Use Stackmat status information</strong>. Stackmat will report its state, e.g. whether left or right area is touched, then csTimer is able to use these information, however, the data error might occur and cause unexpected behavior.</li>
 <li><strong data="opt_scrSize">kích cớ của scramble</strong>. Size of the scramble text.</li>
 <li><strong data="opt_scrASize">Auto scramble size</strong>. The size of the scramble text will be automatically adjusted by the length of the scramble, which works with together previous option.</li>
 <li><strong data="opt_scrMono">Khoảng cách của các chữ scramble</strong>. Use monospaced font for scramble text.</li>
@@ -96,14 +96,14 @@
 <li><strong data="opt_scrFast">Dùng công thức tráo nhanh cho 4x4x4 (không chính thức)</strong>. WCA official 4x4x4 scramble requires huge computation resources, select this option to use a random-move scramble for 4x4x4 instead.</li>
 <li><strong data="opt_scrKeyM">Đánh dấu (các) bước xoay quan trọng trong công thức tráo</strong>. Mark a key move in the scramble, e.g. the move that take the state away from square shape in SQ1 scrambles.</li>
 <li><strong data="opt_scrClk">Hành động khi bấm vào một cách tráo</strong>. Behavior when you click on the scramble text, copy scramble or generate next scramble.</li>
-<li><strong data="opt_trim">Number of solves trimmed at better side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
+<li><strong data="opt_trim">Number of solves trimmed from the better side</strong>. Number of solves trimmed at head and tail of solves when calculating average.</li>
 <li><strong data="opt_statsum">cho xem bảng thành tích	</strong>. Show the statistics table before time list.</li>
 <li><strong data="opt_statthres">Show target time for session best</strong>. In the statistics table, the time required to refresh personal best after next solve is displayed. "N/A" means the next solve will not refresh PB no matter how fast it is, "&#8734;" means any time except DNF will refresh PB.</li>
 <li><strong data="opt_printScr">In scramble trong thành tích</strong>. Print scramble in round statistics dialog.</li>
 <li><strong data="opt_printDate">in ngày giải trong thống kê</strong>. Print solving date in round statistics dialog.</li>
 <li><strong data="opt_imrename">yêu cầu đặt tên ngay sau khi tạo 1 mục</strong>. Immediately rename a session after creating it.</li>
 <li><strong data="opt_scr2ss">tạo ngay 1 mục khi chuyển sang scramble khác</strong>. When switching scramble type, a new session will be created.</li>
-<li><strong data="opt_statinv">Inverse time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
+<li><strong data="opt_statinv">Invert time list</strong>. Invert the time list, thus, latest solves will at the bottom of the time list.</li>
 <li><strong data="opt_statclr">Enable session emptying</strong>. When disabled, an '+' button (for session creating) will replace the 'X' button besides the session selector, thus, when clicked, a new empty session will be created instead of clearing the whole session.</li>
 <li><strong data="opt_absidx">Hiển thị chỉ số tuyệt đối trong thống kê</strong>. Show absolute index in the session instead of 1 to number of solves (e.g. 1/2/3 for mo3) in round statistics.</li>
 <li><strong data="opt_rsfor1s">Hiện thông tin khi nhấn vào STT của lượt giải</strong>. When click the first row of the time list, show a round statistics for a single solve.</li>
@@ -128,7 +128,7 @@
 </ul>
 <h2>Tools detail</h2>
 <ul>
-<li><strong data="tool_scrgen">ScrambleGenerator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
+<li><strong data="tool_scrgen">Scramble Generator</strong>. You are able to generate up to 999 scrambles with one click by this tool.</li>
 <li><strong data="tool_cfm">Xác nhận</strong>. Tool to view current solves with its comment, scramble, solving date and reconstruction if available, which is also the dialog when you click on a solve.</li>
 <li><strong data="tool_hugestats">bắt đầu dấu cộng</strong>. You are able to do cross-session statistics with this tool.</li>
 <li><strong data="tool_stats">Thành tích ( kiểu 1)</strong>. Statistic table similar with the table in the list times panel.</li>

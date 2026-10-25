@@ -295,7 +295,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 			var scrTxt = (tools.getCurScramble()[1]).trim();
 			$.clipboardCopy(scrTxt).then(
 				logohint.push.bind(logohint, LGHINT_SCRCOPY),
-				logohint.push.bind(logohint, 'Copy Failed')
+				logohint.push.bind(logohint, LGHINT_COPYFAIL)
 			);
 		} else if (act == '+') {
 			procNextClick();
@@ -869,7 +869,7 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 			output.text(genScrambles);
 			$.clipboardCopy(genScrambles).then(
 				logohint.push.bind(logohint, LGHINT_SCRCOPY),
-				logohint.push.bind(logohint, 'Copy Failed')
+				logohint.push.bind(logohint, LGHINT_COPYFAIL)
 			);
 			output.select();
 		}
@@ -924,14 +924,14 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 		kernel.regProp('scramble', 'scrFast', 0, PROPERTY_SCRFAST, [false]);
 		kernel.regProp('scramble', 'scrKeyM', 0, PROPERTY_SCRKEYM, [false], 1);
 		kernel.regProp('scramble', 'scrClk', 1, PROPERTY_SCRCLK, ['c', ['n', 'c', '+'], PROPERTY_SCRCLK_STR.split('|')], 1);
-		kernel.regProp('scramble', 'scrType', ~5, 'Scramble Type', ['333'], 3);
+		kernel.regProp('scramble', 'scrType', ~5, SCRAMBLE_INPUTTYPE, ['333'], 3);
 
 		scrLen.change(genScramble);
 		scrOpt.click(showScrOpt);
 		scrOptDiv.append($('<div>').append(SCRAMBLE_LENGTH + ': ', scrLen), scrHelp, scrFltDiv);
 
 		title.append($('<nobr>').append(selects[0], ' ', selects[1], ' ', scrOpt), " <wbr>");
-		title.append($('<nobr>').append(lastClick, '/', nextClick, SCRAMBLE_SCRAMBLE));
+		title.append($('<nobr>').append(lastClick, '/', nextClick, ' ', SCRAMBLE_SCRAMBLE));
 		div.append(title, ssdiv.append(sdiv).click(procScrambleClick));
 		tools.regTool('scrgen', TOOLS_SCRGEN, scrambleGenerator);
 		ssdiv.click(function() {

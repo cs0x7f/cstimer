@@ -130,7 +130,7 @@ var help = execMain(function(regProp, setProp, getProp) {
 		obj.find('.clpr-lk').css({'color': colors[4]});
 		obj.find('.clpr-lg').css({'color': colors[5], 'background-color': colors[6]});
 		obj.click(function(url) {
-			if ($.confirm('Change color scheme?')) {
+			if ($.confirm(CONFIRM_COLORSCHEME)) {
 				window.location.href = url;
 			}
 		}.bind(null, colScheme));
@@ -209,13 +209,13 @@ var help = execMain(function(regProp, setProp, getProp) {
 		table.find('tr:not(:first)').remove();
 		var selectTr = $('<tr>');
 		var select = $('<select id="vrckeylayout">');
-		select.append($('<option />').val('...').html('select layout'));
+		select.append($('<option />').val('...').html(VRC_KEYLAYOUT.split('|')[0]));
 		for (var name in layouts) {
 			select.append($('<option />').val(name).html(name));
 		}
 		select.append($('<option />').val('other').html('...'));
 		select.unbind('change').change(procClick);
-		table.append(selectTr.append($('<th colspan="10">').append('Layout: ', select)));
+		table.append(selectTr.append($('<th colspan="10">').append(VRC_KEYLAYOUT.split('|')[1] + ': ', select)));
 		table.append(ret.join(''));
 		genCodeMap(layout);
 	}

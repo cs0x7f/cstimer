@@ -197,6 +197,9 @@
 		cubeObject.scale = new THREE.Vector3(actualScale, actualScale, actualScale);
 
 		function animateMoveCallback(twisty, currentMove, moveProgress, moveStep) {
+			if (!currentMove || !sidesRotAxis[currentMove[2]]) {
+				return;
+			}
 
 			//          var rott = new THREE.Matrix4();
 			//          rott.setRotationAxis(sidesRotAxis[currentMove[2]], moveProgress * currentMove[3] * Math.TAU/4);
@@ -234,6 +237,9 @@
 
 		function matrix4Power(inMatrix, power) {
 			var matrix = null;
+			if (!inMatrix) {
+				return new THREE.Matrix4();
+			}
 			if (power < 0) {
 				var matrixIdentity = new THREE.Matrix4();
 				matrix = THREE.Matrix4.makeInvert(inMatrix, matrixIdentity);
@@ -249,6 +255,9 @@
 		}
 
 		function advanceMoveCallback(twisty, currentMove) {
+			if (!currentMove || !sidesRot[currentMove[2]]) {
+				return;
+			}
 			cntMove(twisty, currentMove);
 
 			var rott = matrix4Power(sidesRot[currentMove[2]], currentMove[3]);

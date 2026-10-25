@@ -579,6 +579,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		}
 	})();
 
+	function elemTop(elem) {
+		var offset = elem.offset();
+		return offset ? offset.top : 0;
+	}
+
 	function updateTimerOffset(clear) {
 		DEBUG && console.log('[timer] update timer offset');
 		timer.virtual.setSize(getProp('timerSize'));
@@ -587,11 +592,11 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 			var isToolTop = $('html').hasClass('toolt');
 			var winHeight = $('html').height();
 			var calcTop = $('#scrambleDiv').is(':visible') ? $('#scrambleDiv').outerHeight() : 0;
-			var calcBottom = $('#stats').offset().top || winHeight;
+			var calcBottom = elemTop($('#stats')) || winHeight;
 			if (isToolTop) {
 				calcTop += $('#toolsDiv').is(':visible') ? $('#toolsDiv').outerHeight() : 0;
 			} else {
-				calcBottom = Math.min(calcBottom, $('#toolsDiv').offset().top || winHeight);
+				calcBottom = Math.min(calcBottom, elemTop($('#toolsDiv')) || winHeight);
 			}
 			var offset = calcTop + calcBottom - winHeight;
 			$('#timer,#rtimer').css({
@@ -793,8 +798,8 @@ var timer = execMain(function(regListener, regProp, getProp, pretty, ui, pushSig
 		regProp('timer', 'timeU', 1, PROPERTY_TIMEU, ['c', ['u', 'c', 's', 'i', 'n'], PROPERTY_TIMEU_STR.split('|')], 1);
 		regProp('timer', 'preTime', 1, PROPERTY_PRETIME, [300, [0, 300, 550, 1000], '0|0.3|0.55|1'.split('|')], 1);
 		regProp('timer', 'phases', 2, PROPERTY_PHASES, [1, 1, 10], 3);
-		regProp('timer', 'stopKey', 1, "Stop/step timer by", ['a', ['a', 'l', 's'], "any key|spacebar/letters|spacebar".split('|')], 1);
-		regProp('timer', 'phaseBeep', 0, "Beep when recording phase times", [true], 1);
+		regProp('timer', 'stopKey', 1, PROPERTY_STOPKEY, ['a', ['a', 'l', 's'], PROPERTY_STOPKEY_STR.split('|')], 1);
+		regProp('timer', 'phaseBeep', 0, PROPERTY_PHASEBEEP, [true], 1);
 		regProp('kernel', 'showAvg', 0, SHOW_AVG_LABEL, [true], 1);
 		regProp('kernel', 'showDiff', 1, SHOW_DIFF_LABEL, ['rg', ['rg', 'gr', 'b', 'n'], SHOW_DIFF_LABEL_STR.split('|')], 1);
 		regProp('ui', 'timerSize', 2, PROPERTY_TIMERSIZE, [20, 1, 100], 1);

@@ -387,7 +387,7 @@
 				ret = solveParallel(cubeMove, meta[i]['solv'], meta[i]['step'], meta[i]['fmov'] || [], ret[1], meta[i]['maxl'] || 10);
 				sols[i] = ret[0];
 				if (ret[0] == undefined) {
-					span.append(meta[i]['head'] + ": &nbsp;(no solution found in %d moves)".replace('%d', meta[i]['maxl'] || 10), '<br>');
+					span.append(meta[i]['head'] + ': &nbsp;(' + GSOLVER_NOSOLNMOVES.replace('%d', meta[i]['maxl'] || 10) + ')', '<br>');
 					break;
 				}
 				span.append(meta[i]['head'] + ': ', sols[i].length == 0 ? '&nbsp;(skip)' : tools.getSolutionSpan(sols[i]), '<br>');
@@ -423,7 +423,7 @@
 				if (sol1) {
 					span.append(tools.getSolutionSpan(sol1), '<br>');
 				} else {
-					span.append('no solution found<br>');
+					span.append(TOOLS_RECONS_NODATA + '<br>');
 				}
 			}
 		}
@@ -600,10 +600,10 @@
 			}
 			sol = [];
 			var sol1 = solv1.search(stateInit(sq1Move, '0Aa0Aa0Aa0Aa|Aa0Aa0Aa0Aa0'), 0);
-			span.append('Shape: ', tools.getSolutionSpan(prettySq1Arr(sol1)), '<br>');
+			span.append(GSOLVER_SQ1.split('|')[0] + ': ', tools.getSolutionSpan(prettySq1Arr(sol1)), '<br>');
 			sol = sol.concat(sol1);
 			var sol2 = solv2.search(stateInit(sq1Move, '0Aa0Aa0Aa0Aa|Bb1Bb1Bb1Bb1'), 0);
-			span.append('Color: ', tools.getSolutionSpan(prettySq1Arr(sol2)), '<br>');
+			span.append(GSOLVER_SQ1.split('|')[1] + ': ', tools.getSolutionSpan(prettySq1Arr(sol2)), '<br>');
 		}
 
 		return sq1Solver;
@@ -708,7 +708,7 @@
 					}
 					span.append(tools.getSolutionSpan(sol1), '<br>');
 				} else {
-					span.append(faceStr[i] + ': no solution found<br>');
+					span.append(faceStr[i] + ': ' + TOOLS_RECONS_NODATA + '<br>');
 				}
 			}
 		}
@@ -812,7 +812,7 @@
 				if (sol1) {
 					span.append(faceStr[i] + ': ', tools.getSolutionSpan(sol1), '<br>');
 				} else {
-					span.append(faceStr[i] + ': no solution found<br>');
+					span.append(faceStr[i] + ': ' + TOOLS_RECONS_NODATA + '<br>');
 				}
 			}
 		}
@@ -1240,16 +1240,16 @@
 		$(function() {
 			tools.regTool('222face', TOOLS_SOLVERS + '>' + TOOLS_222FACE, execFunc.bind(null, '222face'));
 			tools.regTool('333cf', TOOLS_SOLVERS + '>Cross + F2L', execFunc.bind(null, '333cf'));
-			tools.regTool('333roux', TOOLS_SOLVERS + '>Roux S1 + S2', execFunc.bind(null, '333roux'));
+			tools.regTool('333roux', TOOLS_SOLVERS + '>' + TOOLS_333ROUX, execFunc.bind(null, '333roux'));
 			tools.regTool('333petrus', TOOLS_SOLVERS + '>2x2x2 + 2x2x3', execFunc.bind(null, '333petrus'));
 			tools.regTool('333zz', TOOLS_SOLVERS + '>EOLine + ZZF2L', execFunc.bind(null, '333zz'));
 			tools.regTool('333222', TOOLS_SOLVERS + '>2x2x2', execFunc.bind(null, '333222'));
 			tools.regTool('333eodr', TOOLS_SOLVERS + '>EO + DR', execFunc.bind(null, '333eodr'));
 			tools.regTool('sq1cs', TOOLS_SOLVERS + '>SQ1 S1 + S2', execFunc.bind(null, 'sq1cs'));
-			tools.regTool('pyrv', TOOLS_SOLVERS + '>Pyraminx V', execFunc.bind(null, 'pyrv'));
-			tools.regTool('skbl1', TOOLS_SOLVERS + '>Skewb Face', execFunc.bind(null, 'skbl1'));
-			tools.regTool('333udf', TOOLS_SOLVERS + '>3x3x3 General', execFunc.bind(null, '333udf'));
-			tools.regTool('333koc', TOOLS_SOLVERS + '>3x3x3 TwoPhase', execFunc.bind(null, '333koc'));
+			tools.regTool('pyrv', TOOLS_SOLVERS + '>' + TOOLS_PYRV, execFunc.bind(null, 'pyrv'));
+			tools.regTool('skbl1', TOOLS_SOLVERS + '>' + TOOLS_SKBL1, execFunc.bind(null, 'skbl1'));
+			tools.regTool('333udf', TOOLS_SOLVERS + '>' + TOOLS_333UDF, execFunc.bind(null, '333udf'));
+			tools.regTool('333koc', TOOLS_SOLVERS + '>' + TOOLS_333KOC, execFunc.bind(null, '333koc'));
 		});
 	});
 })();

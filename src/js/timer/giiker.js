@@ -353,12 +353,12 @@ execMain(function(timer) {
 
 	function startConnect() {
 		giikerutil.setCallback(giikerCallback);
-		kernel.showDialog([$('<div>Press OK To Connect To Bluetooth Cube</div>').append(timer.getBTDiv()), function () {
+		kernel.showDialog([$('<div>' + BT_CONNECT_MSG.split('|')[0] + '</div>').append(timer.getBTDiv()), function () {
 			giikerutil.init().catch(function(error) {
 				giikerutil.log('[giiker] init failed', error);
 				alert(error);
 			});
-		}, 0, 0], 'share', 'Bluetooth Connect');
+		}, 0, 0], 'share', BT_CONNECT_TITLE.split('|')[0]);
 	}
 
 	timer.giiker = {

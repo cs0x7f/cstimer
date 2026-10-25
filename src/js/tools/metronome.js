@@ -26,9 +26,9 @@ var metronome = execMain(function() {
 			isEnable = false;
 			return;
 		}
-		fdiv.empty().append("BPM: ", bpmInput, bgmOutput, '<br />')
-			.append('Vol: ', volInput, volOutput, '<br />', button, '<br />')
-			.append('<br />', $('<label>').append(beepButton, '<span class="click"> Beep at</span>'), '<br />', beepInput);
+		fdiv.empty().append(TOOLS_MTRNM_UI.split('|')[0] + ': ', bpmInput, bgmOutput, '<br />')
+			.append(TOOLS_MTRNM_UI.split('|')[1] + ': ', volInput, volOutput, '<br />', button, '<br />')
+			.append('<br />', $('<label>').append(beepButton, '<span class="click"> ' + TOOLS_MTRNM_BEEPAT + '</span>'), '<br />', beepInput);
 
 		bpmInput.unbind().on("input", function() {
 			$.waitUser.call();
@@ -46,11 +46,11 @@ var metronome = execMain(function() {
 			volOutput.html(format(volInput.val()));
 			vol.gain.value = volInput.val() / 100.0;
 		});
-		button.html(isEnable ? 'Stop!' : 'Start!');
+		button.html(isEnable ? TOOLS_MTRNM_BTN.split('|')[1] : TOOLS_MTRNM_BTN.split('|')[0]);
 		button.unbind().click(function() {
 			$.waitUser.call();
 			isEnable = !isEnable;
-			button.html(isEnable ? 'Stop!' : 'Start!');
+			button.html(isEnable ? TOOLS_MTRNM_BTN.split('|')[1] : TOOLS_MTRNM_BTN.split('|')[0]);
 			playAudio();
 		});
 
@@ -154,7 +154,14 @@ var metronome = execMain(function() {
 		var AudioContext = (window["AudioContext"] || window["webkitAudioContext"]);
 		if (AudioContext !== undefined) {
 			$.waitUser.reg(function() {
-				context = new AudioContext();
+				var newContext;
+				try {
+					newContext = new AudioContext();
+				} catch (e) {}
+				if (!newContext || !newContext.createGain) {
+					return;
+				}
+				context = newContext;
 				vol = context.createGain()
 				vol.gain.value = 0.3;
 				vol.connect(context.destination);

@@ -191,6 +191,6 @@ execMain(function() {
 		}
 		selectPre.append($('<option>').val('input').html('...'));
 		setState(presets['U&D']);
-		tools.regTool('pat3x3', TOOLS_SOLVERS + '>' + '3x3x3 Pattern', execFunc);
+		tools.regTool('pat3x3', TOOLS_SOLVERS + '>' + TOOLS_333PATS, execFunc);
 	});
 });

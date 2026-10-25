@@ -229,13 +229,25 @@ var image = (function() {
 			}
 			var moves = moveseq.split('/');
 			var tomove = [];
+			var recons = [];
 			for (var i = 0; i < moves.length; i++) {
 				if (/^\s*$/.exec(moves[i])) {
 					tomove.push([0, 0, 1]);
+					recons.push('/');
 					continue;
 				}
 				var m = movere.exec(moves[i]);
+				if (!m) {
+					continue;
+				}
 				tomove.push([(~~m[1] + 12) % 12, (~~m[2] + 12) % 12, 1]);
+				if (~~m[1]) {
+					recons.push('(' + m[1] + ',0)');
+				}
+				if (~~m[2]) {
+					recons.push('(0,' + m[2] + ')');
+				}
+				recons.push('/');
 			}
 			tomove.push([0, 0, 1]);
 			for (var i = 0; i < tomove.length; i++) {
@@ -259,21 +271,6 @@ var image = (function() {
 			//draw top and bottom
 			drawPosit(svg, sc, colors, sq2sc);
 
-			var recons = [];
-			for (var i = 0; i < moves.length; i++) {
-				if (/^\s*$/.exec(moves[i])) {
-					recons.push('/');
-					continue;
-				}
-				var m = movere.exec(moves[i]);
-				if (~~m[1]) {
-					recons.push('(' + m[1] + ',0)');
-				}
-				if (~~m[2]) {
-					recons.push('(0,' + m[2] + ')');
-				}
-				recons.push('/');
-			}
 			if (recons.at(-1) == '/') {
 				recons.pop();
 			} else {

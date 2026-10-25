@@ -12,7 +12,7 @@
 <p>csTimer支持大部分桌面浏览器。在手机、平板电脑上，你可以把csTimer添加到你的屏幕，它将和本地app一样</p>
 <p>csTimer利用了浏览器的本地缓存功能，只有第一次打开它时会消耗流量。此后即便网络连接断开，csTimer也可以正常工作（除了备份等功能）</p>
 <h3>版权信息</h3>
-<p>csTimer是开源软件，遵循GPLv3协议。 如果你对csTimer有任何建议或意见，请提交到<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">这里</a></p>
+<p>csTimer是开源软件，遵循GPLv3协议。如果你对csTimer有任何建议或意见，请提交到<a class="click" href="https://github.com/cs0x7f/cstimer/issues" title="">这里</a></p>
 <p>功能设计：<a href="mailto:cs0x7f@gmail.com">陈霜 (cs0x7f@gmail.com)</a></p>
 <p>界面美工：<a href="mailto:liebe7@126.com">张悦 (liebe7@126.com)</a></p>
 <h2>基础功能</h2>
@@ -74,15 +74,15 @@
 <li><strong data="opt_bgImgS">背景图片</strong>. 你可以选择自己的图片作为计时器背景图，但由于浏览器的安全限制，只能用https开头的图片链接。</li>
 <li><strong data="opt_timerSize">计时器大小</strong>. 设置主计时器的大小。</li>
 <li><strong data="opt_smallADP">小数点后使用小字体</strong>. 主计时器的小数点后的数字用相对较小的字体。</li>
-<li><strong data="opt_color">选择颜色主题</strong>. 选择csTimer的颜色主题。 点击csTimer的logo可以看到更多颜色主题。</li>
+<li><strong data="opt_color">选择颜色主题</strong>. 选择csTimer的颜色主题。点击csTimer的logo可以看到更多颜色主题。</li>
 <li><strong data="opt_useMouse">启用鼠标计时</strong>. 使用鼠标开始计时器，当然，用键盘开始计时也依然可用。</li>
-<li><strong data="opt_useIns">使用WCA观察</strong>. 使用WCA观察阶段，即15秒倒计时，如果观察时间超过 15 秒，会自动进行+2/DNF判罚。</li>
+<li><strong data="opt_useIns">使用WCA观察</strong>. 使用WCA观察阶段，即15秒倒计时，如果观察时间超过15秒，会自动进行+2/DNF判罚。</li>
 <li><strong data="opt_voiceIns">WCA观察语音提示</strong>. 在观察到8秒/12秒时发出语音提醒，模拟WCA比赛时裁判的提醒。</li>
 <li><strong data="opt_voiceVol">语音音量</strong>. 上述提醒的音量。</li>
 <li><strong data="opt_input">产生成绩通过</strong>. csTimer可以通过多种途径产生成绩，它支持手动输入，自动从Stackmat读取，连接到蓝牙智能魔方，或使用键盘控制的虚拟魔方，当然还包括最基础的键盘计时。</li>
 <li><strong data="opt_intUN">输入整数时的单位</strong>. 当你在输入框中输入XXX时，它代表的时间时XXX秒还是X.XX秒还是0.XXX秒？</li>
 <li><strong data="opt_timeU">计时器更新方式</strong>. 计时过程中主计时器如何更新。</li>
-<li><strong data="opt_preTime">开始前按住空格时间（秒）</strong>. 在计时器变绿之前需要按住空格多久。</li>
+<li><strong data="opt_preTime">开始前按住空格的时间（秒）</strong>. 在计时器变绿之前需要按住空格多久。</li>
 <li><strong data="opt_phases">多阶段测速</strong>. 分阶段的数目，计时过程中可以按下任意按钮记录子阶段时间。</li>
 <li><strong data="opt_stkHead">使用Stackmat状态信息</strong>. Stackmat会传输它的状态信息，如左右触碰区是否有感应等，csTimer可以利用这些信息，但由于数据传输差错，有的时候会产生意外行为。</li>
 <li><strong data="opt_scrSize">打乱字体大小</strong>. 打乱文本的大小。</li>
@@ -91,14 +91,14 @@
 <li><strong data="opt_scrLim">限制打乱区的高度</strong>. 当打乱区域太高时，将会出现滚动条，以避免打乱面板继续升高。</li>
 <li><strong data="opt_scrAlign">打乱区对齐方式</strong>. 整个打乱区域的对齐方式，包括打乱类型选项等。</li>
 <li><strong data="opt_preScr">pre-scramble</strong>. 在打乱公式前的预转动，主要用于虚拟魔方和打乱图案。</li>
-<li><strong data="opt_scrNeut">六色底</strong>. 如果启用，训练打乱的位置、底色将会是随机的。</li>
-<li><strong data="opt_scrEqPr">训练打乱状态出现概率</strong>. 对于训练打乱，不同情况出现的概率可以设置为：按照实际还原过程的概率；或者让所有情况等概率出现；或者让所有情况随机依次出现（也就是确保所有N种情况在未来2N次还原中至少出现一次）</li>
-<li><strong data="opt_scrFast">四阶魔方使用快速打乱（非官方）</strong>. WCA官方的4x4x4打乱需要大量的计算资源，可以通过勾选此选项来启用4x4x4随即转动打乱代替。</li>
+<li><strong data="opt_scrNeut">底色中立</strong>. 如果启用，训练打乱的位置、底色将会是随机的。</li>
+<li><strong data="opt_scrEqPr">训练打乱状态出现概率</strong>. 对于训练打乱，不同情况出现的概率可以设置为：按照实际还原过程的概率；或者让所有情况等概率出现；或者让所有情况随机依次出现（也就是确保所有N种情况在未来2 N次还原中至少出现一次）</li>
+<li><strong data="opt_scrFast">四阶魔方使用快速打乱（非官方）</strong>. WCA官方的4x4x4打乱需要大量的计算资源，可以通过勾选此选项来启用4x4x4随机转动打乱代替。</li>
 <li><strong data="opt_scrKeyM">标记打乱中的关键转动</strong>. 标记打乱中的关键步骤，例如对于SQ1打乱会标记处让形状离开正方形的那一步。</li>
 <li><strong data="opt_scrClk">点击打乱时的动作</strong>. 当您点击打乱公式时触发的行为，复制打乱或生成下一个打乱公式。</li>
 <li><strong data="opt_trim">删去几个最好成绩</strong>. 当计算去尾平均时从最好和最坏处舍弃的成绩比例。</li>
 <li><strong data="opt_statsum">成绩列表前显示摘要</strong>. 在成绩列表前显示分组统计表。</li>
-<li><strong data="opt_statthres">显示创造最快所需的目标时间</strong>. 在统计表中显示一个时间，如果下一次还原时间低于该时间则会刷新个人最好成绩。 “N/A”表示无论下一次还原有多快都不可能刷新个人最好，“&#8734;”表示只是DNF之外的时间都可以刷新个人最好。</li>
+<li><strong data="opt_statthres">显示创造最快所需的目标时间</strong>. 在统计表中显示一个时间，如果下一次还原时间低于该时间则会刷新个人最好成绩。 “N/A”表示无论下一次还原有多快都不可能刷新个人最好，“&#8734;”表示只要不是DNF都可以刷新个人最好。</li>
 <li><strong data="opt_printScr">成绩统计中显示打乱</strong>. 在轮次统计中显示打乱公式。</li>
 <li><strong data="opt_printDate">成绩统计中显示日期</strong>. 在轮次统计中显示还原时间日期。</li>
 <li><strong data="opt_imrename">新建分组时重命名</strong>. 创建分组后立即重名该分组。</li>
@@ -107,17 +107,17 @@
 <li><strong data="opt_statclr">启用分组清空</strong>. 当禁用时，一个‘+’按钮（用于创建分组）会代替分组选择项边上的‘X’按钮，即当你点击这个按钮时会创建一个空的分组而不是删除整个分组。</li>
 <li><strong data="opt_absidx">在统计报告中显示绝对索引</strong>. 在轮次统计中显示成绩的绝对位置而不是1~还原个数（如对于mo3就是1/2/3）。</li>
 <li><strong data="opt_rsfor1s">点击还原序号时显示统计</strong>. 当点击成绩列表的第一列时，显示该单次还原的轮次统计信息。</li>
-<li><strong data="opt_statal">统计指标</strong>. 统计表中的统计指标，如果需要自定义，目前支持aoX和boX。</li>
+<li><strong data="opt_statal">统计指标</strong>. 统计表中的统计指标，如果需要自定义，目前支持aoX和moX。</li>
 <li><strong data="opt_delmul">启用批量删除</strong>. 能够从某个成绩开始删除多个成绩，为了避免误解，这个选择的成绩会是所有删除成绩中最早的那个。</li>
 <li><strong data="opt_disPrec">时间分布显示精度</strong>. 成绩分布工具的时间间隔。</li>
 <li><strong data="opt_solSpl">逐步显示解法</strong>. 如果勾选，求解器会只显示解法长度，接着你可以一步一步查看解法，不勾选的话求解器则会直接显示完整的解法。</li>
 <li><strong data="opt_imgSize">打乱图案大小</strong>. 设置打乱图案的大小。</li>
 <li><strong data="opt_NTools">工具栏数量</strong>. csTimer支持同时显示至多4个工具。</li>
-<li><strong data="opt_useKSC">使用键盘快捷键</strong>. 使用键盘快捷键来切换打乱类型、生成下一个打乱、在分组之间切换等等。 请点击csTimer的logo查看明细。</li>
-<li><strong data="opt_useGES">使用手势控制</strong>. 使用手势（向不同方向滑动）来选择OK/+2/DNF、添加注释、生成下一个打乱等等。 在非触屏的设备上只要启用“使用鼠标计时”也可以使用。 请点击csTimer的logo查看明细。</li>
+<li><strong data="opt_useKSC">使用键盘快捷键</strong>. 使用键盘快捷键来切换打乱类型、生成下一个打乱、在分组之间切换等等。请点击csTimer的logo查看明细。</li>
+<li><strong data="opt_useGES">使用手势控制</strong>. 使用手势（向不同方向滑动）来选择OK/+2/DNF、添加注释、生成下一个打乱等等。在非触屏的设备上只要启用“使用鼠标计时”也可以使用。请点击csTimer的logo查看明细。</li>
 <li><strong data="opt_vrcSpeed">VRC基础速度 (tps)</strong>. 虚拟魔方的基础转动速度，如果积累了多个转动待执行，虚拟魔方会加速转动。</li>
-<li><strong data="opt_vrcMP">多阶段测速</strong>. 对于虚拟魔方和蓝牙魔法，csTimer支持自动多阶段拆分。</li>
-<li><strong data="opt_giiMode">蓝牙魔方模式</strong>. 智能魔方的使用模式：在正常模式下，你需要手动将魔方打乱到与打乱状态一致；在训练模式下，按下空格（或触碰触屏），虚拟魔方就会自动变为打乱完成的状态。 你需要还原虚拟魔方的一部分（取决于打乱，例如对于OLL训练打乱，不会检查顶层的位置）而不是实体魔方；在连续训练模式下，除训练模式外一旦虚拟魔方被还原了，你会直接开始下一次还原而不再需要按下空格。 你也可以按下ESC（在触屏上则是长按2秒）退出还原。</li>
+<li><strong data="opt_vrcMP">多阶段分解</strong>. 对于虚拟魔方和蓝牙魔法，csTimer支持自动多阶段拆分。</li>
+<li><strong data="opt_giiMode">蓝牙魔方模式</strong>. 智能魔方的使用模式：在正常模式下，你需要手动将魔方打乱到与打乱状态一致；在训练模式下，按下空格（或触碰触屏），虚拟魔方就会自动变为打乱完成的状态。你需要还原虚拟魔方的一部分（取决于打乱，例如对于OLL训练打乱，不会检查顶层的位置）而不是实体魔方；在连续训练模式下，除训练模式外一旦虚拟魔方被还原了，你会直接开始下一次还原而不再需要按下空格。你也可以按下ESC（在触屏上则是长按2秒）退出还原。</li>
 <li><strong data="opt_giiVRC">显示虚拟蓝牙魔方</strong>. 当与蓝牙魔方连接时在主计时界面显示一个虚拟魔方。</li>
 <li><strong data="opt_giiSD">保持几秒后标记已打乱</strong>. 对于蓝牙魔方，csTimer不知道哪些转动是打乱，哪些转动时还原。</li>
 <li><strong data="opt_giiSK">使用空格标记已打乱</strong>. 通过空格标记蓝牙魔方为已打乱，此后的任何转动都会触发计时开始。</li>
@@ -134,7 +134,7 @@
 <li><strong data="tool_stats">统计数据</strong>. 与成绩列表面板里的统计表类似的统计表。</li>
 <li><strong data="tool_distribution">时间分布</strong>. 时间分布及稳定性统计工具。&lt;X Y/Z代表当前分组中一共有Y个还原小于X秒，最近的所有Z个还原都小于X秒。</li>
 <li><strong data="tool_trend">时间趋势</strong>. 显示当前分组中所有成绩的趋势曲线。</li>
-<li><strong data="tool_dlystat">Daily Statistics</strong>. 以天/周/月/年的维度统计还原次数。</li>
+<li><strong data="tool_dlystat">逐日统计</strong>. 以天/周/月/年的维度统计还原次数。</li>
 <li><strong data="tool_image">打乱图案</strong>. 打乱图案，用于确认打乱是否正确，支持所有WCA官方项目。</li>
 <li><strong data="tool_roux1">求解器 &gt; 桥式S1</strong>. 桥式第一阶段求解器，还原一个1x2x3块。</li>
 <li><strong data="tool_eoline">求解器 &gt; EOLine</strong>. EO line求解器，还原所有12个棱块的方向，及DF和DB棱的位置。</li>
@@ -181,7 +181,7 @@
 <li><a class="click" href="https://www.amazon.com/dp/B086PNKX2P?tag=cstimer-20#" title="">Gan 356 M</a></li>
 </ul>
 <h2>直接捐赠</h2>
-<p>感谢您愿意支持csTimer！ 您的捐赠将用于支持我们后续的开发和维护费用。</p>
+<p>感谢您愿意支持csTimer！您的捐赠将用于支持我们后续的开发和维护费用。</p>
 <p>如果您希望通过PayPal为我们提供捐赠，请单击下面的按钮或通过<a class="click" href="https://www.paypal.me/cs0x7f" title="">PayPal.me</a></p>
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
@@ -194,13 +194,13 @@
 </div>
 <div class="instruction">
 <p><strong>如果失败，请检查你的系统是否支持蓝牙功能。</strong></p>
-<p>同时，你用的浏览器必须支持 Web Bluetooth API。 目前兼容性比较好的浏览器是：</p>
+<p>同时，你用的浏览器必须支持 Web Bluetooth API。建议使用以下浏览器，其中兼容性最好的是：</p>
 <ul>
 <li>Chrome（谷歌浏览器）用于Windows、macOS、Linux、Android</li>
 <li>Bluefy用于iOS</li>
 </ul>
 <p>你也可以查看所有<a class="click" href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/implementation-status.md" title="">支持的浏览器</a>。</p>
-<p>对于一些蓝牙魔方，我们需要你提供它的MAC地址，这样我们才能解密数据。 如果你正确配置了浏览器，csTimer可以自动读取蓝牙魔方的MAC地址：</p>
+<p>对于一些蓝牙魔方，我们需要你提供它的MAC地址，这样我们才能解密数据。<strong>如果你正确配置了浏览器，csTimer可以自动读取蓝牙魔方的MAC地址：</strong></p>
 <ul>
 <li>Chrome: 在浏览器设置里打开chrome://flags/#enable-experimental-web-platform-features这个开关。</li>
 <li>Bluefy：在浏览器设置里开启Enable BLE Advertisements。</li>

@@ -131,7 +131,7 @@ var replay = execMain(function() {
 		} else if (key == 'a') {
 			$.clipboardCopy(shareURL).then(
 				logohint.push.bind(logohint, LGHINT_LINKCOPY),
-				logohint.push.bind(logohint, 'Copy Failed')
+				logohint.push.bind(logohint, LGHINT_COPYFAIL)
 			);
 		} else if (key == 'o') {
 			autoOri = !autoOri;
@@ -300,7 +300,10 @@ var replay = execMain(function() {
 				div.unbind('click').click(procClick);
 				rangeTime.unbind('input click').bind('input', procClick);
 				puzzleObj = ret;
-				puzzleObj && puzzleObj.resize();
+				if (!puzzleObj) {
+					return;
+				}
+				puzzleObj.resize();
 				scrMoves = puzzleObj.parseScramble(scramble);
 				puzzleObj.applyMoves(scrMoves);
 				parseRecons(recons);

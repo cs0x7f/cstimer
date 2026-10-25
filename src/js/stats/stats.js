@@ -231,7 +231,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 		}
 
 		function changePattern() {
-			var newpattern = $.prompt('Filter Pattern: (23*, 15.1*, comments, scrambles, date)');
+			var newpattern = $.prompt(STATS_FILTERPAT + ': (23*, 15.1*, comments, scrambles, date)');
 			if (newpattern == null || newpattern == patstr) {
 				return;
 			} else if (!newpattern) {
@@ -414,7 +414,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 				var time = timesAt(cfmIdx);
 				$.clipboardCopy(time[1]).then(
 					logohint.push.bind(logohint, LGHINT_SCRCOPY),
-					logohint.push.bind(logohint, 'Copy Failed')
+					logohint.push.bind(logohint, LGHINT_COPYFAIL)
 				);
 			} else if (which == 'c') {
 				var time = timesAt(cfmIdx);
@@ -422,7 +422,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					pretty(time[0], true) + prettyMPA(time[0]) + (time[2] ? "[" + time[2] + "]" : "") + "   " + time[1] + "   @" + mathlib.time2str(time[3])
 				).then(
 					logohint.push.bind(logohint, LGHINT_SOLVCOPY),
-					logohint.push.bind(logohint, 'Copy Failed')
+					logohint.push.bind(logohint, LGHINT_COPYFAIL)
 				);
 			} else if (which == 'r') {
 				var time = timesAt(cfmIdx);
@@ -487,7 +487,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 			cfmDiv.css('font-size', '1.2em');
 			if (action == 'comment') {
 				hideToTools();
-				var newComment = $.prompt('Comment for solve No. ' + (cfmIdx + 1) + ':', cfmTxtR.val());
+				var newComment = $.prompt(STATS_SOLVEHEAD.split('|')[1].replace('%d', cfmIdx + 1) + ':', cfmTxtR.val());
 				if (newComment == null) {
 					return;
 				}
@@ -510,7 +510,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 					kernel.pushSignal('reqrec', [timesAt(cfmIdx), cfmIdx]);
 				}]);
 			}
-			kernel.showDialog(params, 'cfm', 'Solves No.' + (cfmIdx + 1));
+			kernel.showDialog(params, 'cfm', STATS_SOLVEHEAD.split('|')[0].replace('%d', cfmIdx + 1));
 		}
 
 		function setPenalty(value, idx) {
@@ -894,7 +894,7 @@ var stats = execMain(function(kpretty, round, kpround) {
 	function exportCSV(times_stats, timesAt, start, nsolves) {
 		if (times_stats.timesLen == 0) return;
 		if (!window.Blob) {
-			$.alert('Do not support your browser!');
+			$.alert(STATS_BROWSER);
 		}
 		var s = ["No.;Time;Comment;Scramble;Date"];
 		for (var i = 0; i < curDim; i++) {
@@ -1697,12 +1697,12 @@ var stats = execMain(function(kpretty, round, kpround) {
 		if (!force && /^\s*([am]o\d+[\s,;]*)+\s*$/.exec(curValue)) {
 			return;
 		}
-		var input = $.prompt('Statistics Details', curValue || 'mo3 ao5 ao12 ao100');
+		var input = $.prompt(STATS_STATALUS, curValue || 'mo3 ao5 ao12 ao100');
 		if (/^\s*([am]o\d+[\s,;]*)+\s*$/.exec(input) && avgSizesStd(input)) {
 			kernel.setProp('statalu', input);
 		} else {
 			if (input != null) {
-				$.alert('INVALID VALUES!');
+				$.alert(LGHINT_INVALID);
 			}
 			kernel.setProp('statal', 'mo3 ao5 ao12 ao100');
 			kernel.reprop();

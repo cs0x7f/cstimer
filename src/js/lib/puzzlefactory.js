@@ -1,5 +1,5 @@
 var puzzleFactory = execMain(function() {
-	var isLoading = false;
+	var isLoading = 0;
 
 	var twistyScene;
 	var twisty;
@@ -62,18 +62,26 @@ var puzzleFactory = execMain(function() {
 		return this.twisty.parseScramble(scramble, addPreScr);
 	};
 
-	var toInitCalls = null;
+	var toInitCalls = [];
 
 	var prevParents = [];
 
 	function init(options, moveListener, parent, callback) {
 		if (window.twistyjs == undefined) {
-			toInitCalls = init.bind(null, options, moveListener, parent, callback);
 			if (!isLoading && document.createElement('canvas').getContext) {
-				isLoading = true;
-				$.getScript("js/twisty.js", function() {
-					toInitCalls && toInitCalls();
-				});
+				isLoading = 1;
+				toInitCalls.push(init.bind(null, options, moveListener, parent, callback));
+				var onLoadEnd = function() {
+					isLoading = 2;
+					var calls = toInitCalls;
+					toInitCalls = [];
+					for (var i = 0; i < calls.length; i++) {
+						calls[i]();
+					}
+				};
+				$.getScript("js/twisty.js", onLoadEnd).error(onLoadEnd);
+			} else if (isLoading == 1) {
+				toInitCalls.push(init.bind(null, options, moveListener, parent, callback));
 			} else {
 				callback(undefined, true);
 			}

@@ -196,6 +196,9 @@ execMain(function() {
 			var curFacelet;
 			for (var i = todoMoves.length - 1; i >= 0; i--) {
 				var axis = [4, 1, 3, 0, 2, 5][(todoMoves[i][0] - 1) >> 1];
+				if (axis == undefined) {
+					continue;
+				}
 				var power = [0, 2][todoMoves[i][0] & 1];
 				var m = axis * 3 + power;
 				mathlib.CubieCube.CubeMult(prevCubie, mathlib.CubieCube.moveCube[m], curCubie);

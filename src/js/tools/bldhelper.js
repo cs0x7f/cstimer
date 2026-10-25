@@ -733,7 +733,7 @@ var bldhelper = execMain(function() {
 		setDiv.append($('<tr>').append($('<th>Coder</th>'), $('<td colspan=2>').append(schSel, ordSel)));
 		setDiv.append($('<tr>').append($('<td colspan=3 style="width:0;">').append(codeDiv)));
 		setDiv.append($('<tr>').append($('<td colspan=3 style="height:0.2em;border:none;">')));
-		setDiv.append($('<tr>').append('<th colspan=3>Scrambler|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
+		setDiv.append($('<tr>').append('<th colspan=3>' + TOOLS_BLDHELPER_SCR + '|<span class="click" id="bldsClr">clr</span>|<span class="click" id="bldsEg">eg.</span></th>'));
 		setDiv.append($('<tr>').append($('<td>').append(parityFlt), $('<td>').append(cPreSel), $('<td>').append(ePreSel)));
 		setDiv.append($('<tr>').append('<td>buffer</td>', $('<td>').append(cbufSel, cbufFlt), $('<td>').append(ebufSel, ebufFlt)));
 		setDiv.append($('<tr>').append('<td>fixed</td>', $('<td>').append(cFixTxt), $('<td>').append(eFixTxt)));

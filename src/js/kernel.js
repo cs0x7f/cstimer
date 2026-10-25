@@ -262,7 +262,7 @@ var kernel = execMain(function() {
 			scrollToModule();
 
 			ui.showDialog([table, $.noop, undefined, $.noop, [RESET_LANG, function(){
-				if (!$.confirm("Are you sure to reset all options?")) {
+				if (!$.confirm(CONFIRM_RESETOPT)) {
 					return false;
 				}
 				resetPropertyes();
@@ -375,7 +375,7 @@ var kernel = execMain(function() {
 			if (value[1] == curLang || value[2] != "modify") {
 				return;
 			} else if (value[1] == 'h') {
-				if ($.confirm('Press OK to redirect to crowdin for translating cstimer')) {
+				if ($.confirm(CONFIRM_TRANSLATE)) {
 					window.location.href = 'https://crowdin.com/project/cstimer';
 				}
 			} else {

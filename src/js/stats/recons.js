@@ -393,7 +393,7 @@ var recons = execMain(function() {
 		var onCloseDialog = function () {
 			caseStat.execFunc();
 		}
-		kernel.showDialog([casesDialog, onCloseDialog, undefined, onCloseDialog, [EXPORT_TOFILE, exportCaseStatsData]], 'casestats', 'Cases Stats');
+		kernel.showDialog([casesDialog, onCloseDialog, undefined, onCloseDialog, [EXPORT_TOFILE, exportCaseStatsData]], 'casestats', TOOLS_RECONS_CASESSTAT);
 	}
 
 	function procClick(e) {
@@ -447,7 +447,7 @@ var recons = execMain(function() {
 
 	$(function() {
 		if (typeof tools != "undefined") {
-			tools.regTool('recons', TOOLS_RECONS + '>' + 'step', execFunc);
+			tools.regTool('recons', TOOLS_RECONS + '>' + TOOLS_RECONS_SUB.split('|')[0], execFunc);
 		}
 		kernel.regListener('recons', 'reqrec', reqRecons);
 		var ranges = ['single', 'mo5', 'mo12', 'mo100', 'all'];
@@ -680,7 +680,7 @@ var caseStat = execMain(function() {
 
 	$(function() {
 		if (typeof tools != "undefined") {
-			tools.regTool('casestat', TOOLS_RECONS + '>' + 'cases', execFunc);
+			tools.regTool('casestat', TOOLS_RECONS + '>' + TOOLS_RECONS_SUB.split('|')[1], execFunc);
 		}
 		stats.regUtil('casestat', update);
 		var steps = [['cf4op', 'PLL'], ['cf4op', 'OLL'], ['cf3zb', 'ZBLL']];
@@ -897,7 +897,7 @@ var scatter = execMain(function() {
 	$(function() {
 		if (typeof tools != "undefined") {
 			if (canvas[0].getContext) {
-				tools.regTool('scatter', TOOLS_RECONS + '>' + 'scatter', execFunc);
+				tools.regTool('scatter', TOOLS_RECONS + '>' + TOOLS_RECONS_SUB.split('|')[2], execFunc);
 			}
 		}
 		stats.regUtil('scatter', updateScatter);
