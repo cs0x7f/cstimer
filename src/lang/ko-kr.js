@@ -219,6 +219,7 @@ var scrdata = [
 		['맨 위층+홈통 1개', "lsll2", 0],
 		['맨 위층만', "ll", 0],
 		['ZBLL', "zbll", 0],
+		['ZBLLx2', "zbllx2", 0],
 		['COLL', "coll", 0],
 		['CLL', "cll", 0],
 		['ELL', "ell", 0],

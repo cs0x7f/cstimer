@@ -219,6 +219,7 @@ var scrdata = [
 		['F2L cuối  + tầng 3', "lsll2", 0],
 		['tầng 3', "ll", 0],
 		['ZBLL', "zbll", 0],
+		['ZBLLx2', "zbllx2", 0],
 		['COLL', "coll", 0],
 		['CLL', "cll", 0],
 		['ELL', "ell", 0],

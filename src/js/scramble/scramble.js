@@ -412,9 +412,9 @@ var scramble = ISCSTIMER && execMain(function(rn, rndEl) {
 				delete cachedScr[detailType];
 				localStorage['cachedScr'] = JSON.stringify(cachedScr);
 			} else {
-				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], getExtra(realType, 1)), neutLevel);
+				scramble = scramblers[realType](realType, len, rndState(scrFlt[1], getExtra(realType, 1)), neutLevel, scrFlt[1]);
 			}
-			genCachedScramble([realType, len, rndState(scrFlt[1], getExtra(realType, 1)), neutLevel], detailType);
+			genCachedScramble([realType, len, rndState(scrFlt[1], getExtra(realType, 1)), neutLevel, scrFlt[1]], detailType);
 			return;
 		}
 

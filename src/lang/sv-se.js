@@ -219,6 +219,7 @@ var scrdata = [
 		['sista f2l paret + sista lagret', "lsll2", 0],
 		['sista lagret', "ll", 0],
 		['ZBLL', "zbll", 0],
+		['ZBLLx2', "zbllx2", 0],
 		['COLL', "coll", 0],
 		['CLL', "cll", 0],
 		['ELL', "ell", 0],

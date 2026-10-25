@@ -482,6 +482,18 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		return getAnyScramble(zbcase[2] + 0xba9876540000, 0, zbcase[0] + 0x76540000, zbcase[1], neut, aufsuff, aufsuff);
 	}
 
+	function getZBLLx2Scramble(type, length, cases, neut, filter) {
+		var A = zbll_map[scrMgr.fixCase(cases, zbprobs)];
+		var B = zbll_map[scrMgr.rndState(filter, zbprobs)];
+		var EM = [4, 7, 6, 5], cp = A[0], co = A[1], ep = A[2] + 0xba9800000000;
+		for (var i = 0; i < 4; i++) {
+			cp += (7 - (B[0] >> (4 * i) & 15)) * Math.pow(16, 7 - i);
+			co += (B[1] >> (4 * i) & 15) * Math.pow(16, 7 - i);
+			ep += EM[B[2] >> (4 * i) & 15] * Math.pow(16, EM[i]);
+		}
+		return getAnyScramble(ep, 0, cp, co, neut, udaufsuff, emptysuff);
+	}
+
 	function getZBLLImage(cases, canvas) {
 		var face = zbll_map[cases][3];
 		if (!canvas) {
@@ -850,6 +862,10 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 	}
 
 	var daufsuff = [[], [Dx1], [Dx2], [Dx3]];
+	var udaufsuff = [];
+	for (var i = 0; i < 16; i++) {
+		udaufsuff.push(aufsuff[i >> 2].concat(daufsuff[i & 3]));
+	}
 	var daufrot = ["", "y", "y2", "y'"];
 	function getMehta3QBScramble() {
 		var rnd4 = mathlib.rn(4);
@@ -1115,6 +1131,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		('lsll2', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, 'GGGGDGGGGGGGGRRGRRGGGBBGBBG', f2l_map, f2lprobs)])
 		('f2l', getF2LScramble)
 		('zbll', getZBLLScramble, [zbfilter, zbprobs, getZBLLImage])
+		('zbllx2', getZBLLx2Scramble, [zbfilter, zbprobs, getZBLLImage])
 		('zzll', getZZLLScramble)
 		('zbls', getLSLLScramble, [f2lfilter, f2lprobs, getF2LImage.bind(null, 'GGGGDGGGGGGGGRRGRRGGGBBGBBG', f2l_map, f2lprobs)])
 		('ttll', getTTLLScramble, [ttllfilter, ttllprobs, getTTLLImage])
@@ -1160,6 +1177,7 @@ var scramble_333 = (function(getNPerm, setNPerm, getNParity, rn, rndEl) {
 		getLSLLScramble: getLSLLScramble,
 		getCOLLScramble: getCOLLScramble,
 		getZBLLScramble: getZBLLScramble,
+		getZBLLx2Scramble: getZBLLx2Scramble,
 		getZZLLScramble: getZZLLScramble,
 		getTTLLScramble: getTTLLScramble,
 		getF2LScramble: getF2LScramble,
