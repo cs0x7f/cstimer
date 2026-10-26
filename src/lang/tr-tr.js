@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['Çubuk Yok', "222nb", 0]
+		['Çubuk Yok', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["Rastgele Durum (WCA)", "skbso", 0],
 		['ideal', "skbo", 0],
 		['Rastgele hamle', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['son katman', "skbll", 0]
 	]],
 	['Kare-1', [
 		["Rastgele Durum (WCA)", "sqrs", 0],

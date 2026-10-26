@@ -410,6 +410,13 @@ var scramble_222 = (function(rn) {
 				perm = rn(5040);
 				ori = rn(729);
 				lim = 3;
+			} else if (type == '222easy') {
+				var n = Math.min(11, Math.max(4, ~~length || 4));
+				do {
+					perm = rn(5040);
+					ori = rn(729);
+				} while (solv.search([perm, ori], 0, n) == null);
+				lim = 3;
 			} else if (type == '222eg') {
 				ori = egmap[state & 0x7];
 				perm = [0, 2, 3, 4, 5, 1][state >> 3];
@@ -433,7 +440,7 @@ var scramble_222 = (function(rn) {
 		return solv.toStr(solv.search([perm, ori], maxl).reverse(), "URF", "'2 ");
 	}
 
-	scrMgr.reg(['222o', '222so', '222nb'], getScramble)
+	scrMgr.reg(['222o', '222so', '222nb', '222easy'], getScramble)
 		('222eg0', getLLScramble, [egllfilter, egllprobs, getLLImage.bind(null, 'all', egll_map, egllfilter)])
 		('222eg1', getLLScramble, [egllfilter, egllprobs, getLLImage.bind(null, 'all', egll_map, egllfilter)])
 		('222eg2', getLLScramble, [egllfilter, egllprobs, getLLImage.bind(null, 'all', egll_map, egllfilter)])

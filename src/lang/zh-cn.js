@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['无连色', "222nb", 0]
+		['无连色', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["随机状态 (WCA)", "skbso", 0],
 		['最少步', "skbo", 0],
 		['随机转动', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['顶层训练', "skbll", 0]
 	]],
 	['Square-1', [
 		["随机状态 (WCA)", "sqrs", 0],

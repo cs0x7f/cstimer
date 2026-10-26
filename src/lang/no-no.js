@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['Ingen bar', "222nb", 0]
+		['Ingen bar', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["tilfeldig tilstand (WCA)", "skbso", 0],
 		['Optimalt', "skbo", 0],
 		['Tilfeldig trekk', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['Siste rad', "skbll", 0]
 	]],
 	['Square-1', [
 		["tilfeldig tilstand (WCA)", "sqrs", 0],

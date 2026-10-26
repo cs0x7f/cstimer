@@ -174,7 +174,7 @@
 
 	function getScramble(type) {
 		var minl = type == 'pyro' ? 0 : 8;
-		var limit = type == 'pyrl4e' ? 2 : 7;
+		var limit = type == 'pyrl4e' ? 2 : 6;
 		var len = 0;
 		var sol;
 		var perm;

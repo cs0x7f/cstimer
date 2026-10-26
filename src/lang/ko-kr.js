@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['No Bar', "222nb", 0]
+		['No Bar', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["무작위 상태 (WCA)", "skbso", 0],
 		['최적', "skbo", 0],
 		['무작위 수순', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['맨 위층만', "skbll", 0]
 	]],
 	['스퀘어-1', [
 		["무작위 상태 (WCA)", "sqrs", 0],

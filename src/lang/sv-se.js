@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['Ingen bar', "222nb", 0]
+		['Ingen bar', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["Slumpmässigt tillstånd (WCA)", "skbso", 0],
 		['Optimal', "skbo", 0],
 		['Slumpmässigt drag', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['sista lagret', "skbll", 0]
 	]],
 	['Square-1', [
 		["Slumpmässigt tillstånd (WCA)", "sqrs", 0],

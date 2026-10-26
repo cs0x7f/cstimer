@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['Žádný blok', "222nb", 0]
+		['Žádný blok', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["náhodný stav (WCA)", "skbso", 0],
 		['optimální', "skbo", 0],
 		['náhodný tah', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['poslední vrstva', "skbll", 0]
 	]],
 	['Square-1', [
 		["náhodný stav (WCA)", "sqrs", 0],

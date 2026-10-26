@@ -113,8 +113,13 @@
 		var lim = type == 'skbso' ? 6 : 2;
 		var minl = type == 'skbo' ? 0 : 8;
 		do {
-			perm = mathlib.rn(4320);
-			twst = mathlib.rn(2187);
+			if (type == 'skbll') {
+				perm = ctcord.get(mathlib.rndPerm(5, true).concat([5])) * 12 + mathlib.rn(2) * 3;
+				twst = mathlib.rn(3) * 81 + mathlib.rndEl([0, 29, 55]);
+			} else {
+				perm = mathlib.rn(4320);
+				twst = mathlib.rn(2187);
+			}
 		} while (
 			perm == 0 && twst == 0 ||
 			ori[perm % 12] != (twst + ~~(twst / 3) + ~~(twst / 9) + ~~(twst / 27)) % 3 ||
@@ -133,6 +138,6 @@
 		return solvivy.toStr(solvivy.search([perm, twst], maxl).reverse(), "RLDB", "' ");
 	}
 
-	scrMgr.reg(['skbo', 'skbso', 'skbnb'], getScramble)(['ivyo', 'ivyso'], getScrambleIvy);
+	scrMgr.reg(['skbo', 'skbso', 'skbnb', 'skbll'], getScramble)(['ivyo', 'ivyso'], getScrambleIvy);
 
 })();

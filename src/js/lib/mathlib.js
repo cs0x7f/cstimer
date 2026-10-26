@@ -1034,7 +1034,7 @@ var mathlib = (function() {
 	}
 
 	_.search = function(state, minl, MAXL) {
-		MAXL = (MAXL || 99) + 1;
+		MAXL = MAXL || 99;
 		if (!this.inited) {
 			this.init();
 		}

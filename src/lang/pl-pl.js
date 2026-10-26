@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['Brak paska', "222nb", 0]
+		['Brak paska', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["stan losowy (WCA)", "skbso", 0],
 		['optymalny', "skbo", 0],
 		['losowy ruch', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['ostatnia warstwa', "skbll", 0]
 	]],
 	['Square-1', [
 		["stan losowy (WCA)", "sqrs", 0],

@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['No Bar', "222nb", 0]
+		['No Bar', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["ランダム状態 (WCA)", "skbso", 0],
 		['最適', "skbo", 0],
 		['ランダムムーブ', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['last layer', "skbll", 0]
 	]],
 	['スクエア１', [
 		["ランダム状態 (WCA)", "sqrs", 0],

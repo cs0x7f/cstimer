@@ -262,7 +262,8 @@ var scrdata = [
 		['TCLL-', "222tcn", 0],
 		['TCLL', "222tc", 0],
 		['LS', "222lsall", 0],
-		['Oszlop nélkül', "222nb", 0]
+		['Oszlop nélkül', "222nb", 0],
+		['Easy', "222easy", 4]
 	]],
 	['4x4x4', [
 		["WCA", "444wca", -40],
@@ -337,7 +338,8 @@ var scrdata = [
 		["véletlen állapot (WCA)", "skbso", 0],
 		['optimális', "skbo", 0],
 		['véletlen mozdulat', "skb", 25],
-		['No bar', "skbnb", 0]
+		['No bar', "skbnb", 0],
+		['utolsó réteg', "skbll", 0]
 	]],
 	['Square-1', [
 		["véletlen állapot (WCA)", "sqrs", 0],
