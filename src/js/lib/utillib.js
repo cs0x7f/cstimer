@@ -225,6 +225,26 @@ ISCSTIMER && execMain(function() {
 		});
 	};
 
+	$.nextTick = function(deadline) {
+		if (deadline != undefined && $.now() < deadline) {
+			return null;
+		}
+		return new Promise(function(resolve) {
+			setTimeout(resolve, 0);
+		});
+	};
+
+	$.strHash = function(str) {
+		var h1 = 0x811c9dc5 | 0;
+		var h2 = 0x9e3779b9 | 0;
+		for (var i = 0; i < str.length; i++) {
+			var c = str.charCodeAt(i);
+			h1 = Math.imul(h1 ^ c, 16777619);
+			h2 = Math.imul(h2 ^ c, 0x85ebca6b);
+		}
+		return (h1 >>> 0) + '_' + (h2 >>> 0);
+	};
+
 	(function() {
 		// handle blocked alert/confirm/prompt
 		var lastMsg = null;

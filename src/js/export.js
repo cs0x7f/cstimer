@@ -141,30 +141,81 @@ var exportFunc = execMain(function() {
 		return id;
 	}
 
-	function getLocalDataSliced(id) {
+	var sliceCache = {};
+
+	function getLocalDataSliced(id, gen) {
 		return storage.exportAll().then(function(exportObj) {
 			var slices = {};
 			var baseObj = {};
 			baseObj['properties'] = mathlib.str2obj(localStorage['properties']);
+			var keys = [];
 			for (var key in exportObj) {
-				baseObj[key] = [];
-				var times = exportObj[key];
-				for (var i = 0; i < times.length; i+= 1000) {
-					var timesSlice = LZString.compressToEncodedURIComponent(JSON.stringify(times.slice(i, i + 1000)));
-					var sliceHash = $.sha256(timesSlice);
-					slices['slice' + sliceHash] = timesSlice;
-					baseObj[key].push(sliceHash);
+				keys.push(key);
+			}
+			var ki = 0;
+			var si = 0;
+
+			function step() {
+				if (gen != undefined && gen != exportGen) {
+					return null;
 				}
+				var deadline = $.now() + 30;
+				while (ki < keys.length) {
+					var curKey = keys[ki];
+					var times = exportObj[curKey];
+					var cache = sliceCache[curKey] || (sliceCache[curKey] = []);
+					var n = Math.ceil(times.length / 1000);
+					baseObj[curKey] = baseObj[curKey] || [];
+					while (si < n) {
+						var timesJson = JSON.stringify(times.slice(si * 1000, si * 1000 + 1000));
+						var sig = $.strHash(timesJson);
+						var hit = cache[si];
+						if (!hit || hit.sig != sig) {
+							var timesSlice = LZString.compressToEncodedURIComponent(timesJson);
+							hit = cache[si] = {
+								sig: sig,
+								hash: $.sha256(timesSlice),
+								str: timesSlice
+							};
+						}
+						slices['slice' + hit.hash] = hit.str;
+						baseObj[curKey].push(hit.hash);
+						si++;
+						var wait = $.nextTick(deadline);
+						if (wait) {
+							return wait.then(step);
+						}
+					}
+					cache.length = n;
+					si = 0;
+					ki++;
+					wait = $.nextTick(deadline);
+					if (wait) {
+						return wait.then(step);
+					}
+				}
+				for (var key2 in sliceCache) {
+					if (!(key2 in exportObj)) {
+						delete sliceCache[key2];
+					}
+				}
+				if (id != undefined) {
+					slices[id] = LZString.compressToEncodedURIComponent(JSON.stringify(baseObj));
+				}
+				return slices;
 			}
-			if (id != undefined) {
-				slices[id] = LZString.compressToEncodedURIComponent(JSON.stringify(baseObj));
-			}
-			return slices;
+			return step();
 		}).catch(console.log);
 	}
 
-	function uploadData(id) {
-		return getLocalDataSliced(id).then(function(slices) {
+	function uploadData(id, gen) {
+		return getLocalDataSliced(id, gen).then(function(slices) {
+			if (gen != undefined && gen != exportGen) {
+				return;
+			}
+			if (!slices) {
+				return Promise.reject();
+			}
 			var ids = [];
 			for (var key in slices) {
 				if (key == id) {
@@ -211,13 +262,14 @@ var exportFunc = execMain(function() {
 		if (!id) {
 			return;
 		}
+		var gen = ++exportGen;
 		var target = $(e.target);
 		var rawText = target.html();
 		target.html('...');
-		uploadData(id).then(function() {
-			$.alert(EXPORT_UPLOADED);
+		uploadData(id, gen).then(function() {
+			gen == exportGen && $.alert(EXPORT_UPLOADED);
 		}, function() {
-			$.alert(EXPORT_ERROR);
+			gen == exportGen && $.alert(EXPORT_ERROR);
 		}).then(function() {
 			target.html(rawText);
 		});
@@ -618,6 +670,7 @@ var exportFunc = execMain(function() {
 	}
 
 	var exportTid;
+	var exportGen = 0;
 
 	function startBackExport() {
 		if (exportTid) {
@@ -631,18 +684,33 @@ var exportFunc = execMain(function() {
 		if (atexpa == 'n' || atexpa == 'a') {
 			return;
 		}
-		updateExpString().then(function() {
+		var id, gglToken;
+		if (atexpa == 'id' || atexpa == 'wca') {
+			id = atexpa == 'id' ? getDataId('locData', 'id') : getDataId('wcaData', 'cstimer_token');
+			if (!isValidId(id)) {
+				logohint.push(LGHINT_AEXPABT);
+				kernel.setProp('atexpa', 'a');
+				return;
+			}
+		} else if (atexpa == 'ggl') {
+			gglToken = getDataId('gglData', 'access_token');
+			if (!gglToken) {
+				logohint.push(LGHINT_AEXPABT);
+				kernel.setProp('atexpa', 'a');
+				return;
+			}
+		}
+		var gen = ++exportGen;
+		var expReady = (atexpa == 'wca' || atexpa == 'id') ? Promise.resolve() : updateExpString();
+		expReady.then(function() {
+			if (gen != exportGen) {
+				return;
+			}
 			if (atexpa == 'id' || atexpa == 'wca') {
-				var id = atexpa == 'id' ? getDataId('locData', 'id') : getDataId('wcaData', 'cstimer_token');
-				if (!isValidId(id)) {
-					logohint.push(LGHINT_AEXPABT);
-					kernel.setProp('atexpa', 'a');
-					return;
-				}
-				uploadData(id).then(function() {
-					logohint.push(LGHINT_AEXPSUC);
+				uploadData(id, gen).then(function() {
+					gen == exportGen && logohint.push(LGHINT_AEXPSUC);
 				}, function() {
-					logohint.push(LGHINT_AEXPFAL);
+					gen == exportGen && logohint.push(LGHINT_AEXPFAL);
 				});
 			} else if (atexpa == 'f') {
 				if (window.Blob) {
@@ -657,16 +725,10 @@ var exportFunc = execMain(function() {
 					tmpFile.remove();
 				}
 			} else if (atexpa == 'ggl') {
-				var gglToken = getDataId('gglData', 'access_token');
-				if (!gglToken) {
-					logohint.push(LGHINT_AEXPABT);
-					kernel.setProp('atexpa', 'a');
-					return;
-				}
 				uploadDataGGL(gglToken).then(function() {
-					logohint.push(LGHINT_AEXPSUC);
+					gen == exportGen && logohint.push(LGHINT_AEXPSUC);
 				}, function() {
-					logohint.push(LGHINT_AEXPFAL);
+					gen == exportGen && logohint.push(LGHINT_AEXPFAL);
 				});
 			}
 		});
