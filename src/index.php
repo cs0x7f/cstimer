@@ -56,6 +56,7 @@
   <script type="text/javascript" src="js/scramble/utilscramble.js"></script>
   <script type="text/javascript" src="js/lib/storage.js"></script>
   <script type="text/javascript" src="js/stats/timestat.js"></script>
+  <script type="text/javascript" src="js/stats/timeagg.js"></script>
   <script type="text/javascript" src="js/stats/stats.js"></script>
   <script type="text/javascript" src="js/stats/stattool.js"></script>
   <script type="text/javascript" src="js/stats/trend.js"></script>

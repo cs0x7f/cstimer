@@ -18,10 +18,7 @@ var stattool = execMain(function(kpretty, round, kpround) {
 		var numdnf = theStats[0];
 		var sessionmean = theStats[1];
 
-		var totalTime = 0;
-		for (var i = 0; i < times_stats_table.timesLen; i++) {
-			totalTime += stats.timesAt(i)[0][1];
-		}
+		var totalTime = stats.getTimesAgg().getTotalTime();
 		var prettyFunc = times_stats_table.prettyFunc || [kpretty, kpround];
 		var s = [];
 		s.push('<span class="click" data="tt">' + hlstr[4].replace("%d", (times_stats_table.timesLen - numdnf) + "/" + times_stats_table.timesLen) + ', ' + hlstr[9].replace("%v", prettyFunc[1](sessionmean)) + '</span>\n');

@@ -281,16 +281,21 @@ var TimeStat = execMain(function() {
 		return [bpa, wpa];
 	}
 
+	var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
+
 	TimeStat.prototype.getMinMaxInt = function() {
 		var theStats = this.getAllStats();
 		if (theStats[0] == this.timesLen) {
 			return null;
 		}
-		return [this.worstTime, this.bestTime, this.getBestDiff(this.worstTime - this.bestTime)];
+		var diff = this.getBestDiff(this.worstTime - this.bestTime);
+		if (diff > diffValues[diffValues.length - 1]) {
+			diff = diffValues[diffValues.length - 1];
+		}
+		return [this.worstTime, this.bestTime, diff];
 	}
 
 	TimeStat.prototype.getBestDiff = function(gap) {
-		var diffValues = [100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
 		var diff;
 		if (kernel.getProp('disPrec') == 'a') {
 			diff = gap / 10;

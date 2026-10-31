@@ -20,21 +20,25 @@ var distribution = execMain(function(kpretty) {
 			diff = data[2];
 		max = ~~(max / diff);
 		min = ~~(min / diff);
+		var base = stats.getTimesAgg().getDistribution();
 		var dis = {};
 		var keep = {};
 		var cntmax = 0;
-		keep[max + 1] = 0;
-		for (var i = 0; i < timesLen; i++) {
-			var value = times_stats_list.timeAt(i);
-			if (value != -1) {
-				var cur = ~~(value / diff);
-				dis[cur] = (dis[cur] || 0) + 1;
-				cntmax = Math.max(dis[cur], cntmax);
-				keep[cur] = i + 1;
-			} else {
-				keep[max + 1] = i + 1;
+		var key;
+		var unit = diff / base.unit;
+		for (key in base.cnt) {
+			var rd = ~~(key / unit);
+			var cnt = (dis[rd] || 0) + base.cnt[key];
+			dis[rd] = cnt;
+			if (cnt > cntmax) {
+				cntmax = cnt;
+			}
+			var lk = base.last[key] + 1;
+			if (!(keep[rd] >= lk)) {
+				keep[rd] = lk;
 			}
 		}
+		keep[max + 1] = (base.last[-1] === undefined) ? 0 : base.last[-1] + 1;
 		for (var i = max; i > min; i--) {
 			keep[i] = Math.max(keep[i + 1], keep[i] || 0);
 		}

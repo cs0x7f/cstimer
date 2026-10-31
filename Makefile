@@ -57,6 +57,7 @@ scramble/slide.js \
 scramble/utilscramble.js \
 lib/storage.js \
 stats/timestat.js \
+stats/timeagg.js \
 stats/stats.js \
 stats/stattool.js \
 stats/trend.js \
