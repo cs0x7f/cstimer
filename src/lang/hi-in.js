@@ -648,6 +648,7 @@ var STATS_STATALUS = 'Statistics Details';
 var TOOLS_RECONS_CASESSTAT = 'Cases Stats';
 var TOOLS_333ROUX = 'Roux S1 + S2';
 var TOOLS_PYRV = 'Pyraminx V';
+var TOOLS_PYRT = 'Pyraminx Top';
 var TOOLS_SKBL1 = 'Skewb Face';
 var TOOLS_333UDF = '3x3x3 General';
 var TOOLS_333KOC = '3x3x3 TwoPhase';

@@ -648,6 +648,7 @@ var STATS_STATALUS = '统计详情';
 var TOOLS_RECONS_CASESSTAT = '情况统计';
 var TOOLS_333ROUX = '桥式S1 + S2';
 var TOOLS_PYRV = '金字塔V';
+var TOOLS_PYRT = '金字塔顶';
 var TOOLS_SKBL1 = '斜转一面';
 var TOOLS_333UDF = '三阶通用';
 var TOOLS_333KOC = '三阶两阶段';

@@ -769,10 +769,11 @@
 		}
 
 		var solv;
+		var solvs = {};
 
-		function pyraSolver(scramble, span) {
-			solv = solv || new mathlib.gSolver([
-				'????FF??RRR??L?L?L?DDDDD'
+		function pyraSolver(scramble, span, solvedState) {
+			solv = solvs[solvedState] = solvs[solvedState] || new mathlib.gSolver([
+				solvedState
 			], pyraMove, appendSuffix({
 				'R': 0x0,
 				'U': 0x1,
@@ -783,7 +784,7 @@
 			scramble = [];
 			for (var i = 0; i < curScramble.length; i++) {
 				if (curScramble[i][1] == 1) {
-					scramble.push("RULB".charAt(curScramble[i][0]) + " 2'".charAt(curScramble[i][2] - 1));
+					scramble.push("RULB".charAt(curScramble[i][0]) + " ''".charAt(curScramble[i][2] - 1));
 				}
 			}
 			var faceStr = ["D", "L", "R", "F"];
@@ -799,7 +800,7 @@
 						for (var m = 0; m < scramble.length; m++) {
 							curScramble.push(rawMap[moveMap.indexOf(scramble[m][0])] + scramble[m][1]);
 						}
-						sol1 = solv.search(stateInit(pyraMove, '????FF??RRR??L?L?L?DDDDD'), depth, depth);
+						sol1 = solv.search(stateInit(pyraMove, solvedState), depth, depth);
 						if (!sol1) {
 							continue;
 						}
@@ -816,6 +817,9 @@
 				}
 			}
 		}
+
+		pyraSolver.V = '????FF??RRR??L?L?L?DDDDD';
+		pyraSolver.TOP = '?FFF??RR???RL?L?L???????';
 
 		return pyraSolver;
 	})();
@@ -1229,7 +1233,9 @@
 			} else if (type == 'skbl1' && tools.isPuzzle('skb')) {
 				skewbCube(scramble[1], span);
 			} else if (type == 'pyrv' && tools.isPuzzle('pyr')) {
-				pyraCube(scramble[1], span);
+				pyraCube(scramble[1], span, pyraCube.V);
+			} else if (type == 'pyrt' && tools.isPuzzle('pyr')) {
+				pyraCube(scramble[1], span, pyraCube.TOP);
 			} else {
 				fdiv.html(IMAGE_UNAVAILABLE);
 				return;
@@ -1247,6 +1253,7 @@
 			tools.regTool('333eodr', TOOLS_SOLVERS + '>EO + DR', execFunc.bind(null, '333eodr'));
 			tools.regTool('sq1cs', TOOLS_SOLVERS + '>SQ1 S1 + S2', execFunc.bind(null, 'sq1cs'));
 			tools.regTool('pyrv', TOOLS_SOLVERS + '>' + TOOLS_PYRV, execFunc.bind(null, 'pyrv'));
+			tools.regTool('pyrt', TOOLS_SOLVERS + '>' + TOOLS_PYRT, execFunc.bind(null, 'pyrt'));
 			tools.regTool('skbl1', TOOLS_SOLVERS + '>' + TOOLS_SKBL1, execFunc.bind(null, 'skbl1'));
 			tools.regTool('333udf', TOOLS_SOLVERS + '>' + TOOLS_333UDF, execFunc.bind(null, '333udf'));
 			tools.regTool('333koc', TOOLS_SOLVERS + '>' + TOOLS_333KOC, execFunc.bind(null, '333koc'));
