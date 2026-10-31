@@ -1,17 +1,6 @@
 (function() {
 	twistyjs.registerTwisty("clk", createCubeTwisty);
 
-	function axify(v1, v2, v3) {
-		var ax = new THREE.Matrix4();
-		ax.set(
-			v1.x, v2.x, v3.x, 0,
-			v1.y, v2.y, v3.y, 0,
-			v1.z, v2.z, v3.z, 0,
-			0, 0, 0, 1
-		);
-		return ax;
-	}
-
 	var amp = 1.2;
 
 	var wg = 0.1;
@@ -86,8 +75,8 @@
 		"D": yyi
 	};
 	var sidesUV = [
-		axify(xx, zyi, yz),
-		axify(xxi, zyi, yzi)
+		twistyjs.axify(xx, zyi, yz),
+		twistyjs.axify(xxi, zyi, yzi)
 	];
 
 	var mUR = 0, mUL = 1, mDR = 2, mDL = 3,
@@ -104,10 +93,6 @@
 	var faceYMap = [
 		11, 10, 9, 14, 13, 12, 17, 16, 15, 2, 1, 0, 5, 4, 3, 8, 7, 6
 	];
-
-	function matrixVector3Dot(m, v) {
-		return (m.n14 * v.x + m.n24 * v.y + m.n34 * v.z) / amp;
-	}
 
 	function createCubeTwisty(twistyScene, twistyParameters) {
 

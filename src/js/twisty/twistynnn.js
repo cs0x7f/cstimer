@@ -1,17 +1,6 @@
 (function() {
 	twistyjs.registerTwisty("cube", createCubeTwisty);
 
-	function axify(v1, v2, v3) {
-		var ax = new THREE.Matrix4();
-		ax.set(
-			v1.x, v2.x, v3.x, 0,
-			v1.y, v2.y, v3.y, 0,
-			v1.z, v2.z, v3.z, 0,
-			0, 0, 0, 1
-		);
-		return ax;
-	}
-
 	// Cube Constants
 	var numSides = 6;
 
@@ -33,12 +22,12 @@
 	var index_side = ["U", "R", "F", "D", "L", "B"];
 
 	var sidesRot = {
-		"U": axify(zz, yy, xxi),
-		"L": axify(xx, zz, yyi),
-		"F": axify(yyi, xx, zz),
-		"R": axify(xx, zzi, yy),
-		"B": axify(yy, xxi, zz),
-		"D": axify(zzi, yy, xx)
+		"U": twistyjs.axify(zz, yy, xxi),
+		"L": twistyjs.axify(xx, zz, yyi),
+		"F": twistyjs.axify(yyi, xx, zz),
+		"R": twistyjs.axify(xx, zzi, yy),
+		"B": twistyjs.axify(yy, xxi, zz),
+		"D": twistyjs.axify(zzi, yy, xx)
 	};
 	var sidesNorm = {
 		"U": yy,
@@ -57,17 +46,13 @@
 		"D": yy
 	};
 	var sidesUV = [
-		axify(xx, zzi, yy), //U
-		axify(zzi, yy, xx), //R
-		axify(xx, yy, zz), //F
-		axify(xx, zz, yyi), //D
-		axify(zz, yy, xxi), //L
-		axify(xxi, yy, zzi) //B
+		twistyjs.axify(xx, zzi, yy), //U
+		twistyjs.axify(zzi, yy, xx), //R
+		twistyjs.axify(xx, yy, zz), //F
+		twistyjs.axify(xx, zz, yyi), //D
+		twistyjs.axify(zz, yy, xxi), //L
+		twistyjs.axify(xxi, yy, zzi) //B
 	];
-
-	function matrixVector3Dot(m, v) {
-		return m.n14 * v.x + m.n24 * v.y + m.n34 * v.z;
-	}
 
 	/*
 	 * Rubik's Cube NxNxN
@@ -168,7 +153,7 @@
 				var su = (i & 1) ? 1 : -1;
 				var sv = (i & 2) ? 1 : -1;
 				var hsq2 = Math.sqrt(2) / 2;
-				sticker.matrix.copy(new THREE.Matrix4().multiply(axify(
+				sticker.matrix.copy(new THREE.Matrix4().multiply(twistyjs.axify(
 					new THREE.Vector3(1 * sv, 0, 0),
 					new THREE.Vector3(0, hsq2 * sv, -hsq2 * sv),
 					new THREE.Vector3(0, hsq2, hsq2)), new THREE.Matrix4().setTranslation(
@@ -226,7 +211,7 @@
 					// TODO - sticker isn't really a good name for this --jfly
 					var sticker = faceStickers[stickerIndex];
 
-					var layer = matrixVector3Dot(sticker[1].matrix, normVector);
+					var layer = twistyjs.matrixVector3Dot(sticker[1].matrix, normVector);
 					if (layer < maxLayer && layer > minLayer) {
 						sticker[1].matrix.multiply(rots, sticker[1].matrix);
 						sticker[1].update();
@@ -274,7 +259,7 @@
 					// TODO - sticker isn't really a good name for this --jfly
 					var sticker = faceStickers[stickerIndex];
 
-					var layer = matrixVector3Dot(sticker[1].matrix, normVector);
+					var layer = twistyjs.matrixVector3Dot(sticker[1].matrix, normVector);
 					if (layer < maxLayer && layer > minLayer) {
 						sticker[0].multiply(rott, sticker[0]);
 						sticker[1].matrix.copy(sticker[0]);
@@ -443,9 +428,9 @@
 			var xInv = [1, -1, -1, -1, -1, -1];
 			var yInv = [1, -1, 1, 1, 1, -1];
 			var sticker = intObjs[0].object.parent;
-			coord.push(Math.round(matrixVector3Dot(sticker.matrix, sidesNorm['U'])));
-			coord.push(Math.round(matrixVector3Dot(sticker.matrix, sidesNorm['R'])));
-			coord.push(Math.round(matrixVector3Dot(sticker.matrix, sidesNorm['F'])));
+			coord.push(Math.round(twistyjs.matrixVector3Dot(sticker.matrix, sidesNorm['U'])));
+			coord.push(Math.round(twistyjs.matrixVector3Dot(sticker.matrix, sidesNorm['R'])));
+			coord.push(Math.round(twistyjs.matrixVector3Dot(sticker.matrix, sidesNorm['F'])));
 			var idx = coord.indexOf(dimension) + coord.indexOf(-dimension) + 1;
 			var axis = idx + (coord[idx] > 0 ? 0 : 3);
 			coord.splice(idx, 1);
@@ -509,13 +494,13 @@
 				var normVector;
 				var faceStickers = state[faceIndex];
 				for (var faceSideIndex = 0; faceSideIndex < numSides; faceSideIndex++) {
-					if (0.5 > Math.abs(matrixVector3Dot(faceStickers[0][0], normVector = sidesNorm[index_side[faceSideIndex]]) - dimension)) {
+					if (0.5 > Math.abs(twistyjs.matrixVector3Dot(faceStickers[0][0], normVector = sidesNorm[index_side[faceSideIndex]]) - dimension)) {
 						break;
 					}
 				}
 				for (var stickerIndex = 1, faceStickerslength = faceStickers.length; stickerIndex < faceStickerslength; stickerIndex++) {
 					var sticker = faceStickers[stickerIndex];
-					if (0.5 < Math.abs(matrixVector3Dot(sticker[0], normVector) - dimension)) {
+					if (0.5 < Math.abs(twistyjs.matrixVector3Dot(sticker[0], normVector) - dimension)) {
 						return 1;
 					}
 				}
@@ -536,9 +521,9 @@
 				for (var stickerIndex = 0; stickerIndex < faceStickers.length; stickerIndex++) {
 					var sticker = faceStickers[stickerIndex];
 					var coord = [];
-					coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['U'])));
-					coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['R'])));
-					coord.push(Math.round(matrixVector3Dot(sticker[0], sidesNorm['F'])));
+					coord.push(Math.round(twistyjs.matrixVector3Dot(sticker[0], sidesNorm['U'])));
+					coord.push(Math.round(twistyjs.matrixVector3Dot(sticker[0], sidesNorm['R'])));
+					coord.push(Math.round(twistyjs.matrixVector3Dot(sticker[0], sidesNorm['F'])));
 					var idx = coord.indexOf(dimension) + coord.indexOf(-dimension) + 1;
 					var axis = idx + (coord[idx] > 0 ? 0 : 3);
 					coord.splice(idx, 1);
