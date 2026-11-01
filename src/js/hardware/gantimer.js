@@ -47,19 +47,6 @@ var GanTimerDriver = execMain(function () {
 		return evt;
 	}
 
-	// Calculate ArrayBuffer checksum using CRC-16/CCIT-FALSE algorithm variation
-	function crc16ccit(buff) {
-		var dataView = new DataView(buff);
-		var crc = 0xFFFF;
-		for (var i = 0; i < dataView.byteLength; ++i) {
-			crc ^= dataView.getUint8(i) << 8;
-			for (var j = 0; j < 8; ++j) {
-				crc = (crc & 0x8000) > 0 ? (crc << 1) ^ 0x1021 : crc << 1;
-			}
-		}
-		return crc & 0xFFFF;
-	}
-
 	// Ensure received bluetooth event has valid data: check data magic and CRC
 	function validateEventData(data) {
 		try {
@@ -67,7 +54,7 @@ var GanTimerDriver = execMain(function () {
 				return false;
 			}
 			var dataCRC = data.getUint16(data.byteLength - 2, true);
-			var calculatedCRC = crc16ccit(data.buffer.slice(2, data.byteLength - 2));
+			var calculatedCRC = BluetoothTimer.crc16ccit(new Uint8Array(data.buffer, data.byteOffset + 2, data.byteLength - 4));
 			return dataCRC == calculatedCRC;
 		} catch (err) {
 			return false;

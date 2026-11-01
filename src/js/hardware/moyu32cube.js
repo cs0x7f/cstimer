@@ -46,54 +46,15 @@ execMain(function() {
 			value.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 		}
 		var keyiv = getKeyAndIv(value);
-		decoder = $.aes128(keyiv[0]);
-		decoder.iv = keyiv[1];
+		decoder = GiikerCube.createAesCbcCodec(keyiv[0], keyiv[1]);
 	}
 
 	function decode(value) {
-		var ret = [];
-		for (var i = 0; i < value.byteLength; i++) {
-			ret[i] = value.getUint8(i);
-		}
-		if (decoder == null) {
-			return ret;
-		}
-		var iv = decoder.iv || [];
-		if (ret.length > 16) {
-			var offset = ret.length - 16;
-			var block = decoder.decrypt(ret.slice(offset));
-			for (var i = 0; i < 16; i++) {
-				ret[i + offset] = block[i] ^ (~~iv[i]);
-			}
-		}
-		decoder.decrypt(ret);
-		for (var i = 0; i < 16; i++) {
-			ret[i] ^= (~~iv[i]);
-		}
-		return ret;
+		return decoder == null ? GiikerCube.dataViewToBytes(value) : decoder.decode(value);
 	}
 
 	function encode(ret) {
-		if (decoder == null) {
-			return ret;
-		}
-		var iv = decoder.iv || [];
-		for (var i = 0; i < 16; i++) {
-			ret[i] ^= ~~iv[i];
-		}
-		decoder.encrypt(ret);
-		if (ret.length > 16) {
-			var offset = ret.length - 16;
-			var block = ret.slice(offset);
-			for (var i = 0; i < 16; i++) {
-				block[i] ^= ~~iv[i];
-			}
-			decoder.encrypt(block);
-			for (var i = 0; i < 16; i++) {
-				ret[i + offset] = block[i];
-			}
-		}
-		return ret;
+		return decoder == null ? ret : decoder.encode(ret);
 	}
 
 	function sendRequest(req) {

@@ -2,6 +2,85 @@
 
 function BtDeviceGroupFactory() {
 
+	function dataViewToBytes(value) {
+		var ret = [];
+		for (var i = 0; i < value.byteLength; i++) {
+			ret[i] = value.getUint8(i);
+		}
+		return ret;
+	}
+
+	function createAesCbcCodec(key, iv) {
+		var decoder = $.aes128(key);
+		iv = iv || [];
+
+		function decode(value) {
+			var ret = dataViewToBytes(value);
+			if (ret.length > 16) {
+				var offset = ret.length - 16;
+				var block = decoder.decrypt(ret.slice(offset));
+				for (var i = 0; i < 16; i++) {
+					ret[i + offset] = block[i] ^ (~~iv[i]);
+				}
+			}
+			decoder.decrypt(ret);
+			for (var i = 0; i < 16; i++) {
+				ret[i] ^= (~~iv[i]);
+			}
+			return ret;
+		}
+
+		function encode(ret) {
+			for (var i = 0; i < 16; i++) {
+				ret[i] ^= ~~iv[i];
+			}
+			decoder.encrypt(ret);
+			if (ret.length > 16) {
+				var offset = ret.length - 16;
+				var block = ret.slice(offset);
+				for (var i = 0; i < 16; i++) {
+					block[i] ^= ~~iv[i];
+				}
+				decoder.encrypt(block);
+				for (var i = 0; i < 16; i++) {
+					ret[i + offset] = block[i];
+				}
+			}
+			return ret;
+		}
+
+		return {
+			decode: decode,
+			encode: encode
+		};
+	}
+
+	function crc16(data, poly, init, reflect) {
+		var crc = init;
+		for (var i = 0; i < data.length; i++) {
+			if (reflect) {
+				crc ^= data[i];
+				for (var j = 0; j < 8; j++) {
+					crc = (crc & 0x1) > 0 ? (crc >> 1) ^ poly : crc >> 1;
+				}
+			} else {
+				crc ^= data[i] << 8;
+				for (var j = 0; j < 8; j++) {
+					crc = (crc & 0x8000) > 0 ? (crc << 1) ^ poly : crc << 1;
+				}
+			}
+		}
+		return crc & 0xFFFF;
+	}
+
+	function crc16modbus(data) {
+		return crc16(data, 0xa001, 0xFFFF, true);
+	}
+
+	function crc16ccit(data) {
+		return crc16(data, 0x1021, 0xFFFF, false);
+	}
+
 	/* { prefix: cubeModel } */
 	var cubeModels = {};
 
@@ -194,6 +273,10 @@ function BtDeviceGroupFactory() {
 			});
 		},
 		regCubeModel: regCubeModel,
+		dataViewToBytes: dataViewToBytes,
+		createAesCbcCodec: createAesCbcCodec,
+		crc16modbus: crc16modbus,
+		crc16ccit: crc16ccit,
 		findUUID: findUUID,
 		waitForAdvs: waitForAdvs,
 		onDisconnect: onDisconnect,

@@ -21,17 +21,6 @@ execMain(function() {
 		deviceMac = giikerutil.reqMacAddr(forcePrompt, isWrongKey, deviceMac, defaultMac);
 	}
 
-	function crc16modbus(data) {
-		var crc = 0xFFFF;
-		for (var i = 0; i < data.length; i++) {
-			crc ^= data[i];
-			for (var j = 0; j < 8; j++) {
-				crc = (crc & 0x1) > 0 ? (crc >> 1) ^ 0xa001 : crc >> 1;
-			}
-		}
-		return crc;
-	}
-
 	// content: [u8, u8, ..]
 	function sendMessage(content) {
 		if (!_chrct_cube || DEBUGBL) {
@@ -42,7 +31,7 @@ execMain(function() {
 		for (var i = 0; i < content.length; i++) {
 			msg.push(content[i]);
 		}
-		var crc = crc16modbus(msg);
+		var crc = GiikerCube.crc16modbus(msg);
 		msg.push(crc & 0xff, crc >> 8);
 		var npad = (16 - msg.length % 16) % 16;
 		for (var i = 0; i < npad; i++) {
@@ -127,10 +116,7 @@ execMain(function() {
 
 	function onCubeEvent(event) {
 		var value = event.target.value;
-		var encMsg = [];
-		for (var i = 0; i < value.byteLength; i++) {
-			encMsg[i] = value.getUint8(i);
-		}
+		var encMsg = GiikerCube.dataViewToBytes(value);
 		giikerutil.log('[qiyicube] receive enc data', encMsg);
 		decoder = decoder || $.aes128(JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[0])));
 		var msg = [];
@@ -143,7 +129,7 @@ execMain(function() {
 		}
 		giikerutil.log('[qiyicube] decrypted msg', msg);
 		msg = msg.slice(0, msg[1]);
-		if (msg.length < 3 || crc16modbus(msg) != 0) {
+		if (msg.length < 3 || GiikerCube.crc16modbus(msg) != 0) {
 			giikerutil.log('[qiyicube] crc checked error');
 			return;
 		}

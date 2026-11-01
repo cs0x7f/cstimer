@@ -28,17 +28,6 @@ execMain(function () {
 		giikerutil.log('[QiyiTimer] Looks like this cube has new unknown CIC');
 	}
 
-	function crc16modbus(data) {
-		var crc = 0xFFFF;
-		for (var i = 0; i < data.length; i++) {
-			crc ^= data[i];
-			for (var j = 0; j < 8; j++) {
-				crc = (crc & 0x1) > 0 ? (crc >> 1) ^ 0xa001 : crc >> 1;
-			}
-		}
-		return crc;
-	}
-
 	function sendMessage(sendSN, ackSN, cmd, data) {
 		let msg = [];
 		msg.push(sendSN >> 24 & 0xff, sendSN >> 16 & 0xff, sendSN >> 8 & 0xff, sendSN & 0xff);
@@ -47,7 +36,7 @@ execMain(function () {
 		let len = data.length;
 		msg.push(len >> 8 & 0xff, len & 0xff);
 		msg = msg.concat(data);
-		var crc = crc16modbus(msg);
+		var crc = BluetoothTimer.crc16modbus(msg);
 		msg.push(crc >> 8, crc & 0xff);
 
 		var ret = Promise.resolve();
@@ -88,10 +77,7 @@ execMain(function () {
 	function onReadEvent(event) {
 		giikerutil.log('[QiyiTimer] onReadEvent', event);
 		var value = event.target.value;
-		var msg = [];
-		for (var i = 0; i < value.byteLength; i++) {
-			msg[i] = value.getUint8(i);
-		}
+		var msg = BluetoothTimer.dataViewToBytes(value);
 		if (msg[0] != waitPkg) {
 			waitPkg = 0;
 			payloadData = [];
@@ -125,7 +111,7 @@ execMain(function () {
 
 		giikerutil.log('[QiyiTimer] receive data', data);
 		var len = data[10] << 8 | data[11];
-		if (crc16modbus(data.slice(0, len + 12).concat([data[len + 13], data[len + 12]])) != 0) {
+		if (BluetoothTimer.crc16modbus(data.slice(0, len + 12).concat([data[len + 13], data[len + 12]])) != 0) {
 			giikerutil.log('[QiyiTimer] crc checked error');
 			return;
 		}
