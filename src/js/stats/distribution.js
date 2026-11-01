@@ -47,10 +47,13 @@ var distribution = execMain(function(kpretty) {
 		var pattern = diff >= 1000 ? /[^\.]+(?=\.)/ : /[^\.]+\.[\d]/;
 		var lablen = kpretty(max * diff).match(pattern)[0].length;
 		for (var i = min; i <= max; i++) {
-			var label = kpretty(i * diff).match(pattern)[0];
-			var label2 = kpretty((i + 1) * diff).match(pattern)[0];
 			dis[i] = dis[i] || 0;
 			cumDis += dis[i];
+			if (!dis[i]) {
+				continue;
+			}
+			var label = kpretty(i * diff).match(pattern)[0];
+			var label2 = kpretty((i + 1) * diff).match(pattern)[0];
 			label = mathlib.valuedArray(lablen - label.length, '&nbsp;').join('') + label;
 			label2 = mathlib.valuedArray(lablen - label2.length, '&nbsp;').join('') + label2;
 			str.push('<tr><td>' + label + '+</td><td><span class="cntbar" style="width: ' + dis[i] / cntmax * 5 + 'em;">' + dis[i] + '</span></td><td>&nbsp;&lt;' + label2 + '</td><td><span class="cntbar" style="width: ' + cumDis / timesLen * 5 + 'em; white-space: nowrap;">' + (timesLen - keep[i + 1]) + '/' + cumDis + '</span></td></tr>');
