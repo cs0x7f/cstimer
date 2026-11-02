@@ -181,7 +181,9 @@ function BtDeviceGroupFactory() {
 			var cics = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.cics || [])))];
 			// also match by advertised service, for devices that can't present a model name (e.g. phone timers)
 			var servFilters = [...new Set(Array.prototype.concat.apply([], Object.values(cubeModels).map((cubeModel) => cubeModel.servFilters || [])))];
-			filters = filters.concat(servFilters.map((service) => ({ services: [service] })));
+			if (!/Bluefy/i.test(window.navigator.userAgent || '')) {
+				filters = filters.concat(servFilters.map((service) => ({ services: [service] })));
+			}
 			giikerutil.log('[bluetooth]', 'scanning...', Object.keys(cubeModels));
 			return window.navigator.bluetooth.requestDevice({
 				filters: filters,
