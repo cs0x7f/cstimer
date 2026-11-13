@@ -149,10 +149,8 @@
 		l4efilter.push(l4e_map[i][2]);
 	}
 
-	function getL4EScramble(type, length, cases) {
-		var l4ecase = l4e_map[scrMgr.fixCase(cases, l4eprobs)][0];
-		var perm = mathlib.getNPerm(mathlib.setNPerm([], l4ecase & 1, 4, -1).concat([4, 5]), 6, -1);
-		var ori = (l4ecase >> 1 & 0x3) * 864 + (l4ecase >> 3);
+	// scramble to [perm, ori] with random AUFs on both sides and random tips
+	function getAUFScramble(perm, ori) {
 		var state = pyrMult(mathlib.rndEl(aufs), pyrMult([perm, ori], mathlib.rndEl(aufs)));
 		var sol = solv.toStr(solv.search(state, 8).reverse(), "ULRB", ["'", ""]) + ' ';
 		for (var i = 0; i < 4; i++) {
@@ -164,12 +162,58 @@
 		return sol;
 	}
 
+	function getL4EScramble(type, length, cases) {
+		var l4ecase = l4e_map[scrMgr.fixCase(cases, l4eprobs)][0];
+		var perm = mathlib.getNPerm(mathlib.setNPerm([], l4ecase & 1, 4, -1).concat([4, 5]), 6, -1);
+		var ori = (l4ecase >> 1 & 0x3) * 864 + (l4ecase >> 3);
+		return getAUFScramble(perm, ori);
+	}
+
 	function getL4EImage(cases, canvas) {
 		var l4ecase = l4e_map[cases];
 		if (!canvas) {
 			return ['GGG' + l4ecase[3], null, l4ecase[2]];
 		}
 		image.pyrllImage('GGG' + l4ecase[3], canvas);
+	}
+
+	// top-first: the top (edges 0, 1, 3 around U) is built, 3 other centers and 3 bottom edges are random
+	// [swap two top edges, flip one top edge, name, image]
+	var top_map = [
+		[0, 1, '1-Flip',  'FFRFRRLLL'],
+		[0, 0, 'WO',      'FFFRRRLLL'],
+		[1, 0, 'Nutella', 'FFFLRRLLR']
+	];
+
+	var topprobs = [];
+	var topfilter = [];
+	for (var i = 0; i < top_map.length; i++) {
+		topprobs.push(1);
+		topfilter.push(top_map[i][2]);
+	}
+
+	function getTopScramble(type, length, cases) {
+		var topcase = top_map[scrMgr.fixCase(cases, topprobs)];
+		var bottom = mathlib.rndPerm(3, true);
+		var edgePerm = [0, 1, 0, 3];
+		for (var i = 0; i < 3; i++) {
+			edgePerm[[2, 4, 5][i]] = [2, 4, 5][bottom[i]];
+		}
+		if (topcase[0]) { // swap two bottom edges as well to keep the parity
+			mathlib.circle(edgePerm, 0, 1)(edgePerm, 4, 5);
+		}
+		var edgeOri = [topcase[1], 0, mathlib.rn(2), 0, mathlib.rn(2), 0];
+		edgeOri[5] = edgeOri[0] ^ edgeOri[2] ^ edgeOri[4];
+		var ori = mathlib.rn(27) << 5 | eocoord.get(edgeOri);
+		return getAUFScramble(epcoord.get(edgePerm), ori);
+	}
+
+	function getTopImage(cases, canvas) {
+		var topcase = top_map[cases];
+		if (!canvas) {
+			return ['GGG' + topcase[3], null, topcase[2]];
+		}
+		image.pyrllImage('GGG' + topcase[3], canvas);
 	}
 
 	function getScramble(type) {
@@ -205,7 +249,8 @@
 		return sol;
 	}
 	scrMgr.reg(['pyro', 'pyrso', 'pyrnb', 'pyr4c'], getScramble)
-		('pyrl4e', getL4EScramble, [l4efilter, l4eprobs, getL4EImage]);
+		('pyrl4e', getL4EScramble, [l4efilter, l4eprobs, getL4EImage])
+		('pyrtop', getTopScramble, [topfilter, topprobs, getTopImage]);
 })();
 
 var mpyr = (function() {
