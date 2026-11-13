@@ -177,30 +177,28 @@
 		image.pyrllImage('GGG' + l4ecase[3], canvas);
 	}
 
-	// top-first: the top (edges 0, 1, 3 around U) is built, 3 other centers and 3 bottom edges are random
-	// [swap two top edges, flip one top edge, name, image]
 	var top_map = [
-		[0, 1, '1-Flip',  'FFRFRRLLL'],
+		[0, 1, '1Flip',   'FFRFRRLLL'],
 		[0, 0, 'WO',      'FFFRRRLLL'],
 		[1, 0, 'Nutella', 'FFFLRRLLR']
 	];
-
 	var topprobs = [];
 	var topfilter = [];
 	for (var i = 0; i < top_map.length; i++) {
 		topprobs.push(1);
 		topfilter.push(top_map[i][2]);
 	}
+	var bottom_idx = [2, 4, 5];
 
 	function getTopScramble(type, length, cases) {
 		var topcase = top_map[scrMgr.fixCase(cases, topprobs)];
 		var bottom = mathlib.rndPerm(3, true);
-		var edgePerm = [0, 1, 0, 3];
+		var edgePerm = [0, 1, 2, 3, 4, 5];
 		for (var i = 0; i < 3; i++) {
-			edgePerm[[2, 4, 5][i]] = [2, 4, 5][bottom[i]];
+			edgePerm[bottom_idx[i]] = bottom_idx[bottom[i]];
 		}
-		if (topcase[0]) { // swap two bottom edges as well to keep the parity
-			mathlib.circle(edgePerm, 0, 1)(edgePerm, 4, 5);
+		if (topcase[0]) {
+			mathlib.acycle(edgePerm, [0, 4, 1, 5], 2);
 		}
 		var edgeOri = [topcase[1], 0, mathlib.rn(2), 0, mathlib.rn(2), 0];
 		edgeOri[5] = edgeOri[0] ^ edgeOri[2] ^ edgeOri[4];
