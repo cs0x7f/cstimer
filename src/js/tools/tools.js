@@ -64,7 +64,7 @@ var tools = (function() {
 			return "666";
 		} else if (/^(777(si|[sp]|wca)?|7edge)$/.exec(scrambleType)) {
 			return "777";
-		} else if (/^pyr(s?[om]|l4e|nb|4c)$/.exec(scrambleType)) {
+		} else if (/^pyr(s?[om]|l4e|top|nb|4c)$/.exec(scrambleType)) {
 			return "pyr";
 		} else if (/^skb(s?o|nb|ll)?$/.exec(scrambleType)) {
 			return "skb";

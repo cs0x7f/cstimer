@@ -331,6 +331,7 @@ var scrdata = [
 		['Optimalt', "pyro", 0],
 		['Tilfeldig trekk', "pyrm", 25],
 		['L4E', "pyrl4e", 0],
+		['Top first', "pyrtop", 0],
 		['4 tips', "pyr4c", 0],
 		['No bar', "pyrnb", 0]
 	]],
