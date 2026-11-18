@@ -859,26 +859,36 @@ execMain(function() {
 		var len = parseInt(value.slice(8, 16), 2);
 		if (mode == 0x01) { // cube move
 			prevMoveLocTime = locTime;
-			moveCnt = parseInt(value.slice(56, 64) + value.slice(48, 56), 2);
-			giikerutil.log('[gancube]', 'v4 received move event', prevMoveCnt, moveCnt, value);
-			if (moveCnt == prevMoveCnt || prevMoveCnt == -1) {
+			if (prevMoveCnt == -1) {
 				return;
 			}
-			var ts = parseInt(value.slice(40, 48) + value.slice(32, 40) + value.slice(24, 32) + value.slice(16, 24), 2);
-			var pow = parseInt(value.slice(64, 66), 2);
-			var faceHot = parseInt(value.slice(66, 72), 2);
-			var move = decodeV4Move(pow, faceHot);
-			if (!move && is251) {
-				// packing B: face@64:6 + dir@70:2
-				move = decodeV4Move(parseInt(value.slice(70, 72), 2), parseInt(value.slice(64, 70), 2));
+			// one notification may carry several 72-bit move records, e.g. turns made within one connection interval
+			var added = 0;
+			for (var off = 0; off + 72 <= value.length && parseInt(value.slice(off, off + 8), 2) == 0x01; off += 72) {
+				moveCnt = parseInt(value.slice(off + 56, off + 64) + value.slice(off + 48, off + 56), 2);
+				giikerutil.log('[gancube]', 'v4 received move event', prevMoveCnt, moveCnt, value);
+				if (moveCnt == prevMoveCnt) {
+					continue;
+				}
+				var ts = parseInt(value.slice(off + 40, off + 48) + value.slice(off + 32, off + 40) + value.slice(off + 24, off + 32) + value.slice(off + 16, off + 24), 2);
+				var pow = parseInt(value.slice(off + 64, off + 66), 2);
+				var faceHot = parseInt(value.slice(off + 66, off + 72), 2);
+				var move = decodeV4Move(pow, faceHot);
+				if (!move && is251) {
+					// packing B: face@64:6 + dir@70:2
+					move = decodeV4Move(parseInt(value.slice(off + 70, off + 72), 2), parseInt(value.slice(off + 64, off + 70), 2));
+				}
+				if (!move) {
+					giikerutil.log('[gancube]', 'v4 move event invalid axis/pow', faceHot, pow);
+					break;
+				}
+				moveBuffer.push([moveCnt, move, ts, locTime]);
+				giikerutil.log('[gancube]', 'v4 move placed to fifo buffer', moveCnt, move, ts, locTime);
+				added++;
 			}
-			if (!move) {
-				giikerutil.log('[gancube]', 'v4 move event invalid axis/pow', faceHot, pow);
-				return;
+			if (added > 0) {
+				evictMoveBuffer(true);
 			}
-			moveBuffer.push([moveCnt, move, ts, locTime]);
-			giikerutil.log('[gancube]', 'v4 move placed to fifo buffer', moveCnt, move, ts, locTime);
-			evictMoveBuffer(true);
 		} else if (mode == 0xED) {  // cube state
 			moveCnt = parseInt(value.slice(24, 32) + value.slice(16, 24), 2);
 			if (prevMoveCnt != -1) {
