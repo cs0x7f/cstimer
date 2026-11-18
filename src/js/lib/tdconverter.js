@@ -171,6 +171,9 @@ var TimerDataConverter = execMain(function() {
 			var comment = line[6];
 			var timeMs = parseInt(line[2]);
 			var penalty = ({ '0': 0, '1': 2000, '2': -1 }[line[5]]) || 0;
+			if (penalty == 2000) {
+				timeMs -= 2000; // the exported time already includes the +2
+			}
 			if (line[0] == '333mbld') {
 				timeMs = (Math.trunc(line[2] / 1000) % 1000000) * 1000;
 				var point = 1000 - Math.trunc(line[2] / 1000000000);
