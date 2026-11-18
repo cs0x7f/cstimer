@@ -59,7 +59,8 @@ execMain(function () {
 	}
 
 	function sendHello(mac) {
-		let content = [0, 0, 0, 0, 0, 33, 8, 0, 1, 5, 90]; // Array(11).fill(0);
+		// QY-Timer-V2 firmware only answers its own hello header, the rest of the protocol is unchanged
+		let content = /^QY-Timer-V2-/i.test(deviceName) ? [0, 0, 0, 0, 0, 36, 5, 0, 4, 77, 20] : [0, 0, 0, 0, 0, 33, 8, 0, 1, 5, 90];
 		for (var i = 5; i >= 0; i--) {
 			content.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
 		}
