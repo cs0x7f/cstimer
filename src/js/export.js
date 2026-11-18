@@ -781,7 +781,7 @@ var exportFunc = execMain(function() {
 			var readerOther = new FileReader();
 			readerOther.onload = function() {
 				var n_import = stats.importSessions(TimerDataConverter(this.result));
-				if (n_import == 0) {
+				if (!n_import) {
 					logohint.push(LGHINT_IMPORT0);
 				}
 			};
