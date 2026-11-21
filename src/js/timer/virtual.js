@@ -134,6 +134,23 @@ execMain(function(timer) {
 		];
 	}
 
+	function isSolving() {
+		var status = timer.status();
+		return status == -3 || status == -2 || status >= 1;
+	}
+
+	function abortSolve(now) {
+		var recordDNF = timer.status() >= 1;
+		timer.lcd.setStaticAppend('');
+		timer.status(-1);
+		$('#lcd').css({'visibility': 'unset'});
+		timer.lcd.fixDisplay(false, true);
+		if (recordDNF) {
+			rawMoves.reverse();
+			kernel.pushSignal('time', ["", 0, [-1, now - timer.startTime()], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
+		}
+	}
+
 	function onkeydown(keyCode, e) {
 		if (puzzleObj == undefined) {
 			return;
@@ -155,18 +172,10 @@ execMain(function(timer) {
 				$('#lcd').css({'visibility': 'hidden'}); // enable dragging
 				timer.lcd.fixDisplay(false, true);
 			}
-		} else if (timer.status() == -3 || timer.status() == -2 || timer.status() >= 1) { // Scrambled or Running
+		} else if (isSolving()) { // Scrambled or Running
 			if (keyCode == 27 || keyCode == 28) { //ESC
-				var recordDNF = timer.status() >= 1;
-				timer.lcd.setStaticAppend('');
-				timer.status(-1);
+				abortSolve(now);
 				reset();
-				$('#lcd').css({'visibility': 'unset'}); // disable dragging
-				timer.lcd.fixDisplay(false, true);
-				if (recordDNF) {
-					rawMoves.reverse();
-					kernel.pushSignal('time', ["", 0, [-1, now - timer.startTime()], 0, [$.map(rawMoves, cubeutil.moveSeq2str).filter($.trim).join(' '), curPuzzle, moveCnt]]);
-				}
 			} else {
 				var origEvent = e && (e.originalEvent || e);
 				var code = origEvent && origEvent.code;
@@ -191,6 +200,11 @@ execMain(function(timer) {
 
 	function procSignal(signal, value) {
 		if (signal == 'scramble' || signal == 'scrambleX') {
+			var aborted = false;
+			if (isSolving() && (value[0] != curScrType || value[1] != curScramble)) {
+				abortSolve($.now());
+				aborted = true;
+			}
 			curScrType = value[0];
 			curScramble = value[1];
 			var puzzle = tools.puzzleType(curScrType);
@@ -214,6 +228,9 @@ execMain(function(timer) {
 				}
 			} else {
 				relayScrs = null;
+			}
+			if (aborted && !isReseted) {
+				reset();
 			}
 		}
 	}
