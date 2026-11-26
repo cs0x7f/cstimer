@@ -28,7 +28,7 @@
 <tr><th>Gomb</th><td>Funkció</td></tr>
 <tr><th>Alt + 1</th><td>Square-1 keverés kiválasztása</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>2x2x2~7x7x7 keverés kiválasztása</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Pyra/megaminx/óra/skewb keverés kiválasztása</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Pyra/megaminx/óra/skewb/FTO keverés kiválasztása</td></tr>
 <tr><th>Alt + i</th><td>Kézzel bevitt keverés kiválasztása</td></tr>
 <tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Remove the latest solve</td></tr>

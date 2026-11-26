@@ -17,6 +17,7 @@ var shortcuts = execMain(function(){
 		77: [['scrType', 'mgmp']],//m
 		80: [['scrType', 'pyrso']],//p
 		83: [['scrType', 'skbso']],//s
+		70: [['scrType', 'ftoso']],//f
 		73: [['scrType', 'input']],//i
 
 		37: [['scramble', 'last'], 'ctrl'],//left

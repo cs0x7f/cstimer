@@ -28,7 +28,7 @@
 <tr><th>Przycisk</th><td>Funkcja</td></tr>
 <tr><th>Alt + 1</th><td>Typ mieszania do Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Typ mieszania do 2x2-7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Typ mieszania do pyra/mega/clock/skewb</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Typ mieszania do pyra/mega/clock/skewb/FTO</td></tr>
 <tr><th>Alt + i</th><td>Wprowadź rozmieszanie</td></tr>
 <tr><th>Alt + d</th><td>Usuń wszystkie ułożenia w sesji</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Usuń najnowszy czas</td></tr>

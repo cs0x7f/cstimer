@@ -28,7 +28,7 @@
 <tr><th>快捷鍵</th><td>功能</td></tr>
 <tr><th>Alt + 1</th><td>打亂類型切換至 Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>打亂類型切換至 二~七階魔方</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>打亂類型切換至 金字塔/五魔方/魔錶/斜轉魔方</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>打亂類型切換至 金字塔/五魔方/魔錶/斜轉魔方/FTO</td></tr>
 <tr><th>Alt + i</th><td>打亂類型切換至 手動輸入</td></tr>
 <tr><th>Alt + d</th><td>刪除本組所有成績</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>刪除本組的最新成績</td></tr>

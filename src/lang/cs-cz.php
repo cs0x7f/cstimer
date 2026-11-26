@@ -28,7 +28,7 @@
 <tr><th>Key</th><td>Funkce</td></tr>
 <tr><th>Alt + 1</th><td>Nastavit typ míchání na Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Nastavit typ míchání na 2x2x2-7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Nastavit typ míchání na pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Nastavit typ míchání na pyra/megaminx/clock/skewb/FTO</td></tr>
 <tr><th>Alt + i</th><td>Nastavit druh míchání na vstup</td></tr>
 <tr><th>Alt + d</th><td>Odebrat všechny složení v aktuální relaci</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Odstranit nejnovější složení</td></tr>
