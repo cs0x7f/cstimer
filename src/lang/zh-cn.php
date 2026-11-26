@@ -28,7 +28,7 @@
 <tr><th>快捷键</th><td>功能</td></tr>
 <tr><th>Alt + 1</th><td>打乱类型切换至 Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>打乱类型切换至 二~七阶魔方</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>打乱类型切换至 金字塔/五魔方/魔表/斜转魔方</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>打乱类型切换至 金字塔/五魔方/魔表/斜转魔方/FTO</td></tr>
 <tr><th>Alt + i</th><td>打乱类型切换至 手动输入</td></tr>
 <tr><th>Alt + d</th><td>删除统计功能中本组所有成绩</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>删除统计功能中本组最新的一个成绩</td></tr>

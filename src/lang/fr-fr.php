@@ -28,7 +28,7 @@
 <tr><th>Touche</th><td>Fonctionnalité</td></tr>
 <tr><th>Alt + 1</th><td>Type de mélange pour Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Type de mélange pour 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Type de mélange pour pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Type de mélange pour pyra/megaminx/clock/skewb/FTO</td></tr>
 <tr><th>Alt + i</th><td>Type de mélange à saisir</td></tr>
 <tr><th>Alt + d</th><td>Supprimer toutes les résolutions de la session en cours</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Supprimer la dernière résolution</td></tr>

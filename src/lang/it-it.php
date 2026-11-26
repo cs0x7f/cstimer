@@ -28,7 +28,7 @@
 <tr><th>Tasto</th><td>Funzione</td></tr>
 <tr><th>Alt + 1</th><td>Tipo di scramble a Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Tipo di scramble a 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Tipo di scramble a pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Tipo di scramble a pyra/megaminx/clock/skewb/FTO</td></tr>
 <tr><th>Alt + i</th><td>Tipo di scramble a inserimento</td></tr>
 <tr><th>Alt + d</th><td>Rimuovi tutte le risoluzioni nella sessione corrente</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Rimuovi l'ultima risoluzione</td></tr>

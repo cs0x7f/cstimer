@@ -28,7 +28,7 @@
 <tr><th>Tuş</th><td>Fonksiyon</td></tr>
 <tr><th>Alt + 1</th><td>Scramble type to Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Scramble type to 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble type to pyra/megaminx/clock/skewb</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Scramble type to pyra/megaminx/clock/skewb/FTO</td></tr>
 <tr><th>Alt + i</th><td>Scramble type to input</td></tr>
 <tr><th>Alt + d</th><td>Remove all solves in current session</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Remove the latest solve</td></tr>

@@ -28,7 +28,7 @@
 <tr><th>Taste(n)</th><td>Funktion</td></tr>
 <tr><th>Alt + 1</th><td>Scramble-Art zu Square-1</td></tr>
 <tr><th>Alt + 2 ~ 7</th><td>Scramble-Art zu 2x2x2~7x7x7</td></tr>
-<tr><th>Alt + p/m/c/s</th><td>Scramble-Art zu Pyraminx/Megaminx/Clock/Skweb</td></tr>
+<tr><th>Alt + p/m/c/s/f</th><td>Scramble-Art zu Pyraminx/Megaminx/Clock/Skweb/FTO</td></tr>
 <tr><th>Alt + i</th><td>Scramble-Art zu Eingabe</td></tr>
 <tr><th>Alt + d</th><td>Entfernt alle Solves aus der aktuellen Sitzung</td></tr>
 <tr><th>Ctrl/Alt + z</th><td>Entfernt den letzten Solve</td></tr>
